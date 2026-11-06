@@ -1783,6 +1783,7 @@ APPLIED (OURS): `scripts/dev/boot_audit.py` (report; `--fix` touches MTS-owned i
 KEEP/ASK list (not ours, your call, `boot_audit.py` marks them `*`): ASK remove from startup: Docker Desktop, Teams, Discord, Medal Highlight, Free Snipping Tool (+ Updater), OpenVPN GUI. KEEP unless you do not use them: TeamViewer, Tailscale (service + shortcut), Intel DSA, Office ClickToRun, Edge/Chrome autolaunch. KEEP (Windows): SecurityHealth, Defender, Realtek audio, SPDriverInstall. Free C: space above 15 GB is also worth keeping.
 NUC (read-only listing through the SSH gate `ps` verb, 2026-11-06): about 90 spent MTS one-shot tasks are still registered (`gq13`..`gq20`, `gqpush*`, `MTS-GateJob-*` x25 as SYSTEM, `MTS-Wake-*` x30, `MTS-GW-opus-*`, `lab-loop`, `codexloop`, `LayerBible*`, `mts-oneshot-*`) against a policy of one allowed task, plus Run values `MTSTempGuard`, `MTSLogonWake` (authorised), `AntigravityCliDaemon`, `Claude`, `Discord`, `OpenVPN-GUI`; C: 71.6 GB free. Broadcast b-5d221d has the NUC and laptop run `boot_audit.py --fix`, which removes the spent ones (never a running task or a pending one-shot); the `MTS-GateJob-*` tasks run as SYSTEM and may need the operator's admin or the gate `ps-bg`; the fix prints which ones it could not remove.
 Applied: 2026-11-06, card slow-boot-fix-1106; boot time to be compared after the next restart (`boot_audit.py` on each machine).
+2026-11-06 16:45Z, operator (JIS-NB, Settings > Startup): turned off Discord, Docker, Free Snipping Tool + updater, Teams, Chrome/Edge autolaunch, Tailscale GUI (service stays on) and "Console Window Host"; turned Claude on. Lead C: "Console Window Host" is MTSTempGuard (`c_drive_guard.py logon`, already delayed 180 s), so it goes back on; Medal Highlight off.
 
 ## d-fable-lead-revalidation-1106 | decided 2026-11-06 | operator (voice, 12:40Z), Lead C
 DECISION: the Lead session runs on Fable 5.1 from 12:40Z and revalidates every decision and analysis of 2026-11-06 against the operator's standing asks: nothing duplicated, everything wired end to end, simplified, accurate, fast and prompt. Found and fixed this turn: the lows-first scenario was never written to the ledger (added as the study-backed version, down 75,208 before up 80,918 by 11-07 end); the CBP Analyst Desk was rebuilt locally by the fixed cbp_run.py (+6 rows, 18 total) but no session republished it (republished now); 4 registry pages were stale (republish delegated).
@@ -1801,3 +1802,15 @@ Answer: yes, start it (operator, 2026-11-06 16:10Z); session flip-study on JIS-N
 Power gate 0.30 % ceiling with repo-wide Holm m = 238 blocks every DEV study (Builder via Supervisor C, 2026-11-06 14:55Z). Card power-gate-holm-m-decision-1106 READY.
 Recommended: Holm m per study family.
 Answer: default (Holm m per family) applies from 2026-11-07 15:00Z unless the operator overrides; recorded by Lead C.
+
+## d-carry-dropped-leverage-direction-1106 | decided 2026-11-06 | operator (voice, 18:40Z), recorded by Lead C
+Funding carry (carry_basis_2026-10-18, 6-15 %/yr, shrinking) is dropped: MTS aims at leveraged directional trades, not carry.
+Direction: (1) low-leverage long-term longs near confirmed cycle bottoms (CBP bottom signal, buy on or after a good retest); (2) scalps, day and swing trades by session using Tom and Fabio levels (where buyers and sellers sit), bias from indicators and volume, continuation vs counter-trade.
+Lead C finding: the order-flow setups are often positive before costs and negative after (fabio_of: about 0.45 R of cost per trade on 0.15 % stops), so costs, not missing layers, kill most results.
+Answer: carry dropped; direction recorded (operator, 2026-11-06).
+
+## d-phase-first-method-1106 | decided 2026-11-06 | operator (voice, 18:55Z), recorded by Lead C
+Method: an edge is judged by market phase and by patterns that hold now, not by long multi-year backtests. A pattern visible in the current phase goes to the testnet at once and keeps trading until it stops working; we record when it works and the conditions in which it fails. Large-history backtests are not a precondition for testnet trades.
+Example: the BTC four-year cycle (3 up, 1 down) held for 4 cycles; it needs no backtest. Research table: research/btc_cycles_2026-11/cycles.md (16 years of daily prices, blockchain.info before 2017-08, Binance after).
+Bound (Hard rules, unchanged): testnet only; mainnet still needs the fee-net out-of-sample record, which the testnet run now supplies.
+Answer: phase-first, testnet-forward method adopted (operator, 2026-11-06).

@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T17:00:55Z",
+  "depends_on": [],
+  "done_when": "exports sim_desk/results/flip-engine-follow-up.json with the 7 cells recalibrated vs session-adjusted null, and a PRE_REG.md (Context, Regime mix, Phase/Session/Entry) for the fresh-data run",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "recompute the candle_flip null with session-adjusted sigma, then pre-register a fresh-data run (bars from 2026-11-07 on) for the 7 cells that beat the recalibrated baseline; frozen thresholds, no re-tuning",
+  "id": "flip-engine-follow-up-session-adjusted-s",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "flip study step 5: Haiku review (REVIEW.md, 12 findings), amended analysis rerun, card don",
+      "ref": "9c7aa1bc41d7",
+      "utc": "2026-11-06T17:01:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "planner 11-06 refined; fresh data run itself cannot start before 2026-11-07 bars exist",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T17:31:43Z",
+  "refs": [
+    "MyTradingSys/research/candle_flip_probability_2026-11/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/candle_flip_probability_2026-11"
+  ],
+  "scope_out": [
+    "MyTradingSys/tools/live_aid"
+  ],
+  "scope_sha": "9c7aa1bc41d7",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "read RESULT.md to list the 7 cells and the baseline",
+    "fail-first test, then session-adjusted sigma in the null",
+    "write PRE_REG.md for 2026-11-07+ run and export results json"
+  ],
+  "tests": "MyTradingSys/backtest/layers/test_flip_null_session.py: session-sigma null must differ from flat-sigma null on a fixture with two sessions (fails with no session-sigma function)",
+  "title": "flip engine follow-up: session-adjusted sigma for the null, then a fresh-data run (2026-11-07 on) of the 7 cells that beat the recalibrated baseline",
+  "weight": "",
+  "worker": "session"
+}

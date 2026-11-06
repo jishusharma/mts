@@ -1,6 +1,6 @@
 """Regime mix of the two study windows, from research_kit.regime_tag (Malkan weekly/monthly RSI 60/40 band + daily SMA200 side).
 Uses public Binance spot 1d / 1w / 1M klines from 2017-08 (warm-up for the monthly RSI); no outcome of the flip study is read.
-Writes regime_mix.txt (one line per window)."""
+Writes regime_mix.txt (one line per window) and regime_weeks.csv (Monday 00:00Z week start, regime tag; used by the post-review regime split)."""
 import json, sys, urllib.request
 from pathlib import Path
 
@@ -49,9 +49,14 @@ def main():
     import time
     now = int(time.time() * 1000)
     lines = []
+    weeks = []
     for name, lo, hi in (("fit 2024-01-01..2025-01-01", START, CUT), ("score 2025-01-01..now", CUT, now)):
-        tags = [rk.regime_tag(t, daily, wk, mo)["regime"] for t in week_starts(lo, hi)]
+        ws = week_starts(lo, hi)
+        tags = [rk.regime_tag(t, daily, wk, mo)["regime"] for t in ws]
+        weeks += list(zip(ws, tags))
         lines.append("Regime mix (%s): %s" % (name, rk.regime_mix_line(tags)))
+    rows = ["week_ms,regime"] + ["%d,%s" % (t, g) for t, g in weeks]
+    (HERE / "regime_weeks.csv").write_text("\n".join(rows) + "\n", encoding="utf-8", newline="\n")
     (HERE / "regime_mix.txt").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     print("\n".join(lines))
 

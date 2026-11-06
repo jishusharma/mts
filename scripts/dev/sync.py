@@ -3,7 +3,7 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>] [--train]  # --train (off by default): push queue/<host>/<slug>, wait on the train status file (ship_train.py; exit 4 = ejected); a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
                                            # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
@@ -784,6 +784,8 @@ def commit_pending(repo, result, subject=None, nxt=None):
     commit whose body ends `Result: <text>` (and `Next: <tag>`). Clean tree: nothing to commit (commits already made keep their own
     messages), except that --next alone adds an empty `route tag` commit carrying it. Returns the file count."""
     tail = (chr(10) + "Next: " + nxt.strip().removeprefix("Next:").strip()) if nxt else ""
+    if (result is not None or nxt) and git(repo, "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
+        raise SyncError("ship refused: HEAD does not resolve (unborn or unreadable ref, e.g. during git auto-gc); a commit now would be an orphan initial commit")
     if result is None:
         if nxt:
             git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
@@ -905,6 +907,7 @@ Pushed = namedtuple("Pushed", "sha files")   # what ship() returns after a push:
 CI_START_S = 90      # OURS: a pushed sha that shows no CI run by now will not get one (ci.yml path filter, offline) - say so and go on
 CI_WAIT_S = 600      # OURS: cap on the whole wait; a run took ~4-6 min on 2026-10-22 (15 jobs). Past it: "still running", never a verdict
 CI_POLL_S = 20       # OURS: 30 calls at most per ship; logged in (ci_watch.token) the API allows 5000 an hour
+TRAIN_EJECT_EXIT = 4   # `sync.py ship --train` exit code when the train ejected this ref (see MyTradingSys/system/SHIP_TRAIN.md)
 CI_RED_EXIT = 3      # `sync.py ship` exit code when the pushed sha's own CI run failed (the push itself succeeded)
 CI_RED_STATES = ("failure", "timed_out", "startup_failure")
 CI_MISSES = 3        # consecutive API failures before the wait gives up as "unknown"
@@ -1273,12 +1276,13 @@ def stage_layers(repo, fold=False):
     return True
 
 
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep, push_ref=None):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
     after_slug (SV3): wait for predecessor order ticket to finish or lapse before running the gate; never holds a gate slot while waiting.
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
     only when the incoming commits overlap what we ship (race_overlap), at most REGATES times.
+    push_ref (`ship --train`, SHIP_TRAIN.md): push to this ref (queue/<host>/<slug>) instead of the trunk; None = the trunk, unchanged.
     Returns Pushed(sha, files) after a push, None when there was nothing to ship (ship-waits-own-ci: main() waits for that sha's CI run)."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
     t_ship_0 = time.monotonic()
@@ -1342,13 +1346,14 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
                 released = True
             pages = StalePages(repo)       # overlaps the push
-            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
+            dest = push_ref or TRUNK
+            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{dest}", check=False)
             if r.returncode == 0:
                 ok = True
                 write_ship_stamp(repo)
                 if release_slug and not released:
                     released = release_side(repo, release_slug)
-                print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
+                print(f"shipped {len(files)} file(s) to origin/{dest}" + (f"; released {release_slug}" if released else ""))
                 if released:
                     drop_gateway_hold(repo, release_slug)
                 pages.report()
@@ -2263,6 +2268,8 @@ def main(argv):
             # B8 (2026-10-28): ship returns as soon as origin has the commit; the CI wait is `sync.py ci` or opt-in `--wait-ci` / SYNC_WAIT_CI=1
             wait_ci = ("--wait-ci" in argv or bool(os.environ.get("SYNC_WAIT_CI"))) and "--no-ci-wait" not in argv and not os.environ.get("SYNC_NO_CI_WAIT")
             argv = [a for a in argv if a not in ("--no-ci-wait", "--wait-ci")]
+            train = "--train" in argv    # flag off by default: the push goes to the trunk exactly as before
+            argv = [a for a in argv if a != "--train"]
             release_slug = None
             if "--release" in argv:
                 i = argv.index("--release")
@@ -2305,7 +2312,24 @@ def main(argv):
                 raise SyncError(f"staged but not committed: {files}; git commit them or use --result")
             check_route_tags(repo)
             stage_layers(repo, fold=True)
-            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
+            train_ref = train_since = None
+            if train:
+                import ship_train
+                train_ref = ship_train.queue_ref(git(repo, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip())
+                train_since = ship_train.S.stamp()
+            extra_kw = {"push_ref": train_ref} if train else {}   # default call stays byte-identical (test_sync asserts it)
+            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug, **extra_kw)
+            if train and isinstance(pushed, Pushed):
+                write_last_pushed(repo, pushed)
+                print(f"queued {pushed.sha[:8]} on {train_ref}; waiting for the train's verdict on mts-signals")
+                try:
+                    verdict = ship_train.wait_status(train_ref, since=train_since)
+                except KeyboardInterrupt:
+                    print("stopped waiting for the train; the push is done")
+                    return 0
+                if verdict == "landed":
+                    tidy_after_ship(repo)
+                return TRAIN_EJECT_EXIT if verdict == "ejected" else 0
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 tidy_after_ship(repo)

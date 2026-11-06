@@ -844,11 +844,43 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
     if done_when:
         lines.append(f"Done when: {done_when}")
 
+    # Report path inside the worktree for Verifiers or report-bearing cards (gap 5: subagents ship their own report)
+    report_path = None
+    if card.get("report"):
+        report_path = str(card["report"]).strip()
+    elif card.get("report_path"):
+        report_path = str(card["report_path"]).strip()
+    else:
+        for field in ("refs", "scope_in"):
+            for item in card.get(field) or []:
+                s = str(item).strip()
+                if s.endswith("REPORT.md") or s.endswith("report.md"):
+                    report_path = s
+                    break
+            if report_path:
+                break
+        if not report_path:
+            text = f"{done_when} {goal}"
+            m = re.search(r"((?:MyTradingSys/)?research/[\w.-]+/REPORT\.md)", text, re.IGNORECASE)
+            if m:
+                report_path = m.group(1)
+            elif str(worker_role).lower() == "verifier":
+                report_path = f"MyTradingSys/research/{slug}/REPORT.md"
+
+    if report_path:
+        r_str = str(repo).replace("\\", "/")
+        report_path = report_path.replace("\\", "/")
+        if report_path.startswith(r_str):
+            report_path = os.path.relpath(report_path, r_str).replace("\\", "/")
+        report_path = report_path.lstrip("/\\")
+        lines.append(f"Report: {report_path} (write inside your WORKTREE with the Write tool)")
+
     # Defaults for open questions
     lines.append("Defaults for open questions: on any ambiguity take the most conservative default, never ask the operator.")
 
     # Standard stop line
     lines.append("Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue")
+    lines.append(f"Ship once with python scripts/dev/sync.py ship --release {slug}")
     lines.append("Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.")
 
     return "\n".join(lines)

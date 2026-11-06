@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-06T17:45:41Z",
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-malkan-window-wide-1106:low"
+  ],
+  "created": "2026-11-06T16:48:51Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_MALKAN_WIDE_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent blind read (gemini_queue.py, effort low) of malkan_window_wide_2026-11: recompute each quoted number from RESULT.md, counts.csv, gate_lines.csv, PRE_REG.md and flag contradictions with PRE_REG.md.",
+  "id": "gemini-blind-read-malkan-window-wide-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_MALKAN_WIDE_1106.md: VERDICT",
+      "ref": "9276322f5",
+      "utc": "2026-11-06T17:45:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "malkan wide pivot: counts and gate, BLOCKED",
+      "ref": "934d47597575",
+      "utc": "2026-11-06T14:36:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "934d47597575 malkan wide pivot: counts and gate, BLOCKED",
+      "ref": "MyTradingSys/research/malkan_window_wide_2026-11/RESULT.md",
+      "utc": "2026-11-06T14:36:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed with 100% match",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:51Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_MALKAN_WIDE_1106.md: VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_MALKAN_WIDE_1106.md (new)",
+    "MyTradingSys/research/malkan_window_wide_2026-11/RESULT.md (read)",
+    "MyTradingSys/research/malkan_window_wide_2026-11/counts.csv (read)",
+    "MyTradingSys/research/malkan_window_wide_2026-11/gate_lines.csv (read)",
+    "MyTradingSys/research/malkan_window_wide_2026-11/PRE_REG.md (read)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "934d47597575",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the source files before any prose summary",
+    "Recompute independently of the code under read",
+    "Write the table and VERDICT"
+  ],
+  "taken": "2026-11-06T17:45:41Z",
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_MALKAN_WIDE_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of malkan_window_wide RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

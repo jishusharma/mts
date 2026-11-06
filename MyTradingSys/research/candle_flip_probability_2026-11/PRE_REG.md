@@ -90,3 +90,15 @@ Entry: none; this is a probability of the open candle's close colour, not an ent
 | Windows | fit <= 2025-01-01 < score | Lead order |
 | Holm | m = 12 per group table, m = 48 study-wide shown | OURS (Lead order m = 12) |
 | Min bars per cell | 30 | OURS |
+
+## Amendments after the Haiku review (2026-11-06, after the first count; the frozen text above is unchanged and stays the record of the plan)
+The first run (commit 9f7dc27ae, bar clusters) counted 16 cells. `REVIEW.md` found problems in the analysis, so the analysis was changed and rerun. Each amendment is stated with what it replaces; the first-run numbers are NOT a result.
+- A1 clustering (review #1, blocker): SE and p cluster by the UTC week of the bar open (Monday start), not by timeframe + bar, because bars of different timeframes share the same 1m path and the 1d/1w colours are shared by every bar of a day or week. The bar-cluster p is kept in `cells.csv` as `p_bar`. A cell also needs >= 30 distinct score weeks.
+- A2 HTF cell for own-timeframe rows (review #5): the frozen text "no row-colour direction is used" is wrong for 1d and 1w rows (one of the two colours is the row's own). 1d and 1w rows get htf = `na`, are not in the 12 cells, and stay in the per-timeframe Brier table (shift 0).
+- A3 fit gate (review #7): a cell shift is fitted only with >= 30 distinct fit bars, else 0 (fail closed); fit bars are printed.
+- A4 headline multiplicity (review #12): the headline counts cells surviving Holm m = 48 (all four group tables); m = 12 per group stays as printed. Only the open-colour test counts; the prior-close colour is a near-duplicate on 24/7 spot (review #9) and is not evidence.
+- A5 recalibrated baseline (review #2, #3), EXPLORATORY and OURS, written after seeing the first result: the null recalibrated on |d| (8 quantile bins from the fit rows) x time left (fifths), fitted on 2024 per group, bins with < 30 fit rows fall back to the null. Cells are tested against this baseline too (same Holm, same week clusters, same Brier rule); the verdict states both.
+- A6 Bollinger centring constant (review #10): the first close, not the series mean. It cancels exactly; no number changes.
+- A7 regime split (review #11): score-window delta by the weekly regime tag of the bar-open week (`regime_weeks.csv`, `regime_split.csv`), descriptive only.
+- A8 holdout (review #6): RESULT says that no clean holdout remains for this family; any rule that ships from these cells needs fresh data.
+Not adopted: a materiality floor (review #8) is not invented after the fact; RESULT states the gains as statistical, not economic.

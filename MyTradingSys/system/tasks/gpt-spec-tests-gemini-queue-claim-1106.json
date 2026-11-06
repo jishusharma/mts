@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-06T17:55:05Z",
+  "commands": [],
+  "created": "2026-11-06T16:48:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tests/test_gemini_queue_spec_1106.py exists, passes on trunk, and the report MyTradingSys/research/layer_lab/reports/2026-11-06_gemini-queue-claim.md names the mutation that made it fail.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write a spec test for scripts/dev/gemini_queue.py from its docstring/PRE_REG (f724f4eeb claim fix); the test must fail on a planted one-line mutation of the code.",
+  "id": "gpt-spec-tests-gemini-queue-claim-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/tests/test_gemini_queue_spec_1106.py 6 pass, mutation fails 2",
+      "ref": "855e9bfac",
+      "utc": "2026-11-06T17:55:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Reapply own-host claim fix (f721ddf5a); test_gemini_claim_skip pins the claim to another s",
+      "ref": "f724f4eeb83f",
+      "utc": "2026-11-06T15:40:24Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: spec test delivered",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:29Z",
+  "refs": [],
+  "result": "MyTradingSys/tests/test_gemini_queue_spec_1106.py 6 pass, mutation fails 2",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gemini_queue.py (read)",
+    "MyTradingSys/tests/test_gemini_queue_spec_1106.py (new)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_gemini-queue-claim.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "f724f4eeb83f",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the module contract, not the code body",
+    "Write 3+ spec tests from the contract",
+    "Mutate one line, show the test fails, revert, report"
+  ],
+  "taken": "2026-11-06T17:55:05Z",
+  "tests": "python -m pytest MyTradingSys/tests/test_gemini_queue_spec_1106.py -q passes; same test fails on the mutated copy (named in the report)",
+  "title": "GPT spec tests: gemini_queue.py own-host claim skip",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -148,3 +148,37 @@ def test_row_and_time_left_fail_closed():
 def test_format_time_left_and_ago():
     assert _run("[P.fmtLeft(j[0]),P.fmtLeft(j[1]),P.fmtLeft(j[2]),P.fmtLeft(null),P.fmtAgo(j[3]),P.fmtAgo(j[4])]",
                 [125_000, 3_900_000, 90_000_000, 300_000, 7_500_000]) == ["2m 05s", "1h 5m", "1d 1h", "—", "5m", "2h"]
+
+
+def test_close_colour_gauge():
+    # P(keeps colour) = Phi(|d_sd| / sqrt(t_left)), d_sd = d_atr * 1.5958 (sigma_bar = ATR / (2 sqrt(2/pi))). Standard normal table, not the code.
+    K = 1.5957691
+    out = _run("[P.pCloseColour('1h',0,0.5,null),P.pCloseColour('4h',1/j[0],1,null),P.pCloseColour('15m',-0.5/j[0],0.25,null),"
+               "P.pCloseColour('1h',0,0.5,{delta:0.02}),P.pCloseColour('1h',5,0.01,{delta:0.5}),P.pCloseColour('1h',0.3,0,null)]", [K])
+    assert out[0] == pytest.approx(0.5, abs=1e-9)            # d = 0: 0.5 whatever the time left
+    assert out[1] == pytest.approx(0.841345, abs=1e-5)       # d = 1 sd, t = 1: Phi(1)
+    assert out[2] == pytest.approx(0.841345, abs=1e-5)       # d = -0.5 sd, t = 0.25: |d|/sqrt(t) = 1, the sign is the colour not the odds
+    assert out[3] == pytest.approx(0.52, abs=1e-9)           # cell shift added
+    assert out[4] == pytest.approx(0.999, abs=1e-9)          # clipped
+    assert out[5] == 1.0                                     # bar over: colour final
+    bad = _run("[P.pCloseColour('1h',NaN,0.5,null),P.pCloseColour('1h',0.3,1.5,null),P.pCloseColour('7x',0.3,0.5,null),P.pCloseColour('1h',0.3,-0.1,null)]".replace("NaN", "j[0]"), [None])
+    assert bad == [None, None, None, None]                   # unreadable input fails closed
+
+    # strip row: 24 closed 5m bars, every TR = 2 (H 101, L 99, C 100) -> ATR14 = 2; forming bar opens 100
+    def bars(price):
+        b = [k(i * 5 * MIN, 100, 101, 99, 100, 10, 5, 5 * MIN) for i in range(24)]
+        b.append(k(24 * 5 * MIN, 100, 102, 98, price, 10, 5, 5 * MIN))
+        return b
+    t0 = 24 * 5 * MIN
+    # price 101.25 after 2.5 of 5 minutes: d_atr = 1.25/2 = 0.625, t_left = 0.5 -> Phi(0.625*1.5958/sqrt(0.5)) = Phi(1.4105) = 0.92080
+    g = _run("P.row(j.b,j.now).keep", {"b": bars(101.25), "now": t0 + 150_000})
+    assert g["p"] == pytest.approx(0.92080, abs=1e-4) and g["colour"] == "green"
+    assert g["dAtr"] == pytest.approx(0.625) and g["tLeft"] == pytest.approx(0.5, abs=1e-4)
+    # price 98.75: same distance below the open -> same probability, red; 0.5 min of 5 left, d_atr 0.125 -> Phi(0.125*1.5958/sqrt(0.1)) = Phi(0.6308) = 0.73591
+    assert _run("P.row(j.b,j.now).keep", {"b": bars(98.75), "now": t0 + 150_000})["colour"] == "red"
+    g2 = _run("P.row(j.b,j.now).keep", {"b": bars(100.25), "now": t0 + 270_000})
+    assert g2["p"] == pytest.approx(0.73591, abs=1e-4) and g2["colour"] == "green"
+    # 15 bars (needs 16: ATR14 plus the forming bar): no gauge, the row itself still reads
+    short = bars(101.25)[10:]
+    r = _run("P.row(j.b,j.now)", {"b": short, "now": t0 + 150_000})
+    assert r is not None and r["keep"] is None

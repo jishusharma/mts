@@ -1486,3 +1486,33 @@ def test_prompt_with_missing_card_fails(tmp_path):
     assert "no-such-card" in str(e.value)
     (d / "ghost-card.json").write_text(json.dumps({"id": "ghost-card"}), encoding="utf-8")
     assert "Depends on: ghost-card" in S.brief("real-card", repo=tmp_path)
+
+
+def test_brief_names_writable_report_path(tmp_path):
+    """supervisor brief for a Verifier or report-bearing card names a writable report path inside the worktree,
+    names the Write tool, and instructs shipping directly so transcription is never needed."""
+    d = tmp_path / "MyTradingSys" / "system" / "tasks"
+    d.mkdir(parents=True)
+    (d / "v-card.json").write_text(json.dumps({
+        "id": "v-card",
+        "role": "Verifier",
+        "goal": "Verify fix and write REPORT.md",
+        "done_when": "MyTradingSys/research/v_fix/REPORT.md exists",
+    }), encoding="utf-8")
+
+    out = S.brief("v-card", repo=tmp_path)
+    assert "Report: MyTradingSys/research/v_fix/REPORT.md" in out
+    assert "Write tool" in out
+    assert "WORKTREE" in out
+    assert "sync.py ship --release v-card" in out
+
+    # Verifier role with default report path when none explicitly named in card
+    (d / "v-default.json").write_text(json.dumps({
+        "id": "v-default",
+        "goal": "Verify something",
+    }), encoding="utf-8")
+    out_default = S.brief("v-default", role="Verifier", repo=tmp_path)
+    assert "Report: MyTradingSys/research/v-default/REPORT.md" in out_default
+    assert "Write tool" in out_default
+    assert "sync.py ship --release v-default" in out_default
+

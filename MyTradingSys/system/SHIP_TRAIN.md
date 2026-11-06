@@ -120,3 +120,22 @@ Not removed: the local smoke gate (keeps most bad ships off the queue), the quar
 - Red-state minutes include quiet gaps; 1220 of the 1526 are two overnight streaks (782 + 438) where no code push re-ran CI. Under C those gaps vanish because nothing red lands.
 - Ship-wall rows were re-read from this host's trees only (90); the brief's 124 JIS-NB-wide figures were not re-derived.
 - Estimates (batch of 3, 6-8 min, 12 parallel runs) are OURS until card 4 measures them.
+
+## 6. Shadow-week measurement (2026-11-06)
+
+Status: NOT RUN. The shadow lane does not exist yet: no `train.yml` in `.github/workflows/`, no `queue/**` or `fast-track-shadow` ref on origin, and cards
+`ship-train-flake-floor`, `ship-train-runner`, `ship-train-bisect-eject-signal` are all still `ready` (checked this turn: `ls .github/workflows`, `git ls-remote`).
+Nothing was invented for the shadow column. Trunk column re-derived from `gh run list --branch fast-track --limit 300` (286 finished success/failure runs, 2026-11-04T12:57Z .. 11-06T17:02Z).
+
+| Number | Shadow (train) | Trunk (direct push) |
+|---|---|---|
+| Red-state minutes (first red run of a streak to next green run start) | n/a, no shadow lane | 419 of 3125 min span (13%); run-level: 82 of 286 runs red (29%) |
+| Land time p50 / p90 (CI wall of finished runs; push-to-verdict) | n/a | 4.7 / 16.4 min |
+| False ejects (target 0) | n/a | n/a (no eject exists on direct push) |
+| Repeat-red runs (red run re-reporting a break already on trunk) | n/a | 68% of content-break runs in the 11-01..11-03 window (section 1); not re-derived for 11-04..11-06 |
+| Branch-green-but-trunk-red evidence | n/a | not measurable: no branch CI exists; needs the candidate-vs-ref-alone runs from card 3 |
+
+Trunk got better since section 1 (red-state 54% -> 13% of span; p50 5.2 -> 4.7 min), but p90 rose 9.5 -> 16.4 min. Window differs (2.2 days, includes in-flight-adjacent long runs), so treat as indicative only.
+
+GO / NO-GO for the operator: NO-GO on cutover (card 5) now. Reason: nothing to measure until cards 1-3 ship; shadow week needs 3-7 days of both paths after that.
+DECISION (OURS): re-run this card after `ship-train-bisect-eject-signal` lands plus 3 days; keep direct push as the only path meanwhile.

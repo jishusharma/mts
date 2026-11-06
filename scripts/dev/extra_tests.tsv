@@ -236,3 +236,5 @@ scripts/dev/test_us_prep.py
 scripts/dev/test_boot_audit.py
 MyTradingSys/tools/live_aid/test_spec_tf_strip.py
 MyTradingSys/research/candle_flip_probability_2026-11/test_null_model.py
+scripts/dev/test_ship_train.py
+scripts/dev/test_sync_route_tag.py
