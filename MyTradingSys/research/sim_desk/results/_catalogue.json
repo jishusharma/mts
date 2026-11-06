@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 356,
-"exported": 356,
+"count": 357,
+"exported": 357,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5162,6 +5162,20 @@
 "date": "2026-10-26",
 "status": "SEE_VERDICT",
 "verdict_class": "other"
+},
+{
+"id": "backtest-pre-us-failed-break-dev-run",
+"family": "Pre-US failed-break short",
+"title": "Pre-US failed-break short with 4-tranche scale-in, BTCUSDT 1m, DEV fee-net",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "INCONCLUSIVE: n 176 < 250; mean net -1.7 bps, t -0.33; 154 of 176 days hit the time cap",
+"source": "MyTradingSys/research/pre_us_failed_break_2026-10/RESULT.md",
+"exported": true,
+"result_id": "backtest-pre-us-failed-break-dev-run",
+"date": "2026-11-06",
+"status": "UNCLEAR",
+"verdict_class": "unclear"
 }
 ]
 }

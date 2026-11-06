@@ -206,7 +206,7 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
         log.write_text(f'SKIP {card}: {why}'+chr(10), encoding='utf-8', newline=chr(10))
         return
     held = claim_holder(card, sync.open_claims(REPO))
-    if held and held.lower() != socket.gethostname().lower():
+    if held and held.lower() != socket.gethostname().lower():   # own host = crash-stranded claim; claim_with_retry treats own host as ok
         log.write_text(f'SKIP {card}: already claimed by {held}\n', encoding='utf-8', newline='\n')
         return
     if not wt.exists():
