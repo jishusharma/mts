@@ -305,6 +305,64 @@ class LogPitchforkChannel:
         )
 
 
+class CopiedFork:
+    """A pasted copy of a fork: same slope and tine offsets, whole figure translated in time and price.
+
+    The operator's method (10-30): he copies one old fork and pastes it onto later price.
+    Geometry lives in log space when the source fork is a LogPitchforkChannel; queries return dollars.
+    (handle_t, handle_p) is where the P0 handle sits; (t0, p0) is the median line origin.
+    """
+
+    def __init__(self, handle_t: float, handle_p: float, t0: float, p0: float, slope: float,
+                 offset_uml: float, offset_lml: float, p2_is_lower: bool, log_scale: bool):
+        self.handle_t = handle_t
+        self.handle_p = handle_p
+        self.t0 = t0
+        self.p0 = p0
+        self.slope = slope
+        self.offset_uml = offset_uml
+        self.offset_lml = offset_lml
+        self.channel_width = abs(offset_uml - offset_lml)
+        self.half_width = self.channel_width / 2.0
+        self.p2_is_lower = p2_is_lower
+        self.log_scale = log_scale
+
+    def _out(self, v: float) -> float:
+        return math.exp(v) if self.log_scale else v
+
+    def get_ml(self, t: float) -> float:
+        return self._out(self.p0 + self.slope * (t - self.t0))
+
+    def get_uml(self, t: float) -> float:
+        return self._out(self.p0 + self.slope * (t - self.t0) + self.offset_uml)
+
+    def get_lml(self, t: float) -> float:
+        return self._out(self.p0 + self.slope * (t - self.t0) + self.offset_lml)
+
+
+def copy_fork(pf: Any, anchor_index: int, anchor_price: float) -> CopiedFork:
+    """Copy-paste `pf` so its P0 handle lands on (anchor_index, anchor_price); slope and width are kept.
+
+    Works for PitchforkChannel, LogPitchforkChannel and an existing CopiedFork (copy of a copy).
+    """
+    if isinstance(pf, CopiedFork):
+        log_scale, g = pf.log_scale, pf
+        src_t, src_p = pf.handle_t, pf.handle_p
+    else:
+        log_scale = isinstance(pf, LogPitchforkChannel)
+        g = pf._inner if log_scale else pf
+        src_t, src_p = float(g.p0_orig.index), float(g.p0_orig.price)
+    new_p = math.log(max(1e-9, anchor_price)) if log_scale else float(anchor_price)
+    dt = float(anchor_index) - src_t
+    dp = new_p - src_p
+    return CopiedFork(
+        handle_t=float(anchor_index), handle_p=new_p,
+        t0=g.t0 + dt, p0=g.p0 + dp, slope=g.slope,
+        offset_uml=g.offset_uml, offset_lml=g.offset_lml,
+        p2_is_lower=g.p2_is_lower, log_scale=log_scale,
+    )
+
+
 def construct_pitchfork(
     p0: PitchforkPivot,
     p1: PitchforkPivot,

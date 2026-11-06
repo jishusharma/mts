@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:41:05Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-mts-signal-ship-failed.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -17,6 +18,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "blind read 14/14 samples MATCH ship_failed/tool_output; VERDICT MATCH",
+      "ref": "637a4d703",
+      "utc": "2026-11-06T07:41:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "mts_signal: ship done only on a completed ship; failed ship = note; 15 min repeat window",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "note": "planner 11-05 ROUTINE audit, no REVIEWED stamp needed",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T11:19:31Z",
   "refs": [],
-  "result": "",
+  "result": "blind read 14/14 samples MATCH ship_failed/tool_output; VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-mts-signal-ship-failed.md",
     "scripts/dev/mts_signal.py"
@@ -42,12 +55,13 @@
   "scope_sha": "848838d182e2",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SHIPPED_OK, tool_output and ship_failed and predict results for 10 crafted outputs before running",
     "Run each sample through the functions (no signals sent) and compare",
     "Write the report with a table and VERDICT"
   ],
+  "taken": "2026-11-06T07:41:05Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-05_gemini-blind-read-mts-signal-ship-failed.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of scripts/dev/mts_signal.py ship_failed/tool_output",
   "weight": "ROUTINE",

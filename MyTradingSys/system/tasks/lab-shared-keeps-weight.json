@@ -1,35 +1,55 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_tasks.py"
+  ],
   "created": "2026-11-05T17:15:33Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_tasks.py has test_promote_shared_keeps_crucial_and_critical (fails on pre-change tasks.py, passes after) and python scripts/dev/test_tasks.py exits 0; a cited ROUTINE/IMPORTANT card still gets weight B-SHARED plus shared:true.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "promote_shared (scripts/dev/tasks.py) must not overwrite CRUCIAL or CRITICAL with B-SHARED; record sharing in a separate shared:true field. Source: MyTradingSys/research/lab_guy/DISPOSITION_MISSING_2026-10-18.md.",
   "id": "lab-shared-keeps-weight",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "codex lab: gate-red ship writes lab.hold; lint/check flag done_when outside lab",
+      "ref": "7c12edc44529",
+      "utc": "2026-11-05T03:55:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: lane moved CODEX to SONNET; the CODEX build rule needs an existing mutation probe file and this is a small tasks.py change with a plain fail-first test",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T07:53:14Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "7c12edc44529",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Write test_promote_shared_keeps_crucial_and_critical: a CRITICAL card cited in another scope_in stays CRITICAL and gets shared:true; run it on the unchanged code, it must fail",
+    "Change promote_shared: set shared:true always; set weight B-SHARED only when the current weight is not CRUCIAL/CRITICAL",
+    "Update test_promote_shared_still_marks_when_called_explicitly to also assert shared:true; run test_tasks.py; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
+  ],
+  "tests": "python scripts/dev/test_tasks.py",
   "title": "Fix tasks.promote_shared: keep max weight (CRITICAL/CRUCIAL stay), store shared flag separately; fail-first fixtures per MISSING_2026-10-18",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

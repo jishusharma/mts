@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:35:21Z",
   "commands": [],
   "created": "2026-11-04T17:35:36Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "FOUND 22 DIFF 0; VERDICT: MATCH",
+      "ref": "de2af8aa3",
+      "utc": "2026-11-06T07:35:21Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "bear-proxy context tuning: no default earns its place (0 of 11 cells), 15m fake-out filter",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "not_twin_of": [
     "gemini-blind-read-bb-range-studies-1104",
     "gemini-blind-read-rsi-div-mtf-gated-1104",
@@ -38,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04/RESULT.md"
   ],
-  "result": "",
+  "result": "FOUND 22 DIFF 0; VERDICT: MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BEAR_PROXY_1104.md",
     "MyTradingSys/research/bear_proxy_context_tuning_2026-11-04"
@@ -47,12 +60,13 @@
   "scope_sha": "dbedba44981f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read A_dev.csv, A_val.csv, B_dev.csv, B_val.csv and the count CSVs in bear_proxy_context_tuning_2026-11-04 before any prose result file",
     "Recompute counts, win rates and mean or total returns independently of the study code",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BEAR_PROXY_1104.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T07:35:21Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_BEAR_PROXY_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of bear_proxy_context_tuning RESULT.md vs CSVs",
   "weight": "ROUTINE",

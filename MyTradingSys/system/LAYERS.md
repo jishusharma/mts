@@ -30,7 +30,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
-  - `live-aid-balance-acceptance-1105` raw p2 SONNET: live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); b
+  - `live-aid-balance-acceptance-1105` ready p2 SONNET: live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); b
   - `tom-btc-dev-backtest` blocked p2 CODEX: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 CODEX: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
@@ -145,7 +145,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/session`; `MyTradingSys/backtest/layers/session_levels`; `MyTradingSys/backtest/layers/turn_of_candle`
 - Other results: `MyTradingSys/research/t087_session_levels_2026-10-09`; `MyTradingSys/research/eur_low_us_sweep_2026-10-14`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `premarket-risk-flag-1105` raw p1 SONNET: live_aid pre-US-open risk flag: Nasdaq-100 futures, Kospi/SK hynix close, top chip pre-market movers, VIX; fla
+  - `premarket-risk-flag-1105` ready p1 SONNET: live_aid pre-US-open risk flag: Nasdaq-100 futures, Kospi/SK hynix close, top chip pre-market movers, VIX; fla
 
 ## Volume, candle patterns, daily MA setups, bigtrade (`volume_candles_ma`)
 - Status: No validated edge; volume HOLDOUT sealed; MA numbers NO-SOURCE.
