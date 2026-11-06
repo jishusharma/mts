@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "tasks.mark_shared_bases keeps CRUCIAL/CRITICAL weight",
-      "ref": "06a8dedd24f9",
-      "utc": "2026-11-06T13:41:28Z"
+      "line": "tasks.py wiring check: accept comma-string scope_in/refs (broke ship for every lane)",
+      "ref": "a17dac0d2b98",
+      "utc": "2026-11-06T18:10:31Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T17:31:42Z",
+  "refreshed": "2026-11-06T18:48:32Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,7 +38,7 @@
   "scope_out": [
     "MyTradingSys/tools/live_aid"
   ],
-  "scope_sha": "06a8dedd24f9",
+  "scope_sha": "a17dac0d2b98",
   "size": "S",
   "sources": [],
   "state": "ready",
