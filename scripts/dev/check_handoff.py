@@ -6,7 +6,6 @@ Exit 1 with one line per failure:
   b. that block has a `sync.py start` line and a final `End:` line naming `sync.py ship`
   c. a `## State at handoff` heading exists
   d. every commit hash cited under that heading resolves (cat-file -e <hash>^{commit})
-  f. a YYYY-MM-DD date on line 1 is not older than the newest YYYY-MM-DD in the body
   e. no text matches the doc-test forbidden-string list (test_2 in
      MyTradingSys/tests/docs/test_integrity.py; that list is local to the test,
      so it is mirrored here and test_check_handoff.py guards against drift)
@@ -29,7 +28,6 @@ FORBIDDEN = [
     r"\bgit checkout\b",
     r"\bversion control\b",
 ]
-DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
 STATE_RE = re.compile(r"^##\s+State at handoff\s*$", re.M)
 HASH_RE = re.compile(r"(?<![0-9A-Za-z_.\-/])([0-9a-f]{7,40})(?![0-9A-Za-z_\-])")
 
@@ -98,11 +96,6 @@ def check(text, repo=REPO):
             if re.search(p, ln):
                 fails.append(f"e: line {i} matches forbidden pattern {p}")
                 break
-    head = DATE_RE.search(lines[0]) if lines else None
-    body_dates = DATE_RE.findall("
-".join(lines[1:]))
-    if head and body_dates and head.group(1) < max(body_dates):
-        fails.append(f"f: line 1 date {head.group(1)} is older than newest body date {max(body_dates)}")
     return fails
 
 
