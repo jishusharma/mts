@@ -128,6 +128,21 @@ t('replyDone: no .ds-message ancestor (DOM changed) -> unknown, the caller falls
   assert.deepStrictEqual(L.replyDone({ hasMsg: false }), { known: false, done: false });
   assert.deepStrictEqual(L.replyDone(null), { known: false, done: false });
 });
+t('ctlDetail (0.7.28): the one-line box opens its detail lines only on a problem', () => {
+  assert.strictEqual(L.ctlDetail('waiting for DSA after #3', 'agent 0.7.28 on JIS-NB', 'ok'), false);
+  assert.strictEqual(L.ctlDetail('running #2: python x.py', '', 'ok'), false);
+  assert.strictEqual(L.ctlDetail('off: click Run on each block', '', 'ok'), false);
+  assert.strictEqual(L.ctlDetail('x', 'PREFLIGHT FAIL agent_unreachable: no agent on port 7181', 'ok'), true);
+  assert.strictEqual(L.ctlDetail('manual result #4 not posted; copy it from the panel', '', 'ok'), true);
+  assert.strictEqual(L.ctlDetail('extension was reloaded: refresh this page (F5)', '', 'ok'), true);
+  assert.strictEqual(L.ctlDetail('waiting for DSA after #3', '', 'agent_mismatch'), true);
+});
+t('ctlGlyph: running and waiting show as one glyph on the line, idle shows nothing', () => {
+  assert.strictEqual(L.ctlGlyph('running #2 (block 1/2): python x.py'), '\u25B6');
+  assert.strictEqual(L.ctlGlyph('waiting: DSA is still writing this reply (3 s)'), '\u2026');
+  assert.strictEqual(L.ctlGlyph('off: click Run on each block'), '');
+  assert.strictEqual(L.ctlGlyph(''), '');
+});
 (async () => {
   const never = new Promise(() => {});
   const r = await L.raceDeadline(never, 20, () => Promise.resolve(0));

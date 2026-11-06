@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.27';
+  L.VERSION = '0.7.28';
 
   L.fnv = function (s) {
     var h = 2166136261;
@@ -190,6 +190,18 @@
   // operator pasted it) is complete when posted. known=false: no .ds-message ancestor (DeepSeek changed its DOM); the caller
   // falls back to the quiet rule and writes that to the audit once.
   L.MIN_BAR_ICONS = 4;
+  // 0.7.28: the control box is one line (tick, runs/cap, link dot, version); the detail lines (status, versions, agent)
+  // open only on a problem, or when the operator clicks the version. The status text itself lives in the line's tooltip.
+  L.ctlDetail = function (status, info, verLevel) {
+    if (verLevel && verLevel !== 'ok') return true;
+    return /FAIL|MISMATCH|not posted|was reloaded|ignored/i.test((status || '') + ' ' + (info || ''));
+  };
+  L.ctlGlyph = function (status) {
+    var s = status || '';
+    if (/^running/.test(s)) return '\u25B6';
+    if (/^waiting|^on:/.test(s)) return '\u2026';
+    return '';
+  };
   L.replyDone = function (desc) {
     if (!desc || !desc.hasMsg) return { known: false, done: false };
     if (!desc.assistant) return { known: true, done: true };

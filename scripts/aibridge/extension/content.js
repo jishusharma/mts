@@ -257,6 +257,8 @@
           vstate = L.versionState(v.loaded || VER, v.disk, agent, VER);
           if (ui.verEl) ui.verEl.textContent = 'AIBridge: extension ' + (v.loaded || '?') + ' | this page ' + VER + ' | disk ' + (v.disk || '?') + ' | agent ' + (agent || '?') + (vstate.level === 'ok' ? ' - all match' : ' - MISMATCH, see below');
           if (ui.box) ui.box.dataset.ver = vstate.level;
+          if (ui.ver) ui.ver.textContent = 'v' + VER + (vstate.level === 'ok' ? '' : ' !');
+          refreshDetail();
           if (vstate.level !== 'ok' && ui.info) ui.info.textContent = vstate.text;
           if (vstate.level === 'page_stale' && canSelfUpdate()) {   // the extension is newer than this page's script: an F5 fixes it, so do it (idle, once per 10 min)
             try { var lp = parseInt(sessionStorage.getItem('aibridge_page_reload') || '0', 10); if (Date.now() - lp > 600000) { auditEvent('page ' + VER + ' older than extension ' + (v.loaded || '?') + ': reloading the page'); sessionStorage.setItem('aibridge_page_reload', String(Date.now())); location.reload(); } } catch (e) {}
@@ -464,7 +466,11 @@
   }
 
   // ---- auto loop ----
-  function setStatus(s) { if (ui.status) ui.status.textContent = s; }
+  function setStatus(s) { if (ui.status) ui.status.textContent = s; if (ui.line) { ui.line.title = s; } if (ui.glyph) ui.glyph.textContent = L.ctlGlyph(s); refreshDetail(); }
+  function refreshDetail(force) {   // 0.7.28: detail lines only on a problem (loop.js ctlDetail) or a click on the version
+    if (!ui.box) return;
+    ui.box.dataset.show = (force || L.ctlDetail(ui.status && ui.status.textContent, ui.info && ui.info.textContent, vstate.level)) ? '1' : '';
+  }
   function refreshUi() {
     if (!ui.box) return;
     ui.cb.checked = autoRun;
@@ -506,7 +512,7 @@
     else if (r.status !== 200 || !r.body || !r.body.ok) line = 'PREFLIGHT FAIL agent answered http ' + r.status;
     else line = 'agent ' + r.body.agent + ' on ' + r.body.host + ', PowerShell ' + r.body.shell_version + (r.body.pwsh ? ' (+pwsh)' : '') + ', running ' + r.body.running;
     if (ui.info) ui.info.textContent = line;
-    if (prefix) setStatus(prefix + ' ' + line);
+    if (prefix) setStatus(prefix + ' ' + line); else refreshDetail();
     return line;
   }
 
@@ -711,26 +717,57 @@
   // ---- control box ----
   function buildUi() {
     var st = document.createElement('style');
+    // 0.7.28: one line (tick, runs/cap, link dot, version), draggable; the detail lines open only on a problem or a click on the version
     st.textContent = '.aibridge-ctl{position:fixed;right:12px;bottom:12px;z-index:2147483647;background:#1b1b1b;color:#ddd;' +
-      'font:12px/1.4 sans-serif;padding:8px 10px;border-radius:8px;border:1px solid #444;max-width:320px}' +
+      'font:12px/1.3 sans-serif;padding:3px 8px;border-radius:8px;border:1px solid #444;max-width:360px;cursor:move;user-select:none}' +
+      '.aibridge-ctl .ln{display:flex;align-items:center;gap:6px;white-space:nowrap}.aibridge-ctl .ln label{cursor:pointer}' +
+      '.aibridge-ctl .vr{color:#798;cursor:pointer}.aibridge-ctl .gl{color:#9ab;min-width:1em}' +
       '.aibridge-ctl.on{border-color:#2e9e4f}.aibridge-ctl button{margin-left:6px;font-size:12px;cursor:pointer}' +
+      '.aibridge-ctl .dt{display:none}.aibridge-ctl[data-show="1"] .dt{display:block;white-space:normal;max-width:340px}' +
       '.aibridge-ctl .st{margin-top:4px;color:#9ab;word-break:break-word}.aibridge-ctl .in{margin-top:2px;color:#798;font-size:11px;word-break:break-word}';
     document.head.appendChild(st);
     var box = document.createElement('div');
     box.className = 'aibridge-ctl';
+    var line = document.createElement('div'); line.className = 'ln';
     var lab = document.createElement('label');
     var cb = document.createElement('input');
     cb.type = 'checkbox';
     lab.appendChild(cb);
-    lab.appendChild(document.createTextNode(' Hands-free: DSA runs every AIRUN block on its own '));
-    var count = document.createElement('span');
+    lab.appendChild(document.createTextNode(' Hands-free'));
+    lab.title = 'DSA runs every AIRUN block on its own (this chat only)';
+    var count = document.createElement('span'); count.title = 'blocks run / cap';
+    var glyph = document.createElement('span'); glyph.className = 'gl';
+    var ver = document.createElement('span'); ver.className = 'vr'; ver.textContent = 'v' + VER; ver.title = 'click: show or hide the detail lines';
     var status = document.createElement('div'); status.className = 'st'; status.textContent = 'off: click Run on each block';
     var info = document.createElement('div'); info.className = 'in'; info.textContent = 'AIBridge ' + VER + ' (this chat only)';
     var verEl = document.createElement('div'); verEl.className = 'aibridge-ver'; verEl.textContent = 'AIBridge page ' + VER + ' (checking extension and agent...)';
-    var link = document.createElement('span'); link.textContent = '\u25CB'; link.title = 'link: starting'; link.style.marginLeft = '6px'; link.style.cursor = 'help';
-    box.appendChild(lab); box.appendChild(count); box.appendChild(link); box.appendChild(status); box.appendChild(verEl); box.appendChild(info);
+    var link = document.createElement('span'); link.textContent = '\u25CB'; link.title = 'link: starting'; link.style.cursor = 'help';
+    var detail = document.createElement('div'); detail.className = 'dt';
+    line.appendChild(lab); line.appendChild(count); line.appendChild(link); line.appendChild(glyph); line.appendChild(ver);
+    detail.appendChild(status); detail.appendChild(verEl); detail.appendChild(info);
+    box.appendChild(line); box.appendChild(detail);
     document.body.appendChild(box);
-    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link, verEl: verEl };
+    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link, verEl: verEl, line: line, glyph: glyph, ver: ver };
+    line.title = status.textContent;
+    var forced = false;
+    ver.addEventListener('click', function (e) { e.stopPropagation(); forced = !forced; refreshDetail(forced); });
+    // drag anywhere on the box except the tick and the version; the place is kept for this tab (sessionStorage)
+    var drag = null;
+    function place(x, y) {
+      x = Math.max(0, Math.min(x, window.innerWidth - box.offsetWidth)); y = Math.max(0, Math.min(y, window.innerHeight - box.offsetHeight));
+      box.style.left = x + 'px'; box.style.top = y + 'px'; box.style.right = 'auto'; box.style.bottom = 'auto';
+    }
+    box.addEventListener('mousedown', function (e) {
+      if (e.button !== 0 || e.target === cb || e.target === ver || e.target.tagName === 'BUTTON' || e.target.tagName === 'LABEL') return;
+      var r = box.getBoundingClientRect(); drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false }; e.preventDefault();
+    });
+    document.addEventListener('mousemove', function (e) { if (!drag) return; drag.moved = true; place(e.clientX - drag.dx, e.clientY - drag.dy); });
+    document.addEventListener('mouseup', function () {
+      if (!drag) return;
+      if (drag.moved) { try { sessionStorage.setItem('aibridge_ctl_pos', box.style.left + ',' + box.style.top); } catch (e) {} }
+      drag = null;
+    });
+    try { var pos = (sessionStorage.getItem('aibridge_ctl_pos') || '').split(','); if (pos.length === 2 && pos[0]) { box.style.left = pos[0]; box.style.top = pos[1]; box.style.right = 'auto'; box.style.bottom = 'auto'; } } catch (e) {}
     cb.addEventListener('change', function () {
       autoRun = cb.checked;
       if (autoRun) { runs = 0; stopHold = false; preflight('on:'); } else stopAuto('off: click Run on each block');
