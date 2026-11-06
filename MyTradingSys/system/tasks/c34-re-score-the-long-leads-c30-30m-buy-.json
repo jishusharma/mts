@@ -41,11 +41,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after 73d0bbe9f (only a C2 row changed). C30 H1 failed VALIDATION so the 30m row is a cost check, never an edge claim.",
+  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after 73d0bbe9f (only a C2 row changed). C30 H1 failed VALIDATION so the 30m row is a cost check, never an edge claim. GATE (supervisor B 11-06, after a Flash run failed ship): no FEE/SLIP/MAKER/TAKER literal constants in the new .py (test_no_own_costs); perp fee = fees.BINANCE_TAKER*2, spot maker from fees.py with the name cited (the 2 bps Coinbase-routed rate is not in fees.py; if used, pass it as a function parameter labelled SOURCED BACKTEST_CANDIDATES.md:43), slippage as a function parameter; run dsa_backtest_audit_2026-10-16/scripts/T06/t06_tables.py so costs.csv lists them (test_cost_inventory); a test that needs the BTC 5m/15m temp cache must pytest.skip when absent.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T09:22:39Z",
+  "refreshed": "2026-11-06T14:17:57Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],

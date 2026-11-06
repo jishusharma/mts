@@ -86,6 +86,16 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 .rd { font: 600 11px var(--sans); letter-spacing: .05em; } .rd.POSITIVE { color: var(--up); } .rd.NEGATIVE { color: var(--down); } .rd.UNKNOWN { color: var(--amber); } .rd.NEUTRAL { color: var(--dim); }
 #news td.re { white-space: normal; text-align: left; min-width: 220px; font-size: 12px; color: var(--dim); }
 .notes p { margin: 6px 0; font: 13px/1.45 var(--sans); color: var(--dim); }
+.tfs { display: grid; gap: 12px; grid-template-columns: minmax(min(380px, 100%), 2fr) minmax(min(240px, 100%), 1fr); align-items: start; }
+.tfs table { font-size: 14px; } .tfs td { padding: 4px 6px; } .tfs td.tfn { font-weight: 600; }
+.blk { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 2px; background: var(--line); border: 1px solid var(--dim); box-sizing: border-box; }
+.blk.green { background: var(--up); border-color: var(--up); } .blk.red { background: var(--down); border-color: var(--down); }
+.blk.big { width: 22px; height: 22px; margin-right: 6px; } .blk.sm { width: 9px; height: 14px; }
+.flip { background: var(--amber); color: var(--bg); font: 700 11px var(--sans); padding: 1px 5px; border-radius: 3px; }
+.bbt { display: inline-block; position: relative; width: 70px; height: 8px; background: var(--line); border-radius: 4px; vertical-align: middle; margin-right: 6px; }
+.bbt i { position: absolute; top: -3px; width: 4px; height: 14px; background: var(--fg); border-radius: 2px; margin-left: -2px; }
+.tfal { font: 600 15px var(--sans); }
+.lvl td.nm { text-align: left; font-family: var(--sans); }
 @media (max-width: 560px) {
   .huge { font-size: 34px; } .big { font-size: 24px; }
   .bar .inputs { grid-template-columns: 90px 1fr 1fr; width: 100%; }
@@ -93,6 +103,16 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
+  <!-- 0. TIMEFRAME STRIP: one-glance scalp read (spot data); pure functions in tf_strip.js -->
+  <section id="p-tfs">
+    <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
+    <div class="tfal" id="tfs-al">--</div>
+    <div class="tfs">
+      <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
+      <div class="scroll"><table class="lvl"><thead><tr><th>Level</th><th>Price</th><th>From price</th></tr></thead><tbody id="tfs-lv"></tbody></table><span class="err" id="tfs-err"></span></div>
+    </div>
+  </section>
+
   <!-- 1. POSITION BAR (typed by you, saved in this browser only) -->
   <section id="p-pos">
     <div class="bar">
@@ -304,6 +324,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="level_approach_rates.js"></script>
 <script src="bigcandle_rates.js"></script>
 <script src="premarket_risk.js"></script>
+<script src="tf_strip.js"></script>
 <script>
 (function () {
   'use strict';
@@ -837,6 +858,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     S.a15 = atr15();
     renderTop();
     try { renderPremarket(now); } catch (e) { $('pm-sub').textContent = e.message; }
+    try { renderTfs(now); } catch (e) { $("tfs-err").textContent = e.message; }
     renderUsOpen(now);
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
@@ -1337,6 +1359,57 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     if (b.dataset.lvl) { store.levels.splice(+b.dataset.lvl, 1); save(); render(); }
   });
 
+  // ---------- timeframe strip (tf_strip.js; spot data from data-api.binance.vision because fapi is blocked on some networks) ----------
+  var TF = { k: {}, t: {}, l1: [], l1T: 0, err: {} };
+  function msg(e) { return e.name === 'AbortError' ? 'timeout' : e.message; }
+  function loadTfs(tfs) {
+    if (typeof TFSTRIP === 'undefined') { TF.err.all = 'tf_strip.js not found next to this page'; return Promise.resolve(); }
+    return Promise.all(tfs.map(function (tf) {
+      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=60').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
+        function (e) { TF.err[tf] = msg(e); });
+    }));
+  }
+  // 1m bars from the prior UTC day start (up to 3 pages of 1000)
+  function loadTfLevels() {
+    if (typeof TFSTRIP === 'undefined') return Promise.resolve();
+    var p0 = Math.floor(Date.now() / 86400000) * 86400000 - 86400000, acc = [];
+    function page(t, n) {
+      return getJson(TFSTRIP.BASE + '&interval=1m&limit=1000&startTime=' + t).then(function (r) {
+        acc = acc.concat(r);
+        if (r.length === 1000 && n < 3) return page(+r[r.length - 1][0] + 60000, n + 1);
+      });
+    }
+    return page(p0, 1).then(function () { TF.l1 = acc; TF.l1T = Date.now(); delete TF.err.lv; }, function (e) { TF.err.lv = msg(e); });
+  }
+  function loadTfsFast() { return loadTfs(['1m', '3m', '5m', '15m']).then(loadTfLevels); }
+  function loadTfsSlow() { return loadTfs(['30m', '1h', '2h', '4h', '6h', '12h', '1d', '1w']); }
+  function blk(c, cl) { return '<span class="blk ' + (cl || '') + ' ' + (c || '') + '" title="' + (c || 'flat / no data') + '"></span>'; }
+  function renderTfs(now) {
+    if (typeof TFSTRIP === 'undefined') { $('tfs-al').textContent = '—'; $('tfs-err').textContent = TF.err.all || 'tf_strip.js not found next to this page'; return; }
+    var rows = {}, H = [], D = '—';
+    TFSTRIP.TFS.forEach(function (tf) {
+      var r = TF.k[tf] ? TFSTRIP.row(TF.k[tf], now) : null; rows[tf] = r;
+      if (!r) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="5" class="dim">' + D + (TF.err[tf] ? ' <span class="err">' + esc(TF.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
+      var cv = r.cvd && r.cvd.dir ? '<b class="' + (r.cvd.dir === 'up' ? 'up' : 'down') + '">' + (r.cvd.dir === 'up' ? '&#9650; buy' : '&#9660; sell') + '</b>' : D;
+      var fl = r.flip ? (r.flip.flipped ? '<span class="flip">FLIP</span> <span class="dim">flipped ' + TFSTRIP.fmtAgo(r.flip.ageMs) + ' ago</span>' : '<span class="dim">same</span>') : D;
+      var bb = r.bb ? '<span class="bbt"><i style="left:' + r.bb.pos.toFixed(0) + '%"></i></span><span class="' + (r.bb.label.indexOf('upper') >= 0 ? 'down' : r.bb.label.indexOf('lower') >= 0 ? 'up' : 'dim') + '">' + r.bb.label + '</span>' : D;
+      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
+    });
+    $('tfs-rows').innerHTML = H.join('');
+    $('tfs-al').textContent = TFSTRIP.alignment(rows);
+    var m1 = TF.k['1m'], px = m1 && m1.length ? parseFloat(m1[m1.length - 1][4]) : NaN, lv = [];
+    if (isFinite(px) && TF.l1.length) {
+      var lastT = +TF.l1[TF.l1.length - 1][0];
+      lv = TFSTRIP.levels(TF.l1.concat(m1.filter(function (k) { return +k[0] > lastT; })), now, px);
+    }
+    $('tfs-lv').innerHTML = lv.length ? '<tr><td class="nm"><b>Price</b></td><td class="num">' + fmt(px, 1) + '</td><td></td></tr>' + lv.map(function (x) {
+      return '<tr><td class="nm">' + esc(x.name) + '</td><td class="num">' + fmt(x.price, 1) + '</td><td class="num ' + (x.side === 'above' ? 'down' : x.side === 'below' ? 'up' : '') + '">' + (x.dist > 0 ? '+' : '') + fmt(x.dist, 0) + ' USD</td></tr>';
+    }).join('') : '<tr><td colspan="3" class="dim">' + D + '</td></tr>';
+    var errs = Object.keys(TF.err).map(function (k) { return k + ': ' + TF.err[k]; });
+    $('tfs-err').textContent = errs.length ? 'Feed problems: ' + errs.join('; ') : '';
+    var t = TF.t['1m']; $('age-tfs').textContent = t ? Math.round((now - t) / 1000) + 's' : '--';
+  }
+
   // ---------- start ----------
   // Replay (?replay=fixture): the test injects window.LIVEAID_REPLAY (1m rows [openTime,o,h,l,c,volume]); no socket, fetch or news.
   // Layer 3 of system/ARTIFACT_TESTING.md; normal mode below is untouched.
@@ -1373,6 +1446,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   setInterval(render, 1000);
   loadNews(); setInterval(loadNews, 15000);
   loadPremarket(); setInterval(loadPremarket, 120000);
+  loadTfsFast(); setInterval(loadTfsFast, 15000); loadTfsSlow(); setInterval(loadTfsSlow, 60000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);

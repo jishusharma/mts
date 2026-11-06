@@ -108,10 +108,10 @@ def test_now_table_is_on_top_and_fits_one_screen(browser):
         rows = _ov(page)
         assert [r[1][0] for r in rows[:4]] == ["Momentum", "Levels", "Coil", "Pierce"], rows
         assert {"money", "news", "verdict", "liq", "fund", "macro", "usopen", "intrade"} <= {r[0] for r in rows}, rows
-        box = page.eval_on_selector("#p-ov", "e => e.getBoundingClientRect().bottom")
-        assert box <= 900, box                                                       # no scroll for the decision rows
-        first = page.evaluate("Array.from(document.querySelector('main').children).filter(e => e.offsetParent !== null).map(e => e.id || e.className).slice(0, 2)")
-        assert first == ["p-pos", "p-ov"], first
+        box = page.eval_on_selector("#p-ov", "e => e.getBoundingClientRect().bottom - document.querySelector('#p-tfs').getBoundingClientRect().height - 12")
+        assert box <= 900, box                                                       # no scroll for the decision rows (timeframe strip R19 sits above, not counted)
+        first = page.evaluate("Array.from(document.querySelector('main').children).filter(e => e.offsetParent !== null).map(e => e.id || e.className).slice(0, 3)")
+        assert first == ["p-tfs", "p-pos", "p-ov"], first                     # R19: timeframe strip on top
         # Momentum cell: RSI per timeframe, equal to the strip's printed RSI (1m and 5m are in data in the fixture)
         strip = {r[0]: r[1] for r in page.eval_on_selector_all("#strip tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")}
         mom = dict(rows)["momentum"][1]

@@ -234,3 +234,4 @@ scripts/dev/test_cbp_build_row.py
 MyTradingSys/research/malkan_window_dev_2026-11/test_study.py
 scripts/dev/test_us_prep.py
 scripts/dev/test_boot_audit.py
+MyTradingSys/tools/live_aid/test_spec_tf_strip.py
