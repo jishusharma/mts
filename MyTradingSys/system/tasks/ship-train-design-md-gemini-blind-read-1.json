@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:41:04Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tests/docs/test_integrity.py"
   ],
@@ -15,6 +16,12 @@
   "id": "ship-train-design-md-gemini-blind-read-1",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "DESIGN.md R1 5 host classes 26/16/10/3/1=56; R2/R3 stamp on candidate merges, ff-only land",
+      "ref": "06ee2f7dc",
+      "utc": "2026-11-06T12:41:04Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,13 +40,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: design doc fixed",
   "note": "planner-refine-1104e: design doc only, no code.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T18:11:08Z",
   "refs": [],
-  "result": "",
+  "result": "DESIGN.md R1 5 host classes 26/16/10/3/1=56; R2/R3 stamp on candidate merges, ff-only landing; R5 bisect rule n>2; R7 via mts-signals status file polled by ship --wait; U3,U4,M1-M6 open; integrity 16 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/ship_train_2026-11-04/DESIGN.md"
   ],
@@ -51,13 +64,14 @@
   "sources": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/gemini_audits_2026-11-04/BLIND_READ_SHIP_TRAIN_DESIGN_1104.md findings C1, C2, U1, U2 with their file:line quotes",
     "Edit DESIGN.md R1 count, R2/R3 landing wording, R5 n>2 rule, R7 transport; mark every new number OURS or SOURCED with file:line",
     "Append an Open items line listing U3,U4,M1-M6 as not addressed",
     "Run the check command and python -m pytest -q MyTradingSys/tests/docs/test_integrity.py"
   ],
+  "taken": "2026-11-06T12:41:04Z",
   "tests": "python -c \"t=open('MyTradingSys/research/ship_train_2026-11-04/DESIGN.md',encoding='utf-8').read(); assert '5 host classes' in t and '26/16/10/3/1' in t\" fails on the current file (it says 4 host classes)",
   "title": "ship train DESIGN.md (gemini blind read 1104): R1 says 4 host classes but table has 5; R2/R3 land-stamp vs ff-only conflict; R5 batch ejection undefined for n>2; R7 signal transport from GitHub Actions undefined",
   "weight": "ROUTINE",

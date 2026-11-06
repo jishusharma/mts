@@ -1765,3 +1765,21 @@ Applied: 2026-11-05, research/bigcandle_story_2026-11-05/RESULT.md.
 Operator (verbatim): "make it happen" (13:10Z, "move faster"); credit was behind the 60-70 USD target.
 DECISION (OURS): link M2 started 13:10Z instead of 14:50Z, overlapping the tail of M1; M1's api_job queue drained first, then the M2 chain ran back to back (cvd-coil, c31 multi-symbol, pitchfork charts, flow-state).
 Applied: 2026-11-05, PLAN_24H_2026-11-05.md link M2.
+
+## d-no-gpt-codex-credit-1106 | decided 2026-11-06 | Supervisor C (M5, relayed by Lead C)
+Operator (verbatim, via Lead): "2026-11-06 operator: GPT/Codex plan expired; no GPT or Codex lanes. Use both Gemini accounts and the Claude API credit."
+DECISION: no Codex or GPT spawns; 14 CODEX/GPT cards re-routed to SONNET (Builders for code); Gemini cards keep their lane. Credit rule: 83.34 of 100 USD spent, 16.66 left, about 8 USD per day for 2 days, Sonnet or Haiku only (no Opus), check the card is not already on trunk before every job.
+Applied: 2026-11-06, PLAN_24H_2026-11-06.md, tasks/*.json lane field.
+
+## d-us-session-prep-1106 | decided 2026-11-06 | Supervisor C (relayed by Lead C)
+Operator (verbatim, via Lead): "Every US session gets a prep brief. The rolling supervisor runs it at 4 phases as a checklist step (no scheduler): P1 09:00Z pre-market open, P2 13:15Z before the 13:30Z data releases, P3 14:45Z after the open (opening drive and first 15m), P4 21:15Z after the close, scoring. The brief is Context, never a signal; every scenario goes into scenario_ledger.py add and is scored at P4."
+DECISION: card us-session-prep-1106 (Sonnet Builder + Haiku review) builds scripts/dev/us_prep.py (T0, no LLM); the supervisor runs it at each phase from the SUPER_SESSION.md Sonnet checklist; a missed phase is logged, never skipped silently. 11-06 P2 and P3 run by hand before the script exists.
+Applied: 2026-11-06, card us-session-prep-1106.
+
+## d-fable-lead-revalidation-1106 | decided 2026-11-06 | operator (voice, 12:40Z), Lead C
+DECISION: the Lead session runs on Fable 5.1 from 12:40Z and revalidates every decision and analysis of 2026-11-06 against the operator's standing asks: nothing duplicated, everything wired end to end, simplified, accurate, fast and prompt. Found and fixed this turn: the lows-first scenario was never written to the ledger (added as the study-backed version, down 75,208 before up 80,918 by 11-07 end); the CBP Analyst Desk was rebuilt locally by the fixed cbp_run.py (+6 rows, 18 total) but no session republished it (republished now); 4 registry pages were stale (republish delegated).
+Applied: 2026-11-06; wiring gaps found go to cards the same turn.
+
+## d-slow-boot-session-1106 | decided 2026-11-06 | operator (voice, 12:40Z), Lead C
+DECISION: all three machines boot slowly since the always-on scripts started; a dedicated Sonnet session (slow-boot-fix, JIS-NB) inventories boot and logon items on the desktop, writes scripts/dev/boot_audit.py with --fix for MTS-owned items only, applies it here, broadcasts the step to the laptop and NUC, and lists non-MTS items for the operator. No reboot by a session; boot time is measured on the operator's next restart.
+Applied: 2026-11-06, session local_ffd5a690.

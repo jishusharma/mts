@@ -2,64 +2,77 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T09:24:21Z",
+    "misses": 37,
+    "reads": [
+      "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
+      "MyTradingSys/system/DATA_NOTES.md"
+    ],
+    "session": "agent-afebd3f917368a59b"
+  },
   "created": "2026-11-02T19:48:12Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C34_SPOT_COSTS.md has one table (lead, n, gross R, perp fee-net R, spot fee-net R, fee formula cited from FORMULAS.md) computed by a script that is committed; every n and R is the script output; no verdict beyond LEAD/NO-LEAD",
+  "done_when": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C34_SPOT_COSTS.md: one table (lead, n, gross R, perp fee-net R, spot fee-net R, FORMULAS s13 cited) from a committed script reusing wt_rsi_div.run; Context: and Regime mix: lines; C30 VALIDATION H1 FAIL/H2 INCONCLUSIVE quoted; verdict LEAD or NO-LEAD only",
   "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Re-score the long leads (C30 30m buy dot + bull div, C28 2h buy dot) at spot costs (2 bps maker round trip, zero funding, long only) next to the perp costs, from the existing saved trade lists",
+  "goal": "Re-score the long leads at spot costs (2 bps maker round trip, zero funding, long only) next to perp costs by re-running the committed scripts on DEV; also carry the C30 VALIDATION result (H1 30m FAIL -0.066 %, H2 15m INCONCLUSIVE +0.220 %) so no row implies a live lead",
   "id": "c34-re-score-the-long-leads-c30-30m-buy-",
   "lane": "HAIKU",
   "latest": [
     {
       "auto": true,
       "kind": "ship",
-      "line": "level approach study (C15): classifier, tests, pre-reg, DEV result",
-      "ref": "3f6c67af484d",
-      "utc": "2026-11-04T19:49:06Z"
+      "line": "C2 flow-state pairs on 1m (BTCUSDT, 13 days, 5m-OI proxy): A/B/C counts and forward moves",
+      "ref": "73d0bbe9fa4d",
+      "utc": "2026-11-06T08:18:54Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "3f6c67af484d level approach study (C15): classifier, tests, pre-reg, DEV result",
+      "line": "73d0bbe9fa4d C2 flow-state pairs on 1m (BTCUSDT, 13 days, 5m-OI proxy): A/B/C counts and f",
       "ref": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
-      "utc": "2026-11-04T19:49:06Z"
+      "utc": "2026-11-06T08:18:54Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED: planner-c-1104 2026-11-04 T0-ONLY",
+  "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after 73d0bbe9f (only a C2 row changed). C30 H1 failed VALIDATION so the 30m row is a cost check, never an edge claim.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:36Z",
+  "refreshed": "2026-11-06T09:22:39Z",
   "refs": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md"
   ],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md",
-    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md"
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/C30_VALIDATION.md",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/wt_rsi_div.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/wt_context.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/c30_validation.py"
   ],
   "scope_out": [
     "no new data pulls, no mainnet, BTC only so no powered claim; Regime mix line required per step 3pc"
   ],
-  "scope_sha": "3f6c67af484d",
+  "scope_sha": "73d0bbe9fa4d",
   "size": "S",
   "sources": [
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/BACKTEST_CANDIDATES.md:43"
   ],
   "state": "ready",
   "steps": [
-    "read the C30 and C28 trade lists already saved in the folder",
-    "apply spot cost vs perp cost per FORMULAS.md",
-    "write the table"
+    "run wt_rsi_div.py and wt_context.py on DEV 2022-01..2024-06 (data F:/MTS/data/tom_raw/klines or MyTradingSys/data/klines), keep the per-trade lists",
+    "recompute the perp fee-net number in BACKTEST_CANDIDATES.md C28/C30 rows first; then re-score at 2 bps maker round trip",
+    "write C34_SPOT_COSTS.md with the Context and Regime mix lines"
   ],
   "tests": "script recomputes one existing perp number from BACKTEST_CANDIDATES.md and matches it before the spot rows are trusted",
   "title": "C34: re-score the long leads (C30 30m buy dot + bull div, C28 2h buy dot) at spot costs: 2 bps maker round trip, zero funding, long only, vs perp costs; Deribit BTC_USDC is Coinbase-routed 2/5 bps, BTC_USDT 0/0 but 0.39% spread",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "agent"
 }
