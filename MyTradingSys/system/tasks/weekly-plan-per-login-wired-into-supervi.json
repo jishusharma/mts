@@ -4,17 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T13:13:38Z",
-    "misses": 44,
+    "folded": "2026-11-06T13:42:51Z",
+    "misses": 46,
     "reads": [
       "scripts/dev/test_supervisor.py",
       "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_weekplan.py",
       "MyTradingSys/tests/dev/test_exhaust_radar.py",
       "MyTradingSys/tests/test_exhaust_phase.py",
       "MyTradingSys/system/PLAN_24H_2026-11-06.md",
-      "scripts/dev/run_extra_tests.py",
-      "MyTradingSys/tests/test_role_budget.py",
-      "MyTradingSys/tests/test_role_loader.py"
+      "MyTradingSys/system/WEEK_PLAN_B.md",
+      "scripts/dev/run_extra_tests.py"
     ],
     "session": "0d4f2e3e-a109-4c10-b231-691e3677e81d"
   },
