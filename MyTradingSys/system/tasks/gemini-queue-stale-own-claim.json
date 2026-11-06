@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-06T12:55:56Z",
   "commands": [],
   "created": "2026-10-29T23:47:55Z",
   "depends_on": [],
@@ -15,12 +14,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "run_job proceeds when claim_holder returns own hostname; 25/25 test_gemini_queue.py pass",
-      "ref": "d23887d6a",
-      "utc": "2026-11-06T12:55:56Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
@@ -31,7 +24,6 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "mts-signal-gemini-identity-1105",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
@@ -39,12 +31,7 @@
   "refined_by": "",
   "refreshed": "2026-11-05T04:41:41Z",
   "refs": [],
-  "result": "run_job proceeds when claim_holder returns own hostname; 25/25 test_gemini_queue.py pass",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py"
@@ -55,13 +42,12 @@
   "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read gemini_queue.py lines 64-115 and test_gemini_queue.py",
     "Write the fail-first test for own-host claim in run_job",
     "In run_job treat held equal to socket.gethostname() (case-insensitive) as not held, then run python scripts/dev/test_gemini_queue.py"
   ],
-  "taken": "2026-11-06T12:55:56Z",
   "tests": "test_gemini_queue.py: run_job with an open claim whose host is socket.gethostname() does not write SKIP; another host still does; fails on current code",
   "title": "gemini_queue: a crash between claim and release leaves the card claimed; run_job then skips its own host's claim forever (line 104 checks before claim_with_retry, which treats own host as ok)",
   "weight": "",

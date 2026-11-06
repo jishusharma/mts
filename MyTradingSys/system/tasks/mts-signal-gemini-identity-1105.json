@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-06T12:55:57Z",
   "commands": [
     "python -m pytest scripts/dev/test_mts_signal.py MyTradingSys/tests/test_signal_v1_schema.py -q"
   ],
@@ -18,12 +17,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "who() appends MTS_AGENT as host/login/agent; 63/63 test_mts_signal.py + test_signal_v1_sch",
-      "ref": "d23887d6a",
-      "utc": "2026-11-06T12:55:57Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "mts_signal: ship done only on a completed ship; failed ship = note; 15 min repeat window",
@@ -34,19 +27,13 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "gemini-blind-read-ms-bb-retest-eth",
   "note": "planner 11-05 ROUTINE",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T11:20:09Z",
   "refs": [],
-  "result": "who() appends MTS_AGENT as host/login/agent; 63/63 test_mts_signal.py + test_signal_v1_schema.py pass",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/test_mts_signal.py"
@@ -57,13 +44,12 @@
   "scope_sha": "848838d182e2",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Write the failing test for who() with and without MTS_AGENT",
     "Edit who() (mts_signal.py ~line 172) to append the sanitised agent name",
     "Run the whole test_mts_signal.py and test_signal_v1_schema.py"
   ],
-  "taken": "2026-11-06T12:55:57Z",
   "tests": "scripts/dev/test_mts_signal.py::test_who_appends_agent_name written first, fails on current who() (no MTS_AGENT handling)",
   "title": "mts_signal: tell gemini-laptop/gemini-nuc senders apart from Claude on the same host (0 hits for gemini-nuc/gemini-laptop in mts_signal.py)",
   "weight": "ROUTINE",
