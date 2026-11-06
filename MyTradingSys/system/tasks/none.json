@@ -1,0 +1,40 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T08:12:56Z",
+  "depends_on": [],
+  "done_when": "n/a placeholder, closed immediately",
+  "est_turns": 1,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Placeholder satisfying the Next: none route tag; no work",
+  "id": "none",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "none"
+  ],
+  "scope_out": [
+    "everything"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "none"
+  ],
+  "tests": "n/a no code",
+  "title": "none: placeholder id used by a Next: none tag on shipped commit (no follow-up work)",
+  "weight": "",
+  "worker": "agent"
+}
