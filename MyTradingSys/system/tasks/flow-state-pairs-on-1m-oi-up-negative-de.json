@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T08:21:22Z",
   "commands": [],
   "created": "2026-10-28T22:25:24Z",
   "depends_on": [],
@@ -12,10 +13,18 @@
   "goal": "From the 1m CoinGlass history, list every bar where OI rises with a large negative net-delta/CVD burst (case A) and every bar with OI up plus all-positive delta/CVD (case B), and every positive burst with OI falling (case C). Report counts and price 15/30/60 min after, per case. Observation only, no edge claim.",
   "id": "flow-state-pairs-on-1m-oi-up-negative-de",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "A160/B128/C177; C 15m up 39%; FLOW_STATE_PAIRS_1M.md",
+      "ref": "ad737b33a",
+      "utc": "2026-11-06T08:21:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-of-flow-state-pairs-1m",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
@@ -23,7 +32,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T04:41:35Z",
   "refs": [],
-  "result": "",
+  "result": "A160/B128/C177; C 15m up 39%; FLOW_STATE_PAIRS_1M.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "1m OI, CVD, net delta, price on BTCUSDT, last 14 days"
   ],
@@ -35,12 +49,13 @@
   "sources": [
     "operator shot 9ee7ea307f1e 10-28 22:23Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Define A/B/C thresholds from the 10-28 shots (OURS)",
     "Count and measure forward moves",
     "Write the table and cite bar times"
   ],
+  "taken": "2026-11-06T08:21:22Z",
   "tests": "Spot-check three cases against the raw 1m bars",
   "title": "Flow-state pairs on 1m: OI up + negative delta burst vs all-positive burst, what followed (BTCUSDT)",
   "weight": "",
