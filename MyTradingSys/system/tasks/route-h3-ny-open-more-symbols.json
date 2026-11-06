@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T10:48:02Z",
   "commands": [
     "python scripts/dev/prereg_gate.py --help"
   ],
@@ -15,6 +16,12 @@
   "id": "route-h3-ny-open-more-symbols",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED n<=70 vs 1801 needed, MDE 0.81R; END",
+      "ref": "7461266d2",
+      "utc": "2026-11-06T10:48:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,6 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: power gate blocks pooled BTC+ETH",
   "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Power needs n~1650 at sd 1.5 so BLOCKED is the likely, honest outcome; record END then. Event rule is in BLOCKED.md. Data F:/MTS/data/tom_raw/klines and klines_eth.",
   "prio": 3,
   "refine_tries": 2,
@@ -42,7 +50,12 @@
     "MyTradingSys/research/h3_ny_open_low_prereg",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
-  "result": "",
+  "result": "BLOCKED n<=70 vs 1801 needed, MDE 0.81R; END",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/h3_ny_open_low_2026-10/BLOCKED.md",
     "MyTradingSys/research/h3_ny_open_pooled_2026-11"
@@ -55,12 +68,13 @@
   "sources": [
     "MyTradingSys/research/h3_ny_open_low_2026-10/BLOCKED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read h3_ny_open_low_prereg event rule; count events on BTC and ETH DEV (no outcome)",
     "run prereg_gate.py with that n, sd 1.5, cost 0.14 pct as R; paste output",
     "exit 0: freeze PRE_REG, one run, RESULT.md; exit 1: BLOCKED.md and END"
   ],
+  "taken": "2026-11-06T10:48:02Z",
   "tests": "test_pooled_count.py: pooled event count equals BTC plus ETH from one loader, refuses bars >= 2024-07-01; fails before the loader exists",
   "title": "H3 NY-open new-low-holds (20be1c6ec): n=6 test sample; add symbols to reach n>=30 or record END",
   "weight": "ROUTINE",

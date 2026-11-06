@@ -4,6 +4,20 @@
   "commands": [
     "python scripts/dev/prereg_gate.py --n 414 --sd 1.24 --cost 0.068 --m auto --new-cells 1"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-06T10:45:22Z",
+    "misses": 20,
+    "reads": [
+      "MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py",
+      "MyTradingSys/research/cryptocred_s3_2026-11/test_cc_s3_run.py",
+      "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
+      "MyTradingSys/research/cryptocred_s3_2026-11/cc_s3_run.py",
+      "MyTradingSys/backtest/bt/bt_data.py",
+      "scripts/dev/prereg_gate.py"
+    ],
+    "session": "agent-a2c4d3e84bcb0e070"
+  },
   "created": "2026-11-04T14:28:20Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/cryptocred_s3_pooled_2026-11/PRE_REG.md frozen with ## Context (Regime/Phase/Session/Entry) and prereg_gate output; if gate exit 0: RESULT.md with n, net R, CI, Regime mix: line, VERDICT; if exit 1: BLOCKED.md with n, MDE and END reason; no VALIDATION/HOLDOUT read",
