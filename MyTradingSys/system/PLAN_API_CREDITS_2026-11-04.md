@@ -125,15 +125,8 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-05 | haiku-review-refined-1105d | Haiku 5.5 | 0.26 | 30 | 20 stamped: 6 ACCEPT 8 HOLD 6 DROP (575d6179); cap was 2.0 |
 | 2026-11-05 | kurisko-1105 | Opus 5.5 | 1.55 | 35 | study written, ship finished by a Builder agent; cap was 6.0 |
 | 2026-11-05 | fable-regate-1105 | Opus 5.5 | 1.60 | 42 | prereg_gate --m auto counts trial ledger (regate fixes); cap was 6.0 |
-<<<<<<< HEAD
 | 2026-11-05 | oi-pivot-1105 | Opus 5.5 | 2.96 | 66 | shipped c7ac075d5; 32 cells, no OI pivot candidate changes reversal rate (descriptive); cap was 6.0 |
-=======
-| 2026-11-05 | oi-pivot-1105 | Opus 5.5 | 2.96 | 66 | OI pivot follow-up shipped: no candidate changes reversal across 32 cells; cap was 6.0 |
-<<<<<<< HEAD
 | 2026-11-05 | pz4-1105 | Opus 5.5 | 4.76 | 97 | blocked at the power gate: Pizzino main setup retest underpowered; cap was 6.0 |
-=======
->>>>>>> origin/fast-track
->>>>>>> origin/fast-track
 | 2026-11-05 | wt-c1v2-1105 | Opus 5.5 | 1.96 | 50 | WaveTrend C1 v2 count-only DEV pass frozen; cap was 6.0 |
 | 2026-11-05 | live-orderflow-1105 | Opus 5.5 | 1.85 | 44 | market guide prints one order-flow line each for 1m 5m 15m; cap was 6.0 |
 | 2026-11-05 | labguy-missing-1105 | Sonnet 5.5 | 0.38 | 11 | labguy missing-review shipped 658bde4d; cap was 3.0 |

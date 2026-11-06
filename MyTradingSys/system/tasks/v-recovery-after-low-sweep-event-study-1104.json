@@ -14,7 +14,7 @@
   "goal": "Measure what BTC did after a 5-day-low sweep followed by a >=50% win-back of the fall within 3h",
   "id": "v-recovery-after-low-sweep-event-study-1104",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -62,5 +62,6 @@
   "tests": "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/test_study.py: new case fails if the win-back window or the 5-day low uses a future bar",
   "title": "Event study: BTC sweeps the 5-day low then wins back >=50% of the fall within 3h; forward 4h/24h/72h returns by timeframe, fee-net, DEV/VAL split; done when the live feed Market tab can show 'what this usually led to' with n and CI",
   "weight": "",
-  "worker": "session"
+  "worker": "session",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

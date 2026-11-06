@@ -12,7 +12,7 @@
   "goal": "Independently recompute the headline n and fee-net R rows of RESULT_LONG.md from counts_long.csv with the fee formula in FORMULAS.md (not from study_long.py); the Gemini lane gets the follow-up blind read.",
   "id": "gpt-rederive-bb-long-window-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -62,5 +62,6 @@
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
   "title": "GPT re-derive: bb_long_window_2026-11-04 RESULT_LONG.md headline fee-net numbers from counts_long.csv and FORMULAS.md",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

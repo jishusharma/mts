@@ -1765,3 +1765,8 @@ Applied: 2026-11-05, research/bigcandle_story_2026-11-05/RESULT.md.
 Operator (verbatim): "make it happen" (13:10Z, "move faster"); credit was behind the 60-70 USD target.
 DECISION (OURS): link M2 started 13:10Z instead of 14:50Z, overlapping the tail of M1; M1's api_job queue drained first, then the M2 chain ran back to back (cvd-coil, c31 multi-symbol, pitchfork charts, flow-state).
 Applied: 2026-11-05, PLAN_24H_2026-11-05.md link M2.
+
+## d-no-gpt-codex-credit-1106 | decided 2026-11-06 | Supervisor C (M5, relayed by Lead C)
+Operator (verbatim, via Lead): "2026-11-06 operator: GPT/Codex plan expired; no GPT or Codex lanes. Use both Gemini accounts and the Claude API credit."
+DECISION: no Codex or GPT spawns; 14 CODEX/GPT cards re-routed to SONNET (Builders for code); Gemini cards keep their lane. Credit rule: 83.34 of 100 USD spent, 16.66 left, about 8 USD per day for 2 days, Sonnet or Haiku only (no Opus), check the card is not already on trunk before every job.
+Applied: 2026-11-06, PLAN_24H_2026-11-06.md, tasks/*.json lane field.
