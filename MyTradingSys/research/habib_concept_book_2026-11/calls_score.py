@@ -17,13 +17,15 @@ sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "habib_plan_imbalance_2026-10-20"))
+sys.path.insert(0, str(HERE.parents[2]))
+from MyTradingSys.backtest import fees  # noqa: E402
 import habib_common as hc  # noqa: E402
 import plan_score as ps  # noqa: E402
 
 LEDGER = HERE.parent / "habib_plan_imbalance_2026-10-20" / "PLAN_LEDGER.csv"
 OUT = HERE / "CALLS_SCORED.csv"
-FEE_BP = 10.0               # PRE_REG s3: 0.05 % per side, both legs
-FEE_DOMINATED_BP = 20.0     # PRE_REG s3
+FEE_BP = fees.BINANCE_TAKER * 2 * 1e4   # 10 bp round trip, SOURCED from backtest/fees.py (PRE_REG s3: 0.05 % per side, both legs)
+FEE_DOMINATED_BP = 2 * FEE_BP           # 20 bp, PRE_REG s3 fee-dominated flag (OURS)
 STOPS = {"QRP-ZPFK3ZsLwoo-05": 82800.0, "QRP-ZPFK3ZsLwoo-06": 82800.0}   # CALL_LEDGER.csv stop column (the only priced stops)
 SEARCH_DAYS = {"1d": 30, "12h": 21, "4h": 14, "1h": 5, "30m": 3}        # OURS: how far back an underlying imbalance candle is searched
 FETCH_DAYS = {"1d": 100, "12h": 100, "4h": 50, "1h": 25, "30m": 12}     # enough history for the 50-bar median plus the search window
