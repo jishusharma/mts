@@ -27,13 +27,13 @@
   "live_path": false,
   "mutation_check": "",
   "next": "END: underpowered; 1803 events needed, 10 symbols would give ~300",
-  "note": "REVIEWED:2026-11-06 ACCEPT | From raw re-run-pre-us-failed-break-and-h3-ny-ope (split). Expected pooled n about 350 vs about 1650 needed: BLOCKED is the likely honest end, record it with Next: END: <reason>. PRE_REG would need '## Context' (Regime:/Phase:/Session: NY/Entry:) and the result a Regime mix: line. New tool scripts need a wiring_registry.json entry. Fees from backtest/fees.py only.",
+  "note": "REVIEWED:2026-11-06 ACCEPT | From raw re-run-pre-us-failed-break-and-h3-ny-ope (split). Expected pooled n about 350 vs about 1650 needed: BLOCKED is the likely honest end, record it with Next: END: <reason>. PRE_REG would need '## Context' (Regime:/Phase:/Session: NY/Entry:) and the result a Regime mix: line. New tool scripts need a wiring_registry.json entry. Fees from backtest/fees.py only. | 2026-11-06 B: reopened, 9-symbol 1m data now on disk (fetch-1m-klines-9sym-dev); earlier BLOCKED result was data-only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:19:05Z",
   "refs": [],
-  "result": "BLOCKED: only BTC 1m DEV on disk, n=30 vs 1803 needed (gate exit 1, m=222); 9 symbols NOT_IN_DATA",
+  "result": "",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -54,7 +54,7 @@
     "MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md",
     "MyTradingSys/backtest/layers/fabio/v3/day_gates.py"
   ],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "git ls-tree origin/fast-track MyTradingSys/research/ must not list h3_ny_open_10sym_2026-11; read the BTC BLOCKED.md event rule and day_gates.ny_open_utc",
     "write test_count_10sym.py (fail first), then count_10sym.py: load_klines per symbol (klines for BTC, klines_eth, klines_<sym>; SOL/XRP/LTC miss 7200 bars: no-signal), drop days with a gap, bars open < 2024-07-01 only; use highs/lows only to locate the day low, never later returns",
