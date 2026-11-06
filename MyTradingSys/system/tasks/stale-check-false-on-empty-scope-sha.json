@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:21:00Z",
   "commands": [
     "python -m pytest scripts/dev/test_tasks.py -q"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/task_state.py:stale_reason; test_tasks.py 138 passed incl 2 new",
+      "ref": "d6443cfd6",
+      "utc": "2026-11-06T13:21:00Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "tasks.promote_shared keeps CRUCIAL/CRITICAL weight, sets shared:true",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete, ship by coordinator",
   "note": "refined 2026-11-04 planner-refine-1104c.\nREVIEWED:2026-11-04 T0-ONLY",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "Session_Planner",
   "refreshed": "2026-11-06T13:17:53Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/task_state.py:stale_reason; test_tasks.py 138 passed incl 2 new",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/task_state.py",
     "scripts/dev/test_tasks.py"
@@ -46,12 +59,13 @@
   "scope_sha": "a9f710df834f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "in stale_reason compare the last_change utc against card refreshed when scope_sha is empty",
     "stale only when the change is newer than refreshed",
     "add tests: empty scope_sha with refresh after change is fresh; with change after refresh is stale"
   ],
+  "taken": "2026-11-06T13:21:00Z",
   "tests": "scripts/dev/test_tasks.py: empty scope_sha + refreshed later than last change gives ''; fails on old code (returns 'scope changed')",
   "title": "task_state.stale_reason calls a card stale when scope_sha is empty even if the last change predates refreshed: feeder cards hand-set refreshed, so Gemini skipped all of them on 11-04; treat that case as fresh, test first",
   "weight": "",
