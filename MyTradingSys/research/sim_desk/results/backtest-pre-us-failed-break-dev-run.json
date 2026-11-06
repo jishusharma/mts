@@ -1,0 +1,74 @@
+{
+ "id": "backtest-pre-us-failed-break-dev-run",
+ "kind": "backtest",
+ "family": "Pre-US failed-break short",
+ "title": "Pre-US failed-break short with 4-tranche scale-in, BTCUSDT 1m, DEV fee-net",
+ "provenance": "builder-export",
+ "date": "2026-11-06",
+ "what": [
+  {
+   "name": "Entry",
+   "value_plain": "short after a failed break (close back below level within 3 bars) of PDH / session high / 5-day swing high, window 07-13Z; 4 tranches 0.25K, average up 0.5 ATR",
+   "label": "OURS"
+  },
+  {
+   "name": "Exit",
+   "value_plain": "nearest support >= 1 ATR below, else 1.5 ATR; no stop; time cap at 13:00Z",
+   "label": "OURS"
+  },
+  {
+   "name": "Cost",
+   "value_plain": "taker 5 bp + 2 bp slip, maker 2 bp",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Regime mix",
+   "value_plain": "130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)",
+   "label": "OURS"
+  }
+ ],
+ "how": "Frozen PRE_REG 2026-10-28 run once; one position per day.",
+ "window": "DEV 2022-01-01..2024-06-30; VALIDATION and HOLDOUT not read",
+ "verdict": {
+  "label": "INCONCLUSIVE: n 176 < 250; mean net -1.7 bps, t -0.33; 154 of 176 days hit the time cap",
+  "tone": ""
+ },
+ "why": [
+  "Time-cap days sum -14.4 % of K vs target days +11.4 %.",
+  "MDD 12.6 % of K vs buy-and-hold 66.9 %."
+ ],
+ "kpis": [
+  {
+   "label": "episodes",
+   "value": "176"
+  },
+  {
+   "label": "mean net",
+   "value": "-1.7 bps"
+  },
+  {
+   "label": "t",
+   "value": "-0.33"
+  },
+  {
+   "label": "time-cap days",
+   "value": "154",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "Examples",
+   "caption": "no example trades exported: see ledger.csv"
+  }
+ ],
+ "parity": null,
+ "source_files": [
+  "MyTradingSys/research/pre_us_failed_break_2026-10/RESULT.md",
+  "MyTradingSys/research/pre_us_failed_break_2026-10/ledger.csv",
+  "MyTradingSys/research/pre_us_failed_break_2026-10/cells.json",
+  "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md"
+ ],
+ "commit": "unknown"
+}
