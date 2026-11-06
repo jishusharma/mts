@@ -170,9 +170,7 @@ def resolve_login(passed):
 
 
 def who():
-    base = f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
-    agent = re.sub(r"[^A-Za-z0-9._-]", "", os.environ.get("MTS_AGENT") or "")[:32]
-    return f"{base}/{agent}" if agent else base
+    return f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
 
 
 def now():

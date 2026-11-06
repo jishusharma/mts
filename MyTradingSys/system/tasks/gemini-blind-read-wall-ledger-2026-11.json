@@ -14,6 +14,7 @@
   "id": "gemini-blind-read-wall-ledger-2026-11",
   "kind": "audit",
   "lane": "CODEX",
+<<<<<<< HEAD
   "latest": [
     {
       "kind": "ship",
@@ -29,6 +30,9 @@
       "utc": "2026-11-04T20:31:30Z"
     }
   ],
+=======
+  "latest": [],
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -41,7 +45,11 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "wall-ledger-1104",
+<<<<<<< HEAD
   "refreshed": "2026-11-06T12:50:20Z",
+=======
+  "refreshed": "2026-11-04T20:31:11Z",
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "refs": [
     "MyTradingSys/research/wall_ledger_2026-11/RESULT.md"
   ],
@@ -56,7 +64,7 @@
     "MyTradingSys/research/wall_ledger_2026-11"
   ],
   "scope_out": [],
-  "scope_sha": "6540063d456d",
+  "scope_sha": "",
   "size": "S",
   "sources": [],
   "state": "done",
