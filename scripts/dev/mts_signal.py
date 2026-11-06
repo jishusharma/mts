@@ -26,6 +26,7 @@ HIGH broadcasts (operator 2026-10-22: a "every machine needs X" broadcast was sh
       A broadcast with --cmd refuses `ack <id> told` without --note naming the blocker.
   python scripts/dev/mts_signal.py pending [--host <h>] [--json]   HIGH broadcasts needing action on a host (state none, or told
       expired) with hours waiting; for hosts that run no Claude session (the live Lenovo): mts_doctor.py BROADCAST warns on it.
+  python scripts/dev/mts_signal.py expire [--dry]   close (state expired) HIGH broadcasts older than STALE_H still none/told on hosts silent 24 h
   python scripts/dev/mts_signal.py acks [<id>]   hosts seen in the last KEEP_DAYS vs none/told/done; no id = all open high
       broadcasts. The sending machine's sessions also get a one-line ack status on their prompts while any host is not done.
 A record stamped more than 10 minutes in the future (wrong clock) is ignored for display and for the seen marker.
@@ -84,6 +85,7 @@ CMD_MAX = 300           # the operator command of a HIGH broadcast
 FUTURE_MIN = 10        # a record stamped later than now + this is a wrong clock: ignored
 DOT = chr(183)
 TOLD_TTL_H = 2          # OURS: a HIGH broadcast acked `told` goes loud again after this many hours (operator 2026-10-25: b-10b3d8 sat `told` ~25 h)
+STALE_H = 48            # OURS: a HIGH broadcast still none/told this long on a host with no record in the last 24 h cannot be acked: `expire` closes it
 RANK = {"none": 0, "told": 1, "expired": 2, "done": 3}
 TERMINAL = ("done", "expired")   # a host that closed a broadcast this way owes no further action; a later real `done` still outranks `expired`
 
@@ -170,9 +172,7 @@ def resolve_login(passed):
 
 
 def who():
-    base = f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
-    agent = re.sub(r"[^A-Za-z0-9._-]", "", os.environ.get("MTS_AGENT") or "")[:32]
-    return f"{base}/{agent}" if agent else base
+    return f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
 
 
 def now():
@@ -584,6 +584,20 @@ def pending(rows, hostname, at=None):
         out.append({"id": b["id"], "host": hostname, "state": "expired-told" if exp else "none", "since": t0.strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "hours": round(max(0.0, (at - t0).total_seconds() / 3600), 1), "cmd": b.get("cmd", ""),
                     "note": (exp or {}).get("note", "")})
+    return out
+
+
+def stale_open(rows, at=None):
+    """[(broadcast id, host)] still none/told after STALE_H on a target host that has been silent for 24 h (it cannot ack): `expire` closes them."""
+    at = at or now()
+    active, out = hosts_active(rows, 24, at), []
+    for b in high_open(rows, at):
+        t = _t(b)
+        if not t or (at - t).total_seconds() < STALE_H * 3600:
+            continue
+        for tg in sorted(targets(rows, b)):
+            if tg not in active and ack_state(rows, b["id"], tg) in ("none", "told"):
+                out.append((b["id"], tg))
     return out
 
 
@@ -1303,6 +1317,19 @@ def main(argv):
                 print("  %-16s %s%s" % (t, ack_state(rows, b["id"], t), "  " + notes[-1] if notes else ""))
         if not bs:
             print("no such broadcast" if want else "no open HIGH broadcasts")
+        return 0
+    if cmd == "expire":
+        h = ensure()
+        if h is None:
+            print("no origin")
+            return 1
+        rows = load(h)
+        todo = stale_open(rows)
+        print("before: %d stale (broadcast, host) pairs: %s" % (len(todo), ", ".join("%s@%s" % p for p in todo) or "-"))
+        if "--dry" not in argv:
+            for bid, tg in todo:
+                send("ack %s expired %s" % (bid, tg), kind="ack", extra={"id": bid, "state": "expired", "host": tg, "login": "", "note": "stale>%dh, host silent 24h" % STALE_H})
+            print("after: %d stale" % len(stale_open(load(ensure()))))
         return 0
     if cmd == "budget":
         return budget_cmd(argv[1:])

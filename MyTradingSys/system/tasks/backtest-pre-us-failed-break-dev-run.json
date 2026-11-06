@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:55:10Z",
   "commands": [
     "python MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "INCONCLUSIVE: n 176 < 250 on DEV, mean net -1.7 bps, t -0.33, 154 of 176 days time-cap; RE",
+      "ref": "1b19b1983",
+      "utc": "2026-11-06T13:55:10Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: n below N_min, no layer work",
   "note": "Data path F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv. PRE_REG frozen 2026-10-28 (predates the context rule, allowlisted); RESULT must still carry Regime mix:. REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T09:21:39Z",
   "refs": [],
-  "result": "",
+  "result": "INCONCLUSIVE: n 176 < 250 on DEV, mean net -1.7 bps, t -0.33, 154 of 176 days time-cap; RESULT.md + sim_desk card",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md",
     "MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py",
@@ -54,12 +67,13 @@
   "sources": [
     "MyTradingSys/research/pre_us_failed_break_2026-10/PRE_REG.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read PRE_REG sections 2-7; run prereg_gate.py with its n, sd, cost and paste the output",
     "write run_dev.py: loader refuses open >= 2024-07-01, sections 2-5 verbatim, print every cell",
     "write test_run_dev.py then run once; write RESULT.md with the Regime mix: line"
   ],
+  "taken": "2026-11-06T13:55:10Z",
   "tests": "MyTradingSys/research/pre_us_failed_break_2026-10/test_run_dev.py: loader raises on a bar dated 2024-07-01, and a one-day fixture net equals the hand value from fees.py (written in the test); both fail before run_dev.py exists",
   "title": "Run the frozen pre-US failed-break PRE_REG on DEV fee-net (needs card backtest-the-operator-s-pre-us-failed-br done)",
   "weight": "ROUTINE",
