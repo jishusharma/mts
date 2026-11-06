@@ -17,6 +17,16 @@ BEFORE, AFTER = 30, 4  # candles shown before swing B and after the exit (OURS, 
 RID = "rsi-divergence-mtf-gated-run1-2026-11-04"
 
 
+def window_start(a_i, b_i, before=BEFORE, pad_a=4):
+    """First candle drawn: the EARLIER of (pad_a bars before swing A) and (`before` bars before swing B), never below 0."""
+    return max(0, min(a_i - pad_a, b_i - before))
+
+
+def span_class(span):
+    """Arm bucket of the A-to-B distance in bars: '3-12' (W12 and W18 both fire), '13-18' (W18 only), '>18' (neither arm)."""
+    return "3-12" if span <= 12 else ("13-18" if span <= 18 else ">18")
+
+
 def ledger_row():
     for r in csv.DictReader(open(S.HERE / "dev_cells.csv", encoding="utf-8")):
         if (r["tf"], r["arm"], r["kind"], r["gate"], r["entry"]) == (TF, ARM, KIND, GATE, ENTRY):
@@ -43,13 +53,13 @@ def build():
     out = []
     for x in trs:
         e, i = ev[x["t"]], T[x["t"]]  # signal entry: fill at the close of event bar i, exit at the close of bar i + H
-        a, z = max(0, e["a_i"] - 4, e["b_i"] - BEFORE), min(len(bars) - 1, i + S.H + AFTER)
+        a, z = window_start(e["a_i"], e["b_i"]), min(len(bars) - 1, i + S.H + AFTER)
         E = C[i]
         pc = lambda v: round((v / E - 1) * 100, 3)
         out.append(dict(
             d=datetime.fromtimestamp(x["t"] / 1000, timezone.utc).strftime("%Y-%m-%d %H:%M"), t0=bars[a]["t"],
             net=round(x["gross"] - S.COST, 3), bars=S.H, why="time exit: close %d candles after entry" % S.H,
-            sig=i - a, ent=i - a, ext=i + S.H - a, div=[e["a_i"] - a, e["b_i"] - a],
+            sig=i - a, ent=i - a, ext=i + S.H - a, div=[e["a_i"] - a, e["b_i"] - a], span=e["b_i"] - e["a_i"], arm=span_class(e["b_i"] - e["a_i"]),
             c=[[pc(bars[m]["o"]), pc(bars[m]["h"]), pc(bars[m]["l"]), pc(bars[m]["c"])] for m in range(a, z + 1)],
             w1=[None] * (z - a + 1), w2=[None] * (z - a + 1), rsi=[rd(R[m]) for m in range(a, z + 1)]))
     return out
