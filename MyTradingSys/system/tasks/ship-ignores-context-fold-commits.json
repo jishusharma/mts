@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T17:22:43Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "fold amended into real commit; test fails on old code",
+      "ref": "670de068c",
+      "utc": "2026-11-06T17:22:43Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sync.py: check fetched run before trusting path filter in wait_own_ci",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: gap closed",
   "not_twin_of": [
     "context-gap-fold-on-ship"
   ],
@@ -36,7 +44,12 @@
   "refined_by": "",
   "refreshed": "2026-11-06T15:48:03Z",
   "refs": [],
-  "result": "",
+  "result": "fold amended into real commit; test fails on old code",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/context_gap.py",
     "scripts/dev/sync.py"
@@ -49,12 +62,13 @@
   "sources": [
     "operator ask 2026-10-28 gap 3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",
     "Run the test on old and new code; record output"
   ],
+  "taken": "2026-11-06T17:22:43Z",
   "tests": "scripts/dev/test_context_gap.py::test_fold_commit_not_shipped (new, fails on old code)",
   "title": "Ship ignores or squashes context-fold commits; hook must not commit on ship worktrees",
   "weight": "",
