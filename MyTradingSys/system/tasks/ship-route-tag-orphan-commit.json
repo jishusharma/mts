@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T17:50:10Z",
   "commands": [],
   "created": "2026-11-06T16:27:46Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "commit_pending refuses when HEAD unresolved; 3 tests gated",
+      "ref": "445d67b6f",
+      "utc": "2026-11-06T17:50:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sync.py: check fetched run before trusting path filter in wait_own_ci",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: guard shipped",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
@@ -33,7 +41,12 @@
   "refs": [
     "scripts/dev/sync.py"
   ],
-  "result": "",
+  "result": "commit_pending refuses when HEAD unresolved; 3 tests gated",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync_route_tag.py"
@@ -44,12 +57,13 @@
   "scope_sha": "a70c5d3362bf",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add fail-first test with a fresh git init repo, no commits",
     "in commit_pending check git rev-parse --verify HEAD before any commit, SyncError if it fails",
     "run the sync tests"
   ],
+  "taken": "2026-11-06T17:50:10Z",
   "tests": "scripts/dev/test_sync_route_tag.py: unborn-HEAD fixture must raise (fails on current commit_pending)",
   "title": "sync.py ship made an orphan 'route tag' commit (reflog: commit (initial), full 8702-file tree) on branch JIS-NUC/gq-leftovers-b-1106 in F:/MTS/gq/leftovers-b, during git auto-gc; the real commit stayed in reflog. Merge then failed 'unrelated histories', so nothing bad was pushed. Find why HEAD read as unborn (gc/packed-refs race?) and make the route-tag commit refuse when HEAD has no parent",
   "weight": "",

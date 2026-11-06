@@ -1802,3 +1802,9 @@ Answer: yes, start it (operator, 2026-11-06 16:10Z); session flip-study on JIS-N
 Power gate 0.30 % ceiling with repo-wide Holm m = 238 blocks every DEV study (Builder via Supervisor C, 2026-11-06 14:55Z). Card power-gate-holm-m-decision-1106 READY.
 Recommended: Holm m per study family.
 Answer: default (Holm m per family) applies from 2026-11-07 15:00Z unless the operator overrides; recorded by Lead C.
+
+## d-carry-dropped-leverage-direction-1106 | decided 2026-11-06 | operator (voice, 18:40Z), recorded by Lead C
+Funding carry (carry_basis_2026-10-18, 6-15 %/yr, shrinking) is dropped: MTS aims at leveraged directional trades, not carry.
+Direction: (1) low-leverage long-term longs near confirmed cycle bottoms (CBP bottom signal, buy on or after a good retest); (2) scalps, day and swing trades by session using Tom and Fabio levels (where buyers and sellers sit), bias from indicators and volume, continuation vs counter-trade.
+Lead C finding: the order-flow setups are often positive before costs and negative after (fabio_of: about 0.45 R of cost per trade on 0.15 % stops), so costs, not missing layers, kill most results.
+Answer: carry dropped; direction recorded (operator, 2026-11-06).
