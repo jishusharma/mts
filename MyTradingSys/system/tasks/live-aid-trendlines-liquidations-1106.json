@@ -12,6 +12,22 @@
   "goal": "Operator order 2026-11-06 (after the timeframe strip, ac483733): on each timeframe row of the strip show the active trendline (last 3 swing highs or lows that align within 0.2%, slope and distance to price) and, on the levels ladder, estimated liquidation clusters (from OI and funding via fapi when reachable; else leverage ladders 10x/25x/50x off the day's high and low, labelled OURS).",
   "id": "live-aid-trendlines-liquidations-1106",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: timeframe strip panel (R19)",
+      "ref": "d6db87075633",
+      "utc": "2026-11-06T12:51:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d6db87075633 live_aid: timeframe strip panel (R19)",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-06T12:51:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,6 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T14:18:43Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,9 +49,10 @@
     "the live tree",
     "build_artifact.py beyond inlining"
   ],
+  "scope_sha": "d6db87075633",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "swing detection: pivot high/low with 3-bar lookback per timeframe",
     "trendline fit: last 3 aligned pivots, slope per bar, distance to price",
@@ -45,5 +63,5 @@
   "tests": "test_spec_tf_strip.py: test_trendline_from_three_pivots, test_liq_ladder_from_day_extremes (both fail with the functions renamed away)",
   "title": "Live aid strip: auto trendlines per timeframe and liquidation levels",
   "weight": "",
-  "worker": "agent"
+  "worker": "session"
 }
