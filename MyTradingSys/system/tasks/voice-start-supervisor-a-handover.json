@@ -41,7 +41,7 @@
   "live_path": false,
   "mutation_check": "",
   "not_twin_of": [],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "done on trunk per planner brief",
   "pinned": false,
   "prio": 2,
   "refine_tries": 0,
@@ -58,7 +58,7 @@
   "scope_sha": "8e4d81ef9ae3",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Widen BARE_LOGIN in role_loader.py (~line 210) so the 3 phrases resolve to Supervisor",
     "In build_text (~line 447), append MyTradingSys/system/handover/SUPERVISOR_<L>.md from origin/fast-track when it exists",

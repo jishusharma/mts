@@ -1,28 +1,45 @@
 {
   "approved_by": "",
-  "asks": "Limit the new Context check to state raw only (default), or also fix ~8 refined study cards?",
+  "asks": "",
   "commands": [
     "python scripts/dev/test_tasks.py",
     "python scripts/dev/tasks.py lint"
   ],
   "created": "2026-11-05T17:19:27Z",
   "depends_on": [],
-  "done_when": "scripts/dev/test_tasks.py has test_study_card_without_context_in_done_when_not_ready (fails on pre-change tasks.py), test_tasks.py exits 0, MyTradingSys/system/role_details/session_planner_details.md step 3 names the Context check, and tasks.py lint stays clean on all open cards.",
-  "est_turns": 10,
+  "done_when": "scripts/dev/test_tasks.py passes with 2 new tests: a study card whose done_when says PRE_REG without Context is NOT READY with a message naming ## Context (Regime/Phase/Session/Entry); the same card with Context in done_when is ready; tasks.py lint still exits 0",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Definition of Ready (tasks.problems) must refuse a study card whose done_when names PRE_REG but not '## Context', so a Haiku ACCEPT cannot miss the Context section again (Kurisko ACCEPT missed it; first land 57be37ec1 was reverted).",
+  "goal": "Definition of Ready (tasks.problems) refuses a study card whose done_when names PRE_REG but not Context, so a review ACCEPT cannot miss the Context section again (Kurisko ACCEPT missed it).",
   "id": "haiku-accept-review-stamps-must-check-fo",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.promote_shared keeps CRUCIAL/CRITICAL weight, sets shared:true",
+      "ref": "a9f710df834f",
+      "utc": "2026-11-06T08:03:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "88769b8f4da2 card-file-lists-miss-test-registration-w: add test-registration clause to Ses",
+      "ref": "MyTradingSys/system/role_details/session_planner_details.md",
+      "utc": "2026-10-27T15:48:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. If lint flags more than 5 existing cards, narrow the rule to cards created after 2026-11-04 (OURS) and say so in the Result. DEFAULT (OURS) for the old ask: Context check applies to state raw/new cards only; do not edit refined study cards.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:19:13Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -30,16 +47,19 @@
     "scripts/dev/test_tasks.py",
     "MyTradingSys/system/role_details/session_planner_details.md"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "cards already stamped; PRE_REG files; ci.yml or gate config; PRE_REGs frozen before 2026-11-04"
+  ],
+  "scope_sha": "a9f710df834f",
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Write the failing test first: a card with done_when mentioning PRE_REG.md and no '## Context' gives a problem; one with it gives none",
-    "Add the check to problems() (case-sensitive match on '## Context') and one line to the step 3 checks of the planner details doc",
-    "Run test_tasks.py and tasks.py lint; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
+    "read tasks.problems (L328) and how it detects study cards; check lint for an allowlist of frozen PRE_REGs",
+    "write the 2 failing tests, add the check (study card = done_when or goal names PRE_REG), run tasks.py lint and fix only cards it newly flags by adding Context to their done_when",
+    "add one line to session_planner_details.md review checks; run_all_tests.py --quick; ship with Result: and Next: END: Context check in Definition of Ready"
   ],
-  "tests": "python scripts/dev/test_tasks.py",
+  "tests": "test_tasks.py: the 2 new tests, first failing on current problems(); plus python scripts/dev/tasks.py lint exit 0",
   "title": "Haiku ACCEPT review stamps must check for a PRE_REG Context section (Kurisko ACCEPT missed it): review step fails the card when the study's PRE_REG lacks ## Context with Regime/Phase/Session/Entry lines",
   "weight": "IMPORTANT",
   "worker": "agent"
