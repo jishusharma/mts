@@ -111,3 +111,20 @@ def test_cli_exit_codes(tmp_path):
     bad.write_text("nothing here\n", encoding="utf-8")
     p = subprocess.run([sys.executable, str(Path(ch.__file__)), str(bad)], capture_output=True, text=True)
     assert p.returncode == 1 and p.stdout.startswith("FAIL")
+
+
+def test_stale_header_date_fails(repo):
+    r, h = repo
+    t = doc(state=f"## State at handoff\n- 2026-11-04 shipped at {h}.\n").replace(
+        "# NEXT SESSION PROMPT (x)", "# NEXT SESSION (2026-10-30, x)", 1)
+    fails = ch.check(t, repo=r)
+    assert len(fails) == 1 and fails[0].startswith("f:")
+    assert "2026-10-30" in fails[0] and "2026-11-04" in fails[0]
+
+
+def test_same_or_newer_header_date_passes(repo):
+    r, h = repo
+    st = f"## State at handoff\n- 2026-11-04 shipped at {h}.\n"
+    for hd in ("2026-11-04", "2026-11-05"):
+        t = doc(state=st).replace("# NEXT SESSION PROMPT (x)", f"# NEXT SESSION ({hd}, x)", 1)
+        assert ch.check(t, repo=r) == []
