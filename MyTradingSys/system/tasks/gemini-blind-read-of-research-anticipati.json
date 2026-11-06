@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:56:59Z",
   "commands": [],
   "created": "2026-11-05T01:05:18Z",
   "depends_on": [],
@@ -13,10 +14,29 @@
   "id": "gemini-blind-read-of-research-anticipati",
   "kind": "audit",
   "lane": "CODEX",
+<<<<<<< HEAD
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md: 21856 ",
+      "ref": "9ab8cb7fa",
+      "utc": "2026-11-06T12:56:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "anticipation map: price x OI x taker delta readings with DEV base rates in live_aid, score",
+      "ref": "93841e3eace7",
+      "utc": "2026-11-05T01:06:27Z"
+    }
+  ],
+=======
   "latest": [],
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit done",
   "not_twin_of": [
     "gemini-blind-read-wall-ledger-2026-11",
     "gemini-blind-read-of-level-approach-eth-",
@@ -27,11 +47,20 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "anticipation-map-1105",
+<<<<<<< HEAD
+  "refreshed": "2026-11-06T12:50:18Z",
+=======
   "refreshed": "2026-11-05T01:06:00Z",
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "refs": [
     "MyTradingSys/research/anticipation_map_2026-11-05/RESULT.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md: 21856 vs 21855 events, 32/32 rates match, VERDICT MISMATCH (counts +-2)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md",
     "MyTradingSys/research/anticipation_map_2026-11-05"
@@ -40,12 +69,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md definitions only (not RESULT.md, not study.py), then load the raw 1m klines and 5m metrics OI before 2024-07-01",
     "Recompute the event count, the 4 state counts and the 8 cells (n, share, continue, undone, OI keeps sign) independently of study.py",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md with a per-number table against RESULT.md and VERDICT"
   ],
+  "taken": "2026-11-06T12:56:59Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of research/anticipation_map_2026-11-05/RESULT.md",
   "weight": "ROUTINE",

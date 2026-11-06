@@ -1,0 +1,106 @@
+{
+ "n": 1981,
+ "mean_net_r": -0.0467161229416029,
+ "ci_lo": -0.10966581169520984,
+ "ci_hi": 0.016197513754651522,
+ "p_two": 0.1539230384807596,
+ "holm_p": 1.0,
+ "m": 221,
+ "sd_r": 1.2243025214990901,
+ "mean_gross_r": 0.003998961030564083,
+ "symbols_positive": 2,
+ "verdict": "FAIL",
+ "per_symbol": {
+  "BTCUSDT": {
+   "n": 207,
+   "mean_net_r": -0.13291297013140652,
+   "hit_target": 0.37681159420289856,
+   "open_at_end": 0,
+   "unfilled": 10,
+   "signals": 217,
+   "bars_1m": 1313280
+  },
+  "ETHUSDT": {
+   "n": 202,
+   "mean_net_r": -0.04572213020480315,
+   "hit_target": 0.40594059405940597,
+   "open_at_end": 0,
+   "unfilled": 8,
+   "signals": 210,
+   "bars_1m": 1313280
+  },
+  "SOLUSDT": {
+   "n": 193,
+   "mean_net_r": -0.10309009606793464,
+   "hit_target": 0.36787564766839376,
+   "open_at_end": 0,
+   "unfilled": 12,
+   "signals": 205,
+   "bars_1m": 1306080
+  },
+  "BNBUSDT": {
+   "n": 212,
+   "mean_net_r": 0.08303802327163083,
+   "hit_target": 0.45754716981132076,
+   "open_at_end": 0,
+   "unfilled": 10,
+   "signals": 222,
+   "bars_1m": 1313280
+  },
+  "XRPUSDT": {
+   "n": 198,
+   "mean_net_r": -0.008023310070762351,
+   "hit_target": 0.41414141414141414,
+   "open_at_end": 0,
+   "unfilled": 7,
+   "signals": 205,
+   "bars_1m": 1306080
+  },
+  "DOGEUSDT": {
+   "n": 188,
+   "mean_net_r": -0.06078854417748551,
+   "hit_target": 0.39361702127659576,
+   "open_at_end": 0,
+   "unfilled": 8,
+   "signals": 196,
+   "bars_1m": 1313280
+  },
+  "ADAUSDT": {
+   "n": 178,
+   "mean_net_r": -0.05347238601815611,
+   "hit_target": 0.39325842696629215,
+   "open_at_end": 0,
+   "unfilled": 11,
+   "signals": 189,
+   "bars_1m": 1313280
+  },
+  "AVAXUSDT": {
+   "n": 203,
+   "mean_net_r": 0.021296186550473696,
+   "hit_target": 0.4236453201970443,
+   "open_at_end": 0,
+   "unfilled": 7,
+   "signals": 210,
+   "bars_1m": 1313280
+  },
+  "LINKUSDT": {
+   "n": 200,
+   "mean_net_r": -0.06511808990285467,
+   "hit_target": 0.39,
+   "open_at_end": 0,
+   "unfilled": 9,
+   "signals": 209,
+   "bars_1m": 1313280
+  },
+  "LTCUSDT": {
+   "n": 200,
+   "mean_net_r": -0.11134009149891767,
+   "hit_target": 0.375,
+   "open_at_end": 0,
+   "unfilled": 7,
+   "signals": 207,
+   "bars_1m": 1306080
+  }
+ },
+ "regime_weeks": "130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)"
+}

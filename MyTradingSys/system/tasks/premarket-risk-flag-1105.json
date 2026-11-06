@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:41:58Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tools/live_aid/test_spec_premarket.py"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already built and on origin/fast-track in 953a70cb9 (premarket_risk.js, test_spec_premarke",
+      "ref": "076b0608f",
+      "utc": "2026-11-06T13:41:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,13 +43,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: built; flag live in live_aid, outcome log fills as flags occur",
   "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: no quote source is wired yet; DECISION (OURS): use a public no-key quote endpoint behind one fetch function, tests use fixtures only. No order, key or live-tree access.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T07:53:20Z",
   "refs": [],
-  "result": "",
+  "result": "Already built and on origin/fast-track in 953a70cb9 (premarket_risk.js, test_spec_premarket.py 11 passed, live_aid.html wiring, REQUIREMENTS R18); card only needed closing",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/premarket_risk.js",
     "MyTradingSys/tools/live_aid/test_spec_premarket.py",
@@ -54,12 +67,13 @@
   "scope_sha": "b2010203f032",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy the test layout of test_spec_us_open.py; write the three fixture tests first and run them red",
     "Implement premarket_risk.js and wire the flag into live_aid.html; unreachable source degrades to UNKNOWN (fail closed: never shows a calm OFF)",
     "Add the REQUIREMENTS row; run live_aid tests; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
   ],
+  "taken": "2026-11-06T13:41:58Z",
   "tests": "python -m pytest -q MyTradingSys/tools/live_aid/test_spec_premarket.py",
   "title": "live_aid pre-US-open risk flag: Nasdaq-100 futures, Kospi/SK hynix close, top chip pre-market movers, VIX; flag when NQ futures < -0.5% or Kospi < -3% before 14:30Z; record each flag + BTC 4h outcome (11-05: Qualcomm -26% phone chips after close 11-04, Kospi -5.3%, NQ -0.6% at 12:46Z; BTC 80.4k->75.6k)",
   "weight": "IMPORTANT",

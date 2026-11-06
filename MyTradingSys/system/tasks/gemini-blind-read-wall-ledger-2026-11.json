@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:58:28Z",
   "commands": [],
   "created": "2026-11-04T20:30:55Z",
   "depends_on": [],
@@ -13,10 +14,29 @@
   "id": "gemini-blind-read-wall-ledger-2026-11",
   "kind": "audit",
   "lane": "CODEX",
+<<<<<<< HEAD
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "BLIND_READ_WALL_LEDGER.md 9/9 MATCH",
+      "ref": "722f09cf2",
+      "utc": "2026-11-06T12:58:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wall ledger: offline placed/pulled/filled walls from depth snapshots",
+      "ref": "6540063d456d",
+      "utc": "2026-11-04T20:31:30Z"
+    }
+  ],
+=======
   "latest": [],
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete, MATCH",
   "not_twin_of": [
     "gemini-blind-read-rsi-40-60-1104",
     "gemini-blind-read-rsi-div-mtf-gated-1104"
@@ -25,11 +45,20 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "wall-ledger-1104",
+<<<<<<< HEAD
+  "refreshed": "2026-11-06T12:50:20Z",
+=======
   "refreshed": "2026-11-04T20:31:11Z",
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "refs": [
     "MyTradingSys/research/wall_ledger_2026-11/RESULT.md"
   ],
-  "result": "",
+  "result": "BLIND_READ_WALL_LEDGER.md 9/9 MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md",
     "MyTradingSys/research/wall_ledger_2026-11"
@@ -38,12 +67,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the Rule and Parameters sections of wall_ledger_2026-11/RESULT.md before wall_ledger.py",
     "For 5 or more fixtures in test_wall_ledger.py derive the expected rows by hand from the rule",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md with a per-fixture table and VERDICT"
   ],
+  "taken": "2026-11-06T12:58:28Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_WALL_LEDGER.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of MyTradingSys/research/wall_ledger_2026-11/RESULT.md",
   "weight": "ROUTINE",
