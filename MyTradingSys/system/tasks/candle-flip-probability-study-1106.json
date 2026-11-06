@@ -4,13 +4,14 @@
   "commands": [],
   "context": {
     "calls_to_edit": 16,
-    "folded": "2026-11-06T16:28:57Z",
+    "folded": "2026-11-06T16:38:20Z",
     "misses": 26,
     "reads": [
       "MyTradingSys/tools/live_aid/tf_strip.js",
       "MyTradingSys/system/ANNOUNCEMENTS.md",
       "MyTradingSys/research/STATUS.md",
-      "MyTradingSys/tools/live_aid/live_aid.html"
+      "MyTradingSys/tools/live_aid/live_aid.html",
+      "MyTradingSys/research/candle_flip_probability_2026-11/fetch_1m.py"
     ],
     "session": "83e79aee-71ed-40c9-804c-ac02f1e1fa88"
   },
