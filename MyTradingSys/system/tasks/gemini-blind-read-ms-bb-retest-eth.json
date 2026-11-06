@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T13:06:59Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_BB_RETEST_ETH.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -17,17 +18,30 @@
   "id": "gemini-blind-read-ms-bb-retest-eth",
   "kind": "audit",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ",
+      "ref": "d57726fb7",
+      "utc": "2026-11-06T13:06:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "gemini-blind-read-ms-level-eth",
   "note": "REVIEWED:2026-11-04 T0-ONLY\nWaits on the study card ms-bb-range-retest-eth-pool (blind-read card, Gemini low effort). | not_twin_of covered: different study.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:52:06Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_BB_RETEST_ETH.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_BB_RETEST_ETH.md; MyTradingSys/research/bb_range_retest_eth_pool_2026-11"
   ],
@@ -39,12 +53,13 @@
   "sources": [
     "MyTradingSys/research/bb_range_retest_eth_pool_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the CSVs in MyTradingSys/research/bb_range_retest_eth_pool_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",
     "Write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_BB_RETEST_ETH.md with a per-cell diff table and VERDICT"
   ],
+  "taken": "2026-11-06T13:06:59Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_BB_RETEST_ETH.md'); assert 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of ms-bb-range-retest-eth-pool RESULT.md vs CSVs",
   "weight": "ROUTINE",
