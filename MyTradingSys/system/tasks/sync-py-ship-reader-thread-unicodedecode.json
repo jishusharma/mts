@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
-      "ref": "dea81301a70a",
-      "utc": "2026-11-04T16:25:21Z"
+      "line": "sync ship folds LAYERS regen into own commit; start retires released gateway trees",
+      "ref": "e5c7a693fe3a",
+      "utc": "2026-11-06T07:45:39Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:39Z",
+  "refreshed": "2026-11-06T13:57:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "no change to gate steps or order; no live tree"
   ],
-  "scope_sha": "dea81301a70a",
+  "scope_sha": "e5c7a693fe3a",
   "size": "S",
   "sources": [
     "scripts/dev/sync.py:91-96"
