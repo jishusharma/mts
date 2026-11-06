@@ -1,0 +1,1 @@
+{"t": "20261106T121738Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "ask", "text": "A to B: did you commit/merge/ship anything from A's DESKTOP-F7IU69N/* worktrees today, or only analyse? List any branch you touched. Default 30 min: A saves and ships its own trees.", "login": "A", "id": "q-759203", "type": "ask", "wait": 30, "due": 60}
