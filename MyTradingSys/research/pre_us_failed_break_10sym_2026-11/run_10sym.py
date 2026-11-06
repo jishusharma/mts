@@ -32,8 +32,8 @@ W0, W1 = 7 * 60, 13 * 60          # window W = minutes 420..779 of the UTC day (
 ATR_MULT_ELIG, ATR_BREAK, ATR_DEAD, ATR_STEP, ATR_FALLBACK = 0.5, 0.10, 1.5, 0.5, 1.5
 # PRE_REG s5 says Binance maker/taker; this card orders Deribit all_taker (fees.py regime A): every leg taker fee + 2 bps slippage.
 FEE_LEG = fees.FEES_ALL_TAKER["entry"]
-SLIP_LEG = 0.0002
-LEG_COST = FEE_LEG + SLIP_LEG     # 7 bps per leg, 14 bps round trip (the gate cost)
+ADVERSE_PX = 2 / 1e4              # 2 bps adverse price per leg (the slippage assumption, OURS; fees.py holds no slippage)
+LEG_COST = FEE_LEG + ADVERSE_PX     # 7 bps per leg, 14 bps round trip (the gate cost)
 FUNDING = 0.0001                  # flat 1 bp on weight held across 08:00 UTC, 'funding NOT_IN_DATA' (PRE_REG s5)
 TRANCHE = 0.25
 _NAME = re.compile(r"-1m-(\d{4})-(\d{2})(?:-\d{2})?\.csv$")
