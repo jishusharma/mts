@@ -1,35 +1,58 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-of-malkan-window-dev-s:low"
+  ],
   "created": "2026-11-06T10:11:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of study.py, counts.csv: recompute counts.csv rows from study.py logic and check the window rule against PRE_REG.md.",
   "id": "gemini-blind-read-of-malkan-window-dev-s",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan window arms fee-net on DEV: INCONCLUSIVE",
+      "ref": "8fa8ac9e2713",
+      "utc": "2026-11-06T10:27:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-malkan-window-dev-s:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:16:17Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md",
+    "MyTradingSys/research/malkan_window_dev_2026-11/study.py",
+    "MyTradingSys/research/malkan_window_dev_2026-11/counts.csv"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "8fa8ac9e2713",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/malkan_window_dev_2026-11/study.py, MyTradingSys/research/malkan_window_dev_2026-11/counts.csv before any prose summary of them",
+    "Recompute independently of the code under read, then recompute counts.csv rows from study.py logic and check the window rule against PRE_REG.md",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_MALKAN_WINDOW_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of malkan_window_dev study.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

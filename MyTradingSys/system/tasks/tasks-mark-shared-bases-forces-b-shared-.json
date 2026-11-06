@@ -4,32 +4,52 @@
   "commands": [],
   "created": "2026-11-06T11:50:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_tasks.py has a new test: a CRUCIAL and a CRITICAL base keep that weight after mark_shared_bases of a citing consumer and both get shared_consumers; an unweighted base becomes B-SHARED; the test fails on current code",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.mark_shared_bases (scripts/dev/tasks.py L1348) must keep a CRUCIAL or CRITICAL base weight, as promote_shared does since 6e73bb8f, instead of forcing B-SHARED.",
   "id": "tasks-mark-shared-bases-forces-b-shared-",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks.promote_shared keeps CRUCIAL/CRITICAL weight, sets shared:true",
+      "ref": "a9f710df834f",
+      "utc": "2026-11-06T08:03:41Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. Same bug family as lab-shared-keeps-weight-2 (6e73bb8f).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:19:11Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "promote_shared; review_gate rules; any other card file"
+  ],
+  "scope_sha": "a9f710df834f",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "read tasks.py L1348-1360, promote_shared, and test_tasks.py L856-868 for the pattern",
+    "write the failing test, then skip the weight overwrite when the base weight is CRUCIAL or CRITICAL (keep class and shared_consumers updates)",
+    "run test_tasks.py and run_all_tests.py --quick; ship with Result: and Next: END: mark_shared_bases keeps weight"
+  ],
+  "tests": "test_tasks.py new test_mark_shared_bases_keeps_crucial_and_critical, modelled on test_promote_shared_keeps_crucial_and_critical (L856), fails before the fix",
   "title": "tasks.mark_shared_bases forces B-SHARED over CRUCIAL/CRITICAL weight (same bug as promote_shared fixed in 6e73bb8f)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
