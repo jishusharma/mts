@@ -1,6 +1,0 @@
-task: gemini-blind-read-wt-extreme-cross-2026-11
-host: JIS-NUC
-account: sharma
-area: -
-epoch: 1793970895
-expires_at: 1793981695
