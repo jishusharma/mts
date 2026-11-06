@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T18:18:45Z",
   "commands": [],
   "created": "2026-11-06T11:54:06Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/conflict_marker_lint.py: 8 tests, smoke 12 steps PASS; full --quick: only 3xt ",
+      "ref": "258c0c10e",
+      "utc": "2026-11-06T18:18:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "build(api_job)+audit(gemini): spec tests for api_job + 3 blind reads + task card fixes",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete, ship by coordinator",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T17:31:20Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/conflict_marker_lint.py: 8 tests, smoke 12 steps PASS; full --quick: only 3xt test_ship_train.py fails (git 2.24 lacks init -b, unrelated)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/conflict_marker_lint.py",
     "scripts/dev/test_conflict_marker_lint.py",
@@ -43,12 +56,13 @@
   "scope_sha": "101613284177",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write conflict_marker_lint.py over git ls-files, text files only, skip binaries and the lint's own test fixtures",
     "add the fail-first test, register as a gate step in run_all_tests.py with timing entry",
     "run run_all_tests --quick --smoke and report"
   ],
+  "taken": "2026-11-06T18:18:45Z",
   "tests": "scripts/dev/test_conflict_marker_lint.py: fixture with '<<<<<<< HEAD' must exit 1 (written first, fails with no linter)",
   "title": "ship gate refuses committed merge-conflict markers (PLAN_API_CREDITS had <<<<<<< HEAD rows on trunk 11-06)",
   "weight": "",
