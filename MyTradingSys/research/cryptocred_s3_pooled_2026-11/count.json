@@ -1,0 +1,15 @@
+{
+ "BTCUSDT": {
+  "signals": 217,
+  "skipped": 0,
+  "filled": 207,
+  "bars_1m": 1313280
+ },
+ "ETHUSDT": {
+  "signals": 210,
+  "skipped": 0,
+  "filled": 202,
+  "bars_1m": 1313280
+ },
+ "pooled_filled": 409
+}

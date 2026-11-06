@@ -419,3 +419,4 @@ MyTradingSys/research/pre_us_failed_break_2026-10/test_run_dev.py	fwd-index	A["H
 MyTradingSys/research/pre_us_failed_break_2026-10/test_run_dev.py	fwd-index	A["O"][b + 4] = 97.0	SAFE: test fixture writes synthetic bars at fixed offsets; not a signal read
 MyTradingSys/research/pre_us_failed_break_2026-10/test_run_dev.py	fwd-index	A["L"][b + 4] = 96.0	SAFE: test fixture writes synthetic bars at fixed offsets; not a signal read
 MyTradingSys/research/pre_us_failed_break_2026-10/test_run_dev.py	fwd-index	A["L"][b + 6] = 100.0	SAFE: test fixture writes synthetic bars at fixed offsets; not a signal read
+MyTradingSys/research/malkan_window_dev_2026-11/study.py	fwd-index	out.append({"day": int(bars[i]["t"] // DAY), "gross": sgn * (bars[i + h]["c"] - px) / px * 100.0})	forward bar is the trade EXIT (outcome), never a signal input; the event is stamped one bar after swing B
