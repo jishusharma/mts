@@ -1,35 +1,64 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-disposition-missing-1018:low"
+  ],
   "created": "2026-11-05T17:15:43Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of DISPOSITION_MISSING_2026-10-18.md: count every card the file lists as missing a disposition and re-derive that count from MyTradingSys/system/tasks/*.json states and notes.",
   "id": "gemini-blind-read-disposition-missing-1018",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "labguy-review-missing: disposition of MISSING_2026-10-18",
+      "ref": "d8b4857b91b9",
+      "utc": "2026-11-05T17:15:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d8b4857b91b9 labguy-review-missing: disposition of MISSING_2026-10-18",
+      "ref": "MyTradingSys/research/lab_guy/DISPOSITION_MISSING_2026-10-18.md",
+      "utc": "2026-11-05T17:15:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-disposition-missing-1018:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:16:08Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md",
+    "MyTradingSys/research/lab_guy/DISPOSITION_MISSING_2026-10-18.md"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "d8b4857b91b9",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/lab_guy/DISPOSITION_MISSING_2026-10-18.md before any prose summary of them",
+    "Recompute independently of the code under read, then count every card the file lists as missing a disposition and re-derive that count from MyTradingSys/system/tasks/*.json states and notes",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_DISPMISS_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of lab_guy/DISPOSITION_MISSING_2026-10-18.md",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

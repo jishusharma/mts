@@ -1,35 +1,57 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-of-kurisko-run-dev-py-:low"
+  ],
   "created": "2026-11-05T11:08:16Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "D11 feeder: independent blind read (run through gemini_queue.py, Gemini effort low, not a Claude Agent) of run_dev.py: check the DEV-only loader, fee source and R definition against FORMULAS.md.",
   "id": "gemini-blind-read-of-kurisko-run-dev-py-",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "kurisko dev event study re-land: 0 frozen cells, guard refuses, no outcome read",
+      "ref": "c4b49589b0b5",
+      "utc": "2026-11-05T12:51:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-kurisko-run-dev-py-:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:16:15Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md",
+    "MyTradingSys/research/kurisko_2026-10-18/run_dev.py"
+  ],
+  "scope_out": [
+    "editing the files read; reading VALIDATION/HOLDOUT; any fix (a defect becomes a raw card by the coordinator)"
+  ],
+  "scope_sha": "c4b49589b0b5",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/kurisko_2026-10-18/run_dev.py before any prose summary of them",
+    "Recompute independently of the code under read, then check the DEV-only loader, fee source and R definition against FORMULAS.md",
+    "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md with the per-claim table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_KURISKO_RUNDEV_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of kurisko run_dev.py (research/kurisko_2026-10-18)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

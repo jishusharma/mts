@@ -1,35 +1,61 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/malkan_window_wide_2026-11/wide.py"
+  ],
   "created": "2026-11-06T11:50:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "malkan_window_wide_2026-11/RESULT.md: per-band n and days per timeframe pooled on 10 symbols, prereg_gate line per band, verdict word first (BLOCKED|INCONCLUSIVE|PASS|FAIL), PRE_REG.md with ## Context (Regime:/Phase:/Session:/Entry:), a Regime mix: line; bars from 2024-07-01 never opened",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-run the Malkan divergence window comparison (3-10, 11-12, 13-18, 19-50 bars) with a wider pivot (lookaround 3+ bars) so the OURS bands hold events, on the 10 symbols DEV; count and power gate before any outcome read.",
   "id": "malkan-window-comparison-needs-a-wider-p",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan window arms fee-net on DEV: INCONCLUSIVE",
+      "ref": "8fa8ac9e2713",
+      "utc": "2026-11-06T10:27:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. Candidate for credit job 3 of PLAN_24H_2026-11-06 if c34 is unavailable. RESULT needs Regime mix:; Next: must be an existing card, stage or END: why; a new tool script needs a wiring_registry.json entry; fees from backtest/fees.py.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T12:19:07Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_window_wide_2026-11/PRE_REG.md",
+    "MyTradingSys/research/malkan_window_wide_2026-11/wide.py",
+    "MyTradingSys/research/malkan_window_wide_2026-11/test_wide.py",
+    "MyTradingSys/research/malkan_window_dev_2026-11/study.py"
+  ],
+  "scope_out": [
+    "editing malkan_window_dev_2026-11 (read only); VALIDATION/HOLDOUT; changing the default window 3-10; writes into data folders"
+  ],
+  "scope_sha": "8fa8ac9e2713",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/malkan_window_dev_2026-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "git ls-tree origin/fast-track MyTradingSys/research/ must not list malkan_window_wide_2026-11; read malkan_window_dev_2026-11/RESULT.md (4 events in OURS bands) and study.py",
+    "write PRE_REG.md (pivot strength 3 OURS, bands unchanged, cost 0.14 pct, Holm m via verdicts.py check and prereg_gate.py), then failing test_wide.py, then wide.py loading 10 symbols via load_klines (SOL, XRP, LTC short: no-signal)",
+    "count n per band first and run the gate; run outcomes only for bands passing it; RESULT.md with Regime mix:, ship, tasks.py done --next"
+  ],
+  "tests": "malkan_window_wide_2026-11/test_wide.py: pivot strength 3 on a fixture finds a swing pair 14 bars apart that strength 1 misses, and the loader raises on a bar dated 2024-07-01; both fail before wide.py exists",
   "title": "Malkan window comparison needs a wider-pivot or non-adjacent-swing detector (3 OURS bands held 4 events)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
