@@ -17,6 +17,7 @@
   "goal": "Independent Gemini blind read of research/level_approach_eth_2026-11/RESULT.md: recompute n, days, mean and fee-net, per-symbol and pooled, from the CSVs first, then diff against the RESULT.md prose.",
   "id": "gemini-blind-read-ms-level-eth",
   "kind": "audit",
+<<<<<<< HEAD
   "lane": "SONNET",
   "latest": [
     {
@@ -26,6 +27,10 @@
       "utc": "2026-11-06T13:06:59Z"
     }
   ],
+=======
+  "lane": "CODEX",
+  "latest": [],
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -34,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T12:52:06Z",
+  "refreshed": "2026-11-04T21:07:52Z",
   "refs": [],
   "result": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_LEVEL_ETH.md",
   "result_receipt": {
@@ -53,7 +58,11 @@
   "sources": [
     "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md"
   ],
+<<<<<<< HEAD
   "state": "done",
+=======
+  "state": "refined",
+>>>>>>> parent of da06ab9c4 (gemini governance batch 1: fix own-claim skip, MTS_AGENT sender id, ship 2 blind reads, promote 3 ETH blind reads, refresh 5 stale cards)
   "steps": [
     "Read the CSVs in MyTradingSys/research/level_approach_eth_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",
