@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T16:48:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-06_level-approach-prep.md lists each RESULT number with recomputed value and MATCH / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT re-derivation of the numbers in level_approach_prep_2026-11-05/RESULT.md from the raw counts and FORMULAS.md, not from the study code (recent study ship).",
+  "id": "gpt-rederive-level-approach-prep-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "level-approach prep: live_aid panel (checklist, absorption, OI tell, wick TFs, flags/6, on",
+      "ref": "775495c597f6",
+      "utc": "2026-11-05T01:36:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "775495c597f6 level-approach prep: live_aid panel (checklist, absorption, OI tell, wick TFs",
+      "ref": "MyTradingSys/research/level_approach_prep_2026-11-05/RESULT.md",
+      "utc": "2026-11-05T01:36:50Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:23Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/level_approach_prep_2026-11-05/RESULT.md (read)",
+    "MyTradingSys/research/level_approach_prep_2026-11-05/PRE_REG.md (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_level-approach-prep.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "775495c597f6",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "List every number in RESULT.md",
+    "Recompute each from the CSV/raw counts with FORMULAS.md",
+    "Write the table and counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "GPT re-derive: level_approach_prep_2026-11-05 RESULT numbers",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

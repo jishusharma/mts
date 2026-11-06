@@ -122,6 +122,55 @@
       .sort(function (a, b) { return Math.abs(a.dist) - Math.abs(b.dist); });
   }
 
+  // ---- R20 close-colour gauge: P(the forming bar closes with the colour it has now) ----
+  // Same formula as research/candle_flip_probability_2026-11/flip_model.py P_close_colour. A driftless random walk (the null) leaves N(0, t sigma^2) to the close,
+  // so P(keeps) = Phi(|d| / sqrt(t)), d = (price - open) / sigma_bar, sigma_bar = ATR14 / 1.5958 (1.5958 = 2 sqrt(2/pi), expected Brownian range: SOURCED maths, ATR scale OURS).
+  var SIGMA_K = 2 * Math.sqrt(2 / Math.PI);
+  var ALL_TFS = ['1w', '5d', '3d', '2d', '1d', '12h', '8h', '7h', '6h', '4h', '3h', '2h', '1h', '30m', '15m', '10m', '5m', '3m', '2m', '1m'];
+  function erf(x) { // Abramowitz-Stegun 7.1.26, abs error < 1.5e-7
+    var s = x < 0 ? -1 : 1; x = Math.abs(x);
+    var t = 1 / (1 + 0.3275911 * x);
+    var y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+    return s * y;
+  }
+  function phi(x) { return 0.5 * (1 + erf(x / Math.SQRT2)); }
+  function closeProb(dAtr, tLeft, ctx) {
+    var d = num(dAtr), t = num(tLeft);
+    if (d === null || t === null || t < 0 || t > 1) return null;
+    if (t === 0) return d !== 0 ? 1 : 0.5;
+    var p = phi(Math.abs(d) * SIGMA_K / Math.sqrt(t));
+    if (ctx && typeof ctx.delta === 'number' && isFinite(ctx.delta)) p = Math.min(0.999, Math.max(0.001, p + ctx.delta));
+    return p;
+  }
+  // pure function: tf in the 20 study timeframes, d_atr = (price - open) / ATR14 of that timeframe, t_left in [0, 1]; ctx = null (the null) or {delta}. Unreadable input = null.
+  function pCloseColour(tf, dAtr, tLeft, ctx) {
+    if (ALL_TFS.indexOf(tf) < 0) return null;
+    return closeProb(dAtr, tLeft, ctx);
+  }
+  // mean true range of the 14 closed bars before the forming bar (TR = max(H-L, |H-prevC|, |L-prevC|)); null with fewer than 15 closed bars
+  function atr14(klines) {
+    var n = klines.length;
+    if (n < 16) return null;
+    var sum = 0;
+    for (var i = n - 15; i <= n - 2; i++) {
+      var h = num(klines[i][2]), l = num(klines[i][3]), pc = num(klines[i - 1][4]);
+      if (h === null || l === null || pc === null) return null;
+      sum += Math.max(h - l, Math.abs(h - pc), Math.abs(l - pc));
+    }
+    return sum / 14;
+  }
+  // gauge of the forming bar: {p, colour, dAtr, tLeft}; null when the price, the ATR or the time left is unreadable (fail closed: no gauge drawn)
+  function keepGauge(klines, now) {
+    if (!Array.isArray(klines) || klines.length < 16) return null;
+    var f = klines[klines.length - 1];
+    if (!valid(f)) return null;
+    var left = timeLeftMs(f, now), span = num(f[6]) - num(f[0]) + 1, atr = atr14(klines);
+    if (left === null || !(span > 0) || !(atr > 0)) return null;
+    var tLeft = Math.min(1, left / span), dAtr = (num(f[4]) - num(f[1])) / atr;
+    var p = closeProb(dAtr, tLeft, null);
+    return p === null ? null : { p: p, colour: colour(f), dAtr: dAtr, tLeft: tLeft };
+  }
+
   // One strip row from one timeframe's klines (last = forming bar).
   function row(klines, now) {
     if (!Array.isArray(klines) || klines.length < 2) return null;
@@ -129,7 +178,7 @@
     var left = timeLeftMs(f, now), col = colour(f);
     if (left === null || !valid(f)) return null;
     var closed = klines.slice(0, -1).slice(-3).map(colour);
-    return { colour: col, last3: closed, flip: flip(klines, now), cvd: cvd(f), bb: bbPos(klines.map(function (k) { return k[4]; })), leftMs: left };
+    return { colour: col, last3: closed, flip: flip(klines, now), cvd: cvd(f), bb: bbPos(klines.map(function (k) { return k[4]; })), leftMs: left, keep: keepGauge(klines, now) };
   }
 
   function groupCount(rows, names) {
@@ -164,6 +213,7 @@
   }
 
   var api = { TFS: TFS, SCALP: SCALP, CONTEXT: CONTEXT, BASE: BASE, colour: colour, flip: flip, cvd: cvd, bbPos: bbPos, timeLeftMs: timeLeftMs,
-    valueArea: valueArea, levels: levels, row: row, alignment: alignment, fmtLeft: fmtLeft, fmtAgo: fmtAgo };
+    valueArea: valueArea, levels: levels, row: row, alignment: alignment, fmtLeft: fmtLeft, fmtAgo: fmtAgo,
+    pCloseColour: pCloseColour, keepGauge: keepGauge, atr14: atr14 };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.TFSTRIP = api;
 })(typeof window !== 'undefined' ? window : this);

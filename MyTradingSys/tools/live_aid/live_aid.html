@@ -91,6 +91,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 .blk { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 2px; background: var(--line); border: 1px solid var(--dim); box-sizing: border-box; }
 .blk.green { background: var(--up); border-color: var(--up); } .blk.red { background: var(--down); border-color: var(--down); }
 .blk.big { width: 22px; height: 22px; margin-right: 6px; } .blk.sm { width: 9px; height: 14px; }
+.kg { display: block; height: 3px; margin-top: 3px; background: var(--line); border-radius: 2px; overflow: hidden; } .kg b { display: block; height: 100%; background: var(--dim); } .kg b.green { background: var(--up); } .kg b.red { background: var(--down); }
 .flip { background: var(--amber); color: var(--bg); font: 700 11px var(--sans); padding: 1px 5px; border-radius: 3px; }
 .bbt { display: inline-block; position: relative; width: 70px; height: 8px; background: var(--line); border-radius: 4px; vertical-align: middle; margin-right: 6px; }
 .bbt i { position: absolute; top: -3px; width: 4px; height: 14px; background: var(--fg); border-radius: 2px; margin-left: -2px; }
@@ -105,7 +106,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <main>
   <!-- 0. TIMEFRAME STRIP: one-glance scalp read (spot data); pure functions in tf_strip.js -->
   <section id="p-tfs">
-    <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
+    <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close; the thin bar under the colour cells fills to the chance (random-walk maths on the bar's ATR14 scale) that the forming bar closes with the colour it has now. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
     <div class="tfal" id="tfs-al">--</div>
     <div class="tfs">
       <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
@@ -1393,7 +1394,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       var cv = r.cvd && r.cvd.dir ? '<b class="' + (r.cvd.dir === 'up' ? 'up' : 'down') + '">' + (r.cvd.dir === 'up' ? '&#9650; buy' : '&#9660; sell') + '</b>' : D;
       var fl = r.flip ? (r.flip.flipped ? '<span class="flip">FLIP</span> <span class="dim">flipped ' + TFSTRIP.fmtAgo(r.flip.ageMs) + ' ago</span>' : '<span class="dim">same</span>') : D;
       var bb = r.bb ? '<span class="bbt"><i style="left:' + r.bb.pos.toFixed(0) + '%"></i></span><span class="' + (r.bb.label.indexOf('upper') >= 0 ? 'down' : r.bb.label.indexOf('lower') >= 0 ? 'up' : 'dim') + '">' + r.bb.label + '</span>' : D;
-      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
+      var kg = r.keep ? '<span class="kg"><b class="' + (r.keep.colour || '') + '" style="width:' + (r.keep.p * 100).toFixed(0) + '%"></b></span>' : '';
+      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + kg + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
     });
     $('tfs-rows').innerHTML = H.join('');
     $('tfs-al').textContent = TFSTRIP.alignment(rows);

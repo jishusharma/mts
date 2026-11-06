@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T16:48:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py exists, passes on trunk, and the report MyTradingSys/research/layer_lab/reports/2026-11-06_candle-flip-model.md names the mutation that made it fail.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write a spec test for MyTradingSys/research/candle_flip_probability_2026-11/flip_model.py from its docstring/PRE_REG (recent .py ship); the test must fail on a planted one-line mutation of the code.",
+  "id": "gpt-spec-tests-candle-flip-model-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "flip study step 3: null, cell table, Brier vs null, RESULT (PRE_REG heading renamed for th",
+      "ref": "9f7dc27aee98",
+      "utc": "2026-11-06T16:29:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/candle_flip_probability_2026-11/flip_model.py (read)",
+    "MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py (new)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_candle-flip-model.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "9f7dc27aee98",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read the module contract, not the code body",
+    "Write 3+ spec tests from the contract",
+    "Mutate one line, show the test fails, revert, report"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py -q passes; same test fails on the mutated copy (named in the report)",
+  "title": "GPT spec tests: candle_flip flip_model.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

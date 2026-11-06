@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T16:48:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/bigcandle_story_2026-11-05/test_study_spec.py exists, passes on trunk, and the report MyTradingSys/research/layer_lab/reports/2026-11-06_bigcandle-story.md names the mutation that made it fail.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write a spec test for MyTradingSys/research/bigcandle_story_2026-11-05/study.py from its docstring/PRE_REG (recent .py ship); the test must fail on a planted one-line mutation of the code.",
+  "id": "gpt-spec-tests-bigcandle-story-study-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bigcandle story: big-candle stories x top-trader class x phase base rates + live_aid panel",
+      "ref": "b2010203f032",
+      "utc": "2026-11-05T14:07:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/bigcandle_story_2026-11-05/study.py (read)",
+    "MyTradingSys/research/bigcandle_story_2026-11-05/test_study_spec.py (new)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_bigcandle-story.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "b2010203f032",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Read the module contract, not the code body",
+    "Write 3+ spec tests from the contract",
+    "Mutate one line, show the test fails, revert, report"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/bigcandle_story_2026-11-05/test_study_spec.py -q passes; same test fails on the mutated copy (named in the report)",
+  "title": "GPT spec tests: bigcandle_story study.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
