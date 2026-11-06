@@ -6,6 +6,16 @@
   "commands": [
     "python -m pytest MyTradingSys/tests/test_div_flags_chart.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:56:19Z",
+    "misses": 23,
+    "reads": [
+      "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py",
+      "MyTradingSys/backtest/layers/rsi/div_flags_chart.py"
+    ],
+    "session": "agent-ab864f632680b42ba"
+  },
   "created": "2026-11-04T07:15:00Z",
   "depends_on": [],
   "done_when": "MyTradingSys/tests/test_div_flags_chart.py verifies close-only pivot selection, 12-bar, 18-bar, and >18-bar WEAK classification in MyTradingSys/backtest/layers/rsi/div_flags_chart.py and exits 0. Window values are labelled OURS (HINDI_CONCEPTS.md: 18 NOT_IN_DATA).",
