@@ -13,7 +13,7 @@ Labels: SOURCED = quoted from an analyst row (`scripts/dev/analyst_levels.py`, C
 | 3 | Weekly floor | last completed weekly close >= 75,000 | SOURCED Krown 2026-11-05: "75,000 weekly close is his line in the sand" |
 | 4 | 5-day block anchor | blocks anchored 1970-01-01, close = last day of block | OURS (analyst anchor unstated) |
 | 5 | Weeks | Monday-Sunday UTC, close = Sunday close | OURS |
-| 6 | Bottom confirmed | inside window AND #2 AND #3 on completed bars only | OURS combination of SOURCED parts |
+| 6 | Bottom confirmed | #2 AND #3 on completed bars only, AND either inside the window, or after it (day > 2026-11-16) with no completed daily low since the peak under 57,800 (the July bottom stands) | OURS combination of SOURCED parts; 57,800 SOURCED BIBLE.md |
 | 7 | Entry | after confirmation, a day whose low is within 2 % above 80,450 (zone 80,450-82,059) and whose daily close is >= 80,450 | OURS (2 %) |
 | 8 | Stop | 1 % below the lowest low of the retest touch streak | OURS |
 | 9 | Leverage | 2x on testnet, operator may change | OURS |
@@ -25,4 +25,4 @@ Caveats
 - Not modelled: stop fills, funding, fees. The testnet run supplies them.
 - Today (2026-11-06 data): d397, -40.0 % from peak, price under the reclaim level: WAIT.
 
-Wiring: `scripts/dev/market_guide.py` prints the one-line flag in the market guide. MyTradingSys/tools/live_aid is not touched; a card asks the live-aid owner to show the same line there.
+Wiring: `scripts/dev/market_guide.py` prints the one-line flag in the market guide. `MyTradingSys/tools/live_aid` shows the same line (cycle_flag.js, refreshed by build_artifact.py).

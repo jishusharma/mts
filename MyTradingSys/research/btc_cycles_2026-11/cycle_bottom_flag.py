@@ -28,6 +28,9 @@ SOURCE_ROWS = {RECLAIM_5D: "2-day close above 80,350 needed; 3-day close above 7
 ZONE_PCT = 2.0
 STOP_BELOW_PCT = 1.0
 LEVERAGE = 2
+# SOURCED BIBLE.md (mts_bible, row 4 + "Breaks it"): the 2026-07-01 low 57,800 is the bottom unless a new low under 57,800 prints.
+# OURS: after the clock window the same 5d + weekly gates confirm only while no completed daily low since the peak is under it.
+BOTTOM_LOW = 57_800.0
 EXIT_LEVEL = RECLAIM_5D   # exit: weekly close back below the reclaimed level (OURS, card step 2)
 
 
@@ -64,8 +67,11 @@ def state(rows, asof):
     last_wk = None
     zone_top = RECLAIM_5D * (1 + ZONE_PCT / 100)
     streak_low = None
+    min_low = None
     for r in done:
         d = r["d"]
+        if d >= PEAK_DATE:
+            min_low = r["l"] if min_low is None else min(min_low, r["l"])
         if d in wk:
             last_wk = wk[d]
             if st["state"] == "CONFIRMED" and last_wk < EXIT_LEVEL:
