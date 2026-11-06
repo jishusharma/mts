@@ -69,13 +69,18 @@ def cycles(tf):
             dots.append((i, "T"))
     # cycle: valid bottom up-cross -> last valid top before the next bottom
     n_cyc, lens = 0, []
-    bots = [d for d in dots if d[1] == "B"]
-    for k, (bi, _) in enumerate(bots):
-        nxt = bots[k + 1][0] if k + 1 < len(bots) else None
-        tops = [d[0] for d in dots if d[1] == "T" and d[0] > bi and (nxt is None or d[0] < nxt)]
-        if tops:
-            n_cyc += 1
-            lens.append(tops[-1] - bi)
+    start, last_top = None, None   # one pass over dots in time order; a bottom closes the open cycle
+    for i, kind in dots:
+        if kind == "B":
+            if start is not None and last_top is not None:
+                n_cyc += 1
+                lens.append(last_top - start)
+            start, last_top = i, None
+        elif start is not None:
+            last_top = i
+    if start is not None and last_top is not None:
+        n_cyc += 1
+        lens.append(last_top - start)
     weeks = (DEV1 - DEV0) / 604800000
     return crosses, len(dots), n_cyc, n_cyc / weeks, (pd.Series(lens).median() if lens else None)
 
