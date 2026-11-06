@@ -1,0 +1,1 @@
+# BLOCKED: power gate 2026-11-06. n=195 event-days (435 events), m=224: MDE+cost 0.497 (4h) / 0.951 (24h) / 1.535 (72h) vs 0.30; n needed 970 / 5013 / 14829. See PRE_REG.md Resolution. No returns computed.
