@@ -236,34 +236,6 @@ def plan(login: str, week: float, five: float, reset: datetime, models: dict, no
             "read_utc": read_utc, "source": source}
 
 
-WEEK_CAPS = {"A": 95, "B": 75, "C": 85}   # OURS: standing weekly caps (supervisor.weekly_cap on JIS-NB for B/C; A is 95); last 24 h = 99
-WEEK_PLAN_REL = "MyTradingSys/system/WEEK_PLAN_{}.md"
-
-
-def weekplan_text(login: str, week: float, t0: datetime, reset: datetime, cap: float, now: datetime | None = None) -> str:
-    """The fixed week plan of one login: percentages only (no account data). Even spread from (t0, week) to `cap` at reset - 24 h,
-    then cap -> 99 in the last day (traffic.week_target). PARAMS is what `supervisor.py plan` reads each wake."""
-    import traffic
-    f = lambda t: traffic.week_target(t0, week, cap, reset, t)
-    L = [f"# Week plan login {login} (fixed; percentages only)", "",
-         f"PARAMS login={login} t0={fmt_utc(t0)} w0={week:g} cap={cap:g} reset={fmt_utc(reset)}", "",
-         f"Room {max(0.0, cap - week):g} pts under cap {cap:g} from week {week:g}%, spread to {fmt_utc(reset - timedelta(hours=traffic.LAST_DAY_H))}; "
-         f"the last {traffic.LAST_DAY_H} h run to {traffic.LAST_DAY_CAP}% (traffic.LAST_DAY_*). Behind this line by 5 pts or more: "
-         "`supervisor.py plan` prints WEEK PACE + SPAWN CATCHUP. In the exhaust window workers are capped so the 5 h burn stays under 95.",
-         "", "## Per day (target weekly % used at the end of the day)", "| Day end UTC | Target % |", "|---|---|"]
-    t = t0 + timedelta(hours=24)
-    while t < reset:
-        L.append(f"| {fmt_utc(t)} | {f(t):.1f} |")
-        t += timedelta(hours=24)
-    L += [f"| {fmt_utc(reset)} (reset) | {f(reset):.1f} |", "", "## Per 5 h window (target weekly % used at the window end, windows counted from t0)",
-          "| Window end UTC | Target % |", "|---|---|"]
-    t = t0 + timedelta(hours=5)
-    while t < reset:
-        L.append(f"| {fmt_utc(t)} | {f(t):.1f} |")
-        t += timedelta(hours=5)
-    return "\n".join(L) + "\n"
-
-
 def holder(login: str, claims) -> str:
     """Who holds the exhaust claim of `login` ('' = free): one actor per login, others carry on with their own task."""
     slug = f"exhaust-login-{login.lower()}"
@@ -287,7 +259,7 @@ def start(login: str) -> int:
 
 def main(argv=None, now: datetime | None = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["plan", "start", "radar", "weekplan"])
+    ap.add_argument("cmd", choices=["plan", "start", "radar"])
     ap.add_argument("--login", required=False, default="A", choices=["A", "B", "C"])
     ap.add_argument("--week", type=float, default=0)
     ap.add_argument("--five", type=float, default=0)
@@ -295,7 +267,6 @@ def main(argv=None, now: datetime | None = None) -> int:
     ap.add_argument("--read", default="", help="UTC time of the get_usage call the numbers come from; older than %d min is refused" % READ_MAX_MIN)
     ap.add_argument("--model", action="append", default=[], help="name=percent used")
     ap.add_argument("--json", action="store_true", help="Emit JSON for radar")
-    ap.add_argument("--cap", type=float, default=None, help="weekplan: weekly cap pct (default A 95, B 75, C 85)")
     a = ap.parse_args(argv)
     if a.cmd == "radar":
         import mts_signal
@@ -314,21 +285,6 @@ def main(argv=None, now: datetime | None = None) -> int:
         return 0
     if a.cmd == "start":
         return start(a.login)
-    if a.cmd == "weekplan":
-        try:
-            reset = parse_utc(a.reset)
-        except ValueError:
-            print("BAD --reset: want the weekly resetsAt in UTC, e.g. 2026-11-13T09:00Z", file=sys.stderr)
-            return 2
-        t0 = (now or datetime.now(timezone.utc)).replace(second=0, microsecond=0)
-        if reset <= t0:
-            print("BAD --reset: already past", file=sys.stderr)
-            return 2
-        txt = weekplan_text(a.login, a.week, t0, reset, a.cap if a.cap is not None else WEEK_CAPS[a.login], t0)
-        out = Path(__file__).resolve().parents[2] / WEEK_PLAN_REL.format(a.login)
-        out.write_text(txt, encoding="utf-8", newline="\n")
-        print(f"WROTE {WEEK_PLAN_REL.format(a.login)} ({txt.count(chr(10))} lines); ship it so every supervisor of login {a.login} reads it")
-        return 0
     now = now or datetime.now(timezone.utc)
     read_utc, source = "unstated", "unstated"
     if a.read:

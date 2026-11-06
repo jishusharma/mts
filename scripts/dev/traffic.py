@@ -424,22 +424,6 @@ def five_ceiling(h_to_reset=None):
     return EXHAUST_CEIL if h_to_reset is not None and 0 < h_to_reset <= EXHAUST_H else SPAWN_CEIL
 
 
-def week_target(t0, w0, cap, reset, now):
-    """Weekly % a login should have used at `now` on its fixed week plan (WEEK_PLAN_<L>.md): even spread from the plan's start
-    (t0, w0) to `cap` at reset - LAST_DAY_H, then cap -> LAST_DAY_CAP over the last day (pure; datetimes are UTC)."""
-    last = reset - timedelta(hours=LAST_DAY_H)
-    if now >= reset:
-        return float(LAST_DAY_CAP)
-    if now <= t0:
-        return float(w0)
-    if t0 >= last:      # the plan starts inside the last day: straight to the last-day cap
-        return w0 + (LAST_DAY_CAP - w0) * (now - t0) / (reset - t0)
-    c = max(cap, w0)
-    if now >= last:
-        return c + (LAST_DAY_CAP - c) * (now - last) / (reset - last)
-    return w0 + (c - w0) * (now - t0) / (last - t0)
-
-
 def budgets_from_signals(sigs):
     """Latest `BUDGET login=A 5h=42% week=30%` line per login (sent by each session at boot, TC3)."""
     out = {}
