@@ -4,6 +4,13 @@
   "commands": [
     "python -c \"import pathlib; assert 'VERDICT:' in pathlib.Path('MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md').read_text()\""
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:50:46Z",
+    "misses": 24,
+    "reads": [],
+    "session": "agent-adfb62c99c74845f1"
+  },
   "created": "2026-11-05T06:07:18Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/layer_lab/REREVIEW_WT_BIBLE_1105.md has one row per old defect 1-8 with line evidence and ends with VERDICT: ACCEPT or FIX-FIRST.",
