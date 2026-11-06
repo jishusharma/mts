@@ -22,6 +22,12 @@ Started 2026-11-06 at the operator's request ("keep this in your Bible"). Purpos
 | Bottom 2022 | 17,622 (2022-06-18) | 15,476 (2022-11-21) | 5 months | second low LOWER, and it was the bottom |
 | Bottom 2026 | 60,000 (2026-02-06) | 57,800 (2026-07-01) | 5 months | second low lower: same shape as 2022 |
 
+### Patterns reading 2026-11-07 (pattern book, research/pattern_book_2026-11/)
+- The detector (ATR zigzag, log geometry) finds five of the six turns above as double tops/bottoms on the daily history: 2021 top, 2025 top, 2018-19, 2022 (second low lower) and 2026 bottoms. The 2015 pair (172 / 211) is 20 % apart and is not a double bottom by the detector's 15 % cap; the detector instead reads 216 (2015-04-15) / 211 (2015-08-25). So five of the six turns are textbook double tops/bottoms; the 2015 one is a looser "second low higher" shape.
+- Bulkowski's published rates (US stocks, bull market): double bottom 13 % fail, +43 % average, 70 % meets target; double top 22 % fail, -15.5 %, 54 % meets. The 2026 double bottom (neckline 82,850, target 107,900) was confirmed in September; price is back 8 % below the neckline, the throwback branch where 35 % keep falling (throwbacks.html). Breaks it: a weekly close under 60,000 (as above).
+- Conflict to hold: the weekly double bottom is bullish while the daily head-and-shoulders top (head 87,396, neckline broken 10-24) is bearish. Both sit in one 4h/1h range, 75,400 to 80,900; the first close outside it picks which pattern is tested.
+- Candles on BTC: the next candle after the textbook shapes is a coin flip (1d, n 20-100 per shape), as the earlier DEV test found; candles stay context, not triggers.
+
 ## 3. Reading of 2026-11-06 (Lead C): two clocks disagree
 - The depth/shape clock says the bottom is in: 57,800 on 2026-07-01 (2022 shape, shrinking drops; price 75,800 on 11-06, +31 %).
 - The cycle clock says the bottom is due now: peak-to-bottom 363-406 days puts it 2026-10-04 .. 11-16; a July low sits 654 days before the halving vs 513-541 before.
