@@ -2,6 +2,19 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-11-06T19:26:39Z",
+    "misses": 5,
+    "reads": [
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/candle_patterns_2026-10-04/CANDLE_PATTERNS_RESEARCH_2026-10-04.md",
+      "MyTradingSys/tools/live_aid/tf_strip.js",
+      "MyTradingSys/research/btc_cycles_2026-11/test_cycle_bottom_flag.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "0dde8aa3-7569-4097-9717-f58bb1b94ac9"
+  },
   "created": "2026-11-06T14:16:56Z",
   "depends_on": [],
   "done_when": "live_aid.html shows a trendline cell per timeframe row and liquidation rungs on the ladder; tf_strip.js has pure functions for both with spec tests on hand-computed numbers that fail with the functions absent; REQUIREMENTS.md gains R20; ships with --wait-ci.",
