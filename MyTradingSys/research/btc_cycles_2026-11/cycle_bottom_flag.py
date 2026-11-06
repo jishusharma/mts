@@ -79,7 +79,8 @@ def state(rows, asof):
             elif st["state"] == "IN" and last_wk < EXIT_LEVEL:
                 st.update(state="WAIT", exit_day=d, prev_entry_day=st["entry_day"], entry_day=None, entry=None,
                           stop=None, confirmed_on=None)  # re-armed: a new confirmation is needed
-        if st["state"] == "WAIT" and d in b5 and b5[d] > RECLAIM_5D and WINDOW[0] <= d <= WINDOW[1] \
+        if st["state"] == "WAIT" and d in b5 and b5[d] > RECLAIM_5D \
+                and (WINDOW[0] <= d <= WINDOW[1] or (d > WINDOW[1] and min_low is not None and min_low >= BOTTOM_LOW)) \
                 and last_wk is not None and last_wk >= WEEKLY_FLOOR:
             st.update(state="CONFIRMED", confirmed_on=d)
             streak_low = None
