@@ -12,6 +12,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import habib_common as hc  # noqa: E402
 import calls_score as cs  # noqa: E402
+import habib_watch as hw  # noqa: E402
 
 M = 60_000
 
@@ -88,6 +89,44 @@ class TestShippedNumbers(unittest.TestCase):
         for r in csv.DictReader(open(HERE / "CALLS_SCORED.csv", encoding="utf-8")):
             vid, suffix = r["call_id"][4:-3], r["call_id"][-2:]
             self.assertTrue(any(l.startswith("| `") and vid[:3] in l.split("|")[1] and "-" + suffix in l.split("|")[1] for l in lines), r["call_id"])
+
+
+class TestWatch(unittest.TestCase):
+    DAY = 86_400_000
+
+    def _flat(self, tf, n, end_ms, vol=10.0):
+        step = hc.TF_MS[tf]
+        return [[end_ms - (n - i) * step, 100.0, 101.0, 99.0, 100.5, vol] for i in range(n)]
+
+    def test_only_the_spiking_closed_candle_is_listed_and_read_as_large_body(self):
+        now = 10 * self.DAY + 5 * M
+        rows = {"1h": self._flat("1h", 80, now - 5 * M), "4h": self._flat("4h", 80, now - 5 * M), "1d": self._flat("1d", 80, now - 5 * M)}
+        # last closed 1h candle: volume 5x the median, body 9 of range 11 = 82 %
+        i = len(rows["1h"]) - 1
+        o = rows["1h"][i][0]
+        rows["1h"][i] = [o, 100.0, 110.0, 99.0, 109.0, 50.0]
+        bars = [[self.DAY * 8 + j * M, 100.0, 101.0, 99.0, 100.0, 1.0] for j in range(2 * 1440)]   # two full days of 1m bars
+        lines = hw.candidates(rows, bars, now)
+        self.assertEqual(len(lines), 1)
+        self.assertTrue(lines[0].startswith("1h "))
+        self.assertIn("large", lines[0])
+        self.assertIn("rv  5.0", lines[0])              # 50 / median 10 = 5.0
+
+    def test_no_candidates_when_volume_is_flat(self):
+        now = 10 * self.DAY + 5 * M
+        rows = {tf: self._flat(tf, 80, now - 5 * M) for tf in ("1h", "4h", "1d")}
+        self.assertEqual(hw.candidates(rows, [], now), [])
+
+    def test_forming_candle_is_never_listed(self):
+        now = 10 * self.DAY + 30 * M                     # half way into a 1h candle that opened at 10 d
+        rows = {tf: self._flat(tf, 80, 10 * self.DAY) for tf in ("1h", "4h", "1d")}
+        rows["1h"].append([10 * self.DAY, 100.0, 120.0, 99.0, 119.0, 500.0])   # forming candle with a huge volume
+        self.assertEqual(hw.candidates(rows, [], now), [])
+
+    def test_level_hit_names_the_prior_day_poc_by_candle_open(self):
+        c = [0, 76000.0, 76400.0, 75800.0, 76100.0, 1.0]
+        hits = hw.level_hits(c, {"Prior POC": 76000.0, "Prior day high": 81000.0})
+        self.assertEqual(hits, [("Prior POC", 76000.0, "open")])
 
 
 if __name__ == "__main__":

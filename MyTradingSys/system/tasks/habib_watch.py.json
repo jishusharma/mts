@@ -1,34 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "claim": "",
+  "closed": "2026-11-06T20:21:05Z",
+  "commands": [
+    "python MyTradingSys/research/habib_concept_book_2026-11/test_habib_concept_book.py"
+  ],
   "created": "2026-11-06T19:56:23Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/habib_concept_book_2026-11/habib_watch.py prints one line per candidate and test_habib_concept_book.py passes; LADDER_PROPOSAL.md in the same folder",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Daily Habib watch script (habib_watch.py) listing candidate imbalance candles on BTCUSDT 1h/4h/1d at known levels, plus the range-ladder proposal for the operator",
   "id": "habib_watch.py",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "habib_watch.py lists candidate imbalance candles on 1h/4h/1d with body class and known lev",
+      "ref": "ad4619326",
+      "utc": "2026-11-06T20:21:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "calls_score.py: take the fee from backtest/fees.py (no own cost constants)",
+      "ref": "ad4619326a1e",
+      "utc": "2026-11-06T20:14:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "next": "END: concept book + calls scored; ladder awaits the operator",
+  "note": "Steps 3-4 of the Habib concept book session 2026-11-07.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-06T20:21:01Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "habib_watch.py lists candidate imbalance candles on 1h/4h/1d with body class and known level; LADDER_PROPOSAL.md written for the operator",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/habib_concept_book_2026-11/"
+  ],
+  "scope_out": [
+    "any backtest, any order, any live-path file"
+  ],
+  "scope_sha": "ad4619326a1e",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/tools/live_aid/tf_strip.js"
+  ],
+  "state": "done",
+  "steps": [
+    "write habib_watch.py and its spec test",
+    "write LADDER_PROPOSAL.md"
+  ],
+  "taken": "2026-11-06T20:21:04Z",
+  "tests": "python MyTradingSys/research/habib_concept_book_2026-11/test_habib_concept_book.py",
   "title": "Habib daily watch script and range-ladder proposal (steps 3-4 of the Habib concept book)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
