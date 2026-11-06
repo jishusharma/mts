@@ -420,3 +420,5 @@ MyTradingSys/research/wt_bible_studies_2026-11-04/wt_cycle_clock/study.py	fwd-in
 MyTradingSys/research/wt_bible_studies_2026-11-04/wt_cycle_clock/study.py	fwd-index	lab = f"{EDGES[ai]:g}-{EDGES[ai+1]:g}" if EDGES[ai + 1] < 1e8 else f">{EDGES[ai]:g}"	indexes the age-bin EDGES array for the label, not a bar series
 =======
 >>>>>>> parent of bf063601b... WT30 div short: cap event window at c, allowlist reviewed fwd-index hits
+MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py	pivot-right-neighbour	self.swh = [k for k in range(1, len(hs) - 1) if hh[k] > hh[k - 1] and hh[k] > hh[k + 1]]	SAFE: 1h swing level is usable only 3 h after its hour opens (swing() requires hs+3h <= break bar), so the right neighbour is already closed; reviewed PRE_REG s9
+MyTradingSys/research/pre_us_failed_break_2026-10/run_dev.py	pivot-right-neighbour	self.swl = [k for k in range(1, len(hs) - 1) if hl[k] < hl[k - 1] and hl[k] < hl[k + 1]]	SAFE: 1h swing level is usable only 3 h after its hour opens (swing() requires hs+3h <= break bar), so the right neighbour is already closed; reviewed PRE_REG s9
