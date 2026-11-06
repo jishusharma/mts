@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:54:37Z",
   "commands": [
     "python scripts/dev/verdicts.py check \"sweep low win-back\""
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "BLOCKED by power gate: 195 event-days (435 events) vs 970-14829 needed, m=224; no returns ",
+      "ref": "2040748e1",
+      "utc": "2026-11-06T12:54:37Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py::test_f1_prior_day_levels",
+  "next": "END: underpowered on BTC 1h alone",
   "note": "OPERATOR QUOTE: there was such a fall, and in 3 hours the market recovered ... it took out all the lows. Thresholds 5d/50%/3h are OURS. Refined by planner-refine-1104.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T10:27:40Z",
   "refs": [],
-  "result": "",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)",
+  "result": "BLOCKED by power gate: 195 event-days (435 events) vs 970-14829 needed, m=224; no returns computed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/v_recovery_low_sweep_2026-11-04",
     "MyTradingSys/backtest/research_kit.py"
@@ -53,15 +67,15 @@
   "sources": [
     "OPERATOR QUOTE in note (OURS thresholds: 5 days, 50%, 3h)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write PRE_REG.md (run verdicts.py check and prereg_gate.py first; include ## Context and Regime mix:)",
     "Detect events on BTC 1h klines: price below the prior 5-day low, then >=50% win-back within 3h, no look-ahead",
     "DEV pass, VAL on survivors; RESULT.md and the sim_desk export"
   ],
+  "taken": "2026-11-06T12:54:37Z",
   "tests": "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/test_study.py: new case fails if the win-back window or the 5-day low uses a future bar",
   "title": "Event study: BTC sweeps the 5-day low then wins back >=50% of the fall within 3h; forward 4h/24h/72h returns by timeframe, fee-net, DEV/VAL split; done when the live feed Market tab can show 'what this usually led to' with n and CI",
   "weight": "",
-  "worker": "session",
-  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
+  "worker": "session"
 }
