@@ -26,6 +26,7 @@ import socket
 import subprocess
 import sys
 import time
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -706,19 +707,22 @@ def wait_for_transition(
     if reset_at and reset_at > clock() + timedelta(seconds=timeout_s):
         reset_at = None     # the timeout wakes the session first; its next watcher catches the reset
     marker = _watcher_file(login, home)
+    token = uuid.uuid4().hex
     try:
         marker.parent.mkdir(parents=True, exist_ok=True)
         exp = clock() + timedelta(seconds=timeout_s + 120)
-        marker.write_text(json.dumps({"pid": os.getpid(), "expires": exp.strftime("%Y-%m-%dT%H:%MZ"), "out": _stdout_path()}),
+        marker.write_text(json.dumps({"pid": os.getpid(), "token": token, "expires": exp.strftime("%Y-%m-%dT%H:%MZ"), "out": _stdout_path()}),
                           encoding="utf-8", newline=chr(10))
     except OSError:
         pass
     try:
         return _wait_loop(repo, shas, timeout_s, interval, probe, fetcher, sleeper, login, home, reset_at, clock)
     finally:
-        try:
-            marker.unlink()
-        except OSError:
+        try:     # unlink only our own marker: a newer watcher (other pid/token) may have rewritten it
+            d = json.loads(marker.read_text(encoding="utf-8"))
+            if d.get("pid") == os.getpid() and d.get("token") == token:
+                marker.unlink()
+        except (OSError, ValueError, AttributeError):
             pass
 
 

@@ -276,6 +276,28 @@ def test_wait_timeout_exits_3(tmp_path):
     assert sum(sleeps) >= 600
 
 
+def test_wait_exit_keeps_a_marker_rewritten_by_another_watcher(tmp_path):
+    """A newer watcher (other pid, or same pid other token) rewrote the marker: our exit must not unlink it."""
+    steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
+    marker = S._watcher_file("A", tmp_path)
+
+    def foreign_probe(repo, shas):
+        marker.write_text(json.dumps({"pid": os.getpid() + 1, "token": "other", "expires": "2999-01-01T00:00Z", "out": ""}),
+                          encoding="utf-8")
+        return steady
+
+    S.wait_for_transition(repo=tmp_path, shas=[], timeout=300, interval=300, probe=foreign_probe, login="A", home=tmp_path,
+                          fetcher=lambda repo: None, sleeper=lambda s: None)
+    assert marker.exists() and json.loads(marker.read_text(encoding="utf-8"))["token"] == "other"
+
+
+def test_wait_exit_removes_its_own_marker(tmp_path):
+    steady = {"shas": {}, "ci_red": False, "busy_slots": 0}
+    S.wait_for_transition(repo=tmp_path, shas=[], timeout=300, interval=300, probe=lambda repo, shas: steady, login="A",
+                          home=tmp_path, fetcher=lambda repo: None, sleeper=lambda s: None)
+    assert not S._watcher_file("A", tmp_path).exists()
+
+
 def _fake_cards(n=12):
     return [{"id": f"card-{i:02d}", "title": "t", "lane": "SONNET", "state": "ready", "prio": 3, "created": f"2026-10-1{i % 9}"}
             for i in range(n)]
