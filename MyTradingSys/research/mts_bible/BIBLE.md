@@ -42,3 +42,17 @@ Started 2026-11-06 at the operator's request ("keep this in your Bible"). Purpos
 - Chart patterns (Bulkowski success rates, Edwards & Magee, Nison candles, Lo-Mamaysky-Wang detection): pattern book, drawn on BTC across timeframes, checked by the operator's eye.
 - Habib imbalance concept book: his formula, his checks across exchanges, the three-part setup, linked to his calls.
 - Moving averages across timeframes (Krown 21/55/200, 200 SMA vs 200 EMA, distance from the averages, 20 MA pullbacks on low timeframes): one state per timeframe, like the candle-flip strip.
+
+## 5. Reading of 2026-11-07 (Lead C session ma-layer): the MA clock (data: research/ma_layer_2026-11/CYCLE_MA_CLOCK.md, daily closes from btc_daily.csv)
+| Moment | Low | vs 200-day SMA | vs 200-week SMA | vs monthly 20 SMA |
+|---|---|---|---|---|
+| Bottom 2015-01-15 | 172 | -60 % | -11 % | -60 % |
+| Bottom 2018-12-15 | 3,156 | -50 % | -1 % | -52 % |
+| Bottom 2022-11-21 | 15,476 | -31 % | -36 % | -58 % |
+| Bottom 2026-07-01 | 57,800 | -23 % | -8 % | -35 % |
+| Now 2026-11-06 (close 75,772) | 74,888 | +3 % (close; 200d = 73,242) | +11 % (200w = 67,765) | -14 % (20m = 86,634) |
+- The 200-week SMA sat within 1-11 % of the low at three of four bottoms (2015, 2018, 2026-07) and 36 % above the low in 2022 (the low printed far below it, as Krown says: 2022 "traded below it for a short time"; here it was months). So it is a floor zone, not a floor: n = 4, anecdote.
+- Bottoms printed 23-60 % under the 200-day SMA and 35-60 % under the monthly 20 SMA; the 2026 drop is the shallowest of the four on both, same shrinking-drops story as section 1.
+- Now: price is back above the 200-day (+3 %) and 11 % above the 200-week (67.8k), still 14 % under the monthly 20 SMA (86.6k, close to the 87.2k CryptoQuant quoted for October). The MA clock agrees with the depth clock: the July low sat 8 % below the 200-week, price has since moved above it. It has not yet reclaimed the monthly 20, which is the last line the bull-phase rule (web: NewsBTC, CryptoQuant) uses.
+- Confirms "July was the bottom": weekly closes stay above the 200-week SMA (about 67.8k, rising) and price holds the 200-day; later a monthly close above the monthly 20 SMA. Breaks it: a weekly close below the 200-week SMA, or a daily loss of the 200-day with the 200-day sloping down.
+- Live view: the MA strip on the live aid (tools/live_aid/ma_strip.js) shows these distances for 5m to 1M; definitions in research/ma_layer_2026-11/MA_CONCEPTS.md.

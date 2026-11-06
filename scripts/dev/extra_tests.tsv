@@ -240,3 +240,4 @@ scripts/dev/test_ship_train.py
 scripts/dev/test_sync_route_tag.py
 MyTradingSys/tools/live_aid/test_spec_cycle_flag.py
 scripts/dev/test_tasks_next_tag.py
+MyTradingSys/research/ma_layer_2026-11/test_spec_ma_state.py
