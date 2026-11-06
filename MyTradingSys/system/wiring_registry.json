@@ -1001,6 +1001,18 @@
     "scripts/tools/divergence_monitor.py": {
       "disp": "TOOL",
       "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
+    },
+    "MyTradingSys/backtest/layers/fabio/rescore.py": {
+      "disp": "TOOL",
+      "why": "Fee-net R maths (fees.py costs) for the fee/stop re-score, card fee-stop-rescore-fabio-habib-1106; used by rescore_fabio.py, rescore_habib.py and test_rescore.py."
+    },
+    "MyTradingSys/backtest/layers/fabio/rescore_fabio.py": {
+      "disp": "REPRO",
+      "why": "Re-score driver for fabio_of 09-30 with plan stops; run by hand, writes RESCORE.md figures (card fee-stop-rescore-fabio-habib-1106)."
+    },
+    "MyTradingSys/research/imbalance_qriptal_2026-10-16/rescore_habib.py": {
+      "disp": "REPRO",
+      "why": "Re-score driver for the Habib imbalance fade with plan stops; run by hand, writes RESCORE_tables.json (card fee-stop-rescore-fabio-habib-1106)."
     }
   }
 }
