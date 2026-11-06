@@ -319,8 +319,8 @@ def summarize(eps, bh_mdd):
     maes = np.array([e["mae_pct"] for e in eps])
     mdd = mdd_pct_of_k([e["net_bps"] for e in sorted(eps, key=lambda x: x["e"])])
     cap_loss = -cap_sum
-    ok_n, ok_mean, ok_t = n >= N_MIN, mean > 0, (t >= T_MIN)
-    ok_cap, ok_mdd = cap_loss < tgt_sum, mdd <= bh_mdd
+    ok_n, ok_mean, ok_t = bool(n >= N_MIN), bool(mean > 0), bool(t >= T_MIN)
+    ok_cap, ok_mdd = bool(cap_loss < tgt_sum), bool(mdd <= bh_mdd)
     verdict = "INCONCLUSIVE" if not ok_n else ("PASS" if (ok_mean and ok_t and ok_cap and ok_mdd) else "FAIL")
     out.update({"mean_bps": mean, "sd_bps": sd, "se_bps": float(se), "t": float(t), "gross_mean_bps": float(np.mean([e["gross_bps"] for e in eps])),
                 "cost_mean_bps": float(np.mean([e["cost_bps"] for e in eps])), "fund_mean_bps": float(np.mean([e["fund_bps"] for e in eps])),

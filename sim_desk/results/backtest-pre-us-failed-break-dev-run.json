@@ -1,0 +1,138 @@
+{
+  "cells": {
+    "primary_07-13": {
+      "bh_mdd_pct": 67.8000955486779,
+      "by_level": {
+        "ASH": {
+          "mean_bps": 0.4075698323535549,
+          "n": 116
+        },
+        "PDH": {
+          "mean_bps": -1.832390305679741,
+          "n": 105
+        },
+        "SWH": {
+          "mean_bps": 4.388738901498743,
+          "n": 14
+        }
+      },
+      "cap_days": 206,
+      "cap_sum_bps": -1518.5609594604928,
+      "cost_mean_bps": 5.640425531914894,
+      "episode_regime": {
+        "bull": {
+          "mean_bps": -16.462430292982287,
+          "n": 40
+        },
+        "range": {
+          "mean_bps": 2.94777781947135,
+          "n": 195
+        }
+      },
+      "fund_mean_bps": -0.09950000000000295,
+      "gross_mean_bps": 5.1848381407558355,
+      "mae_pct_q": {
+        "50": 0.10706142934701607,
+        "75": 0.41024254906337304,
+        "90": 0.920638591948331,
+        "95": 1.4264453808462731,
+        "99": 2.6233353698207145,
+        "100": 5.489128608581583
+      },
+      "mdd_pct_of_k": 13.207106562526157,
+      "mean_bps": -0.3560873911590558,
+      "mean_loser_bps": -42.78778368174099,
+      "mean_winner_bps": 25.509809662688838,
+      "n": 235,
+      "pass_parts": {
+        "cap_loss<target_gain": false,
+        "mdd<=bh_mdd": true,
+        "mean>0": false,
+        "n>=250": false,
+        "t>=2": false
+      },
+      "sd_bps": 62.60021889477129,
+      "se_bps": 4.083588016434984,
+      "signal_days": 235,
+      "signals": 322,
+      "skipped": 0,
+      "t": -0.0871996366249316,
+      "target_days": 29,
+      "target_sum_bps": 1434.8804225381148,
+      "verdict": "INCONCLUSIVE",
+      "win_rate": 0.6212765957446809
+    },
+    "variant_07-12": {
+      "bh_mdd_pct": 67.8000955486779,
+      "by_level": {
+        "ASH": {
+          "mean_bps": -3.0487131032301864,
+          "n": 85
+        },
+        "PDH": {
+          "mean_bps": -2.2002020685127373,
+          "n": 93
+        },
+        "SWH": {
+          "mean_bps": -7.755878950604424,
+          "n": 10
+        }
+      },
+      "cap_days": 173,
+      "cap_sum_bps": -1075.6399702876074,
+      "cost_mean_bps": 5.449468085106383,
+      "episode_regime": {
+        "bull": {
+          "mean_bps": -22.733584592189658,
+          "n": 32
+        },
+        "range": {
+          "mean_bps": 1.1933109698575277,
+          "n": 156
+        }
+      },
+      "fund_mean_bps": -0.1243750000000037,
+      "gross_mean_bps": 2.4457409805728973,
+      "mae_pct_q": {
+        "50": 0.09692168509317474,
+        "75": 0.32769421312151437,
+        "90": 0.8355508349664225,
+        "95": 1.4116112780779422,
+        "99": 2.393450914956378,
+        "100": 2.7426779624735245
+      },
+      "mdd_pct_of_k": 11.485923970403682,
+      "mean_bps": -2.879352104533482,
+      "mean_loser_bps": -29.61628782999172,
+      "mean_winner_bps": 20.649151333869767,
+      "n": 188,
+      "pass_parts": {
+        "cap_loss<target_gain": false,
+        "mdd<=bh_mdd": true,
+        "mean>0": false,
+        "n>=250": false,
+        "t>=2": false
+      },
+      "sd_bps": 45.181480870720826,
+      "se_bps": 3.2951981615349895,
+      "signal_days": 188,
+      "signals": 246,
+      "skipped": 0,
+      "t": -0.8738024129001711,
+      "target_days": 15,
+      "target_sum_bps": 534.3217746353127,
+      "verdict": "INCONCLUSIVE",
+      "win_rate": 0.5319148936170213
+    }
+  },
+  "fee_regime": "Binance taker 5+2 bps in, maker 2 out; cap taker 5+2",
+  "holdout_rows_scored": 0,
+  "mean_net_bps_of_k": -0.3560873911590558,
+  "n": 235,
+  "regime_mix_weeks": "130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)",
+  "report": "MyTradingSys/research/pre_us_failed_break_2026-10/RESULT.md",
+  "split_scored": "DEV",
+  "study": "backtest-pre-us-failed-break-dev-run",
+  "t": -0.0871996366249316,
+  "verdict": "INCONCLUSIVE"
+}
