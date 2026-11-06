@@ -96,6 +96,10 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 .bbt { display: inline-block; position: relative; width: 70px; height: 8px; background: var(--line); border-radius: 4px; vertical-align: middle; margin-right: 6px; }
 .bbt i { position: absolute; top: -3px; width: 4px; height: 14px; background: var(--fg); border-radius: 2px; margin-left: -2px; }
 .tfal { font: 600 15px var(--sans); }
+.mas { margin-top: 14px; } .mas table { font-size: 14px; } .mas td { padding: 4px 6px; white-space: nowrap; } .mas td.tfn { font-weight: 600; }
+.mas .sl { color: var(--dim); font-size: 12px; margin-left: 3px; }
+.mab { display: inline-block; position: relative; width: 110px; height: 8px; background: var(--line); border-radius: 2px; vertical-align: middle; } .mab i { position: absolute; top: 0; height: 100%; } .mab i.up { background: var(--up); } .mab i.down { background: var(--down); } .mab u { position: absolute; left: 50%; top: -2px; width: 1px; height: 12px; background: var(--dim); }
+.mk { font: 700 11px var(--sans); padding: 1px 5px; border-radius: 3px; margin-right: 4px; border: 1px solid var(--dim); color: var(--dim); } .mk.up { border-color: var(--up); color: var(--up); } .mk.down { border-color: var(--down); color: var(--down); } .mk.fresh { background: var(--amber); border-color: var(--amber); color: var(--bg); }
 .lvl td.nm { text-align: left; font-family: var(--sans); }
 @media (max-width: 560px) {
   .huge { font-size: 34px; } .big { font-size: 24px; }
@@ -113,6 +117,12 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <div class="tfs">
       <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
       <div class="scroll"><table class="lvl"><thead><tr><th>Level</th><th>Price</th><th>From price</th></tr></thead><tbody id="tfs-lv"></tbody></table><span class="err" id="tfs-err"></span></div>
+    </div>
+    <!-- MA strip: price vs the 21/55 EMA, 200 SMA and 200 EMA per timeframe; pure functions in ma_strip.js, definition in research/ma_layer_2026-11/MA_CONCEPTS.md -->
+    <div class="mas" id="p-mas">
+      <div class="hd"><h2>Moving averages</h2><span class="src" title="Per timeframe: price above (green triangle up) or below (red triangle down) each average with the percent distance and the slope arrow (flat = moved less than 0.5 ATR14 in 5 bars: OURS). Bar = how far price sits from the 21 EMA in ATR14, centre = on the line, full = 6 ATR or more (OURS). Marks: PULLBACK / RALLY = uptrend (21 above 55, 55 rising) and the bar touched the 21 within 0.25 ATR while closing above the 55, or the mirror (touch tolerance OURS; structure from Krown KR-M05 and the 20 EMA pullback of the web canon); 21>55 or 21<55 with bars since the cross (amber = within 3 bars); golden or death = 50 SMA over or under the 200 SMA; IN BAND = price between the 20 SMA and the 21 EMA (the weekly bull-market support band). Lengths 21, 55, 200 are SOURCED (Krown); a dash = fewer bars than the average needs. Display only: gates nothing. Refresh 15 s for 5m and 15m, 60 s for 1h and 4h, 5 min for the rest.">DISPLAY ONLY</span><span class="age" id="age-mas">--</span></div>
+      <div class="scroll"><table><thead><tr><th>TF</th><th>21 EMA</th><th>55 EMA</th><th>200 SMA</th><th>200 EMA</th><th>From 21 (ATR)</th><th>Marks</th></tr></thead><tbody id="mas-rows"></tbody></table></div>
+      <span class="err" id="mas-err"></span>
     </div>
   </section>
 
@@ -325,6 +335,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="base_rates.js"></script>
 <script src="premarket_risk.js"></script>
 <script src="tf_strip.js"></script>
+<script src="ma_strip.js"></script>
 <script src="cycle_flag_data.js"></script>
 <script src="cycle_flag.js"></script>
 <script>
@@ -870,6 +881,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderTop();
     try { renderPremarket(now); } catch (e) { $('pm-sub').textContent = e.message; }
     try { renderTfs(now); } catch (e) { $("tfs-err").textContent = e.message; }
+    try { renderMa(now); } catch (e) { $('mas-err').textContent = e.message; }
     renderUsOpen(now);
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
@@ -1422,6 +1434,40 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var t = TF.t['1m']; $('age-tfs').textContent = t ? Math.round((now - t) / 1000) + 's' : '--';
   }
 
+  // ---------- MA strip (ma_strip.js; same spot feed as the timeframe strip, 1000 bars per timeframe so the 200s exist) ----------
+  var MA = { r: {}, t: {}, err: {} };
+  function loadMa(tfs) {
+    if (typeof MASTRIP === 'undefined') { MA.err.all = 'ma_strip.js not found next to this page'; return Promise.resolve(); }
+    return Promise.all(tfs.map(function (tf) {
+      return getJson(MASTRIP.BASE + '&interval=' + tf + '&limit=' + MASTRIP.LIMIT).then(function (r) { MA.r[tf] = MASTRIP.row(tf, r); MA.t[tf] = Date.now(); delete MA.err[tf]; },
+        function (e) { MA.err[tf] = msg(e); });
+    }));
+  }
+  function loadMaFast() { return loadMa(['5m', '15m']); }
+  function loadMaMid() { return loadMa(['1h', '4h']); }
+  function loadMaSlow() { return loadMa(['1d', '1w', '1M']); }
+  function renderMa(now) {
+    if (typeof MASTRIP === 'undefined') { $('mas-rows').innerHTML = '<tr><td colspan="7" class="dim">—</td></tr>'; $('mas-err').textContent = MA.err.all || 'ma_strip.js not found next to this page'; return; }
+    var SL = { up: '&#8599;', down: '&#8600;', flat: '&rarr;' }, H = [];
+    MASTRIP.TFS.forEach(function (tf) {
+      var v = MASTRIP.view(MA.r[tf]);
+      if (!v) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="6" class="dim">—' + (MA.err[tf] ? ' <span class="err">' + esc(MA.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
+      var cells = v.cells.map(function (c) {
+        return '<td class="num">' + (c.side ? '<b class="' + (c.side === 'above' ? 'up' : 'down') + '">' + c.sym + '</b> ' + c.pct + (c.slope ? '<span class="sl" title="slope ' + c.slope + '">' + SL[c.slope] + '</span>' : '') : '<span class="dim">—</span>') + '</td>';
+      }).join('');
+      var bar = v.bar ? '<span class="mab" title="' + (v.bar.atr > 0 ? '+' : '') + v.bar.atr.toFixed(1) + ' ATR from the 21 EMA"><u></u><i class="' + (v.bar.side === 'above' ? 'up' : 'down') + '" style="left:' + Math.min(50, v.bar.pos).toFixed(0) + '%;width:' + Math.abs(v.bar.pos - 50).toFixed(0) + '%"></i></span> <span class="dim">' + (v.bar.atr > 0 ? '+' : '') + v.bar.atr.toFixed(1) + '</span>' : '<span class="dim">—</span>';
+      var mk = (v.pullback ? '<span class="mk ' + (v.pullback.dir === 'up' ? 'up' : 'down') + '">' + (v.pullback.dir === 'up' ? 'PULLBACK' : 'RALLY') + '</span>' : '') +
+        (v.cross ? '<span class="mk ' + (v.cross.fresh ? 'fresh' : v.cross.dir === 'up' ? 'up' : 'down') + '" title="21 vs 55 EMA' + (v.cross.barsSince === null ? ', no cross in the window' : ', ' + v.cross.barsSince + ' bars since the cross') + '">' + v.cross.text + '</span>' : '') +
+        (v.gd ? '<span class="mk ' + (v.gd.dir === 'up' ? 'up' : 'down') + '" title="50 SMA vs 200 SMA">' + v.gd.text + '</span>' : '') +
+        (v.inBand ? '<span class="mk" title="price between the 20 SMA and the 21 EMA">IN BAND</span>' : '');
+      H.push('<tr><td class="tfn">' + tf + '</td>' + cells + '<td>' + bar + '</td><td>' + (mk || '<span class="dim">—</span>') + '</td></tr>');
+    });
+    $('mas-rows').innerHTML = H.join('');
+    var errs = Object.keys(MA.err).map(function (k) { return k + ': ' + MA.err[k]; });
+    $('mas-err').textContent = errs.length ? 'Feed problems: ' + errs.join('; ') : '';
+    var t = MA.t['5m']; $('age-mas').textContent = t ? Math.round((now - t) / 1000) + 's' : '--';
+  }
+
   // ---------- start ----------
   // Replay (?replay=fixture): the test injects window.LIVEAID_REPLAY (1m rows [openTime,o,h,l,c,volume]); no socket, fetch or news.
   // Layer 3 of system/ARTIFACT_TESTING.md; normal mode below is untouched.
@@ -1459,6 +1505,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   loadNews(); setInterval(loadNews, 15000);
   loadPremarket(); setInterval(loadPremarket, 120000);
   loadTfsFast(); setInterval(loadTfsFast, 15000); loadTfsSlow(); setInterval(loadTfsSlow, 60000);
+  loadMaFast(); setInterval(loadMaFast, 15000); loadMaMid(); setInterval(loadMaMid, 60000); loadMaSlow(); setInterval(loadMaSlow, 300000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);

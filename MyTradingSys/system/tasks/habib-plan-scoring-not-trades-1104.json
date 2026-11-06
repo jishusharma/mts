@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T19:53:41Z",
   "commands": [
     "python -m pytest MyTradingSys/research/habib_plan_imbalance_2026-10-20/test_plan_score.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Habib concept book + 9 priced plans scored on Binance klines: 1 full / 8 miss under the pr",
+      "ref": "50de57930",
+      "utc": "2026-11-06T19:53:41Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,20 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/research/pit_levels_2026-10-16/test_pit_leakage.py::test_f1_prior_day_levels",
+  "next": "live-aid-card-show-the-habib-daily-watch",
   "note": "DECISION (OURS): feed line on the live feed deferred to a follow-up after the result exists (CODEX lab builds research, not the feed). Operator quote kept. Refined by planner-refine-1104.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T15:47:50Z",
   "refs": [],
-  "result": "",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)",
+  "result": "Habib concept book + 9 priced plans scored on Binance klines: 1 full / 8 miss under the pre-reg 24h/7d rule; 7 of 9 entries reached in 7d, 2 hit target (descriptive)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/habib_plan_imbalance_2026-10-20/plan_score.py",
     "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PLAN_LEDGER.csv",
@@ -54,15 +68,15 @@
   "sources": [
     "MyTradingSys/research/habib_plan_imbalance_2026-10-20/PRE_REG_HABIB_PLANS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG_HABIB_PLANS.md and the existing plan_score.py; reuse them",
     "Score each ledger plan on DEV rows: direction right, sweep happened, target reached, with n and CI",
     "Write RESULT_PLAN_HIT_RATE.md and the sim_desk export; list the 9 sealed calls for the operator to unseal"
   ],
+  "taken": "2026-11-06T19:53:41Z",
   "tests": "MyTradingSys/research/habib_plan_imbalance_2026-10-20/test_plan_score.py plus new case test_holdout_rows_never_scored (fails on pre-change code: holdout row scored or n/CI missing)",
   "title": "Score Habib's Discord plans (sweep, push, target reached) not his trades, over the 96 logged posts; ask operator to unseal the 9 holdout plan calls; done when the live feed shows his plan hit rate with n",
   "weight": "",
-  "worker": "session",
-  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
+  "worker": "session"
 }
