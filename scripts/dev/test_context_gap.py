@@ -102,12 +102,25 @@ def test_fold_writes_trunk_reads_only_into_the_card_and_commits_it(tmp_path):
     card = json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))
     assert card["context"]["reads"] == ["scripts/dev/desk.py", "scripts/dev/lease.py"]   # most-read first; named, off-trunk, scratchpad, post-edit dropped
     assert card["context"]["calls_to_edit"] == 6 and card["context"]["folded"] == "2026-10-25T00:00:00Z"
-    assert _git(root, "status", "--short").strip() == "" and "fold context into card card-a" in _git(root, "log", "-1", "--format=%B")
+    assert "card-a.json" in _git(root, "status", "--short") and "fold context" not in _git(root, "log", "--format=%B")   # HEAD is on trunk: left dirty, no fold commit
     assert "Builder" not in json.dumps(card)   # paths only, never transcript text
     # O3 CUT1: a second fold of the identical transcript writes nothing new -> skipped, no new commit
     assert G.fold(tp, str(root), now=SINCE)[0] == "skipped"
     assert len(json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))["context"]["reads"]) == 2
-    assert _git(root, "log", "--oneline").count("fold context") == 1   # only the first fold committed
+    assert _git(root, "log", "--oneline").count("fold context") == 0   # the fold never commits on its own
+
+
+def test_fold_commit_not_shipped(tmp_path):
+    """A fold on top of real work must not add a fold-only commit: the card rides inside the real (unpushed) commit."""
+    root = fold_repo(tmp_path)
+    (root / "scripts/dev/named.py").write_text("x=2" + chr(10), encoding="utf-8")
+    _git(root, "commit", "-q", "-am", "real work")
+    tp = fold_transcript(tmp_path / "s.jsonl", root)
+    assert G.fold(tp, str(root), now=SINCE) == ("folded", "card-a")
+    pushed = _git(root, "log", "--format=%s", "origin/fast-track..HEAD").split(chr(10))
+    assert [x for x in pushed if x] == ["real work"]   # no fold-only commit in the pushed range
+    assert "MyTradingSys/system/tasks/card-a.json" in _git(root, "show", "--name-only", "--format=", "HEAD")
+    assert _git(root, "status", "--short").strip() == ""
 
 
 def test_fold_without_card_or_transcript_is_unfolded_not_an_error(tmp_path):
