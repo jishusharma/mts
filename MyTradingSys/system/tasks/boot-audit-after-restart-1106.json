@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T16:55:52Z",
+  "depends_on": [],
+  "done_when": "boot_audit.py output after the restart is compared with the 11-06 baseline and one line reached the operator",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator restarts JIS-NB after turning off Discord, Docker, Teams, Snipping Tool, Chrome/Edge autolaunch, Tailscale GUI and Medal Highlight (11-06). Trigger: first Lead or Supervisor session whose machine uptime is under 2 h. Run boot_audit.py, compare boot time and startup items with the 11-06 run, report one line to the operator; he must not be asked to run it.",
+  "id": "boot-audit-after-restart-1106",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/boot_audit.py"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Run boot_audit.py on JIS-NB at the first session after its next restart; compare with the 11-06 baseline",
+  "weight": "",
+  "worker": "agent"
+}
