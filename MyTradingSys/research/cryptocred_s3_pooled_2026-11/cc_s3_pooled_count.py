@@ -13,8 +13,13 @@ sys.path.insert(0, str(HERE.parent / "cryptocred_s3_2026-11"))
 import cc_s3_run as S  # noqa: E402
 from MyTradingSys.backtest.layers.cryptocred import run_cc_setups as R  # noqa: E402
 
-TICKS = {"BTCUSDT": 0.1, "ETHUSDT": 0.01}   # Binance tick sizes (SOURCED: exchange filters); BTC = repo TICK
-DATASETS = {"BTCUSDT": "klines", "ETHUSDT": "klines_eth"}
+# Binance USD-M tick sizes (exchange PRICE_FILTER as recalled, not re-fetched: no new pulls; BTC = repo TICK).
+# A tick only decides "trades through by one tick"; a one-tick error moves a fill count by a handful at most.
+TICKS = {"BTCUSDT": 0.1, "ETHUSDT": 0.01, "SOLUSDT": 0.01, "BNBUSDT": 0.01, "XRPUSDT": 0.0001, "DOGEUSDT": 0.00001,
+         "ADAUSDT": 0.0001, "AVAXUSDT": 0.001, "LINKUSDT": 0.001, "LTCUSDT": 0.01}
+DATASETS = {"BTCUSDT": "klines", "ETHUSDT": "klines_eth", "SOLUSDT": "klines_sol", "BNBUSDT": "klines_bnb",
+            "XRPUSDT": "klines_xrp", "DOGEUSDT": "klines_doge", "ADAUSDT": "klines_ada", "AVAXUSDT": "klines_avax",
+            "LINKUSDT": "klines_link", "LTCUSDT": "klines_ltc"}
 
 
 def dev_bars(bars):
