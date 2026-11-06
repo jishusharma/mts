@@ -14,7 +14,7 @@
   "goal": "Extend chart_lab.py with a setup switch so it finds and renders blind charts for trend-continuation pullbacks (setup_type_rules.md s5) and breakout / break-in (s6) on BTC DEV 2022-04-01..2024-06-30. Charts and candidate index only. The event-study table is not part of this card: it is superseded until G3 marks and G4 recall exist.",
   "id": "tom-btc-other-setups",
   "kind": "build",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "kind": "ship",
@@ -84,5 +84,6 @@
   "tests": "test_chart_lab.py::test_tc_and_bo_candidates (synthetic, no data): one pullback and one breakout each yield exactly one candidate, plotted rows end at the decision bar; plus test_fade_unchanged (skipif F:/MTS/data/orderflow_1m absent): fade gives 105; fails before the switch exists",
   "title": "Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, breakout/break-in)",
   "weight": "IMPORTANT",
-  "worker": "session"
+  "worker": "session",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

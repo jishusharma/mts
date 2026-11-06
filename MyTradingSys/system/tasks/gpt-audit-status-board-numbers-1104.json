@@ -12,7 +12,7 @@
   "goal": "d-ai-health-review-1104 needs trustworthy health numbers: recompute what status_board.py prints from git log / tasks.py with an independent one-off command and compare.",
   "id": "gpt-audit-status-board-numbers-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -53,5 +53,6 @@
   "tests": "audit card, output file is the test; each row quotes the source line it was matched to; repo files stay byte-identical (git diff empty)",
   "title": "GPT audit: status_board.py numbers (reverts, test-vs-code commits, cards) against a fresh git count",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }

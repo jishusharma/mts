@@ -15,7 +15,7 @@
   "goal": "GPT writes spec and mutation tests for scripts/dev/api_job.py so a regression in the credit launcher (key leak into argv/log, two jobs on one machine, ledger_total counting non-Spent rows, parse_result taking a non-result record) fails a test",
   "id": "gpt-spec-tests-api-job-1104",
   "kind": "audit",
-  "lane": "CODEX",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -56,5 +56,6 @@
   "tests": "test_api_job_gpt.py: build_cmd never contains the key or the key path; launch refuses when running_jobs() is non-empty; ledger_total sums only rows under '## Spent'; parse_result returns done False when no result record",
   "title": "GPT spec and mutation tests for scripts/dev/api_job.py (headless credit launcher): key never in argv/log, one job per machine, ledger_total parses only Spent rows, parse_result ignores non-result records",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "agent",
+  "rerouted": "2026-11-06 operator: GPT/Codex plan expired; lane CODEX -> SONNET (cross-vendor independence of a re-derive is lost: say so in the result)"
 }
