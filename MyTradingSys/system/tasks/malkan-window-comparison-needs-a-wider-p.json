@@ -4,6 +4,17 @@
   "commands": [
     "python MyTradingSys/research/malkan_window_wide_2026-11/wide.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T14:36:21Z",
+    "misses": 64,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/backtest/layers/rsi/rsi_divergence.py",
+      "MyTradingSys/research/malkan_window_dev_2026-11/study.py"
+    ],
+    "session": "agent-a5a877951305dc56a"
+  },
   "created": "2026-11-06T11:50:45Z",
   "depends_on": [],
   "done_when": "malkan_window_wide_2026-11/RESULT.md: per-band n and days per timeframe pooled on 10 symbols, prereg_gate line per band, verdict word first (BLOCKED|INCONCLUSIVE|PASS|FAIL), PRE_REG.md with ## Context (Regime:/Phase:/Session:/Entry:), a Regime mix: line; bars from 2024-07-01 never opened",
