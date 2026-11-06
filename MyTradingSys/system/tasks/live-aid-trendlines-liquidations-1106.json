@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T14:16:56Z",
+  "depends_on": [],
+  "done_when": "live_aid.html shows a trendline cell per timeframe row and liquidation rungs on the ladder; tf_strip.js has pure functions for both with spec tests on hand-computed numbers that fail with the functions absent; REQUIREMENTS.md gains R20; ships with --wait-ci.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator order 2026-11-06 (after the timeframe strip, ac483733): on each timeframe row of the strip show the active trendline (last 3 swing highs or lows that align within 0.2%, slope and distance to price) and, on the levels ladder, estimated liquidation clusters (from OI and funding via fapi when reachable; else leverage ladders 10x/25x/50x off the day's high and low, labelled OURS).",
+  "id": "live-aid-trendlines-liquidations-1106",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Lead C filed 2026-11-06 14:17Z; tasks.py new crashed with TypeError after writing the raw file, fields filled by hand.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/tf_strip.js",
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_spec_tf_strip.py",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
+  ],
+  "scope_out": [
+    "any backtest or layer code",
+    "the live tree",
+    "build_artifact.py beyond inlining"
+  ],
+  "size": "M",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "swing detection: pivot high/low with 3-bar lookback per timeframe",
+    "trendline fit: last 3 aligned pivots, slope per bar, distance to price",
+    "liquidation ladders: 10x/25x/50x from day H/L, OI-weighted when fapi answers",
+    "render: trendline cell per row, liquidation rungs on the ladder",
+    "spec tests fail-first, REQUIREMENTS R20, ship --wait-ci"
+  ],
+  "tests": "test_spec_tf_strip.py: test_trendline_from_three_pivots, test_liq_ladder_from_day_extremes (both fail with the functions renamed away)",
+  "title": "Live aid strip: auto trendlines per timeframe and liquidation levels",
+  "weight": "",
+  "worker": "agent"
+}
