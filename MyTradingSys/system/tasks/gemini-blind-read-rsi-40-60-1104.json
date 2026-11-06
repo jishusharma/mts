@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:35:24Z",
   "commands": [],
   "created": "2026-11-04T17:35:37Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "FOUND 47 DIFF 1 (min MDE 0.22 vs 0.2495); VERDICT: MATCH",
+      "ref": "de2af8aa3",
+      "utc": "2026-11-06T07:35:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "rsi 40/60 line behaviour: RSI sits near a random-walk benchmark at both lines, no default ",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "not_twin_of": [
     "gemini-blind-read-bb-range-studies-1104",
     "gemini-blind-read-rsi-div-mtf-gated-1104",
@@ -38,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04/RESULT.md"
   ],
-  "result": "",
+  "result": "FOUND 47 DIFF 1 (min MDE 0.22 vs 0.2495); VERDICT: MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md",
     "MyTradingSys/research/rsi_40_60_line_behaviour_2026-11-04"
@@ -47,12 +60,13 @@
   "scope_sha": "1dab5e297af0",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read behaviour_dev.csv, behaviour_val.csv, plays_dev.csv and plays_val.csv in rsi_40_60_line_behaviour_2026-11-04 before any prose result file",
     "Recompute counts, win rates and mean or total returns independently of the study code",
     "Write MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md with a per-number table and VERDICT"
   ],
+  "taken": "2026-11-06T07:35:24Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-04/BLIND_READ_RSI_40_60_1104.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of rsi_40_60_line_behaviour RESULT.md vs CSVs",
   "weight": "ROUTINE",
