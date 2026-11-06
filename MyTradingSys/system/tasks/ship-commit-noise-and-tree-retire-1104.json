@@ -7,8 +7,8 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T07:55:56Z",
-    "misses": 25,
+    "folded": "2026-11-06T08:02:11Z",
+    "misses": 27,
     "reads": [
       "scripts/dev/wt_maint.py",
       "scripts/dev/route_audit.py"
