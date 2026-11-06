@@ -4,6 +4,15 @@
   "commands": [
     "python scripts/dev/test_tasks.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T08:03:39Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/test_tasks.py"
+    ],
+    "session": "agent-a0fd8b393199d8304"
+  },
   "created": "2026-11-05T17:15:33Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_tasks.py has test_promote_shared_keeps_crucial_and_critical (fails on pre-change tasks.py, passes after) and python scripts/dev/test_tasks.py exits 0; a cited ROUTINE/IMPORTANT card still gets weight B-SHARED plus shared:true.",
