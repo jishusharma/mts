@@ -42,3 +42,4 @@ Started 2026-11-06 at the operator's request ("keep this in your Bible"). Purpos
 - Chart patterns (Bulkowski success rates, Edwards & Magee, Nison candles, Lo-Mamaysky-Wang detection): pattern book, drawn on BTC across timeframes, checked by the operator's eye.
 - Habib imbalance concept book: his formula, his checks across exchanges, the three-part setup, linked to his calls.
 - Moving averages across timeframes (Krown 21/55/200, 200 SMA vs 200 EMA, distance from the averages, 20 MA pullbacks on low timeframes): one state per timeframe, like the candle-flip strip.
+- 2026-11-06 19:15Z: all three studies started as Sonnet sessions (pattern-book, habib-book, ma-layer; d-three-studies-1106). Reading 3 is scenario S008 in the ledger (scored 2026-11-16). Stops: d-stops-follow-trade-1106.
