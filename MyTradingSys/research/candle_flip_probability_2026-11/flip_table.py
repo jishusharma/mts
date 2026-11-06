@@ -64,7 +64,7 @@ def tf_rows(o, h, l, c, S, t0_ms=START_MS, cut_ms=CUT_MS, max_rows=MAX_ROWS, poi
     atr = np.full(nb, np.nan)
     atr[14:] = (cs[14:nb] - cs[0:nb - 14]) / 14.0
     # 19 prior closes, centred for numeric stability
-    m0 = float(np.mean(bc))
+    m0 = float(bc[0])   # centring constant only (cancels exactly in mean/var); the first close, so no later information is even nominally used
     z = bc - m0
     c1 = np.concatenate([[0.0], np.cumsum(z)])
     c2 = np.concatenate([[0.0], np.cumsum(z * z)])
@@ -107,12 +107,13 @@ def tf_rows(o, h, l, c, S, t0_ms=START_MS, cut_ms=CUT_MS, max_rows=MAX_ROWS, poi
     week_open = o[(g // 10080) * 10080]
     cd, cw = np.sign(price - day_open), np.sign(price - week_open)
     aligned = (cd == cw) & (cd != 0)
+    own = tf in ("1d", "1w")   # amendment A2 (REVIEW.md #5): for a 1d or 1w row one of the two colours IS the row's own colour, so the HTF cell is undefined: label "na"
     hr = ((g + 1) % 1440) // 60                     # session of the evaluation minute CLOSE time
     sess = np.where(hr < 8, 0, np.where(hr < 13, 1, np.where(hr < 21, 2, 3))).astype(np.int8)
     keep = (price != open_) & (price != pc) & (sd > 0)
     df = pd.DataFrame({
         "tf": tf, "bar_ms": b_open_ms[B], "j": Jf, "t_left": t_left, "d_open": d_open, "d_pc": d_pc,
-        "htf": np.where(aligned, "aligned", "split"), "sess": sess, "bb": np.where(at_band, "at", "inside"),
+        "htf": "na" if own else np.where(aligned, "aligned", "split"), "sess": sess, "bb": np.where(at_band, "at", "inside"),
         "y_open": y_open, "y_pc": y_pc, "p0_open": p0_open, "p0_pc": p0_pc, "win": np.where(win[B] == 0, "fit", "score"),
     })
     return df[keep].reset_index(drop=True)

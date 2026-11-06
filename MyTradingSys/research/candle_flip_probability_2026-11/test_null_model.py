@@ -96,3 +96,24 @@ def test_delta_detects_a_planted_edge(fm):
     y = (rng.random(n) < 0.65).astype(float)
     mean, se, z, p = fm.cluster_mean_z(y - p0, np.arange(n))
     assert mean == pytest.approx(0.05, abs=0.03) and z > 2 and p < 0.05
+
+
+def test_own_timeframe_has_no_htf_cell(ft):
+    # review #5: for a 1d or 1w row one of the two HTF colours IS the row's own colour, so the HTF cell is undefined ("na"); other rows get aligned / split
+    o, h, l, c = _sim_walk(1440 * 40, seed=3, sub=2)
+    far = ft.START_MS + 10**13
+    d1 = ft.tf_rows(o, h, l, c, 1440, cut_ms=far, max_rows=10**9, tf="1d")
+    h1 = ft.tf_rows(o, h, l, c, 60, cut_ms=far, max_rows=10**9, tf="1h")
+    assert len(d1) > 50 and set(d1["htf"]) == {"na"}
+    assert set(h1["htf"]) == {"aligned", "split"}
+
+
+def test_week_clusters_are_wider_than_bar_clusters(fm):
+    # review #1: rows of one UTC week share the 1d/1w colours; a cluster of the week must give a larger se than a cluster of the bar when the error is shared inside the week
+    rng = np.random.default_rng(5)
+    weeks = np.repeat(np.arange(60), 100)                                 # 60 weeks x 100 bars
+    shared = np.repeat(rng.standard_normal(60) * 0.05, 100)
+    e = shared + rng.standard_normal(6000) * 0.05
+    _, se_bar, _, _ = fm.cluster_mean_z(e, np.arange(6000))
+    _, se_week, _, _ = fm.cluster_mean_z(e, weeks)
+    assert se_week > 3 * se_bar
