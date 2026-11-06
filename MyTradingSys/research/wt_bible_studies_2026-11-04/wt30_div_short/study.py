@@ -78,7 +78,7 @@ def find_events(bars30, rows30, rsi30, rows4h, t4h):
                 seg = wt1[p + 1:c]
                 if len(seg) and min(seg) < 0:
                     d_ix = p + 1 + int(np.argmin(seg))
-                    if max(hi[d_ix:c + 1]) > max(hi[max(0, p - K):min(p + K, c) + 1]):
+                    if max(hi[d_ix:c + 1]) > max(hi[max(0, p - K):p + K + 1]):
                         p_ok = (p, d_ix)
                         break
         if p_ok is None:
@@ -97,7 +97,7 @@ def find_events(bars30, rows30, rsi30, rows4h, t4h):
         hrs = (c - tops[-1]) * 0.5 if tops else float("inf")
         t_close = bars30[c]["t"] + BAR
         sess = rk.session_tag(t_close // 1000)
-        i1 = max(range(max(0, p - K), min(p + K, c) + 1), key=lambda j: hi[j])
+        i1 = max(range(max(0, p - K), p + K + 1), key=lambda j: hi[j])
         i2 = max(range(d_ix, c + 1), key=lambda j: hi[j])
         r1, r2 = rsi30[i1], rsi30[i2]
         rsi_lower = (r1 is not None and r2 is not None and r2 < r1)
