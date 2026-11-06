@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T10:27:34Z",
   "commands": [
     "python MyTradingSys/research/malkan_window_dev_2026-11/study.py"
   ],
@@ -16,6 +17,12 @@
   "kind": "run",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/malkan_window_dev_2026-11/RESULT.md: INCONCLUSIVE; S3_10 fee-net -0.",
+      "ref": "7461266d2",
+      "utc": "2026-11-06T10:27:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: power gate BLOCK; OURS windows empty on adjacent-pivot detector",
   "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Prior park (no runner) answered: runner is step 2 of this card. ETH 1m at F:/MTS/data/tom_raw/klines_eth.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
   "refreshed": "2026-11-06T09:22:56Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/malkan_window_dev_2026-11/RESULT.md: INCONCLUSIVE; S3_10 fee-net -0.25..+0.04 %, windows over 10 bars hold 4 events",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md",
     "MyTradingSys/research/malkan_div_flags_2026-11-04",
@@ -54,12 +67,13 @@
   "sources": [
     "MyTradingSys/research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write PRE_REG.md from WINDOW_RECONCILE_1104.md arms; run prereg_gate.py --m auto",
     "write study.py: detector as in malkan_div_flags, 1h/4h from 1m F:/MTS/data/tom_raw/klines + klines_eth, DEV only, fees.py costs",
     "test_study.py, one run, RESULT.md with Regime mix line"
   ],
+  "taken": "2026-11-06T10:27:34Z",
   "tests": "test_study.py: loader refuses bars >= 2024-07-01; a hand-built 2-pivot fixture falls in the window arm the PRE_REG names; fails before study.py exists",
   "title": "Compare Malkan divergence windows fee-net on DEV: sourced 3-10 bars against our 12 / 13-18 / over 18 (research/malkan_hindi_2026-11-04/WINDOW_RECONCILE_1104.md); pre-register first; default stays unchanged until this result",
   "weight": "ROUTINE",
