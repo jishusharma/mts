@@ -1,0 +1,2 @@
+n 1981 sd 1.24 m 221 z_holm 3.688 MDE 0.126 R + cost 0.068 = 0.194 vs max plausible gross 0.3; n needed 586
+PASS: may freeze

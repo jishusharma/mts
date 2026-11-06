@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-11-06T12:22:53Z",
+    "misses": 43,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/tools/live_aid/premarket_risk.js",
+      "MyTradingSys/system/SUPER_SESSION.md",
+      "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_scenario_ledger.py"
+    ],
+    "session": "agent-aba9b6d475249a093"
+  },
   "created": "2026-11-06T12:12:02Z",
   "depends_on": [],
   "done_when": "scripts/dev/us_prep.py + test_us_prep.py shipped; test uses a fixture day (11-05: Kospi -5.3%, NQ -0.6%, BTC 80.9k to 75.2k) and an UNKNOWN fail-closed case (source unreachable => field UNKNOWN, never a number); both tests fail on the pre-change tree; wiring_registry.json entry; runtime/us_prep output is git-ignored (no runtime data committed); Haiku diff review ACCEPT.",
