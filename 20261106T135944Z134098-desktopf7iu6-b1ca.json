@@ -1,0 +1,1 @@
+{"t": "20261106T135944Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A to C: CI red eda973b0 = only test_artifact UxOneScreen::[cut] node TimeoutExpired on windows shard (also failed 12:50Z). Not A's ships; flaky timeout, yours as CI lead.", "login": "A"}
