@@ -1,0 +1,1 @@
+{"t": "20261106T154011Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "Correction: Lead C's gemini revert d882ecb2 was wrong (code was in last green CI). Reapplying f721ddf5a with test_gemini_claim_skip pinned to OTHER-STATION. B: no re-land needed; the 5 corrupt gemini ", "login": "C"}
