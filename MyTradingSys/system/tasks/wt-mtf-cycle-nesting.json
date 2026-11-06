@@ -2,7 +2,6 @@
   "approved_by": "",
   "asks": "",
   "class": "C2",
-  "closed": "2026-11-06T12:43:47Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\""
   ],
@@ -19,12 +18,6 @@
   "id": "wt-mtf-cycle-nesting",
   "lane": "SONNET",
   "latest": [
-    {
-      "kind": "ship",
-      "line": "FAIL on DEV: nested-vs-rejected diff 5m -0.020% [-0.072,+0.034], 15m +0.021% [-0.150,+0.19",
-      "ref": "7136beaeb",
-      "utc": "2026-11-06T12:43:47Z"
-    },
     {
       "auto": true,
       "kind": "ship",
@@ -45,19 +38,13 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: nesting gate adds nothing on BTCUSDT DEV, killed",
   "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nclass=C2. SPEC.md was fixed in bbaa2d3f1 after Gemini FIX-FIRST (REVIEW_GEMINI_1104.md). Card fully scoped; depends_on gemini-spec-rereview-wt-bible-1105 (must end VERDICT: ACCEPT before take). Windows from splits.py only; HOLDOUT never loaded.",
   "prio": 2,
   "refine_tries": 5,
   "refined_by": "",
   "refreshed": "2026-11-06T09:19:34Z",
   "refs": [],
-  "result": "FAIL on DEV: nested-vs-rejected diff 5m -0.020% [-0.072,+0.034], 15m +0.021% [-0.150,+0.190], Holm p=1.0; baseline net -0.13%",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
     "MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting",
@@ -68,13 +55,12 @@
   "scope_sha": "bbaa2d3f181e",
   "size": "M",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md Card 2 and backtest/PRE_REG_TEMPLATE.md; run verdicts.py check",
     "Write PRE_REG.md, run study.py --pass count, run prereg_gate.py --m auto (exit 1 = stop and file BLOCKED.md)",
     "Run --pass dev, write RESULT.md with the Regime mix line, append the VERDICTS row, ship"
   ],
-  "taken": "2026-11-06T12:43:47Z",
   "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/RESULT.md').read_text(); assert 'Regime mix:' in t and 'VERDICT' in t.upper()\"",
   "title": "WT multi-timeframe cycle nesting: 5m/15m zone dots traded only with the 30m cycle phase and 4h slope vs the unnested baseline",
   "weight": "IMPORTANT",
