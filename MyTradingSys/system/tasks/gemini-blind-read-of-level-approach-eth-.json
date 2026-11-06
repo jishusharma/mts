@@ -1,12 +1,13 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T07:34:35Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md'); assert p.exists() and len(p.read_text())>400\""
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T07:34:09Z",
+    "folded": "2026-11-06T07:34:30Z",
     "misses": 82,
     "reads": [],
     "session": "agent-afc92d32eefaf71b3"
@@ -22,10 +23,18 @@
   "id": "gemini-blind-read-of-level-approach-eth-",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH: recomputed 4 AGREES / 20 DISAGREES / 40 UNDERPOWERED + invalidation row, 0 diffs",
+      "ref": "a5bb9e412",
+      "utc": "2026-11-06T07:34:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read complete",
   "note": "D11 feeder card for card ms-level-approach-eth-replicate (level_approach_eth_2026-11)",
   "prio": 3,
   "refine_tries": 0,
@@ -35,7 +44,12 @@
     "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md",
     "MyTradingSys/research/level_approach_eth_2026-11/PRE_REG.md"
   ],
-  "result": "",
+  "result": "MATCH: recomputed 4 AGREES / 20 DISAGREES / 40 UNDERPOWERED + invalidation row, 0 diffs",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md",
     "MyTradingSys/research/level_approach_eth_2026-11"
@@ -47,12 +61,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md agreement rule and sequences.csv before RESULT.md prose",
     "Recompute per near_miss / wick_back row: n >= 30 in the BTC/ETH x half A/B cells, sign vs each symbol's base, pooled CI vs pooled base; count AGREES / DISAGREES / UNDERPOWERED",
     "Compare against RESULT.md (4 / 20 / 40, invalidation row) and write MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md with a table and VERDICT"
   ],
+  "taken": "2026-11-06T07:34:35Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_LEVEL_APPROACH_ETH.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of level_approach_eth_2026-11 RESULT.md",
   "weight": "ROUTINE",
