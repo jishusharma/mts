@@ -8,7 +8,7 @@ Eagle_Eyes nor the dashboard showed them. This is the one place that turns CBP r
   python scripts/dev/analyst_levels.py --symbol ETH    # another symbol (band in SYMBOL_BANDS)
   python scripts/dev/analyst_levels.py --json          # for the dashboard
 
-Levels are parsed from each row's `pointers` (prices 40k..200k); hit = traded through since 00:00 UTC of the day AFTER
+Levels are parsed from each row's `pointers` (prices inside SYMBOL_BANDS[symbol]; BTC 40k..200k); hit = traded through since 00:00 UTC of the day AFTER
 the publish date (only the date is stored, so publish-day bars could predate the video: audit 2026-10-30 finding 3).
 """
 import argparse
@@ -29,10 +29,12 @@ SYMBOL_BANDS = {"BTC": (40_000, 200_000), "ETH": (1_000, 10_000)}
 LO, HI = SYMBOL_BANDS["BTC"]
 _NUM = (r"\$?(\d{1,3}(?:,\d{3})+|\d{1,3}(?:\.\d+)?\s*[kK]\b|\d{2,3}(?:\.\d+)?\s*thousand|\d{4,6})")
 _RANGE_K = re.compile(r"\b(\d{2,3}(?:\.\d+)?)\s*[kK]?\s*-\s*(\d{2,3}(?:\.\d+)?)\s*[kK]\b")
-_NOT_PRICE = re.compile(r"(?i)\b\d{2,3}(?:\.\d+)?\s*[kK]?\s*(?:in\s+)?(?:liquidations?|liquidated|contracts?|coins?|"
-                        r"subscribers?|followers?|views?|votes?|people|wallets?|addresses|transactions?|traders?|BTC|ETH)\b")
+_NOT_PRICE = re.compile(r"(?i)(?<![\d,.])\b\d{2,3}(?:\.\d+)?\s*[kK]?\s*(?:in\s+)?(?:liquidations?|liquidated|contracts?|coins?|"
+                        r"subscribers?|followers?|views?|votes?|people|wallets?|addresses|transactions?|traders?)\b")
 
-_YEAR = re.compile(r"(?<![\d,.])20[2-3]\d(?![\d,])")
+_MONTH = r"(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?"
+# A bare 2020-2039 is a year only with a date cue before it ("in 2026", "by 2030", "October 2026"); "ETH 2030 support" is a price.
+_YEAR = re.compile(r"(?i)\b(?:in|by|of|since|during|until|through|from|year|q[1-4]|" + _MONTH + r")\s+20[2-3]\d(?![,.]?\d)")
 
 
 def _val(tok):
@@ -51,8 +53,8 @@ def parse_levels(text, symbol="BTC"):
     if lo is None:
         return []
     out = []
-    text = _NOT_PRICE.sub(" ", text)
-    text = _YEAR.sub(" ", text)  # a bare 2026 is a year, not an ETH price  # "100k liquidations" is a count, not a price
+    text = _NOT_PRICE.sub(" ", text)  # "100k liquidations" is a count, not a price
+    text = _YEAR.sub(" ", text)
     for a, b in _RANGE_K.findall(text):
         out += [float(a) * 1000, float(b) * 1000]
     for tok in re.findall(_NUM, text):
@@ -86,11 +88,19 @@ def recent_rows(days, now, store=None):
 
 
 def spot_1h(since, timeout=15, symbol="BTC"):
-    """Public Binance spot 1h klines (data-api.binance.vision) from `since` (UTC datetime)."""
-    url = (f"https://data-api.binance.vision/api/v3/klines?symbol={symbol}USDT&interval=1h&limit=1000"
-           f"&startTime={int(since.timestamp() * 1000)}")
-    with urllib.request.urlopen(url, timeout=timeout) as f:
-        return [(k[0] // 1000, float(k[2]), float(k[3]), float(k[4])) for k in json.load(f)]
+    """Public Binance spot 1h klines (data-api.binance.vision) from `since` (UTC datetime) to now.
+    One call returns at most 1000 bars (~41.6 days), so page forward until the series reaches the present."""
+    out, start = [], int(since.timestamp() * 1000)
+    for _ in range(20):
+        url = (f"https://data-api.binance.vision/api/v3/klines?symbol={symbol}USDT&interval=1h&limit=1000"
+               f"&startTime={start}")
+        with urllib.request.urlopen(url, timeout=timeout) as f:
+            page = json.load(f)
+        out += [(k[0] // 1000, float(k[2]), float(k[3]), float(k[4])) for k in page]
+        if len(page) < 1000:
+            break
+        start = page[-1][0] + 3_600_000
+    return out
 
 
 def hit_from(published):
@@ -99,6 +109,8 @@ def hit_from(published):
 
 
 def mark(lv, bars, now):
+    if not bars:
+        raise ValueError("no klines returned: cannot price the ladder")
     price = bars[-1][3]
     for x in lv:
         t0 = hit_from(x["published"]).timestamp()
