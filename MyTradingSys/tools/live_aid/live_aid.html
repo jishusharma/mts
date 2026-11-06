@@ -322,10 +322,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 
 <script src="live_aid_indicators.js"></script>
 <script src="analyst_data.js"></script>
-<script src="us_open_rates.js"></script>
-<script src="anticipation_rates.js"></script>
-<script src="level_approach_rates.js"></script>
-<script src="bigcandle_rates.js"></script>
+<script src="base_rates.js"></script>
 <script src="premarket_risk.js"></script>
 <script src="tf_strip.js"></script>
 <script src="cycle_flag_data.js"></script>
@@ -747,13 +744,16 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     }).join('; ') : 'none yet';
   }
 
+  function brRow(id) { return typeof BASE_RATES !== 'undefined' && BASE_RATES[id] ? BASE_RATES[id] : null; }
+  function brWin(id) { var b = brRow(id); return b ? ' | base rates: ' + b.window + ', n=' + b.n + ' ' + b.units + ' (' + b.fee_status + ')' : ''; }
+
   function renderUsOpen(now) {
-    var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = typeof US_OPEN_RATES !== 'undefined' ? US_OPEN_RATES.rates : null;
+    var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = brRow('us_open_levels') ? brRow('us_open_levels').table.rates : null;
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
     var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
     $('uo-when').textContent = when;
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
-      (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded';
+      (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded' + brWin('us_open_levels');
     if (!isFinite(px)) { tb.innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
     function row(dir, x) {
       var pct = function (v, n) { return v === null ? '<span class="dim">n too small (' + n + ')</span>' : '<b>' + v + '%</b> (n=' + n + ')'; };
@@ -762,30 +762,30 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     }
     var H = r.up.slice(0, 4).map(function (x) { return row('UP', x); }).concat(r.down.slice(0, 4).map(function (x) { return row('DOWN', x); }));
     tb.innerHTML = H.join('') || '<tr><td colspan="6">no levels yet (5m bars and daily levels still loading)</td></tr>';
-    if (!rates) tb.innerHTML += '<tr><td colspan="6" class="err">us_open_rates.js not found next to this page: run python MyTradingSys/research/us_open_levels_2026-10-30/study.py</td></tr>';
+    if (!rates) tb.innerHTML += '<tr><td colspan="6" class="err">base_rates.js not found next to this page: run python MyTradingSys/tools/live_aid/base_rates.py build</td></tr>';
     $('age-uo').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
   function renderAntic(now) {
-    var rates = typeof ANTICIPATION_RATES !== 'undefined' ? ANTICIPATION_RATES.rates : null, tb = $('am-rows'), w = null, delta = null;
+    var rates = brRow('anticipation_oi_delta') ? brRow('anticipation_oi_delta').table.rates : null, tb = $('am-rows'), w = null, delta = null;
     try { w = A.oiWindow(omHist('BINANCE'), now, 3600000); } catch (e) { w = { err: 'Binance OI history not loaded' }; }
     var k5 = S.tf['5m'] || [], last = k5.slice(-12);
     if (S.venue === 'BINANCE' && last.length === 12 && last.every(function (k) { return k.length > 9 && isFinite(+k[9]); }))
       delta = last.reduce(function (s, k) { return s + 2 * +k[9] - +k[5]; }, 0);
     var r = A.anticipation(w && !w.err ? w.dp : null, w && !w.err ? w.doi : null, delta, rates);
     $('am-state').textContent = r.state ? 'Price ' + r.state.split('|')[0].toLowerCase() + ', OI ' + r.state.split('|')[1].toLowerCase() + ', delta ' + r.now.toLowerCase() : 'no state';
-    $('am-sub').textContent = w && !w.err ? '60 min: price ' + sgn(100 * w.dp, 2) + '%, Binance OI ' + sgn(100 * w.doi, 2) + '%' + (delta === null ? ', taker delta n/a (needs Binance 5m bars)' : ', taker delta ' + fmt(delta, 0) + ' BTC') : (w ? w.err : NID);
+    $('am-sub').textContent = w && !w.err ? '60 min: price ' + sgn(100 * w.dp, 2) + '%, Binance OI ' + sgn(100 * w.doi, 2) + '%' + (delta === null ? ', taker delta n/a (needs Binance 5m bars)' : ', taker delta ' + fmt(delta, 0) + ' BTC') + brWin('anticipation_oi_delta') : (w ? w.err : NID);
     if (!r.readings.length) { tb.innerHTML = '<tr><td colspan="6" class="dim">flat (under 0.1 %) or inputs missing: no readings</td></tr>'; return; }
     tb.innerHTML = r.readings.map(function (x) {
       var odds = x.p === null ? '<span class="dim">UNMEASURED</span>' : '<b>' + x.p + '%</b> (n=' + x.n + ') <span class="dim">MEASURED</span>';
       var fw = x.cont === null ? '<span class="dim">UNMEASURED</span>' : x.cont + '% / ' + x.kill + '%';
       return '<tr' + (x.live ? ' class="up"' : '') + '><td>' + (x.live ? '<b>now: </b>' : '') + esc(x.label) + '</td><td>' + odds + '</td><td>' + fw + '</td><td>' + esc(x.decider) + '</td><td>' + esc(x.confirm) + '</td><td>' + esc(x.kill_line) + '</td></tr>';
-    }).join('') + (rates ? '' : '<tr><td colspan="6" class="err">anticipation_rates.js not found next to this page: run python MyTradingSys/research/anticipation_map_2026-11-05/study.py</td></tr>');
+    }).join('') + (rates ? '' : '<tr><td colspan="6" class="err">base_rates.js not found next to this page: run python MyTradingSys/tools/live_aid/base_rates.py build</td></tr>');
     $('age-am').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
   function renderBigCandle(now) {
-    var rates = typeof BIGCANDLE_RATES !== 'undefined' ? BIGCANDLE_RATES.cells : null, meta = typeof BIGCANDLE_RATES !== 'undefined' ? BIGCANDLE_RATES.meta : null;
+    var rates = brRow('bigcandle_story') ? brRow('bigcandle_story').table.cells : null, meta = brRow('bigcandle_story') ? brRow('bigcandle_story').table.meta : null;
     var tb = $('bc-rows'), w = null, delta = null;
     try { w = A.oiWindow(omHist('BINANCE'), now, 3600000); } catch (e) { w = { err: 'Binance OI history not loaded' }; }
     var k5 = S.tf['5m'] || [], last = k5.slice(-12);
@@ -798,7 +798,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var big = ok && meta ? A.bcBig(w.dp, delta, meta.sd1h) : null;
     var TTN = { BU: 'size and accounts both longer', BD: 'size and accounts both shorter', SL: 'size long / accounts short', SS: 'size short / accounts long', FLAT: 'top traders flat', NA: 'top-trader feed not loaded' };
     $('bc-state').textContent = r.story ? 'Story ' + r.story + ', ' + (TTN[r.tt] || r.tt) : 'no story';
-    $('bc-sub').textContent = ok ? 'phase: 30-day ' + (band || 'n/a') + ', weekly streak ' + (streak || 'n/a') + (big === null ? '' : big.length ? '; this hour is BIG in ' + big.join(' + ') + ' (vs a ' + meta.sdAsOf.slice(0, 10) + ' snapshot of 30-day sd)' : '; this hour is not big (under 3 sd): the table below describes big hours only') : (w ? w.err : NID);
+    $('bc-sub').textContent = ok ? 'phase: 30-day ' + (band || 'n/a') + ', weekly streak ' + (streak || 'n/a') + (big === null ? '' : big.length ? '; this hour is BIG in ' + big.join(' + ') + ' (vs a ' + meta.sdAsOf.slice(0, 10) + ' snapshot of 30-day sd)' : '; this hour is not big (under 3 sd): the table below describes big hours only') + brWin('bigcandle_story') : (w ? w.err : NID);
     if (!r.story) { tb.innerHTML = '<tr><td colspan="7" class="dim">inputs missing or a zero change: no story</td></tr>'; return; }
     function pc(h) { return '<b>' + h.cont + '%</b> <span class="dim">[' + h.lo + '-' + h.hi + ']</span>'; }
     function line(label, c, status) {
@@ -808,7 +808,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var rows = [];
     if (r.cell) rows.push(line(r.level, r.cell, 'MEASURED'));
     else if (r.thin) rows.push(line(r.thin.level + ' (n under 30)', r.thin.cell, 'THIN: not used'));
-    else rows.push('<tr><td colspan="7"><span class="dim">UNMEASURED</span> (no cell for this story' + (rates ? '' : ': bigcandle_rates.js not found next to this page, run python MyTradingSys/research/bigcandle_story_2026-11-05/study.py') + ')</td></tr>');
+    else rows.push('<tr><td colspan="7"><span class="dim">UNMEASURED</span> (no cell for this story' + (rates ? '' : ': base_rates.js not found next to this page, run python MyTradingSys/tools/live_aid/base_rates.py build') + ')</td></tr>');
     if (r.base) rows.push(line('baseline: every ' + (r.story.split('|')[0]) + ' hour' + (band ? ', band ' + band : ''), r.base, 'MEASURED'));
     tb.innerHTML = rows.join('');
     $('age-bc').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
@@ -839,7 +839,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   }
 
   function renderLevelApproach(now, coilR) {
-    var R = typeof LEVEL_APPROACH_RATES !== 'undefined' ? LEVEL_APPROACH_RATES : null, tb = $('lap-rows'), m1 = (S.tf['1m'] || []).filter(function (r) { return +r[0] + 60000 <= now; });
+    var R = brRow('level_approach_prior_day') ? brRow('level_approach_prior_day').table : null, tb = $('lap-rows'), m1 = (S.tf['1m'] || []).filter(function (r) { return +r[0] + 60000 <= now; });
     var w = null, rs = null, k5 = (S.tf['5m'] || []).filter(function (r) { return +r[0] + 300000 <= now; });
     try { w = A.oiWindow(omHist('BINANCE'), now, 900000); } catch (e) { w = null; }
     if (k5.length > 30) { var rr = A.rsi(k5.map(function (r) { return +r[4]; }), 14); rs = rr[rr.length - 1]; }
@@ -852,8 +852,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
         '<td>' + (x.oi.tell || NID) + (a.flag ? ' <br>reverses ' + odds(x.oi.n, x.oi.rate, x.oi.src) : '') + '</td>' +
         '<td>' + (x.wicks.tfs.join(' ') || 'none') + '<br>hold ' + odds(x.wicks.n, x.wicks.hold, x.wicks.src) + '</td><td>' + esc(x.confirm) + '</td></tr>';
     }).join('') : '<tr><td colspan="6" class="dim">no marked level within 0.5 %</td></tr>';
-    if (!R) tb.innerHTML += '<tr><td colspan="6" class="err">level_approach_rates.js not found next to this page: run python MyTradingSys/research/level_approach_prep_2026-11-05/study.py</td></tr>';
-    $('lap-check').innerHTML = list.length ? 'Hold needs: ' + esc(list[0].checklist.hold.join('; ')) + '. Break shows: ' + esc(list[0].checklist['break'].join('; ')) + '.' : '';
+    if (!R) tb.innerHTML += '<tr><td colspan="6" class="err">base_rates.js not found next to this page: run python MyTradingSys/tools/live_aid/base_rates.py build</td></tr>';
+    $('lap-check').innerHTML = list.length ? 'Hold needs: ' + esc(list[0].checklist.hold.join('; ')) + '. Break shows: ' + esc(list[0].checklist['break'].join('; ')) + '. Base rates: ' + esc(brRow('level_approach_prior_day') ? brRow('level_approach_prior_day').window : 'not loaded') + '.' : '';
     var al = A.approachAlerts(list, S.lapSeen || {}, now);
     S.lapSeen = al.seen;
     al.alerts.forEach(function (x) {
