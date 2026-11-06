@@ -21,4 +21,8 @@ Consequence: the card step says exit 1 = stop. No `--pass dev` is run; BLOCKED.m
 
 ## Context
 Operator rule (Bible, verbatim in `system/layer_bible/wavetrend.md`): up-move to the red bands, WT fails to reach the centre, three waves above 0, dips below 0, rises again with higher price and lower WT = divergence short; the green line coming down confirms. Regimes: the setup is a counter-trend fade; where regimes differ is the point of the 4h slope and his-context cells (not run).
+Regime: none as a gate; the setup is a counter-trend fade and the window regime is the Regime mix line below (no bear week in DEV).
+Phase: the event itself (30m lower-high divergence after waves above 0, SPEC Card 1); the 4h wt1 slope is a feature cell, not run.
+Session: none, because the session cells were not run (study blocked by the power gate).
+Entry: confirming down-cross bar close, short, exit after 24 bars (SPEC Card 1); not run.
 Regime mix: 130 weeks: bull 25 (19%) | bear 0 (0%) | range 105 (81%) | n/a 0 (0%)  (DEV, research_kit.regime_tag, `regime_mix_count.txt`; no bear week in DEV, so bear-regime shorts are untestable here).
