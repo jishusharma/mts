@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "flip study step 3: null, cell table, Brier vs null, RESULT (PRE_REG heading renamed for th",
-      "ref": "9f7dc27aee98",
-      "utc": "2026-11-06T16:29:36Z"
+      "line": "flip study step 5: Haiku review (REVIEW.md, 12 findings), amended analysis rerun, card don",
+      "ref": "9c7aa1bc41d7",
+      "utc": "2026-11-06T17:01:47Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T16:48:33Z",
+  "refreshed": "2026-11-06T18:02:37Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -40,7 +40,7 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "9f7dc27aee98",
+  "scope_sha": "9c7aa1bc41d7",
   "size": "S",
   "sources": [],
   "state": "ready",
