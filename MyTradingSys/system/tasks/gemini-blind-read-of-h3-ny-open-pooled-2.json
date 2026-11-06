@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T12:49:06Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run gemini-blind-read-of-h3-ny-open-pooled-2:low"
   ],
@@ -16,6 +17,12 @@
   "kind": "audit",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md VERDICT MATCH",
+      "ref": "f6b5ad211",
+      "utc": "2026-11-06T12:49:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit done",
   "note": "REVIEWED:2026-11-06 T0-ONLY | route [GEMINI] via gemini_queue.py gemini-blind-read-of-h3-ny-open-pooled-2:low; lane was CODEX (retired 11-06)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:16:13Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md VERDICT MATCH",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md",
     "MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md",
@@ -52,12 +65,13 @@
   "scope_sha": "86bcc0996cfc",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/h3_ny_open_pooled_2026-11/BLOCKED.md, MyTradingSys/research/h3_ny_open_low_2026-10/BLOCKED.md before any prose summary of them",
     "Recompute independently of the code under read, then recompute the quoted MDE and n-needed from prereg_gate.py inputs and check the 2 x 35 bound reasoning",
     "Write MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md with the per-claim table and VERDICT"
   ],
+  "taken": "2026-11-06T12:49:06Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-06/BLIND_READ_H3POOLED_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of h3_ny_open_pooled_2026-11/BLOCKED.md",
   "weight": "ROUTINE",

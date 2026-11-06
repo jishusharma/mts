@@ -1,0 +1,63 @@
+{
+ "BTCUSDT": {
+  "signals": 217,
+  "skipped": 0,
+  "filled": 207,
+  "bars_1m": 1313280
+ },
+ "ETHUSDT": {
+  "signals": 210,
+  "skipped": 0,
+  "filled": 202,
+  "bars_1m": 1313280
+ },
+ "SOLUSDT": {
+  "signals": 205,
+  "skipped": 0,
+  "filled": 193,
+  "bars_1m": 1306080
+ },
+ "BNBUSDT": {
+  "signals": 222,
+  "skipped": 0,
+  "filled": 212,
+  "bars_1m": 1313280
+ },
+ "XRPUSDT": {
+  "signals": 205,
+  "skipped": 0,
+  "filled": 198,
+  "bars_1m": 1306080
+ },
+ "DOGEUSDT": {
+  "signals": 196,
+  "skipped": 0,
+  "filled": 188,
+  "bars_1m": 1313280
+ },
+ "ADAUSDT": {
+  "signals": 189,
+  "skipped": 0,
+  "filled": 178,
+  "bars_1m": 1313280
+ },
+ "AVAXUSDT": {
+  "signals": 210,
+  "skipped": 0,
+  "filled": 203,
+  "bars_1m": 1313280
+ },
+ "LINKUSDT": {
+  "signals": 209,
+  "skipped": 0,
+  "filled": 200,
+  "bars_1m": 1313280
+ },
+ "LTCUSDT": {
+  "signals": 207,
+  "skipped": 0,
+  "filled": 200,
+  "bars_1m": 1306080
+ },
+ "pooled_filled": 1981
+}
