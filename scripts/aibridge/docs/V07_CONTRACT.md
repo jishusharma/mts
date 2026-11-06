@@ -61,3 +61,5 @@ Every refusal and every result names its kind (`read|write|program|task`). The R
 - `ERROR extension_link` : the extension did not answer (disabled / reloaded; F5 the page).
 - `ERROR agent_unreachable` : the extension is alive, nothing listens on the port (start: `scripts\start-agent.ps1`, watchdog: add `-Watch`).
 - `GET /ping` (and the control box line on load) shows agent version, host, PowerShell version, running commands.
+
+0.7.27 (2026-11-06): a block runs only when its reply is complete (DeepSeek's action bar under the message); a block in a user message runs as before. Cause: a stream stall past the 2 s quiet window ran a half-written inline plan (73 chars) and the element lock then never ran the finished block; the result post timed out for the same reason.

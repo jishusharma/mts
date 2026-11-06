@@ -134,6 +134,15 @@
     return '';
   }
   function btext(el) { return L.blockText(el); }
+  // 0.7.27: is the reply that holds this block complete? DeepSeek: .ds-message, then the action bar as its next sibling (loop.js replyDone)
+  function replyFinished(block) {
+    var m = block && block.closest ? block.closest('.ds-message') : null;
+    if (!m) return L.replyDone({ hasMsg: false });
+    var bar = m.nextElementSibling;
+    return L.replyDone({ hasMsg: true, assistant: !!m.querySelector('.ds-assistant-message-main-content'),
+      barIcons: bar ? bar.querySelectorAll('svg').length : 0 });
+  }
+  var warnedNoBar = false;
   function isMarkerFirst(text) { return firstNonEmptyLine(text).indexOf('# AIRUN') === 0; }
   function stripMarker(s) { return L.stripMarker(s); }
   function markerCount(text) { var m = String(text).match(/# AIRUN/g); return m ? m.length : 0; }
@@ -588,6 +597,13 @@
           setStatus(L.quietWaitStatus(Date.now() - quietSince, CFG.aibridge_wait_ms));   // never a silent loop
           await sleep(500); continue;
         }
+        var rf = replyFinished(item.block);
+        if (rf.known && !rf.done) {   // 0.7.27: never run a block DSA is still writing
+          if (!quietSince) quietSince = Date.now();
+          setStatus('waiting: DSA is still writing this reply (' + Math.round((Date.now() - quietSince) / 1000) + ' s)');
+          await sleep(500); continue;
+        }
+        if (!rf.known && !warnedNoBar) { warnedNoBar = true; auditEvent('no reply-finished marker on this page (DeepSeek DOM changed?); blocks run on the quiet rule'); }
         quietSince = 0;
         pending.shift();
         await runBatch(item.block);

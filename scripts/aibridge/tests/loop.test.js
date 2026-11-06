@@ -114,6 +114,20 @@ t('0.7.7 notice text tells DSA not to repeat blocks that have a result', () => {
   assert.ok(L.REPLY_NOTICE_TEXT.includes('do not repeat blocks that already have a result'));
   assert.ok(L.ANSWER_MIN_CHARS <= 2);   // 'ok', the reply the notice asks for, must count as an answer
 });
+t('replyDone (0.7.27): a finished DeepSeek reply has the 6-icon action bar under it -> run', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: true, assistant: true, barIcons: 6 }), { known: true, done: true });
+});
+t('replyDone: a reply still streaming has no action bar yet -> wait (the 73-char inline plan of 2026-11-06)', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: true, assistant: true, barIcons: 0 }), { known: true, done: false });
+  assert.strictEqual(L.replyDone({ hasMsg: true, assistant: true, barIcons: 2 }).done, false);   // a user-row bar (edit, copy) is not it
+});
+t('replyDone: a block the operator pasted into a user message is complete when posted', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: true, assistant: false, barIcons: 2 }), { known: true, done: true });
+});
+t('replyDone: no .ds-message ancestor (DOM changed) -> unknown, the caller falls back to the quiet rule', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: false }), { known: false, done: false });
+  assert.deepStrictEqual(L.replyDone(null), { known: false, done: false });
+});
 (async () => {
   const never = new Promise(() => {});
   const r = await L.raceDeadline(never, 20, () => Promise.resolve(0));
