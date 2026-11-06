@@ -1793,7 +1793,11 @@ DECISION: all three machines boot slowly since the always-on scripts started; a 
 Applied: 2026-11-06, session local_ffd5a690.
 
 ## d-flip-engine-study-1106
-2026-11-06 15:00Z, operator (voice): wants a "flipping engine" over 20 timeframes (1w ... 1m, incl. 5d/3d/2d/7h/10m/3m/2m) that says how likely the open candle closes its current colour, shown graphically on the live-aid strip, reviewed by other models before it counts. Asked the Lead's view first. Lead: good as a context layer, only if measured against the random-walk null (Brownian bridge) with 12 pre-registered cells and Brier out of sample; never a signal. Card: candle-flip-probability-study-1106 (READY, design in research/candle_flip_probability_2026-11/DESIGN.md). Not started until he says go.
+Flip engine study: go or not yet? Card candle-flip-probability-study-1106 is READY.
+2026-11-06 15:00Z, operator (voice): a flipping engine over 20 timeframes (1w ... 1m, incl. 5d/3d/2d/7h/10m/3m/2m) that says how likely the open candle closes its current colour, graphical on the live-aid strip, reviewed by other models. Lead's view: good as a context layer only if measured against the random-walk null (Brownian bridge), 12 pre-registered cells, Brier out of sample; never a signal.
+Answer: (none yet)
 
 ## d-power-gate-ceiling-1106
-2026-11-06 14:55Z, Builder finding via Supervisor C: the pre-reg power gate (0.30 % ceiling, repo-wide Holm m = 238) blocks every DEV study. Lead filed power-gate-holm-m-decision-1106 (READY). Default if the operator is silent 24 h: Holm m per study family.
+Power gate 0.30 % ceiling with repo-wide Holm m = 238 blocks every DEV study (Builder via Supervisor C, 2026-11-06 14:55Z). Card power-gate-holm-m-decision-1106 READY.
+Recommended: Holm m per study family.
+Answer: default (Holm m per family) applies from 2026-11-07 15:00Z unless the operator overrides; recorded by Lead C.
