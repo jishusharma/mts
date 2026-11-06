@@ -13,15 +13,7 @@
   "id": "gemini-blind-read-wt-extreme-cross-2026-11",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "WT extreme-cross bounce size study (1m/5m/15m, DEV) + Gemini feeder card",
-      "ref": "f72763f16b19",
-      "utc": "2026-11-04T20:19:19Z"
-    }
-  ],
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -32,7 +24,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "wt-extreme-cross-1104",
-  "refreshed": "2026-11-06T12:51:09Z",
+  "refreshed": "2026-11-04T20:17:42Z",
   "refs": [
     "MyTradingSys/research/wt_extreme_cross_2026-11/RESULT.md"
   ],
@@ -42,7 +34,7 @@
     "MyTradingSys/research/wt_extreme_cross_2026-11"
   ],
   "scope_out": [],
-  "scope_sha": "f72763f16b19",
+  "scope_sha": "",
   "size": "S",
   "sources": [],
   "state": "ready",

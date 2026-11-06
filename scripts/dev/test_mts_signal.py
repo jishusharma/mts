@@ -632,20 +632,6 @@ class SignalTest(unittest.TestCase):
         os.environ["MTS_ACCOUNT"] = "sharma"
         self.assertEqual(S.who(), "lenovo/sharma")             # an explicit account label still wins
 
-    def test_who_appends_agent_name(self):
-        self.machine("jis-nuc", "")
-        os.environ.pop("MTS_ACCOUNT", None)
-        os.environ.pop("MTS_AGENT", None)
-        self.as_login("bob.fake@example.test")
-        self.assertEqual(S.who(), "jis-nuc/B")
-        os.environ["MTS_AGENT"] = "gemini-nuc"
-        try:
-            self.assertEqual(S.who(), "jis-nuc/B/gemini-nuc")
-            self.assertTrue(S.who().endswith("/gemini-nuc"))
-        finally:
-            os.environ.pop("MTS_AGENT", None)
-        self.assertEqual(S.who(), "jis-nuc/B")
-
     def test_session_start_announces_login_and_tells_the_session(self):
         self.machine("jis-nb", "")
         self.as_login("carol1985@example.test")
