@@ -8,7 +8,12 @@
   ],
   "created": "2026-11-07T18:48:43Z",
   "depends_on": [],
-  "done_when": "Live Aid page shows a News panel: last 12 Tree News items (UTC time, source, importance, title), importance >= 7 highlighted, class tag per item from the N6 word list (hack/exploit/drain, halt/suspend withdrawals, ETF/SEC, Fed/CPI, war/sanction, delist); polls news.treeofalpha.com/api/news?limit=20 every 15 s only while the page is open (no scheduler); a saved sample JSON under research/news_feeds_2026-10-30/sample_tree_news.json; a test that parses the sample and classifies 3 known items fails on pre-change code; REQUIREMENTS.md gets the panel; page rebuilt and shipped; Result: line names the live page build",
+  "done_when": [
+    "Live Aid page shows a News panel: last 12 Tree News items (UTC time, source, importance, title); importance >= 7 highlighted; class tag per item from the N6 word list (hack/exploit/drain, halt/suspend withdrawals, ETF/SEC, Fed/CPI, war/sanction, delist)",
+    "Polls news.treeofalpha.com/api/news?limit=20 every 15 s only while the page is open and visible; no scheduler, no background logger",
+    "research/news_feeds_2026-10-30/sample_tree_news.json saved (20 items); tools/live_aid/test_news_feed.py parses it and classifies 3 known items; the test fails on pre-change code",
+    "REQUIREMENTS.md gets the News panel section; page rebuilt and shipped; Result: line names the live page build"
+  ],
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -16,6 +21,22 @@
   "goal": "Operator 2026-11-08: 'News is a Live Aid and it is critical'. Live Aid shows no headlines; build plan N1+N6 of research/news_feeds_2026-10-30/REPORT.md: a headline panel fed by Tree News REST, context only.",
   "id": "news-headline-panel-tree-rest-1108",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-1106-46cfc9",
+      "ref": "d33c571f45be",
+      "utc": "2026-11-06T21:24:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d33c571f45be Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-110",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-06T21:24:19Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,6 +44,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T18:55:20Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
     "MyTradingSys/items/T054_us_session_news_correlation.md"
@@ -38,11 +60,12 @@
   "scope_out": [
     "no trade gate, no sizing, no signal: context only (CBP rule)|no scheduler, no background logger|no CoinGlass (key-gated) in this card|no headline text stored in the repo beyond the 20-item sample|no live tree (.mts_live) touch"
   ],
+  "scope_sha": "d33c571f45be",
   "size": "M",
   "sources": [
     "operator 2026-11-08 00:15 IST: TradingView News panel screenshot (abf74fdf6d47) 'Do u see such news! as here'; third ask after T054 (09-28) and news_feeds_2026-10-30; nothing built"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "read tools/live_aid/REQUIREMENTS.md + STEPS.md + build_artifact.py to see how panels are built and tested",
     "curl the Tree endpoint once, save 20 items as the sample; write test_news_feed.py (parse, importance >= 7 mark, N6 tags) and run it: must fail before news_feed.js/parser exists",
@@ -52,5 +75,5 @@
   "tests": "MyTradingSys/tools/live_aid/test_news_feed.py (fails pre-change: module missing)",
   "title": "News headlines in MTS: Tree News REST poll (15 s, while a page is open) into live_aid + a headlines log; importance >= 7 marked; no scheduler",
   "weight": "",
-  "worker": "agent"
+  "worker": "session"
 }
