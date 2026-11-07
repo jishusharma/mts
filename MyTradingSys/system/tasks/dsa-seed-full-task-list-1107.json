@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Login B (bridge lane owner, AIBRIDGE_LANE.md) after its reset, else login A. Builds on aibridge-start-dsa-trigger-1107 (the trigger itself, shipping 11-07). Operator 11-07: 'it must list all the tasks assigned to DSA, check latest bugs created by DSA'.",
+  "note": "Login B (bridge lane owner, AIBRIDGE_LANE.md) after its reset, else login A. Builds on aibridge-start-dsa-trigger-1107 (the trigger itself, shipping 11-07). Operator 11-07: 'it must list all the tasks assigned to DSA, check latest bugs created by DSA'. || 2026-11-07 dsa-watcher-1107: scripts/dev/dsa_seed.py + test_dsa_seed.py now exist on trunk (parallel seed: chat slug, cards held by other chats, UTF-8 env). EXTEND them (add DSA QUEUE / DSA FILED in build_seed), do not recreate; register is done (extra_tests.tsv). Do NOT edit scripts/dev/dsa.py: it is a DSA-bridge file, any edit fails test_aibridge_version_bump and needs a RELEASES bump (all running chats then show a version mismatch).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

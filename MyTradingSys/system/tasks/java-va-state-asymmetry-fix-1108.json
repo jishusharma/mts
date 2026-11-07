@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:31:32Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "java-va-state-asymmetry-fix-1108",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Argon root cause 4: a pure bug, no edge claim needed. Audit describes it but ships no Java fix. Maven test on classifyState/determineDirections with price above VAH -> ct_short candidate survives; below VAL -> dirs contains short. Live-path adjacent: smoke gate --full.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Lead C review 2026-11-08 of Argon's Tom/Fabio audit (1a79739e, research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md); operator asked what really needs to be done"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Java SetupCandidatesBuilder: above_vah kills ct_short (trend_healthy, line ~307/477) and below_val never adds short (line ~320); fix both, test fails pre-change",
+  "weight": "",
+  "worker": ""
+}

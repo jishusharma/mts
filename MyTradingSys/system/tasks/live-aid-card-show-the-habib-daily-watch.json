@@ -4,43 +4,45 @@
   "commands": [],
   "created": "2026-11-06T19:53:41Z",
   "depends_on": [],
-  "done_when": "live_aid.html renders a Habib watch card from a fixture of habib_watch.py output; test_live_aid.py asserts the card id and one candidate row (fails now)",
-  "est_turns": 26,
+  "done_when": "MyTradingSys/tools/live_aid/test_live_aid.py has a case that the card renders from a sample habib_watch output and carries the UNVERIFIED label; fails on current code.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "live_aid shows a Habib daily-watch card: the candidate imbalance candles at known levels from habib_watch.py output.",
+  "goal": "live_aid shows a Habib daily-watch card (candidate imbalance candles at known levels from habib_watch.py output), labelled UNVERIFIED while the caption check is open.",
   "id": "live-aid-card-show-the-habib-daily-watch",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; Habib rules stay UNVERIFIED until gemini-habib-caption-check-1107 ships: the card carries that label.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Card ref pointed to a worktree path outside the repo; replaced. Touches live_aid files also named by live-aid-balance-acceptance-1105 and live-aid-trendlines-liquidations-1106: one worker takes the cluster. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
-    "C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/.claude/worktrees/habib-book-1106-98be9c/MyTradingSys/system/tasks/habib-plan-scoring-not-trades-1104.json"
+    "MyTradingSys/system/tasks/habib-plan-scoring-not-trades-1104.json"
   ],
   "result": "",
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/live_aid.py",
     "MyTradingSys/tools/live_aid/test_live_aid.py",
     "MyTradingSys/research/habib_concept_book_2026-11/habib_watch.py (read)"
   ],
   "scope_out": [
-    "no order logic; display only, labelled descriptive",
-    "no live-tree edit"
+    "no trading rule from Habib; display only",
+    "no live-tree edit, no deploy, no .secrets or .env read"
   ],
   "size": "M",
   "sources": [],
   "state": "raw",
   "steps": [
-    "Read habib_watch.py output format",
-    "Add a fixture and a card in live_aid.html",
-    "Add the fail-first test"
+    "Run habib_watch.py to see output shape",
+    "Write failing render test",
+    "Add the card; label UNVERIFIED (gemini-habib-caption-check-1107 is done: re-check the label against its report)",
+    "Run test_live_aid.py"
   ],
-  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: Habib watch card renders the fixture rows (fails now)",
+  "tests": "new case in test_live_aid.py fails on current code",
   "title": "Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)",
   "weight": "IMPORTANT",
   "worker": "session"

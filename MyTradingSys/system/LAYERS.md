@@ -34,6 +34,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `tom-btc-dev-backtest` blocked p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-fabio-auction-context-oos-bt-1107` refined p2 CODEX: Run pre-registered multi-month OOS backtest of auction_context.py on BTC 5m/15m data vs random-entry null
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `tom-btc-other-setups` blocked p3 SONNET: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
@@ -75,7 +76,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-guidance-gpt-rederive` blocked p2 SONNET: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
-  - `squeeze-momentum-engine-1107` ready p2 SONNET: Squeeze Momentum (LazyBear) engine + FORMULAS section + hand test + 90-day squeeze state on 1d/1h/15m (spec SP
 
 ## RSI / Malkan / Kurisko (`rsi`)
 - Status: 40/60 levels: tolerance study done; divergence: no edge on any TF.
@@ -231,7 +231,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/wavetrend_2026-10-17/RESULT.md`; `MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md`; `MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md`; `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `layer-bible-runtime-1104` raw p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
+  - `layer-bible-runtime-1104` refined p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
   - `wt30-div-blind-recount-haiku-1104` ready p2 HAIKU: Haiku blind recount of the coordinator WT 30m divergence and cycle-frequency numbers from the written rule onl
 

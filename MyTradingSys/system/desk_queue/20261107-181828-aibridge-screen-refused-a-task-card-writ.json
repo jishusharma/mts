@@ -1,0 +1,10 @@
+{
+  "done_when": "Either scripts/aibridge screening exempts task-card JSON prose under MyTradingSys/system/tasks/ in a worktree, or the operator tells DSA to reword the card without the keyword; either way the card can be refined, checked and promoted.",
+  "from": "JIS-NB",
+  "id": "20261107-181828-aibridge-screen-refused-a-task-card-writ",
+  "need": "DSA chat mts-dsa-jis-nb-1107-1658 (JIS-NB, tree shipped at 46f01d97) refining card venue-gap-tight-stop-rerun-on-deribit. The card JSON was piped through dsa.py put and the bridge refused before running: REFUSED http=403 reason=denied_path, the command text matched the safety keyword. The match came from one scope_out sentence of the card prose that names the trading stop-file mechanism. Nothing was written; the card is still raw with refine_tries 1. The intended write is safe: a task card under MyTradingSys/system/tasks/ inside a DSA worktree, no safety file read, written or named as a path. Result #49 rid snmzss-mw6q7pst-121.",
+  "posted": "2026-11-07T18:18:28Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge screen refused a task-card write over a prose keyword"
+}

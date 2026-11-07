@@ -4,18 +4,18 @@
   "commands": [],
   "created": "2026-11-06T08:33:32Z",
   "depends_on": [],
-  "done_when": "scripts/dev/test_sync.py has a remote-only-claim test that keeps the tree and fails on e5c7a693f; run_all_tests.py --quick green",
-  "est_turns": 14,
+  "done_when": "scripts/dev/test_sync.py has a case with a remote-only claim where start leaves the tree in place; it fails on e5c7a693f and passes after.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "sync.py start fetches origin/claims before the tidy(gateway_only) retire check, so a remote-only claim keeps the tree.",
+  "goal": "sync.py start fetches the claims ref before the tidy(gateway_only) retire check, so a claim made on another machine keeps its tree.",
   "id": "sync-py-start-tidy-gateway-only-reads-cl",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium. CRITICAL (gate script sync.py): review SESSION before ship per session_planner Duty 5.",
+  "note": "Gate script sync.py. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. CRITICAL protocol (details file): plan review then diff review by a fresh session before ship.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -26,19 +26,20 @@
     "scripts/dev/test_sync.py"
   ],
   "scope_out": [
-    "no change to ship or claim formats",
-    "no live-tree edit"
+    "no change to ship or release paths",
+    "no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "size": "S",
+  "size": "M",
   "sources": [],
   "state": "raw",
   "steps": [
-    "Find tidy(gateway_only) and its claims read (fetch=False)",
-    "Fetch origin/claims first, then check; fail closed if the fetch fails",
-    "Add the fail-first test"
+    "Read tidy(gateway_only) and the claims read with fetch=False",
+    "Write the failing remote-only-claim test",
+    "Fetch origin claims first (bounded timeout, fail closed = keep the tree)",
+    "Run test_sync.py"
   ],
-  "tests": "scripts/dev/test_sync.py: tidy keeps a tree whose claim exists only on origin (fails on e5c7a693f)",
+  "tests": "new case in scripts/dev/test_sync.py fails on current code",
   "title": "sync.py start: tidy(gateway_only) reads claims with fetch=False, so a claim made on another machine can be missed and a claimed tree retired; done when start fetches origin/claims before the retire check and a test with a remote-only claim keeps the tree (fails on e5c7a693f)",
   "weight": "CRITICAL",
-  "worker": "agent"
+  "worker": "session"
 }

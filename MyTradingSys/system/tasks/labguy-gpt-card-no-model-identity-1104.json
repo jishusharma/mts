@@ -4,31 +4,43 @@
   "commands": [],
   "created": "2026-11-04T13:18:04Z",
   "depends_on": [],
-  "done_when": "a layer_lab report from a gpt-* or gemini-* card must carry a Producer: <model> header line; lab_flow check rejects one without it (test in scripts/dev/test_lab_flow.py fails on current code)",
-  "est_turns": null,
+  "done_when": "scripts/dev/codex_run.py writes 'MODEL: <id> VENDOR: <vendor>' on line 2 of every report it saves, and a result without it gets trust UNCHECKED; test_codex_run.py covers both; fails on current code.",
+  "est_turns": 16,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Lab_Guy defect: gpt-* lab reports carry no model identity; gemini-queue authored GPT-labelled audits while Codex was 401, so cross-vendor trust cannot be proven Evidence: reports/2026-11-04_gpt-audit-context-filter-review-1104.md and ..._gpt-rederive-wavetrend-c30-retest-1104.md were committed by author gemini-queue (git-identity-gemini-queue-leak) while codex_run status shows no run since 10-30 and 401 today; neither report states model, effort or tokens, result_receipt.trust = UNCHECKED. Fix: reports/receipts must carry model id + vendor; git author cannot prove vendor; until then a gpt-* result is UNCHECKED and cannot satisfy a different-vendor review.",
+  "goal": "A gpt-* lab report carries its model id and vendor in the first header line, so a cross-vendor reviewer can tell a Codex run from a Gemini-authored one.",
   "id": "labguy-gpt-card-no-model-identity-1104",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium. DECISION (OURS): identity lives in the report header line (not a card field), because the report is what a cross-vendor reviewer reads.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (reviewer still required, IMPORTANT) (planner-a-1107b; twin check run, none). DECISION (OURS): identity in the report header line, not a card field. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
   "prio": 2,
   "refine_tries": 3,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py",
+    "MyTradingSys/research/layer_lab/LAB_RECIPES.md (read)"
+  ],
+  "scope_out": [
+    "no change to which lane runs a card",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Find where codex_run builds result_receipt and trust",
+    "Add the failing test",
+    "Write the identity line from the run's actual model/vendor, UNCHECKED when absent",
+    "Run test_codex_run.py"
+  ],
+  "tests": "new case in scripts/dev/test_codex_run.py: report without identity line -> trust UNCHECKED; with line -> unchanged; fails on current code",
   "title": "Lab_Guy defect: gpt-* lab reports carry no model identity; gemini-queue authored GPT-labelled audits while Codex was 401, so cross-vendor trust cannot be proven",
   "weight": "IMPORTANT",
-  "worker": ""
+  "worker": "session"
 }
