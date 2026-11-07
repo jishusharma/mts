@@ -2021,3 +2021,7 @@ window, fix the Java bug now, then testnet-forward the two setups; no fixed core
 ## d-news-headlines-third-ask-1108 (2026-11-08 ~01:15Z, operator, TradingView News panel screenshot)
 Operator showed TradingView's BTCUSDT News panel ("Hyperliquid whales stack Bitcoin shorts to highest level since October 2025", ETF outflows, etc.) and asked whether MTS sees such news. Lead C: no; MTS has no news ingestion. This is the third ask (T054 2026-09-28, news_feeds_2026-10-30 report, now); the 10-30 report already tested a free timestamped feed (Tree News REST, importance score, ~15 s delay) and wrote plan N1 (headline panel in live_aid), never built. The sim News tab (sim-news-concept-tabs-1104) is a UI tab without a feed.
 Answer: card news-headline-panel-tree-rest-1108 (SONNET p2): Tree REST poll while a page is open, headlines log, importance >= 7 marked; context only, no trade gate; no scheduler. Runs on login A/B or credit, not login C (74 %).
+
+## d-news-is-live-aid-critical-1108 (2026-11-08 ~01:45Z, operator)
+Operator: "News is a live Aid and it is critical!!!" Lead C: card news-headline-panel-tree-rest-1108 raised to p1 and filled build-ready (N1+N6 of the 10-30 report; Tree News REST; context only); launched on the API credit (Sonnet) at once since login C is at the 74 % cap.
+Answer: build it now on credit; N2 pulse tile and N3 macro strip follow as separate cards after N1 lands.
