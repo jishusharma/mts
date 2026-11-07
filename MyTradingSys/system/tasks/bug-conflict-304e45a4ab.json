@@ -1,37 +1,46 @@
 {
   "approved_by": "",
-  "asks": "Which holds: d-login-c-cap-75-24h-1107: no Sonnet from login C; newer order wins, watcher stops at 74% or operator 11-07 17:45Z: Sonnet DSA Watcher on login C?",
+  "asks": "",
   "commands": [],
   "created": "2026-11-07T17:40:25Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "OPERATOR_DECISIONS.md lines 1918-1922 (d-login-c-cap-75-24h-1107) carry a line naming d-dsa-watcher-sonnet-parallel-1107 (2026-11-07 17:45Z) as the newer order that wins for the DSA watcher, and tasks.py lint passes.",
+  "est_turns": 2,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Two instructions contradict: A = d-login-c-cap-75-24h-1107: no Sonnet from login C; newer order wins, watcher stops at 74% | B = operator 11-07 17:45Z: Sonnet DSA Watcher on login C. The operator decides which holds; then fix the loser's text.",
+  "goal": "The operator answer is already on disk: OPERATOR_DECISIONS.md:1978 (d-dsa-watcher-sonnet-parallel-1107, 17:45Z) says the newer order wins and the DSA watcher stops at 74 pct. Carry that answer into the cap-75 block at :1918-1922 so a later reader does not re-open the conflict.",
   "id": "bug-conflict-304e45a4ab",
   "lane": "SONNET",
-  "last_seen": "2026-11-07T17:40:25Z",
-  "last_session": "3d145224-2ecc-4910-b835-38575cd4ee11",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REFINED 2026-11-07 by DSA JIS-NB chat mts-dsa-jis-nb-1107-1658. The operator question this card carried is already answered in the tree: OPERATOR_DECISIONS.md:1978-1979 states the newer order wins and the watcher stops at 74 pct. The card narrows to the mechanical second half, marking the older block as superseded for the DSA watcher only; the 75 pct cap still stands for everything else until 2026-11-08 15:00Z (OPERATOR_DECISIONS.md:1922).",
   "prio": 1,
-  "refine_tries": 0,
-  "refined_by": "",
+  "refine_tries": 1,
+  "refined_by": "DSA JIS-NB chat mts-dsa-jis-nb-1107-1658",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "seen": 1,
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Instruction conflict: d-login-c-cap-75-24h-1107: no Sonnet from login C; vs operator 11-07 17:45Z: Sonnet DSA Watcher on login",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "scope_out": [
+    "no change to the 75 pct cap itself, no change to the 17:45Z decision block",
+    "no scheduler or code change"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md:1918-1922 (d-login-c-cap-75-24h-1107, 15:00Z, cap 75 pct until 2026-11-08 15:00Z)",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md:1974-1979 (d-dsa-watcher-sonnet-parallel-1107, 17:45Z: newer order wins, watcher stops at 74 pct)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Re-read OPERATOR_DECISIONS.md:1918-1922 and :1974-1979",
+    "Add one line under the cap-75 block naming d-dsa-watcher-sonnet-parallel-1107 as the superseding order for the DSA watcher, 74 pct stop, cap otherwise unchanged",
+    "Run tasks.py lint"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q stays green; the new line is found by one Select-String on the added phrase",
+  "title": "Instruction conflict: d-login-c-cap-75-24h-1107 vs d-dsa-watcher-sonnet-parallel-1107 (answer on disk; mark the older block superseded for the watcher)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
