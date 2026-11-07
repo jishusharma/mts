@@ -76,7 +76,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-guidance-gpt-rederive` blocked p2 SONNET: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
-  - `squeeze-momentum-engine-1107` ready p2 SONNET: Squeeze Momentum (LazyBear) engine + FORMULAS section + hand test + 90-day squeeze state on 1d/1h/15m (spec SP
 
 ## RSI / Malkan / Kurisko (`rsi`)
 - Status: 40/60 levels: tolerance study done; divergence: no edge on any TF.
