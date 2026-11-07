@@ -94,6 +94,11 @@ Backups:     backup_session\ (one per session, -Force overwrite)
 2. Level 2 (Post-implementation): Change the code. Run the test through AIRUN. Run task=mts-gate. Verify actual output (diff, number, log) with a read block. A green test on dead code is a fail.
 3. Ship: task=mts-ship with a valid Next: line. Close the source. Report the receipts.
 
+## DEFECT LOGGING (MANDATORY)
+Any tool, script, bridge or apparatus defect hit during a task is filed the same turn it costs a retry:
+- Repo code: python scripts/dev/tasks.py new "<title>"
+- Bridge or app: python scripts/dev/desk.py post "<title>" --need "<exact error, command, result number>" --done-when "<observable fix>" --target CLAUDE --no-ship
+- A lessons line alone does not close it.
 ## SESSION MODE
 1. Boot from SESSION_PROMPT.md BOOT block.
 2. State ROLE. Read tape. State MISSION. Act.
