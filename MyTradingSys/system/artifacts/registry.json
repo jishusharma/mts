@@ -444,6 +444,7 @@
   "cbp_dashboard": "deleted by Jis 2026-10-12 (one-off 2026-10-07 snapshot, https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS)"
  },
  "home_login": "jishusharma1985",
+ "publishers": ["jishusharma1985"],
  "home_slug": "mts_home",
  "access_model": "DECISION (operator 2026-10-17, replaces the 2026-10-16 split): every page is published from the repo by the home login jishusharma1985, so every MTS Home link opens on that login with no Share step. Control Room (MNuodX, its Inbox db now lives here), MTS Layers, both CBP desks, Research Map and Session Planner are owned by jishusharma1985; the jishu.sharma copies are old copies to delete. Exception: the Tom and Fabio deck has no repo html, so it stays on jishu.sharma until re-made. Other logins open these pages only after jishusharma1985 shares them (Share menu, edit access). Never publish a second copy on another login."
 }

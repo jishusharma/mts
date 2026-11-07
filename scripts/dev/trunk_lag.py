@@ -82,6 +82,49 @@ def lag(repo, now=None, fetch=True):
     return len(out), max(0, now - min(int(x) for x in out))
 
 
+PAGES_CACHE = "mts_pages_stale.json"      # in the git dir: {at, key (registry mtime), slugs}; written by `artifacts.py stale-cache`
+PAGES_TTL_S = 900                         # OURS: building the generated pages takes seconds, so the hook only reads the cache
+
+
+def _spawn_pages_refresh(repo, cache):
+    """Detached `artifacts.py stale-cache`: the hook must stay fast, the page builds run on their own."""
+    flags = getattr(subprocess, "CREATE_NO_WINDOW", 0) | getattr(subprocess, "DETACHED_PROCESS", 0)
+    subprocess.Popen([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale-cache", "--file", str(cache)],
+                     cwd=str(repo), stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=flags)
+
+
+def pages_line(repo, now=None, login=None, spawn=None):
+    """`PAGES STALE n: slugs` for a session on a publisher login (registry publishers) when a page's repo build differs from its last
+    publish; '' for any other login, when nothing is stale, or while the cache is still being built (operator 2026-11-07)."""
+    repo, now = Path(repo), now or time.time()
+    reg_path = repo / "MyTradingSys" / "system" / "artifacts" / "registry.json"
+    try:
+        reg = json.loads(reg_path.read_text(encoding="utf-8"))
+        if login is None:
+            import mts_signal
+            login = mts_signal.login()
+        if str(login or "").upper()[:1] not in [k for k, v in PUBLISHER_ACCOUNTS.items() if v in (reg.get("publishers") or [])]:
+            return ""
+        gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
+        cache = Path(gd) / PAGES_CACHE
+        try:
+            c = json.loads(cache.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            c = {}
+        if now - float(c.get("at") or 0) >= PAGES_TTL_S or c.get("key") != reg_path.stat().st_mtime_ns:
+            (spawn or _spawn_pages_refresh)(repo, cache)
+        slugs = c.get("slugs") or []
+    except Exception:
+        return ""
+    if not slugs:
+        return ""
+    return (f"PAGES STALE {len(slugs)}: {', '.join(slugs)}. A page's repo build differs from what is published: build and publish over its url "
+            f"(`python scripts/dev/artifacts.py republish`, then `publish-record --slug <slug>`; SUPER_SESSION.md Every wake step 3b).")
+
+
+PUBLISHER_ACCOUNTS = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}   # login letter -> registry account (artifacts.LOGIN_ACCOUNT)
+
+
 def check(repo=None, fetch=True):
     repo = Path(repo or os.getcwd())
     if ".mts_live" in repo.resolve().parts:
@@ -198,32 +241,6 @@ def sync_hook_files(repo):
     return len(done)
 
 
-CRLF, LF = chr(13).encode() + chr(10).encode(), chr(10).encode()
-
-
-def _blob_text(repo, ref):
-    """Bytes of `git cat-file blob <ref>` with CRLF folded to LF; None when it is not there."""
-    r = subprocess.run(["git", "-C", str(repo), "cat-file", "blob", ref], capture_output=True, timeout=git_timeout(),
-                       env={**os.environ, **GIT_NOPROMPT})
-    return None if r.returncode else r.stdout.replace(CRLF, LF)
-
-
-def _already_trunk(repo, path, head, index, trunk_blobs):
-    """True when this edit holds nothing trunk lacks: the worktree copy (and the staged one) equals trunk's or HEAD's, up to
-    line endings, so the fast-forward may drop it (JIS-NUC main folder: 47 staged scripts/dev copies, CRLF-only LAYERS.md)."""
-    known = {x for x in (head.get(path), trunk_blobs.get(path)) if x}
-    if not known:
-        return False
-    want = {_blob_text(repo, b) for b in known} - {None}
-    if index.get(path) not in known and _blob_text(repo, index.get(path, "")) not in want:
-        return False
-    try:
-        mine = (Path(repo) / path).read_bytes().replace(CRLF, LF)
-    except OSError:
-        return False
-    return mine in want
-
-
 def release_synced(repo):
     """Before a fast-forward: put the files this hook took back to HEAD (or remove a new one), so `merge --ff-only` re-applies
     trunk's copy. Anyone else's tracked edit stays and rides along when trunk does not change that path (JIS-NUC 2026-10-31:
@@ -235,15 +252,9 @@ def release_synced(repo):
         return True
     head, index, dirty, record = _hook_state(repo)
     foreign = {p for p in paths if not (p in record and index.get(p) == record[p] and p not in dirty)}
-    clash = foreign & set(_z(repo, "diff", "--name-only", "-z", "HEAD", f"origin/{TRUNK}", timeout=30))
-    harmless = set()
-    if clash:
-        trunk_blobs = _blobs(repo, "ls-tree", "-r", "-z", f"origin/{TRUNK}", "--", *sorted(clash))
-        harmless = {p for p in clash if _already_trunk(repo, p, head, index, trunk_blobs)}
-        if clash - harmless:
-            return False
-    # an edit that only repeats trunk's (or HEAD's) content goes back to HEAD too; the fast-forward re-applies trunk's copy
-    paths = [p for p in paths if p not in foreign or p in harmless]
+    if foreign & set(_z(repo, "diff", "--name-only", "-z", "HEAD", f"origin/{TRUNK}", timeout=30)):
+        return False
+    paths = [p for p in paths if p not in foreign]
     back = [p for p in paths if p in head]
     new = [p for p in paths if p not in head]
     if back and git(repo, "checkout", "HEAD", "--", *back, timeout=60).returncode:
@@ -311,7 +322,10 @@ def main(argv):
         return 0
     if argv[:1] in (["hook"], ["check"]):
         try:
-            text = check(payload_cwd(sys.stdin.read()) if argv[:1] == ["hook"] else None)
+            cwd = payload_cwd(sys.stdin.read()) if argv[:1] == ["hook"] else None
+            text = check(cwd)
+            if ".mts_live" not in Path(cwd or os.getcwd()).resolve().parts:
+                text = chr(10).join(x for x in (text, pages_line(cwd or os.getcwd())) if x)
         except Exception:
             return 0
         if text:
