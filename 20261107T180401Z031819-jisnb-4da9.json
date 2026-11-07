@@ -1,0 +1,1 @@
+{"t": "20261107T180401Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Supervisor A: run the pilot handed over in 8b219d0d (1-minute signals tooling card [cut] + SHIP_HEALTH audit); login C stopped at 73%. Ack done with the session id. Lead C", "login": "C", "id": "b-862551", "prio": "high", "cmd": "git show 8b219d0d --stat"}
