@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:32:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/ma_layer_2026-11/test_spec_cycle_ma_clock.py exists, passes, and fails under one mutation.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT spec tests for ma_layer_2026-11/cycle_ma_clock.py from CYCLE_MA_CLOCK.md; the module has no test file today.",
+  "id": "gpt-spec-tests-cycle-ma-clock-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "MA layer: concepts (Krown + web), ma_state.py with spec tests, Bible MA clock",
+      "ref": "dbc513feef5b",
+      "utc": "2026-11-06T19:19:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dbc513feef5b MA layer: concepts (Krown + web), ma_state.py with spec tests, Bible MA clock",
+      "ref": "MyTradingSys/research/ma_layer_2026-11/CYCLE_MA_CLOCK.md",
+      "utc": "2026-11-06T19:19:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected values from the md, not the code.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:32:04Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/ma_layer_2026-11/CYCLE_MA_CLOCK.md (read)",
+    "MyTradingSys/research/ma_layer_2026-11/cycle_ma_clock.py (read)",
+    "MyTradingSys/research/ma_layer_2026-11/test_spec_cycle_ma_clock.py (new)",
+    "scripts/dev/run_extra_tests.py (EXTRA list entry)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "dbc513feef5b",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/ma_layer_2026-11/CYCLE_MA_CLOCK.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read CYCLE_MA_CLOCK.md",
+    "Hand-derive 4+ expected clock values",
+    "Write tests, green, one mutation red"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/ma_layer_2026-11/test_spec_cycle_ma_clock.py green; red under one mutation",
+  "title": "gpt-spec-tests-cycle-ma-clock: spec tests for cycle_ma_clock.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,10 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "commands": [
-    "python -m pytest scripts/dev/test_signal_wait.py -q"
-  ],
+  "commands": [],
   "context": {
     "calls_to_edit": null,
     "folded": "2026-11-07T18:07:10Z",
@@ -17,69 +14,48 @@
   },
   "created": "2026-11-07T17:35:26Z",
   "depends_on": [],
-  "done_when": "pytest scripts/dev/test_signal_wait.py passes; wait returns on a planted ask within one 60 s poll; status_block orders asks > stuck HIGH > age, cap 3 + count",
-  "est_turns": 14,
+  "done_when": "scripts/dev/test_mts_signal.py has a wait case (two ids pending, any one fires, --max M returns empty on timeout) and a sort/cap case, both fail on current code; SUPER_SESSION.md has the one-line wake checklist.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "mts_signal wait + broadcast --wait / ask --wait-reply, sorted capped status lines, supervisor.py wait wakes within 60 s on a new ask or HIGH broadcast",
+  "goal": "mts_signal.py gets 'wait [--max M]' that returns on the first new inbound record for this host or login and prints it; prompt status lines sort ask > HIGH > age, cap 3 plus a count.",
   "id": "signal-broadcast-wait-and-prio-1107",
   "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/signal-identity-1107",
-      "ref": "357da11a453e",
-      "utc": "2026-11-07T18:33:28Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "b51c2e1c0184 signals: broadcast/ask = wait for the ack; wake step 0 pending+asks by priori",
-      "ref": "MyTradingSys/system/SUPER_SESSION.md",
-      "utc": "2026-11-07T17:36:39Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Measured 2026-11-07: ask q-7257c1 sent 17:38Z, Lenovo acked+answered 17:43Z (5 min), Lead C saw it only at 17:52Z because its waiter watched one id and two conditions. Rule: a waiter fires on ANY new signal addressed to this host or login (ask, ack, note), never on one id; add mts_signal.py wait [--max M] that returns on the first new inbound record and prints it.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Do not touch .claude/settings.json in this card (hook change = separate card). NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T18:41:37Z",
   "refs": [
-    "scripts/dev/mts_signal.py",
-    "MyTradingSys/system/SUPER_SESSION.md",
-    ".claude/settings.json"
+    "scripts/dev/mts_signal.py"
   ],
   "result": "",
   "scope_in": [
     "scripts/dev/mts_signal.py",
-    "scripts/dev/supervisor.py",
-    "scripts/dev/test_signal_wait.py",
-    "scripts/dev/extra_tests.tsv",
+    "scripts/dev/test_mts_signal.py",
     "MyTradingSys/system/SUPER_SESSION.md"
   ],
   "scope_out": [
-    "no change to signal file schema, ack or HIGH logic, no live tree"
+    "no .claude/settings.json edit",
+    "no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "357da11a453e",
-  "size": "S",
+  "size": "M",
   "sources": [
     "operator 2026-11-07 ~17:40Z voice: broadcasts are fire-and-forget, senders never wait for the reply, receivers never check what is open; login C (the max console) must check broadcasts every wake and answer by priority; d-broadcast-wait-for-reply-1107"
   ],
-  "state": "active",
+  "state": "raw",
   "steps": [
-    "Add wait_signal/inbound_new and CLI wait",
-    "status_block sorted and capped",
-    "supervisor wait signal step",
-    "tests and doc line"
+    "Read the existing wait/status code in mts_signal.py",
+    "Write failing tests (any-signal wake, timeout, ordering, cap)",
+    "Implement wait --max and the ordering",
+    "Add the wake checklist line to SUPER_SESSION.md",
+    "Run test_mts_signal.py"
   ],
-  "taken": "2026-11-07T18:41:41Z",
-  "tests": "scripts/dev/test_signal_wait.py: 5 of 6 fail on pre-change code",
+  "tests": "new cases in scripts/dev/test_mts_signal.py fail on current code",
   "title": "Signal loop: broadcast --wait M blocks bounded and prints acks per host; prompt status lines sorted ask > HIGH > age, capped at 3 + count; wake checklist line in SUPER_SESSION.md",
-  "weight": "",
-  "worker": "agent"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
