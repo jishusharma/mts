@@ -682,6 +682,7 @@ A COUNT of Tom's claim "about 30% of the time ... the other 70% he will try and 
 **29.3 Code comparison (2026-11-01).** `analyse_day`, `shift_levels`, `build_days` (D and D-1 both 288 bars, R_ref from the last 1h bar closed at or before 00:00, day index = D minus the start day), `_naked`, `share`, `diff` match 29.1 and the numbers above. Recorded, not changed: censored events (event on the last bar, or no bar after the N-th close) enter the share as no-return, which is what PRE_REG.md's "else RUN-AWAY" gives and is also reported in the `censoring` audit (post-hoc, OURS, 12-bar restriction).
 
 ## 30. ADX/DI (Wilder) (`backtest/layers/adx/adx.py`; census `research/adx_di_2026-11/census.py`) - added 2026-11-07
+VERIFIED-TV 2026-11-07: TradingView built-in DMI 14/14, BINANCE:BTCUSDT 1D, bars 2026-01-15 and 2026-05-15 match to 0.01 on DI+, DI-, ADX (research/adx_di_2026-11/TV_CROSSCHECK.md); the last csv bar was partial, refresh after 00:00Z.
 
 Context indicator only (card adx-di-2d-cross-census-1107); Wilder's definitions, n = 14 by default, every threshold in the census is OURS.
 
