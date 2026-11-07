@@ -198,32 +198,6 @@ def sync_hook_files(repo):
     return len(done)
 
 
-CRLF, LF = chr(13).encode() + chr(10).encode(), chr(10).encode()
-
-
-def _blob_text(repo, ref):
-    """Bytes of `git cat-file blob <ref>` with CRLF folded to LF; None when it is not there."""
-    r = subprocess.run(["git", "-C", str(repo), "cat-file", "blob", ref], capture_output=True, timeout=git_timeout(),
-                       env={**os.environ, **GIT_NOPROMPT})
-    return None if r.returncode else r.stdout.replace(CRLF, LF)
-
-
-def _already_trunk(repo, path, head, index, trunk_blobs):
-    """True when this edit holds nothing trunk lacks: the worktree copy (and the staged one) equals trunk's or HEAD's, up to
-    line endings, so the fast-forward may drop it (JIS-NUC main folder: 47 staged scripts/dev copies, CRLF-only LAYERS.md)."""
-    known = {x for x in (head.get(path), trunk_blobs.get(path)) if x}
-    if not known:
-        return False
-    want = {_blob_text(repo, b) for b in known} - {None}
-    if index.get(path) not in known and _blob_text(repo, index.get(path, "")) not in want:
-        return False
-    try:
-        mine = (Path(repo) / path).read_bytes().replace(CRLF, LF)
-    except OSError:
-        return False
-    return mine in want
-
-
 def release_synced(repo):
     """Before a fast-forward: put the files this hook took back to HEAD (or remove a new one), so `merge --ff-only` re-applies
     trunk's copy. Anyone else's tracked edit stays and rides along when trunk does not change that path (JIS-NUC 2026-10-31:
@@ -235,15 +209,9 @@ def release_synced(repo):
         return True
     head, index, dirty, record = _hook_state(repo)
     foreign = {p for p in paths if not (p in record and index.get(p) == record[p] and p not in dirty)}
-    clash = foreign & set(_z(repo, "diff", "--name-only", "-z", "HEAD", f"origin/{TRUNK}", timeout=30))
-    harmless = set()
-    if clash:
-        trunk_blobs = _blobs(repo, "ls-tree", "-r", "-z", f"origin/{TRUNK}", "--", *sorted(clash))
-        harmless = {p for p in clash if _already_trunk(repo, p, head, index, trunk_blobs)}
-        if clash - harmless:
-            return False
-    # an edit that only repeats trunk's (or HEAD's) content goes back to HEAD too; the fast-forward re-applies trunk's copy
-    paths = [p for p in paths if p not in foreign or p in harmless]
+    if foreign & set(_z(repo, "diff", "--name-only", "-z", "HEAD", f"origin/{TRUNK}", timeout=30)):
+        return False
+    paths = [p for p in paths if p not in foreign]
     back = [p for p in paths if p in head]
     new = [p for p in paths if p not in head]
     if back and git(repo, "checkout", "HEAD", "--", *back, timeout=60).returncode:
