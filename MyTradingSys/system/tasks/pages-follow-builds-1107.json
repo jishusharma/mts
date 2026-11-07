@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "pages-follow-builds-1107",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -55,10 +56,11 @@
   "sources": [
     "operator 2026-11-07 chat + screenshots 69fbef1d8db8, 110b0c0b416f; d-pages-updated-stamp-follow-builds-1107"
   ],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "read artifacts.py stale + registry|add publishers list (jishusharma1985 + logins given edit access) to registry.json|stamp injection in build + build_board|hook line|supervisor plan REPUBLISH line + SUPER_SESSION step|cbp_run tail line + ask|tests fail pre-change, pass after|ship"
   ],
+  "taken": "2026-11-07T17:02:44Z",
   "tests": "test_artifacts.py (stamp present, stale line format), test for the hook line, test_supervisor plan REPUBLISH line",
   "title": "Pages follow builds: Updated stamp on every page, stale line in the hook, republish step per wake and after cbp_run",
   "weight": "",
