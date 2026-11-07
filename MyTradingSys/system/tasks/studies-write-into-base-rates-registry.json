@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Fifth writer found by grep: scenario_ledger.py. Source card prob-base-rates-registry-1106.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Fifth writer found by grep: scenario_ledger.py. Source card prob-base-rates-registry-1106. | PARKED 2026-11-08: registry hygiene for old study scripts; not on the path.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
