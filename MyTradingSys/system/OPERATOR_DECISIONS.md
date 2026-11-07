@@ -2005,3 +2005,6 @@ pilot-signals-health (login C, worktree JIS-NB/pilot-signals-health-1107): job 1
 research/health_2026-11-07/SHIP_HEALTH.md with gate p50/p90, failures, orphan gate trees, CI reds, stale pages, top-5 time
 sinks as cards. Ultra mode if he switches it: get_usage first, waves <= 4, <= 8 agents, results to files; stops at 74 % login C.
 Answer: Sonnet ultra pilot, two jobs, numbers from git/logs only.
+
+ship-health-1107 (Builder, zero operator input): DECISION (OURS) the ORPHAN gate "kill failed" text lives in host_health.py (not sync.py); filed as a card, not fixed. Gate timings cover this machine's 10 trees only. No sub-agents used. The existing twin card broadcast-hygiene-stale-and-b4c2dfe covers the stale-broadcast sink, so only 4 new cards were filed.
+Answer: research and raw cards only, no product code.
