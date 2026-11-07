@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-04T13:18:04Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "a layer_lab report from a gpt-* or gemini-* card must carry a Producer: <model> header line; lab_flow check rejects one without it (test in scripts/dev/test_lab_flow.py fails on current code)",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-04: needs a design choice (where a report carries producer model: card field vs report header) before a fail-first test can be named; held at try 1/2.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium. DECISION (OURS): identity lives in the report header line (not a card field), because the report is what a cross-vendor reviewer reads.",
   "prio": 2,
   "refine_tries": 3,
   "refined_by": "",
@@ -29,6 +29,6 @@
   "steps": [],
   "tests": "",
   "title": "Lab_Guy defect: gpt-* lab reports carry no model identity; gemini-queue authored GPT-labelled audits while Codex was 401, so cross-vendor trust cannot be proven",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": ""
 }

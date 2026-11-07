@@ -4,32 +4,62 @@
   "commands": [],
   "created": "2026-11-07T12:46:29Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-adx-di-census.md has a findings table (HIGH/MED/LOW, file:line, evidence) and ends with VERDICT: CLEAN or FIX-FIRST",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Gemini blind read of research/adx_di_2026-11/census.py against CENSUS.md and FORMULAS.md section 30: look-ahead, as-of, forward window, cross definition.",
   "id": "gemini-blind-read-of-adx-di-census-py",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "adx-di 2d cross census: Wilder ADX/DI engine, FORMULAS s30, CENSUS.md",
+      "ref": "087c10e29f6f",
+      "utc": "2026-11-07T12:57:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "087c10e29f6f adx-di 2d cross census: Wilder ADX/DI engine, FORMULAS s30, CENSUS.md",
+      "ref": "MyTradingSys/research/adx_di_2026-11/CENSUS.md",
+      "utc": "2026-11-07T12:57:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Gemini Flash; twin check run: pairs with gpt lane cards on the same study, other vendor.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T14:22:17Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/adx_di_2026-11/census.py (read)",
+    "MyTradingSys/research/adx_di_2026-11/CENSUS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-adx-di-census.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the study folder; gemini low effort"
+  ],
+  "scope_sha": "087c10e29f6f",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/adx_di_2026-11/CENSUS.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read census.py before CENSUS.md",
+    "Check each CENSUS.md count against what the code computes; flag any bar after the signal bar used in the signal",
+    "Write the findings table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-adx-di-census.md'); assert 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] blind read of adx_di census.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

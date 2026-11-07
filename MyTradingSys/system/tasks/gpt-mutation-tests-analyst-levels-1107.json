@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T14:19:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-07_gpt-mutation-analyst-levels.md has one row per mutant (line, change, KILLED/SURVIVED) and line 1 holds killed/survived counts; no repo file other than the report changes",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Mutate analyst_levels.py in a throwaway copy (flip comparisons, off-by-one on as-of date, drop a filter) and record which mutants test_analyst_levels.py kills.",
+  "id": "gpt-mutation-tests-analyst-levels-1107",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "WIP save: analyst-levels-fix-a (agent died at 5h limit 2026-11-06 08:55Z)",
+      "ref": "c622ce930530",
+      "utc": "2026-11-06T12:18:49Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (D11 feeder s6, planner-a-20261107; twin check run, none). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T14:19:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/analyst_levels.py (read)",
+    "scripts/dev/test_analyst_levels.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-07_gpt-mutation-analyst-levels.md (new)"
+  ],
+  "scope_out": [
+    "no committed edit to analyst_levels.py or its test",
+    "mutants live only in a temp copy"
+  ],
+  "scope_sha": "c622ce930530",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md section 6"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read analyst_levels.py and its test",
+    "Create at least 10 mutants in a temp copy, run the test on each",
+    "Write the mutant table; survivors listed with a suggested test"
+  ],
+  "tests": "audit card; output file is the test; git status of repo files other than the report is empty",
+  "title": "GPT mutation tests: scripts/dev/analyst_levels.py vs its test_analyst_levels.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

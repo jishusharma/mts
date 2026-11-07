@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T14:19:29Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-tom-v2-gross-first.md recomputes every table number of RESULT.md from the folder data, lists each diff, and ends with VERDICT: MATCH or MISMATCH",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of tom_v2_gross_first_2026-11/RESULT.md: recompute n, mean and fee-net where the folder has data, then diff against the prose.",
+  "id": "gemini-blind-read-tom-v2-gross-first-1107",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tom-v2-gross-first-dev-ext: RESULT FAIL, near-band diff +4.4 pp CI -0.3..8.9",
+      "ref": "619dc89ad56a",
+      "utc": "2026-11-01T08:40:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (D11 feeder s6, planner-a-20261107; twin check run, none). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T14:20:10Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-tom-v2-gross-first.md (new)",
+    "MyTradingSys/research/tom_v2_gross_first_2026-11 (read)"
+  ],
+  "scope_out": [
+    "no edits to the study folder; no re-running the study; gemini low effort"
+  ],
+  "scope_sha": "619dc89ad56a",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_v2_gross_first_2026-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the data/scripts in MyTradingSys/research/tom_v2_gross_first_2026-11 before RESULT.md",
+    "Recompute each table number",
+    "Write the per-cell diff table and VERDICT"
+  ],
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-tom-v2-gross-first.md'); assert 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] Blind read of tom_v2_gross_first RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

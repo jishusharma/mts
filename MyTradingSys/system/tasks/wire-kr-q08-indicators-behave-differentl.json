@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:22:10Z",
   "commands": [],
   "created": "2026-11-04T21:10:12Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Parked: rule asks for per-indicator settings by volatility regime; no defined behaviour or numbers, nothing to code yet (D2 labels the regime only).",
+  "note": "parked twice (tries 2): no defined behaviour or numbers by volatility regime, nothing to code; reopen when evidence exists",
+  "pinned": false,
   "prio": 3,
+  "reason": "parked twice (tries 2): no defined behaviour or numbers by volatility regime, nothing to code; reopen when evidence exists",
   "refine_tries": 2,
   "refined_by": "",
   "refs": [
@@ -27,7 +30,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "wire KR-Q08: Indicators behave differently by volatility regime (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md:428)",

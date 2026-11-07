@@ -4,31 +4,51 @@
   "commands": [],
   "created": "2026-11-06T16:50:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/tasks.py twins exits 0 with a card whose scope_in is a string; new test in scripts/dev/test_tasks.py fails on current tasks.py",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.py twins and twin_pairs tolerate a card whose scope_in is a string.",
   "id": "tasks-py-twins-crashes-on-cards-whose-sc",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tasks: reuse sync route-tag parser and add tasks.py drop",
+      "ref": "e67cad3d17f0",
+      "utc": "2026-11-06T19:06:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Haiku (mechanical, one function).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T14:23:32Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "scripts/dev/test_tasks.py"
+  ],
+  "scope_out": [
+    "no card file edits"
+  ],
+  "scope_sha": "e67cad3d17f0",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reproduce with us-session-prep-1106",
+    "Normalise scope_in to a list in twin_pairs",
+    "Add the test"
+  ],
+  "tests": "scripts/dev/test_tasks.py: twin_pairs on two cards, one with scope_in as a str, raises nothing (fails now)",
   "title": "tasks.py twins crashes on cards whose scope_in is a string (us-prep-failclosed-fixes, us-session-prep-1106)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

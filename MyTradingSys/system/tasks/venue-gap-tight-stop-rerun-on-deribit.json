@@ -4,20 +4,20 @@
   "commands": [],
   "created": "2026-11-05T02:28:50Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "sim_desk/results/venue-gap-tight-stop-deribit.json exports the tight-stop and wick-touch layer rerun on Deribit 1m 2024-05 with n, fee-net mean and the p50/p95 gap used",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
   "id": "venue-gap-tight-stop-rerun-on-deribit",
-  "lane": "SONNET",
+  "lane": "DSA-NB",
   "layers": [
     "live_engine"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-05 parked: needs Deribit 1m history on a machine (machine step / DSA desk task) and a pre-registered layer list; no named runner or data path in the card.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model DSA run-and-report (DeepSeek bridges closed per ROUTING hold: waits, or Sonnet on JIS-NB). PARKED until Deribit 1m history is on a machine and a layer list is pre-registered.",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
@@ -31,6 +31,6 @@
   "steps": [],
   "tests": "",
   "title": "Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": ""
 }

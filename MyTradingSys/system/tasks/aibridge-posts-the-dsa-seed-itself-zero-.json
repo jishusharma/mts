@@ -1,34 +1,46 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_dsa.py"
+  ],
   "created": "2026-11-07T09:21:17Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_dsa.py has a test that dsa start builds an AIBridge post request carrying the seed and touches no clipboard call (fails on current clipboard path)",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "dsa.py start posts the seed into the DeepSeek chat through AIBridge, with no clipboard and no Ctrl+V.",
   "id": "aibridge-posts-the-dsa-seed-itself-zero-",
   "lane": "JIS-NB",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; lane JIS-NB (AIBRIDGE_LANE.md). Held while the DSA bridges are closed (ROUTING.md).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/dsa.py",
+    "scripts/dev/test_dsa.py"
+  ],
+  "scope_out": [
+    "DeepSeek bridges stay closed per ROUTING hold: no real post in tests",
+    "no live-tree edit"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read dsa.py start clipboard path",
+    "Add the AIBridge post path behind the existing bridge check",
+    "Add the fail-first test with a fake bridge"
+  ],
+  "tests": "scripts/dev/test_dsa.py: start() with a fake AIBridge posts the seed, no clipboard call (fails now)",
   "title": "AIBridge posts the DSA seed itself: zero-paste chat start (dsa.py start today = clipboard + Ctrl+V)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
