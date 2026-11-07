@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:30:52Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-24/habib_yt_rules.md"
   ],
@@ -15,17 +16,30 @@
   "id": "gemini-habib-caption-check-1107",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-07_habib-caption-check.md",
+      "ref": "9ae62496a",
+      "utc": "2026-11-07T14:30:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: all 15 video quotes verified against captions",
   "note": "Filed by the Habib concept book session 2026-11-07; the concept book marks these quotes UNVERIFIED until this card runs. Run verify_extract_quotes.py as the check. Gemini flash low effort.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T19:47:58Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-07_habib-caption-check.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-07_habib-caption-check.md"
   ],
@@ -37,11 +51,12 @@
   "sources": [
     "MyTradingSys/research/gemini_burn_2026-10-24/habib_yt_rules.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "fetch captions per video (yt-dlp en-orig, youtube-transcript-api on 429)",
     "run verify_extract_quotes.py; list each failing quote"
   ],
+  "taken": "2026-11-07T14:30:52Z",
   "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/gemini_burn_2026-10-24/habib_yt_rules.md",
   "title": "[GEMINI] Fetch captions for the 15 videos of habib_yt_rules.md and verify its quotes (Habib concept book UNVERIFIED list)",
   "weight": "ROUTINE",

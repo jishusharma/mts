@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:22:03Z",
   "commands": [],
   "created": "2026-11-06T19:19:26Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "shipped: 3e580516f MA strip on the live aid (ma_strip.js, live_aid.html panel, test_spec_ma_strip.py on disk); PLANNER 2026-11-07",
+  "pinned": false,
   "prio": 3,
+  "reason": "shipped: 3e580516f MA strip on the live aid (ma_strip.js, live_aid.html panel, test_spec_ma_strip.py on disk); PLANNER 2026-11-07",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "scope_out": [],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "ma_strip.js pure functions mirroring research/ma_layer_2026-11/ma_state.py",
     "test_spec_ma_strip.py (hand numbers + python parity)",

@@ -1,449 +1,449 @@
 {
-  "_doc": "ONE registry of every claude.ai artifact we keep (replaces manifest.json, 2026-10-12). Pages are published from the repo copy over the SAME url on each account, so the link stays current and the pin stays. A session cannot delete or unpin: retire/duplicate rows are the list Jis cleans by hand. Check: python scripts/dev/artifacts.py check. Procedure: artifacts/README.md.",
-  "accounts": {
-    "jishu.sharma": "login A (jishu.sharma@gmail.com, GitHub jishusharma), JIS-NUC; owns the Control Room with the Inbox and decisions db (q21). Until 2026-10-15 these urls were filed under jishu.awgp: checked 2026-10-15: a session whose Claude login is jishu.sharma@gmail.com on JIS-NUC owns Ep6gA5 and the other pages filed until then under 'jishu.awgp' (Artifact list), and cannot read EoHi2q. Pins: Control Room, MTS Layers, Tom and Fabio, CBP Consensus Desk, CBP Monday Desk",
-    "jishu.awgp": "the JIS-NB login that published the pages filed until 2026-10-15 under jishu.sharma (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk). Which login it is was inferred, not checked: a session on JIS-NB confirms with Artifact list",
-    "jishusharma1985": "HOME login (2026-10-16): owns MTS Home, MTS Research Map (db requests). Third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; runs the super sessions. Checked 2026-10-16 by Artifact list from a session on this login: it owns 9nqpZe, 2Ti4CG and three 'Moved to Control Room' stubs, and cannot read Ep6gA5 (not shared with it yet)."
+ "_doc": "ONE registry of every claude.ai artifact we keep (replaces manifest.json, 2026-10-12). Pages are published from the repo copy over the SAME url on each account, so the link stays current and the pin stays. A session cannot delete or unpin: retire/duplicate rows are the list Jis cleans by hand. Check: python scripts/dev/artifacts.py check. Procedure: artifacts/README.md.",
+ "accounts": {
+  "jishu.sharma": "login A (jishu.sharma@gmail.com, GitHub jishusharma), JIS-NUC; owns the Control Room with the Inbox and decisions db (q21). Until 2026-10-15 these urls were filed under jishu.awgp: checked 2026-10-15: a session whose Claude login is jishu.sharma@gmail.com on JIS-NUC owns Ep6gA5 and the other pages filed until then under 'jishu.awgp' (Artifact list), and cannot read EoHi2q. Pins: Control Room, MTS Layers, Tom and Fabio, CBP Consensus Desk, CBP Monday Desk",
+  "jishu.awgp": "the JIS-NB login that published the pages filed until 2026-10-15 under jishu.sharma (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk). Which login it is was inferred, not checked: a session on JIS-NB confirms with Artifact list",
+  "jishusharma1985": "HOME login (2026-10-16): owns MTS Home, MTS Research Map (db requests). Third account (Claude Max, added 2026-10-14), JIS-NB and JIS-NUC; runs the super sessions. Checked 2026-10-16 by Artifact list from a session on this login: it owns 9nqpZe, 2Ti4CG and three 'Moved to Control Room' stubs, and cannot read Ep6gA5 (not shared with it yet)."
+ },
+ "pages": [
+  {
+   "slug": "mts_control_room",
+   "title": "MTS Control Room",
+   "status": "retire",
+   "pinned": false,
+   "generator": "scripts/dev/make_control_room.py",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
+   "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); one live copy only: the jishu.awgp and jishusharma1985 urls hold a pointer page until Jis deletes them; 2026-10-17: Ep6gA5 opens on no login (NUC and notebook both get not found), so EoHi2q is the live Control Room on jishu.sharma (operator go 2026-10-17); db carries the 24 answered decisions + 6 open + 43 Inbox items",
+   "refresh": "retired",
+   "db": [
+    "decisions",
+    "feedback"
+   ],
+   "urls": {
+    "jishu.sharma": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp"
+   },
+   "last_published": {
+    "jishu.sharma": "2026-10-17",
+    "jishu.awgp": "moved 2026-10-17",
+    "jishusharma1985": "2026-10-31"
+   },
+   "note": "Retired 2026-10-31 (operator: old concept). Its Inbox/decisions db is empty; decisions are answered in chat and recorded in OPERATOR_DECISIONS.md, Home shows what is waiting.",
+   "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
+   "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
+   "published_sha": "2796d8cf8a710d9affe275a9089cc2c731fdcd8f6a9d0dfce090b1de31a731de",
+   "deleted": {
+    "jishusharma1985": "2026-10-31"
+   }
   },
-  "pages": [
-    {
-      "slug": "mts_control_room",
-      "title": "MTS Control Room",
-      "status": "retire",
-      "pinned": false,
-      "generator": "scripts/dev/make_control_room.py",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "jishu.sharma (Inbox and decisions owner, decision q21, 2026-10-15); one live copy only: the jishu.awgp and jishusharma1985 urls hold a pointer page until Jis deletes them; 2026-10-17: Ep6gA5 opens on no login (NUC and notebook both get not found), so EoHi2q is the live Control Room on jishu.sharma (operator go 2026-10-17); db carries the 24 answered decisions + 6 open + 43 Inbox items",
-      "refresh": "retired",
-      "db": [
-        "decisions",
-        "feedback"
-      ],
-      "urls": {
-        "jishu.sharma": "https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/MNuodXmi5RiEihX7rFpqUp"
-      },
-      "last_published": {
-        "jishu.sharma": "2026-10-17",
-        "jishu.awgp": "moved 2026-10-17",
-        "jishusharma1985": "2026-10-31"
-      },
-      "note": "Retired 2026-10-31 (operator: old concept). Its Inbox/decisions db is empty; decisions are answered in chat and recorded in OPERATOR_DECISIONS.md, Home shows what is waiting.",
-      "purpose": "Decisions waiting on you (Inbox), testnet health, road to profitability.",
-      "notes_go_to": "Inbox answers save to this page's decisions list. One Inbox only (q21).",
-      "published_sha": "2796d8cf8a710d9affe275a9089cc2c731fdcd8f6a9d0dfce090b1de31a731de",
-      "deleted": {
-        "jishusharma1985": "2026-10-31"
-      }
-    },
-    {
-      "slug": "mts_layer_map",
-      "title": "MTS Layers",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "scripts/dev/make_layers_board.py",
-      "html": "MyTradingSys/system/artifacts/layers_board.html",
-      "single_owner": "jishusharma1985",
-      "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "jishu.sharma (static, no db); one live copy, the other logins hold a pointer page until Jis deletes them",
-      "refresh": "every session that ships, with the Control Room (zero tokens: artifacts.py build)",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe",
-        "jishu.awgp": "https://claude.ai/artifact/E4NKdbEH5CJkhax9rUeHVF",
-        "jishusharma1985": "https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ"
-      },
-      "last_published": {
-        "jishu.sharma": "2026-10-13",
-        "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-11-05"
-      },
-      "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
-      "purpose": "Every trading layer's road and where it is stuck.",
-      "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "e906df84365ed5bdc7fcb9629ca797e0426bdc79339608c4bd4143973e83a685"
-    },
-    {
-      "slug": "tom_fabio_deck",
-      "title": "Tom and Fabio: what they taught",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "hand-made",
-      "html": "MyTradingSys/system/artifacts/tom_fabio_deck.html",
-      "single_owner": "jishusharma1985",
-      "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "jishusharma1985 (rebuilt from the repo 2026-10-17; the old jishu.sharma slides page is gone)",
-      "refresh": "manual",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/B1h2wkC9xd56fVmp8DdwcJ"
-      },
-      "last_published": {
-        "jishu.sharma": "2026-10-12",
-        "jishu.awgp": "never",
-        "jishusharma1985": "2026-10-31"
-      },
-      "note": "Rebuilt from TOM_FABIO_STORY_2026-10-05.md and tom_fabio_guidance_2026-10-12/. Old jishu.sharma url 2DXWot is an old copy and not found.",
-      "purpose": "Slides: what Tom and Fabio taught.",
-      "notes_go_to": "Read only.",
-      "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25"
-    },
-    {
-      "slug": "cbp_monday_desk",
-      "title": "CBP Monday Desk",
-      "status": "retire",
-      "pinned": false,
-      "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "CBP (publishes to the jishu.sharma url only)",
-      "refresh": "weekly, Monday",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "https://claude.ai/artifact/7V5bKe7YYkYS32vbKc1Yn8",
-        "jishu.awgp": "https://claude.ai/artifact/X8ZB1v6eSEcW14zV9orAK7",
-        "jishusharma1985": "https://claude.ai/artifact/Nt8bgshr2C5jGsViLYGoPy"
-      },
-      "last_published": {
-        "jishu.sharma": "2026-10-09",
-        "jishu.awgp": "unknown",
-        "jishusharma1985": "2026-10-17"
-      },
-      "note": "Retired 2026-10-31: stale since 2026-10-09; replaced by CBP Analyst Desk (rebuilt every CBP run).",
-      "purpose": "Weekly CBP crypto desk, every Monday.",
-      "notes_go_to": "Read only.",
-      "published_sha": "b33e69c59255be3d967202d71c4ad59d3d34aa454d796e95f878623aef5421bd",
-      "deleted": {
-        "jishusharma1985": "2026-10-31"
-      }
-    },
-    {
-      "slug": "cbp_consensus_desk",
-      "title": "CBP Consensus Desk",
-      "status": "retire",
-      "pinned": false,
-      "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
-      "owner_app": "CBP (publishes to the jishu.sharma url only)",
-      "refresh": "daily",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "https://claude.ai/artifact/4JZxNEPNYRMLrteBbcRrqD",
-        "jishu.awgp": "https://claude.ai/artifact/V1d9xSL9fKQYtbWjrMqASU",
-        "jishusharma1985": "https://claude.ai/artifact/5Gw7HJF3eoEvbbUKhL52M1"
-      },
-      "last_published": {
-        "jishu.sharma": "2026-10-09",
-        "jishu.awgp": "unknown",
-        "jishusharma1985": "2026-10-17"
-      },
-      "note": "Retired 2026-10-31: stale since 2026-10-09; replaced by CBP Analyst Desk.",
-      "purpose": "Daily CBP consensus desk.",
-      "notes_go_to": "Read only.",
-      "published_sha": "56e06bbfc2d7b5168d4017a66f3f4278074f13bcca2676ef0fb532c422b3fd7a",
-      "deleted": {
-        "jishusharma1985": "2026-10-31"
-      }
-    },
-    {
-      "slug": "cbp_desk",
-      "title": "CBP Desk",
-      "status": "retire",
-      "pinned": false,
-      "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
-      "html": null,
-      "owner_app": "CBP",
-      "refresh": "twice daily (CBP daily workflow)",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": ""
-      },
-      "last_published": {
-        "jishu.awgp": "2026-10-12 (viewed 2 h ago in the app)",
-        "jishusharma1985": "never"
-      },
-      "note": "Retired 2026-10-31: duplicate of CBP Analyst Desk, never had a url on file.",
-      "purpose": "Same page as the CBP Consensus Desk on the JIS-NB login.",
-      "notes_go_to": "Read only.",
-      "published_sha": null
-    },
-    {
-      "slug": "sim_desk",
-      "title": "Test Simulator",
-      "status": "canonical",
-      "pinned": false,
-      "generator": "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "owner_app": "sim-desk build sessions (Sim_Desk builder)",
-      "refresh": "when a sim-desk build ships",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-05"
-      },
-      "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
-      "notes_go_to": "Read only.",
-      "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
-      "published_sha": "fd8e11b5a6da7146aeb27ebc9612d0b4e173cbc273c5fcb317681997020abd0d"
-    },
-    {
-      "slug": "cbp_analyst_desk",
-      "title": "CBP Analyst Desk",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "F:/CryptoScrapper/cbp_v2/tools/build_board.py (v5 tabbed board; run by cbp_run.rebuild_dashboard after every CBP run, wired 2026-11-04)",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "owner_app": "CBP",
-      "refresh": "after each CBP run (Mon-Fri 05:00+20:00 UTC, Sat 05:30, Sun 16:30): rebuilds cbp_dashboard.html; republish to this url from a session",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-04"
-      },
-      "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
-      "notes_go_to": "Read only.",
-      "note": "The only CBP page (context source, not signals). Live url BpADz (v5, 5 tabs). 2026-11-04: every CBP run now fetches prices and rebuilds cbp_v2/cbp_board.html; a session still republishes it to this url (artifact tool cannot run from a script).",
-      "published_sha": null
-    },
-    {
-      "slug": "mts_home",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "scripts/dev/make_home.py",
-      "single_owner": "jishusharma1985",
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3"
-      },
-      "last_published": {
-        "jishu.sharma": "never",
-        "jishu.awgp": "never",
-        "jishusharma1985": "2026-11-07"
-      },
-      "title": "MTS Home",
-      "html": "MyTradingSys/system/artifacts/mts_home.html",
-      "owner_app": "jishusharma1985 (built from this registry: artifacts.py build, then republish over the url)",
-      "refresh": "whenever registry.json changes (artifacts.py build)",
-      "db": [],
-      "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
-      "notes_go_to": "Nothing to write here.",
-      "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "6db1eb81e8d9480a67e81bc5de0d25b8df55bc5dcee2ee677faabcc6f06100e0"
-    },
-    {
-      "slug": "research_map",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "hand-made",
-      "single_owner": "jishusharma1985",
-      "urls": {
-        "jishusharma1985": "https://claude.ai/artifact/9nqpZeMeEehadoBoYopZU3",
-        "jishu.sharma": "",
-        "jishu.awgp": ""
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-06",
-        "jishu.sharma": "never",
-        "jishu.awgp": "never"
-      },
-      "title": "MTS Research Map",
-      "html": "MyTradingSys/system/artifacts/research_map.html",
-      "banner": true,
-      "owner_app": "super sessions on jishusharma1985 (or a login with edit access): edit the DATA line of the live page, republish over the url (SUPER_SESSION.md)",
-      "refresh": "each super session",
-      "db": [
-        "requests"
-      ],
-      "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
-      "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
-      "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
-      "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d"
-    },
-    {
-      "slug": "session_planner",
-      "status": "retire",
-      "pinned": false,
-      "generator": "hand-made",
-      "single_owner": "jishusharma1985",
-      "urls": {
-        "jishusharma1985": "https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU",
-        "jishu.sharma": "",
-        "jishu.awgp": ""
-      },
-      "last_published": {
-        "jishusharma1985": "2026-10-31",
-        "jishu.sharma": "never",
-        "jishu.awgp": "never"
-      },
-      "title": "MTS Session Planner",
-      "html": null,
-      "banner": false,
-      "owner_app": "jishusharma1985; DATA line from scripts/dev/make_planner_data.py --html",
-      "refresh": "when task cards change (make_planner_data.py)",
-      "db": [
-        "selection"
-      ],
-      "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
-      "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
-      "note": "Retired 2026-10-31 (operator: planning happens in the sessions now). Nothing lost: its prompt was an older copy of SUPER_SESSION.md; tasks.py next already orders by depends_on; the saved pick (2026-10-16) named 4 deleted and 2 blocked cards. Operator deletes the page.",
-      "published_sha": "c89b122558ca5da4bb144c30d0efbff1893de7285486c2066018fa864330fbc7",
-      "deleted": {
-        "jishusharma1985": "2026-10-31"
-      }
-    },
-    {
-      "slug": "tom_fabio_setup_review",
-      "status": "canonical",
-      "pinned": false,
-      "generator": "hand-made",
-      "single_owner": "jishusharma1985",
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/3ZV8nmv52mvW4FTQi5WLGQ"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-10-31"
-      },
-      "title": "Tom and Fabio Setup Review",
-      "html": null,
-      "owner_app": "jishusharma1985",
-      "refresh": "manual (session that edits it)",
-      "db": [],
-      "purpose": "Review of the Tom and Fabio setups.",
-      "notes_go_to": "Read only.",
-      "note": "Registered 2026-10-31 (was published but unlisted).",
-      "published_sha": null
-    },
-    {
-      "slug": "btc_live_aid",
-      "status": "retire",
-      "pinned": false,
-      "generator": "hand-made",
-      "single_owner": "jishusharma1985",
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/BcD1gSuxhvdfYMrxcPBvff"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-10-31"
-      },
-      "title": "BTC Live Aid",
-      "html": null,
-      "owner_app": "jishusharma1985",
-      "refresh": "manual (session that edits it)",
-      "db": [],
-      "purpose": "Live BTC aid page for reading the market.",
-      "notes_go_to": "Read only.",
-      "note": "Retired 2026-10-31: on claude.ai every feed reads NOT_IN_DATA (the viewer blocks exchange connections). The working page is MyTradingSys/tools/live_aid/live_aid.html, opened from disk.",
-      "published_sha": null,
-      "deleted": {
-        "jishusharma1985": "2026-11-04 (gone from the Artifact list)"
-      }
-    },
-    {
-      "slug": "sim_demo_haiku",
-      "title": "Simulator Demo by Haiku",
-      "status": "retire",
-      "pinned": false,
-      "generator": "hand-made",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "owner_app": "jishusharma1985",
-      "refresh": "retired",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": ""
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-01"
-      },
-      "purpose": "Throwaway demo of the simulator (requirements talk 2026-11-01).",
-      "notes_go_to": "Read only.",
-      "note": "Retired 2026-11-04 (Lead declutter): superseded by Test Simulator KaPy7f5B. Operator deletes.",
-      "published_sha": null,
-      "deleted": {
-        "jishusharma1985": "2026-11-04 (operator click)"
-      }
-    },
-    {
-      "slug": "live_feed_onepage_mock",
-      "title": "Live feed one page",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "hand-made (session live-onepage-c, branch claude/live-feed-onepage-1104)",
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "owner_app": "jishusharma1985",
-      "refresh": "mock: no refresh until the operator says wire or change",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-04"
-      },
-      "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
-      "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
-      "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": null
-    }
-  ],
-  "unpinned_old": {
-    "_doc": "Not pinned, not generated, last touched 2026-10-05/06. Delete when Jis answers Control Room q7 (recommended: delete all). Listed under jishu.sharma since the 2026-10-15 relabel (the NUC login that owns them).",
-    "jishu.sharma": [
-      {
-        "title": "Binance Perp Backtesting Guide",
-        "url": "https://claude.ai/artifact/Dq2rYvfgXqvCsabsFZwRXj"
-      },
-      {
-        "title": "MTS Field Guide",
-        "url": "https://claude.ai/artifact/4Z18gHVtcU5sSQ2N8vn7yy"
-      },
-      {
-        "title": "MTS Research Follow-through Audit",
-        "url": "https://claude.ai/artifact/VYrWZbBj5LU1NR9rpesZNY"
-      },
-      {
-        "title": "MTS Research Agenda",
-        "url": "https://claude.ai/artifact/5GfDJhpSc8hjZMUMLyCEuX"
-      },
-      {
-        "title": "BACKTEST_PIPELINE_2026-10-05.md",
-        "url": "https://claude.ai/artifact/3p3RkxTbCBbGycMM1q8XvM"
-      }
-    ]
+  {
+   "slug": "mts_layer_map",
+   "title": "MTS Layers",
+   "status": "canonical",
+   "pinned": true,
+   "generator": "scripts/dev/make_layers_board.py",
+   "html": "MyTradingSys/system/artifacts/layers_board.html",
+   "single_owner": "jishusharma1985",
+   "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
+   "owner_app": "jishu.sharma (static, no db); one live copy, the other logins hold a pointer page until Jis deletes them",
+   "refresh": "every session that ships, with the Control Room (zero tokens: artifacts.py build)",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "https://claude.ai/artifact/QwsvsN3LaZKNPvD6zPTTAe",
+    "jishu.awgp": "https://claude.ai/artifact/E4NKdbEH5CJkhax9rUeHVF",
+    "jishusharma1985": "https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ"
+   },
+   "last_published": {
+    "jishu.sharma": "2026-10-13",
+    "jishu.awgp": "2026-10-14",
+    "jishusharma1985": "2026-11-05"
+   },
+   "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
+   "purpose": "Every trading layer's road and where it is stuck.",
+   "notes_go_to": "Read only. Put notes on the Research Map.",
+   "published_sha": "e906df84365ed5bdc7fcb9629ca797e0426bdc79339608c4bd4143973e83a685"
   },
-  "_retired": {
-    "cbp_dashboard": "deleted by Jis 2026-10-12 (one-off 2026-10-07 snapshot, https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS)"
+  {
+   "slug": "tom_fabio_deck",
+   "title": "Tom and Fabio: what they taught",
+   "status": "canonical",
+   "pinned": true,
+   "generator": "hand-made",
+   "html": "MyTradingSys/system/artifacts/tom_fabio_deck.html",
+   "single_owner": "jishusharma1985",
+   "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
+   "owner_app": "jishusharma1985 (rebuilt from the repo 2026-10-17; the old jishu.sharma slides page is gone)",
+   "refresh": "manual",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "https://claude.ai/artifact/2DXWotLraL8te3xNqo4hWV",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/B1h2wkC9xd56fVmp8DdwcJ"
+   },
+   "last_published": {
+    "jishu.sharma": "2026-10-12",
+    "jishu.awgp": "never",
+    "jishusharma1985": "2026-10-31"
+   },
+   "note": "Rebuilt from TOM_FABIO_STORY_2026-10-05.md and tom_fabio_guidance_2026-10-12/. Old jishu.sharma url 2DXWot is an old copy and not found.",
+   "purpose": "Slides: what Tom and Fabio taught.",
+   "notes_go_to": "Read only.",
+   "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25"
   },
-  "home_login": "jishusharma1985",
-  "home_slug": "mts_home",
-  "access_model": "DECISION (operator 2026-10-17, replaces the 2026-10-16 split): every page is published from the repo by the home login jishusharma1985, so every MTS Home link opens on that login with no Share step. Control Room (MNuodX, its Inbox db now lives here), MTS Layers, both CBP desks, Research Map and Session Planner are owned by jishusharma1985; the jishu.sharma copies are old copies to delete. Exception: the Tom and Fabio deck has no repo html, so it stays on jishu.sharma until re-made. Other logins open these pages only after jishusharma1985 shares them (Share menu, edit access). Never publish a second copy on another login."
+  {
+   "slug": "cbp_monday_desk",
+   "title": "CBP Monday Desk",
+   "status": "retire",
+   "pinned": false,
+   "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
+   "owner_app": "CBP (publishes to the jishu.sharma url only)",
+   "refresh": "weekly, Monday",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "https://claude.ai/artifact/7V5bKe7YYkYS32vbKc1Yn8",
+    "jishu.awgp": "https://claude.ai/artifact/X8ZB1v6eSEcW14zV9orAK7",
+    "jishusharma1985": "https://claude.ai/artifact/Nt8bgshr2C5jGsViLYGoPy"
+   },
+   "last_published": {
+    "jishu.sharma": "2026-10-09",
+    "jishu.awgp": "unknown",
+    "jishusharma1985": "2026-10-17"
+   },
+   "note": "Retired 2026-10-31: stale since 2026-10-09; replaced by CBP Analyst Desk (rebuilt every CBP run).",
+   "purpose": "Weekly CBP crypto desk, every Monday.",
+   "notes_go_to": "Read only.",
+   "published_sha": "b33e69c59255be3d967202d71c4ad59d3d34aa454d796e95f878623aef5421bd",
+   "deleted": {
+    "jishusharma1985": "2026-10-31"
+   }
+  },
+  {
+   "slug": "cbp_consensus_desk",
+   "title": "CBP Consensus Desk",
+   "status": "retire",
+   "pinned": false,
+   "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "pointer_html": "MyTradingSys/system/artifacts/cr_moved.html",
+   "owner_app": "CBP (publishes to the jishu.sharma url only)",
+   "refresh": "daily",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "https://claude.ai/artifact/4JZxNEPNYRMLrteBbcRrqD",
+    "jishu.awgp": "https://claude.ai/artifact/V1d9xSL9fKQYtbWjrMqASU",
+    "jishusharma1985": "https://claude.ai/artifact/5Gw7HJF3eoEvbbUKhL52M1"
+   },
+   "last_published": {
+    "jishu.sharma": "2026-10-09",
+    "jishu.awgp": "unknown",
+    "jishusharma1985": "2026-10-17"
+   },
+   "note": "Retired 2026-10-31: stale since 2026-10-09; replaced by CBP Analyst Desk.",
+   "purpose": "Daily CBP consensus desk.",
+   "notes_go_to": "Read only.",
+   "published_sha": "56e06bbfc2d7b5168d4017a66f3f4278074f13bcca2676ef0fb532c422b3fd7a",
+   "deleted": {
+    "jishusharma1985": "2026-10-31"
+   }
+  },
+  {
+   "slug": "cbp_desk",
+   "title": "CBP Desk",
+   "status": "retire",
+   "pinned": false,
+   "generator": "CBP daily workflow routine (CryptoScrapper tree, not in this repo)",
+   "html": null,
+   "owner_app": "CBP",
+   "refresh": "twice daily (CBP daily workflow)",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": ""
+   },
+   "last_published": {
+    "jishu.awgp": "2026-10-12 (viewed 2 h ago in the app)",
+    "jishusharma1985": "never"
+   },
+   "note": "Retired 2026-10-31: duplicate of CBP Analyst Desk, never had a url on file.",
+   "purpose": "Same page as the CBP Consensus Desk on the JIS-NB login.",
+   "notes_go_to": "Read only.",
+   "published_sha": null
+  },
+  {
+   "slug": "sim_desk",
+   "title": "Test Simulator",
+   "status": "canonical",
+   "pinned": false,
+   "generator": "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "owner_app": "sim-desk build sessions (Sim_Desk builder)",
+   "refresh": "when a sim-desk build ships",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
+   },
+   "last_published": {
+    "jishusharma1985": "2026-11-05"
+   },
+   "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
+   "notes_go_to": "Read only.",
+   "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
+   "published_sha": "fd8e11b5a6da7146aeb27ebc9612d0b4e173cbc273c5fcb317681997020abd0d"
+  },
+  {
+   "slug": "cbp_analyst_desk",
+   "title": "CBP Analyst Desk",
+   "status": "canonical",
+   "pinned": true,
+   "generator": "F:/CryptoScrapper/cbp_v2/tools/build_board.py (v5 tabbed board; run by cbp_run.rebuild_dashboard after every CBP run, wired 2026-11-04)",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "owner_app": "CBP",
+   "refresh": "after each CBP run (Mon-Fri 05:00+20:00 UTC, Sat 05:30, Sun 16:30): rebuilds cbp_dashboard.html; republish to this url from a session",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM"
+   },
+   "last_published": {
+    "jishusharma1985": "2026-11-07"
+   },
+   "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
+   "notes_go_to": "Read only.",
+   "note": "The only CBP page (context source, not signals). Live url BpADz (v5, 5 tabs). 2026-11-04: every CBP run now fetches prices and rebuilds cbp_v2/cbp_board.html; a session still republishes it to this url (artifact tool cannot run from a script). 2026-11-07: republished by Lead C from F:/CryptoScrapper/cbp_v2/cbp_board.html (built 15:02Z); only a session on the owner login (or a login given edit access) can publish: scripts and API jobs cannot.",
+   "published_sha": null
+  },
+  {
+   "slug": "mts_home",
+   "status": "canonical",
+   "pinned": true,
+   "generator": "scripts/dev/make_home.py",
+   "single_owner": "jishusharma1985",
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3"
+   },
+   "last_published": {
+    "jishu.sharma": "never",
+    "jishu.awgp": "never",
+    "jishusharma1985": "2026-11-07"
+   },
+   "title": "MTS Home",
+   "html": "MyTradingSys/system/artifacts/mts_home.html",
+   "owner_app": "jishusharma1985 (built from this registry: artifacts.py build, then republish over the url)",
+   "refresh": "whenever registry.json changes (artifacts.py build)",
+   "db": [],
+   "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
+   "notes_go_to": "Nothing to write here.",
+   "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
+   "published_sha": "87c54c70f7875102ed5449699ffd722f27d2d1e8bea3f0892f18fdc6128e6b59"
+  },
+  {
+   "slug": "research_map",
+   "status": "canonical",
+   "pinned": true,
+   "generator": "hand-made",
+   "single_owner": "jishusharma1985",
+   "urls": {
+    "jishusharma1985": "https://claude.ai/artifact/9nqpZeMeEehadoBoYopZU3",
+    "jishu.sharma": "",
+    "jishu.awgp": ""
+   },
+   "last_published": {
+    "jishusharma1985": "2026-11-06",
+    "jishu.sharma": "never",
+    "jishu.awgp": "never"
+   },
+   "title": "MTS Research Map",
+   "html": "MyTradingSys/system/artifacts/research_map.html",
+   "banner": true,
+   "owner_app": "super sessions on jishusharma1985 (or a login with edit access): edit the DATA line of the live page, republish over the url (SUPER_SESSION.md)",
+   "refresh": "each super session",
+   "db": [
+    "requests"
+   ],
+   "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
+   "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
+   "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
+   "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d"
+  },
+  {
+   "slug": "session_planner",
+   "status": "retire",
+   "pinned": false,
+   "generator": "hand-made",
+   "single_owner": "jishusharma1985",
+   "urls": {
+    "jishusharma1985": "https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU",
+    "jishu.sharma": "",
+    "jishu.awgp": ""
+   },
+   "last_published": {
+    "jishusharma1985": "2026-10-31",
+    "jishu.sharma": "never",
+    "jishu.awgp": "never"
+   },
+   "title": "MTS Session Planner",
+   "html": null,
+   "banner": false,
+   "owner_app": "jishusharma1985; DATA line from scripts/dev/make_planner_data.py --html",
+   "refresh": "when task cards change (make_planner_data.py)",
+   "db": [
+    "selection"
+   ],
+   "purpose": "Builds the prompt for the next super session: pick a goal and hours, copy, paste into a new session.",
+   "notes_go_to": "nothing to send. Copy the prompt; your ticks and goal stay saved on this page.",
+   "note": "Retired 2026-10-31 (operator: planning happens in the sessions now). Nothing lost: its prompt was an older copy of SUPER_SESSION.md; tasks.py next already orders by depends_on; the saved pick (2026-10-16) named 4 deleted and 2 blocked cards. Operator deletes the page.",
+   "published_sha": "c89b122558ca5da4bb144c30d0efbff1893de7285486c2066018fa864330fbc7",
+   "deleted": {
+    "jishusharma1985": "2026-10-31"
+   }
+  },
+  {
+   "slug": "tom_fabio_setup_review",
+   "status": "canonical",
+   "pinned": false,
+   "generator": "hand-made",
+   "single_owner": "jishusharma1985",
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/3ZV8nmv52mvW4FTQi5WLGQ"
+   },
+   "last_published": {
+    "jishusharma1985": "2026-10-31"
+   },
+   "title": "Tom and Fabio Setup Review",
+   "html": null,
+   "owner_app": "jishusharma1985",
+   "refresh": "manual (session that edits it)",
+   "db": [],
+   "purpose": "Review of the Tom and Fabio setups.",
+   "notes_go_to": "Read only.",
+   "note": "Registered 2026-10-31 (was published but unlisted).",
+   "published_sha": null
+  },
+  {
+   "slug": "btc_live_aid",
+   "status": "retire",
+   "pinned": false,
+   "generator": "hand-made",
+   "single_owner": "jishusharma1985",
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/BcD1gSuxhvdfYMrxcPBvff"
+   },
+   "last_published": {
+    "jishusharma1985": "2026-10-31"
+   },
+   "title": "BTC Live Aid",
+   "html": null,
+   "owner_app": "jishusharma1985",
+   "refresh": "manual (session that edits it)",
+   "db": [],
+   "purpose": "Live BTC aid page for reading the market.",
+   "notes_go_to": "Read only.",
+   "note": "Retired 2026-10-31: on claude.ai every feed reads NOT_IN_DATA (the viewer blocks exchange connections). The working page is MyTradingSys/tools/live_aid/live_aid.html, opened from disk.",
+   "published_sha": null,
+   "deleted": {
+    "jishusharma1985": "2026-11-04 (gone from the Artifact list)"
+   }
+  },
+  {
+   "slug": "sim_demo_haiku",
+   "title": "Simulator Demo by Haiku",
+   "status": "retire",
+   "pinned": false,
+   "generator": "hand-made",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "owner_app": "jishusharma1985",
+   "refresh": "retired",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": ""
+   },
+   "last_published": {
+    "jishusharma1985": "2026-11-01"
+   },
+   "purpose": "Throwaway demo of the simulator (requirements talk 2026-11-01).",
+   "notes_go_to": "Read only.",
+   "note": "Retired 2026-11-04 (Lead declutter): superseded by Test Simulator KaPy7f5B. Operator deletes.",
+   "published_sha": null,
+   "deleted": {
+    "jishusharma1985": "2026-11-04 (operator click)"
+   }
+  },
+  {
+   "slug": "live_feed_onepage_mock",
+   "title": "Live feed one page",
+   "status": "canonical",
+   "pinned": true,
+   "generator": "hand-made (session live-onepage-c, branch claude/live-feed-onepage-1104)",
+   "html": null,
+   "single_owner": "jishusharma1985",
+   "owner_app": "jishusharma1985",
+   "refresh": "mock: no refresh until the operator says wire or change",
+   "db": [],
+   "urls": {
+    "jishu.sharma": "",
+    "jishu.awgp": "",
+    "jishusharma1985": "https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9"
+   },
+   "last_published": {
+    "jishusharma1985": "2026-11-04"
+   },
+   "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
+   "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
+   "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
+   "published_sha": null
+  }
+ ],
+ "unpinned_old": {
+  "_doc": "Not pinned, not generated, last touched 2026-10-05/06. Delete when Jis answers Control Room q7 (recommended: delete all). Listed under jishu.sharma since the 2026-10-15 relabel (the NUC login that owns them).",
+  "jishu.sharma": [
+   {
+    "title": "Binance Perp Backtesting Guide",
+    "url": "https://claude.ai/artifact/Dq2rYvfgXqvCsabsFZwRXj"
+   },
+   {
+    "title": "MTS Field Guide",
+    "url": "https://claude.ai/artifact/4Z18gHVtcU5sSQ2N8vn7yy"
+   },
+   {
+    "title": "MTS Research Follow-through Audit",
+    "url": "https://claude.ai/artifact/VYrWZbBj5LU1NR9rpesZNY"
+   },
+   {
+    "title": "MTS Research Agenda",
+    "url": "https://claude.ai/artifact/5GfDJhpSc8hjZMUMLyCEuX"
+   },
+   {
+    "title": "BACKTEST_PIPELINE_2026-10-05.md",
+    "url": "https://claude.ai/artifact/3p3RkxTbCBbGycMM1q8XvM"
+   }
+  ]
+ },
+ "_retired": {
+  "cbp_dashboard": "deleted by Jis 2026-10-12 (one-off 2026-10-07 snapshot, https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS)"
+ },
+ "home_login": "jishusharma1985",
+ "home_slug": "mts_home",
+ "access_model": "DECISION (operator 2026-10-17, replaces the 2026-10-16 split): every page is published from the repo by the home login jishusharma1985, so every MTS Home link opens on that login with no Share step. Control Room (MNuodX, its Inbox db now lives here), MTS Layers, both CBP desks, Research Map and Session Planner are owned by jishusharma1985; the jishu.sharma copies are old copies to delete. Exception: the Tom and Fabio deck has no repo html, so it stays on jishu.sharma until re-made. Other logins open these pages only after jishusharma1985 shares them (Share menu, edit access). Never publish a second copy on another login."
 }

@@ -4,18 +4,18 @@
   "commands": [],
   "created": "2026-11-06T19:53:41Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "live_aid.html renders a Habib watch card from a fixture of habib_watch.py output; test_live_aid.py asserts the card id and one candidate row (fails now)",
+  "est_turns": 26,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_aid shows a Habib daily-watch card: the candidate imbalance candles at known levels from habib_watch.py output.",
   "id": "live-aid-card-show-the-habib-daily-watch",
-  "lane": "",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; Habib rules stay UNVERIFIED until gemini-habib-caption-check-1107 ships: the card carries that label.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -23,14 +23,25 @@
     "C:/Users/E-ngineers/IdeaProjects/BinanceDataFeed/.claude/worktrees/habib-book-1106-98be9c/MyTradingSys/system/tasks/habib-plan-scoring-not-trades-1104.json"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/research/habib_concept_book_2026-11/habib_watch.py (read)"
+  ],
+  "scope_out": [
+    "no order logic; display only, labelled descriptive",
+    "no live-tree edit"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read habib_watch.py output format",
+    "Add a fixture and a card in live_aid.html",
+    "Add the fail-first test"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: Habib watch card renders the fixture rows (fails now)",
   "title": "Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

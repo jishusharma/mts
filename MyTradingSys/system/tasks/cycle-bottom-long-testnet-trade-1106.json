@@ -6,18 +6,18 @@
   "depends_on": [
     "cycle-bottom-long-testnet-rule-1106"
   ],
-  "done_when": "one operator-called testnet trade logged with flag state, entry, stop, leverage; or the card stays raw until ENTRY OK",
+  "done_when": "one cotrade.py testnet long is logged in the testnet ledger the first time cycle_flag shows CONFIRMED/ENTRY OK, with the flag state and RULE.md line quoted; no trade before that",
   "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "When cycle_bottom_flag.py (market_guide line) shows ENTRY OK, the operator calls the testnet long through cotrade.py with RULE.md's stop and 2x leverage default; the session logs the trade and the flag state at entry. Builders never place it.",
   "id": "cycle-bottom-long-testnet-trade-1106",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet; OPERATOR-CALLED ONLY (CLAUDE.md: builders never open trades): lists as OPERATOR-ONLY, never dispatched to a builder. Testnet (Deribit test) only.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -35,6 +35,6 @@
   "steps": [],
   "tests": "",
   "title": "Cycle-bottom long: operator-called testnet trade (cotrade.py) when the flag shows CONFIRMED/ENTRY OK",
-  "weight": "",
+  "weight": "CRITICAL",
   "worker": "agent"
 }

@@ -1901,3 +1901,31 @@ subscription (claude-code beta refused by the credit, key never approved). Decis
 Messages API (`api_agent.py`); routing table in PLAN_API_CREDITS_2026-11-04.md (about $9 a day to 11-17: Sonnet builders, Haiku
 reviews/batches, Opus one-shot reads); `claude -p`/Agent SDK/cloud sessions are not credit paths. Managed Agents = $2 probe, later.
 Answer: operator 2026-11-07: use the platform for everything possible; engine shipped (api_agent.py), routing table in PLAN_API_CREDITS.
+
+## d-tv-favorites-context-columns-1107 (2026-11-07, operator, screenshot + text)
+"I need to also see what other indicators are and how to use them for MTS" (his TradingView favourites: ADX and DI, WaveTrend, WaveTrend with Crosses, Squeeze Momentum, Volume Flow Indicator). Note shipped: research/tv_favorites_2026-11/FAVORITES_2026-11-07.md (what each is, what MTS has, proposed context use, plan P1-P4). Default (OURS): context columns only, TradingView-verified first; P2/P3 engines wait for his go.
+Answer: survey delivered 2026-11-07; P1 (ADX TradingView read) running; P2-P4 await his answer.
+
+
+## d-build-squeeze-vfi-use-a-c-gemini-1107 (2026-11-07, operator, chat)
+"Yes, build both" (Squeeze Momentum + VFI engines) then "use login A and C and other gemini models to get things done". Routing (OURS): squeeze-momentum-engine-1107 -> login A (Supervisor A asked for work, q-e5e808); vfi-engine-1107 -> API credit (api_job --engine api, Sonnet, when the slot frees); Gemini laptop -> malkan-hindi-extract + 3 gemini-blind-read-* (:low, q-820c7b); B/NUC -> main-folder-staged-blocks-ff + b-aa62c7 ack + gemini-habib-caption-check-1107; C verifies both engines on his TradingView.
+Answer: assigned 2026-11-07 14:40Z; cards shipped b2f00512.
+
+## d-start-dsa-bridge-typed-trigger-1107 (2026-11-07, operator order via B, q-9d225e)
+"Build it so typing just 'Start DSA bridge' as the first line in a new DeepSeek chat boots DSA (no terminal, no clipboard paste); e.g. the AIBridge extension injects the seed." Card aibridge-start-dsa-trigger-1107 (spec scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md); the terminal-based card aibridge-posts-the-dsa-seed-itself-zero- dropped as superseded. DECISION OURS: the seed is fetched from the agent (dsa.py start --print), never hard-coded in the extension; exact phrase only.
+Answer: ordered; Sonnet builder started 2026-11-07 ~14:55Z on C.
+
+## d-login-c-cap-75-24h-1107 (2026-11-07 ~15:00Z, operator, chat)
+Login C stands at 68 % weekly; the bar for the next 24 h is 75 %. Lead C (Fable) spends the 7 % only on coordination: wake on a
+result, ledger, launch the next job, sleep (bounded waiters, warm cache). All building, reviewing and reading goes to the API
+credit, login A (fresh week), login B (reset 11-08 17:00Z) and the Gemini Argon/Flash queues. Plan: PLAN_24H_2026-11-07.md.
+Answer: yes, recorded; cap 75 % until 2026-11-08 15:00Z, then the 11-10 reset rule (d-login-c-cap-60-1107) applies again.
+
+## d-pages-updated-stamp-follow-builds-1107 (2026-11-07 ~15:20Z, operator, chat + 2 screenshots)
+Operator: pages are not updated when their sources change (CBP Analyst Desk showed 11-06 12:38 after a CBP run; MTS Home built 11-06
+19:17); every page must show its last-updated time at the top, and every super session must republish what moved. Why it was not
+wired: the build side is scripted (artifacts.py build, cbp_run rebuilds cbp_board.html), but publishing needs the Artifact tool, which
+only a Claude Code session on the owner login jishusharma1985 has; CBP runs on other machines, API jobs and Gemini cannot publish; the
+ship gate only prints a WARNING. Fix: card pages-follow-builds-1107 (stamp + hook line + wake step + share pages with logins A/B for
+edit so their sessions can publish too). Republished now: CBP Analyst Desk (15:02Z build), MTS Home (15:03Z build).
+Answer: yes; the operator shares the canonical pages with jishu.sharma and jishu.awgp (edit) so that A and B sessions can republish.

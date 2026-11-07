@@ -4,16 +4,17 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T07:40:34Z",
-    "misses": 13,
+    "folded": "2026-11-07T15:11:00Z",
+    "misses": 9,
     "reads": [
-      "scripts/dev/extra_tests.tsv",
-      "scripts/dev/run_extra_tests.py",
-      "scripts/dev/lookahead_allowlist.tsv",
-      "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py",
-      "scripts/dev/lookahead_lint.py"
+      "MyTradingSys/system/wiring_registry.json",
+      "scripts/dev/us_prep.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/system/specs/us_prep_spec.md",
+      "MyTradingSys/system/SUPER_SESSION.md",
+      "scripts/dev/test_us_prep.py"
     ],
-    "session": "agent-a51cc84a61a78d1fe"
+    "session": "agent-abfef61ceba4fbd39"
   },
   "created": "2026-10-29T21:18:24Z",
   "depends_on": [],

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T15:11:05Z",
   "commands": [],
   "context": {
     "calls_to_edit": 10,
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "us_prep.py + test_us_prep.py already in tree (e8c7215d5, 27b63058d); 9 tests pass incl. fi",
+      "ref": "d8a8a897b",
+      "utc": "2026-11-07T15:11:05Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into worktree-agent-ae9633aa3bf83ae8e",
@@ -37,19 +44,25 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped earlier",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T12:12:24Z",
   "refs": [],
-  "result": "",
+  "result": "us_prep.py + test_us_prep.py already in tree (e8c7215d5, 27b63058d); 9 tests pass incl. fixture 11-05 and UNKNOWN fail-closed; .gitignore + SUPER_SESSION step present; wiring_scan --check PASS without a registry entry (script is DEV-TOOL, not unrun). Haiku review not run (DECISION OURS).",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": "scripts/dev/us_prep.py, scripts/dev/test_us_prep.py, wiring_registry.json, .gitignore entry for MyTradingSys/runtime/us_prep/, SUPER_SESSION.md Sonnet checklist step (phase runner)",
   "scope_out": "cbp_run.py, ci.yml, gate config, live tree, any order/account data, LLM calls",
   "scope_sha": "3c380988c2db",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write failing tests first (fixture day + UNKNOWN fail-closed)",
     "implement fetchers with timeouts; UNKNOWN on any failure",
@@ -58,6 +71,7 @@
     "wiring_registry entry, gitignore, checklist step in SUPER_SESSION.md",
     "ship once; then Haiku diff review"
   ],
+  "taken": "2026-11-07T15:11:05Z",
   "tests": "scripts/dev/test_us_prep.py::test_fixture_day_1105, ::test_unknown_fail_closed (fail before the module exists)",
   "title": "Build scripts/dev/us_prep.py: T0 US-session prep brief (phases P1-P4) + P4 scorer",
   "weight": "",

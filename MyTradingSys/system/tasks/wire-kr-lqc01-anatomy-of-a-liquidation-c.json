@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:22:08Z",
   "commands": [],
   "created": "2026-11-04T21:10:14Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Parked: NO_QUOTE row (no verbatim line) and needs a liquidation feed that is not on disk; check data availability first.",
+  "note": "parked twice (tries 2): NO_QUOTE row (no verbatim line) and no liquidation feed on disk; reopen when evidence exists",
+  "pinned": false,
   "prio": 4,
+  "reason": "parked twice (tries 2): NO_QUOTE row (no verbatim line) and no liquidation feed on disk; reopen when evidence exists",
   "refine_tries": 2,
   "refined_by": "",
   "refs": [
@@ -27,7 +30,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "wire KR-LQC01: Anatomy of a liquidation cascade and domino effect (quote )",
