@@ -307,7 +307,8 @@ def scan_model_a(bars, open_idx, i, N, k_bal, p, m, tier, bin_size, f, dmax, ent
                 else:
                     entry = bars[b + 1]["o"]
                     if d_and_stop(s, entry, s * (entry - O) + tick, f, dmax) is not None:
-                        return _setup("A", "IN_TRADE", s, fill_idx=b + 1, armed_idx=armed["k"], price=entry, i_b=i_b, O=O)
+                        return _setup("A", "IN_TRADE", s, fill_idx=b + 1, armed_idx=armed["k"], price=entry,
+                                      touch_lvn=armed["price"], i_b=i_b, O=O)
                 state, armed = "IMPULSE", None
             X = max(bars[j]["h"] for j in range(i_b, b + 1)) if s > 0 else min(bars[j]["l"] for j in range(i_b, b + 1))
             lv = select_lvn(lvn_levels(build_profile(bars, i_b, b, bin_size), bin_size), s, X, O, bar["c"])

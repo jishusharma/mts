@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:31:52Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/backtest/layers/vfi/test_spec_vfi.py exists, passes against vfi.py, and fails at least once on a mutated vfi.py (mutation noted in the commit).",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT spec tests for backtest/layers/vfi/vfi.py written from FORMULAS s32 only, not from the builder's test_vfi.py.",
+  "id": "gpt-spec-tests-vfi-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as default; textbook",
+      "ref": "f12c86c02044",
+      "utc": "2026-11-07T17:57:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f12c86c02044 squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as defa",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-07T17:57:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected numbers from FORMULAS, never from existing code.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:31:54Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md (read, section 32)",
+    "MyTradingSys/backtest/layers/vfi/vfi.py (read)",
+    "MyTradingSys/backtest/layers/vfi/test_spec_vfi.py (new)",
+    "scripts/dev/run_extra_tests.py (EXTRA list entry)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "f12c86c02044",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md s32"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FORMULAS s32 only",
+    "Derive 5+ expected values by hand",
+    "Write tests, run green",
+    "Mutate vfi.py locally once, see red, revert"
+  ],
+  "tests": "python -m pytest MyTradingSys/backtest/layers/vfi/test_spec_vfi.py green; red under one mutation",
+  "title": "gpt-spec-tests-vfi: independent spec tests for vfi.py from FORMULAS s32",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

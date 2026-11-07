@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:48:43Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "news-headline-panel-tree-rest-1108",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "CoinGlass checked 2026-11-08 01:30Z (operator asked): coinglass.com/news returns 502 from CloudFront (site home 200, news page down twice); CoinGlass survey 10-29 never covered news; API v4 has GET open-api-v4.coinglass.com/api/article/list (docs.coinglass.com/reference/article-list) but it is key-only (401 without key) and plan-gated, so it is a paid second source, not the free primary. Keep Tree News REST as primary; CoinGlass article list optional behind a key.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+    "MyTradingSys/items/T054_us_session_news_correlation.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-08 00:15 IST: TradingView News panel screenshot (abf74fdf6d47) 'Do u see such news! as here'; third ask after T054 (09-28) and news_feeds_2026-10-30; nothing built"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "News headlines in MTS: Tree News REST poll (15 s, while a page is open) into live_aid + a headlines log; importance >= 7 marked; no scheduler",
+  "weight": "",
+  "worker": ""
+}

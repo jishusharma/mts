@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:31:49Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-cycles.md has line 1 with counts (MATCH/DIFF/NOT_IN_DATA or COVERED/NOT_COVERED) and one row per item checked.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of btc_cycles_2026-11/cycles.py: cycles.csv and cycles.md follow from the code and btc_daily.csv, no hand-edited rows.",
+  "id": "gemini-blind-read-cycles-py-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "d-phase-first-method-1106 + BTC 4-cycle table (16 years)",
+      "ref": "22d35cbbb694",
+      "utc": "2026-11-06T18:00:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "22d35cbbb694 d-phase-first-method-1106 + BTC 4-cycle table (16 years)",
+      "ref": "MyTradingSys/research/btc_cycles_2026-11/cycles.md",
+      "utc": "2026-11-06T18:00:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Gemini queue, load as <card>:low. Blind read: use only the files named. ",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:31:51Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_cycles_2026-11/cycles.py (read)",
+    "MyTradingSys/research/btc_cycles_2026-11/cycles.md (read)",
+    "MyTradingSys/research/btc_cycles_2026-11/cycles.csv (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-cycles.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "22d35cbbb694",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/btc_cycles_2026-11/cycles.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read cycles.py",
+    "Recompute each cycles.md row from btc_daily.csv outside the repo",
+    "Write table, counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of btc_cycles_2026-11/cycles.py vs cycles.md (1108)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
