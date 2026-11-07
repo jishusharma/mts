@@ -435,7 +435,7 @@
 
   // ---------- US open ladder (research/us_open_levels_2026-10-30; operator 2026-10-30 "anticipation ... if price goes up or down").
   // Levels known at the open: UTC-day-so-far H/L (box), prior day, prior 3 days, prior 7 days H/L, plus the first-15-min opening range.
-  // rates = US_OPEN_RATES.rates: per level kind and distance bucket, reached-in-2h % and held-60-min-after-touch %. All OURS, descriptive. ----------
+  // rates = BASE_RATES.us_open_levels.table.rates: per level kind and distance bucket, reached-in-2h % and held-60-min-after-touch %. All OURS, descriptive. ----------
   var UO = { windowMs: 7200000, orMs: 900000, buckets: [['0-0.25', 0, 0.0025], ['0.25-0.5', 0.0025, 0.005], ['0.5-1', 0.005, 0.01], ['1-2', 0.01, 0.02], ['2+', 0.02, 9]],
              names: { dayH: 'day high so far', dayL: 'day low so far', pdh: 'prev day high', pdl: 'prev day low', d3h: '3-day high', d3l: '3-day low', d7h: '7-day high', d7l: '7-day low', orH: 'opening range high', orL: 'opening range low' } };
   function uoBucket(x) { for (var i = 0; i < UO.buckets.length; i++) if (x >= UO.buckets[i][1] && x < UO.buckets[i][2]) return UO.buckets[i][0]; return null; }
@@ -615,7 +615,7 @@
 
   // ---------- anticipation map (card anticipation-map-from-current-layer-stat; Eagle_Eyes 10-30 operator ask).
   // Readings of one price x OI state over 60 min, split by Binance taker delta. Odds = MEASURED fee-free descriptive base rates
-  // (research/anticipation_map_2026-11-05, anticipation_rates.js, DEV 2022-01..2024-06); flat 0.1 % and the 60-min window = OURS.
+  // (research/anticipation_map_2026-11-05, base_rates.js row anticipation_oi_delta, DEV 2022-01..2024-06); flat 0.1 % and the 60-min window = OURS.
   // The third reading (other venues lead) has no history on disk: UNMEASURED. Descriptive, never an entry call.
   var AM_TEXT = {
     'UP|UP|BUY': ['New aggressive longs: buyers lift and open', 'next 60 min: price above the window high, OI still rising', 'close back below the window start price'],
@@ -644,7 +644,7 @@
 
   // ---------- big-candle story (operator 2026-11-05 "understand what the story it tells ... wire this to runtime pipeline"; research/bigcandle_story_2026-11-05).
   // The live hour's story (price x OI x taker delta, same 8 keys as above) + top-trader class (positions ratio vs accounts ratio over the hour)
-  // + phase (30-day band, weekly red/green streak; all OURS) -> the measured cell of bigcandle_rates.js (1h events with |z| >= 3, DEV 2022-01..2024-06).
+  // + phase (30-day band, weekly red/green streak; all OURS) -> the measured cell of base_rates.js row bigcandle_story (1h events with |z| >= 3, DEV 2022-01..2024-06).
   // Fallback order band -> streak -> story|tt -> story; a cell under n 30 is THIN and never the answer. Descriptive, never an entry call.
   var BC = { thin: 30, flat: 0.002, band: 0.10, zBig: 3 };
   function bcClass(posRel, accRel) {
@@ -715,7 +715,7 @@
   // ---------- level-approach prep (card level-approach-prep; Eagle_Eyes 10-30 operator ask; spec CARD_SPECS.md#level-approach-prep).
   // Per marked level within 0.5 %: checklist, absorption (delta share >= +0.3 into the level, < 0.1 % extension over the next 3 1m bars),
   // OI tell, 1m/2m/3m/5m wick rejections in the last 15 min, RSI 70/30 (Wilder, SOURCED), coil, flag count. Thresholds = OURS (PRE_REG).
-  // Rates MEASURED only for prior-day H/L (research/level_approach_prep_2026-11-05, level_approach_rates.js); other levels UNMEASURED.
+  // Rates MEASURED only for prior-day H/L (research/level_approach_prep_2026-11-05, base_rates.js row level_approach_prior_day); other levels UNMEASURED.
   // Descriptive, never an entry call.
   var LA = { near: 0.5, zone: 0.003, absDs: 0.3, absExt: 0.001, wick: 0.5, winMin: 15, rsiHi: 70, rsiLo: 30, pd: /prev(ious)? day|prior[- ]day/i };
   var LA_CHECK = {

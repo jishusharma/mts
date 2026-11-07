@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T19:06:20Z",
   "commands": [],
   "created": "2026-11-06T08:39:19Z",
   "depends_on": [],
@@ -14,23 +15,35 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "scripts/dev/test_tasks_next_tag.py",
+      "ref": "e67cad3d1",
+      "utc": "2026-11-06T19:06:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "tasks.mark_shared_bases keeps CRUCIAL/CRITICAL weight",
-      "ref": "06a8dedd24f9",
-      "utc": "2026-11-06T13:41:28Z"
+      "line": "tasks.py wiring check: accept comma-string scope_in/refs (broke ship for every lane)",
+      "ref": "a17dac0d2b98",
+      "utc": "2026-11-06T18:10:31Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: route-tag trap fixed and drop subcommand implemented",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T17:31:42Z",
+  "refreshed": "2026-11-06T18:48:32Z",
   "refs": [],
-  "result": "",
+  "result": "scripts/dev/test_tasks_next_tag.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks_next_tag.py"
@@ -38,15 +51,16 @@
   "scope_out": [
     "MyTradingSys/tools/live_aid"
   ],
-  "scope_sha": "06a8dedd24f9",
+  "scope_sha": "a17dac0d2b98",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read how sync.py check_route_tags parses Next and reuse that parser in tasks.py done",
     "fail-first test, then add drop subcommand with --reason",
     "run tasks tests"
   ],
+  "taken": "2026-11-06T19:06:20Z",
   "tests": "scripts/dev/test_tasks_next_tag.py: done --next none must fail (fails on current tasks.py, which accepts it)",
   "title": "sync.py ship / tasks.py done route-tag trap: '--next none' accepted by done but blocks ship, free-text --next parsed as a card id (filed junk cards 'fix','none'), no tasks.py drop; done when done/ship reject bad Next at commit time with one clear message and tasks.py drop <id> --reason exists, tests fail on old code",
   "weight": "",

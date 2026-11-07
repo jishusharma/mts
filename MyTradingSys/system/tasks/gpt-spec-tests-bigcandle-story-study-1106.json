@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T18:00:59Z",
   "commands": [],
   "created": "2026-11-06T16:48:33Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_study_spec.py 6 pass; 2 mutations fail it",
+      "ref": "4ed44ac73",
+      "utc": "2026-11-06T18:00:59Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "bigcandle story: big-candle stories x top-trader class x phase base rates + live_aid panel",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: spec test shipped by coordinator",
   "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T16:48:34Z",
   "refs": [],
-  "result": "",
+  "result": "test_study_spec.py 6 pass; 2 mutations fail it",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/bigcandle_story_2026-11-05/study.py (read)",
     "MyTradingSys/research/bigcandle_story_2026-11-05/test_study_spec.py (new)",
@@ -43,12 +56,13 @@
   "scope_sha": "b2010203f032",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the module contract, not the code body",
     "Write 3+ spec tests from the contract",
     "Mutate one line, show the test fails, revert, report"
   ],
+  "taken": "2026-11-06T18:00:59Z",
   "tests": "python -m pytest MyTradingSys/research/bigcandle_story_2026-11-05/test_study_spec.py -q passes; same test fails on the mutated copy (named in the report)",
   "title": "GPT spec tests: bigcandle_story study.py",
   "weight": "ROUTINE",

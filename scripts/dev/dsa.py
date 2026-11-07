@@ -6,6 +6,7 @@ stderr into red noise). Exit codes: 0 ok, 1 could not do it, 2 refused (nothing 
 
   python scripts/dev/dsa.py host                                  # facts for THIS machine (host, java, mvn, live tree, BUILD_REPORT host match)
   python scripts/dev/dsa.py boot [--hours N]                      # host + CI line + claims + desk row + next task cards + open Q lines + news gaps (read-only)
+  python scripts/dev/dsa.py start [--open] [--print]              # OPERATOR: the seed for a new DeepSeek chat on the clipboard (--open: the chat tab too); paste, Enter, wait for BOOT
   python scripts/dev/dsa.py begin "<task title>"                  # own worktree ../mts-dsa-<slug>, branch <host>/dsa-<slug>, sync start + claim
   python scripts/dev/dsa.py put <path> [--append]                 # write STDIN to the file (UTF-8, no BOM, LF; keeps a CRLF-only target CRLF)
                                                                   #   PS 5.1 pipes ASCII by default: first run $OutputEncoding=[Text.UTF8Encoding]::new($false)
@@ -39,6 +40,10 @@ STATUS_MD = "MyTradingSys/research/STATUS.md"
 BUILD_REPORT = "MyTradingSys/runtime/BUILD_REPORT.md"
 HERE = Path(__file__).resolve().parent
 BOOT_BUDGET_S = 240
+LIVE_ROOT_WIN = r"C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed"   # the live tree on every MTS host (HOW_MTS_RUNS.md)
+CHAT_URL = "https://chat.deepseek.com/"
+CHROME_PROFILE = "Profile 4"                                       # jishu.awgp, the DSA login (DSA_DELEGATION.md)
+SEED_MAX_BYTES = 4000
 
 # git subcommands / flags this tool refuses to run: nothing here may rewrite history or push.
 FORBIDDEN_GIT = {"reset", "rebase", "filter-branch", "filter-repo", "replace", "push", "gc", "prune", "update-ref",
@@ -696,6 +701,94 @@ def cmd_end(a):
     return 0
 
 
+# ------------------------------------------------------------------ start (the seed)
+def seed_text(host, live_root=LIVE_ROOT_WIN):
+    """The whole first message of a new DSA chat: who it is, how the bridge works, ONE block that loads everything, then wait.
+
+    Replaces the 86-250 KB session paste as the normal start (operator 2026-11-07: one command, quick init, then wait for
+    my instruction). Everything DSA needs (the prompt, host facts, CI line, claims, desk row, cards) comes back through the
+    bridge from the block below, read from origin/fast-track, so the seed never goes stale. ASCII only, no source line of
+    the block begins with a hash (AIBridge parser rule), every line under 200 chars.
+    """
+    stamp = utc_now().strftime("%Y-%m-%d %H:%MZ")
+    lines = [
+        f"DSA seed {stamp}, host {host}. You are DSA (DeepSeek + AIBridge) for MTS, the same working level as a Claude Code session.",
+        "How anything happens: a fenced block whose first line is # AIRUN ..., in your FINAL answer. The bridge runs it and the",
+        "result comes back as your next message ([AIRUN RESULT] or [AIRUN BATCH]). While a block runs, send nothing.",
+        "",
+        "STEP 1. Your whole first reply is this one block, copied exactly, nothing else in that reply:",
+        "```powershell",
+        f"# AIRUN cwd={live_root} timeout=300",
+        "$ErrorActionPreference = 'Stop'",
+        f"Set-Location '{live_root}'",
+        "$id = (hostname).ToLower() + '-' + (Get-Date).ToUniversalTime().ToString('MMdd-HHmm')",
+        "git fetch --quiet origin fast-track",
+        'git worktree add --quiet "..\\mts-dsa-$id" -b "dsa/$id" origin/fast-track',
+        '$wt = (Resolve-Path "..\\mts-dsa-$id").Path',
+        "Set-Location $wt",
+        'Write-Output "WORKTREE: $wt"',
+        'Write-Output "===== DSA_SESSION_PROMPT.md: your rule book, read all of it ====="',
+        "Get-Content DSA_SESSION_PROMPT.md",
+        'Write-Output "===== dsa.py boot ====="',
+        "python scripts/dev/dsa.py boot --hours 24",
+        "```",
+        "",
+        "STEP 2. After that result, reply with the BOOT banner only, then STOP and wait for the operator:",
+        "BOOT: <host> | bridge <the version label on the page> | <WORKTREE> | <CI green line> | claims <N> | desk_next <row> | card <first DSA card>",
+        "No task, no claim, no command and no further block until he sends an order (prompt FIRST, G). Orders:",
+        '  "go" = work the queue of prompt section 5;  a card id or desk row = that one task, then stop;  other text = answer it.',
+        '  "Check the desk tasks for DSA-<host> and do them." (the watcher) counts as "go".',
+        "Result cut ([TRUNCATED]): read the rest of DSA_SESSION_PROMPT.md by range before the banner.",
+        "ERROR extension_link or agent_unreachable: say which in one line and wait.",
+    ]
+    text = "\n".join(lines) + "\n"
+    for ln in lines:
+        if len(ln) >= 200:
+            raise Failed(f"seed line too long: {ln[:40]}")
+        if ln.startswith("#") and not ln.startswith("# AIRUN"):
+            raise Failed(f"seed line begins with a hash: {ln[:40]}")
+    if len(text.encode("ascii")) > SEED_MAX_BYTES:
+        raise Failed(f"seed over {SEED_MAX_BYTES} bytes")
+    return text
+
+
+def chrome_exe():
+    for c in (shutil.which("chrome"),
+              r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+              r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"):
+        if c and Path(c).exists():
+            return c
+    return None
+
+
+def cmd_start(a):
+    text = seed_text(hostname())
+    if a.print:
+        sys.stdout.write(text)
+        return 0
+    copied = False
+    if os.name == "nt":
+        try:
+            subprocess.run(["clip"], input=text, text=True, check=True, timeout=10)
+            copied = True
+        except (OSError, subprocess.SubprocessError) as e:
+            print(f"clipboard: FAILED {e}")
+    if not copied:
+        sys.stdout.write(text)
+        print("clipboard: not copied; the seed is printed above, copy it")
+    else:
+        print(f"seed: {len(text)} chars on the clipboard")
+    if a.open:
+        exe = chrome_exe()
+        if exe is None:
+            print("chrome: not found; open chat.deepseek.com in the jishu.awgp profile yourself")
+        else:
+            subprocess.Popen([exe, f"--profile-directory={CHROME_PROFILE}", CHAT_URL], close_fds=True)
+            print(f"chrome: opened {CHAT_URL} in {CHROME_PROFILE}")
+    print("NEXT: in the new DeepSeek chat press Ctrl+V, Enter; wait for the BOOT line; then say go, or name a task")
+    return 0
+
+
 # ------------------------------------------------------------------ main
 def build_parser():
     ap = argparse.ArgumentParser(prog="dsa.py", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -704,6 +797,10 @@ def build_parser():
     p = sub.add_parser("boot")
     p.add_argument("--hours", type=int, default=24)
     p.set_defaults(f=cmd_boot)
+    p = sub.add_parser("start")
+    p.add_argument("--open", action="store_true", help="also open chat.deepseek.com in the DSA Chrome profile")
+    p.add_argument("--print", action="store_true", help="print the seed instead of copying it")
+    p.set_defaults(f=cmd_start)
     p = sub.add_parser("begin")
     p.add_argument("title")
     p.set_defaults(f=cmd_begin)

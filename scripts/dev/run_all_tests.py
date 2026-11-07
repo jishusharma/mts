@@ -114,7 +114,7 @@ _LOCK = threading.Lock()
 # plus 3x (ALWAYS, 18 s in ship logs, 8 failures) and 3js. 2026-10-18: RELAY.md over its size cap failed step 4d (6.6 s) at +438 s.
 CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
                "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
-               "4d", "4e", "5c")
+               "4d", "4e", "5c", "3cm", "3cmt")
 PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
 TARGET_CAP = 12      # OURS: at most this many files (sorted), so the precheck stays about a minute
@@ -132,7 +132,7 @@ EXTRA_FILE_S = 4              # OURS: estimated seconds per step-3xt file (one p
 # Estimated CPU seconds of the script-style test steps a change can reach (each run alone on JIS-NB, 2026-10-18; 3k/3ds/3dk/3bk run as
 # 2-3 shards, the figure is their sum); a step above the budget is deferred to CI unless a changed file names it.
 STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 150, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
-            "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3}
+            "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3, "3cm": 2, "3cmt": 3}
 RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
 RECORD_MAX_AGE_S = 24 * 3600
 
@@ -598,6 +598,11 @@ def build_plan(quick):
     # 29 of 33 reports never said what regime their window was). Every PRE_REG not frozen before the rule carries a `## Context` section
     # (Regime/Phase/Session/Entry), every result a `Regime mix:` line. <1 s; exit 1 on an offender.
     add("3pc", "PRE_REG context lint: new pre-registrations state regime/phase/session/entry, results state the regime mix", [sys.executable, "scripts/dev/prereg_context_lint.py"], "Step 3pc: PRE_REG context lint")
+
+    # Step 3cm: committed merge-conflict markers (2026-11-06: PLAN_API_CREDITS had marker rows on trunk; the 8dbd7408f revert put markers in 5
+    # task cards). git ls-files text scan, <1 s; exit 1 names file:line. 3cmt = its fail-first test.
+    add("3cmt", "Conflict marker lint tests", [sys.executable, "scripts/dev/test_conflict_marker_lint.py"], "Step 3cmt: Conflict marker lint tests")
+    add("3cm", "Conflict markers: no tracked text file has a line starting with seven < or > and a space (conflict_marker_lint.py)", [sys.executable, "scripts/dev/conflict_marker_lint.py"], "Step 3cm: Conflict marker lint")
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest

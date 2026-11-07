@@ -114,6 +114,35 @@ t('0.7.7 notice text tells DSA not to repeat blocks that have a result', () => {
   assert.ok(L.REPLY_NOTICE_TEXT.includes('do not repeat blocks that already have a result'));
   assert.ok(L.ANSWER_MIN_CHARS <= 2);   // 'ok', the reply the notice asks for, must count as an answer
 });
+t('replyDone (0.7.27): a finished DeepSeek reply has the 6-icon action bar under it -> run', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: true, assistant: true, barIcons: 6 }), { known: true, done: true });
+});
+t('replyDone: a reply still streaming has no action bar yet -> wait (the 73-char inline plan of 2026-11-06)', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: true, assistant: true, barIcons: 0 }), { known: true, done: false });
+  assert.strictEqual(L.replyDone({ hasMsg: true, assistant: true, barIcons: 2 }).done, false);   // a user-row bar (edit, copy) is not it
+});
+t('replyDone: a block the operator pasted into a user message is complete when posted', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: true, assistant: false, barIcons: 2 }), { known: true, done: true });
+});
+t('replyDone: no .ds-message ancestor (DOM changed) -> unknown, the caller falls back to the quiet rule', () => {
+  assert.deepStrictEqual(L.replyDone({ hasMsg: false }), { known: false, done: false });
+  assert.deepStrictEqual(L.replyDone(null), { known: false, done: false });
+});
+t('ctlDetail (0.7.28): the one-line box opens its detail lines only on a problem', () => {
+  assert.strictEqual(L.ctlDetail('waiting for DSA after #3', 'agent 0.7.28 on JIS-NB', 'ok'), false);
+  assert.strictEqual(L.ctlDetail('running #2: python x.py', '', 'ok'), false);
+  assert.strictEqual(L.ctlDetail('off: click Run on each block', '', 'ok'), false);
+  assert.strictEqual(L.ctlDetail('x', 'PREFLIGHT FAIL agent_unreachable: no agent on port 7181', 'ok'), true);
+  assert.strictEqual(L.ctlDetail('manual result #4 not posted; copy it from the panel', '', 'ok'), true);
+  assert.strictEqual(L.ctlDetail('extension was reloaded: refresh this page (F5)', '', 'ok'), true);
+  assert.strictEqual(L.ctlDetail('waiting for DSA after #3', '', 'agent_mismatch'), true);
+});
+t('ctlGlyph: running and waiting show as one glyph on the line, idle shows nothing', () => {
+  assert.strictEqual(L.ctlGlyph('running #2 (block 1/2): python x.py'), '\u25B6');
+  assert.strictEqual(L.ctlGlyph('waiting: DSA is still writing this reply (3 s)'), '\u2026');
+  assert.strictEqual(L.ctlGlyph('off: click Run on each block'), '');
+  assert.strictEqual(L.ctlGlyph(''), '');
+});
 (async () => {
   const never = new Promise(() => {});
   const r = await L.raceDeadline(never, 20, () => Promise.resolve(0));

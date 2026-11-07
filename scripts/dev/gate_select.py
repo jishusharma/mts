@@ -50,7 +50,7 @@ def is_gate_file(f):
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
              "MyTradingSys/options/", "MyTradingSys/observation/")
 
-ALWAYS = ("3w", "3x", "3gd", "3dl")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint: seconds, catch the usual merge-time breaks
+ALWAYS = ("3w", "3x", "3gd", "3dl", "3cm")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint, conflict markers: seconds, catch the usual merge-time breaks
 DOC_STEPS = ()   # gate-tiers-by-path (operator q-v1-gate-tiers, 2026-10-20): a docs ship runs no local step; CI gates behind
 CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")   # a card in the diff brings step 3tl (task-card lint) with it
 # gate_gap_2026-11-03 (MyTradingSys/research/gate_gap_2026-11-03.md): docs/data-only ships ran no local step and went red on trunk,

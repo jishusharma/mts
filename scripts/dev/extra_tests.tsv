@@ -147,6 +147,7 @@ scripts/dev/test_refresh_main_checkout.py
 MyTradingSys/tools/live_aid/test_live_aid.py
 MyTradingSys/tools/live_aid/test_build_analyst_data.py
 MyTradingSys/tools/live_aid/test_oi_money.py
+MyTradingSys/tools/live_aid/test_base_rates.py
 MyTradingSys/tools/live_aid/test_live_aid_replay.py
 MyTradingSys/tools/live_aid/test_live_aid_layout.py
 scripts/dev/test_sync_push_race.py
@@ -236,3 +237,11 @@ scripts/dev/test_us_prep.py
 scripts/dev/test_boot_audit.py
 MyTradingSys/tools/live_aid/test_spec_tf_strip.py
 MyTradingSys/research/candle_flip_probability_2026-11/test_null_model.py
+scripts/dev/test_ship_train.py
+scripts/dev/test_sync_route_tag.py
+MyTradingSys/tools/live_aid/test_spec_cycle_flag.py
+scripts/dev/test_tasks_next_tag.py
+MyTradingSys/backtest/layers/fabio/test_rescore.py
+MyTradingSys/research/ma_layer_2026-11/test_spec_ma_state.py
+MyTradingSys/tools/live_aid/test_spec_ma_strip.py
+MyTradingSys/research/pattern_book_2026-11/test_spec_detect_patterns.py

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T17:54:02Z",
   "commands": [],
   "created": "2026-11-06T16:48:22Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-06_level-approach-prep.md MATCH=11 DIFF=19",
+      "ref": "d3bf85052",
+      "utc": "2026-11-06T17:54:02Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit delivered",
   "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T16:48:23Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-06_level-approach-prep.md MATCH=11 DIFF=19 NOT_IN_DATA=0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/level_approach_prep_2026-11-05/RESULT.md (read)",
     "MyTradingSys/research/level_approach_prep_2026-11-05/PRE_REG.md (read)",
@@ -51,12 +64,13 @@
   "scope_sha": "775495c597f6",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every number in RESULT.md",
     "Recompute each from the CSV/raw counts with FORMULAS.md",
     "Write the table and counts on line 1"
   ],
+  "taken": "2026-11-06T17:54:02Z",
   "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "GPT re-derive: level_approach_prep_2026-11-05 RESULT numbers",
   "weight": "ROUTINE",

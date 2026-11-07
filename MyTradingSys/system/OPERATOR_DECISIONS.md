@@ -1802,3 +1802,56 @@ Answer: yes, start it (operator, 2026-11-06 16:10Z); session flip-study on JIS-N
 Power gate 0.30 % ceiling with repo-wide Holm m = 238 blocks every DEV study (Builder via Supervisor C, 2026-11-06 14:55Z). Card power-gate-holm-m-decision-1106 READY.
 Recommended: Holm m per study family.
 Answer: default (Holm m per family) applies from 2026-11-07 15:00Z unless the operator overrides; recorded by Lead C.
+
+## d-carry-dropped-leverage-direction-1106 | decided 2026-11-06 | operator (voice, 18:40Z), recorded by Lead C
+Funding carry (carry_basis_2026-10-18, 6-15 %/yr, shrinking) is dropped: MTS aims at leveraged directional trades, not carry.
+Direction: (1) low-leverage long-term longs near confirmed cycle bottoms (CBP bottom signal, buy on or after a good retest); (2) scalps, day and swing trades by session using Tom and Fabio levels (where buyers and sellers sit), bias from indicators and volume, continuation vs counter-trade.
+Lead C finding: the order-flow setups are often positive before costs and negative after (fabio_of: about 0.45 R of cost per trade on 0.15 % stops), so costs, not missing layers, kill most results.
+Answer: carry dropped; direction recorded (operator, 2026-11-06).
+
+## d-phase-first-method-1106 | decided 2026-11-06 | operator (voice, 18:55Z), recorded by Lead C
+Method: an edge is judged by market phase and by patterns that hold now, not by long multi-year backtests. A pattern visible in the current phase goes to the testnet at once and keeps trading until it stops working; we record when it works and the conditions in which it fails. Large-history backtests are not a precondition for testnet trades.
+Example: the BTC four-year cycle (3 up, 1 down) held for 4 cycles; it needs no backtest. Research table: research/btc_cycles_2026-11/cycles.md (16 years of daily prices, blockchain.info before 2017-08, Binance after).
+Bound (Hard rules, unchanged): testnet only; mainnet still needs the fee-net out-of-sample record, which the testnet run now supplies.
+Answer: phase-first, testnet-forward method adopted (operator, 2026-11-06).
+
+## d-stops-follow-trade-1106 | decided 2026-11-06 | operator (voice, 18:04Z), recorded by Lead C
+The 0.15 % minimum stop in fabio_of (09-30) was OURS (a worker's floor), never Fabio's; the Habib candle-extreme stop (10-16) was OURS too. Both are dropped as rules. A stop follows the trade: direction, leverage and the plan's invalidation point (below the level or range traded), never a fixed percentage. Re-score of the two studies with plan stops and maker fees: card fee-stop-rescore-fabio-habib-1106.
+Answer: stops are per trade and per plan; the 0.15 % floor is retired (operator, 2026-11-06).
+
+## d-three-studies-1106 | decided 2026-11-06 | operator ("Yes, start all three", 19:05Z), recorded by Lead C
+Three Sonnet sessions, concepts before code, phase-first: pattern book (chart patterns, candle patterns, trendlines per timeframe, drawn for the operator's eye; takes the trendline half of card live-aid-trendlines-liquidations-1106), Habib concept book (imbalance method wired to his calls; takes card habib-plan-scoring-not-trades-1104), moving-average layer (one MA state per timeframe on the live aid, Krown and the common practice sourced first). Each ships to research/<name>_2026-11/ and appends dated readings to research/mts_bible/BIBLE.md.
+Answer: yes, all three (operator, 2026-11-06 19:05Z); sessions pattern-book, habib-book, ma-layer on JIS-NB.
+
+## d-habib-calls-unsealed-1106 | decided 2026-11-06 | operator (voice, 18:04Z: "see what is happening with Habib's calls, how he is able to do it"), recorded by Lead C
+The 9 priced Habib plans (habib_plan_imbalance_2026-10-20/PLAN_LEDGER.csv, dated inside the 2026-06-26..09-26 holdout) may be scored against klines now: scoring his plans tunes nothing of ours, and d-phase-first-method-1106 removes the backtest-holdout gate for analyst calls. Our own rules still keep their holdout.
+Answer: released for scoring by the Habib session (operator's order, 2026-11-06); reversible by the operator.
+
+## d-ladder-discuss-first-1106 | decided 2026-11-06 | operator (voice, 18:04Z: "first discuss with me and reflect on my ideas"), recorded by Lead C
+Range laddering (the operator's martingale idea) is a written proposal first, no code: fixed total risk split across 3-4 levels in the range, one invalidation below the range, stop width from the range; Fabio's add-in-profit is the trend-phase counterpart. The Habib session writes LADDER_PROPOSAL.md for the operator.
+Answer: proposal only until the operator decides (2026-11-06).
+
+## d-mts-bible-1106 | decided 2026-11-06 | operator (voice, 18:14Z: "keep this in your Bible"), recorded by Lead C
+research/mts_bible/BIBLE.md holds the big-picture truths (cycle clock, turn shapes, two-clock reading, exact lows) with confirm/break conditions; sessions append dated readings, never edit past ones. Each Bible reading with a testable outcome also goes to the scenario ledger so it is scored (S008: July bottom stands).
+Answer: Bible kept and wired to the ledger (operator, 2026-11-06).
+
+## d-prob-registry-1106 | decided 2026-11-06 | operator ("Yes, build it", 19:55Z), recorded by Lead C
+The probability layer is context, never a signal: one base-rate registry (base_rates.py -> base_rates.js) replaces the five *_rates.js globals on the live aid, built from the existing study outputs, no new study, no backtest; every number shows its window and n. Card prob-base-rates-registry-1106 goes to a Sonnet Builder now (defaults from UNIFY_2026-11-06.md s6: unify now; rows below the unit minimum shown greyed, never hidden; the leverage cap (D3) waits for a realised testnet log).
+Answer: build it now (operator, 2026-11-06 19:55Z).
+
+## d-login-c-cap-60-1107 | decided 2026-11-07 | operator (chat, ~09:00Z), recorded by Lead C
+Login C weekly cap is 60 % (was 85 %; at 56 % when said). The last 4 % finish the open tasks end to end; no new task starts on login C this week. Login A (the Lenovo laptop) and the NUC are switched off. Order: DSA fix verified on trunk, then tested by the Haiku watcher; the Builder's base-rate registry; archive done sessions.
+Answer: critical tasks first, no rework, no new tasks (operator, 2026-11-07).
+
+## d-aibridge-ctl-one-line-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+The hands-free control box on the DeepSeek page covered most of the screen. It becomes one line (tick, blocks run / cap, link dot, version), draggable; the status, version and agent lines open only on a problem or a click on the version. Shipped as AIBridge 0.7.28.
+Answer: one line, floatable, only the blocks and the version (operator, 2026-11-07).
+
+## d-dsa-seed-then-wait-1107 | decided 2026-11-07 | operator (voice, ~09:15Z), recorded by Lead C
+The DSA fix is end to end: DSA must know how to use the 0.7.28 bridge (its failure patterns are now prompt 0.9), a new chat
+starts with ONE command (`python scripts/dev/dsa.py start --open`: seed on the clipboard, chat tab opened; paste, Enter), DSA
+loads itself through one bridge block (worktree, prompt, `dsa.py boot`), prints a one-line BOOT banner and WAITS; it starts
+work only on his order ("go", a card id, a desk row; the watcher's check-desk line counts as go). Reason: DSA had begun doing
+many things on its own. All of it tested end to end by a Haiku worker in Chrome. The 86-250 KB session paste stays as the
+paste-mode fallback. DECISION (OURS): a zero-paste start (the extension posts the seed itself) is bridge work, raw card filed.
+Answer: one command, quick init, wait for my instruction; test with Haiku (operator, 2026-11-07).
