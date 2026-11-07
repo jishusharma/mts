@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T16:11:27Z",
   "commands": [],
   "created": "2026-11-07T15:37:20Z",
   "depends_on": [],
@@ -13,10 +14,18 @@
   "id": "dsa-seed-full-task-list-1107",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "seed lists 11 cards + 6 desk rows (DSA QUEUE) and DSA FILED (NOT_IN_DATA where unrecorded)",
+      "ref": "838bbd404",
+      "utc": "2026-11-07T16:11:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: NUC types Start DSA bridge",
   "note": "Login B (bridge lane owner, AIBRIDGE_LANE.md) after its reset, else login A. Builds on aibridge-start-dsa-trigger-1107 (the trigger itself, shipping 11-07). Operator 11-07: 'it must list all the tasks assigned to DSA, check latest bugs created by DSA'.",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
     "DSA_SESSION_PROMPT.md",
     "MyTradingSys/system/AIBRIDGE_LANE.md"
   ],
-  "result": "",
+  "result": "seed lists 11 cards + 6 desk rows (DSA QUEUE) and DSA FILED (NOT_IN_DATA where unrecorded), 4020B<=4000 cap; chat check pending",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/dsa.py (seed builder, lines ~400-420)|scripts/dev/tasks.py (a --source filter if missing)|DSA_SESSION_PROMPT.md section 0 + 5|scripts/dev/test_dsa*.py|MyTradingSys/system/SPEC_START_DSA_TRIGGER.md (append the list rule)"
   ],
@@ -39,10 +53,11 @@
   "sources": [
     "operator 2026-11-07 voice (chat, Lead C turn 15:30Z): understand how people use the favourites, LazyBear/Carter/Katsanos, crypto filter, then group indicators and analysts by what they measure; d-favourites-usage-then-map-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read dsa.py seed builder + SPEC_START_DSA_TRIGGER + DSA prompt section 0|add DSA QUEUE + DSA FILED, keep the byte cap|test fails pre-change|prompt section 0 batching review, shorten not add|type Start DSA bridge here, check the banner (or report chat check pending)|ship Result: <n listed> Next: END: NUC types Start DSA bridge"
   ],
+  "taken": "2026-11-07T16:11:27Z",
   "tests": "scripts/dev/test_dsa_seed.py (new or extended): fails pre-change on the missing DSA QUEUE / DSA FILED sections; seed byte cap test stays green",
   "title": "Start DSA bridge seed lists every open DSA task (desk + lanes, both hosts) and the last 5 cards DSA filed; DSA prompt reviewed for bridge batching",
   "weight": "",

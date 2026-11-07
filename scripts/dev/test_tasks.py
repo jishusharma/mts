@@ -1386,6 +1386,18 @@ class TwinCardTest(unittest.TestCase):
             cs[0].update(change)
             self.assertNotIn(("a", "b"), self.ids(cs), change)
 
+    def test_twin_pairs_tolerate_string_and_scalar_list_fields(self):
+        for field, val in (("scope_in", "x/y.py, z/w.py"), ("scope_in", 5), ("refs", 5), ("depends_on", 5), ("not_twin_of", 5), ("title", None)):
+            cs = self.cards()
+            cs[0][field] = val
+            self.ids(cs)                                      # must not raise
+        cs = self.cards()
+        cs[0]["not_twin_of"] = "abc"                         # a string is a one-item list, not a substring haystack
+        self.assertIn(("a", "b"), self.ids(cs))
+        cs[0]["not_twin_of"] = "b"
+        self.assertNotIn(("a", "b"), self.ids(cs))
+        self.assertEqual(T.as_list("x/y.py, z/w.py"), ["x/y.py", "z/w.py"])
+
     def test_new_warns_on_a_likely_twin(self):
         with tempfile.TemporaryDirectory() as d:
             repo, old = Path(d), T.REPO

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T15:57:15Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -29,12 +30,20 @@
   "id": "pages-follow-builds-1107",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped as bdb4965ac + 249110766",
+      "ref": "838bbd404",
+      "utc": "2026-11-07T15:57:15Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "Root cause: publishing needs the Artifact tool = a Claude Code session on the owner login; scripts, API jobs, Gemini, DSA cannot publish. After the operator shares the pages with jishu.sharma/jishu.awgp (edit), A and B sessions become publishers too. Assign: login A (fresh week) or B after its 11-08 reset; not login C (75 % cap).",
   "prio": 1,
   "refine_tries": 0,
@@ -43,7 +52,12 @@
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md d-pages-updated-stamp-follow-builds-1107"
   ],
-  "result": "",
+  "result": "shipped as bdb4965ac + 249110766",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts\\dev\\artifacts.py|scripts\\dev\\make_home.py|scripts\\dev\\make_layers_board.py|F;C:\\Users\\E-ngineers\\Git\\CryptoScrapper\\cbp_v2\\tools\\build_board.py (repo copy if any)|scripts\\dev\\supervisor.py|hook script that prints TRUNK LAG|MyTradingSys\\system\\SUPER_SESSION.md|registry.json publishers list"
   ],
@@ -55,10 +69,11 @@
   "sources": [
     "operator 2026-11-07 chat + screenshots 69fbef1d8db8, 110b0c0b416f; d-pages-updated-stamp-follow-builds-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read artifacts.py stale + registry|add publishers list (jishusharma1985 + logins given edit access) to registry.json|stamp injection in build + build_board|hook line|supervisor plan REPUBLISH line + SUPER_SESSION step|cbp_run tail line + ask|tests fail pre-change, pass after|ship"
   ],
+  "taken": "2026-11-07T15:57:15Z",
   "tests": "test_artifacts.py (stamp present, stale line format), test for the hook line, test_supervisor plan REPUBLISH line",
   "title": "Pages follow builds: Updated stamp on every page, stale line in the hook, republish step per wake and after cbp_run",
   "weight": "",
