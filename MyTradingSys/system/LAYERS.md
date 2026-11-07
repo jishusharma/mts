@@ -185,7 +185,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/screenshots`
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `aibridge-start-dsa-trigger-1107` ready p1 SONNET: AIBridge: typing 'Start DSA bridge' as the first line of a new DeepSeek chat boots DSA (extension fetches the 
   - `live-mirror-follow-live-host-move` refined p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `pages-follow-builds-1107` ready p1 SONNET: Pages follow builds: Updated stamp on every page, stale line in the hook, republish step per wake and after cb
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels

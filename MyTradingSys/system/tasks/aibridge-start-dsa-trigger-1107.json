@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T15:43:15Z",
   "commands": [],
   "created": "2026-11-07T14:33:18Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "agent GET /seed + extension swaps typed phrase for seed; tests pass; installed here, healt",
+      "ref": "5b4d8d188",
+      "utc": "2026-11-07T15:43:15Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "AIBridge 0.7.27+0.7.28: a block runs only when its reply is complete (DeepSeek action bar)",
@@ -27,6 +34,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: operator reloads the extension; NUC/laptop run the broadcast",
   "note": "DECISION (OURS): no 'second message' detection in the matcher; only whole-message exact phrase (multi-line rejected). DECISION (OURS): /seed token in X-AIBridge-Token header; repo root = config.repo_root else live tree path; seed_python config for tests. Chat check pending (Profile 4 tab owned by another worker).",
   "prio": 1,
   "refine_tries": 0,
@@ -35,7 +43,12 @@
   "refs": [
     "MyTradingSys/system/SPEC_START_DSA_TRIGGER.md"
   ],
-  "result": "",
+  "result": "agent GET /seed + extension swaps typed phrase for seed; tests pass; installed here, health UP 0.7.30; chat check pending",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/extension/content.js, loop.js, manifest.json; scripts/aibridge/src/agent.ps1; scripts/aibridge/RELEASES.json; scripts/aibridge/tests/; MyTradingSys/system/AIBRIDGE_LANE.md; scripts/dev/aibridge_install.py only if the install needs it"
   ],
@@ -47,10 +60,11 @@
   "sources": [
     "operator order q-9d225e 2026-11-07; d-dsa-seed-then-wait-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read AIBRIDGE_LANE.md, V07_CONTRACT, RELEASES.json, content.js, loop.js, agent.ps1 (routes), dsa.py start --print|write the tests first (fail)|agent /seed route|extension trigger + seed send|version bump + release note|install --restart-agent on JIS-NB, health UP 0.7.30|broadcast --cmd to other hosts; ship"
   ],
+  "taken": "2026-11-07T15:43:15Z",
   "tests": "scripts/aibridge/tests: trigger-phrase matcher (exact phrase, case, dot, NOT a longer sentence) and /seed handler (token required, returns seed text); both fail on the pre-change tree",
   "title": "AIBridge: typing 'Start DSA bridge' as the first line of a new DeepSeek chat boots DSA (extension fetches the seed from the agent and sends it; no terminal, no clipboard); operator order q-9d225e",
   "weight": "ROUTINE",
