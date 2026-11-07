@@ -9,7 +9,7 @@
   "depends_on": [
     "ms-level-approach-eth-replicate"
   ],
-  "done_when": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_LEVEL_ETH.md recomputes every table number of research/level_approach_eth_2026-11/RESULT.md from its CSVs, lists each diff, checks the Regime mix: line against regime_mix files, and ends with VERDICT: MATCH or MISMATCH",
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-ms-level-eth.md recomputes every table number of the RESULT file in the card refs from its CSVs, lists each diff, checks the Regime mix line against the regime_mix files, and ends with VERDICT: MATCH or MISMATCH",
   "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
@@ -18,7 +18,22 @@
   "id": "gemini-blind-read-ms-level-eth",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "audit(gemini): complete 6 blind-read audits (ETH MS BB/Level/WT, CVD U7/U8, FlowPairs, Mal",
+      "ref": "7aaf99bb5e70",
+      "utc": "2026-11-06T13:08:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "7aaf99bb5e70 audit(gemini): complete 6 blind-read audits (ETH MS BB/Level/WT, CVD U7/U8, F",
+      "ref": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_LEVEL_ETH.md",
+      "utc": "2026-11-06T13:08:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,8 +42,10 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T21:07:52Z",
-  "refs": [],
+  "refreshed": "2026-11-07T14:23:27Z",
+  "refs": [
+    "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md"
+  ],
   "result": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_LEVEL_ETH.md",
   "result_receipt": {
     "trust": {
@@ -41,12 +58,12 @@
   "scope_out": [
     "no edits to the study folder; no re-running the study; gemini low effort"
   ],
-  "scope_sha": "",
+  "scope_sha": "7aaf99bb5e70",
   "size": "S",
   "sources": [
     "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Read the CSVs in MyTradingSys/research/level_approach_eth_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",
