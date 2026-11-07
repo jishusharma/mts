@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Noticed by the Haiku Chrome worker 2026-11-07 17:25Z in chat 'DSA bootstrap step 1' (JIS-NB). Fix candidates: AIRUN header sets PYTHONIOENCODING, or agent.ps1 sets it for every child; test fails pre-change.",
+  "note": "Noticed by the Haiku Chrome worker 2026-11-07 17:25Z in chat 'DSA bootstrap step 1' (JIS-NB). MITIGATED (not closed) 2026-11-07 by dsa-watcher-1107: DSA prompt 0b rule 6 and the seed block set PYTHONUTF8=1 + PYTHONIOENCODING=utf-8 per AIRUN block. Why open: the root fix is the bridge agent setting the child env for every block (agent.ps1 under F:/AIBridge, operator-owned, closed to DSA) so no block needs the line; Claude lane. Verify on a desktop DSA chat that ship output now prints.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
