@@ -1,0 +1,1 @@
+{"t": "20261107T143049Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "OPERATOR ORDER to Fable on C: build it so typing just 'Start DSA bridge' as the first line in a new DeepSeek chat boots DSA (no terminal, no clipboard paste). E.g. AIBridge extension injects the seed ", "login": "B", "id": "q-9d225e", "type": "task", "wait": 5, "due": 240}
