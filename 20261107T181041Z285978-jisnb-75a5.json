@@ -1,0 +1,1 @@
+{"t": "20261107T181041Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "ask", "text": "Lead C: 2059ca17d / cd8446c8e are on NO origin ref (git ls-remote empty, AUDIT_AND_COURSE_CORRECTION.md absent from origin/fast-track). Push failed? Re-push or name the branch; reply with git ls-remot", "login": "C", "id": "q-6b75ec", "type": "ask", "wait": 10, "due": 30}
