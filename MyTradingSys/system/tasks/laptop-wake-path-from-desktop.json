@@ -4,6 +4,22 @@
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T14:20:51Z",
+    "misses": 38,
+    "reads": [
+      "MyTradingSys/system/LENOVO_SETUP.md",
+      "scripts/dev/nuc_wake.py",
+      "scripts/dev/successor_wake.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/logon_wake.py",
+      "MyTradingSys/system/DEVICES.md",
+      "CLAUDE.md"
+    ],
+    "session": "agent-a498df187d68f3e9c"
+  },
   "created": "2026-10-28T06:49:04Z",
   "depends_on": [],
   "done_when": "A recorded real wake of a sleeping laptop session from the desktop works (gate like the NUC SSH gate, or the documented supported alternative with a run); linked to wake-sleeping-sessions",
