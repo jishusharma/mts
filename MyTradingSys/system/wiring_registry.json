@@ -1020,7 +1020,8 @@
   },
   "MyTradingSys/backtest/layers/adx/adx.py": {
    "disp": "WIRE",
-   "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py"
+   "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py",
+   "ref": "adx-di-tradingview-crosscheck-1107"
   }
  }
 }
