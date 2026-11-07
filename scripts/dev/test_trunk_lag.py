@@ -254,5 +254,27 @@ class PagesStaleLine(unittest.TestCase):
             self.assertEqual(len(spawned), 1)
 
 
+class PagesRefreshGuard(unittest.TestCase):
+    """pages-hook-guard-1107: a hung or crashed refresh child is not respawned at every prompt; the login is not re-read each time."""
+
+    def test_hung_child_is_not_respawned_within_the_bound(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = PagesStaleLine()._repo(d, slugs=())
+            spawned = []
+            t0 = 1000.0 + T.PAGES_TTL_S + 1
+            for i in range(5):              # five prompts; the child never writes its result
+                T.pages_line(repo, now=t0 + i * 30, login="C", spawn=lambda *a: spawned.append(a))
+            self.assertEqual(len(spawned), 1)
+            T.pages_line(repo, now=t0 + T.PAGES_REFRESH_BOUND_S + 1, login="C", spawn=lambda *a: spawned.append(a))
+            self.assertEqual(len(spawned), 2)       # after the bound it tries once more
+
+    def test_login_comes_from_env_or_cache_not_claude_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = PagesStaleLine()._repo(d)
+            with unittest.mock.patch.dict(os.environ, {"MTS_LOGIN": "C"}), \
+                    unittest.mock.patch("mts_signal.login", side_effect=AssertionError("must not read ~/.claude.json")):
+                self.assertTrue(T.pages_line(repo, now=1100.0, spawn=lambda *a: None).startswith("PAGES STALE"))
+
+
 if __name__ == "__main__":
     unittest.main()

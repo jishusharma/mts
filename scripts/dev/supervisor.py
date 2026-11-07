@@ -1435,13 +1435,26 @@ def _who_rows() -> list:
         return []
 
 
+REPUBLISH_TIMEOUT_S = 60       # OURS: the page builds run inside every publisher-login plan, so they are time-capped
+
+
 def republish_notes(login: str) -> list:
     """`REPUBLISH <slug> <html> <url>` for each page whose repo build differs from its last publish, on a publisher login only
     (operator 2026-11-07: pages follow builds; SUPER_SESSION.md Every wake step 3b). Fails soft into one NOTE line."""
     try:
         import artifacts
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutTimeout
         reg = artifacts.load()
-        return artifacts.republish_lines(reg) if artifacts.is_publisher(reg, login) else []
+        if not artifacts.is_publisher(reg, login):
+            return []
+        ex = ThreadPoolExecutor(max_workers=1)
+        fut = ex.submit(artifacts.republish_lines, reg)
+        try:
+            return fut.result(timeout=REPUBLISH_TIMEOUT_S)
+        except FutTimeout:
+            return [f"NOTE REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s: run `python scripts/dev/artifacts.py republish` by hand"]
+        finally:
+            ex.shutdown(wait=False)
     except Exception as e:
         return [f"NOTE REPUBLISH check failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/artifacts.py stale` by hand"]
 
