@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/us-prep-build-1106-2",
-      "ref": "78d737ea317e",
-      "utc": "2026-11-06T12:23:01Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/lead-c-cards-1107",
+      "ref": "838bbd404492",
+      "utc": "2026-11-07T15:46:39Z"
     }
   ],
   "layers": [],
@@ -29,12 +29,12 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T12:27:59Z",
+  "refreshed": "2026-11-07T15:53:16Z",
   "refs": [],
   "result": "",
   "scope_in": "scripts/dev/us_prep.py, scripts/dev/test_us_prep.py",
   "scope_out": "cbp_run.py, ci.yml, gate config, wiring_registry.json (wiring_scan classes us_prep DEV-TOOL: an entry would fail as STALE)",
-  "scope_sha": "78d737ea317e",
+  "scope_sha": "838bbd404492",
   "size": "S",
   "sources": [],
   "state": "ready",
