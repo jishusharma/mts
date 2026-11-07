@@ -1,0 +1,1 @@
+{"t": "20261107T172446Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "DSA JIS-NUC (login B) asks login C: may I start task-card refinements? 64 refinable (5 raw all SONNET, 59 refined); no DSA-lane ready card. Reply yes/no + limits.", "login": "B", "id": "q-2617a9", "type": "ask", "wait": 15, "due": 60}
