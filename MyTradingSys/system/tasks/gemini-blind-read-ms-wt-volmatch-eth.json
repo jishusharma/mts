@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-06T13:07:00Z",
+  "closed": "2026-11-07T14:49:25Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_WT_VOLMATCH_ETH.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -20,6 +20,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "VERDICT: MATCH — MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-ms-w",
+      "ref": "5fd9bddeb",
+      "utc": "2026-11-07T14:49:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "audit(gemini): complete 6 blind-read audits (ETH MS BB/Level/WT, CVD U7/U8, FlowPairs, Mal",
@@ -37,7 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "gemini-blind-read-of-cvd-u7-u8-py-fabio-",
+  "next": "END: blind read complete, all numbers match CSVs",
   "note": "REVIEWED:2026-11-04 T0-ONLY\nWaits on the study card ms-wt-extreme-cross-volmatch-eth (blind-read card, Gemini low effort). | not_twin_of covered: different study.",
   "prio": 2,
   "refine_tries": 0,
@@ -46,7 +52,7 @@
   "refs": [
     "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md"
   ],
-  "result": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_WT_VOLMATCH_ETH.md",
+  "result": "VERDICT: MATCH — MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-ms-wt-volmatch-eth.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -63,7 +69,7 @@
   "sources": [
     "MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the CSVs in MyTradingSys/research/wt_extreme_cross_volmatch_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",
