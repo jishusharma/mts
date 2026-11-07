@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Found by Lead C 2026-11-07 16:40Z from F:/AIBridge/src/audit.jsonl: SEED refused bad_origin at 15:47:51 (x2) and 16:32:37-38 (x3), each an operator press; agent 0.7.30 up on 7181. Login A (bridge free, 0 workers) per ask q-55f5d4. Per-host step after ship: aibridge_install.py --restart-agent via broadcast --cmd; extension reload per Chrome profile is the operator's.",
+  "note": "Found by Lead C 2026-11-07 16:40Z from F:/AIBridge/src/audit.jsonl: SEED refused bad_origin at 15:47:51 (x2) and 16:32:37-38 (x3), each an operator press; agent 0.7.30 up on 7181. Login A (bridge free, 0 workers) per ask q-55f5d4. Per-host step after ship: aibridge_install.py --restart-agent via broadcast --cmd; extension reload per Chrome profile is the operator's. | PARKED 2026-11-08: DSA bridge tooling, no card on the critical path reads it; machinery growth frozen. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

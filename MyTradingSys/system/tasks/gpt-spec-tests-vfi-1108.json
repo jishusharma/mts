@@ -32,7 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected numbers from FORMULAS, never from existing code.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected numbers from FORMULAS, never from existing code. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: GPT/Codex lane: d-no-gpt-codex-credit-1106 and 401 stall; re-derive of a finished study, no roadmap exit",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

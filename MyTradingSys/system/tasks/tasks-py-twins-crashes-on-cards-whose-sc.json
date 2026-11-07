@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Haiku (mechanical, one function).",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Haiku (mechanical, one function). | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; the tasks.as_list fix was reverted cb214227a",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

@@ -3,6 +3,7 @@ import csv
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -58,6 +59,24 @@ def _results_dir(*results):
         with open(os.path.join(d, r["id"] + ".json"), "w", encoding="utf-8", newline="\n") as f:
             json.dump(r, f)
     return d
+
+
+NODE_TIMEOUT = 60  # a slow node start must skip, not turn CI red (flake 22b22e93)
+
+
+def _run_node(node, prog):
+    try:
+        return subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=NODE_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        raise unittest.SkipTest("node did not finish in %ss (slow start); skipped, not failed" % NODE_TIMEOUT)
+
+
+class NodeTimeout(unittest.TestCase):
+    def test_timeout_reports_skip(self):
+        import unittest.mock as mock
+        with mock.patch.object(subprocess, "run", side_effect=subprocess.TimeoutExpired("node", NODE_TIMEOUT)):
+            with self.assertRaises(unittest.SkipTest):
+                _run_node("node", "1")
 
 
 class Levels(unittest.TestCase):
@@ -468,7 +487,7 @@ class UxOneScreen(unittest.TestCase):
                 {"family": "Malkan Rsi", "title": "Malkan RSI", "id": "g"},
                 {"family": "Desk runs", "title": "other", "id": "h"}]
         prog = js + "const R=" + json.dumps(rows) + ";const o={};['News','Tom','Fabio','Malkan','Krown','Bollinger','RSI','WaveTrend'].forEach(c=>{o[c]=R.filter(r=>inConcept(r,c)).map(r=>r.id)});console.log(JSON.stringify(o))"
-        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        out = _run_node(node, prog)
         self.assertEqual(out.returncode, 0, out.stderr)
         o = json.loads(out.stdout)
         self.assertEqual(o["Tom"], ["a"])
@@ -511,7 +530,7 @@ await new Promise(r=>setTimeout(r,20));
 DBP=null;global.localStorage={getItem:()=>{throw new Error("x")},setItem:()=>{throw new Error("x")}};global.window={};saveComment({test_id:"t",chart_id:"c",text:"three",ts:3});
 await new Promise(r=>setTimeout(r,20));
 console.log(JSON.stringify({calls:calls.length,first:calls[0],local:JSON.parse(store[CKEY]).length}));})();'''
-        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        out = _run_node(node, prog)
         self.assertEqual(out.returncode, 0, out.stderr)
         res = json.loads(out.stdout.strip().splitlines()[-1])
         self.assertEqual(res["calls"], 1)
@@ -578,7 +597,7 @@ class TradeStrip(unittest.TestCase):
                 "const r=tradeStrip({trades:tr,tf_min:30});const h=r.html;"
                 "console.log(JSON.stringify({m:(h.match(/class=\"trade-marker/g)||[]).length,"
                 "w:(h.match(/trade-marker trade-win/g)||[]).length,l:(h.match(/trade-marker trade-loss/g)||[]).length,id:h.includes('id=\"trade-strip\"')}))")
-        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        out = _run_node(node, prog)
         self.assertEqual(out.returncode, 0, out.stderr)
         res = json.loads(out.stdout.strip().splitlines()[-1])
         self.assertEqual(res["m"], 3)

@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-07T20:21:20Z",
   "commands": [
     "python scripts/dev/test_api_agent_models.py"
   ],
@@ -16,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "claude-fable-5-1 added at $10 in/$50 out per MTok (live pricing page 2026-11-08) to api_ag",
+      "ref": "f21bea28d",
+      "utc": "2026-11-07T20:21:20Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "api credit: raw Messages API engine (api_agent.py) as api_job default; claude -p never bil",
@@ -26,6 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "Operator asked for Fable runs on the Platform. Price must come from the live pricing page, never from memory.",
   "prio": 1,
   "refine_tries": 0,
@@ -34,7 +43,12 @@
   "refs": [
     "scripts/dev/api_agent.py"
   ],
-  "result": "",
+  "result": "claude-fable-5-1 added at $10 in/$50 out per MTok (live pricing page 2026-11-08) to api_agent PRICE_PER_MTOK and api_job MODEL_NAMES; test_api_agent_models 4/4, red first; dry-run launch OK. Note: Fable 5.1 cache hit is $0.25/MTok (factor 0.025), code uses 0.1, so cap is conservative",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/api_agent.py, scripts/dev/api_job.py, scripts/dev/test_api_agent_models.py (new)"
   ],
@@ -46,10 +60,11 @@
   "sources": [
     "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the test first and run it red; fetch the pricing page; add the model; run the test and a dry-run launch; ship"
   ],
+  "taken": "2026-11-07T20:21:16Z",
   "tests": "scripts/dev/test_api_agent_models.py",
   "title": "api_job and api_agent accept claude-fable-5-1 with its price so Fable runs bill the Platform credit",
   "weight": "",

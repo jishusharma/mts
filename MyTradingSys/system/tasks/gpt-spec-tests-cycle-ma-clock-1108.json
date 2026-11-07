@@ -32,7 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected values from the md, not the code.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected values from the md, not the code. | PARKED 2026-11-08: GPT/Codex lane has no credit and returns 401 (d-no-gpt-codex-credit-1106).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
