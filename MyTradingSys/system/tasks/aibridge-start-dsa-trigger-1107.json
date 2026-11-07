@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-07T14:33:18Z",
   "depends_on": [],
-  "done_when": "Per scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md: agent GET /seed (token-checked, runs dsa.py start --print); extension swaps the typed phrase for the seed and sends; 0.7.30 in manifest + RELEASES; matcher and /seed tests fail pre-change; installed here, health UP 0.7.30; broadcast --cmd for other hosts; AIBRIDGE_LANE paragraph; Result/Next on the ship",
+  "done_when": "Per MyTradingSys/system/SPEC_START_DSA_TRIGGER.md: agent GET /seed (token-checked, runs dsa.py start --print); extension swaps the typed phrase for the seed and sends; 0.7.30 in manifest + RELEASES; matcher and /seed tests fail pre-change; installed here, health UP 0.7.30; broadcast --cmd for other hosts; AIBRIDGE_LANE paragraph; Result/Next on the ship",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -33,7 +33,7 @@
   "refined_by": "",
   "refreshed": "2026-11-07T14:34:27Z",
   "refs": [
-    "scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md"
+    "MyTradingSys/system/SPEC_START_DSA_TRIGGER.md"
   ],
   "result": "",
   "scope_in": [

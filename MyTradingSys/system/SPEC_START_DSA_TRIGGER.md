@@ -4,6 +4,9 @@ Operator order 2026-11-07 (q-9d225e, relayed by B): no terminal, no clipboard pa
 start --open` (seed on the clipboard, paste, Enter). Supersedes card aibridge-posts-the-dsa-seed-itself-zero- (that one still needed a
 terminal).
 
+Lives in MyTradingSys/system, not scripts/aibridge/docs: every file there is bridge payload, fingerprinted by RELEASES.json and
+installed by aibridge_install.py (the first placement broke CI at d04560aa0, reverted).
+
 ## Behaviour
 1. In a DeepSeek chat tab with the AIBridge panel (hands-free box) the user types exactly `Start DSA bridge` (case-insensitive; a
    trailing `.` or `!` allowed; nothing else in the message) and presses Enter.
