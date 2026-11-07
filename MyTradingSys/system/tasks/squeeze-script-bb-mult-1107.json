@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T18:37:03Z",
   "commands": [],
   "created": "2026-11-07T17:07:07Z",
   "depends_on": [],
@@ -15,10 +16,18 @@
   "id": "squeeze-script-bb-mult-1107",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "shipped on trunk (f12c86c02, b06402442, eed91269); dots VERIFIED-TV 4/4 bars",
+      "ref": "eed91269d",
+      "utc": "2026-11-07T18:37:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: squeeze layer verified 2026-11-08",
   "note": "Lead C 2026-11-07 17:05Z: TradingView legend read 858.4 black (ON) on 2026-08-19 and 2016.7 gray (OFF) on 08-20; engine with bb_mult=1.5 reproduces this (ON/OFF 08-19/08-20, 09-20/09-21, 10-31 still ON through 11-01). Momentum already VERIFIED-TV 3/3. Dot re-read via a Haiku Chrome worker: hover the bar, read the SQZMOM legend value span's computed color (rgb(0,0,0) ON, rgb(128,128,128) OFF, blue none); the Data Window needs a wide window. Credit job (Sonnet, $3) when the slot frees, else login A.",
   "prio": 2,
   "refine_tries": 0,
@@ -30,7 +39,12 @@
     "MyTradingSys/research/tv_favorites_2026-11/SQUEEZE_STATE.md",
     "MyTradingSys/research/tv_favorites_2026-11/SPEC_ENGINES.md"
   ],
-  "result": "",
+  "result": "shipped on trunk (f12c86c02, b06402442, eed91269); dots VERIFIED-TV 4/4 bars",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/squeeze/squeeze.py (bb_dev_mult default = kc_mult, script quirk; textbook flag OURS)",
     "MyTradingSys/backtest/layers/squeeze/test_squeeze.py (fail-first case where 2.0 and 1.5 differ)",
@@ -51,7 +65,7 @@
     "TradingView legend read 2026-11-07 by login C Haiku worker (2 bars)",
     "SQUEEZE_STATE.md 2026-11-07 14:40Z releases 08-19, 09-20, 10-31"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read squeeze.py + FORMULAS s31 + the script source",
     "add the quirk as default, keep 2.0 behind a flag labelled OURS",
@@ -60,6 +74,7 @@
     "Haiku Chrome re-read of 4+ dots (08-19, 08-20, 09-20, 09-21), VERIFIED-TV line",
     "ship Result: <n bars match> Next: indicator-map-1107"
   ],
+  "taken": "2026-11-07T18:37:03Z",
   "tests": "backtest/layers/squeeze/test_squeeze.py: a synthetic series where 1.5*sd < 1.5*atr < 2.0*sd must report ON under the script default and OFF under the textbook flag; fails on the pre-change code",
   "title": "Squeeze engine: reproduce LazyBear's BB-dev quirk (dev = multKC*stdev) so on/off dots match TradingView; VERIFIED-TV dots",
   "weight": "",

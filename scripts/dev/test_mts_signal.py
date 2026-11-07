@@ -875,5 +875,31 @@ class TempInsideGitRepo(unittest.TestCase):
         finally:
             shutil.rmtree(scratch, ignore_errors=True)
 
+class WhoAgentTest(unittest.TestCase):
+    def _who(self, agent):
+        old = os.environ.pop("MTS_AGENT", None)
+        try:
+            if agent is not None:
+                os.environ["MTS_AGENT"] = agent
+            return S.who()
+        finally:
+            os.environ.pop("MTS_AGENT", None)
+            if old is not None:
+                os.environ["MTS_AGENT"] = old
+
+    def test_who_appends_agent_name(self):
+        base = self._who(None)
+        self.assertEqual(base.count("/"), 1)
+        self.assertEqual(self._who("gemini-nuc"), base + "/gemini-nuc")
+        self.assertEqual(self._who("Gemini Laptop!/x"), base + "/geminilaptopx")   # sanitised: no extra slash
+        self.assertEqual(self._who("  "), base)
+        self.assertEqual(self._who("a" * 50), base + "/" + "a" * 24)
+
+    def test_roll_login_still_second_segment(self):
+        rec = {"t": S.stamp(), "from": "H1/B/gemini-nuc", "to": "*", "kind": "note", "text": "x"}
+        out = " ".join(S.roll_lines([rec]))
+        self.assertIn("H1", out.upper())
+
+
 if __name__ == "__main__":
     unittest.main()

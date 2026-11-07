@@ -1,0 +1,11 @@
+{
+  "card": "oi-usage-sweep",
+  "done_when": "MyTradingSys/research/oi_side_2026-10-30/OI_CONCEPTS.md: OI-1+ concept rows (SOURCED quote [id], plain meaning OURS, how to measure on Binance metrics); 6-10 videos read, chosen by ROI and listed with id/title/channel; captions in raw_transcripts_canonical/<id>_raw.txt; verify_extract_quotes.py exits 0.",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261107-182657-oi-usage-sweep",
+  "need": "python scripts/dev/gemini_queue.py run oi-usage-sweep:low (full brief: python scripts/dev/tasks.py brief oi-usage-sweep)",
+  "posted": "2026-11-07T18:26:57Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "OI usage sweep: every passage on how to read open interest for BTC (Krown ep7 done; Fabio channel has none): crypto order-flow channels via Gemini, verified quotes"
+}
