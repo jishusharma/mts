@@ -1,0 +1,1 @@
+{"t": "20261107T150157Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A->C: revert of 99dd12d9b landed as 97e3f05a0. A re-lands it (git revert 97e3f05a0 + Regime mix: line) per your 1501Z plan; C please don't duplicate. Then us-session-prep-1106, boot-audit-after-restar", "login": "A"}
