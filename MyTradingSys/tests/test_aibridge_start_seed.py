@@ -1,5 +1,5 @@
 import sys; sys.dont_write_bytecode = True
-"""GET /seed on the AIBridge agent (card aibridge-start-dsa-trigger-1107, spec MyTradingSys/system/SPEC_START_DSA_TRIGGER.md).
+"""POST /seed on the AIBridge agent (card aibridge-start-dsa-trigger-1107, spec MyTradingSys/system/SPEC_START_DSA_TRIGGER.md).
 
 The extension swaps the typed phrase "Start DSA bridge" for the seed it gets here. The route: same origin and token check as /run (token in
 the X-AIBridge-Token header), runs `<python> scripts/dev/dsa.py start --print` in the repo root, returns text/plain. A fake python (a .cmd that
@@ -30,22 +30,32 @@ def agent(tmp_path_factory):
 
 
 def test_seed_without_token_is_refused(agent):
-    st, ct, body = agent.get_text("/seed")
+    st, ct, body = agent.post_text("/seed")
     assert st == 403 and "FAKESEED" not in body, (st, body)
 
 
 def test_seed_with_wrong_token_is_refused(agent):
-    st, ct, body = agent.get_text("/seed", {"X-AIBridge-Token": "nope"})
+    st, ct, body = agent.post_text("/seed", {"X-AIBridge-Token": "nope"})
     assert st == 403 and "FAKESEED" not in body, (st, body)
 
 
+def test_get_seed_is_refused(agent):
+    st, ct, body = agent.get_text("/seed", {"X-AIBridge-Token": agent.token})
+    assert st != 200 and "FAKESEED" not in body, (st, body)
+
+
+def test_seed_post_without_origin_is_refused_bad_origin(agent):
+    st, ct, body = agent.post_text("/seed", {"X-AIBridge-Token": agent.token}, origin=False)
+    assert st == 403 and "bad_origin" in body and "FAKESEED" not in body, (st, body)
+
+
 def test_seed_with_wrong_origin_is_refused(agent):
-    st, ct, body = agent.get_text("/seed", {"X-AIBridge-Token": agent.token, "Origin": "https://evil.example"})
+    st, ct, body = agent.post_text("/seed", {"X-AIBridge-Token": agent.token, "Origin": "https://evil.example"})
     assert st == 403 and "FAKESEED" not in body, (st, body)
 
 
 def test_seed_runs_dsa_start_print_in_the_repo_root_and_returns_plain_text(agent):
-    st, ct, body = agent.get_text("/seed", {"X-AIBridge-Token": agent.token}, timeout=60)
+    st, ct, body = agent.post_text("/seed", {"X-AIBridge-Token": agent.token}, timeout=60)
     assert st == 200, (st, body)
     assert ct.startswith("text/plain"), ct
     assert "FAKESEED" in body
@@ -54,13 +64,13 @@ def test_seed_runs_dsa_start_print_in_the_repo_root_and_returns_plain_text(agent
 
 
 def test_token_never_appears_in_the_audit_log(agent):
-    agent.get_text("/seed", {"X-AIBridge-Token": agent.token})
+    agent.post_text("/seed", {"X-AIBridge-Token": agent.token})
     for p in Path(agent.work).rglob("*"):
         if p.is_file() and p.suffix in (".log", ".jsonl"):
             assert agent.token not in p.read_text(encoding="utf-8", errors="replace"), p
 
 
 def test_seed_leaves_one_audit_row(agent):
-    agent.get_text("/seed", {"X-AIBridge-Token": agent.token})
+    agent.post_text("/seed", {"X-AIBridge-Token": agent.token})
     rows = (Path(agent.sdir) / "audit.jsonl").read_text(encoding="utf-8").splitlines()
     assert any("SEED" in r for r in rows), rows[-3:]

@@ -1,9 +1,9 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.30';
+  L.VERSION = '0.7.31';
 
-  // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's GET /seed.
+  // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's POST /seed.
   // Case-insensitive; one trailing . or ! allowed; a longer sentence, a second line or a second message is an ordinary message (no swap).
   L.START_TRIGGER = /^start dsa bridge[.!]?$/i;
   L.isStartTrigger = function (text) {

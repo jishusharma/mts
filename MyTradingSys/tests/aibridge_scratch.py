@@ -75,6 +75,17 @@ class Scratch:
         except urllib.error.HTTPError as e:
             return e.code, e.headers.get("Content-Type", ""), e.read().decode("utf-8")
 
+    def post_text(self, path, headers=None, timeout=60, origin=True):
+        """POST (no body) returning (status, content_type, text); /seed is POST since 0.7.31. origin=False sends no Origin header."""
+        h = {"Origin": ORIGIN} if origin else {}
+        h.update(headers or {})
+        req = urllib.request.Request("http://127.0.0.1:%d%s" % (self.port, path), method="POST", headers=h, data=b"")
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.status, r.headers.get("Content-Type", ""), r.read().decode("utf-8")
+        except urllib.error.HTTPError as e:
+            return e.code, e.headers.get("Content-Type", ""), e.read().decode("utf-8")
+
     def run(self, cmd, auto=True, timeout=180, **kw):
         b = {"cmd": cmd, "cwd": self.work, "token": self.token, "auto": auto}
         b.update(kw)

@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.30'
+$AgentVersion = '0.7.31'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
@@ -297,9 +297,9 @@ function Handle-Client {
             $client.Close(); return
         }
 
-        # 0.7.30: GET /seed. The extension swaps the typed phrase "Start DSA bridge" for this text (spec SPEC_START_DSA_TRIGGER.md).
+        # 0.7.30: /seed (0.7.31: POST, so the browser sends an Origin header like /run; GET carried none and was refused bad_origin). The extension swaps the typed phrase "Start DSA bridge" for this text (spec SPEC_START_DSA_TRIGGER.md).
         # Same origin and token checks as /run (token in the X-AIBridge-Token header); one fixed command, nothing from the request is run.
-        if ($method -eq 'GET' -and $path -eq '/seed') {
+        if ($method -eq 'POST' -and $path -eq '/seed') {
             if ($config.allowed_origins -notcontains $reqOrigin) {
                 $audit.cmd = 'SEED'; $audit.result = 'refused'; $audit.reason = 'bad_origin'
                 Write-Audit $audit
