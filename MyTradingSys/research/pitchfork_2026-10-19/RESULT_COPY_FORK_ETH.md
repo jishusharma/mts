@@ -6,3 +6,5 @@ so F:/MTS/data/tom_raw/klines_eth is unreadable here; no ETH count was produced.
 and `Regime mix:` line will overwrite this file. VALIDATION/HOLDOUT unread.
 
 Operator pitchfork shots: NOT_IN_DATA (no pitchfork/fork shot under MyTradingSys/research/screenshots; DECISION OURS: not guessed from BTC chart notes).
+
+Regime mix: not run (no ETH klines on the building machine); the ETH run on a machine with F:/MTS/data/tom_raw/klines_eth rewrites this line with the real mix.
