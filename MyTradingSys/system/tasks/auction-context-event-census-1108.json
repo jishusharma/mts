@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:31:32Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "auction-context-event-census-1108",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Part 3 of the audit is 4 hand-picked winners (it says illustrative). Before testnet: every event the classifier fires on in the window, outcome at fee-net R with the audit's own stop rule (structural beyond wick, fee_r <= 0.25 R), split by htf_bias with/against. Label thresholds SOURCED or OURS (rel_vol >= 2.0, knife > 2%, 2x30m acceptance, fee_r 0.25). PRE_REG with ## Context + Regime mix per the 11-04 rule.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/wicks_2026-11/CENSUS_5m_2026-10-03_11-07.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Lead C review 2026-11-08 of Argon's Tom/Fabio audit (1a79739e, research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md); operator asked what really needs to be done"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Count, not 4 stories: run classify_level_interaction over CENSUS_5m 2026-10-03..11-07 and 7y daily at prior-day VA edges + HTF extremes; FAST_REJECTION vs ACCEPTED vs KNIFE counts, fee-net R forward",
+  "weight": "",
+  "worker": ""
+}

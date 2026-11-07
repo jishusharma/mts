@@ -159,6 +159,21 @@ class Home(unittest.TestCase):
         self.assertIsNone(d["answerAt"])  # decisions are answered in chat (Control Room retired 2026-10-31)
         self.assertIn("waiting for you", mh.render(d))
 
+    def test_waiting_skips_recorded_decisions(self):
+        """Recorded decisions (dated/d- headings, Applied:/Operator bodies) are not open questions; DECISION NEEDED stays."""
+        import tempfile
+        import make_home as mh
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / mh.TASKS).mkdir(parents=True)
+            (root / mh.DECISIONS).write_text(
+                "# D\n\n\n\n## 2026-11-02 - Live aid wanted\nOperator (voice): build it.\n\n\n\n"
+                "## d-api-1104 (2026-11-04, Lead)\nOperator: go.\nApplied: told all.\n\n\n\n"
+                "## q-x | asked 2026-10-13 | P\n\nBody?\nApplied: 2026-10-14 done.\n\n\n\n"
+                "## DECISION NEEDED 2026-10-21 (Lab): review_by\nPick (a) or (b).\n", encoding="utf-8")
+            ids = [w["id"] for w in mh.waiting(root)]
+        self.assertEqual(ids, ["DECISION NEEDED 2026-10-21 (Lab): review_by"])
+
     def test_home_shows_road_to_v1_with_current_stage_and_counts(self):
         """Operator 2026-10-31: the road to profitability left with the Control Room; Home shows D7's one line per stage."""
         import json

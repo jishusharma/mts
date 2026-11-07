@@ -1,0 +1,61 @@
+{
+  "approved_by": "operator",
+  "asks": "none",
+  "commands": [
+    "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py MyTradingSys/backtest/layers/fabio/v3/tests/test_models_engine.py MyTradingSys/tools/live_aid/test_spec_tf_strip.py -q"
+  ],
+  "created": "2026-11-07T16:38:55Z",
+  "depends_on": [],
+  "done_when": "AUDIT_AND_COURSE_CORRECTION.md, auction_context.py, test_auction_context.py, REVALIDATION_LOG.md, Fabio v3 confirm-mode fix, and Live Aid 1M timeframe strip addition pass all unit tests and complete the 4-stage revalidation pipeline (Self #1 -> Flash -> Self #2 -> Claude).",
+  "est_turns": 8,
+  "formula_id": "s28",
+  "formula_ids": ["s18", "s28", "s29"],
+  "from_inbox": "",
+  "goal": "Audit all past Tom and Fabio work, diagnose why historical backtests failed while recent Oct-Nov 2026 BTC auction setups succeeded, implement a plain MTF auction-theory and context engine (1M/1w/1d + Value Area + LVN + fast rejection vs acceptance + fee-safe stop geometry), fix Fabio v3 confirm-mode trade management and Live Aid 1M strip support, and revalidate across 4 stages (Self, Flash, Self, Claude).",
+  "id": "tom-fabio-course-correction-1107",
+  "lane": "DSA-NUC",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Breaking stop_bps fee gate in build_auction_trade_plan fails test_fee_trap_gate_blocks_tight_stop_scalps",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 1,
+  "refined_by": "Argon",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVALIDATION_LOG.md",
+    "MyTradingSys/backtest/layers/fabio/v3/engine.py",
+    "MyTradingSys/tools/live_aid/tf_strip.js"
+  ],
+  "result": "Delivered Tom & Fabio forensic audit and course correction (AUDIT_AND_COURSE_CORRECTION.md), plain MTF auction context & level-interaction engine (auction_context.py + 11 unit/replay tests in test_auction_context.py), Fabio v3 Model A confirm-mode management fix (engine.py, models.py, test_run_v3_l3.py), Live Aid 1M Monthly timeframe strip support (tf_strip.js, live_aid.html, test_spec_tf_strip.py), and 4-stage revalidation log (REVALIDATION_LOG.md: Argon -> Flash -> Argon -> Claude).",
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/",
+    "MyTradingSys/backtest/layers/fabio/v3/",
+    "MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py",
+    "MyTradingSys/tools/live_aid/tf_strip.js",
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_spec_tf_strip.py"
+  ],
+  "scope_out": [
+    "src/main/java/"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/FORMULAS.md",
+    "MyTradingSys/backtest/layers/fabio/RESCORE.md",
+    "MyTradingSys/research/wicks_2026-11/CENSUS_5m_2026-10-03_11-07.md",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Audit all Tom and Fabio layers, backtests, and Oct-Nov 2026 BTC case studies in AUDIT_AND_COURSE_CORRECTION.md",
+    "Implement auction_context.py and test_auction_context.py, fix Fabio v3 Model A confirm management, and add 1M to tf_strip.js",
+    "Run 4-stage revalidation pipeline (Stage A Self #1, Stage B Flash subagent, Stage C Self #2, Stage D Claude pre-trunk review) and record in REVALIDATION_LOG.md"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py MyTradingSys/backtest/layers/fabio/test_run_v3_l3.py MyTradingSys/backtest/layers/fabio/v3/tests/test_models_engine.py MyTradingSys/tools/live_aid/test_spec_tf_strip.py -q",
+  "title": "Tom & Fabio Layers: End-to-End Audit, Course Correction, MTF Auction Context Engine, and 4-Stage Revalidation",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
