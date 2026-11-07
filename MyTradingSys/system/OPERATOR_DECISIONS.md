@@ -1900,3 +1900,4 @@ that's good, cheap, best." Finding: the $100 console credit was never spent ($94
 subscription (claude-code beta refused by the credit, key never approved). Decision (OURS, standing): api_job.py default engine = raw
 Messages API (`api_agent.py`); routing table in PLAN_API_CREDITS_2026-11-04.md (about $9 a day to 11-17: Sonnet builders, Haiku
 reviews/batches, Opus one-shot reads); `claude -p`/Agent SDK/cloud sessions are not credit paths. Managed Agents = $2 probe, later.
+Answer: operator 2026-11-07: use the platform for everything possible; engine shipped (api_agent.py), routing table in PLAN_API_CREDITS.
