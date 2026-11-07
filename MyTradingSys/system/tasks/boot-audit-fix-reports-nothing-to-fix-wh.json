@@ -1,8 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "claim": "",
-  "closed": "2026-11-07T20:19:20Z",
   "commands": [],
   "created": "2026-11-06T19:54:03Z",
   "depends_on": [],
@@ -16,12 +14,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "boot_audit --fix now prints FIX FAIL could not remove task <name> (<reason>) and exits 1; ",
-      "ref": "dd890f7e9",
-      "utc": "2026-11-07T20:19:20Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "boot audit: tasks running MTS files are ours; skip in-flight one-shots",
@@ -32,19 +24,13 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: fixed",
   "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Host boot audit only, not the live runner.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T18:34:05Z",
   "refs": [],
-  "result": "boot_audit --fix now prints FIX FAIL could not remove task <name> (<reason>) and exits 1; new test fails on old code, 11/11 pass",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "scripts/dev/boot_audit.py",
     "scripts/dev/test_boot_audit.py"
@@ -56,14 +42,13 @@
   "scope_sha": "82a65b59fcf7",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read apply_fix in boot_audit.py",
     "Add failing test with a stub removal that returns rc=1",
     "Make apply_fix return a FAIL line with the reason and main exit nonzero",
     "Run test_boot_audit.py"
   ],
-  "taken": "2026-11-07T20:19:04Z",
   "tests": "new case in scripts/dev/test_boot_audit.py fails on current code (line 236 prints 'nothing to fix'), passes after",
   "title": "boot_audit --fix reports 'nothing to fix' while MTS-Wrapper still exists (removal needs admin, error swallowed); done when --fix prints FAIL with the reason for a task it could not remove",
   "weight": "ROUTINE",
