@@ -1,0 +1,1 @@
+{"t": "20261107T150607Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: Removed <<<<<<< HEAD markers from 5 gemini-blind-read task files; all 5 now parse as valid JSON; tasks.py no longer skips them", "login": "C", "sid": "de1f00ee6c"}
