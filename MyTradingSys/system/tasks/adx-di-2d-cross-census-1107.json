@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T12:37:51Z",
+  "depends_on": [],
+  "done_when": "The 4 items of MyTradingSys/research/adx_di_2026-11/SPEC.md 'Done when' hold: FORMULAS section with hand values, adx.py + test (fails first), CENSUS.md tables (a)-(d) with n per cell, shipped with Result/Next and the api_job ledger row.",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build the Wilder ADX/DI indicator and measure every 2-day DI cross on BTC: time to the next swing low/high, depth, whipsaw rate, ADX level and slope at the cross (fake-out filter), and the lead of 1h/4h/1d crosses before each 2d cross. Checks CCU (Steve, 2026-11-05) '3 steps after a red cross' against ALL crosses, not his 3 cases. Context layer: no orders, no core, no edge claim.",
+  "id": "adx-di-2d-cross-census-1107",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "b69d699f3164",
+      "utc": "2026-11-01T01:15:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-01T01:15:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY\noperator 2026-11-07 'API credit now' (d-cbp-adx-m1-m4-api-credit-1107). Wilder 14 on every timeframe is OURS (Steve names no number). Splits: SPEC.md.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T12:38:41Z",
+  "refs": [
+    "MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md (new section only), MyTradingSys/backtest/layers/adx/, MyTradingSys/research/adx_di_2026-11/"
+  ],
+  "scope_out": [
+    "no change to Tom/Fabio/Krown layers, no execution code, no promoted_setups, no HOLDOUT-fitted parameter, no volume work (M5 is a separate card)"
+  ],
+  "scope_sha": "b69d699f3164",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md section 1 (CCU quotes, all thresholds OURS)"
+  ],
+  "state": "ready",
+  "steps": [
+    "1 FORMULAS.md section + adx.py + test (fails first, then passes)",
+    "2 data: daily from research/btc_cycles_2026-11/btc_daily.csv (date,high,low,close); 2d via timeframe/tf_resample bucket '2d'; 1h/4h from the F:/MTS klines if present on the machine, else M4 runs 1d-vs-2d only and says so",
+    "3 splits (DECISION OURS, log in the note): DEV 2020-01-01..2024-06-30 for the bucket table, VALIDATION 2024-07-01..2025-06-30 to check it, 2025-07-01..2026-11-07 reported as 'recent, descriptive, holds CCU's Oct-2025/Jan-2026/May-2026 cases', no parameter chosen from it",
+    "4 census.py writes CENSUS.md tables (a)-(c) with n per cell; swing low = lowest low in the 30 bars after the cross (2d), depth = low/close-at-cross - 1; whipsaw = opposite cross within k bars",
+    "5 ship: Result: <n crosses, whipsaw rate, best bucket>, Next: END: operator reads CENSUS.md; api_job ledger row"
+  ],
+  "tests": "test_adx.py: a 20-bar toy series with DI+/DI-/ADX computed by hand in the test (formula from FORMULAS.md, not from code); tf_resample 2d bucket test reused; census script has a unit test on a synthetic cross",
+  "title": "ADX/DI 2d cross census M1-M4: engine, every 2d DI cross, ADX state at the cross, timeframe cascade",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

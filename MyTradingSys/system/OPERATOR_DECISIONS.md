@@ -1870,3 +1870,11 @@ ADX strength on the DI, the fake-out read, the smaller-timeframe confirmations; 
 around Tom/Fabio levels as a layer; design for the current phase; plan first, discuss, then implement, in line with the
 roadmap. Plan: MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md (M1-M8, 4 open questions).
 Answer: come up with a plan first, discuss, only then implement (operator, 2026-11-07).
+
+## d-cbp-adx-m1-m4-api-credit-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+M1-M4 of PLAN_ADX_DI_VOLUME_2026-11-07.md (ADX/DI engine, 2d cross census, ADX state at the cross, timeframe cascade)
+run now on the API credit as one Sonnet api_job (card adx-di-2d-cross-census-1107, spec research/adx_di_2026-11/SPEC.md,
+cap 8 USD; credit left about 13 USD). The other plan questions take their defaults: M5 on both Tom levels and FAB real-FVG,
+CCU to actionable=partial, cascade on 1h/4h/1d. Splits DECISION (OURS): DEV/VALIDATION fit and check, 2025-07..2026-11
+reported descriptively only. Weight ROUTINE (OURS): a T0-ONLY coordinator stamp cannot promote an IMPORTANT card.
+Answer: API credit now (operator, 2026-11-07).
