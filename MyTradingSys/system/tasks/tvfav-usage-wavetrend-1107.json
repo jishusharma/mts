@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T16:07:01Z",
   "commands": [],
   "created": "2026-11-07T15:37:20Z",
   "depends_on": [],
@@ -13,10 +14,18 @@
   "id": "tvfav-usage-wavetrend-1107",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "USAGE_wavetrend.md: 4 sources verified by verify_extract_quotes (LazyBear, lonestar108, MC",
+      "ref": "47d68f923",
+      "utc": "2026-11-07T16:07:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "indicator-map-1107",
   "note": "Gemini queue on the NUC, load as <card>:low (gemini-always-low-effort). Reading only; Gemini never writes to the chart or the engines. Companion cards: the other three tvfav-usage-* cards; consumer: indicator-map-1107.",
   "prio": 2,
   "refine_tries": 0,
@@ -26,7 +35,12 @@
     "MyTradingSys/system/SPEC_INDICATOR_MAP.md",
     "MyTradingSys/research/tv_favorites_2026-11/FAVORITES_2026-11-07.md"
   ],
-  "result": "",
+  "result": "USAGE_wavetrend.md: 4 sources verified by verify_extract_quotes (LazyBear, lonestar108, MC-B community, MTS census); measures swing position and momentum oscillation",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tv_favorites_2026-11/USAGE_wavetrend.md (new)|WaveTrend Oscillator + WaveTrend with Crosses (LazyBear notes, original WT idea, how traders use the zones and crosses)|the public script page and the sources named in the spec"
   ],
@@ -38,10 +52,11 @@
   "sources": [
     "operator 2026-11-07 voice (chat, Lead C turn 15:30Z): understand how people use the favourites, LazyBear/Carter/Katsanos, crypto filter, then group indicators and analysts by what they measure; d-favourites-usage-then-map-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read FAVORITES_2026-11-07.md row + SPEC step 1|collect sources (script page, author text, 3-5 articles)|extract quotes to the md, run verify_extract_quotes until exit 0|write the five sections|ship with Result: <n sources, what it measures> Next: indicator-map-1107"
   ],
+  "taken": "2026-11-07T16:07:01Z",
   "tests": "scripts/dev/verify_extract_quotes.py MyTradingSys/research/tv_favorites_2026-11/USAGE_wavetrend.md exit 0",
   "title": "TV favourite usage research: WaveTrend Oscillator + WaveTrend with Crosses",
   "weight": "",
