@@ -27,7 +27,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY | operator (via B, q-9d225e): no terminal, no clipboard; e.g. the extension injects the seed | DECISION OURS: trigger = exact phrase on send; seed comes from the agent (dsa.py start --print), never hard-coded in the extension",
+  "note": "DECISION (OURS): no 'second message' detection in the matcher; only whole-message exact phrase (multi-line rejected). DECISION (OURS): /seed token in X-AIBridge-Token header; repo root = config.repo_root else live tree path; seed_python config for tests. Chat check pending (Profile 4 tab owned by another worker).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

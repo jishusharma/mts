@@ -1,5 +1,5 @@
 import sys; sys.dont_write_bytecode = True
-"""GET /seed on the AIBridge agent (card aibridge-start-dsa-trigger-1107, spec scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md).
+"""GET /seed on the AIBridge agent (card aibridge-start-dsa-trigger-1107, spec MyTradingSys/system/SPEC_START_DSA_TRIGGER.md).
 
 The extension swaps the typed phrase "Start DSA bridge" for the seed it gets here. The route: same origin and token check as /run (token in
 the X-AIBridge-Token header), runs `<python> scripts/dev/dsa.py start --print` in the repo root, returns text/plain. A fake python (a .cmd that
