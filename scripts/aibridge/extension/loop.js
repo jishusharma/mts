@@ -1,7 +1,16 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.29';
+  L.VERSION = '0.7.30';
+
+  // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's GET /seed.
+  // Case-insensitive; one trailing . or ! allowed; a longer sentence, a second line or a second message is an ordinary message (no swap).
+  L.START_TRIGGER = /^start dsa bridge[.!]?$/i;
+  L.isStartTrigger = function (text) {
+    if (typeof text !== 'string') return false;
+    return L.START_TRIGGER.test(text.trim());
+  };
+  L.SEED_DOWN_TEXT = 'agent down: run aibridge_install.py --restart-agent';
 
   L.fnv = function (s) {
     var h = 2166136261;
