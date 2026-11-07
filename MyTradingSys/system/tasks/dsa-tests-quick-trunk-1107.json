@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-07T19:02:11Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick > MyTradingSys/research/dsa_runs/tests_quick_2026-11-07.log 2>&1; echo EXIT $?",
     "python -c \"import io;t=io.open('MyTradingSys/research/dsa_runs/tests_quick_2026-11-07.log',encoding='utf-8',errors='replace').read();print(t[-3000:])\""
@@ -15,10 +17,18 @@
   "goal": "Trunk CI went red on 2026-11-07 (acb6eff3: unregistered scripts/dev/test_dsa_seed.py and test_aibridge_version_bump); an independent machine run tells whether the revert cleared it.",
   "id": "dsa-tests-quick-trunk-1107",
   "lane": "DSA-NUC",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Quick gate on trunk: shard 1/4 ALL TESTS PASSED (153.6s). Shard 2/4 FAILED 1 step: Step 3x",
+      "ref": "d5c218705",
+      "utc": "2026-11-07T19:02:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: partial quick-gate counts; 3xt failure traced to git 2.24 host and 4 sim_desk/soak files",
   "note": "REVIEWED: Lead C 2026-11-07 T0 run-and-report; the log file stays untracked (add only the md).",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +37,12 @@
   "refs": [
     "scripts/dev/run_all_tests.py"
   ],
-  "result": "",
+  "result": "Quick gate on trunk: shard 1/4 ALL TESTS PASSED (153.6s). Shard 2/4 FAILED 1 step: Step 3xt Extra tests, 5 of 360 files fail (test_soak_six_slots.py, test_ship_train.py, sim_desk/test_backfill.py, sim_desk/test_build2.py, sim_desk/test_conditions.py). test_ship_train root cause: host git 2.24.0 rejects 'git init -b' (needs >=2.28). Shards 3/4 and 4/4 NOT RUN: inline task mode failed twice (ignored repo param, then output-file lock). Partial result; full counts not obtained.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/dsa_runs/TESTS_QUICK_2026-11-07.md (new)"
   ],
@@ -39,10 +54,11 @@
   "sources": [
     "operator 2026-11-07 ~17:15Z voice: DSA says it has no tasks; load DSA with review and refinement work, several DSA chats per host driven by Haiku; d-dsa-load-queue-multi-chat-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "sync.py start dsa-tests-quick; run_all_tests.py --quick with output to the log; write the md; ship"
   ],
+  "taken": "2026-11-07T18:12:52Z",
   "tests": "",
   "title": "DSA runs run_all_tests.py --quick on trunk and reports counts and failing tests (CI red cause check)",
   "weight": "",
