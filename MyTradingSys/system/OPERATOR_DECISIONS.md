@@ -1855,3 +1855,18 @@ work only on his order ("go", a card id, a desk row; the watcher's check-desk li
 many things on its own. All of it tested end to end by a Haiku worker in Chrome. The 86-250 KB session paste stays as the
 paste-mode fallback. DECISION (OURS): a zero-paste start (the extension posts the seed itself) is bridge work, raw card filed.
 Answer: one command, quick init, wait for my instruction; test with Haiku (operator, 2026-11-07).
+
+## d-aibridge-0729-installed-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+"Install now": AIBridge 0.7.29 installed to F:/AIBridge on JIS-NB (agent restarted, health UP). The stale backup folders
+extension.pre_0.7.11 and src.pre_0.7.11 are to be removed (deletes are blocked for sessions; the operator removes them).
+NUC: broadcast b-aa62c7 carries the install command; the NUC has no session reading broadcasts (11 unacked), so the
+operator prompts one there. 4 DSA chats on the NUC (2 profiles x 2 tabs): the bridge supports it (one agent, up to 8
+commands at once, per-page state); two Chrome instances of one profile are not possible, two tabs per profile are.
+Answer: install now; remove the duplicate stale folder; NUC gets it too (operator, 2026-11-07).
+
+## d-cbp-adx-volume-plan-first-1107 | decided 2026-11-07 | operator (voice, ~12:00Z), recorded by Lead C
+CBP update: read the new CCU (Steve, ADX/DI cross on the 2-day), Michael and Krown videos; understand the crosses, the
+ADX strength on the DI, the fake-out read, the smaller-timeframe confirmations; what the Sep-15 low break means; volume
+around Tom/Fabio levels as a layer; design for the current phase; plan first, discuss, then implement, in line with the
+roadmap. Plan: MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md (M1-M8, 4 open questions).
+Answer: come up with a plan first, discuss, only then implement (operator, 2026-11-07).
