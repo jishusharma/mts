@@ -702,7 +702,33 @@ def cmd_end(a):
 
 
 # ------------------------------------------------------------------ start (the seed)
-def seed_text(host, live_root=LIVE_ROOT_WIN):
+DSA_LANES = ("DSA", "DSA-NB", "DSA-NUC")
+SEED_CLAIMS_MAX = 6          # cards named in the seed (and at most ~90 chars of ids); the rest are "+N more"
+
+
+def parse_card_ids(text):
+    """Unique card ids (first column) of `tasks.py list` output, in order."""
+    seen = []
+    for line in text.splitlines():
+        parts = line.split()
+        if parts and parts[0] not in seen:
+            seen.append(parts[0])
+    return seen
+
+
+def claimed_dsa_cards(work=None):
+    """Ids of cards active in the DSA lanes (held by DSA chats now). [] when tasks.py cannot say; never raises."""
+    work = work or Path.cwd()
+    ids = []
+    for lane in DSA_LANES:
+        rc, out, _ = run([sys.executable, str(script_path(work, "tasks.py")), "list", "--state", "active", "--lane", lane],
+                         cwd=work, timeout=60)
+        if rc == 0:
+            ids += [i for i in parse_card_ids(out) if i not in ids]
+    return ids
+
+
+def seed_text(host, live_root=LIVE_ROOT_WIN, slug=None, claimed=None):
     """The whole first message of a new DSA chat: who it is, how the bridge works, ONE block that loads everything, then wait.
 
     Replaces the 86-250 KB session paste as the normal start (operator 2026-11-07: one command, quick init, then wait for
@@ -711,17 +737,29 @@ def seed_text(host, live_root=LIVE_ROOT_WIN):
     the block begins with a hash (AIBridge parser rule), every line under 200 chars.
     """
     stamp = utc_now().strftime("%Y-%m-%d %H:%MZ")
+    slug = slug or (host.lower() + "-" + utc_now().strftime("%m%d-%H%M"))
+    held = list(claimed or [])
+    keep = []
+    for cid in held[:SEED_CLAIMS_MAX]:                 # whole ids only, so the line stays under the 200-char seed rule
+        if len(", ".join(keep + [cid])) > 90:
+            break
+        keep.append(cid)
+    shown = ", ".join(keep) + (f" (+{len(held) - len(keep)} more)" if len(held) > len(keep) else "")
     lines = [
         f"DSA seed {stamp}, host {host}. You are DSA (DeepSeek + AIBridge) for MTS, the same working level as a Claude Code session.",
         "How anything happens: a fenced block whose first line is # AIRUN ..., in your FINAL answer. The bridge runs it and the",
         "result comes back as your next message ([AIRUN RESULT] or [AIRUN BATCH]). While a block runs, send nothing.",
         "",
+        f"Your chat slug: {slug} (worktree mts-dsa-{slug}). Held by other DSA chats now: {shown or 'none'}.",
+        "Several DSA chats run in parallel: take cards only via tasks.py take; prompt section 0b is the rule.",
+        "",
         "STEP 1. Your whole first reply is this one block, copied exactly, nothing else in that reply:",
         "```powershell",
         f"# AIRUN cwd={live_root} timeout=300",
         "$ErrorActionPreference = 'Stop'",
+        "$env:PYTHONUTF8 = '1'; $env:PYTHONIOENCODING = 'utf-8'",
         f"Set-Location '{live_root}'",
-        "$id = (hostname).ToLower() + '-' + (Get-Date).ToUniversalTime().ToString('MMdd-HHmm')",
+        f"$id = '{slug}'",
         "git fetch --quiet origin fast-track",
         'git worktree add --quiet "..\\mts-dsa-$id" -b "dsa/$id" origin/fast-track',
         '$wt = (Resolve-Path "..\\mts-dsa-$id").Path',
@@ -762,7 +800,7 @@ def chrome_exe():
 
 
 def cmd_start(a):
-    text = seed_text(hostname())
+    text = seed_text(hostname(), claimed=claimed_dsa_cards())
     if a.print:
         sys.stdout.write(text)
         return 0
