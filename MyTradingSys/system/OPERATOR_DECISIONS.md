@@ -1914,3 +1914,9 @@ Answer: assigned 2026-11-07 14:40Z; cards shipped b2f00512.
 ## d-start-dsa-bridge-typed-trigger-1107 (2026-11-07, operator order via B, q-9d225e)
 "Build it so typing just 'Start DSA bridge' as the first line in a new DeepSeek chat boots DSA (no terminal, no clipboard paste); e.g. the AIBridge extension injects the seed." Card aibridge-start-dsa-trigger-1107 (spec scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md); the terminal-based card aibridge-posts-the-dsa-seed-itself-zero- dropped as superseded. DECISION OURS: the seed is fetched from the agent (dsa.py start --print), never hard-coded in the extension; exact phrase only.
 Answer: ordered; Sonnet builder started 2026-11-07 ~14:55Z on C.
+
+## d-login-c-cap-75-24h-1107 (2026-11-07 ~15:00Z, operator, chat)
+Login C stands at 68 % weekly; the bar for the next 24 h is 75 %. Lead C (Fable) spends the 7 % only on coordination: wake on a
+result, ledger, launch the next job, sleep (bounded waiters, warm cache). All building, reviewing and reading goes to the API
+credit, login A (fresh week), login B (reset 11-08 17:00Z) and the Gemini Argon/Flash queues. Plan: PLAN_24H_2026-11-07.md.
+Answer: yes, recorded; cap 75 % until 2026-11-08 15:00Z, then the 11-10 reset rule (d-login-c-cap-60-1107) applies again.
