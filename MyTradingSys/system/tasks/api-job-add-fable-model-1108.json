@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_api_agent_models.py"
+  ],
+  "created": "2026-11-07T20:07:34Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_api_agent_models.py: asserts the model list and that an unknown model is refused; written first, fails on pre-change code; no job is launched in this card",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fable-named work cannot run on the credit: api_agent.py has prices only for Haiku, Sonnet and Opus. Add the Fable 5.1 model id with its current published price so the spend cap works.",
+  "id": "api-job-add-fable-model-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "api credit: raw Messages API engine (api_agent.py) as api_job default; claude -p never bil",
+      "ref": "bb9714d34a63",
+      "utc": "2026-11-07T13:04:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator asked for Fable runs on the Platform. Price must come from the live pricing page, never from memory.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T20:07:36Z",
+  "refs": [
+    "scripts/dev/api_agent.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/api_agent.py, scripts/dev/api_job.py, scripts/dev/test_api_agent_models.py (new)"
+  ],
+  "scope_out": [
+    "no key handling change|no job launch|no change to the claude engine"
+  ],
+  "scope_sha": "bb9714d34a63",
+  "size": "S",
+  "sources": [
+    "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
+  ],
+  "state": "ready",
+  "steps": [
+    "write the test first and run it red; fetch the pricing page; add the model; run the test and a dry-run launch; ship"
+  ],
+  "tests": "scripts/dev/test_api_agent_models.py",
+  "title": "api_job and api_agent accept claude-fable-5-1 with its price so Fable runs bill the Platform credit",
+  "weight": "",
+  "worker": "agent"
+}

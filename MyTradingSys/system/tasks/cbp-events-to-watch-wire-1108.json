@@ -7,7 +7,9 @@
     "python MyTradingSys/tools/live_aid/build_artifact.py"
   ],
   "created": "2026-11-07T19:57:56Z",
-  "depends_on": [],
+  "depends_on": [
+    "news-design-synthesis-1108"
+  ],
   "done_when": "tools/live_aid/test_events_wire.py: fixture JSON with 3 events (past, +30 min, +3 days) gives the right strip order and flash state, and a matching headline links to its event; fails on pre-change code; page rebuilt and shipped; Result names the build and the number of events extracted",
   "est_turns": 40,
   "formula_id": "",
@@ -20,7 +22,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on the News panel being on trunk. CBP has no fire since 10-28 per an open card, so the extraction may need a manual run on F:/CryptoScrapper; if the YouTube fetch is blocked, backfill from the existing extractions.md only. Event times that analysts give loosely stay 'week of' and flash only at the day start.",
+  "note": "Depends on the News panel being on trunk. CBP has no fire since 10-28 per an open card, so the extraction may need a manual run on F:/CryptoScrapper; if the YouTube fetch is blocked, backfill from the existing extractions.md only. Event times that analysts give loosely stay 'week of' and flash only at the day start. HOLD 2026-11-08: build only after the news design synthesis is on trunk; its done_when and scope replace the lines above where they differ.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

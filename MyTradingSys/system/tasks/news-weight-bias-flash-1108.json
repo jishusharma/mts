@@ -7,7 +7,9 @@
     "python MyTradingSys/tools/live_aid/build_artifact.py"
   ],
   "created": "2026-11-07T19:57:54Z",
-  "depends_on": [],
+  "depends_on": [
+    "news-design-synthesis-1108"
+  ],
   "done_when": [
     "news_weight.js scores each headline 0-100 from 5 parts shown on hover: Tree importance (SOURCED), source tier (OURS table), class prior direction and size (OURS table), freshness half-life 15 min (OURS), confirmation by the BTC 1m move and volume since the headline time from the page's own feed",
     "Two distinct sources of one class inside 10 min add a corroboration bonus (OURS); every number in the file is commented SOURCED or OURS",
@@ -42,7 +44,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Weights are OURS priors until the event study and the live log score them; the chip shows 'prior' until then. Phase-first: ships now, a class prior that fails its count is dropped, not defended. Bias is a read for him to act on by hand (long, short or hold), never an order. Folds in the earlier pulse-tile idea. Public repo: no account data.",
+  "note": "Weights are OURS priors until the event study and the live log score them; the chip shows 'prior' until then. Phase-first: ships now, a class prior that fails its count is dropped, not defended. Bias is a read for him to act on by hand (long, short or hold), never an order. Folds in the earlier pulse-tile idea. Public repo: no account data. HOLD 2026-11-08: build only after the news design synthesis is on trunk; its done_when and scope replace the lines above where they differ.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
