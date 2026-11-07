@@ -16,9 +16,7 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [],
-  "layers": [
-    "squeeze"
-  ],
+  "layers": [],
   "live_path": false,
   "mutation_check": "",
   "note": "Lead C 2026-11-07 17:05Z: TradingView legend read 858.4 black (ON) on 2026-08-19 and 2016.7 gray (OFF) on 08-20; engine with bb_mult=1.5 reproduces this (ON/OFF 08-19/08-20, 09-20/09-21, 10-31 still ON through 11-01). Momentum already VERIFIED-TV 3/3. Dot re-read via a Haiku Chrome worker: hover the bar, read the SQZMOM legend value span's computed color (rgb(0,0,0) ON, rgb(128,128,128) OFF, blue none); the Data Window needs a wide window. Credit job (Sonnet, $3) when the slot frees, else login A.",
