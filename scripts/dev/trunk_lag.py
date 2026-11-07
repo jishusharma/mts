@@ -83,6 +83,7 @@ def lag(repo, now=None, fetch=True):
 
 
 PAGES_CACHE = "mts_pages_stale.json"      # in the git dir: {at, key (registry mtime), slugs}; written by `artifacts.py stale-cache`
+PAGES_REFRESH_BOUND_S = 600                # a refresh marker younger than this blocks a new child (a hung or crashed child never piles up)
 PAGES_TTL_S = 900                         # OURS: building the generated pages takes seconds, so the hook only reads the cache
 
 
@@ -100,19 +101,24 @@ def pages_line(repo, now=None, login=None, spawn=None):
     reg_path = repo / "MyTradingSys" / "system" / "artifacts" / "registry.json"
     try:
         reg = json.loads(reg_path.read_text(encoding="utf-8"))
-        if login is None:
-            import mts_signal
-            login = mts_signal.login()
-        if str(login or "").upper()[:1] not in [k for k, v in PUBLISHER_ACCOUNTS.items() if v in (reg.get("publishers") or [])]:
-            return ""
         gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
         cache = Path(gd) / PAGES_CACHE
         try:
             c = json.loads(cache.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             c = {}
+        if login is None:       # env first, then the letter kept in the cache: ~/.claude.json can be many MB
+            login = os.environ.get("MTS_LOGIN", "").strip() or c.get("login")
+            if not login:
+                import mts_signal
+                login = mts_signal.login()
+        if str(login or "").upper()[:1] not in [k for k, v in PUBLISHER_ACCOUNTS.items() if v in (reg.get("publishers") or [])]:
+            return ""
         if now - float(c.get("at") or 0) >= PAGES_TTL_S or c.get("key") != reg_path.stat().st_mtime_ns:
-            (spawn or _spawn_pages_refresh)(repo, cache)
+            if now - float(c.get("refreshing") or 0) >= PAGES_REFRESH_BOUND_S:
+                c.update({"refreshing": now, "login": str(login).upper()[:1]})      # marker first: a hung child is not respawned each prompt
+                cache.write_text(json.dumps(c), encoding="utf-8", newline=chr(10))
+                (spawn or _spawn_pages_refresh)(repo, cache)
         slugs = c.get("slugs") or []
     except Exception:
         return ""

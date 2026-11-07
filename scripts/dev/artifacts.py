@@ -30,6 +30,7 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 REPO = Path(__file__).resolve().parents[2]
 REG = REPO / "MyTradingSys" / "system" / "artifacts" / "registry.json"
+STALE_CACHE_TIMEOUT_S = 180     # OURS: the background refresh of the hook cache dies after this
 STATUSES = ("canonical", "retire", "needs-url")
 URL_PREFIX = "https://claude.ai/artifact/"
 
@@ -492,9 +493,20 @@ def main(argv=None):
         print(f"stamp: {f}")
         return 0
     if a.cmd == "stale-cache":      # the prompt hook's background refresh: slugs of stale pages -> --file (json), never raises
+        import os
+        import threading
+        wd = threading.Timer(STALE_CACHE_TIMEOUT_S, lambda: os._exit(0))    # hard stop: a hung page build must not outlive its hook
+        wd.daemon = True
+        wd.start()
         try:
+            f = Path(a.file)
+            try:
+                old = json.loads(f.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                old = {}
             slugs = [s for s, _u, _w in stale(reg)]
-            Path(a.file).write_text(json.dumps({"at": time.time(), "key": REG.stat().st_mtime_ns, "slugs": slugs}), encoding="utf-8", newline=chr(10))
+            f.write_text(json.dumps({"at": time.time(), "key": REG.stat().st_mtime_ns, "slugs": slugs, "login": old.get("login", "")}),
+                         encoding="utf-8", newline=chr(10))
         except Exception:
             pass
         return 0

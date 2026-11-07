@@ -1532,3 +1532,15 @@ def test_plan_prints_a_republish_line_per_stale_page_on_a_publisher_login(tmp_pa
     got = [x for x in lines if x.startswith("REPUBLISH ")]
     assert len(got) == 2 and got[0].split()[1:2] == ["mts_home"] and got[0].endswith("https://claude.ai/artifact/AAA")
     assert S.republish_notes("A") == [] and S.republish_notes("B") == []
+
+
+def test_republish_notes_time_cap_becomes_a_note(monkeypatch):
+    """pages-hook-guard-1107: a page build that hangs inside plan is cut off at REPUBLISH_TIMEOUT_S and reported as a NOTE."""
+    import artifacts
+    import threading
+    gate = threading.Event()
+    monkeypatch.setattr(S, "REPUBLISH_TIMEOUT_S", 0.2)
+    monkeypatch.setattr(artifacts, "republish_lines", lambda reg: gate.wait(5) or [])
+    out = S.republish_notes("C")
+    gate.set()
+    assert len(out) == 1 and out[0].startswith("NOTE REPUBLISH check timed out")
