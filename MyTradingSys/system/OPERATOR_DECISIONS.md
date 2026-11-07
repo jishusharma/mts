@@ -1966,3 +1966,19 @@ Answer: rule from now: (1) after every broadcast or ask the sender runs ONE boun
 ask's --wait) before its next step; (2) every wake starts with `mts_signal.py pending --host <me>` and `asks`, answered in the
 order ask > HIGH broadcast > normal, before the task; (3) tooling = card signal-broadcast-wait-and-prio-1107 (SONNET p1).
 Applied this turn: q-2617a9 (NUC DSA refinements) answered yes with limits.
+
+## d-dsa-watcher-sonnet-parallel-1107 (2026-11-07 ~17:45Z, operator, voice)
+Operator: 3 DSA chats run (2 on JIS-NUC in one Chrome profile, 1 on the desktop); assign one Sonnet worker that permanently
+watches DSA work; refine the DSA prompt so DSA knows it runs several sessions in parallel and works without getting stuck; the
+Chrome tab stays in the foreground. Lead C: started session dsa-watcher (Sonnet, login C, worktree JIS-NB/dsa-watcher-1107):
+job 1 = DSA_SESSION_PROMPT.md "Parallel sessions" section + dsa.py seed shows other chats' claims + UTF-8 stdout; job 2 =
+signal-driven watch loop (stuck = active DSA card > 60 min without ship), re-kick desktop chat via one Haiku Chrome Agent, NUC
+chats via HIGH broadcast with a bounded ack wait. Conflict: d-login-c-cap-75-24h-1107 said no Sonnet from login C; the newer
+order wins, the watcher stops itself at 74 % weekly.
+Answer: Sonnet DSA Watcher runs on login C, frugal (one bounded waiter per wake), stops at 74 %.
+
+## d-super-sessions-use-logins-a-b-1107 (2026-11-07 ~17:42Z, operator, voice)
+Operator: the super sessions should run on the other logins; nothing visible runs beyond background cards; does login A (14 %
+weekly used, Supervisor A re-arming its watcher) share the load? Lead C: 20 READY SONNET cards wait while login A sits at 14 %;
+broadcast b-e787e5 HIGH to jis-laptop: dispatch background Sonnet Agents 3 at a time; one bounded ack waiter (30 min).
+Answer: load goes to login A by broadcast + ack wait; login B (71 %, reset 11-08 17:00Z) keeps DSA x2 and the Gemini queue.
