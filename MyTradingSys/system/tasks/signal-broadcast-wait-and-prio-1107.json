@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Facts 2026-11-07 17:40Z: one prompt on JIS-NB carried 16 '[MTS BROADCAST b-... status]' lines, unsorted, 7 of them told on jis-nuc for hours; ask already has --wait/--due, broadcast has none; a sender ships and moves on, so nobody reads the ack. Scope for the refiner: (1) mts_signal.py broadcast --wait M = one bounded loop (fetch every 60 s, acks table, exit 0 all hosts done / 2 timeout), same for ask; (2) hook status lines: open asks first, then HIGH none/told-expired, then by age, cap 3 plus 'n more: mts_signal.py acks'; (3) SUPER_SESSION.md wake checklist line 0: 'mts_signal.py pending --host <me>; asks' answered by priority before the task; (4) test fails pre-change (hook ordering + --wait exit codes). No scheduler.",
+  "note": "Operator 2026-11-07 18:12Z: the reply must arrive within 1 MINUTE, not 60. Receiver side is the real delay: signals are read only on prompts, so an idle session never sees an ask. Scope add: supervisor.py wait (and every coordinator waiter) fetches the mts-signals branch every 60 s and returns on an ask or HIGH broadcast for its host; the sender waiter polls acks every 60 s; target = ack within 1 min when a session is awake on the target host, measured in the test with a fake signal.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
