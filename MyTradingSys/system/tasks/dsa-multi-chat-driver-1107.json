@@ -26,7 +26,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design: each chat has its own mts-dsa-<chat> worktree; tasks.py take claims a card so two chats cannot take one; limit = concurrent sync.py ship (gate flakes at 4+, desk 20261029-170405). DONE 2026-11-07 (dsa-watcher-1107): DSA_SESSION_PROMPT section 0b Parallel sessions; dsa.py seed names the chat slug and cards held by other DSA chats (dsa.py claimed_dsa_cards) + UTF-8 env line; test_dsa StartSeed. REMAINING (not built): the Haiku N-tab driver (DSA_DELEGATION Standing setup step: open N=2 DeepSeek tabs per host in Profile 4, one seed per tab, send go); cap N=2 per host until it lands.",
+  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design facts: each DSA chat already writes in its own mts-dsa-<chat> worktree (DSA_SESSION_PROMPT line 79); tasks.py take claims a card so two chats cannot take the same one; limit = concurrent sync.py ship on one host (desk 20261029-170405). Scope for the refiner: dsa.py seed gets a --chat n and a lane filter; DSA_DELEGATION line 108 Haiku brief loops over N tabs; test fails pre-change.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
