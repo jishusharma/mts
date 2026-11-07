@@ -6,6 +6,9 @@
   python scripts/dev/api_job.py ledger <slug> --outcome "shipped <sha>; <number>"   append the Spent row (PLAN_API_CREDITS_*.md)
   python scripts/dev/api_job.py total                    USD in the Spent ledger (today and all)
 
+Engine (2026-11-07): default `--engine api` runs scripts/dev/api_agent.py on the raw Messages API, the only path the promotional
+credit pays; `--engine claude` (`claude -p`) carries the claude-code beta, which the org refuses ("credit balance is too low"), and
+with an OAuth login present it silently bills that login's subscription (every Spent row before 2026-11-07 was such a run).
 Rules (PLAN_API_CREDITS_2026-11-04.md): one job at a time per machine; every job carries --max-budget-usd; the key is read from
 F:/ClaudePlaform/key.txt (env MTS_API_KEY_FILE overrides) into the child's environment only, never printed, logged or put in a
 prompt; a prompt that names a secret-like path is refused; hooks are off under a nested headless run (disableAllHooks), so the
@@ -72,7 +75,10 @@ def child_env(base: dict, kf: Path) -> dict:
     return env
 
 
-def build_cmd(model: str, max_usd: float, max_turns: int) -> list[str]:
+def build_cmd(model: str, max_usd: float, max_turns: int, engine: str = "api", cwd: str = "", out_dir: str = "") -> list[str]:
+    if engine == "api":  # raw Messages API: the only path the promotional credit pays (measured 2026-11-07, see api_agent.py)
+        return [sys.executable, str(REPO / "scripts/dev/api_agent.py"), "--model", model, "--max-usd", str(max_usd),
+                "--max-turns", str(max_turns), "--cwd", cwd or str(REPO), "--out", out_dir]
     exe = shutil.which("claude") or "claude"
     return [exe, "-p", "--model", model, "--permission-mode", "bypassPermissions",
             "--settings", '{"disableAllHooks":true}', "--max-budget-usd", str(max_usd), "--max-turns", str(max_turns),
@@ -144,8 +150,11 @@ def launch(a) -> None:
     busy = running_jobs()
     if busy and not a.dry_run:
         die(f"REFUSED: one job at a time per machine; running: {busy} (api_job.py status)")
-    cmd = build_cmd(a.model, a.max_usd, a.max_turns)
     d = RUNS / a.slug
+    cmd = build_cmd(a.model, a.max_usd, a.max_turns, a.engine, a.cwd or str(REPO), str(d))
+    if a.engine == "claude":
+        print("WARNING: engine=claude sends the claude-code beta, which this org's promotional credit refuses; with an OAuth login "
+              "present the run bills the LOGIN'S SUBSCRIPTION, not the credit (measured 2026-11-07).", file=sys.stderr)
     if a.dry_run:
         print("DRY-RUN", " ".join(cmd))
         print(f"DRY-RUN prompt {len(prompt)} chars -> {d / 'prompt.txt'}; cwd {a.cwd or REPO}")
@@ -155,7 +164,7 @@ def launch(a) -> None:
         die(f"key file missing: {kf}")
     d.mkdir(parents=True, exist_ok=True)
     io.open(d / "prompt.txt", "w", encoding="utf-8", newline="\n").write(prompt)
-    meta = {"slug": a.slug, "card": a.card, "model": a.model, "max_usd": a.max_usd, "max_turns": a.max_turns,
+    meta = {"slug": a.slug, "card": a.card, "model": a.model, "max_usd": a.max_usd, "max_turns": a.max_turns, "engine": a.engine,
             "started": dt.datetime.now(dt.timezone.utc).isoformat(), "host": os.environ.get("COMPUTERNAME", ""), "cwd": a.cwd or str(REPO)}
     io.open(d / "meta.json", "w", encoding="utf-8", newline="\n").write(json.dumps(meta, indent=1))
     out = io.open(d / "out.jsonl", "ab")
@@ -241,6 +250,8 @@ def main(argv=None) -> None:
     l.add_argument("--max-usd", type=float, required=True)
     l.add_argument("--max-turns", type=int, default=200)
     l.add_argument("--cwd", help="run from this checkout (default: this repo)")
+    l.add_argument("--engine", default="api", choices=("api", "claude"),
+                   help="api = raw Messages API via api_agent.py (bills the credit); claude = `claude -p` (bills the subscription)")
     l.add_argument("--dry-run", action="store_true")
     l.set_defaults(fn=launch)
     s = sub.add_parser("status")

@@ -4,6 +4,27 @@ Credit: $100 promotional on platform.claude.com ("jis's Individual Org"), grante
 2026-11-02: about $1 (api_batch runs, COST_FIGURES.md). Balance left: about $99 over 13 days = about $7.50 a day. No payment method
 is on file, so a run that answers was paid by the credit; the console billing page is the only balance read (operator-only).
 
+## CORRECTION 2026-11-07 (Lead C, measured): the Spent rows below never touched the credit
+Console 2026-11-07: $94.34 of the $100 left, $5.67 spent this month, purchased balance $0.00, no payment method. Our ledger said
+$87 spent. Cause, isolated with the raw API on the same key: a plain `/v1/messages` call is paid by the promotional credit; the same
+call with the `claude-code-20250219` beta header (every `claude -p` run) is refused with "Your credit balance is too low". And with
+the login's OAuth present `claude -p` does not even use the key (customApiKeyResponses never approved): every api_job run since
+11-04 billed the LOGIN'S SUBSCRIPTION (that is where login C's 61 % went). The console is the bill; the Spent column is Claude
+Code's estimate of subscription usage, not credit.
+Fix shipped: `scripts/dev/api_agent.py` (raw Messages API, four tools, USD cap, same result record) is api_job's default engine
+(`--engine api`); `--engine claude` stays behind a warning. Smoke 11-07: Haiku wrote a file and ran a command, $0.003, on the credit.
+
+### Routing until the credit expires 2026-11-17 UTC ($94.34 over 10 days = about $9 a day; no payment method = no overrun)
+| Work | Engine | Model | Cap/job |
+|---|---|---|---|
+| Builder cards with a done_when (SONNET lane, 85 ready) | api_job --engine api | Sonnet | $3-8 |
+| reviews, recounts, caption passes, card refreshes, judge passes | api_batch (half price) or api_job api | Haiku | $0.5-2 |
+| one-shot design reads, SPEC audits (no tools) | api_batch single job | Opus | $1-3 |
+| super-session coordinator turns (read queue, pick, launch) | api_job api on Sonnet, one turn cap 40 | Sonnet | $2 |
+| anything live-path, deploy, operator-facing chat | logins (subscription), never the credit | - | - |
+Not usable on the credit: `claude -p`, the Agent SDK (same beta), cloud sessions (login A). Untested: Managed Agents (server-hosted
+loop; the repo is public so a clone works; a $2 probe decides).
+
 ## What the credit can run (measured 2026-11-04 on JIS-NB)
 | Lane | How | Measured | Use for |
 |---|---|---|---|

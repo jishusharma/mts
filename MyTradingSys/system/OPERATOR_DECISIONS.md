@@ -1893,3 +1893,10 @@ Computed indicators are cross-checked on his TradingView / Binance charts throug
 verified; a formula already verified needs no re-check. First: card adx-di-tradingview-crosscheck-1107 (Haiku, after the
 ADX engine lands); FORMULAS.md gets a VERIFIED-TV line per indicator.
 Answer: verify through Claude in Chrome on my TradingView and Binance charts; be sure (operator, 2026-11-07).
+
+## d-api-credit-raw-api-engine-1107 (2026-11-07, operator, voice)
+"We are highly underutilizing our cloud platform ... everything we can that we can get done there should be done there ... find a way
+that's good, cheap, best." Finding: the $100 console credit was never spent ($94.34 left); `claude -p` jobs billed login C's
+subscription (claude-code beta refused by the credit, key never approved). Decision (OURS, standing): api_job.py default engine = raw
+Messages API (`api_agent.py`); routing table in PLAN_API_CREDITS_2026-11-04.md (about $9 a day to 11-17: Sonnet builders, Haiku
+reviews/batches, Opus one-shot reads); `claude -p`/Agent SDK/cloud sessions are not credit paths. Managed Agents = $2 probe, later.
