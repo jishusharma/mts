@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-07T20:20:27Z",
   "commands": [],
   "created": "2026-11-06T17:33:50Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "test_artifact.py: one NODE_TIMEOUT=60 constant, _run_node helper skips on TimeoutExpired; ",
+      "ref": "65ba72338",
+      "utc": "2026-11-07T20:20:27Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sim page: Malkan-gated RSI divergence trade chart with the divergence drawn on closes",
@@ -24,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: fixed",
   "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Haiku is enough; p1 because it turned trunk CI red (22b22e93).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T18:34:16Z",
   "refs": [],
-  "result": "",
+  "result": "test_artifact.py: one NODE_TIMEOUT=60 constant, _run_node helper skips on TimeoutExpired; new test covers it; 48/48 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/artifact/test_artifact.py"
   ],
@@ -41,13 +55,14 @@
   "scope_sha": "2acaea436b70",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add NODE_TIMEOUT constant (60)",
     "Wrap the three node calls in a helper that skips on TimeoutExpired",
     "Add the patched test",
     "Run the file"
   ],
+  "taken": "2026-11-07T20:20:06Z",
   "tests": "new case that patches subprocess.run to raise TimeoutExpired fails on current code",
   "title": "sim_desk test_artifact: node subprocess timeout turns trunk CI red (flake, 22b22e93, rerun green)",
   "weight": "ROUTINE",

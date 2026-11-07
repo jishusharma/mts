@@ -185,7 +185,7 @@ def apply_fix(acts):
         if act == "remove_task":
             res = _ps("try{Unregister-ScheduledTask -TaskName '%s' -Confirm:$false -ErrorAction Stop;'ok'}catch{'FAIL '+$_.Exception.Message}"
                       % name.replace("'", "''")).strip()
-            out.append("removed task " + name if res == "ok" else "could not remove task %s (%s)" % (name, res[:80]))
+            out.append("removed task " + name if res == "ok" else "FAIL could not remove task %s (%s)" % (name, res[:80]))
         elif act == "remove_run" and raw.get("hive") == "HKCU":
             import winreg
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, raw["key"], 0, winreg.KEY_SET_VALUE) as k:
@@ -233,8 +233,12 @@ def main(argv=None):
         print("C: free %.1f GB | boot times: %s" % (free_c_gb(), boot_times().replace("\n", " / ")))
     if a.fix:
         acts = plan_fix(rows)
+        failed = False
         for line in apply_fix(acts) or ["nothing to fix (MTS-owned items already compliant)"]:
             print("FIX", line)
+            failed = failed or line.startswith("FAIL")
+        if failed:
+            return 1
     return 0
 
 

@@ -248,3 +248,4 @@ MyTradingSys/research/pattern_book_2026-11/test_spec_detect_patterns.py
 scripts/dev/test_laptop_wake.py
 scripts/dev/test_dsa_seed.py
 scripts/dev/test_signal_wait.py
+scripts/dev/test_api_agent_models.py
