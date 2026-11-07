@@ -1,0 +1,10 @@
+{
+  "done_when": "desk row closed with: reachable yes/no, error text or the card result file on trunk",
+  "from": "JIS-NB",
+  "id": "20261107-172114-depth-band-audit-rerun-from-jis-nuc-fapi",
+  "need": "From JIS-NB every fapi.binance.com depth request timed out (credit job depth-band-audit-marketdatasnapshot-bid- BLOCKED, $0.17). Run from the NUC: curl -s -m 15 \"https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=5\" ; if JSON comes back, run the card commands of depth-band-audit-marketdatasnapshot-bid- and ship its result file; if not, report the error text and the public IP country (curl -s ifconfig.co/country).",
+  "posted": "2026-11-07T17:21:14Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "Depth-band audit rerun from JIS-NUC: fapi.binance.com reachability, then the MarketDataSnapshot bid/ask band job if reachable"
+}

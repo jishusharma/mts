@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T18:07:10Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/stop_guard.py",
+      "MyTradingSys/system/RELAY.md"
+    ],
+    "session": "d18a1dd1-055b-40e6-82fc-c1d51f99330a"
+  },
+  "created": "2026-11-07T17:35:26Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "signal-broadcast-wait-and-prio-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Measured 2026-11-07: ask q-7257c1 sent 17:38Z, Lenovo acked+answered 17:43Z (5 min), Lead C saw it only at 17:52Z because its waiter watched one id and two conditions. Rule: a waiter fires on ANY new signal addressed to this host or login (ask, ack, note), never on one id; add mts_signal.py wait [--max M] that returns on the first new inbound record and prints it.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "scripts/dev/mts_signal.py",
+    "MyTradingSys/system/SUPER_SESSION.md",
+    ".claude/settings.json"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-07 ~17:40Z voice: broadcasts are fire-and-forget, senders never wait for the reply, receivers never check what is open; login C (the max console) must check broadcasts every wake and answer by priority; d-broadcast-wait-for-reply-1107"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Signal loop: broadcast --wait M blocks bounded and prints acks per host; prompt status lines sorted ask > HIGH > age, capped at 3 + count; wake checklist line in SUPER_SESSION.md",
+  "weight": "",
+  "worker": ""
+}

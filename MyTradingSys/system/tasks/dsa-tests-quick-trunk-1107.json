@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick > MyTradingSys/research/dsa_runs/tests_quick_2026-11-07.log 2>&1; echo EXIT $?",
+    "python -c \"import io;t=io.open('MyTradingSys/research/dsa_runs/tests_quick_2026-11-07.log',encoding='utf-8',errors='replace').read();print(t[-3000:])\""
+  ],
+  "created": "2026-11-07T17:21:09Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/dsa_runs/TESTS_QUICK_2026-11-07.md on trunk: exit code, pass/fail counts, each failing test name with its first assertion line, trunk sha; Result: <exit, n fail> Next: END: coordinator reads it",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Trunk CI went red on 2026-11-07 (acb6eff3: unregistered scripts/dev/test_dsa_seed.py and test_aibridge_version_bump); an independent machine run tells whether the revert cleared it.",
+  "id": "dsa-tests-quick-trunk-1107",
+  "lane": "DSA-NUC",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: Lead C 2026-11-07 T0 run-and-report; the log file stays untracked (add only the md).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T17:21:11Z",
+  "refs": [
+    "scripts/dev/run_all_tests.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dsa_runs/TESTS_QUICK_2026-11-07.md (new)"
+  ],
+  "scope_out": [
+    "no fix|no test edit|no rerun loop: one run, report"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "operator 2026-11-07 ~17:15Z voice: DSA says it has no tasks; load DSA with review and refinement work, several DSA chats per host driven by Haiku; d-dsa-load-queue-multi-chat-1107"
+  ],
+  "state": "ready",
+  "steps": [
+    "sync.py start dsa-tests-quick; run_all_tests.py --quick with output to the log; write the md; ship"
+  ],
+  "tests": "",
+  "title": "DSA runs run_all_tests.py --quick on trunk and reports counts and failing tests (CI red cause check)",
+  "weight": "",
+  "worker": "agent"
+}

@@ -246,3 +246,4 @@ MyTradingSys/research/ma_layer_2026-11/test_spec_ma_state.py
 MyTradingSys/tools/live_aid/test_spec_ma_strip.py
 MyTradingSys/research/pattern_book_2026-11/test_spec_detect_patterns.py
 scripts/dev/test_laptop_wake.py
+scripts/dev/test_dsa_seed.py

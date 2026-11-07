@@ -1946,3 +1946,62 @@ volume and time count as layers even though LAYERS.md does not list them. Cards:
 (Gemini, low) -> indicator-map-1107 (Sonnet, login B after reset or A). Spec: SPEC_INDICATOR_MAP.md. Also: card
 dsa-seed-full-task-list-1107 (the Start DSA bridge seed must list every DSA task and DSA's last 5 filings).
 Answer: yes (his order); nothing in the map becomes a signal; phase-first rule stays.
+
+## d-dsa-load-queue-multi-chat-1107 (2026-11-07 ~17:15Z, operator, voice)
+Operator: DSA (JIS-NUC and the desktop) reports no tasks; "load DSA with work" (review, refinement, anything else); run 2-3 DSA chats
+per host in separate tabs under Haiku control, DSA told that sessions run in parallel. Lead C: the standard flow already exists
+(DSA_DELEGATION.md line 108: one Haiku Agent seeds the tab and sends "Check the desk tasks"; each DSA chat writes in its own
+mts-dsa-<chat> worktree, tasks.py take claims a card), so the gap was an empty queue, not the driver. Loaded: 3 refined DSA cards
+promoted READY (fabervaale-cvd-sweep, oi-usage-sweep, lab-verify-footprint-vs-indicator-delta), new dsa-refine-raw-cards-1107 (DSA,
+repeatable), dsa-tests-quick-trunk-1107 (DSA-NUC), desk row depth-band rerun (DSA-NUC). Fan-out driver = card
+dsa-multi-chat-driver-1107 (raw, SONNET): cap chats per host by the ship gate (4+ concurrent ships flake, desk 20261029-170405).
+Answer: yes, load via the queue; 2 chats per host until the driver card lands; Haiku only kicks a chat, never babysits it.
+
+## d-broadcast-wait-for-reply-1107 (2026-11-07 ~17:40Z, operator, voice)
+Operator: the broadcast feature is not used properly: a session broadcasts and moves on without waiting for the reply, and
+receivers do not check what broadcasts are open while they work; login C (the Max console, most often running) must be in
+the habit of checking open broadcasts and asks on every wake and answering them by priority. Lead C: delivery rides on
+prompts (mts_signal.py help), so a sender that never prompts again never sees the ack; 16 open status lines sat on one prompt.
+Answer: rule from now: (1) after every broadcast or ask the sender runs ONE bounded waiter on `mts_signal.py acks <id>` (≤ the
+ask's --wait) before its next step; (2) every wake starts with `mts_signal.py pending --host <me>` and `asks`, answered in the
+order ask > HIGH broadcast > normal, before the task; (3) tooling = card signal-broadcast-wait-and-prio-1107 (SONNET p1).
+Applied this turn: q-2617a9 (NUC DSA refinements) answered yes with limits.
+
+## d-dsa-watcher-sonnet-parallel-1107 (2026-11-07 ~17:45Z, operator, voice)
+Operator: 3 DSA chats run (2 on JIS-NUC in one Chrome profile, 1 on the desktop); assign one Sonnet worker that permanently
+watches DSA work; refine the DSA prompt so DSA knows it runs several sessions in parallel and works without getting stuck; the
+Chrome tab stays in the foreground. Lead C: started session dsa-watcher (Sonnet, login C, worktree JIS-NB/dsa-watcher-1107):
+job 1 = DSA_SESSION_PROMPT.md "Parallel sessions" section + dsa.py seed shows other chats' claims + UTF-8 stdout; job 2 =
+signal-driven watch loop (stuck = active DSA card > 60 min without ship), re-kick desktop chat via one Haiku Chrome Agent, NUC
+chats via HIGH broadcast with a bounded ack wait. Conflict: d-login-c-cap-75-24h-1107 said no Sonnet from login C; the newer
+order wins, the watcher stops itself at 74 % weekly.
+Answer: Sonnet DSA Watcher runs on login C, frugal (one bounded waiter per wake), stops at 74 %.
+
+## d-super-sessions-use-logins-a-b-1107 (2026-11-07 ~17:42Z, operator, voice)
+Operator: the super sessions should run on the other logins; nothing visible runs beyond background cards; does login A (14 %
+weekly used, Supervisor A re-arming its watcher) share the load? Lead C: 20 READY SONNET cards wait while login A sits at 14 %;
+broadcast b-e787e5 HIGH to jis-laptop: dispatch background Sonnet Agents 3 at a time; one bounded ack waiter (30 min).
+Answer: load goes to login A by broadcast + ack wait; login B (71 %, reset 11-08 17:00Z) keeps DSA x2 and the Gemini queue.
+
+## d-signal-reply-within-1-minute-1107 (2026-11-07 18:12Z, operator, chat)
+Operator: a 60-minute wait for a broadcast reply is too much; it should be 1 minute. Lead C: the sender waiter now polls every
+60 s (cap 30 min); the receiving session only sees a signal on its next prompt, so the fix is receiver-side: the host watcher
+(supervisor.py wait) must wake on a new ask/HIGH broadcast within 60 s. Added to card signal-broadcast-wait-and-prio-1107.
+Answer: target = ack within 1 minute whenever a session is awake on the target host; watchers wake on signals.
+
+## d-one-minute-means-solution-arrives-1107 (2026-11-07 18:20Z, operator, voice)
+Operator: "if any login needs something, within a minute the solution arrives" is the goal; asked whether Lead C knew the Lenovo
+had already replied. Lead C: no; the reply came 5 min after the ask (17:43Z), Lead C read it 9 min later on the operator's prompt,
+because its waiter watched one id with two conditions. Fix: every waiter fires on the first new inbound signal for this host
+(mts_signal.py wait, card signal-broadcast-wait-and-prio-1107); receivers wake on asks within 60 s.
+Answer: 1 minute = ask to solution; waiters watch the inbox, not one id.
+
+## d-pilot-sonnet-signals-health-1107 (2026-11-07 18:25Z, operator, voice)
+Operator: all signal improvements must be done now (1-minute goal: "we do not have all day to wait"); also audit how we ship
+and the overall health (failures, optimisation); offered an ultra-mode pilot session, Sonnet or Opus, Lead C to choose.
+Lead C: Sonnet, not Opus (mechanical tooling + measurement; Opus only when he names it for design); started session
+pilot-signals-health (login C, worktree JIS-NB/pilot-signals-health-1107): job 1 builds signal-broadcast-wait-and-prio-1107
+(mts_signal.py wait, --wait on broadcast/ask, sorted status lines, watcher wakes on asks), job 2 writes
+research/health_2026-11-07/SHIP_HEALTH.md with gate p50/p90, failures, orphan gate trees, CI reds, stale pages, top-5 time
+sinks as cards. Ultra mode if he switches it: get_usage first, waves <= 4, <= 8 agents, results to files; stops at 74 % login C.
+Answer: Sonnet ultra pilot, two jobs, numbers from git/logs only.

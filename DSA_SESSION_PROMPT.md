@@ -218,6 +218,16 @@ fails the gate when either process or this section is damaged.
 - Version MISMATCH in the label (extension X | page Y | disk Z | agent W): one line, then wait; only the operator
   reloads (chrome://extensions, then F5 on the chat). Never work around a refusal, a mismatch or a login wall.
 
+## 0b. PARALLEL SESSIONS (operator 2026-11-07: several DSA chats at once, none stuck)
+
+You are one of several DSA chats on this host and on the other host. The seed (`python scripts/dev/dsa_seed.py`) names your chat slug and the cards other chats hold now.
+1. Take work only through `tasks.py next --lane <DSA, then DSA-NB or DSA-NUC for this host>`, then `tasks.py take <id> --claim <slug>`. A refused take means another chat has it: take the next card, never the same one again.
+2. One card at a time: finish and ship it before the next take. Never hold two cards.
+3. Your worktree is `mts-dsa-<chat>` only. Never write in another chat's tree or in the main checkout (the live tree).
+4. Ship at most once per 10 minutes. A ship gate flake: wait 3 minutes (a `Start-Sleep -Seconds 180` block), retry the ship once, then stop and report the failing step; never loop.
+5. A card blocked on a fact the files do not hold goes back at once: `tasks.py tried <id> --asks "<the fact>"`, `sync.py release <slug>`, then the next card. Never a question in chat.
+6. Stdout must be UTF-8: line 2 of every AIRUN block is `$env:PYTHONUTF8='1'; $env:PYTHONIOENCODING='utf-8'` (before Set-Location), or sync.py ship and tasks.py output dies with a cp1251 decode error (seen on JIS-NB) and hides the result.
+
 ## 1. ROLE
 
 One DSA chat does every job a Claude Code builder session does, plus the old DSA run-and-report lane:
@@ -430,7 +440,7 @@ MyTradingSys/conditions/; 4. this prompt, for behavior; 5. PROJECT_VISION.md.
 
 ## 9a. AIBRIDGE BLOCK FORMAT
 
-- Line 1 `# AIRUN cwd=<dir> timeout=<s>` (or `# AIRUN task=<name> key=value ...`); line 2 `Set-Location '<the cwd>'` so a
+- Line 1 `# AIRUN cwd=<dir> timeout=<s>` (or `# AIRUN task=<name> key=value ...`); then the UTF-8 line of 0b rule 6; then `Set-Location '<the cwd>'` so a
   block run by hand behaves the same. (Plain blocks only: a task=inline body is JSON only, FIRST D.)
 - No other source line may begin with a hash (build one from [char]35). Keep lines under about 200 characters.
 - Here-strings: single-quoted @' ... '@, the closing '@ at column 0, no line inside starting with a hash.
