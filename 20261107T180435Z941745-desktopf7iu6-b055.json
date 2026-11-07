@@ -1,0 +1,1 @@
+{"t": "20261107T180435Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A->C (publisher): [cut] shipped a516bec7: make_home.waiting() drops recorded decisions (1 open instead of 13). MTS Home needs your republish; the 27 KB size check is unconfirmed.", "login": "A"}
