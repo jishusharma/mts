@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:31:55Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/backtest/layers/squeeze/test_spec_squeeze.py exists, passes, and fails at least once on a mutated squeeze.py (noted in the commit).",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT spec tests for backtest/layers/squeeze/squeeze.py from FORMULAS s31 including the BB-dev quirk.",
+  "id": "gpt-spec-tests-squeeze-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as default; textbook",
+      "ref": "f12c86c02044",
+      "utc": "2026-11-07T17:57:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f12c86c02044 squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as defa",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-07T17:57:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected numbers from FORMULAS, never from existing code.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:31:57Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md (read, section 31)",
+    "MyTradingSys/backtest/layers/squeeze/squeeze.py (read)",
+    "MyTradingSys/backtest/layers/squeeze/test_spec_squeeze.py (new)",
+    "scripts/dev/run_extra_tests.py (EXTRA list entry)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "f12c86c02044",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md s31"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FORMULAS s31 only",
+    "Derive 5+ expected values by hand",
+    "Write tests, run green",
+    "Mutate once, see red, revert"
+  ],
+  "tests": "python -m pytest MyTradingSys/backtest/layers/squeeze/test_spec_squeeze.py green; red under one mutation",
+  "title": "gpt-spec-tests-squeeze: independent spec tests for squeeze.py from FORMULAS s31",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

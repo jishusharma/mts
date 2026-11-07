@@ -4,21 +4,31 @@
   "commands": [],
   "created": "2026-11-06T21:57:11Z",
   "depends_on": [],
-  "done_when": "grep -rn _rates.js over MyTradingSys/research/*/study.py returns 0 hits; test_base_rates.py has a test that a study re-run leaves no *_rates.js file in tools/live_aid; run_all_tests.py --quick green",
-  "est_turns": 24,
+  "done_when": "grep -rn '_rates.js' over those five scripts returns no write path; MyTradingSys/tools/live_aid/test_base_rates.py has a case that a study run leaves no *_rates.js file; fails on current code.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "The study.py scripts that still write tools/live_aid/*_rates.js write their row into the base_rates.py build input instead, so a re-run no longer recreates the deleted globals.",
+  "goal": "The five scripts that still write tools/live_aid/*_rates.js write their row into the base_rates.py build input instead, so a re-run no longer recreates the deleted globals.",
   "id": "studies-write-into-base-rates-registry",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: base_rates.js registry (5 rows) replaces four *_rates.js; panels show the window; ",
+      "ref": "92ce6b02c527",
+      "utc": "2026-11-06T19:53:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; the fifth study.py is found by grep. Source card prob-base-rates-registry-1106.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Fifth writer found by grep: scenario_ledger.py. Source card prob-base-rates-registry-1106.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T18:34:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -26,23 +36,26 @@
     "MyTradingSys/research/bigcandle_story_2026-11-05/study.py",
     "MyTradingSys/research/level_approach_prep_2026-11-05/study.py",
     "MyTradingSys/research/us_open_levels_2026-10-30/study.py",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py",
     "MyTradingSys/tools/live_aid/base_rates.py",
     "MyTradingSys/tools/live_aid/test_base_rates.py"
   ],
   "scope_out": [
-    "no change to study numbers or RESULT.md files",
-    "no live-tree edit"
+    "no re-run of any study; no result number changes",
+    "no live-tree edit, no deploy, no .secrets or .env read"
   ],
+  "scope_sha": "92ce6b02c527",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "grep the writers of *_rates.js and read base_rates.py input format",
-    "Replace each write with a row in the base_rates.py build input",
-    "Add the fail-first test, run the quick suite"
+    "Read base_rates.py to see the build input format",
+    "Write the failing test",
+    "Replace each OUT_JS write with a row for the build input",
+    "Run test_base_rates.py and one study's dry path"
   ],
-  "tests": "MyTradingSys/tools/live_aid/test_base_rates.py: new test running a study writer into a temp dir and asserting no *_rates.js is created (fails on current study.py)",
+  "tests": "new case in test_base_rates.py fails on current code",
   "title": "Five study.py scripts still write the deleted tools/live_aid/*_rates.js; a re-run silently recreates the old globals. Make each write its row into base_rates.py build input instead (Builder noticed 2026-11-07, card prob-base-rates-registry-1106)",
-  "weight": "IMPORTANT",
+  "weight": "ROUTINE",
   "worker": "session"
 }
