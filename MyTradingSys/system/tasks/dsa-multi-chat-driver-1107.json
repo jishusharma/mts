@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T17:21:12Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "dsa-multi-chat-driver-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design facts: each DSA chat already writes in its own mts-dsa-<chat> worktree (DSA_SESSION_PROMPT line 79); tasks.py take claims a card so two chats cannot take the same one; limit = concurrent sync.py ship on one host (desk 20261029-170405). Scope for the refiner: dsa.py seed gets a --chat n and a lane filter; DSA_DELEGATION line 108 Haiku brief loops over N tabs; test fails pre-change.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/DSA_DELEGATION.md",
+    "DSA_SESSION_PROMPT.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-07 ~17:15Z voice: DSA says it has no tasks; load DSA with review and refinement work, several DSA chats per host driven by Haiku; d-dsa-load-queue-multi-chat-1107"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "DSA fan-out: Haiku driver opens N DSA chats per host (own worktree each), seeds, assigns lane cards; cap N by ship-gate load (gate flakes at 4+ concurrent ships)",
+  "weight": "",
+  "worker": ""
+}

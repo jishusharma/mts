@@ -1946,3 +1946,13 @@ volume and time count as layers even though LAYERS.md does not list them. Cards:
 (Gemini, low) -> indicator-map-1107 (Sonnet, login B after reset or A). Spec: SPEC_INDICATOR_MAP.md. Also: card
 dsa-seed-full-task-list-1107 (the Start DSA bridge seed must list every DSA task and DSA's last 5 filings).
 Answer: yes (his order); nothing in the map becomes a signal; phase-first rule stays.
+
+## d-dsa-load-queue-multi-chat-1107 (2026-11-07 ~17:15Z, operator, voice)
+Operator: DSA (JIS-NUC and the desktop) reports no tasks; "load DSA with work" (review, refinement, anything else); run 2-3 DSA chats
+per host in separate tabs under Haiku control, DSA told that sessions run in parallel. Lead C: the standard flow already exists
+(DSA_DELEGATION.md line 108: one Haiku Agent seeds the tab and sends "Check the desk tasks"; each DSA chat writes in its own
+mts-dsa-<chat> worktree, tasks.py take claims a card), so the gap was an empty queue, not the driver. Loaded: 3 refined DSA cards
+promoted READY (fabervaale-cvd-sweep, oi-usage-sweep, lab-verify-footprint-vs-indicator-delta), new dsa-refine-raw-cards-1107 (DSA,
+repeatable), dsa-tests-quick-trunk-1107 (DSA-NUC), desk row depth-band rerun (DSA-NUC). Fan-out driver = card
+dsa-multi-chat-driver-1107 (raw, SONNET): cap chats per host by the ship gate (4+ concurrent ships flake, desk 20261029-170405).
+Answer: yes, load via the queue; 2 chats per host until the driver card lands; Haiku only kicks a chat, never babysits it.
