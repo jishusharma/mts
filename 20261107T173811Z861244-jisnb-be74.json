@@ -1,0 +1,1 @@
+{"t": "20261107T173811Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Supervisor A: 20 READY SONNET cards wait (tasks.py list --state ready), login A week 14%. Dispatch background Sonnet Agents now, 3 at a time; ack done with the ids started. Lead C", "login": "C", "id": "b-e787e5", "prio": "high", "cmd": "python scripts/dev/tasks.py list --state ready"}
