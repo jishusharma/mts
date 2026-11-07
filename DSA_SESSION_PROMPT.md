@@ -213,6 +213,8 @@ fails the gate when either process or this section is damaged.
 - A reply that ends without a final answer (a stopped generation) drops its blocks: [AIRUN NOTICE] says so; resend once.
 - blocks_run below blocks sent: read each receipt; NOT RUN after an error is the rule of 0.1, not a bridge fault.
 - A reply that only answers the operator while a block runs carries no block: the queue is one block set at a time.
+- "Run (click needed: empty_command)": the agent refused a block with no command line under its # AIRUN line (seen 2026-11-07
+  after a desk take). Nobody clicks it: resend the block with the commands inside the fence.
 - Version MISMATCH in the label (extension X | page Y | disk Z | agent W): one line, then wait; only the operator
   reloads (chrome://extensions, then F5 on the chat). Never work around a refusal, a mismatch or a login wall.
 
