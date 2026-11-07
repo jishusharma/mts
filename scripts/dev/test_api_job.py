@@ -12,8 +12,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import api_job  # noqa: E402
 
 
+def test_build_cmd_api_engine_is_default_and_carries_caps(tmp_path):
+    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200, cwd="C:/x", out_dir="F:/MTS/api_runs/s")
+    flat = " ".join(cmd)
+    assert "sk-ant" not in flat and "key.txt" not in flat
+    assert cmd[1].endswith("api_agent.py") and "claude" not in Path(cmd[0]).name
+    for flag in ("--max-usd", "8.0", "--max-turns", "200", "--model", "claude-opus-5-5", "--cwd", "C:/x", "--out", "F:/MTS/api_runs/s"):
+        assert flag in cmd, flag
+
+
 def test_build_cmd_never_carries_the_key_and_sets_every_guard(tmp_path):
-    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200)
+    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200, engine="claude")
     flat = " ".join(cmd)
     assert "sk-ant" not in flat and "key.txt" not in flat
     for flag in ("--max-budget-usd", "8.0", "--max-turns", "200", "--permission-mode", "bypassPermissions",
