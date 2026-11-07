@@ -171,8 +171,15 @@ def resolve_login(passed):
     return det or typed, ""
 
 
+def agent_name():
+    """MTS_AGENT (OURS name, e.g. gemini-nuc) sanitised to [a-z0-9._-], max 24; "" when unset or empty after cleaning."""
+    return re.sub(r"[^a-z0-9._-]", "", os.environ.get("MTS_AGENT", "").lower())[:24]
+
+
 def who():
-    return f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
+    base = f"{host()}/{os.environ.get('MTS_ACCOUNT') or login() or '?'}"
+    a = agent_name()
+    return base + "/" + a if a else base
 
 
 def now():
