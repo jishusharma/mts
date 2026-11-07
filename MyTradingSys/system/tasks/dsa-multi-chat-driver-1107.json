@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-11-07T17:44:43Z",
+    "misses": 4,
+    "reads": [
+      "MyTradingSys/tests/test_dsa_direct_mode.py",
+      "MyTradingSys/system/critical_files.json",
+      "scripts/dev/test_dsa.py"
+    ],
+    "session": "8118e29d-e045-4638-a525-f493c6f504d5"
+  },
   "created": "2026-11-07T17:21:12Z",
   "depends_on": [],
   "done_when": "",
