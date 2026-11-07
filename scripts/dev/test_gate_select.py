@@ -40,6 +40,25 @@ class Select(unittest.TestCase):
         self.assertEqual(self.sel("MyTradingSys/research/x/RESULT_a.md"), ("docs", ["3pc"]))
         self.assertEqual(self.sel("MyTradingSys/research/x/notes.md"), ("docs", []))
 
+    def test_ci_red_census_dev_check_doc_runs_the_prereg_lint(self):
+        # CI_RED_CENSUS.md class 2: prereg_context_lint also reads DEV_CHECK*.md; a docs ship of one ran no 3pc
+        self.assertEqual(self.sel("MyTradingSys/research/x/DEV_CHECK_a.md"), ("docs", ["3pc"]))
+        self.assertEqual(self.sel("MyTradingSys/research/x/PRE_REG_b.md"), ("docs", ["3pc"]))
+
+    def test_ci_red_census_bridge_change_selects_the_aibridge_shards(self):
+        # class 1: any bridge file reaches the pytest shard that holds test_aibridge_version_bump (already so; pinned)
+        steps = [("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3cm", "x"),
+                 ("4", "pytest MyTradingSys/tests/test_aibridge_version_bump.py MyTradingSys/tests/test_aibridge_install_fresh.py"), ("4b", "pytest MyTradingSys/tests/other")]
+        for f in ("scripts/aibridge/RELEASES.json", "scripts/dev/aibridge_install.py"):
+            self.assertIn("4", gs.select([f], steps)[1], f)
+
+    def test_ci_red_census_extra_test_file_change_selects_3xt(self):
+        # class 3: a changed registered extra test runs step 3xt (the ubuntu-only failures there are platform parity, not selection)
+        steps = STEPS
+        files = ["scripts/dev/test_boot_audit.py"]
+        mode, nums, _ = gs.explain(files, steps, mentioned=mentioned, step_files={"3xt": ["scripts/dev/test_boot_audit.py"]})
+        self.assertIn("3xt", nums)
+
     def test_gap_card_only_ship_runs_the_task_card_lint(self):
         # 4a26cac5f dsabr-c1..c8 promoted to ready: CI red at Step 3tl, reverted twice (b0e6553af, 850f7187c)
         self.assertEqual(self.sel("MyTradingSys/system/tasks/x.json"), ("docs", ["3tl"]))
