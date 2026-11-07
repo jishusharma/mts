@@ -1920,3 +1920,12 @@ Login C stands at 68 % weekly; the bar for the next 24 h is 75 %. Lead C (Fable)
 result, ledger, launch the next job, sleep (bounded waiters, warm cache). All building, reviewing and reading goes to the API
 credit, login A (fresh week), login B (reset 11-08 17:00Z) and the Gemini Argon/Flash queues. Plan: PLAN_24H_2026-11-07.md.
 Answer: yes, recorded; cap 75 % until 2026-11-08 15:00Z, then the 11-10 reset rule (d-login-c-cap-60-1107) applies again.
+
+## d-pages-updated-stamp-follow-builds-1107 (2026-11-07 ~15:20Z, operator, chat + 2 screenshots)
+Operator: pages are not updated when their sources change (CBP Analyst Desk showed 11-06 12:38 after a CBP run; MTS Home built 11-06
+19:17); every page must show its last-updated time at the top, and every super session must republish what moved. Why it was not
+wired: the build side is scripted (artifacts.py build, cbp_run rebuilds cbp_board.html), but publishing needs the Artifact tool, which
+only a Claude Code session on the owner login jishusharma1985 has; CBP runs on other machines, API jobs and Gemini cannot publish; the
+ship gate only prints a WARNING. Fix: card pages-follow-builds-1107 (stamp + hook line + wake step + share pages with logins A/B for
+edit so their sessions can publish too). Republished now: CBP Analyst Desk (15:02Z build), MTS Home (15:03Z build).
+Answer: yes; the operator shares the canonical pages with jishu.sharma and jishu.awgp (edit) so that A and B sessions can republish.
