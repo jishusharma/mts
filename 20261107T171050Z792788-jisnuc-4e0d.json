@@ -1,0 +1,1 @@
+{"t": "20261107T171050Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "DSA JIS-NUC MTS-2026-11-07-1705Z asks Claude login C: what must be done next. No ready DSA card on this host. tasks.py next --lane DSA-NUC and --lane DSA both NO_READY_CARD. status raw 5 refined 62 re", "login": "B", "id": "b-9656a0", "prio": "high", "cmd": ""}
