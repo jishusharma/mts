@@ -3,7 +3,7 @@
 python base_rates.py build   -> writes base_rates.js (var BASE_RATES = {...}) and
                                 research/prob_dist_layer_brief_2026-10-16/BASE_RATES.md
 
-Reads each study's output AS IT IS (no recomputation). The four studies write <name>_rates.js next to this file when
+Reads each study's output AS IT IS (no recomputation). The four studies write <name>_rates.js into base_rates_input/ when
 re-run; if that file is absent (deleted after the first build) the row's table is carried over from the existing
 base_rates.js, so a re-run of one study followed by `build` refreshes only that row. The candle_flip table is read
 from its cells.csv. Row keys: id, event, condition, outcome, horizon, n, units, window, regime_mix, fee_status,
@@ -17,6 +17,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 RES = HERE.parents[1] / "research"
+INPUT_DIR = HERE / "base_rates_input"   # studies write <name>_rates.js here, never next to the registry
 OUT_JS = HERE / "base_rates.js"
 OUT_MD = RES / "prob_dist_layer_brief_2026-10-16" / "BASE_RATES.md"
 FLIP_DIR = RES / "candle_flip_probability_2026-11"
@@ -47,7 +48,7 @@ def flip_table():
 
 
 def load_table(js_name, var, prev):
-    p = HERE / js_name
+    p = INPUT_DIR / js_name
     if p.exists():
         return read_js_var(p)
     if prev is None:
