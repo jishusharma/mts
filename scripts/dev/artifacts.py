@@ -22,6 +22,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from collections import namedtuple
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -85,18 +86,19 @@ def stamp_block(now=None):
     """The 'Updated <UTC>' line every generated page shows first (operator 2026-11-07: pages follow builds)."""
     now = now or datetime.now(timezone.utc)
     style = "margin:0;padding:6px 14px;font:600 .8rem/1.4 ui-monospace,Consolas,monospace;color:var(--muted,#666)"
-    return f'{STAMP_START}<p class="mts-updated" style="{style}">Updated {now.strftime("%Y-%m-%d %H:%M")} UTC</p>{STAMP_END}'
+    return f'{STAMP_START}{chr(10)}<p class="mts-updated" style="{style}">Updated {now.strftime("%Y-%m-%d %H:%M")} UTC</p>{STAMP_END}'
 
 
 def put_stamp(text, now=None):
-    """Insert or refresh the stamp: between its markers, else right after <body ...>, else at the very top (a fragment)."""
+    """Insert or refresh the stamp: between its markers, else right after <body ...>, else before the first <main>/<div class=wrap>, else at the very top."""
     b = stamp_block(now)
     if STAMP_START in text:
         return STAMP_RE.sub(lambda m: b, text, count=1)
     m = re.search(r"<body[^>]*>", text, re.I)
     if m:
-        return text[:m.end()] + "\n" + b + text[m.end():]
-    return b + "\n" + text
+        return text[:m.end()] + b + text[m.end():]
+    m = re.search(r'<main|<div class="wrap"', text)      # a page with no <body>: before its first wrapper, after <title>/<style>
+    return text[:m.start()] + b + text[m.start():] if m else b + text
 
 
 def publishers(reg):
@@ -464,7 +466,7 @@ def cmd_audit_links(reg, repo=REPO, fetcher=None, reader=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record", "audit-links", "stamp", "republish"])
+    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record", "audit-links", "stamp", "republish", "stale-cache"])
     ap.add_argument("--account", default="jishu.sharma")
     ap.add_argument("--slug", help="banner / publish-record: the registry page")
     ap.add_argument("--all", action="store_true", help="republish: print for any login, not only a publisher login")
@@ -488,6 +490,13 @@ def main(argv=None):
             raise SystemExit("artifacts: stamp needs --file <existing html>")
         f.write_text(put_stamp(f.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
         print(f"stamp: {f}")
+        return 0
+    if a.cmd == "stale-cache":      # the prompt hook's background refresh: slugs of stale pages -> --file (json), never raises
+        try:
+            slugs = [s for s, _u, _w in stale(reg)]
+            Path(a.file).write_text(json.dumps({"at": time.time(), "key": REG.stat().st_mtime_ns, "slugs": slugs}), encoding="utf-8", newline=chr(10))
+        except Exception:
+            pass
         return 0
     if a.cmd == "republish":
         import mts_signal
