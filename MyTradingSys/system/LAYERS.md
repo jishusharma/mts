@@ -75,6 +75,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/research/tom_fabio_guidance_2026-10-12/matrix_q33.py`; `MyTradingSys/backtest/layers/test_layer_boundaries.py`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-guidance-gpt-rederive` blocked p2 SONNET: Layer re-derive: guidance (independent recount of the headline numbers behind the fact sheet)
+  - `squeeze-momentum-engine-1107` ready p2 SONNET: Squeeze Momentum (LazyBear) engine + FORMULAS section + hand test + 90-day squeeze state on 1d/1h/15m (spec SP
 
 ## RSI / Malkan / Kurisko (`rsi`)
 - Status: 40/60 levels: tolerance study done; divergence: no edge on any TF.
@@ -173,6 +174,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/bigtrade`
 - Other results: `MyTradingSys/research/volume_2026-10-09`; `MyTradingSys/research/candle_patterns_2026-10-04`; `MyTradingSys/research/setup_alpha_beta_2026-10-10`; `MyTradingSys/research/bigtrade_2026-10-09`; `MyTradingSys/research/layer_lab/candle_close_2026-10-14`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
+  - `vfi-engine-1107` ready p2 SONNET: Volume Flow Indicator (LazyBear/Katsanos) engine + FORMULAS section + hand test + 90-day VFI state incl. the 1
   - `pooled-short-lookback-trend-tsmom-30d-sm` blocked p3 DSA: Pooled short-lookback trend (TSMOM 30d, SMA50/100, 4h Donchian 20/10) on sealed 2025-07..2026-09 BTC holdout: 
   - `time-adjusted-volume-context-line-for-th` refined p3 SONNET: Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-o
 
