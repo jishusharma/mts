@@ -74,3 +74,41 @@ def test_seed_leaves_one_audit_row(agent):
     agent.post_text("/seed", {"X-AIBridge-Token": agent.token})
     rows = (Path(agent.sdir) / "audit.jsonl").read_text(encoding="utf-8").splitlines()
     assert any("SEED" in r for r in rows), rows[-3:]
+
+
+def _fake_py(tmp_path):
+    fake = tmp_path / "fakepy.cmd"
+    fake.write_text("@echo off\r\necho FAKESEED cwd=%CD% args=%*\r\n", newline="")
+    return fake
+
+
+def test_stale_repo_root_falls_back_to_a_current_sibling_worktree(tmp_path):
+    import subprocess
+    repo = tmp_path / "main"
+    repo.mkdir()
+    g = lambda *a: subprocess.run(["git", "-C", str(repo), *a], check=True, capture_output=True)
+    g("init", "-q")
+    (repo / "README").write_text("x")
+    g("add", "README")
+    g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "init")
+    wt = tmp_path / "wt"
+    g("worktree", "add", "-q", str(wt))
+    (wt / "scripts" / "dev").mkdir(parents=True)
+    (wt / "scripts" / "dev" / "dsa.py").write_text("# start [--open] [--print]\n")
+    s = Scratch(extra_config={"repo_root": str(repo), "seed_python": str(_fake_py(tmp_path))})
+    try:
+        st, ct, body = s.post_text("/seed", {"X-AIBridge-Token": s.token}, timeout=60)
+        assert st == 200 and os.path.normcase(str(wt)) in os.path.normcase(body), (st, body)
+    finally:
+        s.close()
+
+
+def test_seed_root_in_config_wins(tmp_path):
+    root = tmp_path / "cur"
+    root.mkdir()
+    s = Scratch(extra_config={"repo_root": str(tmp_path), "seed_root": str(root), "seed_python": str(_fake_py(tmp_path))})
+    try:
+        st, ct, body = s.post_text("/seed", {"X-AIBridge-Token": s.token}, timeout=60)
+        assert st == 200 and os.path.normcase(str(root)) in os.path.normcase(body), (st, body)
+    finally:
+        s.close()
