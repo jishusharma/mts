@@ -217,6 +217,40 @@ class TrunkLagTest(unittest.TestCase):
         self.assertEqual((self.tree / "a").read_text(encoding="utf-8"), "runtime log line", "the runtime edit stays")
         self.assertEqual(T.git(self.tree, "status", "--porcelain", "--untracked-files=no").stdout.split(), ["M", "a"])
 
+    def _write(self, path, text, nl):
+        with open(path, "w", encoding="utf-8", newline=nl) as f:
+            f.write(text)
+
+    def test_staged_trunk_equal_files_and_crlf_only_edit_do_not_block_the_fast_forward(self):
+        # JIS-NUC main folder 500+ behind: staged copies equal to trunk (scripts/dev) and CRLF-only LAYERS.md edits blocked it
+        hooks = self.origin / "scripts" / "dev"
+        hooks.mkdir(parents=True)
+        (hooks / "hook.py").write_text("v1", encoding="utf-8")
+        self._write(self.origin / "LAYERS.md", "l1\nl2\n", "\n")
+        sh(self.origin, "add", "scripts", "LAYERS.md")
+        commit(self.origin, "b", 1_000_100)
+        sh(self.tree, "pull", "-q", "--ff-only")
+        (hooks / "hook.py").write_text("v2", encoding="utf-8")
+        self._write(self.origin / "LAYERS.md", "l1\nl2\nl3\n", "\n")
+        sh(self.origin, "add", "-A")
+        commit(self.origin, "c", 1_000_200)
+        (self.tree / "scripts" / "dev" / "hook.py").write_text("v2", encoding="utf-8")   # trunk's own content, staged by hand
+        sh(self.tree, "add", "scripts")
+        self._write(self.tree / "LAYERS.md", "l1\nl2\n", "\r\n")                        # line endings only
+        sh(self.tree, "fetch", "-q", "origin")
+        self.assertEqual(T.fast_forward(self.tree, fetch=False)[0], 1)
+        self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
+        with open(self.tree / "LAYERS.md", encoding="utf-8", newline="") as f:
+            self.assertEqual(f.read().replace(chr(13), ""), "l1\nl2\nl3\n")
+        # a real edit on a path trunk changes still blocks the fast-forward and survives
+        (hooks / "hook.py").write_text("v3", encoding="utf-8")
+        sh(self.origin, "add", "-A")
+        commit(self.origin, "d", 1_000_300)
+        (self.tree / "scripts" / "dev" / "hook.py").write_text("my own edit", encoding="utf-8")
+        sh(self.tree, "fetch", "-q", "origin")
+        self.assertEqual(T.fast_forward(self.tree, fetch=False), (0, False))
+        self.assertEqual((self.tree / "scripts" / "dev" / "hook.py").read_text(encoding="utf-8"), "my own edit")
+
     def test_registered_first_at_session_start(self):
         root = Path(__file__).resolve().parents[2]
         ss = json.loads((root / ".claude" / "settings.json").read_text(encoding="utf-8"))["hooks"]["SessionStart"]
