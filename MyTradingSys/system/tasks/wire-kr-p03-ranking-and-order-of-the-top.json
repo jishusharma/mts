@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:22:09Z",
   "commands": [],
   "created": "2026-11-04T21:10:13Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Parked: ranking of the four tops() legs needs fee-net evidence first; no sourced weights, OURS only. Revisit after tops() has OOS fire counts.",
+  "note": "parked twice (tries 2): ranking of tops() legs has no sourced weights (OURS only) and no OOS fire counts; reopen when evidence exists",
+  "pinned": false,
   "prio": 4,
+  "reason": "parked twice (tries 2): ranking of tops() legs has no sourced weights (OURS only) and no OOS fire counts; reopen when evidence exists",
   "refine_tries": 2,
   "refined_by": "",
   "refs": [
@@ -27,7 +30,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "wire KR-P03: Ranking and order of the top signals (quote MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_7IxfsuD2wCM.md:85)",
