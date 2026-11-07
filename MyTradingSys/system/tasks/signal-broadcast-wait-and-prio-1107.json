@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-07 18:12Z: the reply must arrive within 1 MINUTE, not 60. Receiver side is the real delay: signals are read only on prompts, so an idle session never sees an ask. Scope add: supervisor.py wait (and every coordinator waiter) fetches the mts-signals branch every 60 s and returns on an ask or HIGH broadcast for its host; the sender waiter polls acks every 60 s; target = ack within 1 min when a session is awake on the target host, measured in the test with a fake signal.",
+  "note": "Measured 2026-11-07: ask q-7257c1 sent 17:38Z, Lenovo acked+answered 17:43Z (5 min), Lead C saw it only at 17:52Z because its waiter watched one id and two conditions. Rule: a waiter fires on ANY new signal addressed to this host or login (ask, ack, note), never on one id; add mts_signal.py wait [--max M] that returns on the first new inbound record and prints it.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
