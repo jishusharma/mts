@@ -34,7 +34,8 @@ RUNS = Path(os.environ.get("MTS_API_RUNS", "F:/MTS/api_runs"))
 KEY_FILE_DEFAULT = "F:/ClaudePlaform/key.txt"
 LEDGER = REPO / "MyTradingSys/system/PLAN_API_CREDITS_2026-11-04.md"
 BLOCKED = (".secrets", ".env", ".pem", ".key", "api_key", "apikey", "key.txt", ".ovpn")
-MODEL_NAMES = {"claude-opus-5-5": "Opus 5.5", "claude-sonnet-5-5": "Sonnet 5.5", "claude-haiku-5-5": "Haiku 5.5"}
+MODEL_NAMES = {"claude-opus-5-5": "Opus 5.5", "claude-sonnet-5-5": "Sonnet 5.5", "claude-haiku-5-5": "Haiku 5.5",
+               "claude-fable-5-1": "Fable 5.1"}
 
 PREAMBLE = """You are Builder. Headless job on the Claude API credit; hooks are off, so these rules replace them.
 Boot: python scripts/dev/sync.py start {slug} --worker; work only in the printed WORKTREE (git -C <tree> for git, never cd x && git).
