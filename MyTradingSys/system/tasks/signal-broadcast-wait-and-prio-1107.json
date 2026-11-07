@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "claim": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_signal_wait.py -q"
+  ],
   "context": {
     "calls_to_edit": null,
     "folded": "2026-11-07T18:07:10Z",
@@ -14,14 +17,30 @@
   },
   "created": "2026-11-07T17:35:26Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "pytest scripts/dev/test_signal_wait.py passes; wait returns on a planted ask within one 60 s poll; status_block orders asks > stuck HIGH > age, cap 3 + count",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "mts_signal wait + broadcast --wait / ask --wait-reply, sorted capped status lines, supervisor.py wait wakes within 60 s on a new ask or HIGH broadcast",
   "id": "signal-broadcast-wait-and-prio-1107",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/signal-identity-1107",
+      "ref": "357da11a453e",
+      "utc": "2026-11-07T18:33:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b51c2e1c0184 signals: broadcast/ask = wait for the ack; wake step 0 pending+asks by priori",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-11-07T17:36:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -29,22 +48,38 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T18:41:37Z",
   "refs": [
     "scripts/dev/mts_signal.py",
     "MyTradingSys/system/SUPER_SESSION.md",
     ".claude/settings.json"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/supervisor.py",
+    "scripts/dev/test_signal_wait.py",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/system/SUPER_SESSION.md"
+  ],
+  "scope_out": [
+    "no change to signal file schema, ack or HIGH logic, no live tree"
+  ],
+  "scope_sha": "357da11a453e",
+  "size": "S",
   "sources": [
     "operator 2026-11-07 ~17:40Z voice: broadcasts are fire-and-forget, senders never wait for the reply, receivers never check what is open; login C (the max console) must check broadcasts every wake and answer by priority; d-broadcast-wait-for-reply-1107"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "active",
+  "steps": [
+    "Add wait_signal/inbound_new and CLI wait",
+    "status_block sorted and capped",
+    "supervisor wait signal step",
+    "tests and doc line"
+  ],
+  "taken": "2026-11-07T18:41:41Z",
+  "tests": "scripts/dev/test_signal_wait.py: 5 of 6 fail on pre-change code",
   "title": "Signal loop: broadcast --wait M blocks bounded and prints acks per host; prompt status lines sorted ask > HIGH > age, capped at 3 + count; wake checklist line in SUPER_SESSION.md",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
