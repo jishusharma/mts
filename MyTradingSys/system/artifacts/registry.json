@@ -64,7 +64,7 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "cbb531dd43193584bf985fd78f8f4776b2ddbbfd31461fc8df517988c31a58d9"
+      "published_sha": "577fba33df1ec6081cd60bdc65b274470aa9f252fbe9190f3e83807fe7b92d0f"
     },
     {
       "slug": "tom_fabio_deck",

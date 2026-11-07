@@ -6,6 +6,16 @@
     "python scripts/dev/artifacts.py publish-record --slug mts_home",
     "python scripts/dev/artifacts.py publish-record --slug mts_layer_map"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T18:08:02Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/make_layers_board.py",
+      "MyTradingSys/system/artifacts/registry.json"
+    ],
+    "session": "agent-abc838c65bca2c596"
+  },
   "created": "2026-11-04T07:33:20Z",
   "depends_on": [],
   "done_when": "artifacts.py stale prints no STALE line for mts_home or mts_layer_map, and registry.json pub date for both slugs is today",
