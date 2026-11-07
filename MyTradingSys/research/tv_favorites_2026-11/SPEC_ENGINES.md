@@ -19,9 +19,9 @@ Done when:
 ## B. Volume Flow Indicator (card vfi-engine-1107, API credit, Sonnet via api_job --engine api)
 Formula (SOURCED, LazyBear "Volume Flow Indicator", after Katsanos 2004):
 - typical = hlc3; inter = log(typical) - log(typical[1]); vinter = stdev(inter, 30); cutoff = coef x vinter x close, coef = 0.2.
-- vave = SMA(volume, 50)[1]; vmax = vave x vcoef, vcoef = 2.5; vc = min(volume, vmax).
+- vave = SMA(volume, 130)[1] (CORRECTED 11-07: the script uses one `length`; the 50 here was Lead C's recall); vmax = vave x vcoef, vcoef = 2.5; vc = min(volume, vmax).
 - mf = typical - typical[1]; vcp = +vc if mf > cutoff, -vc if mf < -cutoff, else 0.
-- vfi = SMA(vcp, 130) / vave (length 130); if smoothing, vfi = EMA(vfi, 3) (smoothVFI default false in the script; both outputs returned).
+- vfi = sum(vcp, 130) / vave; if smoothing, vfi = SMA(vfi, 3) (CORRECTED 11-07, VERIFIED-TV 4/4 bars, FORMULAS s32; smoothVFI default false; both outputs returned).
 Done when:
 1. FORMULAS.md section "Volume Flow Indicator (LazyBear / Katsanos)" with the formula and a short toy series (length parameters reduced for the toy, stated) computed by hand.
 2. `MyTradingSys/backtest/layers/vfi/vfi.py`: `vfi(high, low, close, volume, length=130, coef=0.2, vcoef=2.5, smooth=3) -> (vfi_raw, vfi_smoothed)`; `test_vfi.py` asserts the hand values, FAILS pre-change; registered in run_all_tests.py; wiring_registry entry.
