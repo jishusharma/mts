@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T14:18:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-07_value-area-acceptance.md lists each RESULT.md number with recomputed value and MATCH / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT re-derivation of every number in value_area_acceptance_2026-11-05/RESULT.md from the raw counts/CSVs and FORMULAS.md, not from the study code.",
+  "id": "gpt-rederive-value-area-acceptance-1107",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.01); last csv ",
+      "ref": "25e12c01a904",
+      "utc": "2026-11-07T14:14:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "25e12c01a904 adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.0",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-07T14:14:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (D11 feeder s6, planner-a-20261107; twin check run, none). Never use model output as the source.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T14:18:43Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md (read)",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/ (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-07_value-area-acceptance.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "25e12c01a904",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number in RESULT.md",
+    "Recompute each from the data in the folder with FORMULAS.md",
+    "Write the table and the three counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "GPT re-derive: value_area_acceptance_2026-11-05 RESULT.md numbers",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
