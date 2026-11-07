@@ -35,9 +35,3 @@ installed by aibridge_install.py (the first placement broke CI at d04560aa0, rev
 Typing `Start DSA bridge` in a fresh chat on this machine produces the BOOT banner with no terminal and no paste (checked by the
 builder through Claude in Chrome on the Profile 4 tab, or reported as "install done, chat check pending" if that tab is busy);
 tests green; health UP 0.7.30; shipped with `Result:` and `Next: END: operator reloads the extension; NUC/laptop run the broadcast`.
-
-## The list rule (card dsa-seed-full-task-list-1107)
-`dsa.py start --print` appends, under the 4000-byte seed cap, a DSA QUEUE (every open card in lanes DSA, DSA-NB, DSA-NUC plus every
-open desk row addressed to them, both hosts, from the repo files only) and DSA FILED (the 5 newest cards whose provenance field
-names DSA: `tasks.py new ... --source "DSA chat <host>"`). Overflow prints `+N more`. The filer is not otherwise recorded on a
-card, so older DSA filings are NOT_IN_DATA, never guessed. Data from the other host's checkout is not read: what the repo holds is listed.
