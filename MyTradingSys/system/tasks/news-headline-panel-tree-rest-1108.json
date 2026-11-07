@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Plan N1 of the 10-30 report: Tree REST news.treeofalpha.com/api/news?limit=N (fields time, source, title, importance 0-10, suggestions; CORS *; free tier ~15 s late), poll 15 s OURS only while live_aid is open (SCHEDULING_POLICY: no scheduler), last 12 headlines, importance >= 7 marked (SOURCED Tree score), BTC/macro words marked; append to a local headlines log under runtime/ (gitignored, PUBLIC repo). Context only, never gates or sizes a trade (CBP rule). Test fails pre-change (parser on a saved sample). Measured 10-29: hack headline 15 min after on-chain, 5 min before the main leg.",
+  "note": "CoinGlass checked 2026-11-08 01:30Z (operator asked): coinglass.com/news returns 502 from CloudFront (site home 200, news page down twice); CoinGlass survey 10-29 never covered news; API v4 has GET open-api-v4.coinglass.com/api/article/list (docs.coinglass.com/reference/article-list) but it is key-only (401 without key) and plan-gated, so it is a paid second source, not the free primary. Keep Tree News REST as primary; CoinGlass article list optional behind a key.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
