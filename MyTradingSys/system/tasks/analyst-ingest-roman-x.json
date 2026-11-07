@@ -35,7 +35,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PARKED 2026-11-08: a new analyst source and listener is machinery growth (frozen); not needed by any path exit. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 3,
   "refine_tries": 1,

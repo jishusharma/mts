@@ -28,7 +28,7 @@ import pandas as pd
 
 SRC = "F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv"
 OUT = Path(__file__).resolve().parent
-JS_OUT = OUT.parents[1] / "tools" / "live_aid" / "us_open_rates.js"
+JS_OUT = OUT.parents[1] / "tools" / "live_aid" / "base_rates_input" / "us_open_rates.js"
 NY = ZoneInfo("America/New_York")
 WINDOW, HOLD = 120, 60
 BUCKETS = [("0-0.25", 0, 0.0025), ("0.25-0.5", 0.0025, 0.005), ("0.5-1", 0.005, 0.01), ("1-2", 0.01, 0.02), ("2+", 0.02, 9)]
@@ -108,6 +108,7 @@ def main():
             "hold_min": HOLD, "buckets": [b[0] for b in BUCKETS], "note": "weekdays, US holidays not removed; OURS definitions in study.py"}
     res = {"meta": meta, "rates": rates}
     (OUT / "results.json").write_text(json.dumps(res, indent=1) + "\n", encoding="utf-8", newline="\n")
+    JS_OUT.parent.mkdir(parents=True, exist_ok=True)
     JS_OUT.write_text("// built by research/us_open_levels_2026-10-30/study.py; do not edit\nvar US_OPEN_RATES = "
                       + json.dumps(res, separators=(",", ":")) + ";\n", encoding="utf-8", newline="\n")
     lines = ["# US open: levels reached in the first 2 h, and whether a touch holds 60 min later", "",

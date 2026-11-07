@@ -18,7 +18,7 @@ WIN = 60          # OURS: minutes in the state window and in the follow-up windo
 FLAT = 0.001      # OURS: |price change| or |OI change| under 0.1 % = flat (same as live_aid OM.flat)
 REGIME = 0.10     # OURS: trailing 30-day return > +10 % bull, < -10 % bear, else range
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT_JS = os.path.join(HERE, '..', '..', 'tools', 'live_aid', 'anticipation_rates.js')
+OUT_JS = os.path.join(HERE, '..', '..', 'tools', 'live_aid', 'base_rates_input', 'anticipation_rates.js')
 
 
 def load_klines(symbol='BTCUSDT'):
@@ -127,6 +127,7 @@ def main():
     last = datetime.fromtimestamp(evs[-1]['t'] / 1000, timezone.utc).strftime('%Y-%m-%d')
     meta = {'source': 'Binance USD-M BTCUSDT 1m klines + metrics 5m OI', 'range': [first, last], 'events': len(evs),
             'window_min': WIN, 'flat': FLAT, 'note': 'DEV window, fee-free descriptive; OURS thresholds in study.py'}
+    os.makedirs(os.path.dirname(OUT_JS), exist_ok=True)
     with open(OUT_JS, 'w', newline='\n') as fh:
         fh.write('// built by research/anticipation_map_2026-11-05/study.py; do not edit\n')
         fh.write('var ANTICIPATION_RATES = ' + json.dumps({'meta': meta, 'rates': rates}, sort_keys=True) + ';\n')

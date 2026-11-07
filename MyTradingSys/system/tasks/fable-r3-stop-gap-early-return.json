@@ -17,20 +17,20 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "wiring audit builder: restore full tree after an index slip; lint-clean quote parsing",
-      "ref": "89619dbe5f66",
-      "utc": "2026-10-28T22:03:30Z"
+      "line": "B148 part 5 (D10: 10 min heartbeat age) and B146 gate on at 0.3 (D09); Inbox items recorde",
+      "ref": "5c5678d4caa8",
+      "utc": "2026-10-09T08:25:56Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only. Stale guard 11-08: bug still on trunk (position_manager.py:340-342 raises ManagerHalted, scratch_r3/test_stop_gap_r3.py still unmoved); goal and design unchanged; placed on CRITICAL_PATH before the S2 restart drill.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:36Z",
+  "refreshed": "2026-11-07T21:41:19Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "live tree; auto_trader respawn loop; executor; other offline tests"
   ],
-  "scope_sha": "89619dbe5f66",
+  "scope_sha": "5c5678d4caa8",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_runs_2026-10-28/R3_LIVE_REDTEAM.md"

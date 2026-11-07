@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). DECISION (OURS): ship the stall line only; the re-login goes out by mts_signal broadcast and GPT cards wait (0b1bf4e20 keeps 401 = IDLE).",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). DECISION (OURS): ship the stall line only; the re-login goes out by mts_signal broadcast and GPT cards wait (0b1bf4e20 keeps 401 = IDLE). | PARKED 2026-11-08: Codex lane has no credit (d-no-gpt-codex-credit-1106); fixing the 401 is not on the path.",
   "prio": 1,
   "refine_tries": 3,
   "refined_by": "",

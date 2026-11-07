@@ -20,7 +20,7 @@ KLINES = 'F:/MTS/data/tom_raw/klines'
 METRICS = 'F:/MTS/data/binance_metrics'
 CACHE = 'F:/MTS/data/bigcandle_cache'
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT_JS = os.path.join(HERE, '..', '..', 'tools', 'live_aid', 'bigcandle_rates.js')
+OUT_JS = os.path.join(HERE, '..', '..', 'tools', 'live_aid', 'base_rates_input', 'bigcandle_rates.js')
 
 M5 = 300000
 DEV_T0 = int(datetime(2022, 1, 3, tzinfo=timezone.utc).timestamp() * 1000)    # Monday: weekly candles align
@@ -523,6 +523,7 @@ def main():
     meta = {'source': 'Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader ratios)', 'range': [ms(S['t0'])[:10], '2024-06-30'],
             'events_1h': len(ev1), 'events_5m': len(ev5), 'zBig': Z_BIG, 'thin': THIN, 'ttFlat': TT_FLAT, 'band': BAND,
             'sd1h': th, 'sdAsOf': asof, 'note': 'DEV window, fee-free descriptive, 1h events; OURS thresholds in study.py'}
+    os.makedirs(os.path.dirname(OUT_JS), exist_ok=True)
     with open(OUT_JS, 'w', newline='\n') as fh:
         fh.write('// built by research/bigcandle_story_2026-11-05/study.py; do not edit\n')
         fh.write('var BIGCANDLE_RATES = ' + json.dumps({'meta': meta, 'cells': {**cells, **bases}}, sort_keys=True, separators=(',', ':')) + ';\n')
