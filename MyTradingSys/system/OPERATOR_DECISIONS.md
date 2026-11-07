@@ -1878,3 +1878,18 @@ cap 8 USD; credit left about 13 USD). The other plan questions take their defaul
 CCU to actionable=partial, cascade on 1h/4h/1d. Splits DECISION (OURS): DEV/VALIDATION fit and check, 2025-07..2026-11
 reported descriptively only. Weight ROUTINE (OURS): a T0-ONLY coordinator stamp cannot promote an IMPORTANT card.
 Answer: API credit now (operator, 2026-11-07).
+
+## d-wicks-research-plan-first-1107 | decided 2026-11-07 | operator (voice, ~13:30Z), recorded by Lead C
+"VIX" = wicks. MTS research plus public research on how wicks form on 5m/15m, the recent 5-week pattern, price-and-time
+(Steve, Jason), the Friday 74,900 sweep (first try, bought back), what support is really there (confluence, first try,
+volume, CVD, order flow), and the context gap: a falling knife (news sell-off, no retracement) is never a wick to buy.
+Done this turn: 5-week census (research/wicks_2026-11, R = 1 hit rates 38-51 %, blind wicks no edge), repo survey, note
+WICKS_NOTE_2026-11-07.md with the context gate and plan W1-W6; nothing built. Defaults (OURS): with-trend side first,
+knife rule 2 % in 12 bars with < 25 % retrace, W1-W3 after the Monday reset.
+Answer: MTS has to find a way to buy and sell into wicks with the whole context; plan it (operator, 2026-11-07).
+
+## d-verify-indicators-on-tradingview-1107 | decided 2026-11-07 | operator (voice), recorded by Lead C
+Computed indicators are cross-checked on his TradingView / Binance charts through Claude in Chrome before they count as
+verified; a formula already verified needs no re-check. First: card adx-di-tradingview-crosscheck-1107 (Haiku, after the
+ADX engine lands); FORMULAS.md gets a VERIFIED-TV line per indicator.
+Answer: verify through Claude in Chrome on my TradingView and Binance charts; be sure (operator, 2026-11-07).
