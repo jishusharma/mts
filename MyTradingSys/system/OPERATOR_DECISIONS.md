@@ -2025,3 +2025,7 @@ Answer: card news-headline-panel-tree-rest-1108 (SONNET p2): Tree REST poll whil
 ## d-news-is-live-aid-critical-1108 (2026-11-08 ~01:45Z, operator)
 Operator: "News is a live Aid and it is critical!!!" Lead C: card news-headline-panel-tree-rest-1108 raised to p1 and filled build-ready (N1+N6 of the 10-30 report; Tree News REST; context only); launched on the API credit (Sonnet) at once since login C is at the 74 % cap.
 Answer: build it now on credit; N2 pulse tile and N3 macro strip follow as separate cards after N1 lands.
+
+## d-lead-c-8h-monitor-all-llms-1108 (2026-11-08 ~01:50Z, operator)
+Operator: keep login A alive; use the Claude Platform (API credit) for the next tasks; keep working for the next 8 hours (to ~10:00Z); use ALL LLMs (credit, login A, Gemini on the NUC) and the Claude Platform; login C's cap raised from 75 % to 78 % weekly; login C may only MONITOR tasks on the Claude Platform, login A and Gemini (no building from login C). Supersedes the cap line of d-login-c-cap-75-24h-1107.
+Answer: credit job news-headline-panel-1108 running (Sonnet, cap $8); next credit jobs in order: java-va-state-asymmetry-fix-1108, auction-context-event-census-1108, auction-plan-testnet-forward-1108, signal-broadcast-wait-and-prio-1107 (if A has not built it), artifacts stale-hash fix; login A asked by HIGH broadcast to stay alive 8 h and refine the Argon cards; NUC Gemini queue loaded with the 6 READY [GEMINI] cards; Lead C wakes on job end / signal only.
