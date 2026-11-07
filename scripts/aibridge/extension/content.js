@@ -776,6 +776,59 @@
     refreshUi();
   }
 
+  // 0.7.30: "Start DSA bridge" typed as the whole message is swapped for the seed (agent GET /seed through the worker) and sent.
+  // Enter or the send button with exactly that text is caught before DeepSeek sees it. Agent down: nothing is sent, the phrase stays.
+  var seeding = false;
+  function fetchSeed() {
+    return new Promise(function (resolve) {
+      if (!alive()) { orphan(); resolve(null); return; }
+      try {
+        chrome.runtime.sendMessage({ type: 'seed' }, function (r) {
+          if (chrome.runtime.lastError || !r || !r.ok || !r.text) { resolve(null); return; }
+          resolve(r.text);
+        });
+      } catch (e) { resolve(null); }
+    });
+  }
+  async function startDsaBridge(el) {
+    if (seeding) return;
+    seeding = true;
+    try {
+      setStatus('fetching the DSA seed...');
+      var seed = await fetchSeed();
+      if (!seed) { stopHold = true; setStatus(L.SEED_DOWN_TEXT); return; }
+      setInput(el, seed);
+      await sleep(400);
+      lastSend = Date.now();
+      pressEnter(el);
+      var landed = false;
+      for (var i = 0; i < 8 && !landed; i++) { await sleep(250); landed = L.postLanded(liveInput(el), nowInput()); }
+      if (!landed) {
+        clickSend(el);
+        for (var j = 0; j < 12 && !landed; j++) { await sleep(250); landed = L.postLanded(liveInput(el), nowInput()); }
+      }
+      setStatus(landed ? 'DSA seed sent' : 'DSA seed not posted: the chat input did not clear (press Enter once)');
+    } finally { seeding = false; }
+  }
+  function triggerTarget(e) {
+    var t = e.target;
+    if (!t || !t.matches || isOurs(t)) return null;
+    var inp = findInput();
+    if (!inp || !L.isStartTrigger(inputText(inp))) return null;
+    if (e.type === 'keydown') return (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.isTrusted && t === inp) ? inp : null;
+    var box = inp; for (var u = 0; u < 4 && box.parentElement; u++) box = box.parentElement;
+    return (e.isTrusted && t.closest && t.closest('button, [role="button"]') && box.contains(t)) ? inp : null;
+  }
+  function onTriggerEvent(e) {
+    var inp = triggerTarget(e);
+    if (!inp) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type === 'keydown') startDsaBridge(inp);
+    else if (e.type === 'click') startDsaBridge(inp);
+  }
+  document.addEventListener('keydown', onTriggerEvent, true);
+  document.addEventListener('click', onTriggerEvent, true);
+
   document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey && e.target && e.target.matches && e.target.matches('textarea, [contenteditable], [role="textbox"]') && !isOurs(e.target)) lastSend = Date.now(); }, true);
 
   chrome.storage.local.get(['aibridge_quiet_ms', 'aibridge_max_chars', 'aibridge_cap', 'aibridge_wait_ms', 'aibridge_max_blocks'], function (r) {

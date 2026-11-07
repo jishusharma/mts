@@ -21,7 +21,7 @@ ORIGIN = "chrome-extension://selftestselftestselftestselftest"
 
 
 class Scratch:
-    def __init__(self):
+    def __init__(self, extra_config=None):
         self.work = tempfile.mkdtemp(prefix="aib_probe_")
         self.sdir = os.path.join(self.work, "src")
         os.makedirs(self.sdir)
@@ -36,8 +36,9 @@ class Scratch:
             s.bind(("127.0.0.1", 0))
             self.port = s.getsockname()[1]
         self.token = "probe" + os.urandom(8).hex()
-        json.dump({"token": self.token, "allowed_origins": [ORIGIN], "port": self.port, "bind": "127.0.0.1"},
-                  open(os.path.join(self.sdir, "config.json"), "w"))
+        cfg = {"token": self.token, "allowed_origins": [ORIGIN], "port": self.port, "bind": "127.0.0.1"}
+        cfg.update(extra_config or {})
+        json.dump(cfg, open(os.path.join(self.sdir, "config.json"), "w"))
         pol = {"roots": [self.work], "deny_path_regex": [{"re": r"(^|[\/\s'\"=(,;@])\.secrets(?![A-Za-z0-9_])", "why": "secrets directory"}], "timeout_soft_s": 60, "timeout_hard_s": 300,
                "max_output_bytes": 262144, "mode": "open"}
         pol.update(json.load(open(PAYLOAD / "policy_patch.json", encoding="utf-8")))
@@ -62,6 +63,17 @@ class Scratch:
                 return r.status, json.loads(r.read().decode("utf-8") or "{}")
         except urllib.error.HTTPError as e:
             return e.code, json.loads(e.read().decode("utf-8") or "{}")
+
+    def get_text(self, path, headers=None, timeout=60):
+        """GET returning (status, content_type, text); for the plain-text /seed route."""
+        h = {"Origin": ORIGIN}
+        h.update(headers or {})
+        req = urllib.request.Request("http://127.0.0.1:%d%s" % (self.port, path), method="GET", headers=h)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.status, r.headers.get("Content-Type", ""), r.read().decode("utf-8")
+        except urllib.error.HTTPError as e:
+            return e.code, e.headers.get("Content-Type", ""), e.read().decode("utf-8")
 
     def run(self, cmd, auto=True, timeout=180, **kw):
         b = {"cmd": cmd, "cwd": self.work, "token": self.token, "auto": auto}

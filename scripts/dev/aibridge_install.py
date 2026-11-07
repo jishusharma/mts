@@ -119,6 +119,7 @@ files = [
     ('RELEASES.json', None),
     ('tests/loop.test.js', None),
     ('tests/handsfree.test.js', None),
+    ('tests/start_trigger.test.js', None),
     ('tests/agent_live_selftest.py', None),
 ]
 for rel, content in files:

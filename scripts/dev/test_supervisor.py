@@ -714,6 +714,7 @@ def _stub_plan_reads(monkeypatch, ci_red=False, picks=5):
     monkeypatch.setattr(traffic, "read_signals", lambda a, b: ([], None))
     import mts_signal
     monkeypatch.setattr(mts_signal, "send", lambda *a, **k: True)
+    monkeypatch.setattr(S, "republish_notes", lambda login: [])           # the page builds are tested on their own
 
 
 def _plan_run(tmp_path, running, minutes, send=True):
@@ -1516,3 +1517,30 @@ def test_brief_names_writable_report_path(tmp_path):
     assert "Write tool" in out_default
     assert "sync.py ship --release v-default" in out_default
 
+
+
+def test_plan_prints_a_republish_line_per_stale_page_on_a_publisher_login(tmp_path, monkeypatch):
+    """pages-follow-builds-1107: plan on login C (publisher) prints one REPUBLISH <slug> <html> <url> per stale page; login A prints none."""
+    import artifacts
+    real = S.republish_notes
+    _stub_plan_reads(monkeypatch)
+    monkeypatch.setattr(S, "republish_notes", real)
+    monkeypatch.setattr(S, "idle_hosts", lambda *a, **k: [])
+    rows = [("mts_home", "https://claude.ai/artifact/AAA", "differs"), ("sim_desk", "https://claude.ai/artifact/BBB", "differs")]
+    monkeypatch.setattr(artifacts, "stale", lambda reg, builder=None: rows)
+    lines = _plan_run(tmp_path, 0, 0)[0]
+    got = [x for x in lines if x.startswith("REPUBLISH ")]
+    assert len(got) == 2 and got[0].split()[1:2] == ["mts_home"] and got[0].endswith("https://claude.ai/artifact/AAA")
+    assert S.republish_notes("A") == [] and S.republish_notes("B") == []
+
+
+def test_republish_notes_time_cap_becomes_a_note(monkeypatch):
+    """pages-hook-guard-1107: a page build that hangs inside plan is cut off at REPUBLISH_TIMEOUT_S and reported as a NOTE."""
+    import artifacts
+    import threading
+    gate = threading.Event()
+    monkeypatch.setattr(S, "REPUBLISH_TIMEOUT_S", 0.2)
+    monkeypatch.setattr(artifacts, "republish_lines", lambda reg: gate.wait(5) or [])
+    out = S.republish_notes("C")
+    gate.set()
+    assert len(out) == 1 and out[0].startswith("NOTE REPUBLISH check timed out")

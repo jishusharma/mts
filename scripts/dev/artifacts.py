@@ -6,6 +6,8 @@
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
   python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
   python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD]   # after an Artifact publish: store published_sha + the publish date (default today)
+  python scripts/dev/artifacts.py stamp --file page.html   # put "Updated <UTC>" first on a built page (build does it for generated pages)
+  python scripts/dev/artifacts.py republish                 # REPUBLISH <slug> <html> <url> for each stale page (publisher login only; --all: any login)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
   python scripts/dev/artifacts.py audit-links               # audit registry vs repo copy and verify relative links across pages
 
@@ -20,18 +22,24 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from collections import namedtuple
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
 REPO = Path(__file__).resolve().parents[2]
 REG = REPO / "MyTradingSys" / "system" / "artifacts" / "registry.json"
+STALE_CACHE_TIMEOUT_S = 180     # OURS: the background refresh of the hook cache dies after this
 STATUSES = ("canonical", "retire", "needs-url")
 URL_PREFIX = "https://claude.ai/artifact/"
 
 
 BANNER_START, BANNER_END = "<!--mts-home:start-->", "<!--mts-home:end-->"
+STAMP_START, STAMP_END = "<!--mts-stamp:start-->", "<!--mts-stamp:end-->"
+STAMP_RE = re.compile(re.escape(STAMP_START) + ".*?" + re.escape(STAMP_END), re.S)
+# registry account of each login letter (CLOUD_ACCOUNTS.md LOGINS); a session publishes only when its account is in registry["publishers"]
+LOGIN_ACCOUNT = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}
 
 
 def load(path=REG):
@@ -75,6 +83,34 @@ def put_banner(text, reg, slug, strict=True):
     return text  # a test fragment with no page wrapper
 
 
+def stamp_block(now=None):
+    """The 'Updated <UTC>' line every generated page shows first (operator 2026-11-07: pages follow builds)."""
+    now = now or datetime.now(timezone.utc)
+    style = "margin:0;padding:6px 14px;font:600 .8rem/1.4 ui-monospace,Consolas,monospace;color:var(--muted,#666)"
+    return f'{STAMP_START}{chr(10)}<p class="mts-updated" style="{style}">Updated {now.strftime("%Y-%m-%d %H:%M")} UTC</p>{STAMP_END}'
+
+
+def put_stamp(text, now=None):
+    """Insert or refresh the stamp: between its markers, else right after <body ...>, else before the first <main>/<div class=wrap>, else at the very top."""
+    b = stamp_block(now)
+    if STAMP_START in text:
+        return STAMP_RE.sub(lambda m: b, text, count=1)
+    m = re.search(r"<body[^>]*>", text, re.I)
+    if m:
+        return text[:m.end()] + b + text[m.end():]
+    m = re.search(r'<main|<div class="wrap"', text)      # a page with no <body>: before its first wrapper, after <title>/<style>
+    return text[:m.start()] + b + text[m.start():] if m else b + text
+
+
+def publishers(reg):
+    return list(reg.get("publishers") or [])
+
+
+def is_publisher(reg, letter):
+    """True when login letter A/B/C maps to an account listed in registry publishers."""
+    return LOGIN_ACCOUNT.get(str(letter or "").strip().upper()[:1], "\0") in publishers(reg)
+
+
 def problems(reg, repo=REPO):
     p, accounts = [], list(reg["accounts"])
     seen = {}
@@ -110,6 +146,9 @@ def problems(reg, repo=REPO):
         if pg.get("banner") and pg.get("html") and (Path(repo) / pg["html"]).is_file() \
                 and BANNER_START not in (Path(repo) / pg["html"]).read_text(encoding="utf-8"):
             p.append(f"{s}: html has no MTS Home banner (artifacts.py banner --slug {s})")
+    for a in publishers(reg):
+        if a not in accounts:
+            p.append(f"publishers: {a!r} is not an account")
     # one hub, owned by the home login (DECISION 2026-10-16, access_model)
     if reg.get("home_login") not in accounts:
         p.append(f"home_login {reg.get('home_login')!r} is not an account")
@@ -171,7 +210,8 @@ VOLATILE = re.compile(r'"(?:generated|commit|pub)":\s*"[^"]*"|"(?:[a-z_]*age_h|m
 
 
 def content_hash(text):
-    """sha256 of the page html with the DATA `generated` stamp and `commit` sha blanked (a rebuild alone is not a change)."""
+    """sha256 of the page html with the DATA `generated` stamp, the 'Updated' stamp and `commit` sha blanked (a rebuild alone is not a change)."""
+    text = STAMP_RE.sub("", text)
     return hashlib.sha256(VOLATILE.sub(lambda m: m.group(0).split(":")[0] + ': ""', text).encode("utf-8")).hexdigest()
 
 
@@ -217,6 +257,15 @@ def stale_lines(reg, builder=build_html):
     return [f"STALE {s} {u}  ({why})" for s, u, why in stale(reg, builder)]
 
 
+def republish_lines(reg, builder=build_html):
+    """One `REPUBLISH <slug> <html> <url>` line per stale page: <html> is the repo file, or the generator for a page that exists only as build output."""
+    out = []
+    for s, u, _why in stale(reg, builder):
+        pg = next(p for p in reg["pages"] if p["slug"] == s)
+        out.append(f"REPUBLISH {s} {pg.get('html') or pg.get('generator')} {u}")
+    return out
+
+
 def behind(reg, pg, repo=REPO):
     """MTS Home badge: the repo html on disk differs from what was last published (no generator run, so Home can build itself)."""
     try:
@@ -241,6 +290,8 @@ def cmd_build(reg):
         if g.startswith("scripts/") and pg["status"] != "retire":
             print("build", pg["slug"])
             subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True)
+            f = REPO / pg["html"]
+            f.write_text(put_stamp(f.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
 
 
 class AuditRow(namedtuple("AuditRow", ["page", "link", "target", "status"])):
@@ -416,10 +467,11 @@ def cmd_audit_links(reg, repo=REPO, fetcher=None, reader=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record", "audit-links"])
+    ap.add_argument("cmd", choices=["check", "list", "plan", "build", "banner", "stale", "publish-record", "audit-links", "stamp", "republish", "stale-cache"])
     ap.add_argument("--account", default="jishu.sharma")
     ap.add_argument("--slug", help="banner / publish-record: the registry page")
-    ap.add_argument("--file", help="banner: html to update in place (default: the page's repo html)")
+    ap.add_argument("--all", action="store_true", help="republish: print for any login, not only a publisher login")
+    ap.add_argument("--file", help="banner / stamp: html to update in place (default: the page's repo html)")
     ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
     a = ap.parse_args(argv)
     reg = load()
@@ -432,6 +484,39 @@ def main(argv=None):
         f = Path(a.file or REPO / pg["html"])
         f.write_text(put_banner(f.read_text(encoding="utf-8"), reg, a.slug), encoding="utf-8", newline="\n")
         print(f"banner: {a.slug} -> {f}")
+        return 0
+    if a.cmd == "stamp":
+        f = Path(a.file or "")
+        if not f.is_file():
+            raise SystemExit("artifacts: stamp needs --file <existing html>")
+        f.write_text(put_stamp(f.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
+        print(f"stamp: {f}")
+        return 0
+    if a.cmd == "stale-cache":      # the prompt hook's background refresh: slugs of stale pages -> --file (json), never raises
+        import os
+        import threading
+        wd = threading.Timer(STALE_CACHE_TIMEOUT_S, lambda: os._exit(0))    # hard stop: a hung page build must not outlive its hook
+        wd.daemon = True
+        wd.start()
+        try:
+            f = Path(a.file)
+            try:
+                old = json.loads(f.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                old = {}
+            slugs = [s for s, _u, _w in stale(reg)]
+            f.write_text(json.dumps({"at": time.time(), "key": REG.stat().st_mtime_ns, "slugs": slugs, "login": old.get("login", "")}),
+                         encoding="utf-8", newline=chr(10))
+        except Exception:
+            pass
+        return 0
+    if a.cmd == "republish":
+        import mts_signal
+        if not a.all and not is_publisher(reg, mts_signal.login()):
+            print("artifacts: this login is not a publisher (registry publishers); nothing to republish here")
+            return 0
+        lines = republish_lines(reg)
+        print("\n".join(lines) if lines else "artifacts: no stale pages")
         return 0
     if a.cmd == "publish-record":
         sha = publish_record(reg, a.slug, today=a.date)
