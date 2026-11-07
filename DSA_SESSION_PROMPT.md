@@ -126,7 +126,7 @@ Every claim about disk or process state rests on a result you saw in this chat. 
   {"steps":[{"name":"a","cmd":"...","cwd":"...","timeout_s":120,"on_fail":"stop","expect":"regex","capture":{"v":"re(.+)"},"show":3}]}
   on_fail is stop, continue or retry:N; {v} and {param} placeholders fill from captures and params; every step is screened first.
 The report is one message: per step PASS/FAIL/SKIP with seconds and tail lines, then "TASK RESULT: PASS|FAIL at step N".
-Use task mode for anything slow or multi-step (the ship, backtest chunks); plain blocks for reads and edits. One chain per task, no status polls.
+Use task mode for anything slow or multi-step (the ship, backtest chunks); plain blocks for reads and edits.
 A step passes on its own exit code. End every step `cmd` on the program call, or with `; exit $LASTEXITCODE`. Never add
 `Write-Output "EXIT_CODE=$LASTEXITCODE"` as the last line: it hides the real exit (from 0.7.4 a line
 `EXIT_CODE=<non-zero>` also fails the step). Never run the gate yourself: the ship runs it (FIRST, D). The ship's result is
@@ -345,7 +345,7 @@ A. Build a card (HAIKU/SONNET, live_path false). Expected numbers in tests come 
    file:line) or OURS (chosen on DEV, checked once on VALIDATION, every variant in the trial ledger); never present an OURS
    number as a trader's. A new backtest = a row in system/layer_map.json; a new layer = a family in layer_index.json, then
    `python scripts/dev/make_layers_md.py`. Adding a timeframe or layer family: `git grep` every TF/family map first.
-   Follow-up work you find: `tasks.py new "<title>" --layer <family> --source "DSA chat <host>"` (the seed's DSA FILED list reads it).
+   Follow-up work you find: `tasks.py new "<title>" --layer <family>`.
 B. Refine a raw card: MyTradingSys/system/TASK_REFINEMENT.md (Definition of Ready); fill fields from the evidence the card
    names; `git grep` every path you write. A fact only the operator has: `tasks.py tried <id> --asks "<question>"`.
    Gate: `tasks.py check <id>` then `tasks.py lint`.

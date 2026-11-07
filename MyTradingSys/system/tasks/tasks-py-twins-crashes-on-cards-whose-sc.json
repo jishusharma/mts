@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-07T15:57:24Z",
   "commands": [],
   "created": "2026-11-06T16:50:11Z",
   "depends_on": [],
@@ -15,12 +14,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "tasks.as_list normalises list fields (str/scalar/None) in twin_pairs and scope_in readers;",
-      "ref": "838bbd404",
-      "utc": "2026-11-07T15:57:24Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "tasks: reuse sync route-tag parser and add tasks.py drop",
@@ -31,19 +24,13 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "dsa-seed-full-task-list-1107",
   "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Haiku (mechanical, one function).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T14:23:32Z",
   "refs": [],
-  "result": "tasks.as_list normalises list fields (str/scalar/None) in twin_pairs and scope_in readers; test fails on old code",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -54,13 +41,12 @@
   "scope_sha": "e67cad3d17f0",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Reproduce with us-session-prep-1106",
     "Normalise scope_in to a list in twin_pairs",
     "Add the test"
   ],
-  "taken": "2026-11-07T15:57:24Z",
   "tests": "scripts/dev/test_tasks.py: twin_pairs on two cards, one with scope_in as a str, raises nothing (fails now)",
   "title": "tasks.py twins crashes on cards whose scope_in is a string (us-prep-failclosed-fixes, us-session-prep-1106)",
   "weight": "ROUTINE",
