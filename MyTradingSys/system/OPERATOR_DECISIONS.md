@@ -1982,3 +1982,9 @@ Operator: the super sessions should run on the other logins; nothing visible run
 weekly used, Supervisor A re-arming its watcher) share the load? Lead C: 20 READY SONNET cards wait while login A sits at 14 %;
 broadcast b-e787e5 HIGH to jis-laptop: dispatch background Sonnet Agents 3 at a time; one bounded ack waiter (30 min).
 Answer: load goes to login A by broadcast + ack wait; login B (71 %, reset 11-08 17:00Z) keeps DSA x2 and the Gemini queue.
+
+## d-signal-reply-within-1-minute-1107 (2026-11-07 18:12Z, operator, chat)
+Operator: a 60-minute wait for a broadcast reply is too much; it should be 1 minute. Lead C: the sender waiter now polls every
+60 s (cap 30 min); the receiving session only sees a signal on its next prompt, so the fix is receiver-side: the host watcher
+(supervisor.py wait) must wake on a new ask/HIGH broadcast within 60 s. Added to card signal-broadcast-wait-and-prio-1107.
+Answer: target = ack within 1 minute whenever a session is awake on the target host; watchers wake on signals.
