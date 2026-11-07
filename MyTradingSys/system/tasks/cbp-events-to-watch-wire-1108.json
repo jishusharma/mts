@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/events_extract.md",
+    "python MyTradingSys/tools/live_aid/test_events_wire.py",
+    "python MyTradingSys/tools/live_aid/build_artifact.py"
+  ],
+  "created": "2026-11-07T19:57:56Z",
+  "depends_on": [],
+  "done_when": "tools/live_aid/test_events_wire.py: fixture JSON with 3 events (past, +30 min, +3 days) gives the right strip order and flash state, and a matching headline links to its event; fails on pre-change code; page rebuilt and shipped; Result names the build and the number of events extracted",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Analysts keep naming data and announcements to watch (CPI, FOMC, jobs, ETF deadlines, unlocks, hearings); CBP stores their stances but no dated event list, so the Live Aid cannot warn before one. Wire the named events from CBP into the Live Aid News tab.",
+  "id": "cbp-events-to-watch-wire-1108",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on the News panel being on trunk. CBP has no fire since 10-28 per an open card, so the extraction may need a manual run on F:/CryptoScrapper; if the YouTube fetch is blocked, backfill from the existing extractions.md only. Event times that analysts give loosely stay 'week of' and flash only at the day start.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T19:57:57Z",
+  "refs": [
+    "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "F:/CryptoScrapper/cbp_v2/extract_prompt.md and cbp_events_export.py (outside the repo: copy the exported json only)",
+    "MyTradingSys/research/cbp/events_to_watch.json (new)",
+    "MyTradingSys/tools/live_aid/events_strip.js, test_events_wire.py (new); build_artifact.py (wire only)"
+  ],
+  "scope_out": [
+    "analyst calls are Context, never signals: no gate, no order, no sizing|no cookies or raw transcripts into the repo|no scheduler (export runs when CBP runs)|no live tree touch"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
+  ],
+  "state": "ready",
+  "steps": [
+    "read extract_prompt.md, extractions.md tail and the CBP rules; write the events_to_watch block into the prompt and re-run extraction over 14 days; verify quotes",
+    "write cbp_events_export.py -> events_to_watch.json; write test_events_wire.py red, then events_strip.js; flash logic shares the News tab pulse",
+    "rebuild page, run tests --quick, ship"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_events_wire.py",
+  "title": "CBP extraction gains events_to_watch (reports, announcements analysts name); Live Aid shows an upcoming strip with countdown and flashes the News tab near each event",
+  "weight": "",
+  "worker": "session"
+}

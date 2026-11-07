@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/tools/live_aid/test_news_weight.py",
+    "python MyTradingSys/tools/live_aid/news_study.py",
+    "python MyTradingSys/tools/live_aid/build_artifact.py"
+  ],
+  "created": "2026-11-07T19:57:54Z",
+  "depends_on": [],
+  "done_when": [
+    "news_weight.js scores each headline 0-100 from 5 parts shown on hover: Tree importance (SOURCED), source tier (OURS table), class prior direction and size (OURS table), freshness half-life 15 min (OURS), confirmation by the BTC 1m move and volume since the headline time from the page's own feed",
+    "Two distinct sources of one class inside 10 min add a corroboration bonus (OURS); every number in the file is commented SOURCED or OURS",
+    "Each row shows weight and a LONG / SHORT / HOLD chip with its reason (HOLD when direction is ambiguous, the move already happened, or confirmation disagrees) and a 'prior' tag while the class table is OURS; no order, no sizing, no signal output",
+    "News tab pulses when weight >= 70 (OURS) or the bias of the top item flips, stops when he opens the tab; one-line banner shows title, weight and bias",
+    "tools/live_aid/test_news_weight.py: 6 fixtures (exchange hack, ETF approval, hot CPI, cool CPI, social rumour, stale item) give the expected bias and weight order; written first, fails on pre-change code",
+    "news_study.py prints per class the 15 m and 60 m BTC move after each sample item on public 1m klines (counts only, no edge claim); page rebuilt and shipped; Result names the build"
+  ],
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Headlines in the Live Aid News panel say how much to care: a WEIGHT (how real and how applicable to BTC/ETH now) and a bias LONG, SHORT or HOLD with the reason, and the News tab flashes when weight is high. Context for his decision, never a gate.",
+  "id": "news-weight-bias-flash-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-1106-46cfc9",
+      "ref": "d33c571f45be",
+      "utc": "2026-11-06T21:24:19Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d33c571f45be Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-110",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-06T21:24:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Weights are OURS priors until the event study and the live log score them; the chip shows 'prior' until then. Phase-first: ships now, a class prior that fails its count is dropped, not defended. Bias is a read for him to act on by hand (long, short or hold), never an order. Folds in the earlier pulse-tile idea. Public repo: no account data.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T19:58:13Z",
+  "refs": [
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/news_weight.js (new)",
+    "MyTradingSys/tools/live_aid/news_feed.js and build_artifact.py (wire only)",
+    "MyTradingSys/tools/live_aid/test_news_weight.py and news_study.py (new)",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md (one section)"
+  ],
+  "scope_out": [
+    "no trade gate, no order, no sizing, no signal feed: context only|no scheduler or background logger|no live tree touch|no headline archive in the repo beyond the existing 20-item sample|no edge claim from the study: counts only"
+  ],
+  "scope_sha": "d33c571f45be",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
+  ],
+  "state": "ready",
+  "steps": [
+    "wait for the News panel (news_feed.js) on trunk; read REQUIREMENTS.md and STEPS.md; write test_news_weight.py with the 6 fixtures and run it red",
+    "write news_weight.js: five parts, class table (hack/drain -> SHORT, ETF approval/inflow -> LONG, SEC suit/ban -> SHORT, hot CPI -> SHORT, cool CPI -> LONG, rate cut -> LONG, war/sanction -> SHORT, delist -> SHORT that coin, else HOLD), every number labelled SOURCED or OURS in a comment",
+    "wire chip, hover breakdown and tab pulse into the panel; write news_study.py on public Binance 1m klines; rebuild the page; run tests --quick; ship"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_news_weight.py",
+  "title": "News weight 0-100 + LONG/SHORT/HOLD bias chip per headline, News tab flashes on high weight; he acts, nothing auto",
+  "weight": "",
+  "worker": "session"
+}
