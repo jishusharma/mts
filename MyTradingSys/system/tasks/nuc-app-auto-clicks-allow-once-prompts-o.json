@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "OPERATOR QUOTE 2026-10-28: \"on NUC device the app is making those allow once request and somehow clicking on it. Or bypassing it. So they are like slashing every time, which I do not see in other devices. So it has been working differently because the gateway was first set up there. In a different way perhaps.\" Needs: compare NUC app permission setup vs the other devices (settings, gateway); read-only first.\nWAITING 2026-10-28 (planner-2026-10-28-c2): needs NUC-side read-only comparison of app permission/gateway settings vs other devices; run via NUC ssh gate (nuc-ssh-gate) or a DSA-NUC desk task; waiting for a NUC session slot, no code change expected.",
+  "note": "OPERATOR QUOTE 2026-10-28: \"on NUC device the app is making those allow once request and somehow clicking on it. Or bypassing it. So they are like slashing every time, which I do not see in other devices. So it has been working differently because the gateway was first set up there. In a different way perhaps.\" Needs: compare NUC app permission setup vs the other devices (settings, gateway); read-only first.\nWAITING 2026-10-28 (planner-2026-10-28-c2): needs NUC-side read-only comparison of app permission/gateway settings vs other devices; run via NUC ssh gate (nuc-ssh-gate) or a DSA-NUC desk task; waiting for a NUC session slot, no code change expected. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

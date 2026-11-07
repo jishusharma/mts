@@ -36,7 +36,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08 (CI-red parity covers the red-trunk lever first; machinery freeze, D7 frozen list)",
+  "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08 (CI-red parity covers the red-trunk lever first; machinery freeze, D7 frozen list) REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

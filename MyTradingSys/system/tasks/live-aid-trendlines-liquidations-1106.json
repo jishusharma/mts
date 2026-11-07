@@ -44,7 +44,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Lead C filed 2026-11-06 14:17Z; tasks.py new crashed with TypeError after writing the raw file, fields filled by hand. 2026-11-07 pattern-book session: the TRENDLINE half is built (tf_strip.js trendline/fmtLine, live_aid.html column 'Trend lines', test_trendline_from_three_pivots, REQUIREMENTS R22 because R20 (close-colour gauge) and R21 (moving-average strip) were already taken; 2-touch fallback added to the card's 3-touch rule). The LIQUIDATION-CLUSTER half (ladder rungs, test_liq_ladder_from_day_extremes) is still open on this card. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them",
+  "note": "Lead C filed 2026-11-06 14:17Z; tasks.py new crashed with TypeError after writing the raw file, fields filled by hand. 2026-11-07 pattern-book session: the TRENDLINE half is built (tf_strip.js trendline/fmtLine, live_aid.html column 'Trend lines', test_trendline_from_three_pivots, REQUIREMENTS R22 because R20 (close-colour gauge) and R21 (moving-average strip) were already taken; 2-touch fallback added to the card's 3-touch rule). The LIQUIDATION-CLUSTER half (ladder rungs, test_liq_ladder_from_day_extremes) is still open on this card. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

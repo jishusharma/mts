@@ -28,7 +28,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): lane stays JIS-NB (CBP host data, desk task), not live_path. Operator quote: twice a day, Discord and YouTube, broadcast when CBP synced. Refined by planner-refine-1104. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: CBP ingestion hygiene; YouTube fetch is blocked anyway (see the events wire card)",
+  "note": "DECISION (OURS): lane stays JIS-NB (CBP host data, desk task), not live_path. Operator quote: twice a day, Discord and YouTube, broadcast when CBP synced. Refined by planner-refine-1104. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: CBP ingestion hygiene; YouTube fetch is blocked anyway (see the events wire card) REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

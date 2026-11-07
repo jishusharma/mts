@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "after ship-train-shadow-week go | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: ship-train machinery: frozen (D7 frozen list, week-plan move 5); the CI-red parity card is the ship-gate lever on the path",
+  "note": "after ship-train-shadow-week go | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: ship-train machinery: frozen (D7 frozen list, week-plan move 5); the CI-red parity card is the ship-gate lever on the path REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

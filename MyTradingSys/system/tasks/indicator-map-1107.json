@@ -18,7 +18,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Login B after its 11-08 17:00Z reset, or login A if free; not login C (75 %% cap). Needs the four tvfav-usage-* cards done first (depends_on). Operator wants the grouping to include price, volume, levels and time as layers even though LAYERS.md does not list them.",
+  "note": "Login B after its 11-08 17:00Z reset, or login A if free; not login C (75 %% cap). Needs the four tvfav-usage-* cards done first (depends_on). Operator wants the grouping to include price, volume, levels and time as layers even though LAYERS.md does not list them. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

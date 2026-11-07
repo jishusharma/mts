@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: gate for DEV studies; phase-first reduces DEV backtest runs (d-phase-first-method-1106); operator lever decision, not a build",
+  "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: gate for DEV studies; phase-first reduces DEV backtest runs (d-phase-first-method-1106); operator lever decision, not a build REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

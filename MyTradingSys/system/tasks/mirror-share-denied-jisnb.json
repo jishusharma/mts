@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-31 (planner-refine; DECISION (OURS): conservative default, card serves none of setup-review, storybook-v2, S3 funnel); unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-31 (planner-refine; DECISION (OURS): conservative default, card serves none of setup-review, storybook-v2, S3 funnel); unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 2,
   "refine_tries": 1,
