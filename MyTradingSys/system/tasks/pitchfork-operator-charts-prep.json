@@ -4,18 +4,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-07T14:34:22Z",
-    "misses": 40,
+    "folded": "2026-11-06T07:40:34Z",
+    "misses": 13,
     "reads": [
-      "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_copy.py",
-      "MyTradingSys/research/level_approach_eth_2026-11/study.py",
-      "MyTradingSys/research/pitchfork_2026-10-19/btc_4h_2020_2026.csv",
-      "scripts/dev/where_is.py",
-      "MyTradingSys/backtest/splits.py",
-      "MyTradingSys/research/pitchfork_2026-10-19/run_copy_fork_study.py",
-      "MyTradingSys/research/pitchfork_2026-10-19/RESULT_COPY_FORK.md"
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/lookahead_allowlist.tsv",
+      "MyTradingSys/research/pitchfork_2026-10-19/run_pitchfork_event_study.py",
+      "scripts/dev/lookahead_lint.py"
     ],
-    "session": "agent-a4f8d27f738261645"
+    "session": "agent-a51cc84a61a78d1fe"
   },
   "created": "2026-10-29T21:18:24Z",
   "depends_on": [],
