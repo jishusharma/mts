@@ -4,9 +4,10 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-07T18:02:16Z",
-    "misses": 1,
+    "folded": "2026-11-07T18:07:10Z",
+    "misses": 2,
     "reads": [
+      "scripts/dev/stop_guard.py",
       "MyTradingSys/system/RELAY.md"
     ],
     "session": "d18a1dd1-055b-40e6-82fc-c1d51f99330a"

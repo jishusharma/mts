@@ -167,7 +167,7 @@ Interpretation for the 1-minute goal (Job 1): 66 % of asks get a first ack withi
 | Tidy dry run | would remove 0, kept 11 (uncommitted 4, unshipped 3, active 2, branch 1, hand-named 1) | `python scripts/dev/sync.py tidy` |
 | Stray processes | none that are orphan gates (list below) | `Get-CimInstance Win32_Process` filtered to python, claude, node, git |
 
-Processes found (listed, none killed): Claude desktop app and helper processes (parent 4768, started 18:56 local), one `claude-code 2.1.317` session process (PID 5092), `scripts/dev/bg_watch.py until --file ...sigtest.o...` (PID 16284), `scripts/dev/supervisor.py wait --timeout 50m --login A` (PID 17500), and this session's own scratch scripts (mine). Zero `run_all_tests.py` processes, so zero orphan gates. Local times in the listing are IST (UTC+5:30).
+Processes found (listed, none killed): Claude desktop app and helper processes (parent 4768, started 18:56 local), one `claude-code 2.1.317` session process (PID 5092), `scripts/dev/bg_watch.py until --file ...sigtest.o...` (PID 16284), `scripts/dev/supervisor.py wait --timeout 50m --login A` (PID 17500), and this session's own scratch scripts (mine). Host-health preflight at ship time also flagged 2 stray Antigravity.exe renderer/GPU processes (PID 7452 cpu 7425 s, PID 13600 cpu 4192 s, age 4.0 h, parent gone; not killed, `taskkill` lines are in the ship output). Zero `run_all_tests.py` processes, so zero orphan gates. Local times in the listing are IST (UTC+5:30).
 
 ## 7. Top-5 time sinks and the raw cards
 

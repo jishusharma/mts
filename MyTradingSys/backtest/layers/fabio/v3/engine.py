@@ -87,8 +87,9 @@ def _manage(mdl, st, bars, o, i, cfg, ctx):
     f, mode = cfg["f"], cfg["entry_mode"]
     if mdl == "A":
         if mode != "rest":
-            return None      # unknown: scan_model_a IN_TRADE (confirm) returns price = entry, not the LVN touch level
-        r = model_a_trade(bars, st["armed_idx"], st["s"], st["O"], st["price"], f, DMAX, entry_mode="rest", **kw)
+            r = model_a_trade(bars, st["armed_idx"], st["s"], st["O"], st["touch_lvn"], f, DMAX, entry_mode="confirm", **kw)
+        else:
+            r = model_a_trade(bars, st["armed_idx"], st["s"], st["O"], st["price"], f, DMAX, entry_mode="rest", **kw)
     elif mdl == "C":
         r = model_c(bars, o, IB_LEN, cfg["m_c"], f, DMAX, entry_mode=mode, tier=ctx["tier"], gate_open=ctx["gate"] or True,
                     **kw)

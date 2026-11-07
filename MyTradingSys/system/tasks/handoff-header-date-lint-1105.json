@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T18:26:06Z",
   "commands": [
     "python -m pytest scripts/dev/test_check_handoff.py -q",
     "python scripts/dev/check_handoff.py"
@@ -17,6 +18,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already in tree: rule f + test_stale_header_date_fails landed 6e9fe9591; check_handoff.py ",
+      "ref": "1792a5d42",
+      "utc": "2026-11-07T18:26:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,13 +42,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already fixed",
   "note": "planner 11-05 ROUTINE, T0 checker only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-05T11:20:06Z",
   "refs": [],
-  "result": "",
+  "result": "already in tree: rule f + test_stale_header_date_fails landed 6e9fe9591; check_handoff.py prints FAIL f for NEXT_SESSION.md 2026-10-30 vs 2026-11-04; test_check_handoff 21 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/check_handoff.py",
     "scripts/dev/test_check_handoff.py",
@@ -53,12 +66,13 @@
   "scope_sha": "1d54cdeed71a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add the failing test using doc() with a line-1 date earlier than a body date",
     "Add rule f in check() using a YYYY-MM-DD regex on line 1 and the max date in the body (OURS: strict less-than)",
     "Fix the line-1 date in NEXT_SESSION.md so the checker passes"
   ],
+  "taken": "2026-11-07T18:26:06Z",
   "tests": "scripts/dev/test_check_handoff.py::test_stale_header_date_fails written first, fails on current check_handoff.py (no rule f), plus a passing same-date case",
   "title": "handoff_lint: flag NEXT_SESSION.md line-1 date older than its newest dated line (header said 2026-10-30, body 2026-11-04)",
   "weight": "ROUTINE",

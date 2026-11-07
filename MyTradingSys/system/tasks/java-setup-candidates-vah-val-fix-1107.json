@@ -1,0 +1,54 @@
+{
+  "approved_by": "Argon",
+  "asks": "none",
+  "commands": [
+    "mvn test -Dtest=SetupCandidatesBuilderTest"
+  ],
+  "created": "2026-11-07T16:38:59Z",
+  "depends_on": [
+    "tom-fabio-course-correction-1107"
+  ],
+  "done_when": "SetupCandidatesBuilder.java allows failed-breakout reclaim shorts at VAH and breakdown continuation shorts below VAL, and SetupCandidatesBuilderTest passes with explicit regression tests for both.",
+  "est_turns": 5,
+  "formula_id": "s29",
+  "formula_ids": ["s18", "s29"],
+  "from_inbox": "",
+  "goal": "Fix the structural asymmetry in SetupCandidatesBuilder.java (lines 320, 477-480) uncovered during the Tom/Fabio audit, where above_vah blocks ct_short in 14/18 slope combinations and below_val omits short altogether.",
+  "id": "java-setup-candidates-vah-val-fix-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Reverting SetupCandidatesBuilder.java:320 or 477 fails the new VAH failed-breakout short and VAL breakdown short unit tests in SetupCandidatesBuilderTest",
+  "note": "Companion follow-up card from Flash Stage B and Claude Stage D reviews of tom-fabio-course-correction-1107.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "Argon",
+  "refs": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/SetupCandidatesBuilderTest.java",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/SetupCandidatesBuilderTest.java"
+  ],
+  "scope_out": [
+    "MyTradingSys/backtest/"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+    "MyTradingSys/system/FORMULAS.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Update determineDirections() in SetupCandidatesBuilder.java:320 so below_val includes both 'long' (failed breakdown reclaim) and 'short' (VA acceptance breakdown continuation), symmetric with above_vah",
+    "Update classifySetupType() in SetupCandidatesBuilder.java:476-482 so VAH and VAL handle failed-breakout fades (ct_short / ct_long) and acceptance continuations symmetrically without deadlocking when state is trend_healthy",
+    "Add unit tests in SetupCandidatesBuilderTest.java verifying VAH failed-breakout short and VAL breakdown short candidate generation"
+  ],
+  "tests": "mvn test -Dtest=SetupCandidatesBuilderTest",
+  "title": "Fix SetupCandidatesBuilder.java VAH/VAL structural asymmetry (lines 320, 477-480) blocking VAH failed-breakout shorts and VAL breakdown shorts",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
