@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T12:56:51Z",
   "commands": [],
   "created": "2026-11-07T12:37:51Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "adx-di-2d-cross-census-1107",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "126 2d crosses; DEV whipsaw3 32.1%; lowest bucket red ADX20-40 falling 17.6% n=17; CENSUS.",
+      "ref": "8f8db18af",
+      "utc": "2026-11-07T12:56:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: operator reads CENSUS.md",
   "note": "REVIEWED:2026-11-07 T0-ONLY\noperator 2026-11-07 'API credit now' (d-cbp-adx-m1-m4-api-credit-1107). Wilder 14 on every timeframe is OURS (Steve names no number). Splits: SPEC.md.",
   "prio": 2,
   "refine_tries": 0,
@@ -39,7 +47,12 @@
   "refs": [
     "MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md"
   ],
-  "result": "",
+  "result": "126 2d crosses; DEV whipsaw3 32.1%; lowest bucket red ADX20-40 falling 17.6% n=17; CENSUS.md; 1d-vs-2d only (no 1h/4h data); DECISIONS OURS: n=14, fwd 30, slope5, splits per SPEC",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md (new section only), MyTradingSys/backtest/layers/adx/, MyTradingSys/research/adx_di_2026-11/"
   ],
@@ -51,7 +64,7 @@
   "sources": [
     "MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md section 1 (CCU quotes, all thresholds OURS)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "1 FORMULAS.md section + adx.py + test (fails first, then passes)",
     "2 data: daily from research/btc_cycles_2026-11/btc_daily.csv (date,high,low,close); 2d via timeframe/tf_resample bucket '2d'; 1h/4h from the F:/MTS klines if present on the machine, else M4 runs 1d-vs-2d only and says so",
@@ -59,6 +72,7 @@
     "4 census.py writes CENSUS.md tables (a)-(c) with n per cell; swing low = lowest low in the 30 bars after the cross (2d), depth = low/close-at-cross - 1; whipsaw = opposite cross within k bars",
     "5 ship: Result: <n crosses, whipsaw rate, best bucket>, Next: END: operator reads CENSUS.md; api_job ledger row"
   ],
+  "taken": "2026-11-07T12:56:51Z",
   "tests": "test_adx.py: a 20-bar toy series with DI+/DI-/ADX computed by hand in the test (formula from FORMULAS.md, not from code); tf_resample 2d bucket test reused; census script has a unit test on a synthetic cross",
   "title": "ADX/DI 2d cross census M1-M4: engine, every 2d DI cross, ADX state at the cross, timeframe cascade",
   "weight": "ROUTINE",
