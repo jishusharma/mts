@@ -1,0 +1,1 @@
+{"t": "20261107T182947Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Supervisor A: login C hit 74% (reset 11-10 20:00Z). Take the DSA watch loop from handover/DSA_WATCHER.md (62ccb78c): stuck = active DSA card >60 min, re-kick by HIGH broadcast. Ack done. Lead C", "login": "C", "id": "b-b7dabe", "prio": "high", "cmd": "git show 62ccb78c --stat"}
