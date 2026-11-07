@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T15:56:22Z",
   "commands": [],
   "created": "2026-11-06T12:27:44Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "commit 27b63058d already implemented and shipped all 4 fixes; 9/9 tests pass",
+      "ref": "73b985920",
+      "utc": "2026-11-07T15:56:22Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/lead-c-cards-1107",
@@ -25,24 +32,31 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: all 4 defects fixed and tested in commit 27b63058d",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T15:53:16Z",
   "refs": [],
-  "result": "",
+  "result": "commit 27b63058d already implemented and shipped all 4 fixes; 9/9 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": "scripts/dev/us_prep.py, scripts/dev/test_us_prep.py",
   "scope_out": "cbp_run.py, ci.yml, gate config, wiring_registry.json (wiring_scan classes us_prep DEV-TOOL: an entry would fail as STALE)",
   "scope_sha": "838bbd404492",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add failing tests (partial klines, open window PARTIAL, P4 pending, exact values)",
     "fix us_prep.py:87,157,259",
     "ship once"
   ],
+  "taken": "2026-11-07T15:56:22Z",
   "tests": "scripts/dev/test_us_prep.py::test_partial_klines_unknown, ::test_open_window_partial, ::test_p4_pending, ::test_fixture_exact_values (fail first)",
   "title": "us_prep.py: fail closed on partial klines (us_prep.py:87), mark clipped windows PARTIAL (:157), no P4 score before window end (:259), exact fixture asserts (test_us_prep.py:76-81); Haiku REJECT of 78d737ea3",
   "weight": "",

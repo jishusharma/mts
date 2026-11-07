@@ -1023,6 +1023,11 @@
    "why": "Squeeze Momentum (LazyBear) context engine (SPEC_ENGINES.md A); imported by research/tv_favorites_2026-11/squeeze_state.py through sys.path, which the scanner cannot follow, and by test_squeeze.py",
    "ref": "squeeze-momentum-engine-1107"
   },
+  "MyTradingSys/backtest/layers/vfi/vfi.py": {
+   "disp": "WIRE",
+   "why": "Volume Flow Indicator (LazyBear/Katsanos) context engine (SPEC_ENGINES.md B); imported by research/tv_favorites_2026-11/vfi_state.py through sys.path, which the scanner cannot follow, and by test_vfi.py",
+   "ref": "vfi-engine-1107"
+  },
   "MyTradingSys/backtest/layers/adx/adx.py": {
    "disp": "WIRE",
    "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py",
