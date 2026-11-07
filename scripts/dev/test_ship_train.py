@@ -117,7 +117,8 @@ class StatusAndShip(unittest.TestCase):
         self.keep = {k: os.environ.get(k) for k in ("MTS_SIGNALS_HOME", "MTS_SIGNALS_ORIGIN", "GIT_CEILING_DIRECTORIES")}
         os.environ["GIT_CEILING_DIRECTORIES"] = os.path.realpath(str(self.tmp.parent)).replace(os.sep, "/")
         self.origin = self.tmp / "origin.git"
-        _git(self.tmp, "init", "-q", "--bare", "-b", sync.TRUNK, str(self.origin))
+        _git(self.tmp, "init", "-q", "--bare", str(self.origin))
+        _git(self.origin, "symbolic-ref", "HEAD", "refs/heads/" + sync.TRUNK)   # git 2.24 has no init -b (JIS-NUC)
         os.environ["MTS_SIGNALS_ORIGIN"] = str(self.origin)
         os.environ["MTS_SIGNALS_HOME"] = str(self.tmp / "hub")
         self.work = self.tmp / "work"
