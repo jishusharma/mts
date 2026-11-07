@@ -4,34 +4,39 @@
   "commands": [],
   "created": "2026-11-06T17:33:50Z",
   "depends_on": [],
-  "done_when": "test_artifact.py node calls share one process or carry a timeout with margin; 3 CI runs green",
-  "est_turns": 8,
+  "done_when": "test_artifact.py runs green 5 times in a row under load; the 3 node subprocess calls (lines ~471, 514, 581) use one NODE_TIMEOUT >= 120",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Node subprocess timeouts turned trunk CI red twice on 11-06: sim_desk test_artifact (22b22e93) and live_aid test_spec_tf_strip (f99c3991); both reruns green. Give every node -e call in these spec tests one shared process or a timeout with margin, so a slow windows-latest runner cannot fail trunk.",
+  "goal": "sim_desk/artifact/test_artifact.py survives a slow node start: one shared timeout constant, and a skip with a clear message instead of a failure on TimeoutExpired.",
   "id": "sim-desk-test-artifact-node-timeout-flake",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Haiku; p1 because it turned trunk CI red (22b22e93).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
-    "MyTradingSys/tools/live_aid/test_spec_tf_strip.py"
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py"
   ],
-  "scope_out": [],
+  "scope_out": [
+    "no change to artifact content"
+  ],
   "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Introduce one NODE_TIMEOUT constant",
+    "Catch TimeoutExpired and skip with a reason",
+    "Add the patched-timeout test, run it 5 times"
+  ],
+  "tests": "same file: a test that patches subprocess.run to raise TimeoutExpired and expects a skip, not an error (fails now)",
   "title": "sim_desk test_artifact: node subprocess timeout turns trunk CI red (flake, 22b22e93, rerun green)",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": "agent"
 }

@@ -4,31 +4,40 @@
   "commands": [],
   "created": "2026-11-06T19:54:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_boot_audit.py has a test where the removal fails and the --fix output contains FAIL and the error text (fails now); run_all_tests --quick green",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "boot_audit.py --fix prints FAIL with the reason when a task removal fails (MTS-Wrapper, admin needed) instead of nothing to fix.",
   "id": "boot-audit-fix-reports-nothing-to-fix-wh",
-  "lane": "",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium. Host boot audit only, not the live runner.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/boot_audit.py",
+    "scripts/dev/test_boot_audit.py"
+  ],
+  "scope_out": [
+    "no task is removed by this card; no live-tree edit"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read plan_fix/apply_fix (lines ~167-190)",
+    "Return and print the error of a failed removal",
+    "Add the fail-first test"
+  ],
+  "tests": "scripts/dev/test_boot_audit.py: apply_fix with a failing delete returns FAIL + reason (fails on current code)",
   "title": "boot_audit --fix reports 'nothing to fix' while MTS-Wrapper still exists (removal needs admin, error swallowed); done when --fix prints FAIL with the reason for a task it could not remove",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

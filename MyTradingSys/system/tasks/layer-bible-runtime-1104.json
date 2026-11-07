@@ -5,7 +5,7 @@
   "commands": [],
   "created": "2026-11-04T13:39:50Z",
   "depends_on": [],
-  "done_when": "Phase 2: layer_state.py wavetrend prints zone, last valid cycle dot, cycle completed, 1m-4h stack from public klines; tests written red first pass incl. 11-04 (3m 03:12-11:39 completed cycle; 12:21 at -49 not a valid bottom dot); expected numbers from FORMULAS s20 independently; Haiku re-derivation matches.",
+  "done_when": "MyTradingSys/backtest/layers/layer_state.py loads the WaveTrend bible pilot and a test_layer_state.py passes; the Gemini spec review result of DESIGN.md is quoted in the card note (both gemini-spec-review/recheck cards done)",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
@@ -18,7 +18,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "class=C2 (a definition base). NOT stamped: DESIGN.md needs a non-Claude review before build. Do not add to red CI (health_audit.py). Testnet/public data only.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium (Opus only if the operator names it); class C2: waits for a real non-Claude review stamp on DESIGN.md before build.",
   "prio": 1,
   "refine_tries": 2,
   "refined_by": "",
@@ -37,6 +37,6 @@
   "steps": [],
   "tests": "",
   "title": "Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C2, then build, archive, roll out",
-  "weight": "",
+  "weight": "CRITICAL",
   "worker": ""
 }

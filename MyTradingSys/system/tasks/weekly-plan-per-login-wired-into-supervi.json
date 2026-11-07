@@ -20,31 +20,41 @@
   },
   "created": "2026-11-06T12:19:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_supervisor.py has a test that the boot summary holds a WEEKLY PLAN line for login A built from exhaust.py plan (fails now)",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Supervisor boot prints the weekly pace plan for its login (exhaust.py plan) so a missed weekly 16 pct (A, 11-06) is visible at boot.",
   "id": "weekly-plan-per-login-wired-into-supervi",
-  "lane": "",
+  "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/exhaust.py",
+    "scripts/dev/test_supervisor.py"
+  ],
+  "scope_out": [
+    "no spawn or budget logic change"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read how boot builds its summary",
+    "Call exhaust plan with the stored budget args; fail soft with no budget on file",
+    "Add the test"
+  ],
+  "tests": "scripts/dev/test_supervisor.py: boot summary contains the weekly plan line for login A (fails now)",
   "title": "weekly plan per login wired into supervisor boot: A missed 16pct weekly 11-06",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

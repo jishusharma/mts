@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-04T13:18:03Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "lane_health/status prints CODEX STALLED since <hours> when the last codex_run results are 401 (test in scripts/dev/test_lane_health.py fails on current code); NUC Codex re-login is a separate broadcast, not this card",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-04: code side decided in 0b1bf4e20 (401 = IDLE host-auth, no lane_state write); fix needs the NUC Codex re-login (machine step, broadcast) and a stall line in status; scope not fixed, held at try 1/2.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium. DECISION (OURS): ship the stall line only; the re-login goes out by mts_signal broadcast, GPT cards wait meanwhile (0b1bf4e20 keeps 401 = IDLE).",
   "prio": 1,
   "refine_tries": 3,
   "refined_by": "",
@@ -29,6 +29,6 @@
   "steps": [],
   "tests": "",
   "title": "Lab_Guy defect: Codex returns 401 on the lab host (JIS-NUC); 27 CODEX cards stalled 115.7 h, status says lane up",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": ""
 }
