@@ -68,7 +68,7 @@
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "wait for the News panel (news_feed.js) on trunk; read REQUIREMENTS.md and STEPS.md; write test_news_weight.py with the 6 fixtures and run it red",
     "write news_weight.js: five parts, class table (hack/drain -> SHORT, ETF approval/inflow -> LONG, SEC suit/ban -> SHORT, hot CPI -> SHORT, cool CPI -> LONG, rate cut -> LONG, war/sanction -> SHORT, delist -> SHORT that coin, else HOLD), every number labelled SOURCED or OURS in a comment",

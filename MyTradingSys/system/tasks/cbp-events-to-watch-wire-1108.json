@@ -45,7 +45,7 @@
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "read extract_prompt.md, extractions.md tail and the CBP rules; write the events_to_watch block into the prompt and re-run extraction over 14 days; verify quotes",
     "write cbp_events_export.py -> events_to_watch.json; write test_events_wire.py red, then events_strip.js; flash logic shares the News tab pulse",
