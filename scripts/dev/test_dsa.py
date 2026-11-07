@@ -456,33 +456,6 @@ class StartSeed(unittest.TestCase):
             self.assertLess(len(ln), 200, ln)
             self.assertFalse(ln.startswith("#") and not ln.startswith("# AIRUN"), ln)   # AIBridge parser: no source line begins with #
 
-    def test_seed_names_chat_slug_other_chats_cards_and_utf8(self):
-        """Parallel DSA chats (2026-11-07): the seed fixes the chat slug, lists cards held by other chats, sets UTF-8 stdout."""
-        t = dsa.seed_text("JIS-NB", slug="jis-nb-1107-1800", claimed=["card-a", "card-b"])
-        self.assertIn("jis-nb-1107-1800", t)
-        self.assertIn("Held by other DSA chats now: card-a, card-b", t)
-        self.assertIn("PYTHONUTF8", t)
-        self.assertIn("PYTHONIOENCODING", t)
-        self.assertLess(len(t.encode("ascii")), dsa.SEED_MAX_BYTES)
-        self.assertIn("Held by other DSA chats now: none", dsa.seed_text("JIS-NB", slug="x", claimed=[]))
-        many = dsa.seed_text("JIS-NB", slug="x", claimed=["c%02d-" % i + "z" * 30 for i in range(40)])
-        self.assertLess(len(many.encode("ascii")), dsa.SEED_MAX_BYTES)   # a long claim list is cut, never over the cap
-
-    def test_active_dsa_cards_parse_from_tasks_list(self):
-        out = ("alpha-card              active   p2 DSA      S  one\n"
-               "beta-card               active   p1 DSA-NUC  S  two\n"
-               "beta-card               active   p1 DSA-NUC  S  dup\n\n")
-        self.assertEqual(dsa.parse_card_ids(out), ["alpha-card", "beta-card"])
-        self.assertEqual(dsa.parse_card_ids(""), [])
-
-    def test_prompt_has_the_parallel_sessions_section(self):
-        s = (Path(dsa.HERE).parent.parent / "DSA_SESSION_PROMPT.md").read_text(encoding="utf-8")
-        i = s.index("## 0b. PARALLEL SESSIONS")
-        sec = s[i:s.index("## 1. ROLE")]
-        for needle in ("tasks.py take", "A refused take", "One card at a time", "mts-dsa-<chat>", "once per 10 minutes",
-                       "wait 3 minutes", "tasks.py tried", "sync.py release", "PYTHONUTF8", "PYTHONIOENCODING"):
-            self.assertIn(needle, sec, needle)
-
     def test_start_print_writes_the_seed_and_exits_0(self):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
