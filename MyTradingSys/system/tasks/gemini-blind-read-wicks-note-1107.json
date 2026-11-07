@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:39:43Z",
   "commands": [],
   "created": "2026-11-07T14:19:39Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-wicks-note.md",
+      "ref": "d33163a0a",
+      "utc": "2026-11-07T14:39:43Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "wicks: 5-week census, repo survey, note with context gate and plan W1-W6; TradingView cros",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed with VERDICT: MISMATCH",
   "note": "REVIEWED:2026-11-07 T0-ONLY (D11 feeder s6, planner-a-20261107; twin check run, none). Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T14:20:15Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-wicks-note.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-wicks-note.md (new)",
     "MyTradingSys/research/wicks_2026-11 (read)"
@@ -44,12 +57,13 @@
   "sources": [
     "MyTradingSys/research/wicks_2026-11/WICKS_NOTE_2026-11-07.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the data/scripts in MyTradingSys/research/wicks_2026-11 before WICKS_NOTE_2026-11-07.md",
     "Recompute each table number",
     "Write the per-cell diff table and VERDICT"
   ],
+  "taken": "2026-11-07T14:39:43Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-wicks-note.md'); assert 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of wicks WICKS_NOTE vs wick_census.py outputs",
   "weight": "ROUTINE",

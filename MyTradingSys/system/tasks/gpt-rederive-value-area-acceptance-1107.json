@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-07T14:41:17Z",
   "commands": [],
   "created": "2026-11-07T14:18:40Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-07_value-area-acceptance.md",
+      "ref": "b76b04d06",
+      "utc": "2026-11-07T14:41:17Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +40,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit card done",
   "note": "REVIEWED:2026-11-07 T0-ONLY (D11 feeder s6, planner-a-20261107; twin check run, none). Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T14:18:43Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-07_value-area-acceptance.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md (read)",
     "MyTradingSys/research/value_area_acceptance_2026-11-05/ (read)",
@@ -54,12 +68,13 @@
   "sources": [
     "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List every number in RESULT.md",
     "Recompute each from the data in the folder with FORMULAS.md",
     "Write the table and the three counts on line 1"
   ],
+  "taken": "2026-11-07T14:38:53Z",
   "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "GPT re-derive: value_area_acceptance_2026-11-05 RESULT.md numbers",
   "weight": "ROUTINE",
