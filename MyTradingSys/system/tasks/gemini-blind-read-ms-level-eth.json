@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-06T13:06:59Z",
+  "closed": "2026-11-07T14:40:16Z",
   "commands": [
     "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_LEVEL_ETH.md'); assert p.exists() and len(p.read_text())>400\""
   ],
@@ -19,6 +19,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-ms-level-eth.md",
+      "ref": "9f820df1e",
+      "utc": "2026-11-07T14:40:16Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -46,7 +52,7 @@
   "refs": [
     "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md"
   ],
-  "result": "VERDICT: CLEAN / NUMBERS MATCH — MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_MS_LEVEL_ETH.md",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-ms-level-eth.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -63,7 +69,7 @@
   "sources": [
     "MyTradingSys/research/level_approach_eth_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the CSVs in MyTradingSys/research/level_approach_eth_2026-11 before RESULT.md",
     "Recompute per-symbol and pooled n, days, mean, fee-net, CI",
