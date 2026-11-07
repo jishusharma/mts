@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T18:00:03Z",
+    "misses": 22,
+    "reads": [
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "scripts/dev/make_home.py",
+      "scripts/dev/test_artifacts.py",
+      "scripts/dev/gemini_queue.py"
+    ],
+    "session": "agent-abd4e00b1eae9e0f9"
+  },
   "created": "2026-11-06T15:20:00Z",
   "depends_on": [],
   "done_when": "hub html under 27,000 bytes with the true open questions only; a test that fails on the 2026-11-06 decisions file",
