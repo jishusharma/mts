@@ -1,0 +1,1 @@
+{"t": "20261107T203950Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "DSA watch (A): DSA-NUC has 4 pending desk rows, oldest 3.3 h, STALLED. NUC: open a DSA chat (Start DSA bridge in chat.deepseek.com) and take fabervaale-cvd-sweep p1, or reply with the blocker", "login": "A", "id": "b-ea3809", "prio": "high", "cmd": "python scripts/dev/dsa_watch.py"}
