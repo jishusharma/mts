@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-07T14:33:18Z",
   "depends_on": [],
-  "done_when": "agent.ps1 gets GET /seed (same token check as /run) that returns the output of 'python scripts/dev/dsa.py start --print' from the repo root the agent already knows; content.js/loop.js intercept the trigger phrase on send, call /seed through the existing agent-call path, replace the composer text with the seed and submit; VERSION 0.7.30 in manifest.json + RELEASES.json current + a RELEASES note; tests/ get a unit test for the trigger match and for the /seed route (fails pre-change); aibridge_install.py --restart-agent run on this machine, aibridge_health.py UP 0.7.30; broadcast --cmd for NUC/laptop; AIBRIDGE_LANE.md one paragraph 'Start DSA bridge'",
+  "done_when": "Per MyTradingSys/system/SPEC_START_DSA_TRIGGER.md: agent GET /seed (token-checked, runs dsa.py start --print); extension swaps the typed phrase for the seed and sends; 0.7.30 in manifest + RELEASES; matcher and /seed tests fail pre-change; installed here, health UP 0.7.30; broadcast --cmd for other hosts; AIBRIDGE_LANE paragraph; Result/Next on the ship",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -13,6 +13,15 @@
   "id": "aibridge-start-dsa-trigger-1107",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.27+0.7.28: a block runs only when its reply is complete (DeepSeek action bar)",
+      "ref": "33ec4afc27e0",
+      "utc": "2026-11-06T21:03:24Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
@@ -22,7 +31,10 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refreshed": "2026-11-07T14:34:27Z",
+  "refs": [
+    "MyTradingSys/system/SPEC_START_DSA_TRIGGER.md"
+  ],
   "result": "",
   "scope_in": [
     "scripts/aibridge/extension/content.js, loop.js, manifest.json; scripts/aibridge/src/agent.ps1; scripts/aibridge/RELEASES.json; scripts/aibridge/tests/; MyTradingSys/system/AIBRIDGE_LANE.md; scripts/dev/aibridge_install.py only if the install needs it"
@@ -30,16 +42,17 @@
   "scope_out": [
     "F:/AIBridge/extension/background.js and F:/AIBridge/src/config.json are NEVER opened, printed or diffed (bridge token); the repo's background.js is edited only if the agent-call path lives there, and the token stays a placeholder; no DeepSeek chat is written to beyond the seed; no live tree"
   ],
+  "scope_sha": "33ec4afc27e0",
   "size": "M",
   "sources": [
     "operator order q-9d225e 2026-11-07; d-dsa-seed-then-wait-1107"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "read AIBRIDGE_LANE.md, V07_CONTRACT, RELEASES.json, content.js, loop.js, agent.ps1 (routes), dsa.py start --print|write the tests first (fail)|agent /seed route|extension trigger + seed send|version bump + release note|install --restart-agent on JIS-NB, health UP 0.7.30|broadcast --cmd to other hosts; ship"
   ],
   "tests": "scripts/aibridge/tests: trigger-phrase matcher (exact phrase, case, dot, NOT a longer sentence) and /seed handler (token required, returns seed text); both fail on the pre-change tree",
   "title": "AIBridge: typing 'Start DSA bridge' as the first line of a new DeepSeek chat boots DSA (extension fetches the seed from the agent and sends it; no terminal, no clipboard); operator order q-9d225e",
   "weight": "ROUTINE",
-  "worker": "agent"
+  "worker": "session"
 }
