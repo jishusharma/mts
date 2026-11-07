@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "indicator-map-1107",
   "commands": [],
   "created": "2026-11-07T15:37:20Z",
   "depends_on": [],
@@ -43,6 +44,7 @@
   "steps": [
     "read SPEC step 2 + the 4 USAGE files + LAYERS.md + analyst notes|dimension table|role table with the gate column each feeds|connected sets per setup family|gaps|ledger/wiring rows per claim|test fails pre-change|ship Result: <rows, gaps> Next: END: operator reads the map"
   ],
+  "taken": "2026-11-07T17:20:59Z",
   "tests": "MyTradingSys/tests/test_indicator_map.py: fails on the pre-change tree (file missing), then asserts every engine under backtest/layers/ has a row and every row's engine path exists",
   "title": "INDICATOR_MAP.md: what each indicator and analyst measures, its role (context/setup/confirmation), connected sets per setup family, gaps, ledger rows + test",
   "weight": "",

@@ -1,0 +1,11 @@
+{
+  "card": "dsa-tests-quick-trunk-1107",
+  "done_when": "MyTradingSys/research/dsa_runs/TESTS_QUICK_2026-11-07.md on trunk: exit code, pass/fail counts, each failing test name with its first assertion line, trunk sha; Result: <exit, n fail> Next: END: coordinator reads it",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261107-182657-dsa-tests-quick-trunk-1107",
+  "need": "python scripts/dev/run_all_tests.py --quick > MyTradingSys/research/dsa_runs/tests_quick_2026-11-07.log 2>&1; echo EXIT $?; python -c \"import io;t=io.open('MyTradingSys/research/dsa_runs/tests_quick_2026-11-07.log',encoding='utf-8',errors='replace').read();print(t[-3000:])\" (full brief: python scripts/dev/tasks.py brief dsa-tests-quick-trunk-1107)",
+  "posted": "2026-11-07T18:26:58Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "DSA runs run_all_tests.py --quick on trunk and reports counts and failing tests (CI red cause check)"
+}
