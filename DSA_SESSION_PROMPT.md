@@ -220,7 +220,7 @@ fails the gate when either process or this section is damaged.
 
 ## 0b. PARALLEL SESSIONS (operator 2026-11-07: several DSA chats at once, none stuck)
 
-You are one of several DSA chats on this host and on the other host. The seed names your chat slug and the cards other chats hold now.
+You are one of several DSA chats on this host and on the other host. The seed (`python scripts/dev/dsa_seed.py`) names your chat slug and the cards other chats hold now.
 1. Take work only through `tasks.py next --lane <DSA, then DSA-NB or DSA-NUC for this host>`, then `tasks.py take <id> --claim <slug>`. A refused take means another chat has it: take the next card, never the same one again.
 2. One card at a time: finish and ship it before the next take. Never hold two cards.
 3. Your worktree is `mts-dsa-<chat>` only. Never write in another chat's tree or in the main checkout (the live tree).
