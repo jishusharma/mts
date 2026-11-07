@@ -354,5 +354,58 @@ class Stale(unittest.TestCase):
         self.assertEqual(n, len(lines))
 
 
+class PagesFollowBuilds(unittest.TestCase):
+    """pages-follow-builds-1107: Updated stamp first, publishers list, REPUBLISH lines."""
+
+    def test_put_stamp_goes_first_after_body_and_is_idempotent(self):
+        from datetime import datetime, timezone
+        page = "<!doctype html><html><body class=x><main>hi</main></body></html>"
+        once = af.put_stamp(page, datetime(2026, 11, 7, 15, 4, tzinfo=timezone.utc))
+        self.assertIn("Updated 2026-11-07 15:04 UTC", once)
+        self.assertTrue(once.index("Updated") < once.index("<main>"))
+        twice = af.put_stamp(once, datetime(2026, 11, 7, 16, 0, tzinfo=timezone.utc))
+        self.assertEqual(twice.count("Updated"), 1)
+        self.assertIn("16:00 UTC", twice)
+
+    def test_stamp_alone_never_makes_a_page_stale(self):
+        page = "<html><body><main>x</main></body></html>"
+        self.assertEqual(af.content_hash(af.put_stamp(page)), af.content_hash(af.put_stamp(page, None)))
+        self.assertNotEqual(af.content_hash(page), af.content_hash(page.replace("x", "y")))
+        self.assertEqual(af.content_hash(af.put_stamp(page)), af.content_hash(page))
+
+    def test_generated_pages_carry_the_stamp_first(self):
+        import make_home
+        import make_layers_board
+        for mod in (make_home, make_layers_board):
+            with self.subTest(mod.__name__):
+                import tempfile
+                with tempfile.TemporaryDirectory() as d:
+                    out = Path(d) / "p.html"
+                    mod.main(["--out", str(out)])
+                    t = out.read_text(encoding="utf-8")
+                    self.assertIn("Updated 20", t)
+                    self.assertLess(t.index("mts-updated"), min(i for i in (t.find("<main"), t.find('<div class="wrap"')) if i >= 0))
+
+    def test_publishers_in_registry_and_login_mapping(self):
+        reg = af.load()
+        self.assertIn("jishusharma1985", af.publishers(reg))
+        self.assertTrue(af.is_publisher(reg, "C"))
+        self.assertFalse(af.is_publisher(reg, "A"))
+        self.assertFalse(af.is_publisher(reg, ""))
+        bad = copy.deepcopy(reg)
+        bad["publishers"] = ["nobody"]
+        self.assertIn("not an account", chr(10).join(af.problems(bad)))
+
+    def test_republish_lines_format(self):
+        reg = af.load()
+        pages = af.tracked(reg)
+        lines = af.republish_lines(reg, lambda pg: "<html>" + pg["slug"] + "</html>")
+        self.assertEqual(len(lines), len(pages))
+        for ln in lines:
+            kind, slug, src, url = ln.split()
+            self.assertEqual(kind, "REPUBLISH")
+            self.assertTrue(url.startswith(af.URL_PREFIX))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1435,6 +1435,17 @@ def _who_rows() -> list:
         return []
 
 
+def republish_notes(login: str) -> list:
+    """`REPUBLISH <slug> <html> <url>` for each page whose repo build differs from its last publish, on a publisher login only
+    (operator 2026-11-07: pages follow builds; SUPER_SESSION.md Every wake step 3b). Fails soft into one NOTE line."""
+    try:
+        import artifacts
+        reg = artifacts.load()
+        return artifacts.republish_lines(reg) if artifacts.is_publisher(reg, login) else []
+    except Exception as e:
+        return [f"NOTE REPUBLISH check failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/artifacts.py stale` by hand"]
+
+
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
          home=None, now: datetime | None = None, shas: list | None = None, who_rows=None,
          context_tokens: int | None = None, wave_start: datetime | None = None, work_hours: float | None = None,
@@ -1570,6 +1581,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         notes += bg_watch.report_lines(repo, root=(Path(home) / "projects") if home else None, now=now.timestamp())
     except Exception as e:
         notes.append(f"NOTE bg_watch failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/bg_watch.py report` by hand")
+    notes += republish_notes(login)
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
