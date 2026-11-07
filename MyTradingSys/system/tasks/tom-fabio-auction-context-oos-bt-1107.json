@@ -1,0 +1,53 @@
+{
+  "approved_by": "Argon",
+  "asks": "none",
+  "commands": [
+    "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py -q"
+  ],
+  "created": "2026-11-07T16:38:57Z",
+  "depends_on": [
+    "tom-fabio-course-correction-1107"
+  ],
+  "done_when": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/OOS_BACKTEST_RESULT.md and run_oos_backtest.py exist, reporting N, win rate, gross R, fee R, net R, effective R, and bootstrap CI vs random-entry null across multi-month BTC 5m/15m data.",
+  "est_turns": 6,
+  "formula_id": "s28",
+  "formula_ids": ["s18", "s28", "s29"],
+  "from_inbox": "",
+  "goal": "Run a pre-registered multi-month out-of-sample (OOS) backtest of the plain auction-theory evaluator (auction_context.py) on historical BTC 5m/15m bars with anchored prior-day/week Volume Profiles and 1M/1w/1d context, comparing against a random-entry null.",
+  "id": "tom-fabio-auction-context-oos-bt-1107",
+  "kind": "run",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "Removing the fee_r <= 0.25 gate increases mean fee_r above 0.50 R in the test harness",
+  "note": "Companion follow-up card from Claude Stage D review of tom-fabio-course-correction-1107.",
+  "prio": 2,
+  "refine_tries": 1,
+  "refined_by": "Argon",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/"
+  ],
+  "scope_out": [
+    "src/main/java/"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+    "MyTradingSys/system/FORMULAS.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Write run_oos_backtest.py in MyTradingSys/research/tom_fabio_course_correction_2026-11-07/ feeding historical BTC 1M/1w/1d and 5m/15m bars into build_mtf_context, classify_level_interaction, and build_auction_trade_plan",
+    "Evaluate all three setups (failed_auction_reclaim, va_acceptance_continuation, lvn_fast_traverse) with 10 bps round-trip taker fees and compare against 1,000 random-entry null permutations",
+    "Write OOS_BACKTEST_RESULT.md with full sample size N, win rate, gross R, fee R, net R, effective R, and 95% bootstrap CIs"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py -q",
+  "title": "Run pre-registered multi-month OOS backtest of auction_context.py on BTC 5m/15m data vs random-entry null",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

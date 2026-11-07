@@ -1,0 +1,11 @@
+{
+  "card": "dsa-refine-raw-cards-1107",
+  "done_when": "3 raw cards per DSA session carry goal, scope_in, scope_out, steps, done_when (run lane: commands) filled from their refs, state refined (never ready); a Claude card gets tests named, not written; shipped with Result: <ids> Next: dsa-refine-raw-cards-1107 while raw cards remain, else END: no raw cards",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261107-182657-dsa-refine-raw-cards-1107",
+  "need": "python scripts/dev/tasks.py list --state raw; python scripts/dev/tasks.py check <id>; python scripts/dev/tasks.py fill <id> --size S --goal '<one sentence>' --scope-in '<path>' --scope-out '<never>' --step '<step>' --done-when '<measurable>' (full brief: python scripts/dev/tasks.py brief dsa-refine-raw-cards-1107)",
+  "posted": "2026-11-07T18:26:57Z",
+  "status": "pending",
+  "target": "DSA",
+  "title": "DSA refines 3 raw cards per session: goal, scope, steps, done_when, copy-ready commands; never marks ready, never writes code"
+}

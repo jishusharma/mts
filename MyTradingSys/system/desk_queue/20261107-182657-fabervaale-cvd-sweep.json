@@ -1,0 +1,11 @@
+{
+  "card": "fabervaale-cvd-sweep",
+  "done_when": "MyTradingSys/research/fabio_cvd_2026-10-30/CHANNEL_SWEEP.md lists all uploads (id, title, date, read y/n) and new concept rows F-CVD13+ in the CVD_CONCEPTS.md table format; verify_extract_quotes.py exits 0; captions saved to raw_transcripts_canonical/<id>_raw.txt.",
+  "from": "DESKTOP-F7IU69N",
+  "id": "20261107-182657-fabervaale-cvd-sweep",
+  "need": "git -C <repo> pull --ff-only origin fast-track; python scripts/dev/gemini_queue.py run fabervaale-cvd-sweep:low (full brief: python scripts/dev/tasks.py brief fabervaale-cvd-sweep)",
+  "posted": "2026-11-07T18:26:57Z",
+  "status": "pending",
+  "target": "DSA-NUC",
+  "title": "Fabervaale ENG channel sweep: every CVD/delta/absorption passage from Fabio and guests (Cimi etc.), verbatim, BTC mentions flagged; extends fabio_cvd_2026-10-30/CVD_CONCEPTS.md"
+}

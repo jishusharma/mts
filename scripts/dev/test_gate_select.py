@@ -34,6 +34,12 @@ class Select(unittest.TestCase):
         self.assertEqual(steps, [])
 
     # gate_gap_2026-11-03: docs/data-only ships that ran no local step and went red on trunk, each a revert
+    def test_gap_prereg_md_selects_the_prereg_context_lint(self):
+        # two PRE_REGs without Phase/Session/Entry lines reached trunk 11-06 and turned CI red at step 3pc
+        self.assertEqual(self.sel("MyTradingSys/research/x/PRE_REG.md"), ("docs", ["3pc"]))
+        self.assertEqual(self.sel("MyTradingSys/research/x/RESULT_a.md"), ("docs", ["3pc"]))
+        self.assertEqual(self.sel("MyTradingSys/research/x/notes.md"), ("docs", []))
+
     def test_gap_card_only_ship_runs_the_task_card_lint(self):
         # 4a26cac5f dsabr-c1..c8 promoted to ready: CI red at Step 3tl, reverted twice (b0e6553af, 850f7187c)
         self.assertEqual(self.sel("MyTradingSys/system/tasks/x.json"), ("docs", ["3tl"]))
