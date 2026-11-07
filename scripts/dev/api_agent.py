@@ -26,7 +26,8 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 API = "https://api.anthropic.com/v1/messages"
-PRICE_PER_MTOK = {"claude-haiku-5-5": (1.0, 5.0), "claude-sonnet-5-5": (3.0, 15.0), "claude-opus-5-5": (5.0, 25.0)}  # OURS
+PRICE_PER_MTOK = {"claude-haiku-5-5": (1.0, 5.0), "claude-sonnet-5-5": (3.0, 15.0), "claude-opus-5-5": (5.0, 25.0),
+                  "claude-fable-5-1": (10.0, 50.0)}  # OURS
 CACHE_READ_FACTOR = 0.1  # cached input is billed at a tenth (OURS placeholder, list price)
 BLOCKED = (".secrets", ".env", ".pem", ".ovpn", "key.txt", "cookies_", "background.js", "config.json", "api_key", "apikey")
 TOOLS = [

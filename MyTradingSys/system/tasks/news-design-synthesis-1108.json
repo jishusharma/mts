@@ -1,0 +1,54 @@
+{
+  "approved_by": "operator 2026-11-08 chat ~20:20Z: reviews by Fable and Opus, combined by a higher model (d-news-research-first-reviews-synthesis-1108)",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/check_design.py",
+    "python scripts/dev/tasks.py check news-weight-bias-flash-1108"
+  ],
+  "created": "2026-11-07T20:07:32Z",
+  "crucial": "combines two high-model reviews into the design the news builds must follow; the highest model is the operator's order for this step",
+  "depends_on": [],
+  "done_when": "The two build cards (weight and bias; CBP events wire) get rewritten done_when and scope lines that match NEWS_DESIGN.md and name the fail-first test for each rule; tasks.py check passes on both; Result lists what changed in each",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One higher-model synthesis reads the catalogue, both reviews and the operator's preferences and writes the design the build cards must follow: weighting, flash, bias, event strip, in the order and layout he prefers.",
+  "id": "news-design-synthesis-1108",
+  "lane": "OPUS",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Highest model available on the credit (Fable if supported, else Opus 5.5). Runs only after the catalogue and both reviews are on trunk.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T20:07:52Z",
+  "refs": [
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+    "MyTradingSys/system/OPERATOR_PREFS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md and check_design.py (new)",
+    "MyTradingSys/system/tasks/ (only the two news build cards, via tasks.py fill)"
+  ],
+  "scope_out": [
+    "no Live Aid code|no trade gate|no new numbers without a catalogue row behind them"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
+  ],
+  "state": "ready",
+  "steps": [
+    "read the catalogue report, both reviews, OPERATOR_PREFS.md, OPERATOR_REPLY_FORMAT.md, BIBLE.md; list agreements and disagreements",
+    "write NEWS_DESIGN.md; run check_design.py (every rule cites a count or says OURS); rewrite the two build cards; ship"
+  ],
+  "tests": "MyTradingSys/research/news_effects_2026-11/check_design.py",
+  "title": "Combine catalogue and both reviews into NEWS_DESIGN: what weight, flash and bias rules the evidence supports, laid out in the operator's own style",
+  "weight": "",
+  "worker": "session"
+}
