@@ -712,6 +712,8 @@ Context columns only (card vfi-engine-1107, SPEC_ENGINES.md B); defaults SOURCED
 - Bar 8: mf = +0.25; inter_8 = ln(108.25/108) = 0.002312, vinter = (0.002312 + 0.018349)/2 = 0.010331, cutoff = 0.2 * 0.010331 * 108.25 = 0.2237; 0.25 > 0.2237 -> vcp = +50. (A SAMPLE stdev, divisor n-1, would give cutoff 0.3163 and vcp = 0: the variant, not used.)
 - vfi (first at bar 5 = max(2, 3) + 3 - 1): bar 5 sum(vcp, bars 3-5) = 20 + 0 - 10 = 10, vave 30 -> 1/3 = 0.333333. Bar 6 sum = 0 - 10 + 175/3 = 145/3, vave 70/3 -> 145/70 = 29/14 = 2.071429. Bar 7 sum = -10 + 175/3 - 30 = 55/3, vave 50 -> 11/30 = 0.366667. Bar 8 sum = 175/3 - 30 + 50 = 235/3, vave 140/3 -> 47/28 = 1.678571. Bars 0-4 None.
 - Smoothed SMA(2), first at bar 6: (1/3 + 29/14)/2 = 101/84 = 1.202381; bar 7 (29/14 + 11/30)/2 = 128/105 = 1.219048; bar 8 (11/30 + 47/28)/2 = 859/840 = 1.022619. EMA(2) variant (alpha 2/3, seed at bar 6 = 101/84): bar 7 = (2/3)(11/30) + (1/3)(101/84) = 271/420 = 0.645238; bar 8 = (2/3)(47/28) + (1/3)(271/420) = 1681/1260 = 1.334127.
+VERIFIED-TV 2026-11-07, login C: TradingView "Volume Flow Indicator [LazyBear]" (VFI_LB 130 0.2 2.5 5), BYBIT:BTCUSDT.P 1D, raw vfi matches on 4/4 bars within the one-decimal display (2026-10-04 0.6 vs +0.641, 2026-10-08 -0.7 vs -0.736, 2026-10-09 1.4 vs +1.436, 2026-11-06 8.5 vs +8.518). The engine's reading of the script (sum(vcp, 130) / SMA(volume, 130)[1], SMA smoothing) is the verified one; the SPEC_ENGINES.md B text (50/130 split, EMA 3) was Lead C's recall and is superseded.
+
 ## Verification note (this audit, 2026-09-28)
 
 Every case number in `layers/timeframe/TEST_PLAN.md`, `layers/rsi/TEST_PLAN.md`,
