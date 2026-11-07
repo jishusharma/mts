@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_api_agent_models.py"
+  ],
+  "created": "2026-11-07T21:57:26Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_api_agent_models.py gains three cases: default token cap per model, passthrough in the launch command (dry-run), retry on a faked max_tokens stop; written first, the new cases fail on pre-change code; no live job launched",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The news event catalogue job ended after 16 min and 26 turns with error_max_tokens because api_agent.py caps one reply at 8192 tokens, and thinking plus a long file write exceed it. Raise the cap and make it a launch option so research jobs finish.",
+  "id": "api-agent-max-tokens-and-resume-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "api credit: raw Messages API engine (api_agent.py) as api_job default; claude -p never bil",
+      "ref": "bb9714d34a63",
+      "utc": "2026-11-07T13:04:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Unblocks the research chain: catalogue, both reviews and the synthesis all write long files. Check the 32000 value against the model's documented max output before setting it; use the lower of the two.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T21:57:27Z",
+  "refs": [
+    "scripts/dev/api_agent.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/api_agent.py, scripts/dev/api_job.py, scripts/dev/test_api_agent_models.py"
+  ],
+  "scope_out": [
+    "no key handling change|no job launch|no change to the claude engine|no price table change"
+  ],
+  "scope_sha": "bb9714d34a63",
+  "size": "S",
+  "sources": [
+    "credit job news-effect-event-catalogue-1108 ended error_max_tokens 2026-11-08 21:56Z (F:/MTS/api_runs/news-effect-event-catalogue-1108/out.jsonl)"
+  ],
+  "state": "ready",
+  "steps": [
+    "add the three test cases and run them red; change the default, add the passthrough, add the retry on max_tokens; run the test and a dry-run launch; ship"
+  ],
+  "tests": "scripts/dev/test_api_agent_models.py",
+  "title": "Credit runner: max_tokens 8192 kills big research jobs (event catalogue died at turn 26, error_max_tokens); raise default, pass it through api_job, say so in the status line",
+  "weight": "",
+  "worker": "agent"
+}
