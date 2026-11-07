@@ -1846,3 +1846,12 @@ Answer: critical tasks first, no rework, no new tasks (operator, 2026-11-07).
 ## d-aibridge-ctl-one-line-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
 The hands-free control box on the DeepSeek page covered most of the screen. It becomes one line (tick, blocks run / cap, link dot, version), draggable; the status, version and agent lines open only on a problem or a click on the version. Shipped as AIBridge 0.7.28.
 Answer: one line, floatable, only the blocks and the version (operator, 2026-11-07).
+
+## d-dsa-seed-then-wait-1107 | decided 2026-11-07 | operator (voice, ~09:15Z), recorded by Lead C
+The DSA fix is end to end: DSA must know how to use the 0.7.28 bridge (its failure patterns are now prompt 0.9), a new chat
+starts with ONE command (`python scripts/dev/dsa.py start --open`: seed on the clipboard, chat tab opened; paste, Enter), DSA
+loads itself through one bridge block (worktree, prompt, `dsa.py boot`), prints a one-line BOOT banner and WAITS; it starts
+work only on his order ("go", a card id, a desk row; the watcher's check-desk line counts as go). Reason: DSA had begun doing
+many things on its own. All of it tested end to end by a Haiku worker in Chrome. The 86-250 KB session paste stays as the
+paste-mode fallback. DECISION (OURS): a zero-paste start (the extension posts the seed itself) is bridge work, raw card filed.
+Answer: one command, quick init, wait for my instruction; test with Haiku (operator, 2026-11-07).

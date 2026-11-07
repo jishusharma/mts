@@ -55,6 +55,13 @@ unless he told you to stop or change task. A question never ends a task.
 If he corrects you, take it, say the change in one line, continue.
 After a long gap, or if unsure where you are: `sync.py where` plus `tasks.py brief <id>`, once.
 
+G. BOOT, THEN WAIT FOR THE ORDER (operator 2026-11-07: DSA started doing too much on its own).
+A new chat starts from the seed (`python scripts/dev/dsa.py start` puts it on the operator's clipboard): its one block makes
+this chat's worktree, prints this file and `dsa.py boot`. Your next reply is the one-line BOOT banner, then you stop.
+Nothing runs until the operator sends an order: "go" = the queue of section 5 until it is empty or section 12 says end;
+a card id or desk row = that one task, then the five lines of section 13 and stop; any other text = answer it.
+The watcher's "Check the desk tasks for DSA-<host> and do them." is "go". Never start work nobody ordered.
+
 Single behavior source for DSA. v2 2026-10-14 (operator: "DSA must perform end to end tasks like Claude does ... fluent").
 DSA works a task from pick to shipped commit by itself: pick, claim, read, test first, change, gate, commit, ship, close,
 hand off. The bridge version is the one the chat label and aibridge_health.py show. CLAUDE.md is the rule book; this file is how DSA follows it through AIRUN blocks. Bridge contract:
@@ -190,12 +197,24 @@ PowerShell -Filter takes wildcards only (no [7-9] classes): use -Filter 'B1*.md'
 (a) Session paste. scripts\start-session.ps1 builds Dumps\SESSION_PASTE.txt from MyTradingSys\runtime\SESSION_MANIFEST.json
 (boot_files and boot_supplemental). Regenerate (in the live tree, it writes only Dumps\):
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start-session.ps1 -NoClipboard -NoLoad
-The paste may be 100 KB or 250 KB; size is never a reason to skip, split or truncate it. After adding, removing or
+Since 2026-11-07 the normal start is the seed (`dsa.py start`, FIRST G); the paste stays maintained as the paste-mode
+start (0.7) and the fallback. The paste may be 100 KB or 250 KB; size is never a reason to skip, split or truncate it. After adding, removing or
 renaming a manifest file, regenerate and confirm the file's header line is in the paste. Changes to start-session.ps1 or
 the manifest structure are builder work with a test.
 (b) News. python scripts/dev/sync.py news <hours> lists every shipped commit with its Result line ("Result: (not
 stated)" is the thing to flag). It works in the live tree. A guard test (MyTradingSys/tests/test_dsa_direct_mode.py)
 fails the gate when either process or this section is damaged.
+
+0.9 BRIDGE KNOW-HOW (0.7.28; the failures seen 2026-11-01 to 11-07 and what you do).
+- The hands-free box is one line: tick, N/200 blocks, link dot, version. Hovering shows link, port and worker age.
+  "(tab hidden)" is normal: the loop runs in a worker and does not stall when Chrome is covered or unfocused.
+- "result #N not posted: chat never idle or a draft in the input": the extension cannot post while a reply is generating
+  or text sits in the input box. Do not resend the block; end your reply cleanly, the result posts on the next tick.
+- A reply that ends without a final answer (a stopped generation) drops its blocks: [AIRUN NOTICE] says so; resend once.
+- blocks_run below blocks sent: read each receipt; NOT RUN after an error is the rule of 0.1, not a bridge fault.
+- A reply that only answers the operator while a block runs carries no block: the queue is one block set at a time.
+- Version MISMATCH in the label (extension X | page Y | disk Z | agent W): one line, then wait; only the operator
+  reloads (chrome://extensions, then F5 on the chat). Never work around a refusal, a mismatch or a login wall.
 
 ## 1. ROLE
 
@@ -219,6 +238,8 @@ DeepSeek chat: serial, no subagents, no saved images.
 
 ## 3. BOOT PROCEDURE
 
+Started from the seed (FIRST, G): its block already did steps 1 to 3; do not repeat them, go to step 4.
+Started from the session paste (0.8a, paste mode or an old start):
 1. Make this chat's worktree (ONE block in the whole reply, cwd = the live tree; a second one dies on the existing branch):
    Set-Location 'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed'
    $id = (hostname).ToLower() + '-' + (Get-Date).ToUniversalTime().ToString('MMdd-HHmm')
@@ -238,7 +259,7 @@ DeepSeek chat: serial, no subagents, no saved images.
    a read-only task is never blocked by a FAIL report.
 6. Read MyTradingSys/system/LESSONS_DIGEST.md once (rules only). STATUS.md only for the task you pick.
 7. Not on JIS-NB: `python scripts/dev/live_mirror.py brief` before any live read; quote it as mirror@<utc>.
-8. Pick the first task by section 5 and start. No question to the operator.
+8. Print the BOOT banner and wait for the operator's order (FIRST, G). No question to him; the order is his move.
 Boot rules:
 - 3.6 No fabricated values: every number, path, level or verdict comes from a result in this chat.
 - 3.7 No invented commands: only commands in scripts/, COMMANDS.md, `<script> -h` output, or ones you saw run.
@@ -254,7 +275,7 @@ Boot rules:
 Over 20 KB: read by range (`Get-Content <f> | Select-Object -Skip N -First M`, `Select-String -Context`), cite file:NN-MM.
 Keep output small; never re-read what is already in this chat. Find before you read: `git grep -n "<text>"`.
 
-## 5. THE QUEUE (pick in this order; never idle while a step has work)
+## 5. THE QUEUE (after the order, FIRST G; pick in this order; in "go" mode never idle while a step has work)
 
 1. CI RED in STATUS.md, or this host's STATUS: FAIL, outside the live path: fix it by the recipe in FIRST, E. Inside the live path: post `--target CLAUDE`.
 2. The operator in this chat: do it now (record a task or question verbatim first: role E).
@@ -287,7 +308,7 @@ A claim older than 24 h is stale: release it and say so in the Result line. Neve
    second ship unless other work is left.
 9. The inline ship block of FIRST, D (`--release <slug>` takes the claim out in the same push) -> TASK RESULT: PASS.
    A second ship within 10 minutes is allowed (sync.py prints a note only).
-10. One line: TASK / DONE / VERIFIED / MISSED. Next task, no pause.
+10. One line: TASK / DONE / VERIFIED / MISSED. "go" mode: next task, no pause. A single ordered task: stop here.
 
 ### 5b. PROVE
 Done when the goal moves (a test, a news line, a number in a file), not when a file changes. A check that never executes
@@ -449,7 +470,7 @@ Last DSA boot:   not yet recorded under v2 (rewritten 2026-10-14).
    is unshipped; `python scripts/dev/sync.py where` (from the live tree) shows none of yours.
 3. NEXT_SESSION.md overwritten and shipped (5e D) with the section 11 line.
 4. Regenerate the session paste (0.8a) so the next chat boots from current files.
-5. Last reply: the section 13 lines, then "DSA chat done; next chat: paste Dumps\SESSION_PASTE.txt and say go".
+5. Last reply: the section 13 lines, then "DSA chat done; next chat: python scripts/dev/dsa.py start, paste the seed, wait for BOOT, say go".
 
 ## 13. HANDOFF FORMAT
 
