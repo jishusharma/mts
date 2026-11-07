@@ -89,5 +89,30 @@ class TestGuardLogonDelay(unittest.TestCase):
         self.assertEqual(calls[1], "logon")
 
 
+class FixFailureReported(unittest.TestCase):
+    def test_failed_removal_prints_fail_with_reason_and_exits_nonzero(self):
+        import io
+        import contextlib
+        row = {"kind": "task", "name": "MTS-Wrapper", "owner": "MTS", "verdict": "REMOVE", "detail": "", "reason": "x",
+               "ask": False, "done": False, "raw": {}}
+        saved = (ba.collect, ba._ps, ba.in_flight, ba.free_c_gb, ba.boot_times)
+        ba.collect = lambda: [row]
+        ba._ps = lambda cmd: "FAIL Access is denied"
+        ba.in_flight = lambda raw, now: False
+        ba.free_c_gb = lambda: 1.0
+        ba.boot_times = lambda: ""
+        import unittest.mock as mock
+        try:
+            buf = io.StringIO()
+            with mock.patch.object(ba.sys, "platform", "win32"), contextlib.redirect_stdout(buf):
+                rc = ba.main(["--fix"])
+        finally:
+            ba.collect, ba._ps, ba.in_flight, ba.free_c_gb, ba.boot_times = saved
+        out = buf.getvalue()
+        self.assertEqual(rc, 1)
+        self.assertIn("FIX FAIL could not remove task MTS-Wrapper", out)
+        self.assertIn("Access is denied", out)
+
+
 if __name__ == "__main__":
     unittest.main()
