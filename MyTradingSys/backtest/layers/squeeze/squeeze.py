@@ -1,6 +1,9 @@
 """squeeze.py - Squeeze Momentum (LazyBear), context columns only. Formula: FORMULAS.md section 31.
 
 Defaults are LazyBear's script defaults (SOURCED). The 1e-9 relative tie tolerance is OURS.
+Script quirk (SOURCED): LazyBear's Pine source computes `dev = multKC * stdev(source, length)`, so the Bollinger
+half-width is kc_mult*stdev (1.5*sd), not 2.0*sd; TradingView's dots follow the script, so the default does too.
+`textbook_bb=True` (OURS) restores the textbook half-width bb_mult*stdev (2.0*sd).
 """
 import math
 
@@ -9,12 +12,16 @@ def _sma(a, i, n):
     return sum(a[i - n + 1:i + 1]) / n
 
 
-def squeeze_momentum(high, low, close, bb_len=20, bb_mult=2.0, kc_len=20, kc_mult=1.5, mom_len=20):
+def squeeze_momentum(high, low, close, bb_len=20, bb_mult=2.0, kc_len=20, kc_mult=1.5, mom_len=20,
+                     textbook_bb=False):
     """-> (squeeze_on, squeeze_off, momentum), each a list aligned to the input, None until defined.
-    squeeze_on: BB inside KC (strict); squeeze_off: BB outside KC (strict); both False when equal/overlapping."""
+    squeeze_on: BB inside KC (strict); squeeze_off: BB outside KC (strict); both False when equal/overlapping.
+    BB half-width = kc_mult*sd (script quirk, default) or bb_mult*sd when textbook_bb=True (OURS); bb_mult is
+    ignored unless textbook_bb is set."""
     n = len(close)
     if not (len(high) == len(low) == n):
         raise ValueError("high/low/close length mismatch")
+    dev_mult = bb_mult if textbook_bb else kc_mult
     tr = [high[i] - low[i] if i == 0 else
           max(high[i] - low[i], abs(high[i] - close[i - 1]), abs(low[i] - close[i - 1])) for i in range(n)]
     src = [None] * n
@@ -29,7 +36,7 @@ def squeeze_momentum(high, low, close, bb_len=20, bb_mult=2.0, kc_len=20, kc_mul
         if i >= max(bb_len, kc_len) - 1:
             m = _sma(close, i, bb_len)
             sd = math.sqrt(sum((c - m) ** 2 for c in close[i - bb_len + 1:i + 1]) / bb_len)
-            bb_hw = bb_mult * sd
+            bb_hw = dev_mult * sd
             kc_hw = kc_mult * _sma(tr, i, kc_len)
             tol = 1e-9 * max(1.0, abs(bb_hw), abs(kc_hw))
             on[i] = bb_hw < kc_hw - tol

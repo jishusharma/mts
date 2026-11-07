@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-11-07T17:44:43Z",
+    "misses": 4,
+    "reads": [
+      "MyTradingSys/tests/test_dsa_direct_mode.py",
+      "MyTradingSys/system/critical_files.json",
+      "scripts/dev/test_dsa.py"
+    ],
+    "session": "8118e29d-e045-4638-a525-f493c6f504d5"
+  },
   "created": "2026-11-07T17:21:12Z",
   "depends_on": [],
   "done_when": "",
@@ -15,7 +26,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design facts: each DSA chat already writes in its own mts-dsa-<chat> worktree (DSA_SESSION_PROMPT line 79); tasks.py take claims a card so two chats cannot take the same one; limit = concurrent sync.py ship on one host (desk 20261029-170405). Scope for the refiner: dsa.py seed gets a --chat n and a lane filter; DSA_DELEGATION line 108 Haiku brief loops over N tabs; test fails pre-change.",
+  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design: each chat has its own mts-dsa-<chat> worktree; tasks.py take claims a card so two chats cannot take one; limit = concurrent sync.py ship (gate flakes at 4+, desk 20261029-170405). DONE 2026-11-07 (dsa-watcher-1107): DSA_SESSION_PROMPT section 0b Parallel sessions; scripts/dev/dsa_seed.py (chat slug, cards held by other DSA chats, UTF-8 env line; test_dsa_seed.py). It wraps dsa.seed_text and does NOT edit dsa.py: dsa.py is a bridge file, a first attempt (6336fa4c, reverted) failed test_aibridge_version_bump; a bump would put every running chat in a version mismatch. REMAINING: (1) fold dsa_seed.py into dsa.py at the next planned bridge bump; (2) the Haiku N-tab driver (DSA_DELEGATION Standing setup: open N=2 DeepSeek tabs per host in Profile 4, one dsa_seed.py seed per tab, send go); cap N=2 per host until it lands.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
