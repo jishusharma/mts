@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T15:37:20Z",
+  "depends_on": [],
+  "done_when": "dsa.py start --print seed shows DSA QUEUE (every open card in lanes DSA/DSA-NB/DSA-NUC + desk.py rows for both hosts) and DSA FILED (5 newest cards DSA filed), under the seed byte cap; test_dsa_seed.py fails pre-change; DSA_SESSION_PROMPT.md section 0 reviewed for batching (one chain per task, no status polls). Detail: card note + SPEC_START_DSA_TRIGGER.md.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Typing 'Start DSA bridge' on any device shows DSA (and the operator) the whole DSA queue and DSA's own recent filings, not just two cards, so DSA can pick without a terminal.",
+  "id": "dsa-seed-full-task-list-1107",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Login B (bridge lane owner, AIBRIDGE_LANE.md) after its reset, else login A. Builds on aibridge-start-dsa-trigger-1107 (the trigger itself, shipping 11-07). Operator 11-07: 'it must list all the tasks assigned to DSA, check latest bugs created by DSA'.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T15:37:20Z",
+  "refs": [
+    "MyTradingSys/system/SPEC_START_DSA_TRIGGER.md",
+    "DSA_SESSION_PROMPT.md",
+    "MyTradingSys/system/AIBRIDGE_LANE.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/dsa.py (seed builder, lines ~400-420)|scripts/dev/tasks.py (a --source filter if missing)|DSA_SESSION_PROMPT.md section 0 + 5|scripts/dev/test_dsa*.py|MyTradingSys/system/SPEC_START_DSA_TRIGGER.md (append the list rule)"
+  ],
+  "scope_out": [
+    "no bridge payload change (scripts/aibridge/** needs a RELEASES bump; not needed here)|no token files|no DeepSeek chat writes beyond the seed|no live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-07 voice (chat, Lead C turn 15:30Z): understand how people use the favourites, LazyBear/Carter/Katsanos, crypto filter, then group indicators and analysts by what they measure; d-favourites-usage-then-map-1107"
+  ],
+  "state": "ready",
+  "steps": [
+    "read dsa.py seed builder + SPEC_START_DSA_TRIGGER + DSA prompt section 0|add DSA QUEUE + DSA FILED, keep the byte cap|test fails pre-change|prompt section 0 batching review, shorten not add|type Start DSA bridge here, check the banner (or report chat check pending)|ship Result: <n listed> Next: END: NUC types Start DSA bridge"
+  ],
+  "tests": "scripts/dev/test_dsa_seed.py (new or extended): fails pre-change on the missing DSA QUEUE / DSA FILED sections; seed byte cap test stays green",
+  "title": "Start DSA bridge seed lists every open DSA task (desk + lanes, both hosts) and the last 5 cards DSA filed; DSA prompt reviewed for bridge batching",
+  "weight": "",
+  "worker": "session"
+}

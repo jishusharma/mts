@@ -1929,3 +1929,20 @@ only a Claude Code session on the owner login jishusharma1985 has; CBP runs on o
 ship gate only prints a WARNING. Fix: card pages-follow-builds-1107 (stamp + hook line + wake step + share pages with logins A/B for
 edit so their sessions can publish too). Republished now: CBP Analyst Desk (15:02Z build), MTS Home (15:03Z build).
 Answer: yes; the operator shares the canonical pages with jishu.sharma and jishu.awgp (edit) so that A and B sessions can republish.
+
+## d-vertical-bars-for-confirmations-1107 (2026-11-07 ~15:30Z, operator, chat)
+Operator, after Lead C asked him to hover six dated daily bars for the squeeze dots: "make it a rule - place vertical bars where you
+need my confirmations so that it is easier for me." Rule: every Chrome check on his TradingView that ends with a question for him
+draws a vertical line (TradingView "Vertical Line" tool, Alt+V) at each bar he must read, with the date as the line text, leaves the
+layout unsaved, and the reply says how many lines are on the chart. The Haiku check brief carries this step from now on.
+Answer: yes (his order); applies to every indicator check and to Eagle_Eyes chart questions.
+
+## d-favourites-usage-then-map-1107 (2026-11-07 ~15:30Z, operator, voice)
+Operator: before using the TradingView favourites (WaveTrend oscillator and crosses, Squeeze Momentum / TTM Squeeze, Volume Flow
+Indicator, ADX/DI), research how their authors and practitioners say they are used (LazyBear, John Carter, Katsanos, articles), apply
+the crypto/Bitcoin filter, then group indicators AND analysts by what they measure (price action, volume, levels, time, momentum,
+volatility, trend strength) and by role (context, setup, confirmation) so sessions read connected sets, not indicators alone; price,
+volume and time count as layers even though LAYERS.md does not list them. Cards: tvfav-usage-{wavetrend,squeeze,vfi,adx}-1107
+(Gemini, low) -> indicator-map-1107 (Sonnet, login B after reset or A). Spec: SPEC_INDICATOR_MAP.md. Also: card
+dsa-seed-full-task-list-1107 (the Start DSA bridge seed must list every DSA task and DSA's last 5 filings).
+Answer: yes (his order); nothing in the map becomes a signal; phase-first rule stays.
