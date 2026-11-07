@@ -85,6 +85,15 @@ Backups:     backup_session\ (one per session, -Force overwrite)
 - All timestamps UTC.
 - No emoji in any system file.
 
+## STANDARD TASK FORMAT (2026-11-07)
+1. Level 1 (Analysis): Locate ground truth (rule, formula, quote). Write test/repro. Prove it fails before touching code.
+2. Level 2 (Post-implementation): Run test against changed code. Run gate. Spot-check the actual output (number, diff, log). A green test on dead code is a fail. Ship after revalidation.
+
+## STANDARD TASK FORMAT (DSA Bridge Native)
+1. Level 1 (Analysis): Ground truth is an [AIRUN RESULT], never a guess. Write the failing test or repro. Run it through AIRUN. See it fail for the right reason.
+2. Level 2 (Post-implementation): Change the code. Run the test through AIRUN. Run task=mts-gate. Verify actual output (diff, number, log) with a read block. A green test on dead code is a fail.
+3. Ship: task=mts-ship with a valid Next: line. Close the source. Report the receipts.
+
 ## SESSION MODE
 1. Boot from SESSION_PROMPT.md BOOT block.
 2. State ROLE. Read tape. State MISSION. Act.

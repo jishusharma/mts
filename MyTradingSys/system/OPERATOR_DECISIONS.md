@@ -1988,3 +1988,20 @@ Operator: a 60-minute wait for a broadcast reply is too much; it should be 1 min
 60 s (cap 30 min); the receiving session only sees a signal on its next prompt, so the fix is receiver-side: the host watcher
 (supervisor.py wait) must wake on a new ask/HIGH broadcast within 60 s. Added to card signal-broadcast-wait-and-prio-1107.
 Answer: target = ack within 1 minute whenever a session is awake on the target host; watchers wake on signals.
+
+## d-one-minute-means-solution-arrives-1107 (2026-11-07 18:20Z, operator, voice)
+Operator: "if any login needs something, within a minute the solution arrives" is the goal; asked whether Lead C knew the Lenovo
+had already replied. Lead C: no; the reply came 5 min after the ask (17:43Z), Lead C read it 9 min later on the operator's prompt,
+because its waiter watched one id with two conditions. Fix: every waiter fires on the first new inbound signal for this host
+(mts_signal.py wait, card signal-broadcast-wait-and-prio-1107); receivers wake on asks within 60 s.
+Answer: 1 minute = ask to solution; waiters watch the inbox, not one id.
+
+## d-pilot-sonnet-signals-health-1107 (2026-11-07 18:25Z, operator, voice)
+Operator: all signal improvements must be done now (1-minute goal: "we do not have all day to wait"); also audit how we ship
+and the overall health (failures, optimisation); offered an ultra-mode pilot session, Sonnet or Opus, Lead C to choose.
+Lead C: Sonnet, not Opus (mechanical tooling + measurement; Opus only when he names it for design); started session
+pilot-signals-health (login C, worktree JIS-NB/pilot-signals-health-1107): job 1 builds signal-broadcast-wait-and-prio-1107
+(mts_signal.py wait, --wait on broadcast/ask, sorted status lines, watcher wakes on asks), job 2 writes
+research/health_2026-11-07/SHIP_HEALTH.md with gate p50/p90, failures, orphan gate trees, CI reds, stale pages, top-5 time
+sinks as cards. Ultra mode if he switches it: get_usage first, waves <= 4, <= 8 agents, results to files; stops at 74 % login C.
+Answer: Sonnet ultra pilot, two jobs, numbers from git/logs only.

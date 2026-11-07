@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T18:06:45Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py -k tidy"
   ],
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: tidy has_open_claim in sync.py; test_tidy_keeps_a_tree_with_an_open_clai",
+      "ref": "96948faaf",
+      "utc": "2026-11-07T18:06:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
@@ -35,6 +42,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: nothing left",
   "note": "\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: tidy() present; open-claim test absent on trunk; testable.)",
   "prio": 2,
   "refine_tries": 0,
@@ -43,7 +51,12 @@
   "refs": [
     "MyTradingSys/system/PARALLEL.md"
   ],
-  "result": "",
+  "result": "already on trunk: tidy has_open_claim in sync.py; test_tidy_keeps_a_tree_with_an_open_claim passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py",
     "scripts/dev/test_sync.py"
@@ -54,12 +67,13 @@
   "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write the failing test beside test_tidy_retires_a_shipped_clean_tree_after_one_hour_not_24.",
     "In tidy(), skip a tree whose branch slug matches open_claims(repo) rows.",
     "Run test_sync.py and ship."
   ],
+  "taken": "2026-11-07T18:06:45Z",
   "tests": "scripts/dev/test_sync.py::test_tidy_keeps_a_tree_with_an_open_claim",
   "title": "sync.py tidy retires a clean, on-trunk tree idle 1 h even if a person is between steps in it (DSA tree after 5c939ec6, tidy_after_ship). Keep any tree with an open claim. Measured: operator's live DSA tree mts-dsa-jis-nuc-1103-1825 is in scope.",
   "weight": "",
