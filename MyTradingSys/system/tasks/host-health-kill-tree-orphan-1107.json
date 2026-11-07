@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: research/health_2026-11-07/SHIP_HEALTH.md item 1. scripts/dev/host_health.py kill_tree (l.105) runs taskkill /T /F, returns rc==0 only, drops stderr; run() l.432-435 prints 'ORPHAN ... - kill failed'. Measured: taskkill on a gone PID exits 128, counted as failure. Fix: treat 128 as reaped, log stderr to health.log, re-snapshot and kill leftover children whose ppid is dead (taskkill /T cannot reach them), retry once. Test with a fake kill returning 128. Not reproduced on this machine today (0 orphan gates).",
+  "note": "Source: research/health_2026-11-07/SHIP_HEALTH.md item 1. scripts/dev/host_health.py kill_tree (l.105) runs taskkill /T /F, returns rc==0 only, drops stderr; run() l.432-435 prints 'ORPHAN ... - kill failed'. Measured: taskkill on a gone PID exits 128, counted as failure. Fix: treat 128 as reaped, log stderr to health.log, re-snapshot and kill leftover children whose ppid is dead (taskkill /T cannot reach them), retry once. Test with a fake kill returning 128. Not reproduced on this machine today (0 orphan gates). | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

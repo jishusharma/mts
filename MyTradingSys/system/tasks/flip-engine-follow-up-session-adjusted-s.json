@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-06 refined; fresh data run itself cannot start before 2026-11-07 bars exist",
+  "note": "planner 11-06 refined; fresh data run itself cannot start before 2026-11-07 bars exist | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: long-history DEV study; phase-first testnet-forward replaced backtest gates (d-phase-first-method-1106)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

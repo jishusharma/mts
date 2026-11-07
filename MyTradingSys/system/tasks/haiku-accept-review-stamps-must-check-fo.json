@@ -35,7 +35,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. If lint flags more than 5 existing cards, narrow the rule to cards created after 2026-11-04 (OURS) and say so in the Result. DEFAULT (OURS) for the old ask: Context check applies to state raw/new cards only; do not edit refined study cards.",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. If lint flags more than 5 existing cards, narrow the rule to cards created after 2026-11-04 (OURS) and say so in the Result. DEFAULT (OURS) for the old ask: Context check applies to state raw/new cards only; do not edit refined study cards. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; tasks.py reverted cb214227a since refresh",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",

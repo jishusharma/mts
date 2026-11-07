@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (d-eagle-eyes-missed-boxes-defaults)",
   "asks": "",
+  "closed": "2026-11-07T21:32:01Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -28,6 +29,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk 1dff1abde (RESULT_COPY_FORK_ETH.md re-landed with Regime mix line)",
+      "ref": "f4e938467",
+      "utc": "2026-11-07T21:32:01Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Pitchfork copy-paste fork vs random parallels, BTC 4H DEV count",
@@ -47,6 +54,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already done",
   "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. Refreshed after cb341d766 (steps 2-3 done).",
   "pinned": false,
   "prio": 2,
@@ -54,7 +62,12 @@
   "refined_by": "",
   "refreshed": "2026-11-06T09:23:56Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk 1dff1abde (RESULT_COPY_FORK_ETH.md re-landed with Regime mix line)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/pitchfork_2026-10-19/PRE_REG_COPY_FORK.md",
     "MyTradingSys/research/pitchfork_2026-10-19/run_copy_fork_study.py",
@@ -64,12 +77,13 @@
   "scope_sha": "cb341d766dfc",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add a symbol argument to run_copy_fork_study.py; ETH 1m at F:/MTS/data/tom_raw/klines_eth built to 4H",
     "run ETH DEV once; write RESULT_COPY_FORK_ETH.md with Regime mix line",
     "list operator pitchfork shots under research/screenshots, else write NOT_IN_DATA"
   ],
+  "taken": "2026-11-07T21:32:01Z",
   "tests": "test_pitchfork_copy.py: symbol argument selects the ETH folder and the loader refuses bars >= 2024-07-01; fails before the argument exists",
   "title": "pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec CARD_SPECS.md#pitchfork-operator-charts-prep)",
   "weight": "ROUTINE",

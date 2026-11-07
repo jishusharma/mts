@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T21:32:10Z",
   "commands": [
     "python scripts/dev/prereg_gate.py --n 414 --sd 1.24 --cost 0.068 --m auto --new-cells 1"
   ],
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk 4be92a523 (BLOCKED.md, power gate n 409 need 586) then 5392a26aa (10-symb",
+      "ref": "f4e938467",
+      "utc": "2026-11-07T21:32:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cryptocred 4h/1d S3: power gate BLOCKS the DEV run; tested wrapper built, no outcome read",
@@ -47,6 +54,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already done",
   "note": "REVIEWED:planner-c-1106b 2026-11-06 T0-ONLY. n 414 is a rough 2x of BTC 207, recount first. Data F:/MTS/data/tom_raw/klines and klines_eth.",
   "prio": 3,
   "refine_tries": 2,
@@ -56,7 +64,12 @@
     "MyTradingSys/research/cryptocred_s3_2026-11",
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
-  "result": "",
+  "result": "already on trunk 4be92a523 (BLOCKED.md, power gate n 409 need 586) then 5392a26aa (10-symbol pooled DEV run FAIL)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md",
     "MyTradingSys/research/cryptocred_s3_2026-11/cc_s3_run.py",
@@ -70,12 +83,13 @@
   "sources": [
     "MyTradingSys/research/cryptocred_s3_2026-11/BLOCKED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "recount Setup 1 fills on BTC and ETH DEV via cc_s3_run.py count mode; no outcome read",
     "run prereg_gate.py --n <fills> --sd 1.24 --cost 0.068 --m auto --new-cells 1; paste output",
     "exit 0: freeze PRE_REG then one run; exit 1: write BLOCKED.md and END"
   ],
+  "taken": "2026-11-07T21:32:10Z",
   "tests": "test_pooled_count.py: pooled fill count equals BTC count plus ETH count from the same loader and refuses bars >= 2024-07-01; fails before the pooled loader exists",
   "title": "cryptocred S3 (7501e2816): power gate blocked DEV; widen symbols/window to pass the gate or record END",
   "weight": "ROUTINE",

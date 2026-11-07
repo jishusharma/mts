@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: SHIP_HEALTH.md item 1. ship rows in gate_timing.jsonl carry ok:false but not which step failed; 7 d: 12 of 64 ships failed, top failing steps 3xm 3, 3gi 2, 3cm 2, 3af 2. Add failed_steps to the ship and ship_wall rows (sync.record_ship_timing), so doctor SHIP-TIME can name the repeat offenders. Test: fake failing step writes its id.",
+  "note": "Source: SHIP_HEALTH.md item 1. ship rows in gate_timing.jsonl carry ok:false but not which step failed; 7 d: 12 of 64 ships failed, top failing steps 3xm 3, 3gi 2, 3cm 2, 3af 2. Add failed_steps to the ship and ship_wall rows (sync.record_ship_timing), so doctor SHIP-TIME can name the repeat offenders. Test: fake failing step writes its id. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: gate telemetry; the CI-red parity card carries the failing-step census on the path",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

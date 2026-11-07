@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (reviewer still required, IMPORTANT) (planner-a-1107b; twin check run, none). DECISION (OURS): identity in the report header line, not a card field. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (reviewer still required, IMPORTANT) (planner-a-1107b; twin check run, none). DECISION (OURS): identity in the report header line, not a card field. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: GPT/Codex lane: d-no-gpt-codex-credit-1106 and 401 stall; re-derive of a finished study, no roadmap exit",
   "prio": 2,
   "refine_tries": 3,
   "refined_by": "",

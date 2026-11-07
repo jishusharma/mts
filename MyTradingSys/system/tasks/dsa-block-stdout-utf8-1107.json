@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Noticed by the Haiku Chrome worker 2026-11-07 17:25Z in chat 'DSA bootstrap step 1' (JIS-NB). MITIGATED (not closed) 2026-11-07 by dsa-watcher-1107: DSA prompt 0b rule 6 and the dsa_seed.py seed block set PYTHONUTF8=1 + PYTHONIOENCODING=utf-8 per AIRUN block. Why open: the root fix is the bridge agent setting the child env for every block (agent.ps1 under F:/AIBridge, operator-owned, closed to DSA; also a bridge version bump) so no block needs the line. Verify on a desktop DSA chat that ship output now prints.",
+  "note": "Noticed by the Haiku Chrome worker 2026-11-07 17:25Z in chat 'DSA bootstrap step 1' (JIS-NB). MITIGATED (not closed) 2026-11-07 by dsa-watcher-1107: DSA prompt 0b rule 6 and the dsa_seed.py seed block set PYTHONUTF8=1 + PYTHONIOENCODING=utf-8 per AIRUN block. Why open: the root fix is the bridge agent setting the child env for every block (agent.ps1 under F:/AIBridge, operator-owned, closed to DSA; also a bridge version bump) so no block needs the line. Verify on a desktop DSA chat that ship output now prints. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: DSA bridge tooling; mitigated by seed env lines, root fix needs the operator-owned bridge agent",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
