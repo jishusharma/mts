@@ -1,0 +1,10 @@
+{
+  "done_when": "Inline task mode uses the repo param, doesn't lock output files, and fails closed on step failures.",
+  "from": "JIS-NUC",
+  "id": "20261107-185143-aibridge-task-mode-file-lock-crash-and-m",
+  "need": "task=inline runs fail with Exception calling ReadAllText on .ps1.out because the file is locked by another process. Also inline ignores repo= param and runs from F:\\AIBridge. Finally inline reports TASK RESULT: PASS even when steps fail.",
+  "posted": "2026-11-07T18:51:43Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "AIBridge task mode file lock crash and missing repo param"
+}
