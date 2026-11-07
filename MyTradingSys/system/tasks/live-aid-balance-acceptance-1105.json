@@ -36,7 +36,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: descriptive display card, not a study (no PRE_REG; no trade rule, so no Context/Regime gate). Public data only.",
+  "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: descriptive display card, not a study (no PRE_REG; no trade rule, so no Context/Regime gate). Public data only. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

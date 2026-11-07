@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Card ref pointed to a worktree path outside the repo; replaced. Touches live_aid files also named by live-aid-balance-acceptance-1105 and live-aid-trendlines-liquidations-1106: one worker takes the cluster. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Card ref pointed to a worktree path outside the repo; replaced. Touches live_aid files also named by live-aid-balance-acceptance-1105 and live-aid-trendlines-liquidations-1106: one worker takes the cluster. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

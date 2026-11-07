@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; PARKED: tom_bt/maker_model edits need that review first.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; PARKED: tom_bt/maker_model edits need that review first. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: cost-model input for backtests; phase-first testnet-forward needs no backtest cost gate (d-phase-first-method-1106)",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",

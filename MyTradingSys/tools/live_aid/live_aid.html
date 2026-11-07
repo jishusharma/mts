@@ -331,6 +331,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </main>
 
 <script src="live_aid_indicators.js"></script>
+<script src="news_feed.js"></script>
 <script src="analyst_data.js"></script>
 <script src="base_rates.js"></script>
 <script src="premarket_risk.js"></script>
@@ -1177,8 +1178,11 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function highNews(now) {
     return (S.news.items || []).filter(function (x) { return +x.importance >= A.NW.mark && x.time <= now && x.time > now - A.NW.winMs; });
   }
+  // news_feed.js decides when (15 s, only while the tab is visible) and how many (20 per poll, 300 first or after a pause)
+  var NF = window.NEWSFEED;
   function loadNews() {
-    return fetch(NEWS_URL + (S.news.t ? 40 : 300)).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    if (!NF) { S.news.err = 'news_feed.js not found next to this page'; return Promise.resolve(); }
+    return fetch(NEWS_URL + NF.fetchLimit(S.news.t, Date.now())).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.news.items = A.newsMerge(S.news.items, a, 400); S.news.t = Date.now(); S.news.err = ''; })
       .catch(function (e) { S.news.err = 'Tree News: ' + e.message; });
   }
@@ -1194,9 +1198,9 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       $('g-news').innerHTML = NID; $('g-news-sub').textContent = S.news.err || 'connecting'; return;
     }
     $('news').innerHTML = S.news.items.slice(0, S.view === 'news' ? 60 : 12).map(function (x) {
-      var hi = +x.importance >= A.NW.mark, t = esc(headline(x)), u = String(x.url || ''), rd = A.newsRead(x);
-      var tags = A.newsTags(headline(x)).filter(function (g) { return g !== 'btc'; }).map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
-      return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + new Date(x.time).toISOString().slice(11, 19) + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
+      var r = NF.row(x), hi = r.hi, t = esc(r.headline), u = r.url, rd = A.newsRead(x);
+      var tags = r.tags.map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
+      return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + r.utc + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
         (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags +
         '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + '</td></tr>';
     }).join('');
@@ -1507,7 +1511,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
-  loadNews(); setInterval(loadNews, 15000);
+  function newsTick() { if (NF ? NF.shouldPoll(document.hidden, S.news.tried || 0, Date.now()) : !S.news.err) { S.news.tried = Date.now(); loadNews(); } }
+  newsTick(); setInterval(newsTick, 1000); document.addEventListener('visibilitychange', newsTick);
   loadPremarket(); setInterval(loadPremarket, 120000);
   loadTfsFast(); setInterval(loadTfsFast, 15000); loadTfsSlow(); setInterval(loadTfsSlow, 60000);
   loadMaFast(); setInterval(loadMaFast, 15000); loadMaMid(); setInterval(loadMaMid, 60000); loadMaSlow(); setInterval(loadMaSlow, 300000);

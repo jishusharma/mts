@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. analyst_levels.py feeds CBP candidates; a lost level is a false negative, so IMPORTANT.",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. analyst_levels.py feeds CBP candidates; a lost level is a false negative, so IMPORTANT. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: CBP candidate parser defect, WIP save c622ce930 on trunk; not a roadmap exit",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
