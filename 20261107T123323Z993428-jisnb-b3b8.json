@@ -1,0 +1,1 @@
+{"t": "20261107T123323Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "AIBridge 0.7.29 on NUC: run the cmd from a current tree, then reload the extension in each Chrome profile and F5 the DSA chats; label must read 0.7.29", "login": "C", "id": "b-aa62c7", "prio": "high", "cmd": "python scripts/dev/aibridge_install.py --restart-agent"}
