@@ -9,7 +9,7 @@ Stop at week >= 90% (new work), CI red you did not fix, or no ready cards.
 - Worktrees 33 -> 7 after cleanup; leftovers saved in F:/MTS/gq/_saved | `git worktree list` | read at 2026-11-06T16:35Z
 - Trunk CI green after B reverted 80327e0e7 (904cc0b5: market_guide loaded cycle_bottom_flag, whose docstring named the co-trade CLI, so wiring marked it LIVE); docstring reworded 7378431c, conflict-marker gate 3cm in ALWAYS 230845de | `python scripts/dev/sync.py ci` | green 230845de at 2026-11-06T18:55Z
 - 5 task cards carried merge markers from revert 8dbd7408f; fixed in ead36982 | `python scripts/dev/tasks.py lint` | read at 2026-11-06T16:40Z
-- agy: Argon 429 until ~11-09T18:25Z, Claude/GPT pool back ~11-06T17:48Z, Flash works; a second Gemini governor (F:/MTS/mts-gemini) ships gq branches itself | Antigravity > View Usage | read at 2026-11-06T14:40Z
+- agy: Argon (low/medium) and Flash (low/medium) both verified online 2026-11-07T14:32Z; assign review tasks across Argon and Flash in low and medium settings in background; a second Gemini governor (F:/MTS/mts-gemini) ships gq branches itself | `python scripts/dev/gemini_queue.py status` | read at 2026-11-07T14:32Z
 - 9 symbols of 1m 2022-01..2024-06 on disk at F:/MTS/data/tom_raw/klines (SOL/XRP/LTC miss 7,200 source bars); h3-ny-open-count-10sym queued on Flash | `python scripts/dev/kline_gap_check.py ETHUSDT 2022-01 2024-06` | read at 2026-11-06T16:50Z
 
 ## Ruled out
@@ -19,7 +19,7 @@ Stop at week >= 90% (new work), CI red you did not fix, or no ready cards.
 
 ## Next 3 steps
 1. `sync.py start supervisor-B-<date>`; `get_usage`; read the last 20 trunk commits. New work only below 90% weekly.
-2. agy Sonnet 429 until ~2026-11-11T14:00Z; Flash works. Half-done card sync-py-ship-tasks-py-done-route-tag-tra sits uncommitted in F:/MTS/gq/sync-py-ship-tasks-py-done-route-tag-tra: finish it on `:high:flash` (the queue reuses that tree) or remove tree + branch.
+2. agy Argon (`:low:argon`, `:medium:argon`) and Flash (`:low:flash`, `:medium:flash`) both work; assign review tasks to Argon and Flash in low and medium settings in background (`gemini_queue.py run <card>:low:argon <card>:medium:argon <card>:low:flash <card>:medium:flash`). Half-done card sync-py-ship-tasks-py-done-route-tag-tra sits uncommitted in F:/MTS/gq/sync-py-ship-tasks-py-done-route-tag-tra: finish it on `:high:flash` (the queue reuses that tree) or remove tree + branch.
 3. The cycle-bottom market_guide line (80327e0e7) needs a reland by its JIS-NB author; broadcast sent.
 
 ## Traps

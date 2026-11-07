@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:36:42Z",
   "commands": [],
   "created": "2026-11-07T14:19:33Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "VERDICT: MATCH (31/31 numbers in MyTradingSys/research/layer_lab/reports/2026-11-07_gemini",
+      "ref": "d9436d76d",
+      "utc": "2026-11-07T14:36:42Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "reclaim study: no module-level fee constant (cost-inventory gate)",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read of reclaim_close_stop_2026-11/RESULT.md vs results_DEV.csv complete (VERDICT: MATCH)",
   "note": "REVIEWED:2026-11-07 T0-ONLY (D11 feeder s6, planner-a-20261107; twin check run, none). Never use model output as the source.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T14:20:12Z",
   "refs": [],
-  "result": "",
+  "result": "VERDICT: MATCH (31/31 numbers in MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-reclaim-close-stop.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-reclaim-close-stop.md (new)",
     "MyTradingSys/research/reclaim_close_stop_2026-11 (read)"
@@ -44,12 +57,13 @@
   "sources": [
     "MyTradingSys/research/reclaim_close_stop_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the data/scripts in MyTradingSys/research/reclaim_close_stop_2026-11 before RESULT.md",
     "Recompute each table number",
     "Write the per-cell diff table and VERDICT"
   ],
+  "taken": "2026-11-07T14:36:42Z",
   "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-07_gemini-blind-read-reclaim-close-stop.md'); assert 'VERDICT' in p.read_text()\"",
   "title": "[GEMINI] Blind read of reclaim_close_stop RESULT.md vs results_DEV.csv",
   "weight": "ROUTINE",
