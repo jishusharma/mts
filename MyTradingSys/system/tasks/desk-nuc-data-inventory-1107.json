@@ -25,10 +25,11 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "NUC data inventory for CBP alt coverage (desk row closed, card filed to satisfy ship Next line)",
   "weight": "",
-  "worker": ""
+  "worker": "",
+  "dropped_reason": "Placeholder card filed only to satisfy sync.py Next line; actual desk row shipped in 199c0b63"
 }
