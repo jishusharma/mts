@@ -1,0 +1,10 @@
+{
+  "done_when": "bridge records a receipt or ERROR for every task-mode block; aibridge_version.py check exits 0 with the dsa.py change; test_ship_train passes on git 2.24",
+  "from": "JIS-NUC",
+  "id": "20261107-192040-bridge-mts-ship-and-mts-gate-gave-no-rec",
+  "need": "DSA JIS-NUC login B, bridge 0.7.30, branch dsa/jis-nuc-1107-refine. 18:06Z task=mts-ship and 18:48Z task=mts-gate returned no receipt and no ERROR LOCK_EXPIRED. Wrote dsa.py ship_pending + boot/commit SHIP OWED lines + 3 tests (commit 140b4e386). test_aibridge_version_bump now red because the guard fingerprints scripts/dev/dsa.py: fingerprint 71a012210b48 vs recorded 97abc6f4fd2b; bump the 3 version strings and --record under scripts/aibridge (floor 0.3, Claude only). Also scripts/dev/test_ship_train.py line 120 uses git init -b, absent in git 2.24.0 on this host, so every gate here is red. Branch is committed and unshipped on purpose.",
+  "posted": "2026-11-07T19:20:40Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Bridge: mts-ship and mts-gate gave no receipt; dsa.py change needs a version bump"
+}
