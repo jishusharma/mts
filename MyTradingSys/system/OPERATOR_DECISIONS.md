@@ -1910,3 +1910,7 @@ Answer: survey delivered 2026-11-07; P1 (ADX TradingView read) running; P2-P4 aw
 ## d-build-squeeze-vfi-use-a-c-gemini-1107 (2026-11-07, operator, chat)
 "Yes, build both" (Squeeze Momentum + VFI engines) then "use login A and C and other gemini models to get things done". Routing (OURS): squeeze-momentum-engine-1107 -> login A (Supervisor A asked for work, q-e5e808); vfi-engine-1107 -> API credit (api_job --engine api, Sonnet, when the slot frees); Gemini laptop -> malkan-hindi-extract + 3 gemini-blind-read-* (:low, q-820c7b); B/NUC -> main-folder-staged-blocks-ff + b-aa62c7 ack + gemini-habib-caption-check-1107; C verifies both engines on his TradingView.
 Answer: assigned 2026-11-07 14:40Z; cards shipped b2f00512.
+
+## d-start-dsa-bridge-typed-trigger-1107 (2026-11-07, operator order via B, q-9d225e)
+"Build it so typing just 'Start DSA bridge' as the first line in a new DeepSeek chat boots DSA (no terminal, no clipboard paste); e.g. the AIBridge extension injects the seed." Card aibridge-start-dsa-trigger-1107 (spec scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md); the terminal-based card aibridge-posts-the-dsa-seed-itself-zero- dropped as superseded. DECISION OURS: the seed is fetched from the agent (dsa.py start --print), never hard-coded in the extension; exact phrase only.
+Answer: ordered; Sonnet builder started 2026-11-07 ~14:55Z on C.
