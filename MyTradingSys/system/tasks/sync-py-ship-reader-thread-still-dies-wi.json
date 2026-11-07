@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:43:25Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_run_all_tests_encoding.py feeds byte 0x98 through the reader and passes with no UnicodeDecodeError while failing on pre-change file; run_all_tests.py:153, :491, :1154 all carry encoding and errors; a ship gate on a tree with non-utf8 git log output prints no reader-thread traceback.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The ship gate child still dies with UnicodeDecodeError cp1251 byte 0x98. The earlier card sync-py-ship-reader-thread-unicodedecode fixed sync.py calls and is closed done, but the traceback still fires on every ship, so the remaining sites are in the gate child scripts/dev/run_all_tests.py. Give each text=True subprocess call an explicit utf-8 decode with errors=replace.",
+  "id": "sync-py-ship-reader-thread-still-dies-wi",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REFINED 2026-11-07 by DSA JIS-NB chat mts-dsa-jis-nb-1107-1658. Dedup: sync-py-ship-reader-thread-unicodedecode is done and covers sync.py only; that fix is in place at :91, :96, :711, :1074, :1643. dsa-block-stdout-utf8-1107 is a different defect (DSA bridge block header, not gate). Harmless to the ship result: still reports PASS and pushes, but stderr carries a full traceback every time, so a real failure in that thread would be invisible.",
+  "prio": 1,
+  "refine_tries": 1,
+  "refined_by": "DSA JIS-NB chat mts-dsa-jis-nb-1107-1658",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/test_run_all_tests_encoding.py"
+  ],
+  "scope_out": [
+    "no change to sync.py subprocess calls (already fixed)",
+    "no change to which steps the gate runs",
+    "no gate weakening, no test skip"
+  ],
+  "size": "S",
+  "sources": [
+    "scripts/dev/run_all_tests.py:153 (git rev-parse, text=True no encoding)",
+    "scripts/dev/run_all_tests.py:491 (mvn --version, text=True no encoding)",
+    "scripts/dev/run_all_tests.py:1154 (git -C root, text=True no encoding)",
+    "scripts/dev/run_all_tests.py:255 (the fixed pattern to copy)",
+    "scripts/dev/sync.py:392 (run_gate launches run_all_tests.py)",
+    "DSA chat results #70, #50, #23 (traceback four times on successful ships)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read run_all_tests.py:145-160, :485-495, :1145-1160",
+    "Write failing test first and show it fail on unmodified file",
+    "Add encoding=utf-8, errors=replace to :153, :491, :1154",
+    "Run new test then scripts/dev/test_run_all_tests.py -q",
+    "Ship and confirm next ship prints no reader-thread traceback"
+  ],
+  "tests": "scripts/dev/test_run_all_tests_encoding.py fails on pre-change file, passes after; scripts/dev/test_run_all_tests.py stays green",
+  "title": "sync.py ship reader thread still dies with UnicodeDecodeError: run_all_tests.py has text=True subprocess calls with no encoding (lines 153, 491, 1154)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
