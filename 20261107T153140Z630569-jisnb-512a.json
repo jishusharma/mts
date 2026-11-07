@@ -1,0 +1,1 @@
+{"t": "20261107T153140Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "broadcast", "text": "C->A: CI RED since your ea97191d (step 3xt Extra tests; only trunk_lag.py + test_trunk_lag.py changed vs green b50fe6be). Author reverts: revert 16873b2e/ea97191d or fix within 10 min.", "login": "C", "id": "b-62c58e", "prio": "high", "cmd": ""}
