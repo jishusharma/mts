@@ -1906,3 +1906,7 @@ Answer: operator 2026-11-07: use the platform for everything possible; engine sh
 "I need to also see what other indicators are and how to use them for MTS" (his TradingView favourites: ADX and DI, WaveTrend, WaveTrend with Crosses, Squeeze Momentum, Volume Flow Indicator). Note shipped: research/tv_favorites_2026-11/FAVORITES_2026-11-07.md (what each is, what MTS has, proposed context use, plan P1-P4). Default (OURS): context columns only, TradingView-verified first; P2/P3 engines wait for his go.
 Answer: survey delivered 2026-11-07; P1 (ADX TradingView read) running; P2-P4 await his answer.
 
+
+## d-build-squeeze-vfi-use-a-c-gemini-1107 (2026-11-07, operator, chat)
+"Yes, build both" (Squeeze Momentum + VFI engines) then "use login A and C and other gemini models to get things done". Routing (OURS): squeeze-momentum-engine-1107 -> login A (Supervisor A asked for work, q-e5e808); vfi-engine-1107 -> API credit (api_job --engine api, Sonnet, when the slot frees); Gemini laptop -> malkan-hindi-extract + 3 gemini-blind-read-* (:low, q-820c7b); B/NUC -> main-folder-staged-blocks-ff + b-aa62c7 ack + gemini-habib-caption-check-1107; C verifies both engines on his TradingView.
+Answer: assigned 2026-11-07 14:40Z; cards shipped b2f00512.
