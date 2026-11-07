@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T14:35:06Z",
   "commands": [
     "python scripts/dev/test_dsa.py"
   ],
@@ -17,8 +18,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; lane JIS-NB (AIBRIDGE_LANE.md). Held while the DSA bridges are closed (ROUTING.md).",
+  "note": "superseded by aibridge-start-dsa-trigger-1107 (operator order q-9d225e: no terminal at all; the chat-typed phrase boots DSA)",
+  "pinned": false,
   "prio": 3,
+  "reason": "superseded by aibridge-start-dsa-trigger-1107 (operator order q-9d225e: no terminal at all; the chat-typed phrase boots DSA)",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -33,7 +36,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "Read dsa.py start clipboard path",
     "Add the AIBridge post path behind the existing bridge check",
