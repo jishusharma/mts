@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "pages-follow-builds-1107",
+  "closed": "2026-11-07T17:19:05Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -29,12 +31,20 @@
   "id": "pages-follow-builds-1107",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Already on origin/fast-track: 191057ddb (Updated stamp on generated pages, publishers list",
+      "ref": "1648d9759",
+      "utc": "2026-11-07T17:19:05Z"
+    }
+  ],
   "layers": [
     "live_engine"
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no further work; republish on the owner login jishusharma1985 per SUPER_SESSION.md step 3b when a page lags",
   "note": "Root cause: publishing needs the Artifact tool = a Claude Code session on the owner login; scripts, API jobs, Gemini, DSA cannot publish. After the operator shares the pages with jishu.sharma/jishu.awgp (edit), A and B sessions become publishers too. Assign: login A (fresh week) or B after its 11-08 reset; not login C (75 % cap).",
   "prio": 1,
   "refine_tries": 0,
@@ -43,7 +53,12 @@
   "refs": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md d-pages-updated-stamp-follow-builds-1107"
   ],
-  "result": "",
+  "result": "Already on origin/fast-track: 191057ddb (Updated stamp on generated pages, publishers list), b2449c25a (PAGES STALE hook, supervisor REPUBLISH lines, cbp_run republish ask, tests), a81e54688 (republish with stamp). 172 tests pass in test_artifacts/test_trunk_lag/test_supervisor/test_cbp_run. Closed as bookkeeping: no code change from DSA.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts\\dev\\artifacts.py|scripts\\dev\\make_home.py|scripts\\dev\\make_layers_board.py|F;C:\\Users\\E-ngineers\\Git\\CryptoScrapper\\cbp_v2\\tools\\build_board.py (repo copy if any)|scripts\\dev\\supervisor.py|hook script that prints TRUNK LAG|MyTradingSys\\system\\SUPER_SESSION.md|registry.json publishers list"
   ],
@@ -55,10 +70,11 @@
   "sources": [
     "operator 2026-11-07 chat + screenshots 69fbef1d8db8, 110b0c0b416f; d-pages-updated-stamp-follow-builds-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read artifacts.py stale + registry|add publishers list (jishusharma1985 + logins given edit access) to registry.json|stamp injection in build + build_board|hook line|supervisor plan REPUBLISH line + SUPER_SESSION step|cbp_run tail line + ask|tests fail pre-change, pass after|ship"
   ],
+  "taken": "2026-11-07T17:02:44Z",
   "tests": "test_artifacts.py (stamp present, stale line format), test for the hook line, test_supervisor plan REPUBLISH line",
   "title": "Pages follow builds: Updated stamp on every page, stale line in the hook, republish step per wake and after cbp_run",
   "weight": "",

@@ -29,7 +29,15 @@
   "goal": "Settle which delta the CoinGlass Net Delta indicator, the Legend footprint and spot taker flow each measure, because Eagle_Eyes read the 13:30Z 2026-10-26 bar as selling (indicator) and the footprint showed +2.13K buying",
   "id": "lab-verify-footprint-vs-indicator-delta",
   "lane": "DSA",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "effb5bbaa1bd lab-verify-footprint-vs-indicator-delta: spot taker delta computed, indicator",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-10-28_lab-verify-footprint-vs-indicator-delta.md",
+      "utc": "2026-10-28T06:57:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -38,7 +46,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-26T14:57:39Z",
+  "refreshed": "2026-11-07T17:18:38Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
   ],
@@ -52,7 +60,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "From the 7 listed shots tabulate Net Delta indicator, footprint delta and spot taker delta (2*taker_buy-volume from data-api.binance.vision klines) per 15m bar 13:00-14:30Z",
     "State units and bar-label alignment for each source",

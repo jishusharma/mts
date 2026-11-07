@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T23:42:23Z",
+  "refreshed": "2026-11-07T17:18:40Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -45,7 +45,7 @@
     "MyTradingSys/research/oi_side_2026-10-30/RESULT.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md"
   ],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Start from Krown P3rDSh187TE (KR-LQC01-04) and the Fabio guest list in CVD_CONCEPTS.md 3c (HijoTrades, Cimi, IQCapital) for OI passages",
     "YouTube search: BTC open interest + funding + CVD order-flow teaching; rank by ROI, fetch captions",

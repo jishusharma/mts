@@ -1,0 +1,40 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T17:35:26Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "signal-broadcast-wait-and-prio-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Operator 2026-11-07 18:12Z: the reply must arrive within 1 MINUTE, not 60. Receiver side is the real delay: signals are read only on prompts, so an idle session never sees an ask. Scope add: supervisor.py wait (and every coordinator waiter) fetches the mts-signals branch every 60 s and returns on an ask or HIGH broadcast for its host; the sender waiter polls acks every 60 s; target = ack within 1 min when a session is awake on the target host, measured in the test with a fake signal.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "scripts/dev/mts_signal.py",
+    "MyTradingSys/system/SUPER_SESSION.md",
+    ".claude/settings.json"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-07 ~17:40Z voice: broadcasts are fire-and-forget, senders never wait for the reply, receivers never check what is open; login C (the max console) must check broadcasts every wake and answer by priority; d-broadcast-wait-for-reply-1107"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Signal loop: broadcast --wait M blocks bounded and prints acks per host; prompt status lines sorted ask > HIGH > age, capped at 3 + count; wake checklist line in SUPER_SESSION.md",
+  "weight": "",
+  "worker": ""
+}

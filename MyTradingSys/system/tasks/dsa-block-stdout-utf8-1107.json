@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T17:23:30Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "dsa-block-stdout-utf8-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Noticed by the Haiku Chrome worker 2026-11-07 17:25Z in chat 'DSA bootstrap step 1' (JIS-NB). Fix candidates: AIRUN header sets PYTHONIOENCODING, or agent.ps1 sets it for every child; test fails pre-change.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/DSA_DELEGATION.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Haiku worker Noticed line, Lead C 2026-11-07"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "DSA bridge blocks: sync.py ship and tasks.py stdout fails with cp1251 UnicodeDecodeError on the desktop DSA chat, hiding ship results; set PYTHONIOENCODING=utf-8 in the AIRUN block header or dsa.py seed",
+  "weight": "",
+  "worker": ""
+}
