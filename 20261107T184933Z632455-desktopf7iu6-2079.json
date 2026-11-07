@@ -1,0 +1,1 @@
+{"t": "20261107T184933Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "1-minute signals live (facabf74): mts_signal.py wait, broadcast --wait, ask --wait-reply. Pull trunk, then keep one wait loop running", "login": "A", "id": "b-5faa0d", "prio": "high", "cmd": "python scripts/dev/mts_signal.py wait --max 1"}
