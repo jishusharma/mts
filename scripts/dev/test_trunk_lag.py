@@ -242,17 +242,10 @@ class TrunkLagTest(unittest.TestCase):
         self.assertEqual(T.lag(self.tree, fetch=False), (0, 0))
         with open(self.tree / "LAYERS.md", encoding="utf-8", newline="") as f:
             self.assertEqual(f.read().replace(chr(13), ""), "l1\nl2\nl3\n")
-
-    def test_real_edit_on_a_path_trunk_changes_still_blocks(self):
-        hooks = self.origin / "scripts" / "dev"
-        hooks.mkdir(parents=True)
-        (hooks / "hook.py").write_text("v1", encoding="utf-8")
-        sh(self.origin, "add", "scripts")
-        commit(self.origin, "b", 1_000_100)
-        sh(self.tree, "pull", "-q", "--ff-only")
-        (hooks / "hook.py").write_text("v2", encoding="utf-8")
+        # a real edit on a path trunk changes still blocks the fast-forward and survives
+        (hooks / "hook.py").write_text("v3", encoding="utf-8")
         sh(self.origin, "add", "-A")
-        commit(self.origin, "c", 1_000_200)
+        commit(self.origin, "d", 1_000_300)
         (self.tree / "scripts" / "dev" / "hook.py").write_text("my own edit", encoding="utf-8")
         sh(self.tree, "fetch", "-q", "origin")
         self.assertEqual(T.fast_forward(self.tree, fetch=False), (0, False))
