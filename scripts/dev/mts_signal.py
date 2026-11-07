@@ -687,8 +687,9 @@ def action_block(rows, ev):
     return "\n".join(out)
 
 
-def sender_status(rows):
-    """One line for the machine that sent a HIGH broadcast while any target host is not done."""
+def _sender_items(rows, at=None):
+    """[(group, t, line)] for the HIGH broadcasts this host sent that are not done on every target. Group 1 = some target is
+    still `none` or told-expired (nobody has it), group 2 = only parked/told."""
     out = []
     for b in high_open(rows):
         if not hosts.same_host(str(b.get("from", "")).split("/")[0], host()):
@@ -696,9 +697,30 @@ def sender_status(rows):
         hs = sorted(targets(rows, b))
         open_ = ["%s=%s" % (h, ack_state(rows, b["id"], h)) for h in hs if ack_state(rows, b["id"], h) not in TERMINAL]
         if open_:
-            out.append("[MTS BROADCAST %s status] %d/%d hosts done; open: %s (python scripts/dev/mts_signal.py acks %s)"
-                       % (b["id"], len(hs) - len(open_), len(hs), ", ".join(open_), b["id"]))
-    return "\n".join(out)
+            stuck = any(ack_state(rows, b["id"], h) == "none" or told_expired(rows, b, h, at) for h in hs if ack_state(rows, b["id"], h) not in TERMINAL)
+            out.append((1 if stuck else 2, b.get("t", ""),
+                        "[MTS BROADCAST %s status] %d/%d hosts done; open: %s (python scripts/dev/mts_signal.py acks %s)"
+                        % (b["id"], len(hs) - len(open_), len(hs), ", ".join(open_), b["id"])))
+    return out
+
+
+def sender_status(rows):
+    """One line for the machine that sent a HIGH broadcast while any target host is not done."""
+    return "\n".join(x[2] for x in sorted(_sender_items(rows)))
+
+
+STATUS_MAX = 3   # OURS: status lines shown per prompt, the rest are counted (the boot showed 13 unsorted lines)
+
+
+def status_block(rows, at=None, cap=STATUS_MAX):
+    """This host's open asks first (group 0), then HIGH broadcasts nobody has (none / told-expired), then the rest, oldest first
+    inside a group; at most `cap` lines plus 'n more'."""
+    at = at or now()
+    items = sorted(_ask_items(rows, at) + _sender_items(rows, at))
+    lines = [x[2] for x in items[:cap]]
+    if len(items) > cap:
+        lines.append("[MTS status] %d more: python scripts/dev/mts_signal.py acks" % (len(items) - cap))
+    return "\n".join(lines)
 
 
 # ---- asks: mandatory ack + answer, minimum wait before a re-ask, one escalation past the deadline ----------------------
@@ -815,8 +837,8 @@ def ask_block(rows, ev, at=None):
     return "\n".join(out)
 
 
-def asker_status(rows, at=None):
-    """For the asker's host: each open ask with its state, and the time before which a re-ask is refused."""
+def _ask_items(rows, at=None):
+    """[(0, t, line)] for each ask this host sent that is still open, with its state and the time before which a re-ask is refused."""
     at = at or now()
     out = []
     for a in asks_from_me(rows):
@@ -829,8 +851,13 @@ def asker_status(rows, at=None):
             hint = "OVERDUE, escalated to %s" % (",".join(escalated_to(rows, a["id"])) or "(next hook)")
         else:
             hint = "answer due %s" % ask_due(a).strftime("%H%MZ")
-        out.append("[MTS ASK %s to %s] %s, %d min old; %s" % (a["id"], a.get("to"), st, (at - _t(a)).total_seconds() // 60, hint))
-    return "\n".join(out)
+        out.append((0, a.get("t", ""), "[MTS ASK %s to %s] %s, %d min old; %s" % (a["id"], a.get("to"), st, (at - _t(a)).total_seconds() // 60, hint)))
+    return out
+
+
+def asker_status(rows, at=None):
+    """For the asker's host: each open ask with its state, and the time before which a re-ask is refused."""
+    return "\n".join(x[2] for x in _ask_items(rows, at))
 
 
 def new_ask(text, to="all", typ="ask", wait=None, due=None, at=None):
@@ -853,6 +880,59 @@ def new_ask(text, to="all", typ="ask", wait=None, due=None, at=None):
         return "", "ask NOT sent (push failed)"
     return qid, ("ask %s sent to %s: ack expected within %d min, answer by %d min; do not re-ask before then (python scripts/dev/mts_signal.py asks)"
                  % (qid, to, w, max(w, d)))
+
+
+# ---- wait: one bounded loop that returns on the first new inbound signal (1-minute signals, operator 2026-11-07) --------------
+
+WAIT_POLL = 60      # OURS: seconds between fetches of the signals branch; the operator's target is an answer within 1 minute
+WAIT_MAX_MIN = 10   # OURS: default bound of `wait`, minutes
+
+
+def inbound_new(rows, since, hostname=None):
+    """The first record newer than stamp `since` that concerns this host and was not sent from it: an ask for it (or escalated to it),
+    a HIGH broadcast to it, or an ack/answer on an ask or HIGH broadcast this host sent. None when there is none."""
+    hostname = hostname or host()
+    lim = future_limit()
+    mine = {r["id"] for r in rows if r.get("id") and r.get("kind") in ("ask", "broadcast")
+            and hosts.same_host(str(r.get("from", "")).split("/")[0], hostname)}
+    for r in sorted(rows, key=lambda x: x.get("t", "")):
+        if not since < r.get("t", "") <= lim or hosts.same_host(str(r.get("from", "")).split("/")[0], hostname):
+            continue
+        k = r.get("kind")
+        if (k == "ask" and r.get("id") and ask_for_me(rows, r, hostname)) \
+                or (k == "broadcast" and r.get("prio") == "high" and to_me(r.get("to"), hostname)) \
+                or (k == "ack" and r.get("id") in mine):
+            return r
+    return None
+
+
+def wait_signal(max_min=WAIT_MAX_MIN, hostname=None, since=None, poll=None, sleeper=None, fetch=None):
+    """Fetch the signals branch; (0, record, seconds waited) on the FIRST new inbound signal, (2, None, seconds) after max_min.
+    The first look is at once, then every `poll` seconds. `since` defaults to now (what was already there is not new)."""
+    poll = WAIT_POLL if poll is None else poll
+    sleeper, fetch = sleeper or time.sleep, fetch or ensure
+    since = since or stamp()
+    total, elapsed = int(max_min * 60), 0
+    while True:
+        h = fetch()
+        if h is not None:
+            rec = inbound_new(load(h), since, hostname)
+            if rec:
+                return 0, rec, elapsed
+        if elapsed >= total:
+            return 2, None, elapsed
+        step = max(1, min(poll, total - elapsed))
+        sleeper(step)
+        elapsed += step
+
+
+def wait_print(res):
+    rc, rec, secs = res
+    if rc == 0:
+        print("SIGNAL %s %s from %s after %d s: %s" % (rec.get("kind"), rec.get("id", ""), rec.get("from", "?"), secs, rec.get("text", "")))
+    else:
+        print("no new signal in %d s" % secs)
+    return rc
 
 
 def _handle(payload, sid, ev, auto):
@@ -903,8 +983,7 @@ def _handle_rows(payload, sid, ev, auto):
         except Exception:
             pass
     if ev == "UserPromptSubmit":
-        out.append(sender_status(rows))
-        out.append(asker_status(rows))
+        out.append(status_block(rows))
     if ev != "SessionStart":
         out.append(news(rows, sid, seen_f, sd, fetch))
     return "\n".join(t for t in out if t)
@@ -1210,9 +1289,13 @@ def main(argv):
         ap.add_argument("--type", default="ask", choices=sorted(ASK_TYPES))
         ap.add_argument("--wait", type=int, default=None, help="minimum wait in minutes before a re-ask")
         ap.add_argument("--due", type=int, default=None, help="deadline in minutes; unanswered past it escalates once")
+        ap.add_argument("--wait-reply", type=float, default=0, help="after sending, run `wait` this many minutes and print the first reply (--wait is the re-ask minimum)")
         a = ap.parse_args(argv[1:])
+        t0 = stamp()
         qid, msg = new_ask(a.text, to=a.to, typ=a.type, wait=a.wait, due=a.due)
         print(msg)
+        if qid and a.wait_reply and not msg.startswith("NOT"):
+            wait_print(wait_signal(a.wait_reply, since=t0))
         return 0 if qid and not msg.startswith("NOT") else (3 if qid else 1)
     if cmd == "asks":
         h = ensure()
@@ -1240,7 +1323,9 @@ def main(argv):
         ap.add_argument("--prio", default="normal", choices=["normal", "high"])
         ap.add_argument("--audience", default="all", choices=["all", "top"], help="top: subagents and embedded workers neither see nor block on it")
         ap.add_argument("--cmd", default="", help="high: the exact command the operator must run on each machine")
+        ap.add_argument("--wait", type=float, default=0, help="after sending, wait up to M minutes for the first ack, then print the acks table")
         a = ap.parse_args(argv[1:])
+        t0 = stamp()
         extra, bid = None, ""
         if a.prio == "high":
             bid = "b-" + hashlib.sha1(("%s%s%s" % (time.time(), who(), a.message)).encode("utf-8")).hexdigest()[:6]
@@ -1253,7 +1338,20 @@ def main(argv):
             print(sender_note(a.message))
             if bid:
                 print("id %s (HIGH): every host shows it on every prompt until it acks. Follow it with: python scripts/dev/mts_signal.py acks %s" % (bid, bid))
+            if a.wait:
+                if bid:
+                    wait_print(wait_signal(a.wait, since=t0))
+                    main(["acks", bid])
+                else:
+                    print("--wait: a normal broadcast has no acks; use --prio high")
         return 0 if ok else 1
+    if cmd == "wait":
+        import argparse
+        ap = argparse.ArgumentParser(prog="mts_signal.py wait")
+        ap.add_argument("--max", type=float, default=WAIT_MAX_MIN, help="give up after this many minutes (exit 2)")
+        ap.add_argument("--host", default="")
+        a = ap.parse_args(argv[1:])
+        return wait_print(wait_signal(a.max, hostname=a.host or None))
     if cmd == "pending":
         import argparse
         ap = argparse.ArgumentParser(prog="mts_signal.py pending")
