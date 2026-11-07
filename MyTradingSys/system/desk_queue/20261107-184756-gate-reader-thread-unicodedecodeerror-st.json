@@ -1,0 +1,10 @@
+{
+  "done_when": "run_all_tests.py:153, :491 and :1154 carry encoding=utf-8, errors=replace; a fail-first test scripts/dev/test_run_all_tests_encoding.py passes after and fails on the pre-change file; a ship gate with non-utf8 bytes in git log output prints no reader-thread traceback.",
+  "from": "JIS-NB",
+  "id": "20261107-184756-gate-reader-thread-unicodedecodeerror-st",
+  "need": "Card sync-py-ship-reader-thread-still-dies-wi (refined, SONNET, p1). The ship gate child dies on every ship with UnicodeDecodeError cp1251 byte 0x98, seen four times in DSA chat mts-dsa-jis-nb-1107-1658 (results #15, #23, #50, #70), each after a successful push. The prior card sync-py-ship-reader-thread-unicodedecode is done and fixed only sync.py, which now carries encoding=utf-8 errors=replace at :91, :96, :711, :1074, :1643. sync.py:392 launches the gate child without capture, so the failing reader is inside scripts/dev/run_all_tests.py, whose three text=True subprocess calls carry neither encoding nor errors: :153 git rev-parse, :491 mvn --version, :1154 git -C root. Crash offset is about 79600 bytes each time, within 37 bytes, so it is a long git-log style stream rather than test output.",
+  "posted": "2026-11-07T18:47:56Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Gate reader thread UnicodeDecodeError still fires: three unencoded subprocess calls in run_all_tests.py"
+}
