@@ -1,0 +1,10 @@
+{
+  "done_when": "From the owner login jishusharma1985: artifacts.py build, Artifact publish over both urls, artifacts.py publish-record --slug mts_layer_map and --slug mts_home, then artifacts.py stale shows neither.",
+  "from": "JIS-NB",
+  "id": "20261107-172025-republish-2-stale-pages-mts-layer-map-mt",
+  "need": "Ship d1af3f37 (JIS-NB, DSA) reported: STALE mts_layer_map https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ ; STALE mts_home https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3 (repo build differs from last publish). DSA cannot publish.",
+  "posted": "2026-11-07T17:20:25Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Republish 2 stale pages (mts_layer_map, mts_home)"
+}
