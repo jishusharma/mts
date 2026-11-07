@@ -308,6 +308,21 @@ class TestRepoRoles(unittest.TestCase):
                 n = len(rl.build_text(h["name"], REPO, True))
                 self.assertLess(n, 9500, f"{f.name} emits {n} chars")
 
+    def test_session_planner_has_duty_0_and_fits_the_cap(self):
+        """Code Red lane floors (CODEX >= 8, GEMINI >= 4) are Duty 0 of the planner and the emit stays <= 9500 chars."""
+        def local_show(repo, rel):
+            p = REPO / rel
+            return p.read_bytes().decode("utf-8") if p.exists() else None
+        f = REPO / rl.ROLES_REL / "session_planner.md"
+        body = f.read_bytes().decode("utf-8").replace("\r\n", "\n")
+        self.assertIn("## Duty 0", body)
+        self.assertIn("CODEX >= 8", body)
+        self.assertIn("GEMINI >= 4", body)
+        with mock.patch.object(rl, "git_show", local_show), mock.patch.object(rl, "git_sha8", lambda r: "abcd1234"), \
+                mock.patch.object(rl, "lease_suffix", lambda n, r: ""):
+            n = len(rl.build_text("Session_Planner", REPO, True))
+        self.assertLessEqual(n, 9500, f"session_planner emits {n} chars")
+
     def test_check_passes_on_repo(self):
         self.assertEqual(rl.check(REPO, lambda x: None), 0)
 
