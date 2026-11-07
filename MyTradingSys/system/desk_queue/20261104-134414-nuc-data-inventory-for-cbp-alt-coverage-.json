@@ -4,7 +4,9 @@
   "id": "20261104-134414-nuc-data-inventory-for-cbp-alt-coverage-",
   "need": "On JIS-NUC: list every folder under F:/MTS/data with file count and newest file date (Get-ChildItem F:/MTS/data -Directory | ForEach { name, count of files, max LastWriteTime }). Then for each of ETHUSDT SOLUSDT XRPUSDT BNBUSDT DOGEUSDT say whether a 1h and a 1d kline file exists and its first and last date.",
   "posted": "2026-11-04T13:44:14Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-11-07T17:55:20Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "NUC data inventory for CBP alt coverage (J9 prep)"
 }

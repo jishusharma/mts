@@ -34,7 +34,7 @@ def fetch(interval, sec, end_ms, n):
 def main():
     now_ms = int(time.time() * 1000)
     lines = ["# Squeeze state, BTCUSDT (Bybit linear public klines), last 90 days - descriptive, n printed, no verdict",
-             "", "Generated %s. Engine: layers/squeeze/squeeze.py, FORMULAS s31, LazyBear defaults 20/2.0/1.5/20 (SOURCED). "
+             "", "Generated %s. Engine: layers/squeeze/squeeze.py, FORMULAS s31, LazyBear defaults 20/1.5/20 with the script BB-dev quirk dev = multKC*stdev (SOURCED, FORMULAS s31). "
              "The last bar of each series is partial (still forming) and is excluded." % datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%MZ"), ""]
     for name, iv, sec in TFS:
         n90 = 90 * 86400 // sec

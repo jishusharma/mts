@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T17:59:56Z",
   "commands": [],
   "created": "2026-10-29T23:47:55Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already fixed by f721ddf5a: run_job treats own-host claim as not held (case-insensitive), ",
+      "ref": "27923ef65",
+      "utc": "2026-11-07T17:59:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no defect left",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
   "pinned": false,
   "prio": 3,
@@ -31,7 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-05T04:41:41Z",
   "refs": [],
-  "result": "",
+  "result": "already fixed by f721ddf5a: run_job treats own-host claim as not held (case-insensitive), other host still SKIPs; claims carry a 3 h expires_at lease refreshed by keep_lease, so a crashed run frees itself (sync.claim_expired); test_own_host_open_claim_not_skipped + test_other_host_open_claim_skipped pass (26 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py"
@@ -42,12 +55,13 @@
   "scope_sha": "dea81301a70a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read gemini_queue.py lines 64-115 and test_gemini_queue.py",
     "Write the fail-first test for own-host claim in run_job",
     "In run_job treat held equal to socket.gethostname() (case-insensitive) as not held, then run python scripts/dev/test_gemini_queue.py"
   ],
+  "taken": "2026-11-07T17:59:56Z",
   "tests": "test_gemini_queue.py: run_job with an open claim whose host is socket.gethostname() does not write SKIP; another host still does; fails on current code",
   "title": "gemini_queue: a crash between claim and release leaves the card claimed; run_job then skips its own host's claim forever (line 104 checks before claim_with_retry, which treats own host as ok)",
   "weight": "",
