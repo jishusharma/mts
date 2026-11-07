@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:48:43Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "news-headline-panel-tree-rest-1108",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Plan N1 of the 10-30 report: Tree REST news.treeofalpha.com/api/news?limit=N (fields time, source, title, importance 0-10, suggestions; CORS *; free tier ~15 s late), poll 15 s OURS only while live_aid is open (SCHEDULING_POLICY: no scheduler), last 12 headlines, importance >= 7 marked (SOURCED Tree score), BTC/macro words marked; append to a local headlines log under runtime/ (gitignored, PUBLIC repo). Context only, never gates or sizes a trade (CBP rule). Test fails pre-change (parser on a saved sample). Measured 10-29: hack headline 15 min after on-chain, 5 min before the main leg.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+    "MyTradingSys/items/T054_us_session_news_correlation.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-08 00:15 IST: TradingView News panel screenshot (abf74fdf6d47) 'Do u see such news! as here'; third ask after T054 (09-28) and news_feeds_2026-10-30; nothing built"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "News headlines in MTS: Tree News REST poll (15 s, while a page is open) into live_aid + a headlines log; importance >= 7 marked; no scheduler",
+  "weight": "",
+  "worker": ""
+}
