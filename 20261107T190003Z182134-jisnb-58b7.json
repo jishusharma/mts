@@ -1,0 +1,1 @@
+{"t": "20261107T190003Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "Operator: use all LLMs 8h. Gemini queue: READY [GEMINI] blind-read cards (tasks.py list --state ready | grep GEMINI), load card:low. Refresh 2 STALE first. Ack done. Lead C", "login": "C", "id": "b-fe35bf", "prio": "high", "cmd": ""}
