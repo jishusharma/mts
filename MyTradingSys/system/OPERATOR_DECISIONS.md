@@ -1956,3 +1956,13 @@ promoted READY (fabervaale-cvd-sweep, oi-usage-sweep, lab-verify-footprint-vs-in
 repeatable), dsa-tests-quick-trunk-1107 (DSA-NUC), desk row depth-band rerun (DSA-NUC). Fan-out driver = card
 dsa-multi-chat-driver-1107 (raw, SONNET): cap chats per host by the ship gate (4+ concurrent ships flake, desk 20261029-170405).
 Answer: yes, load via the queue; 2 chats per host until the driver card lands; Haiku only kicks a chat, never babysits it.
+
+## d-broadcast-wait-for-reply-1107 (2026-11-07 ~17:40Z, operator, voice)
+Operator: the broadcast feature is not used properly: a session broadcasts and moves on without waiting for the reply, and
+receivers do not check what broadcasts are open while they work; login C (the Max console, most often running) must be in
+the habit of checking open broadcasts and asks on every wake and answering them by priority. Lead C: delivery rides on
+prompts (mts_signal.py help), so a sender that never prompts again never sees the ack; 16 open status lines sat on one prompt.
+Answer: rule from now: (1) after every broadcast or ask the sender runs ONE bounded waiter on `mts_signal.py acks <id>` (≤ the
+ask's --wait) before its next step; (2) every wake starts with `mts_signal.py pending --host <me>` and `asks`, answered in the
+order ask > HIGH broadcast > normal, before the task; (3) tooling = card signal-broadcast-wait-and-prio-1107 (SONNET p1).
+Applied this turn: q-2617a9 (NUC DSA refinements) answered yes with limits.
