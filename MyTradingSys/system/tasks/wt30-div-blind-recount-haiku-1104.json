@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-11-07T21:32:00Z",
   "commands": [
     "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/RECOUNT_HAIKU_1104.md').read_text(); assert 'MATCH' in t or 'DIFF' in t\""
   ],
@@ -16,6 +17,12 @@
   "id": "wt30-div-blind-recount-haiku-1104",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk 990e9b8b8 (RECOUNT_HAIKU_1104.md + recount_haiku_1104.py)",
+      "ref": "f4e938467",
+      "utc": "2026-11-07T21:32:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,13 +43,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already done",
   "note": "REVIEWED:2026-11-04 ACCEPT by lab_guy | lab_guy C1 ACCEPT independent recount (Haiku, cap 2 USD). Blind: never read the coordinator scratch scripts. DEV only: the candidate numbers used bars past DEV_END, so a window DIFF is expected, not an error.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T07:47:49Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk 990e9b8b8 (RECOUNT_HAIKU_1104.md + recount_haiku_1104.py)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wt_bible_studies_2026-11-04/SPEC.md",
     "MyTradingSys/research/wt_bible_studies_2026-11-04/RECOUNT_HAIKU_1104.md",
@@ -53,12 +66,13 @@
   "scope_sha": "bbaa2d3f181e",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SPEC.md Cards 1 and 3; use wavetrend.py for WT; Binance spot klines on disk, DEV window only",
     "Compute the counts with your own short script",
     "Write RECOUNT_HAIKU_1104.md"
   ],
+  "taken": "2026-11-07T21:32:00Z",
   "tests": "python -c \"import pathlib; t=pathlib.Path('MyTradingSys/research/wt_bible_studies_2026-11-04/RECOUNT_HAIKU_1104.md').read_text(); assert 'MATCH' in t or 'DIFF' in t\"",
   "title": "Haiku blind recount of the coordinator WT 30m divergence and cycle-frequency numbers from the written rule only (never the scratch scripts)",
   "weight": "ROUTINE",

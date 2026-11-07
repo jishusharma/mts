@@ -91,3 +91,15 @@ def test_old_rates_globals_are_gone_from_the_live_aid():
     for g in ("US_OPEN_RATES", "ANTICIPATION_RATES", "BIGCANDLE_RATES", "LEVEL_APPROACH_RATES", "us_open_rates.js", "anticipation_rates.js", "bigcandle_rates.js", "level_approach_rates.js"):
         assert g not in page, g
     assert (HERE / "cycle_flag_data.js").exists()
+
+
+def test_studies_write_into_the_registry_input_dir_not_next_to_it():
+    """A study re-run must not recreate the deleted *_rates.js globals in live_aid/ (card studies-write-into-base-rates-registry)."""
+    studies = ["anticipation_map_2026-11-05", "bigcandle_story_2026-11-05", "level_approach_prep_2026-11-05", "us_open_levels_2026-10-30"]
+    for d in studies:
+        src = (HERE.parents[1] / "research" / d / "study.py").read_text(encoding="utf-8")
+        assert "base_rates_input" in src, d
+        assert "'live_aid', '" not in src.replace("'live_aid', 'base_rates_input'", ""), d
+        assert '"live_aid" / "' not in src.replace('"live_aid" / "base_rates_input"', ""), d
+    import base_rates
+    assert base_rates.INPUT_DIR == base_rates.HERE / "base_rates_input"

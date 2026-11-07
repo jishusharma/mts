@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-07T22:26:06Z",
   "commands": [
     "python scripts/dev/test_tasks.py",
     "python scripts/dev/tasks.py lint"
@@ -18,11 +20,17 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tasks.problems: a card whose done_when names PRE_REG but not Context is NOT READY with a m",
+      "ref": "1bd780aa9",
+      "utc": "2026-11-07T22:26:06Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "tasks.promote_shared keeps CRUCIAL/CRITICAL weight, sets shared:true",
-      "ref": "a9f710df834f",
-      "utc": "2026-11-06T08:03:41Z"
+      "line": "Revert 18c0cf765 (tasks.as_list + DSA seed queue/filed): CI RED Step 3gd, scripts/dev/test",
+      "ref": "cb214227a8d2",
+      "utc": "2026-11-07T16:47:48Z"
     },
     {
       "auto": true,
@@ -35,13 +43,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. If lint flags more than 5 existing cards, narrow the rule to cards created after 2026-11-04 (OURS) and say so in the Result. DEFAULT (OURS) for the old ask: Context check applies to state raw/new cards only; do not edit refined study cards.",
+  "next": "END: done",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. If lint flags more than 5 existing cards, narrow the rule to cards created after 2026-11-04 (OURS) and say so in the Result. DEFAULT (OURS) for the old ask: Context check applies to state raw/new cards only; do not edit refined study cards. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; tasks.py reverted cb214227a since refresh",
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "",
-  "refreshed": "2026-11-06T12:19:13Z",
+  "refreshed": "2026-11-07T22:23:32Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.problems: a card whose done_when names PRE_REG but not Context is NOT READY with a message naming ## Context (Regime/Phase/Session/Entry); new test in test_tasks.py (fails on old code), 141/141 pass incl. every committed card",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py",
@@ -50,15 +64,16 @@
   "scope_out": [
     "cards already stamped; PRE_REG files; ci.yml or gate config; PRE_REGs frozen before 2026-11-04"
   ],
-  "scope_sha": "a9f710df834f",
+  "scope_sha": "cb214227a8d2",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read tasks.problems (L328) and how it detects study cards; check lint for an allowlist of frozen PRE_REGs",
     "write the 2 failing tests, add the check (study card = done_when or goal names PRE_REG), run tasks.py lint and fix only cards it newly flags by adding Context to their done_when",
     "add one line to session_planner_details.md review checks; run_all_tests.py --quick; ship with Result: and Next: END: Context check in Definition of Ready"
   ],
+  "taken": "2026-11-07T22:23:33Z",
   "tests": "test_tasks.py: the 2 new tests, first failing on current problems(); plus python scripts/dev/tasks.py lint exit 0",
   "title": "Haiku ACCEPT review stamps must check for a PRE_REG Context section (Kurisko ACCEPT missed it): review step fails the card when the study's PRE_REG lacks ## Context with Regime/Phase/Session/Entry lines",
   "weight": "IMPORTANT",

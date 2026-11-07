@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: research/health_2026-11-07/SHIP_HEALTH.md item 7. gate_timing.jsonl 7 d, 10 trees: median 3xt 695 s, 4f 404 s, 3sig 357 s, 5b 346 s (parallel shards, under load). Twin to read first: gate-flakes-under-load-test-lease-py-tes (blocked). Fix: profile why test_mts_signal.py (3sig) takes 6 min, move 3xt tests that are import-graph covered to CI only, split 4f.",
+  "note": "Source: research/health_2026-11-07/SHIP_HEALTH.md item 7. gate_timing.jsonl 7 d, 10 trees: median 3xt 695 s, 4f 404 s, 3sig 357 s, 5b 346 s (parallel shards, under load). Twin to read first: gate-flakes-under-load-test-lease-py-tes (blocked). Fix: profile why test_mts_signal.py (3sig) takes 6 min, move 3xt tests that are import-graph covered to CI only, split 4f. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: gate speed; the CI-red parity card is the gate lever on the path",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

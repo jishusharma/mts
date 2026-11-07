@@ -26,7 +26,7 @@ WICK = 0.5        # OURS: wick toward the level >= 50 % of the bar range
 TFS = (1, 2, 3, 5)
 REGIME = 0.10     # OURS: trailing 30-day return > +10 % bull, < -10 % bear, else range
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT_JS = os.path.join(HERE, '..', '..', 'tools', 'live_aid', 'level_approach_rates.js')
+OUT_JS = os.path.join(HERE, '..', '..', 'tools', 'live_aid', 'base_rates_input', 'level_approach_rates.js')
 
 
 def load_klines(symbol='BTCUSDT'):
@@ -231,6 +231,7 @@ def main():
     last = datetime.fromtimestamp(evs[-1]['t'] / 1000, timezone.utc).strftime('%Y-%m-%d')
     meta = {'source': 'Binance USD-M BTCUSDT 1m klines + metrics 5m OI', 'range': [first, last], 'approaches': len(evs), 'touches': len(touches),
             'zone': ZONE, 'absDs': ABS_DS, 'absExt': ABS_EXT, 'note': 'DEV window, fee-free descriptive; OURS thresholds in study.py'}
+    os.makedirs(os.path.dirname(OUT_JS), exist_ok=True)
     with open(OUT_JS, 'w', newline='\n') as fh:
         fh.write('// built by research/level_approach_prep_2026-11-05/study.py; do not edit\n')
         fh.write('var LEVEL_APPROACH_RATES = ' + json.dumps({'meta': meta, 'u1': u1, 'u2': u2, 'u3': u3}, sort_keys=True) + ';\n')

@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Planner could not locate the sim_desk build file by name: the worker greps 'Updated' under MyTradingSys/research/sim_desk and adds it to scope. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Planner could not locate the sim_desk build file by name: the worker greps 'Updated' under MyTradingSys/research/sim_desk and adds it to scope. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: page stamp housekeeping; machinery freeze",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

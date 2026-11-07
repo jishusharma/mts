@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gemini queue on the NUC, load as <card>:low (gemini-always-low-effort). Reading only; Gemini never writes to the chart or the engines. Companion cards: the other three tvfav-usage-* cards; consumer: indicator-map-1107.",
+  "note": "Gemini queue on the NUC, load as <card>:low (gemini-always-low-effort). Reading only; Gemini never writes to the chart or the engines. Companion cards: the other three tvfav-usage-* cards; consumer: indicator-map-1107. | PARKED 2026-11-08: CODEX-lane research, lint WARN done_when outside the lab folder; not on the path. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

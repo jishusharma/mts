@@ -65,6 +65,14 @@ class DefinitionOfReadyTest(unittest.TestCase):
             with self.subTest(k=k):
                 self.assertTrue(T.problems(good(**{k: empty})), k)
 
+    def test_prereg_done_when_must_name_the_context_section(self):
+        """A review ACCEPT missed the PRE_REG Context section (Kurisko): a card whose done_when names PRE_REG must say Context."""
+        bad = T.problems(good(done_when="PRE_REG.md frozen before any run, 28 cells"))
+        self.assertTrue(any("## Context" in m and "Regime" in m and "Entry" in m for m in bad), bad)
+        ok = T.problems(good(done_when="PRE_REG.md with a ## Context section (Regime/Phase/Session/Entry), 28 cells"))
+        self.assertEqual(ok, [])
+        self.assertEqual(T.problems(good(done_when="no pre-registration named here")), [])
+
     def test_worker_type_is_set_up_front_and_consistent(self):
         """WORKERS.md: agent = size S and est_turns <= 15, session otherwise; code lanes only."""
         has = lambda c, w: any(w in m for m in T.problems(c))

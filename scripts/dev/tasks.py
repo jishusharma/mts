@@ -409,6 +409,8 @@ def problems(card, cards=None, reg=None, repo=None, lab_scope=False):
                     p.append("mutation_check test must assert rejection of dummy or shuffled output")
             except OSError:
                 p.append(f"mutation_check test file missing: {match.group(1)}")
+    if re.search(r"PRE_REG", str(card.get("done_when", ""))) and not re.search(r"(?i)context", str(card.get("done_when", ""))):
+        p.append("done_when names PRE_REG but not its ## Context section (Regime/Phase/Session/Entry lines); name it so a review ACCEPT cannot miss it")
     w = card.get("weight") or ""
     if w and w not in WEIGHTS:
         p.append(f"weight {w!r} not one of {', '.join(WEIGHTS)}")

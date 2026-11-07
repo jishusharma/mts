@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T21:32:14Z",
   "commands": [
     "python scripts/dev/tasks.py check java-va-state-asymmetry-fix-1108"
   ],
@@ -17,8 +18,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "superseded by refine-batch-1108",
+  "pinned": false,
   "prio": 1,
+  "reason": "superseded by refine-batch-1108",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
@@ -38,7 +41,7 @@
   "sources": [
     "Lead C 2026-11-08 plan: credit slot J2"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "for each id: python scripts/dev/tasks.py show-free read of the json (open the file), read its refs and the audit AUDIT_AND_COURSE_CORRECTION.md Part 4",
     "tasks.py fill <id> with --goal --scope-in --scope-out --step --tests --done-when --size --est-turns --worker (worker session when size M or est_turns > 15)",

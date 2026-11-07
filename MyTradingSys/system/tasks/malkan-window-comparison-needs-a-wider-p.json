@@ -40,7 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. Candidate for credit job 3 of PLAN_24H_2026-11-06 if c34 is unavailable. RESULT needs Regime mix:; Next: must be an existing card, stage or END: why; a new tool script needs a wiring_registry.json entry; fees from backtest/fees.py.",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. Candidate for credit job 3 of PLAN_24H_2026-11-06 if c34 is unavailable. RESULT needs Regime mix:; Next: must be an existing card, stage or END: why; a new tool script needs a wiring_registry.json entry; fees from backtest/fees.py. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: long-history DEV study; phase-first testnet-forward replaced backtest gates (d-phase-first-method-1106)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

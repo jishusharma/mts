@@ -32,7 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Gemini queue, load as <card>:low. Companion: vfi-engine-1107. Blind read: use only the files named. ",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Gemini queue, load as <card>:low. Companion: vfi-engine-1107. Blind read: use only the files named. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: context-engine review; context columns follow the news and auction path",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
