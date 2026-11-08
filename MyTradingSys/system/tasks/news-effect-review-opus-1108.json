@@ -15,7 +15,22 @@
   "goal": "A reviewer who did not build the catalogue checks it for selection bias, look-ahead, overlapping windows, thin classes and over-reading, and says which findings are safe to build on.",
   "id": "news-effect-review-opus-1108",
   "lane": "OPUS",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect-review-opus-1108: independent Opus review of the news-effect catalogue",
+      "ref": "90119ad0e4f9",
+      "utc": "2026-11-08T02:21:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "90119ad0e4f9 news-effect-review-opus-1108: independent Opus review of the news-effect cata",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md",
+      "utc": "2026-11-08T02:21:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +38,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T20:07:50Z",
+  "refreshed": "2026-11-08T18:20:56Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/REPORT.md"
   ],
@@ -34,7 +49,7 @@
   "scope_out": [
     "no edits to the catalogue or its report|no weight or flash proposal|do not read any other review file"
   ],
-  "scope_sha": "",
+  "scope_sha": "90119ad0e4f9",
   "size": "S",
   "sources": [
     "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"

@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "cbp_run: every run refreshes prices and rebuilds the v5 CBP Analyst Desk board",
-      "ref": "891a04e9a6af",
-      "utc": "2026-11-04T13:52:10Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "layers": [],
@@ -32,7 +32,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:46:04Z",
+  "refreshed": "2026-11-08T18:20:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
   "scope_out": [
     "live tree .mts_live; mainnet; .secrets"
   ],
-  "scope_sha": "891a04e9a6af",
+  "scope_sha": "05d8d613782f",
   "size": "M",
   "sources": [],
   "state": "ready",

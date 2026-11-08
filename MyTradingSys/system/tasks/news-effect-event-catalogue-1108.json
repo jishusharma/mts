@@ -25,7 +25,15 @@
   "goal": "Before any weight or flash rule is fixed: know which kinds of news moved BTC and ETH, by how much, how fast, and whether the same kind of news worked a second time. Evidence from analyst transcripts plus public online sources, reaction measured on public Binance 1m klines.",
   "id": "news-effect-event-catalogue-1108",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
+      "ref": "8ce5a1c28081",
+      "utc": "2026-11-08T09:13:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -33,7 +41,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T20:07:26Z",
+  "refreshed": "2026-11-08T18:20:55Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
     "MyTradingSys/items/T054_us_session_news_correlation.md",
@@ -47,7 +55,7 @@
   "scope_out": [
     "no trade gate, no Live Aid change, no weight or bias rule|no cookies or private data|no headline text beyond a short title and URL|no live tree touch"
   ],
-  "scope_sha": "",
+  "scope_sha": "8ce5a1c28081",
   "size": "M",
   "sources": [
     "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"

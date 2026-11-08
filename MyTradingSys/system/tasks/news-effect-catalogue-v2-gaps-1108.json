@@ -23,7 +23,15 @@
   "goal": "The v1 catalogue (192 events, 13 classes) has no surprise data, so a hot and a cool CPI look identical; 55 rows have only an approximate time; the times of own-grouping events came from memory; analyst-named events are 4. The operator wants how news behaves, including why the same news sometimes does not work twice: surprise and sourcing are the missing pieces.",
   "id": "news-effect-catalogue-v2-gaps-1108",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
+      "ref": "8ce5a1c28081",
+      "utc": "2026-11-08T09:13:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -31,7 +39,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T01:19:33Z",
+  "refreshed": "2026-11-08T18:20:54Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md (read first: only CPI and NFP size effects are safe; direction needs surprise data)"
@@ -44,7 +52,7 @@
   "scope_out": [
     "no weight, flash or bias rule|no Live Aid change|no trade gate|no live tree touch|no unsourced number written into the csv"
   ],
-  "scope_sha": "",
+  "scope_sha": "8ce5a1c28081",
   "size": "M",
   "sources": [
     "catalogue v1 Result 2026-11-08 01:18Z: no surprise data, 55 rows approximate time, own-grouping times from memory, 4 analyst events; operator chat 20:20Z"

@@ -29,16 +29,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid: timeframe strip panel (R19)",
-      "ref": "d6db87075633",
-      "utc": "2026-11-06T12:51:59Z"
+      "line": "Merge origin/fast-track (news_weight) into events strip: keep both script tags, renderers,",
+      "ref": "3db35c5f403d",
+      "utc": "2026-11-08T12:36:04Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d6db87075633 live_aid: timeframe strip panel (R19)",
+      "line": "06baadc50339 live_aid: News weight W 0-100, LONG/SHORT/HOLD chip and News row flash (news_",
       "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
-      "utc": "2026-11-06T12:51:59Z"
+      "utc": "2026-11-08T10:51:00Z"
     }
   ],
   "layers": [],
@@ -48,7 +48,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T14:18:43Z",
+  "refreshed": "2026-11-08T18:20:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -62,7 +62,7 @@
     "the live tree",
     "build_artifact.py beyond inlining"
   ],
-  "scope_sha": "d6db87075633",
+  "scope_sha": "3db35c5f403d",
   "size": "M",
   "sources": [],
   "state": "ready",

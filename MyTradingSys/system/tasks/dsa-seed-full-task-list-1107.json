@@ -29,7 +29,15 @@
   "id": "dsa-seed-full-task-list-1107",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert 18c0cf765 (tasks.as_list + DSA seed queue/filed): CI RED Step 3gd, scripts/dev/test",
+      "ref": "cb214227a8d2",
+      "utc": "2026-11-07T16:47:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -37,7 +45,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T15:37:20Z",
+  "refreshed": "2026-11-08T18:20:37Z",
   "refs": [
     "MyTradingSys/system/SPEC_START_DSA_TRIGGER.md",
     "DSA_SESSION_PROMPT.md",
@@ -50,7 +58,7 @@
   "scope_out": [
     "no bridge payload change (scripts/aibridge/** needs a RELEASES bump; not needed here)|no token files|no DeepSeek chat writes beyond the seed|no live tree"
   ],
-  "scope_sha": "",
+  "scope_sha": "cb214227a8d2",
   "size": "M",
   "sources": [
     "operator 2026-11-07 voice (chat, Lead C turn 15:30Z): understand how people use the favourites, LazyBear/Carter/Katsanos, crypto filter, then group indicators and analysts by what they measure; d-favourites-usage-then-map-1107"

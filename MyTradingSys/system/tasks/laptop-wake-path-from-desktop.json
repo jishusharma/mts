@@ -34,16 +34,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "mts_doctor: add GIT-HUNG check and guard scope_in network git calls with timeout and no-pr",
-      "ref": "d6d63cf459d6",
-      "utc": "2026-11-02T06:42:18Z"
+      "line": "laptop_wake.py: one-shot wake gate client for the Lenovo with verb allow-list + test; LENO",
+      "ref": "7019e48997f6",
+      "utc": "2026-11-07T14:20:52Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "b2ddbc7d9f0e docs: Lenovo is login A (2026-10-25 roll call); add the operator start lines",
+      "line": "7019e48997f6 laptop_wake.py: one-shot wake gate client for the Lenovo with verb allow-list",
       "ref": "MyTradingSys/system/LENOVO_SETUP.md",
-      "utc": "2026-10-25T06:51:22Z"
+      "utc": "2026-11-07T14:20:52Z"
     }
   ],
   "layers": [],
@@ -54,7 +54,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T04:41:42Z",
+  "refreshed": "2026-11-08T18:20:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -65,7 +65,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "d6d63cf459d6",
+  "scope_sha": "7019e48997f6",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 11"

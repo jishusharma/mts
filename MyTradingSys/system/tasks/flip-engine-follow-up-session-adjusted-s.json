@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "flip study step 5: Haiku review (REVIEW.md, 12 findings), amended analysis rerun, card don",
-      "ref": "9c7aa1bc41d7",
-      "utc": "2026-11-06T17:01:47Z"
+      "line": "GPT spec tests for candle_flip flip_model.py",
+      "ref": "2ba1444c6aac",
+      "utc": "2026-11-06T18:03:57Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T17:31:43Z",
+  "refreshed": "2026-11-08T18:20:40Z",
   "refs": [
     "MyTradingSys/research/candle_flip_probability_2026-11/RESULT.md"
   ],
@@ -39,7 +39,7 @@
   "scope_out": [
     "MyTradingSys/tools/live_aid"
   ],
-  "scope_sha": "9c7aa1bc41d7",
+  "scope_sha": "2ba1444c6aac",
   "size": "M",
   "sources": [],
   "state": "ready",

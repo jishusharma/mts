@@ -17,16 +17,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "news-effect catalogue v2: verified flag, controls, analyst events, PPI fix",
-      "ref": "c686699d229c",
-      "utc": "2026-11-08T03:53:52Z"
+      "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
+      "ref": "8ce5a1c28081",
+      "utc": "2026-11-08T09:13:10Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c686699d229c news-effect catalogue v2: verified flag, controls, analyst events, PPI fix",
+      "line": "8ce5a1c28081 news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 12",
       "ref": "MyTradingSys/research/news_effects_2026-11/REPORT.md",
-      "utc": "2026-11-08T03:53:52Z"
+      "utc": "2026-11-08T09:13:10Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T08:11:21Z",
+  "refreshed": "2026-11-08T18:20:57Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -48,7 +48,7 @@
   "scope_out": [
     "no change to returns columns; no trading code; public pages only"
   ],
-  "scope_sha": "c686699d229c",
+  "scope_sha": "8ce5a1c28081",
   "size": "M",
   "sources": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md"

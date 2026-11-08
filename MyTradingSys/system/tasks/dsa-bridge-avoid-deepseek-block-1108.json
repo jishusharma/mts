@@ -5,6 +5,7 @@
     "python F:/AIBridge/tests/agent_live_selftest.py"
   ],
   "created": "2026-11-08T05:08:38Z",
+  "depends_on": [],
   "done_when": [
     "Pacing guard in the bridge payload (scripts/aibridge): at least 60 s between auto posts per account, at most 15 an hour and 80 a day, random 10-30 s jitter; a refused post says paced; test_aibridge_pacing.py replays the 2026-11-07 audit timestamps and fails on 0.7.32",
     "Account lease: hands-free refuses to arm when another host holds the same account label; test_aibridge_account_lease.py with two fake hosts, fails on 0.7.32",
@@ -18,7 +19,15 @@
   "goal": "DeepSeek blocked the AWGP Chrome profile until 2026-11-11; the bridge sent 205 auto-run commands on 11-07 (peak 45 an hour) across parallel chats and three machines. Without a cause and a pacing guard the next block hits any DSA profile.",
   "id": "dsa-bridge-avoid-deepseek-block-1108",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease u",
+      "ref": "5b6548bb8521",
+      "utc": "2026-11-08T10:34:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -26,7 +35,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T05:08:39Z",
+  "refreshed": "2026-11-08T18:20:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -35,7 +44,7 @@
   "scope_out": [
     "never read F:/AIBridge/src/config.json or extension/background.js tokens; no login attempts; no bypass of any bot check; no account creation"
   ],
-  "scope_sha": "",
+  "scope_sha": "5b6548bb8521",
   "size": "M",
   "sources": [
     "operator chat 2026-11-08 ~10:40Z (d-dsa-deepseek-block-find-cause-1108); audit.jsonl counts 11-07"
@@ -47,6 +56,5 @@
   "tests": "node F:/AIBridge/tests/loop.test.js",
   "title": "DSA bridge: find why DeepSeek blocked the AWGP profile until 11-11 and stop it recurring (pacing, daily cap, one machine per account)",
   "weight": "",
-  "worker": "session",
-  "depends_on": []
+  "worker": "session"
 }
