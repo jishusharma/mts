@@ -1,0 +1,1 @@
+{"t": "20261108T194520Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "Run Gemini card [cut] (Malkan 7-star captions, low effort, Flash); B reviews and ships", "login": "C", "id": "b-cb8d14", "prio": "high", "cmd": "python scripts/dev/gemini_queue.py run [cut]:low:flash"}
