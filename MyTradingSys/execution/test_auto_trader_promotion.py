@@ -155,7 +155,8 @@ class PromotionGateTest(unittest.TestCase):
     def test_shipped_list_is_explicit_and_complete(self):
         raw = json.loads(SHIPPED.read_text(encoding="utf-8"))
         gf = raw["pre_pipeline_sources"]
-        want = {k for k in list(raw["size_overrides"]) + list(raw["accounts"]) if k != "layer:"} | {"tom"}
+        # layer:krown: (R7 forward test) is promoted through promoted_setups.json, never grandfathered (FORWARD_PREREG.md s4)
+        want = {k for k in list(raw["size_overrides"]) + list(raw["accounts"]) if k not in ("layer:", "layer:krown:")} | {"tom"}
         self.assertEqual(set(gf), want)
         self.assertNotIn("layer:", gf)                                    # the catch-all would defeat default-deny
         for k, v in gf.items():
