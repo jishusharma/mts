@@ -2101,3 +2101,7 @@ Answer: measured: the block is DNS-only (ISP DNS answers 49.44.79.236 for fapi/f
 ## d-fix-binance-dns-block-1109 (2026-11-09)
 Operator: "whatever is the correct fix, you should apply it ... people are paying TDS on Binance, so don't worry about it. Fix whatever is the best fix for us."
 Answer: repo-level fix (reaches every station through sync, no machine setting changed): Binance hosts are resolved through DNS-over-HTTPS (Cloudflare, then Google), cached with TTL, TLS still checks the real hostname; Python fetchers + live layers and the Java feed (Java 17, BinanceLiquidationAccumulator / StateCodeEmitter on wss://fstream.binance.com). Sonnet session builds card binance-futures-dns-block-fleet-1109; live path, so the coordinator deploys after tests.
+
+## d-tom-fabio-rebuild-from-source-1109 (2026-11-09)
+Operator: "Tom is launching videos about how a beginner can trade ... so simple ... we need to think right this time. From the beginning ... build carefully."
+Answer: rebuild in steps from their own words. Step 1 card tom-fabio-rebuild-from-beginner-videos-1109 (Gemini, captions verified): a rulebook where every rule has a quote, plus what candles cannot see (order flow). Then code one rule at a time and measure what each adds, with testnet forward from the first version. The running real-frame census (tf-real-frame) stays as the baseline.
