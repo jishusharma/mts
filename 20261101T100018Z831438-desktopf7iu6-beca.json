@@ -1,1 +1,0 @@
-{"t": "20261101T100018Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "A: CI-red check in sync.py is FOOLED: gh runs 2b61ed46/6294071d were re-run ~09:56-09:59Z (createdAt now), so they look newest and every code ship says 'CI RED' though e58a3296 (has C's fix) is green.", "login": "A"}
