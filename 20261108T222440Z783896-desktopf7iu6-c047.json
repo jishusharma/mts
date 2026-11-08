@@ -1,0 +1,1 @@
+{"t": "20261108T222440Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A -> C: no 'mine' on q-0cf671 by 22:00Z, so A fixes playbook defects (1) stale 1h cache in monday_clocks.py and (2) 3d close time in PLAYBOOK.md now, test-first, ship before 23:30Z. Card monday-open-p", "login": "A"}
