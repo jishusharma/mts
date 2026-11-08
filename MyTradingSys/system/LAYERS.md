@@ -31,7 +31,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-fabio-rebuild-from-beginner-videos-1109` ready p1 CODEX: Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what c
-  - `live-aid-balance-acceptance-1105` ready p2 SONNET: live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); b
   - `tom-btc-dev-backtest` blocked p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
@@ -83,6 +82,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `rsi_levels`: D3 tolerance study done | module backtest/layers/rsi; rsi_events
 - Layer `rsi_divergence`: no edge, all TFs | module backtest/layers/rsi/run_divergence_mtf.py
 - Backtests (layer_map.json, newest first):
+  - 2026-11-09 `MALKAN-LEVEL-SHORT-4H`: UNDERPOWERED (N<30): primary arm +0.245 R fee-net 1R exit, CI includes 0; 2 of 5 operator points reproduce (C1, C3); no  | `MyTradingSys/research/malkan_level_shorts_2026-11-09/REPORT.md`
   - 2026-11-05 `KURISKO-QR-DEV-20261105`: BLOCKED: PRE_REG froze 0 of 8 cells (fee-dominated or underpowered); run_dev.py guard refused, no outcome read | `MyTradingSys/research/kurisko_2026-10-18/RESULT.md`
   - 2026-11-04 `RSI-DEEP-PRESTUDIES`: no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/ | `MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md`
   - 2026-10-09 `RSI-DIV-MTF`: no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54 | `MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md`
@@ -90,11 +90,11 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - 2026-10-07 `MARKET-GUIDE`: table in report not read for this map | `MyTradingSys/research/_archive/loose_2026-10/MARKET_GUIDE_RESULTS_2026-10-07.md`
   - 2026-09-27 `L1-D3`: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 | `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md`
 - Spec / sources: `MyTradingSys/research/rsi_kurisko_2026-10-09/KURISKO_SPEC.md`; `MyTradingSys/backtest/layers/FORMULAS.md`
-- Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
-- Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
+- Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/rsi/malkan_level_short.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
+- Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`; `MyTradingSys/research/malkan_level_shorts_2026-11-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-04_malkan-window-12-18-vs-hindi.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-level-short-4h-count-1109` raw p1 SONNET: Malkan level short 4h: code the 5-layer stack in research/malkan_level_shorts_2026-11-09/READING.md (level, di
+  - `malkan-level-short-4h-count-1109` ready p1 SONNET: Malkan level short 4h: code the 5-layer stack in research/malkan_level_shorts_2026-11-09/READING.md (level, di
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T20:23:27Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid.py"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "1670b39b9: valueArea/vaPriorDay/vaAcceptance in live_aid_indicators.js, wired in live_aid.",
+      "ref": "6aab6c87c",
+      "utc": "2026-11-08T20:23:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -36,13 +43,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped; rates in research/value_area_acceptance_2026-11-05",
   "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: descriptive display card, not a study (no PRE_REG; no trade rule, so no Context/Regime gate). Public data only. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T18:20:50Z",
   "refs": [],
-  "result": "",
+  "result": "1670b39b9: valueArea/vaPriorDay/vaAcceptance in live_aid_indicators.js, wired in live_aid.html:845-848; test_value_area_matches_python + test_acceptance_two_closes in tools/live_aid/test_live_aid.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/live_aid_indicators.js",
     "MyTradingSys/tools/live_aid/live_aid.html",
@@ -54,12 +67,13 @@
   "scope_sha": "3db35c5f403d",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read accept80.py for the exact VA rule; write the two failing tests with a Python reference on fixture_klines.json",
     "Port VA + acceptance to live_aid_indicators.js, draw VAL/POC/VAH and the flag in live_aid.html with the base rates labelled OURS",
     "Run the live_aid tests; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
   ],
+  "taken": "2026-11-08T20:23:27Z",
   "tests": "python -m pytest -q MyTradingSys/tools/live_aid/test_live_aid.py",
   "title": "live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); base rates from research/value_area_acceptance_2026-11-05",
   "weight": "IMPORTANT",
