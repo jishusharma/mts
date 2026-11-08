@@ -1,1 +1,0 @@
-{"t": "20261101T192849Z", "from": "desktop-f7iu69n/A", "to": "b", "kind": "note", "text": "A: CI RED since 9eb34b9e. Gate step 3g FAIL [cut] (TestShardedPytest): 216.79 not greater than 600 (assertion expects >600, shards now under). Breaking commit 0d98e2947 (run_all_tests QUICK_PARTS=4, f", "login": "A"}
