@@ -2109,3 +2109,7 @@ Answer: rebuild in steps from their own words. Step 1 card tom-fabio-rebuild-fro
 ## d-edge-hunt-credit-wave-1109 (2026-11-09)
 Operator: run our own edge hunt on the cloud credit: 5 Haiku, 2-3 Sonnet, 2 Opus, 1 Fable ("table", voice), all on the credit; an Opus session first reads everything done, redone and failed plus the latest decisions, and how he thinks (RSI, wicks, levels), then decides what each worker does.
 Answer: card edge-hunt-plan-opus-1109 runs first on the credit (Opus, cap 6 USD) and writes PLAN.md, OPERATOR_LENS, 11 worker briefs and a fixed TRIALS list; the wave (5 Haiku, 3 Sonnet, 2 Opus, 1 Fable, total cap 36 USD) then launches on api_job.py --engine api only, in waves of at most 4. Reserve about 25 USD of the credit (expires 2026-11-17).
+
+## d-daily-session-playbook-1109 (2026-11-09)
+Operator: "I think I need this daily and on live aid! Plus on my screen ... also covers Asian and European sessions and related key trading information/trades/insights/notes."
+Answer: card daily-session-playbook-live-aid-1109 (Sonnet session): a daily playbook for Asia, Europe and US sessions (levels, base rates, 2-3 scenarios with counts and invalidation, analyst calls, events), each scenario scored in the ledger, as a Live Aid Playbook tab and a phone-width artifact. The Monday playbook had 3 Claude scenarios, US open only.

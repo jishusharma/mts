@@ -32,7 +32,7 @@ Never ask questions: take the conservative default, write it as `DECISION (OURS)
 ## Boot and hard rules
 - Boot: `python scripts/dev/sync.py start eh-o1-confluence-dose-response --worker`; work only in the printed WORKTREE (use `git -C <tree>` for git; never `cd x && git`).
 - Read first: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md (s5 shared rules) and TRIALS.md (your trial ids). Your trial rules below are frozen; do not add, split or re-cut trials.
-- Testnet/research only. Never read .secrets/, .env or keys; never deploy, restart processes, touch HALT or orders, open trades; never commit to master; never rebase, reset or force-push. Write files with LF newlines (newline='\n').
+- Testnet/research only. Never read secret, environment or key files; never deploy, restart processes, touch HALT or orders, open trades; never commit to master; never rebase, reset or force-push. Write files with LF newlines (newline='\n').
 - Never commit market data, runtime, order or account data (public repo). Cache downloads OUTSIDE the repo (F:/MTS/Dumps/backtest/... if F: exists, else %TEMP%/mts_eh_cache). Commit only code, PRE_REG.md, RESULT.md and small summary tables (counts, per-cell stats; no raw bars).
 - Scope: write only under MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-response/. Import repo code read-only (MyTradingSys/backtest/bt/bt_data.py, MyTradingSys/backtest/fees.py, MyTradingSys/backtest/splits.py, MyTradingSys/backtest/research_kit.py, MyTradingSys/backtest/layers/rsi/*.py, MyTradingSys/backtest/layers/wavetrend/wavetrend.py); never edit them. If a repo function is wrong for your rule, copy the needed lines into your own file and say so.
 
