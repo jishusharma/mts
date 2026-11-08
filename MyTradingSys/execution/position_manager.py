@@ -333,41 +333,99 @@ def manage(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=False, to
             print(f"WARNING: could not remove heartbeat ({he!r})")
 
 
-def _flatten_naked_entry(plan_id, instrument, token, is_long):
+NAKED_STOP_LABELS = ("stop_order", "stop_order_trailing", "stop_order_breakeven_pending", "stop_order_pending_fill")
+
+
+def _flatten_naked_entry(plan_id, instrument, token, entry_side, entry_filled_total):
     """F-GAP-1 fail-closed: the journal holds a FILLED entry but no stop (executor died between the entry fill and the
-    stop placement). No trigger is journaled to re-place from, so: write HALT, flatten whatever is open (verify flat),
-    sweep the plan's resting orders by label, then raise ManagerHalted. Never returns."""
-    reason = "journal has a filled entry but no stop (executor crash window) - flattening naked position"
-    journal.append_event(plan_id, "mismatch_halt", {"reason": reason, "by": "position_manager"})
-    try:
-        HALT_PATH.write_text(f"{datetime.now(timezone.utc).isoformat()} position_manager {plan_id}: {reason}\n",
-                             encoding="utf-8")
-    except Exception as he:  # noqa: BLE001
-        print(f"WARNING: could not write HALT ({he!r})")
+    stop placement). No trigger is journaled to re-place from, so the plan is halted and its position flattened:
+      * the exchange position must BELONG to this plan (sign matches the entry side, |size| <= the journaled entry
+        fill); close_position is account/instrument-wide, so on any mismatch or unreadable position we do NOT close,
+        journal + write HALT and raise (operator check).
+      * already flat (size 0): plan halt only - no global HALT file (nothing is exposed), but resting orders are swept.
+      * HALT is written before any exchange call, even if the journal write fails.
+      * every journal / close / sweep error is journaled (best effort) and put in the raised message; 'flattened' is
+        only claimed when every step succeeded.
+    Never returns: always raises ManagerHalted."""
+    reason = "journal has a filled entry but no stop (executor crash window)"
+    errors = []
+
+    def jr(event, data):
+        try:
+            journal.append_event(plan_id, event, data)
+        except Exception as je:  # noqa: BLE001 - a journal failure must not skip HALT / flatten
+            errors.append(f"journal {event}: {je!r}")
+
+    def write_halt(msg):
+        try:
+            HALT_PATH.write_text(f"{datetime.now(timezone.utc).isoformat()} position_manager {plan_id}: {msg}\n",
+                                 encoding="utf-8")
+        except Exception as he:  # noqa: BLE001
+            errors.append(f"HALT write: {he!r}")
+            print(f"WARNING: could not write HALT ({he!r})")
+
+    def fail(msg):
+        raise ManagerHalted(msg + ("; ERRORS: " + " | ".join(errors) if errors else "")
+                            + (" - CHECK EXCHANGE UI NOW" if errors else ""))
+
+    is_long = entry_side == "BUY"
+    jr("mismatch_halt", {"reason": reason, "by": "position_manager"})
     try:
         token = token or _retry_call(do.authenticate)
         size = _signed(do.get_position(token, instrument).get("size"))
-        if size != 0:
-            try:
-                c = do.close_position(token, instrument)
-                journal.append_event(plan_id, "order_placed", {"order_id": c["order"]["order_id"],
-                                                               "label": "emergency_close",
-                                                               "side": "SELL" if is_long else "BUY",
-                                                               "amount": c["order"].get("filled_amount")})
-            except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown: the re-read decides
-                journal.append_event(plan_id, "error", {"context": "naked_entry:close_position", "error": repr(xe)})
+    except Exception as pe:  # noqa: BLE001 - position unknown: never close blind
+        errors.append(f"get_position: {pe!r}")
+        jr("error", {"context": "naked_entry:get_position", "error": repr(pe)})
+        write_halt(f"{reason} - position unreadable, NOT closed")
+        fail(f"halted: {reason}; position unreadable, not closed")
+    if size != 0:
+        write_halt(f"{reason} - flattening naked position")
+        owns = (size > 0) == is_long and abs(size) <= int(entry_filled_total)
+        if not owns:
+            jr("error", {"context": "naked_entry:not_this_plan",
+                         "error": f"exchange position {size} does not match entry {entry_side} {entry_filled_total}"})
+            errors.append(f"exchange position {size} does not match this plan's entry {entry_side} "
+                          f"{entry_filled_total} - NOT closed")
+            fail(f"halted: {reason}")
+        try:
+            c = do.close_position(token, instrument)
+            jr("order_placed", {"order_id": c["order"]["order_id"], "label": "emergency_close",
+                                "side": "SELL" if is_long else "BUY", "amount": c["order"].get("filled_amount")})
+        except Exception as xe:  # noqa: BLE001 - e.g. OrderStateUnknown / error reply: the re-read decides
+            errors.append(f"close_position: {xe!r}")
+            jr("error", {"context": "naked_entry:close_position", "error": repr(xe)})
+        try:
             size = _signed(do.get_position(token, instrument).get("size"))
+        except Exception as pe:  # noqa: BLE001
+            errors.append(f"get_position after close: {pe!r}")
+            jr("error", {"context": "naked_entry:get_position_after_close", "error": repr(pe)})
+            size = None
         if size != 0:
-            raise ManagerHalted(f"position still {size} after close_position")
-    except ManagerHalted as e:
-        raise ManagerHalted(f"FLATTEN FAILED ({e}) after: {reason} - CHECK EXCHANGE UI NOW")
-    except Exception as e:  # noqa: BLE001
-        journal.append_event(plan_id, "error", {"context": "naked_entry:flatten", "error": repr(e)})
-        raise ManagerHalted(f"FLATTEN ITSELF FAILED ({e}) after: {reason} - CHECK EXCHANGE UI NOW")
+            errors.append(f"position {size if size is not None else 'unknown'} after close_position")
+            fail(f"FLATTEN FAILED after: {reason}")
+    # flat: sweep every label this plan can have resting (journaled + the known stop labels), exactly like the executor
+    labels = []
     try:
-        do.cancel_by_label(token, f"{plan_id}:"[:64])
-    except Exception:  # noqa: BLE001 - best effort; position is flat
-        pass
+        for ev in journal.read_events(plan_id):
+            lab = ev["data"].get("label") if ev["event_type"] == "order_placed" else None
+            if lab and lab != "emergency_close" and lab not in labels:
+                labels.append(lab)
+    except Exception as re_:  # noqa: BLE001
+        errors.append(f"journal read: {re_!r}")
+    for lab in list(NAKED_STOP_LABELS) + labels:
+        if lab in NAKED_STOP_LABELS and lab in labels:
+            continue
+        full = f"{plan_id}:{lab}"
+        if len(full) > 64:
+            errors.append(f"sweep label {full!r} exceeds 64 chars")
+            continue
+        try:
+            do.cancel_by_label(token, full)
+        except Exception as ce:  # noqa: BLE001
+            errors.append(f"cancel_by_label {full}: {ce!r}")
+            jr("error", {"context": "naked_entry:cancel_by_label", "error": repr(ce)})
+    if errors:
+        fail(f"halted (flat) but cleanup incomplete after: {reason}")
     raise ManagerHalted(f"flattened + halted: {reason}")
 
 
@@ -377,7 +435,7 @@ def _manage_impl(plan_id, instrument="BTC-PERPETUAL", max_seconds=None, once=Fal
         raise ManagerHalted(f"plan {plan_id} already halted: {belief['halt_reason']}")
     stop, targets, entry_side, entry_filled_total = _plan_orders(plan_id)
     if stop is None and entry_side is not None and (entry_filled_total or 0) > 0:
-        _flatten_naked_entry(plan_id, instrument, token, entry_side == "BUY")  # F-GAP-1: always raises
+        _flatten_naked_entry(plan_id, instrument, token, entry_side, entry_filled_total)  # F-GAP-1: always raises
     if stop is None or entry_side is None:
         raise ManagerHalted(f"plan {plan_id}: journal has no entry/stop - nothing to manage")
     is_long = entry_side == "BUY"
