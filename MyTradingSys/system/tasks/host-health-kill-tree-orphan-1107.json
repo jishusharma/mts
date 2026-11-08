@@ -1,34 +1,83 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "closed": "2026-11-08T01:43:46Z",
+  "commands": [
+    "python -m pytest scripts/dev/test_host_health.py -q"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-08T01:42:23Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/test_host_health.py"
+    ],
+    "session": "agent-a680d0e4901bc5141"
+  },
   "created": "2026-11-07T18:20:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_host_health.py has (a) a case with a fake kill reporting rc=128 asserting REAPED and no 'ORPHAN ... kill failed' line, and (b) a case where the first kill fails with another rc and a leftover child with a dead ppid is killed once on retry, no second retry; both fail on current host_health.py and the file passes after",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "kill_tree treats taskkill exit 128 (PID already gone) as reaped, logs stderr to health.log, and retries once on leftover children whose ppid is dead",
   "id": "host-health-kill-tree-orphan-1107",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "kill rc128=reaped, stderr logged, one gate-only retry; 21 tests pass, 2 new fail on old co",
+      "ref": "a12b30f8b",
+      "utc": "2026-11-08T01:43:46Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
+      "ref": "dea81301a70a",
+      "utc": "2026-11-04T16:25:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: research/health_2026-11-07/SHIP_HEALTH.md item 1. scripts/dev/host_health.py kill_tree (l.105) runs taskkill /T /F, returns rc==0 only, drops stderr; run() l.432-435 prints 'ORPHAN ... - kill failed'. Measured: taskkill on a gone PID exits 128, counted as failure. Fix: treat 128 as reaped, log stderr to health.log, re-snapshot and kill leftover children whose ppid is dead (taskkill /T cannot reach them), retry once. Test with a fake kill returning 128. Not reproduced on this machine today (0 orphan gates). | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
+  "next": "END: shipped",
+  "note": "DECISION (OURS): IMPORTANT, kills processes\nREVIEWED: Lab_Guy 2026-11-08\nACCEPT (C1, IMPORTANT). Amended: retry limited to find_orphan_gates matches (no arbitrary dead-ppid kills), test (b) for the retry added, kill() contract stated. Checked: l.105/432-435 exist, kill is injectable, no ci.yml/test_sync.py in scope, no twin. Fail-closed: unknown rc stays ORPHAN.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "refreshed": "2026-11-08T01:39:55Z",
+  "refs": [
+    "scripts/dev/host_health.py"
+  ],
+  "result": "kill rc128=reaped, stderr logged, one gate-only retry; 21 tests pass, 2 new fail on old code (a12b30f8b)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/host_health.py",
+    "scripts/dev/test_host_health.py"
+  ],
+  "scope_out": [
+    "live tree, no process killed by the test, sync.py"
+  ],
+  "scope_sha": "dea81301a70a",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
+  ],
+  "state": "done",
+  "steps": [
+    "add the rc=128 test (a) and the one-retry test (b) in test_host_health.py first, run, see both fail",
+    "kill_tree (host_health.py l.105) returns rc+stderr (the injected kill= keeps a bool-or-(rc,stderr) contract, bool still accepted); rc 128 counts as reaped; stderr goes to health.log",
+    "after a failed kill re-snapshot; retry ONLY on children that match find_orphan_gates (gate command line) with a dead ppid, never any dead-ppid process; update run() l.432-435 message"
+  ],
+  "taken": "2026-11-08T01:43:46Z",
+  "tests": "scripts/dev/test_host_health.py: new case fake kill rc=128 -> reaped, stderr logged; fail-first on pre-change code",
   "title": "host_health kill_tree: orphan gate kill reports failed when taskkill exits 128 (already gone) and hides the cause",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }

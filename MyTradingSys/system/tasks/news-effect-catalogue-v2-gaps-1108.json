@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/build_events.py",
+    "python MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
+  ],
+  "created": "2026-11-08T01:19:33Z",
+  "depends_on": [],
+  "done_when": "Report adds: reaction by surprise sign for CPI, NFP, FOMC (count, median 1 h move, direction hit rate), the repeat table recomputed on verified rows only, and a before and after 2025-01-20 split; check_catalogue.py extended first and red, then green; shipped, Result names verified counts",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The v1 catalogue (192 events, 13 classes) has no surprise data, so a hot and a cool CPI look identical; 55 rows have only an approximate time; the times of own-grouping events came from memory; analyst-named events are 4. The operator wants how news behaves, including why the same news sometimes does not work twice: surprise and sourcing are the missing pieces.",
+  "id": "news-effect-catalogue-v2-gaps-1108",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Runs between the Opus statistics review and the market-lens review so the second reviewer and the synthesis read the better data. Public data and pages pre-approved. If a source blocks scripts (bls.gov 403), use web.archive.org or the Fed pages and say which.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T01:19:33Z",
+  "refs": [
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/ (news_events.csv, build_events.py, check_catalogue.py, REPORT.md, calendar_cache.json)",
+    "reads: F:/CryptoScrapper/cbp_v2/extractions.md and transcripts, public web sources, Binance public klines"
+  ],
+  "scope_out": [
+    "no weight, flash or bias rule|no Live Aid change|no trade gate|no live tree touch|no unsourced number written into the csv"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "catalogue v1 Result 2026-11-08 01:18Z: no surprise data, 55 rows approximate time, own-grouping times from memory, 4 analyst events; operator chat 20:20Z"
+  ],
+  "state": "ready",
+  "steps": [
+    "extend check_catalogue.py with the new columns, URL presence and verified counts; run it red",
+    "fill surprise columns from public releases (BLS, Fed, archived consensus pages); verify and time-stamp each own-grouping row from a URL",
+    "extract 30+ analyst-named events with quotes; rebuild csv and REPORT.md; run the check and tests --quick; ship"
+  ],
+  "tests": "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
+  "title": "Catalogue v2: add surprise (actual vs consensus) for CPI/NFP/FOMC, source-verify every own-grouping event time, add analyst-named events from the CBP transcripts",
+  "weight": "",
+  "worker": "session"
+}
