@@ -227,3 +227,4 @@ MyTradingSys/research/volume_2026-10-09/run_v4.py,19,COST,2,other,n/a,both,cost 
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py,39,COST10,2,other,round_trip,taker,cost in wt_extreme_cross_volmatch_2026-11,1,assign,COST10 = 2 * fees.BINANCE_TAKER * 100.0       # SOURCED fees.py: Binance USD-M taker both legs; % round trip
 MyTradingSys/research/tom_fabio_course_correction_2026-11-07/census_session_ladder.py,55,SLIP_BPS,2.0,bp,round_trip,both,slippage in census_session_ladder,1,assign,SLIP_BPS = 2.0
 MyTradingSys/research/tom_fabio_course_correction_2026-11-07/census_session_ladder.py,57,GATE_FEE_R,0.25,ratio,n/a,taker,fee gate in census_session_ladder,0,assign,GATE_FEE_R = 0.25
+MyTradingSys/backtest/layers/rsi/malkan_level_short.py,36,FEE,0.0004,fraction,per_side,taker,fee in malkan_level_short,0,assign,FEE = 0.0004                # task card: 0.04 pct taker per side
