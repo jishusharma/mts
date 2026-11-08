@@ -933,6 +933,11 @@ def cmd_brief(a):
     print(chr(10).join(TS.latest_block(c, REPO, TS.state_tag(c, REPO, claim_of(c, open_claims(REPO)), registry(REPO)))))
 
 
+def cmd_show(a):
+    print(json.dumps(get(REPO, a.id), indent=2, sort_keys=True, ensure_ascii=False))
+    return 0
+
+
 def cmd_tag(a):
     """Print the state tag + LATEST block; --refresh recomputes the pointers, --add records a manual one (decision, signal...)."""
     c = get(REPO, a.id)
@@ -1809,6 +1814,9 @@ def main(argv=None):
     b = sp.add_parser("brief")
     b.add_argument("id")
     b.set_defaults(f=cmd_brief)
+    sh = sp.add_parser("show", help="print one card's JSON")
+    sh.add_argument("id")
+    sh.set_defaults(f=cmd_show)
     t = sp.add_parser("take")
     t.add_argument("id")
     t.add_argument("--claim")
