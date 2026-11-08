@@ -1,17 +1,28 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/tasks.py show worker-briefs-name-tasks-py-show-id-but-"
+  ],
   "created": "2026-11-07T14:24:08Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/tasks.py show <id> prints the card JSON; test added in scripts/dev/test_tasks.py",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add a 'show <id>' verb to tasks.py that prints one card, since worker briefs already name it",
   "id": "worker-briefs-name-tasks-py-show-id-but-",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/dsa-seed-reland-1107",
+      "ref": "1bdd06734509",
+      "utc": "2026-11-07T23:01:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +30,25 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T03:55:53Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py"
+  ],
+  "scope_out": [
+    "brief template wording"
+  ],
+  "scope_sha": "1bdd06734509",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "add show subparser",
+    "add test failing before"
+  ],
+  "tests": "python -m pytest scripts/dev/test_tasks.py -k show",
   "title": "worker briefs name 'tasks.py show <id>' but tasks.py has no show verb; add it or fix the brief template | done-when: tasks.py show <id> prints the card",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

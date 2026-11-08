@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-11-07T15:12:58Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_trunk_lag.py runs under 60 s alone or Step 3xm splits it",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Cut test_trunk_lag.py runtime below the 240 s Step 3xm ceiling",
   "id": "test-trunk-lag-py-140-s-alone-slowest-te",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Pages hook guard: refresh marker stops respawn, login from env/cache, build time cap",
+      "ref": "779eb295f037",
+      "utc": "2026-11-07T15:42:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +28,25 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T03:57:32Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_trunk_lag.py"
+  ],
+  "scope_out": [
+    "trunk_lag.py semantics"
+  ],
+  "scope_sha": "779eb295f037",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "profile slow tests",
+    "mock git/sleep"
+  ],
+  "tests": "python -m pytest scripts/dev/test_trunk_lag.py --durations=5",
   "title": "test_trunk_lag.py (~140 s alone, slowest test 31 s) hits the 240 s Step 3xm must-pass ceiling on a loaded host, so trunk_lag ships fail falsely | done-when: test_trunk_lag.py runs under 60 s or Step 3xm splits it, and a trunk_lag ship passes on a busy host",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
