@@ -14,36 +14,59 @@
   },
   "created": "2026-11-08T18:45:50Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "PRE_REG block with its ## Context section (Regime/Phase/Session/Entry lines) committed before the run; CENSUS_5M15M_1109.md with n, hit, net R per event by session x htf bias x phase x fee arm; verdict line: node+BE exit has edge or not; test_auction_census green",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Rerun auction_census.py on 7y BTC 5m and 15m (public mirror) in session blocks (Asia/London/NY), HTF ladder (weekly+daily profile) as a GATE, node-to-node targets with BE at +1R and half off at POC. Fee arms: FEES_DERIBIT (fees.py:48) and 10 bps taker. Split by phase: Bible range 75.4-80.9k since 2026-10-24 vs rest. Pre-registered, diagnostic only.",
   "id": "census-5m-15m-7y-session-ladder-1109",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auction census script + tests",
+      "ref": "1ccb287ac123",
+      "utc": "2026-11-07T23:34:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
   "note": "MERGED from tf-census-trader-exits-rescore-1109 (Opus post-mortem 2026-11-09): also score each event with trader management (BE at +1R, half off at POC, rest to next HVN; Fabio fZlNGWvd2Ko:43-61, Tom TOM-014/017/018), fee model FEES_DERIBIT (maker entry/target 0, taker stop 5 bps; fees.py:48) beside 10 bps taker, and split by phase (Bible range 75.4-80.9k since 2026-10-24 vs rest). Fable's fixed 2R/3R recompute was -0.035/-0.023 R on 1h, so this is the last untested exit shape, not a likely rescue. Diagnostic only; testnet does not wait on it (d-phase-first-method-1106). Levels: add NY-session VA from tf-ny-session-va-profile-1109 when it lands.",
   "prio": 1,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "B (JIS-NUC, Opus)",
+  "refreshed": "2026-11-08T20:23:17Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_census.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/CENSUS_5M15M_1109.md"
+  ],
+  "scope_out": [
+    "testnet forward (tf-testnet-forward-range-phase-amend-1109, does not wait on this)",
+    "order-flow delta (klines carry none)"
+  ],
+  "scope_sha": "1ccb287ac123",
+  "size": "M",
   "sources": [
     "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "pre-register: hypotheses, arms, kill line (net R <= 0 on both fee arms = no edge)",
+    "fail-first test: session block + ladder gate",
+    "add session, ladder gate, node+BE exit, phase split to auction_census.py",
+    "run 5m and 15m 7y, write CENSUS_5M15M_1109.md, ship"
+  ],
+  "tests": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_census.py::test_session_block_and_ladder_gate (fail-first: a 5m event outside NY with ladder against is excluded)",
   "title": "Run the auction census on 7y 5m and 15m (public mirror) in session blocks with the HTF ladder as gate and node-to-node targets: the frame Tom/Fabio trade, untested; report by session and htf bias, fee-net, pre-registered",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
