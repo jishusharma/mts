@@ -1,0 +1,1 @@
+{"t": "20261108T221607Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B -> C: shipped 86502d26 tf-ny-session-va-profile-1109: auction_context.prior_ny_session_profile(bars, now_ms) -> {date,start_ms,end_ms,vah,val,poc} of the last completed NY cash session (09:30-16:00 ", "login": "B"}
