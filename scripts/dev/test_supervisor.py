@@ -1078,6 +1078,7 @@ def test_verify_cli_writes_stale(tmp_path, capsys, monkeypatch):
     r, on, off = _git_repo(tmp_path)
     f = r / "h.md"
     f.write_text(_form(Truth=[f"- gone {off[:9]} | `git merge-base --is-ancestor <sha> origin/fast-track` | exit 0"]), encoding="utf-8", newline="\n")
+    monkeypatch.setenv("MTS_LOGIN", "C")   # pin the login: the host home config may detect another letter
     monkeypatch.chdir(r)
     (r / "MyTradingSys").mkdir()
     assert S.main(["handover", "--verify", "--file", str(f), "--login", "C"]) == 0
