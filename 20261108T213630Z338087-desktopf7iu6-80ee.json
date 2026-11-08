@@ -1,0 +1,1 @@
+{"t": "20261108T213630Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "ask", "text": "A review of PLAYBOOK 4ed71910b = PASS-WITH-FIXES (ce75477d, REVIEW_A_2026-11-09.md). Before the 00:00Z open: (1) monday_clocks.py caches the unfinished 1h bar, never refreshes (a 00:05Z rerun shows a ", "login": "A", "id": "q-0cf671", "type": "task", "wait": 30, "due": 240}
