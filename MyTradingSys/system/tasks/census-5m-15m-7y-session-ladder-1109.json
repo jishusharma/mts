@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 15,
+    "folded": "2026-11-08T20:04:23Z",
+    "misses": 30,
+    "reads": [
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py",
+      "MyTradingSys/backtest/fees.py"
+    ],
+    "session": "fdbecf0a-905b-4586-be47-cd36e0740da1"
+  },
+  "created": "2026-11-08T18:45:50Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "census-5m-15m-7y-session-ladder-1109",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "MERGED from tf-census-trader-exits-rescore-1109 (Opus post-mortem 2026-11-09): also score each event with trader management (BE at +1R, half off at POC, rest to next HVN; Fabio fZlNGWvd2Ko:43-61, Tom TOM-014/017/018), fee model FEES_DERIBIT (maker entry/target 0, taker stop 5 bps; fees.py:48) beside 10 bps taker, and split by phase (Bible range 75.4-80.9k since 2026-10-24 vs rest). Fable's fixed 2R/3R recompute was -0.035/-0.023 R on 1h, so this is the last untested exit shape, not a likely rescue. Diagnostic only; testnet does not wait on it (d-phase-first-method-1106). Levels: add NY-session VA from tf-ny-session-va-profile-1109 when it lands.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Run the auction census on 7y 5m and 15m (public mirror) in session blocks with the HTF ladder as gate and node-to-node targets: the frame Tom/Fabio trade, untested; report by session and htf bias, fee-net, pre-registered",
+  "weight": "",
+  "worker": ""
+}

@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/monday_open_2026-11-09/ARGON_CHECK.md"
+  ],
+  "created": "2026-11-08T18:22:57Z",
+  "depends_on": [],
+  "done_when": "A table of 3-6 other analysts' weekend calls for this week (video id, date, call, level); a quote only where captions verify via verify_extract_quotes.py, else marked UNVERIFIED; every number labelled SOURCED or OURS; committed on the gemini-q branch only",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Krown (CBP row 2026-11-08, video M4mTHyPxMUM) says BTC lows break and ~10% more downside follows, from a correlation. BTC ~75.9k, swing low 74,888. Independently measure how often that has held, so the Monday playbook weighs it by evidence, not by voice.",
+  "id": "gemini-argon-krown-lows-break-check-1109",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Run on Gemini 4 Argon (weekly quota, heavy research). Independent of the Sonnet playbook job; the Opus refute-review reads both.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:23:09Z",
+  "refs": [
+    "MyTradingSys/system/PLAN_5H_2026-11-08.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/monday_open_2026-11-09/ARGON_CHECK.md and a helper script beside it"
+  ],
+  "scope_out": [
+    "no trade, signal or live tree|no edit to PLAYBOOK.md (a Sonnet credit job owns it)|no ship: a Claude session reviews the branch"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator chat 2026-11-08 18:15Z: Krown says lows break, another 10% down, based on a correlation; use both Gemini models"
+  ],
+  "state": "ready",
+  "steps": [
+    "fetch BTC daily klines, compute the swing-low breaks and forward drops with a script; then search analysts' weekend videos; write ARGON_CHECK.md; commit"
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Argon: test Krown's 'lows break, ~10% more down' claim on BTC history + list other analysts' Monday calls",
+  "weight": "",
+  "worker": "session"
+}

@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T19:32:46Z",
+  "depends_on": [],
+  "done_when": [
+    "Python helper resolves *.binance.com/*.binance.vision via DoH (Cloudflare, then Google), TTL cache, rejects block IP 49.44.79.236 and private answers, keeps TLS hostname check; every Python caller of fapi/fstream/api.binance.com uses it",
+    "Java 17 feed reaches wss://fstream.binance.com via the library's DNS hook or connect-to-IP with SNI = real name; no jdk.net.hosts.file; fails closed with a clear log line if DoH fails",
+    "Tests first, failing on pre-change code: block IP rejected, DoH fallback, TTL cache, TLS name kept, DoH-down fails closed, restart/reset and API-error paths; run_all_tests.py --quick and Maven green",
+    "Proof on JIS-NB: live fapi 4h kline + 30 s of fstream messages via the new path in Result; broadcast --cmd smoke to JIS-NUC and laptop; Result says 'deploy request'"
+  ],
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "ISP (Jio) DNS returns block IP 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; the real IP (Cloudflare DoH) serves futures klines and the stream. Operator order d-fix-binance-dns-block-1109: apply the best fix fleet-wide through the repo, no machine setting changes.",
+  "id": "binance-futures-dns-block-fleet-1109",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/",
+    "MyTradingSys/backtest/",
+    "src/main/java/datafeed/",
+    "src/test/java/"
+  ],
+  "scope_out": [
+    "no machine DNS/hosts/network setting change",
+    "no deploy, .mts_live, HALT, AUTO_PAUSE, process restart",
+    "no mainnet, no keys/.secrets/.env"
+  ],
+  "size": "M",
+  "sources": [
+    "Lead C probe 2026-11-09: nslookup fapi.binance.com -> 49.44.79.236; DoH 54.192.142.53 -> klines OK; fstream DoH 43.206.66.18 -> 404 (server up); NUC ping FAIL both"
+  ],
+  "state": "raw",
+  "steps": [
+    "grep every Binance live host caller (py + java)",
+    "write failing tests",
+    "build Python DoH helper and wire callers",
+    "build Java DNS hook",
+    "smoke on NB, broadcast smoke, ship with deploy request"
+  ],
+  "tests": "new python test file for the resolver + Java unit test for the DNS hook",
+  "title": "Fleet fix: resolve Binance hosts via DNS-over-HTTPS so live futures data works on every station (ISP DNS block)",
+  "weight": "",
+  "worker": "session",
+  "kind": "build"
+}

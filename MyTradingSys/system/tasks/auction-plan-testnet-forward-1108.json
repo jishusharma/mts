@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T20:07:44Z",
   "commands": [],
   "created": "2026-11-07T18:31:33Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Phase-first rule (d 11-06): a pattern valid in the current phase goes to testnet at once. Depends on auction-context-event-census-1108 for the counts and java-va-state-asymmetry-fix-1108 for the Java path. Every 'X confirms Y' in the audit becomes a scenario_ledger row the same ship; the mermaid ladder in the doc is a rule, not a mechanism until then.",
+  "note": "MERGED into tf-testnet-forward-range-phase-amend-1109 (READY): same forward run, Fable kill rule, session logged, context-only",
+  "pinned": false,
   "prio": 2,
+  "reason": "MERGED into tf-testnet-forward-range-phase-amend-1109 (READY): same forward run, Fable kill rule, session logged, context-only",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
@@ -30,7 +33,7 @@
   "sources": [
     "Lead C review 2026-11-08 of Argon's Tom/Fabio audit (1a79739e, research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md); operator asked what really needs to be done"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Testnet-forward: build_auction_trade_plan as CONTEXT in the signal path for 2 setups (failed-auction reclaim at HTF level; VA acceptance continuation), scenario_ledger rows for the 77% acceptance claim, run until it fails",

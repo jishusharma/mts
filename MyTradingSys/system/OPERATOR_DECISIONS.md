@@ -2077,3 +2077,35 @@ bigger bounce; Krown sees lows broken and ~10 % more down); logins A and B do th
 until the 11-10 20:00Z reset; use the Platform credit; C instructs A and B with confirmation points so they keep working.
 Answer: PLAN_5H_2026-11-08.md (credit J1 monday-open-playbook-1109, Opus refute-review J2; B Gemini analyst extracts + card
 refresh + monday_watch.py; A reviews every ship + CBP events strip); hourly CHK signals; C cap 85 %.
+
+## d-gemini-both-models-cap-raised-1108 (2026-11-08 ~18:25Z)
+Operator: "make sure we use both Gemini models well! And use Claude Platform. U also have your cap raised - so do the critical tasks."
+Answer: Gemini 4 Argon takes the heavy Monday research (gemini-argon-krown-lows-break-check-1109: Krown's lows-break claim tested on BTC history); Gemini 3.8 Flash takes the 4 fresh [GEMINI] blind reads of shipped work; both run on JIS-NUC via gemini_queue.py, B reviews and ships. Platform credit runs J1 Monday playbook (Sonnet $5) then J2 Opus refute-review ($3). Lead C cap raised (operator gave no number): Lead C spends on critical coordination only, default ceiling 90% weekly until he names one.
+
+## d-backtest-map-1109 (2026-11-09, operator: "so many backtesting failures, I don't know where to start")
+Lead C wrote research/BACKTEST_MAP_2026-11-09.md (147 rows = 48 ideas; 0 proven; 3 eras; where to start) and added a line to D7_ROADMAP S3 recording that d-phase-first-method-1106 replaced the VALIDATION-backtest exit with testnet-forward.
+Answer: start from the map, then the Fable/Opus reviews, then the testnet-forward list; backtests are now a sanity check and failure map, not the gate.
+
+## d-krown-4h-testnet-forward-start-1109 (2026-11-09)
+Operator: asked how the roadmap moves on with no edge; Lead C proposed reviews cross-check, one trader-exits backtest, and testnet-forward of the setups we understand; operator pressed "Yes, start it" for the Krown 4h testnet forward test now, alongside the reviews.
+Answer: fable-run7-forward-test started now as a Fable 5.1 session (the operator's yes is the operator-run start the card requires). The old HOLD (72 months to power) is replaced by d-phase-first-method-1106: frozen R6 Krown S8 4h rule trades on testnet until it fails; the pre-reg fixes the fail rule and parity test, not a power gate. Testnet only; builders never trade, the build card wires the signal.
+
+## d-malkan-level-shorts-read-1109 (2026-11-09)
+Operator: asked where the Malkan RSI 40/60 layer is, whether 5-star and 7-star can be identified, and what confluence makes his marked 4h shorts (C1 08-28, C2 09-04, V1 09-23, V2 10-06, C3 10-21) tradable, including the no-divergence C3.
+Answer: research/malkan_level_shorts_2026-11-09/READING.md: all 5 reached >= 1R, only V1 fits the repo divergence rule (3-10 bars close to close); 5-star never fired (monthly/weekly never below 40); 7-star is a label only. Proposed 5-layer stack (OURS) goes to card malkan-level-short-4h-count-1109 for a 7y count, then testnet forward.
+
+## d-futures-data-every-station-1109 (2026-11-09)
+Operator: "it is a limitation that I do not accept. All stations must have this data" (Binance futures data blocked on JIS-NB).
+Answer: measured: the block is DNS-only (ISP DNS answers 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; real IP via Cloudflare DoH serves futures klines). Backtests already use futures history from data.binance.vision futures/um (from 2019-09) plus spot for 2017-2019; only live/REST futures is cut, including the Java feed's wss://fstream.binance.com. Card binance-futures-dns-block-fleet-1109; fix route awaits his pick (machine DNS setting is his to change; a repo-level resolver is the fleet-wide code option).
+
+## d-fix-binance-dns-block-1109 (2026-11-09)
+Operator: "whatever is the correct fix, you should apply it ... people are paying TDS on Binance, so don't worry about it. Fix whatever is the best fix for us."
+Answer: repo-level fix (reaches every station through sync, no machine setting changed): Binance hosts are resolved through DNS-over-HTTPS (Cloudflare, then Google), cached with TTL, TLS still checks the real hostname; Python fetchers + live layers and the Java feed (Java 17, BinanceLiquidationAccumulator / StateCodeEmitter on wss://fstream.binance.com). Sonnet session builds card binance-futures-dns-block-fleet-1109; live path, so the coordinator deploys after tests.
+
+## d-tom-fabio-rebuild-from-source-1109 (2026-11-09)
+Operator: "Tom is launching videos about how a beginner can trade ... so simple ... we need to think right this time. From the beginning ... build carefully."
+Answer: rebuild in steps from their own words. Step 1 card tom-fabio-rebuild-from-beginner-videos-1109 (Gemini, captions verified): a rulebook where every rule has a quote, plus what candles cannot see (order flow). Then code one rule at a time and measure what each adds, with testnet forward from the first version. The running real-frame census (tf-real-frame) stays as the baseline.
+
+## d-edge-hunt-credit-wave-1109 (2026-11-09)
+Operator: run our own edge hunt on the cloud credit: 5 Haiku, 2-3 Sonnet, 2 Opus, 1 Fable ("table", voice), all on the credit; an Opus session first reads everything done, redone and failed plus the latest decisions, and how he thinks (RSI, wicks, levels), then decides what each worker does.
+Answer: card edge-hunt-plan-opus-1109 runs first on the credit (Opus, cap 6 USD) and writes PLAN.md, OPERATOR_LENS, 11 worker briefs and a fixed TRIALS list; the wave (5 Haiku, 3 Sonnet, 2 Opus, 1 Fable, total cap 36 USD) then launches on api_job.py --engine api only, in waves of at most 4. Reserve about 25 USD of the credit (expires 2026-11-17).

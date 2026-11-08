@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T19:59:18Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/malkan_level_shorts_2026-11-09/SEVEN_STAR_CAPTIONS.md"
+  ],
+  "created": "2026-11-08T19:43:58Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/malkan_level_shorts_2026-11-09/SEVEN_STAR_CAPTIONS.md: per video id, title, caption source, every star/grade condition with a verbatim quote and line; verify_extract_quotes.py exits 0; a table 3-star / 5-star / 7-star conditions marked SOURCED or MISSING",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator wants the two extra 7-star conditions. Our A-CQiV_UFB4 transcript (lines 291-298) grades reverse divergence 3/5/7 star and withholds the conditions; web search found no written source. Captions of his other 7-star and 3X3 videos are the remaining primary source.",
+  "id": "gemini-malkan-7star-captions-1109",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/malkan_level_shorts_2026-11-09/SEVEN_STAR_CAPTIONS.md",
+      "ref": "523c3a892",
+      "utc": "2026-11-08T19:59:18Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: Malkan level shorts read on the 82-87k range (5 operator points measured)",
+      "ref": "17fbce4b1fb7",
+      "utc": "2026-11-08T19:23:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_quote_spanning_timestamp_markers_is_found",
+  "next": "END: task complete",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T19:46:12Z",
+  "refs": [],
+  "result": "MyTradingSys/research/malkan_level_shorts_2026-11-09/SEVEN_STAR_CAPTIONS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/malkan_level_shorts_2026-11-09/"
+  ],
+  "scope_out": [
+    "no repo code change|no invented conditions"
+  ],
+  "scope_sha": "17fbce4b1fb7",
+  "size": "S",
+  "sources": [
+    "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
+  ],
+  "state": "done",
+  "steps": [
+    "fetch captions (yt-dlp subs, hi + en) for the listed videos and the 3X3 series list; grep star grades; write the table; verify quotes; ship"
+  ],
+  "taken": "2026-11-08T19:59:18Z",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "Malkan 7-star: captions for XFO49JlODxI (Spinning Top 7 Star Setup), bH0mXqSXV3Y (Banknifty 7 Star Signal) and the rest of his 3X3 Swing Trading series after episode 8 (A-CQiV_UFB4, where 7-star = all reverse-divergence conditions met, conditions withheld); extract every star condition with verbatim quotes",
+  "weight": "",
+  "worker": "agent"
+}
