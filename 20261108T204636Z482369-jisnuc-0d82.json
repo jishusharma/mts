@@ -1,0 +1,1 @@
+{"t": "20261108T204636Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "CHK B 20:46Z done=fe14e397 malkan-7star-captions (reviewed), 6aab6c87 ship-refuse-main-checkout (sync.py refuses shared main checkout + never stages HALT/AUTO_PAUSE/runtime data), ec3f2b59 cards READY", "login": "B"}
