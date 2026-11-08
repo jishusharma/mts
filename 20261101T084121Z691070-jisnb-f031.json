@@ -1,1 +1,0 @@
-{"t": "20261101T084121Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Laptop: report C: free GB + c_drive_guard + wt_maint dry-run lines via mts_signal note. No deletes beyond the guard.", "login": "C", "id": "b-0a6eda", "prio": "high", "cmd": "python scripts/dev/c_drive_guard.py; python scripts/dev/wt_maint.py"}
