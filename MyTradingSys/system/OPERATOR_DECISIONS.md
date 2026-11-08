@@ -2085,3 +2085,7 @@ Answer: Gemini 4 Argon takes the heavy Monday research (gemini-argon-krown-lows-
 ## d-backtest-map-1109 (2026-11-09, operator: "so many backtesting failures, I don't know where to start")
 Lead C wrote research/BACKTEST_MAP_2026-11-09.md (147 rows = 48 ideas; 0 proven; 3 eras; where to start) and added a line to D7_ROADMAP S3 recording that d-phase-first-method-1106 replaced the VALIDATION-backtest exit with testnet-forward.
 Answer: start from the map, then the Fable/Opus reviews, then the testnet-forward list; backtests are now a sanity check and failure map, not the gate.
+
+## d-krown-4h-testnet-forward-start-1109 (2026-11-09)
+Operator: asked how the roadmap moves on with no edge; Lead C proposed reviews cross-check, one trader-exits backtest, and testnet-forward of the setups we understand; operator pressed "Yes, start it" for the Krown 4h testnet forward test now, alongside the reviews.
+Answer: fable-run7-forward-test started now as a Fable 5.1 session (the operator's yes is the operator-run start the card requires). The old HOLD (72 months to power) is replaced by d-phase-first-method-1106: frozen R6 Krown S8 4h rule trades on testnet until it fails; the pre-reg fixes the fail rule and parity test, not a power gate. Testnet only; builders never trade, the build card wires the signal.
