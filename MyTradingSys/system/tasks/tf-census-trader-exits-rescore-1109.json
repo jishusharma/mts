@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T18:59:37Z",
   "commands": [],
   "created": "2026-11-08T18:44:56Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "merged into census-5m-15m-7y-session-ladder-1109 (Fable twin)",
+  "pinned": false,
   "prio": 1,
+  "reason": "merged into census-5m-15m-7y-session-ladder-1109 (Fable twin)",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [
@@ -29,7 +32,7 @@
   "sources": [
     "Opus post-mortem 2026-11-09 POSTMORTEM_OPUS.md (tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Re-score the auction census event list with the traders' exits (next HVN / opposite VA edge, BE at +1R, no fixed 1R), FEES_DERIBIT maker entry, split by session (Asia/London/NY) and by phase (Bible range 75.4-80.9k vs rest); no new events, no tuning; new script beside auction_census.py",

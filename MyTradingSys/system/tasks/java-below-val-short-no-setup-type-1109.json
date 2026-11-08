@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T18:45:48Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "java-below-val-short-no-setup-type-1109",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
+    "src/main/java/datafeed/SetupCandidatesBuilder.java"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Java fix 36513c888 adds short below VAL but determineSetupType returns null for short at val zones (:482): breakdown continuation short still impossible; add a setup type + test on the candidate, not the direction list",
+  "weight": "",
+  "worker": ""
+}

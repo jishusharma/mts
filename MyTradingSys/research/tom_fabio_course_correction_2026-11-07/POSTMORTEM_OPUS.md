@@ -2,6 +2,8 @@
 
 **Verdict: the "no edge" result is about a mechanical proxy, not about Tom or Fabio. The census tested a symmetric 1R bracket, entered at market on the reclaim close, against UTC-day levels, with no session, no order flow and no phase. Both traders sourced a 30-40 % win rate paid by 3R+ targets, adds and break-even. A 1R bracket cannot carry that payoff, so gross ~0 R (-0.010 R on 7y 1h) is what any symmetric bracket returns. Argon got the diagnosis of the old engines mostly right. It then built the fix around four hand-picked winners, and its fee fix (a stop of at least 40 bps) filters out the traders' real trade.**
 
+**Amended after the cross-check (section 6): Fable recomputed fixed 2R and 3R targets on 1h and got -0.035 R and -0.023 R. So the 1R bracket is not the whole story: on 1h, the classifier label carries no direction at any fixed R. Two exits stay untested: node-to-node targets with break-even, and in-session 5m/15m entries.**
+
 Scope: process and design, not a recount (Fable recounts). Inputs: AUDIT_AND_COURSE_CORRECTION.md (AUDIT), REVALIDATION_LOG.md (REVAL), auction_context.py (AC), auction_census.py (CEN), AUCTION_CENSUS_1108.md (CENSUS), Lead C review d-argon-tom-fabio-review-1108, Java fix 36513c888, v3 rerun 2eda09a40. Trader rules: CONCEPTS.md (tom_fabio_concepts_2026-10-29), TOM_VERBATIM_INDEX.md, FABIO_V3_SPEC.md s7.1, the raw transcripts. Tom = Tom Vorwald (raw_transcripts_canonical/5Ljfwvtktek_raw.txt:4). Fabio = NQ scalper, NY session (8CWKfoSJu3c_raw.txt:7).
 
 ## 1. Argon's claims, graded
@@ -14,7 +16,7 @@ Scope: process and design, not a recount (Fable recounts). Inputs: AUDIT_AND_COU
 | C2b | The middle path (2-3 plain proofs) fixes it | WRONG so far | Census FAST_REJECTION gross -0.010 R over 7y; every year negative (CENSUS:113,152-163) |
 | C3 | The 1M/1w/1d ladder was missing | PROVEN (absence) | AUDIT:18; tf_strip lacked 1M |
 | C3b | The missing ladder caused the no-edge result | UNPROVEN | AC uses the ladder only for the sizing tier, never as a gate (AC:890-898). The census used a different proxy (daily SMA20, CEN daily_bias) and found no with/against gap (CENSUS:139-146) |
-| C4a | Java above_vah / below_val asymmetry | PROVEN, fixed | 36513c888 (RulesTest 21/21). Effect on any count: not measured |
+| C4a | Java above_vah / below_val asymmetry | PROVEN; direction fixed, still no candidate | 36513c888 adds the short direction, but determineSetupType still returns null for it (Fable J1) |
 | C4b | Fabio v3 Model A in confirm mode came back "unmanaged" | PROVEN, fixed | engine.py diff in 9358461e2. Rerun 2eda09a40: still starved, so the fix does not change the result |
 | C5 | Order flow away from a level reads as continuation | PLAUSIBLE-to-PROVEN | n=2,175 b99 study, 18 % reversal vs 27 % baseline (AUDIT:39) |
 | C5b | (implied) The new engine reads order flow at the level | WRONG | The census klines carry no delta, so `delta` defaults to 0 and absorption reduces to wick plus rel_vol (AC:604,620,636). Fabio's half was never tested |
@@ -44,8 +46,8 @@ Scope: process and design, not a recount (Fable recounts). Inputs: AUDIT_AND_COU
 
 | Gap | Could hide an edge? | Why | Cheapest test |
 |---|---|---|---|
-| 1R bracket vs 3R+ target with BE/trail | YES, strongest | The traders' R lives in the tail. Gross ~0 at 1R says nothing about 3R at a 30 % hit rate | Re-score the census event list with exit = next HVN or opposite VA edge, BE at +1R, no fixed R (card 1). No new events, so no tuning |
-| Session (NY / London) | YES | Both traders exclude the quiet sessions; the pool is ~1/3 Asia | Same re-score, split by session (card 1) |
+| 1R bracket vs 3R+ target with BE/trail | WEAKENED (section 6) | Fixed 2R/3R lose too (Fable); only the node target plus BE is untested | Folded into census-5m-15m-7y-session-ladder-1109 |
+| Session (NY / London) | OPEN, the prior is against NY fades | Fable's 1h split: 12-16 UTC fades -0.180 R, 00-04 -0.003 R | Log the session block per trade; no session restriction yet |
 | Taker-only fees | PARTLY | Maker entry and target cut fees on winners to 0. At 6 bps stops, losers still pay 0.8 R: Fabio-size stops do not survive on BTC under either model. 15+ bps stops at 1:3 can | Re-score with FEES_DERIBIT (card 1) |
 | No order flow at the level | YES (Fabio) | Absorption then aggression is his trigger; the census never saw delta | Live delta exists (orderflow_live). Log NY-session level events with delta on testnet (card 3) |
 | No phase | YES | The census pools seven years and every regime; the current phase is a 75.4-80.9k range (BIBLE.md:28), where range-edge fades are the operator's own claim | Phase-scoped testnet run (below) |
@@ -59,7 +61,7 @@ Scope: process and design, not a recount (Fable recounts). Inputs: AUDIT_AND_COU
 |---|---|---|
 | Phase | Current 4h/1h range 75,400-80,900 (BIBLE.md:28). The run ends when a daily close lands outside the range, which records the phase end | phase SOURCED (Bible); exit rule OURS |
 | Levels | range edges, PDH/PDL, NY-session VAH/VAL/POC (prior session) | Tom/Fabio SOURCED; NY analogue OURS |
-| Session | London open and NY session only | SOURCED (Fabio NY; Tom cash hours) |
+| Session | all sessions; log the session block (amended: Fable's 1h split has NY fades worst) | Fabio NY SOURCED; logging OURS |
 | Trigger | probe beyond the level, reclaim within 3 bars, rel_vol of at least 2 or opposing delta | AC thresholds OURS |
 | Entry | maker limit at the level after the reclaim (Tom's limit order); no fill within 3 bars = no trade | SOURCED (TOM-005); 3 bars OURS |
 | Stop | beyond the sweep extreme (the plan's invalidation, d-stops-follow-trade-1106); no floor | SOURCED |
@@ -67,7 +69,7 @@ Scope: process and design, not a recount (Fable recounts). Inputs: AUDIT_AND_COU
 | Management | BE at +1R; half off at POC | Fabio BE SOURCED; split OURS |
 | Size | testnet, fixed risk per trade | OURS |
 | Logged per trade | session, level type, delta at reclaim, with/against 1M bias, fill or no fill, R net under FEES_DERIBIT | - |
-| Fails when | 8 losses in a row (0.65^8 = 3 % at a 35 % hit rate), or net R < 0 after 20 trades | OURS |
+| Fails when | after 30 gate-pass trades, net R <= 0, measured against the -0.087 R null (adopted from Fable) | OURS |
 
 Existing card auction-plan-testnet-forward-1108 carries this; card 4 below amends its setup list.
 
@@ -92,5 +94,24 @@ Existing card auction-plan-testnet-forward-1108 carries this; card 4 below amend
 | Four reviewers checked numbers and code, none checked the method or demanded a count | false confidence | a review question: "what count supports this?" |
 | SOURCED was claimed where the source said OURS (77 %, 80 %) | the wrong anchor carried into the census | blind-read of labels (Haiku) |
 
-## Cards filed
-See the ship commit: tf-census-trader-exits-rescore-1109, tf-ny-session-va-profile-1109, tf-delta-at-level-testnet-log-1109, tf-testnet-forward-range-phase-amend-1109, tf-acceptance-77-label-placebo-1109.
+## 6. Cross-check vs REVIEW_FABLE (d2c4980b)
+
+| Their point | Agree / disagree / new | Evidence |
+|---|---|---|
+| Census reproduces byte for byte; 50/50 rows recomputed; no lookahead | AGREE (new to me: the recompute) | REVIEW_FABLE b; my read of CEN:101-146 found no lookahead either |
+| Fees are not the story on 1h (median stop 96 bps, fee 0.10 R); they are on 5m | AGREE | matches my C1b; CENSUS:113,169 |
+| Fixed 2R/3R targets also lose (-0.035, -0.023 R) | AGREE; it corrects me | My verdict called the 1R bracket the cause. Downgraded to "node target plus BE untested" (verdict amendment, section 3) |
+| The label carries no direction at 1h; that absence is real | AGREE | 8/8 years negative, n=1871 |
+| Session: 12-16 UTC fades are the worst cell (-0.180 R) | AGREE; it corrects my plan | I had planned London/NY only. Plan now logs the session block instead (section 3) |
+| Stop = sweep extreme matches both traders | AGREE for fades; DISAGREE for ACCEPTED | ACCEPTED stop = the level, not the invalidation, so fee 0.54 R (CENSUS:116; d-stops-follow-trade-1106) |
+| Acceptance threshold: sourced 2x30m = 12x5m, not 6 | NEW (I had only the OURS label) | accept80 RESULT.md:5 |
+| 77 % misread as a win rate | AGREE | my C7 |
+| Slippage 2 bps and funding omitted, so fee_r is understated ~20 % | NEW, agree | FORMULAS s13 |
+| Cooldown resets per UTC day, so a level can fire twice around midnight | NEW, agree (minor) | CEN:112 |
+| Java J1: the VAL short has no setup type; J2: the VAH health check was removed, not made symmetric | NEW, agree | I graded C4a "fixed"; amended to "direction fixed, still no candidate" |
+| The missing run is a 7y 5m/15m census with session, HTF gate and node targets | PARTLY DISAGREE | Useful as a diagnostic, but phase-first says testnet does not wait on it (d-phase-first-method-1106). Run both in parallel |
+| Phase / Bible cycle clock | NEW from me (Fable silent) | Section 4: the 7y pool mixes phases; Argon caps cycle-bottom longs |
+| Order flow (delta) never tested | NEW from me (Fable silent) | auction_context.py:604,620 |
+
+## Cards
+Kept: tf-ny-session-va-profile-1109, tf-delta-at-level-testnet-log-1109, tf-testnet-forward-range-phase-amend-1109 (amended with Fable's kill rule and session logging). Merged into Fable's twins and dropped: tf-census-trader-exits-rescore-1109 -> census-5m-15m-7y-session-ladder-1109; tf-acceptance-77-label-placebo-1109 -> audit-77pct-acceptance-misread-1109 + census-acceptance-threshold-mislabel-1109. java-below-val-short-no-setup-type-1109 (Fable) has no twin here.
