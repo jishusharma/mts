@@ -150,7 +150,7 @@ def toplevel(path):
 
 
 def refuse_live(repo):
-    if (repo / LIVE_MARKER).exists():
+    if (Path(repo) / LIVE_MARKER).exists():
         raise SyncError(
             f"{repo} is the live tree ({LIVE_MARKER} present). Sessions do not work here.\n"
             f"Make a worktree:  python scripts/dev/sync.py start <slug>  (never `git worktree add -b` by hand: on Windows the ref "
