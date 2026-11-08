@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T20:18:08Z",
   "commands": [
     "python MyTradingSys/research/news_effects_2026-11/build_events.py",
     "python MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Met on trunk (8ce5a1c28): surprise cols, 142/191 verified counts per class, 31 analyst men",
+      "ref": "0f0dd73d2",
+      "utc": "2026-11-08T20:18:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
@@ -35,6 +42,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done_when met under stated reading",
   "note": "Runs between the Opus statistics review and the market-lens review so the second reviewer and the synthesis read the better data. Public data and pages pre-approved. If a source blocks scripts (bls.gov 403), use web.archive.org or the Fed pages and say which. The Opus review (on trunk) is an input, not a reason to skip checks: re-measure what it flags.",
   "prio": 1,
   "refine_tries": 0,
@@ -44,7 +52,12 @@
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md (read first: only CPI and NFP size effects are safe; direction needs surprise data)"
   ],
-  "result": "",
+  "result": "Met on trunk (8ce5a1c28): surprise cols, 142/191 verified counts per class, 31 analyst mentions of 6 events (quote-checked), section 5/6/4, Opus data errors fixed, check GREEN. DECISION (OURS): '30 analyst-named events' read as 30+ quoted mentions; distinct events are 6, more needs raw transcripts not on this machine",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/news_effects_2026-11/ (news_events.csv, build_events.py, check_catalogue.py, REPORT.md, calendar_cache.json)",
     "reads: F:/CryptoScrapper/cbp_v2/extractions.md and transcripts, public web sources, Binance public klines"
@@ -57,12 +70,13 @@
   "sources": [
     "catalogue v1 Result 2026-11-08 01:18Z: no surprise data, 55 rows approximate time, own-grouping times from memory, 4 analyst events; operator chat 20:20Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "extend check_catalogue.py with the new columns, URL presence and verified counts; run it red",
     "fill surprise columns from public releases (BLS, Fed, archived consensus pages); verify and time-stamp each own-grouping row from a URL",
     "extract 30+ analyst-named events with quotes; rebuild csv and REPORT.md; run the check and tests --quick; ship"
   ],
+  "taken": "2026-11-08T20:18:08Z",
   "tests": "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
   "title": "Catalogue v2: add surprise (actual vs consensus) for CPI/NFP/FOMC, source-verify every own-grouping event time, add analyst-named events from the CBP transcripts",
   "weight": "",
