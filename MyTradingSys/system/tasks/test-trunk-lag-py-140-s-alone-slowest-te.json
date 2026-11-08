@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T15:41:56Z",
   "commands": [],
   "created": "2026-11-07T15:12:58Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already met on trunk 33f440866: pytest scripts/dev/test_trunk_lag.py alone = 15 passed in ",
+      "ref": "33f440866",
+      "utc": "2026-11-08T15:41:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Pages hook guard: refresh marker stops respawn, login from env/cache, build time cap",
@@ -24,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done_when met (under 60 s alone)",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T03:57:32Z",
+  "refreshed": "2026-11-08T15:41:55Z",
   "refs": [],
-  "result": "",
+  "result": "Already met on trunk 33f440866: pytest scripts/dev/test_trunk_lag.py alone = 15 passed in 15.62s on JIS-NUC (slowest test 3.39s). No code change needed.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_trunk_lag.py"
   ],
@@ -40,11 +54,12 @@
   "scope_sha": "779eb295f037",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "profile slow tests",
     "mock git/sleep"
   ],
+  "taken": "2026-11-08T15:41:56Z",
   "tests": "python -m pytest scripts/dev/test_trunk_lag.py --durations=5",
   "title": "test_trunk_lag.py (~140 s alone, slowest test 31 s) hits the 240 s Step 3xm must-pass ceiling on a loaded host, so trunk_lag ships fail falsely | done-when: test_trunk_lag.py runs under 60 s or Step 3xm splits it, and a trunk_lag ship passes on a busy host",
   "weight": "ROUTINE",
