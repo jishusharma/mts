@@ -96,7 +96,7 @@ Verification command: `python scripts/dev/verify_extract_quotes.py MyTradingSys/
 
 | Star Grade | Setup Family | Stated Conditions | Claimed Strike Rate / Win Rate | Risk:Reward Ratio | Status | Sourced Citations |
 |---|---|---|---|---|---|---|
-| **3-Star** | Reverse Divergence (PRD / NRD) | Price and RSI reverse divergence present, but loose / minimal confluence; bar count or level criteria marginal (it will run on it, loose) | ~50% (5 out of 10 work, 5 fail) | 1:3 | SOURCED | `raw_transcripts_canonical/XFO49JlODxI_raw.txt:8`, `raw_transcripts_canonical/A-CQiV_UFB4_raw.txt:296-301`, `raw_transcripts_canonical/GbXnw_tNMtw_raw.txt:387-391` |
+| **3-Star** | Reverse Divergence (PRD / NRD) | Price and RSI reverse divergence present, but loose / minimal confluence; bar count or level criteria marginal (it will run on it, loose) | ~50% (5 out of 10 work, 5 fail) | 1:3 | SOURCED (rate, RR) / INFERRED (conditions: Malkan never lists 3-star conditions; 'loose' is his word) | `raw_transcripts_canonical/XFO49JlODxI_raw.txt:8`, `raw_transcripts_canonical/A-CQiV_UFB4_raw.txt:296-301`, `raw_transcripts_canonical/GbXnw_tNMtw_raw.txt:387-391` |
 | **5-Star** | Reverse Divergence (PRD / NRD) | Partial condition match; bar count 5 to 50 bars; points above 60 (PRD) or below 40 (NRD) | 60% - 70% (7 out of 10 work, 3 fail) | 1:5 to 1:7 | SOURCED | `raw_transcripts_canonical/XFO49JlODxI_raw.txt:8`, `raw_transcripts_canonical/A-CQiV_UFB4_raw.txt:294-297`, `raw_transcripts_canonical/GbXnw_tNMtw_raw.txt:456-465` |
 | **5-Star** | Multi-Timeframe RSI (Presenter / Recap) | Monthly RSI > 60 + Weekly RSI > 60 + Daily RSI pullback to 40 support with green reversal candle | Unspecified | 1:2+ | SOURCED | `raw_transcripts_canonical/2HcJ3NeZmEQ_raw.txt:8`, `raw_transcripts_canonical/-CBvFi40sIQ_raw.txt:8` |
 | **7-Star** | Multi-Timeframe RSI Divergence | Monthly RSI above 60 (or at 60) + Daily RSI below 40 + Daily divergence visible; stop loss unchanged, target doubled | High probability (best trades) | Target doubled (e.g. 1:10+) | SOURCED | `raw_transcripts_canonical/Wvq1TZh8aF0_raw.txt:8` |
@@ -104,3 +104,11 @@ Verification command: `python scripts/dev/verify_extract_quotes.py MyTradingSys/
 | **7-Star** | Candlestick Reversal (Spinning Top) | Candlestick pattern at major top or bottom: small body (color red/green immaterial) + long upper and lower shadows + high volume (exhaustion/expansion volume). Entry: buy above high (long) or sell below low (short). Stop: below low (long) or above high (short). Standalone trade: no RSI or BB required. | 90% (9 out of 10 work, 1 fails) | 1:10 to 1:30 | SOURCED | `raw_transcripts_canonical/XFO49JlODxI_raw.txt:8` |
 | **7-Star** | Banknifty 7-Star Signal (`bH0mXqSXV3Y`) | Video is private on YouTube | Unknown | Unknown | MISSING | None (Private video) |
 | **7-Star** | 3X3 Series Post-Ep 8 (`WBByyLBp8-c`, `TYB7GJODt-k`, `p32qB7PjkVI`) | Episodes 9, 10, 12 rate-limited by YouTube HTTP 429; Episode 11 (`fgN6QBFY3Ss`) has captions but contains no star grade mentions | N/A | N/A | MISSING | Captions not accessible due to YouTube 429 |
+
+## Review (B, Claude Opus, 2026-11-08)
+
+- Quote gate re-run by B: PASS, 0 problems. Spot-checked XFO49JlODxI and A-CQiV_UFB4 quotes against the raw files.
+- Fixed: the 3-star row claimed SOURCED conditions; only its strike rate and RR are sourced. Conditions are now marked INFERRED.
+- Still MISSING: Malkan's withheld 7-star reverse-divergence filters, bH0mXqSXV3Y (private), 3X3 Ep 9/10/12 (YouTube 429 on the NUC; re-fetch after the lock lifts, 2026-11-09T01:54Z, or from JIS-NB).
+- Process note: the job fetched YouTube while yt-guard had the NUC IP locked. Future Gemini caption jobs must check yt-guard first.
+- Usable for malkan-level-short-4h-count-1109: the 7-star RD base rules (5-50 bars, both points >60 / <40) and the monthly>60 + daily<40 + divergence rule are sourced.
