@@ -105,6 +105,12 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   .huge { font-size: 34px; } .big { font-size: 24px; }
   .bar .inputs { grid-template-columns: 90px 1fr 1fr; width: 100%; }
 }
+.nw-chip { font: 700 11px var(--sans); letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--dim); color: var(--dim); }
+.nw-chip.LONG { border-color: var(--up); color: var(--up); } .nw-chip.SHORT { border-color: var(--down); color: var(--down); }
+.nw-w { font-weight: 700; cursor: help; border-bottom: 1px dotted var(--dim); } .nw-w.hot { color: var(--amber); } #news td.nh .dim { font-size: 12px; }
+@keyframes nwflash { 0%, 100% { background: transparent; } 50% { background: rgba(224, 164, 58, .35); } }
+#ov tr.nwflash td { animation: nwflash 1s ease-in-out infinite; } .nwf { color: var(--amber); font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { #ov tr.nwflash td { animation: none; background: rgba(224, 164, 58, .35); } }
 </style>
 
 <main>
@@ -271,6 +277,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       <div class="hd"><h2>News</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
       <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th>Source</th><th>Headline</th><th>Reading for BTC</th><th>How it usually reacts</th></tr></thead><tbody id="news"></tbody></table></div>
       <span class="tag">Reading = word rules (OURS), a label on the headline, never a forecast; UNKNOWN when the headline gives no basis. "How it usually reacts" quotes a study only where one exists (research/news_feeds_2026-10-30/REPORT.md section 3), else says not measured.</span>
+      <span class="tag" id="news-w-note">W 0-100 = F x (P + K + I): P class prior from the event catalogue (SOURCED), K the BTC 1m move since the headline in z on the prior 24 h (SOURCED thresholds), I 2 x Tree importance (OURS), F freshness 1 for 15 min then to 0 at 60 (OURS shape). Hover W for the parts. Bias chip is HOLD unless the market's own move says LONG or SHORT; a prior tag never sets it. Context for your decision, nothing is automatic (research/news_effects_2026-11/NEWS_DESIGN.md sections 3-6).</span>
       <span class="tag" id="news-gaps"></span>
     </section>
 
@@ -332,6 +339,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 
 <script src="live_aid_indicators.js"></script>
 <script src="news_feed.js"></script>
+<script src="news_weight.js"></script>
 <script src="analyst_data.js"></script>
 <script src="base_rates.js"></script>
 <script src="premarket_risk.js"></script>
@@ -985,7 +993,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function html(id) { return $(id).innerHTML; }
   function renderOverview(now, MOM, L, px, a15, cr) {
     var R = [], kt = ovAge(S.klT, now);
-    function row(go, name, nowH, moreH, ageT, key) { R.push('<tr data-go="' + go + '" tabindex="0"' + (key ? ' class="key"' : '') + '><td>' + name + '</td><td class="nw">' + nowH + '</td><td class="mo">' + (moreH || '') + '</td><td>' + ageT + '</td></tr>'); }
+    function row(go, name, nowH, moreH, ageT, key, fl) { var rc = ((key ? 'key' : '') + (fl ? ' nwflash' : '')).trim(); R.push('<tr data-go="' + go + '" tabindex="0"' + (rc ? ' class="' + rc + '"' : '') + '><td>' + name + '</td><td class="nw">' + nowH + '</td><td class="mo">' + (moreH || '') + '</td><td>' + ageT + '</td></tr>'); }
     // 1. momentum: RSI per timeframe; 15m WaveTrend
     var mom = STRIP.map(function (tf) { var m = MOM[tf.k]; return tf.k + ' ' + (m ? '<b class="' + (m.rsi > 70 ? 'down' : m.rsi < 30 ? 'up' : '') + '">' + fmt(m.rsi, 1) + '</b>' : NID); }).join(' &middot; ');
     var m15 = MOM['15m'];
@@ -1015,8 +1023,9 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     if (!nLive) row('news', 'News', NID + ' <span class="err">' + esc(S.news.err || 'connecting') + '</span>', '', ovAge(S.news.t, now));
     else {
       var top = highNews(now).sort(function (a, b) { return b.time - a.time; })[0], pl = A.newsPulse(S.news.items, now), rd = top ? A.newsRead(top) : null;
-      row('news', 'News', '<b>' + pl.level + '</b> ' + pl.n + ' high in 60 min' + (top ? ': ' + hhmm(top.time) + ' ' + esc(headline(top).slice(0, 90)) + ' <span class="rd ' + rd.tag + '">' + rd.tag + '</span>' : ''),
-        top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min', ovAge(S.news.t, now));
+      var fl = !!(S.nwFlash && S.nwFlash.on), tw = nwTop(now);
+      row('news', 'News', (fl ? '<b class="nwf">FLASH</b> ' : '') + '<b>' + pl.level + '</b> ' + pl.n + ' high in 60 min' + (top ? ': ' + hhmm(top.time) + ' ' + esc(headline(top).slice(0, 90)) + ' <span class="rd ' + rd.tag + '">' + rd.tag + '</span>' : ''),
+        (tw ? 'top W ' + tw.w + ' <span class="nw-chip ' + tw.chip + '">' + tw.chip + '</span> ' + esc(tw.reason) + ' ' + hhmm(tw.time) + ' ' + esc(tw.title.slice(0, 70)) + '; ' : '') + (top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min'), ovAge(S.news.t, now), 0, fl);
     }
     row('verdict', 'Verdict', html('v-call'), esc($('v-count').textContent), '');
     row('liq', 'Liquidations 5 min', html('g-liq'), esc($('g-liq-sub').textContent), '');
@@ -1188,8 +1197,38 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   }
   function ago(ms) { var m = Math.floor(ms / 60000); return m < 1 ? 'now' : m < 60 ? m + 'm' : Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0'); }
   function headline(x) { return String(x.title || '').split('\n')[0].slice(0, 220); }
+  // W, chip and tab flash (news_weight.js, NEWS_DESIGN.md sections 3-6): context only, nothing is gated or sent. K reads this page's own BTC 1m feed S.tf['1m'].
+  var NW = window.NEWSWEIGHT;
+  function nwCompute(now) {
+    S.nw = null;
+    if (!NW) return;
+    var items = (S.news.items || []).filter(function (x) { return x && x._id && isFinite(+x.time) && x.time <= now; }), pool = [], list = [], by = {};
+    items.forEach(function (x) { var c = NW.classify(headline(x)); if (NW.isEvent(c, x.importance)) pool.push({ id: x._id, cls: c, time: x.time }); });
+    items.forEach(function (x, i) {
+      if (i >= 60 && now - x.time >= 3600000) return;
+      var a = NW.assess({ id: x._id, time: x.time, title: headline(x), importance: x.importance }, { now: now, rows: S.tf['1m'] || [], pool: pool });
+      a.title = headline(x); by[x._id] = a; list.push(a);
+    });
+    S.nwFlash = NW.flashStep(S.nwFlash || NW.flashInit(), list, now, S.view === 'news');
+    S.nw = { by: by, list: list };
+  }
+  function nwTop(now) {
+    var l = S.nw ? S.nw.list.filter(function (a) { return a.ageMin >= 0 && a.ageMin < 60 && a.w > 0; }).sort(function (a, b) { return b.w - a.w || b.time - a.time; }) : [];
+    return l[0] || null;
+  }
+  function nwLast(id) {
+    var a = S.nw && S.nw.by[id];
+    return a && a.last ? '<br><span title="last verified ' + esc(a.name) + ' row of the event catalogue (SOURCED); shown, never used in W or the chip">last ' + esc(a.name) + ' ' + esc(a.last.text) + '</span>' : '';
+  }
+  function nwCells(id) {
+    var a = S.nw && S.nw.by[id];
+    if (!a) return '';
+    return ' <span class="nw-w' + (a.w >= 60 ? ' hot' : '') + '" title="' + esc(a.hover) + '">W ' + a.w + '</span> <span class="nw-chip ' + a.chip + '" title="' + esc(a.reason + ' (OURS wording; rules NEWS_DESIGN.md section 5)') + '">' + a.chip + '</span> <span class="dim">' + esc(a.reason) +
+      (a.prior ? '; prior ' + a.prior : '') + '</span>';
+  }
   function renderNews(now) {
     var live = !!S.news.t && now - S.news.t <= 60000;
+    if (live) nwCompute(now); else S.nw = null;
     $('age-news').textContent = S.news.t ? Math.round((now - S.news.t) / 1000) + 's' : '--';
     $('news-feed').textContent = 'Tree News ' + (live ? 'live' : 'down');
     $('news-gaps').textContent = NEWS_GAPS;
@@ -1201,8 +1240,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       var r = NF.row(x), hi = r.hi, t = esc(r.headline), u = r.url, rd = A.newsRead(x);
       var tags = r.tags.map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
       return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + r.utc + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
-        (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags +
-        '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + '</td></tr>';
+        (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags + nwCells(x._id) +
+        '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + nwLast(x._id) + '</td></tr>';
     }).join('');
     var p = A.newsPulse(S.news.items, now);
     $('g-news').innerHTML = p.level + ' <span class="tag" style="font-size:16px">' + p.n + ' high</span>';

@@ -30,6 +30,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "decision",
+      "line": "DECISION (OURS): flash = W>=60 or K=40 on a headline under 60 min, ends when none qualifie",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-08T10:50:39Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
@@ -51,7 +57,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T09:03:40Z",
+  "refreshed": "2026-11-08T10:50:39Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
