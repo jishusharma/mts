@@ -2064,3 +2064,8 @@ Answer: yes; card dsa-bridge-fix-review-opus-1108 (Opus, ready) runs next after 
 Operator pasted the block page of the DSA chat profile (jishu, AWGP Google account): "Due to violation of user policies, your account has been suspended until November 11, 2026 10:22."
 Lead C: it is an account suspension for policy violation (not a rate-limit notice), about 3 days, and the profile was still running the bridge (Hands-free 0/200, v0.7.30). The chat list shows DSA task chats from NUC and boot sessions today, so more than one machine used this account. Cause still unproved; the Opus review ranks it. Rule until it ends: no bridge use, no workaround, no new account on this profile.
 Answer: yes; the DSA lane pauses on this account until 2026-11-11 10:22; the Opus review (credit) goes ahead.
+
+## d-dsa-block-cause-from-user-reports-1108 (2026-11-08 ~11:15Z, operator, chat)
+Operator: find the cause from other DeepSeek users; maybe too many requests sent continuously.
+Lead C: found the same suspension text in user reports of third-party web tools (OmniRoute, better-deepseek, ZeroScript); the best-supported pattern is fast repeated or agent-like use of the web chat, many new chats, regenerate, bridges and MCP, plus a wider wave of false positives; DeepSeek's terms ban automatic setups on the web service and account sharing, and no source names the exact trigger. Our bridge matches several of those patterns (205 auto-run commands on 11-07, peak 45 an hour, one account on three machines). Unproved. The official API is the sanctioned automation channel.
+Answer: yes; evidence handed to the Opus review card; price the DeepSeek API as an operator money decision after that review.
