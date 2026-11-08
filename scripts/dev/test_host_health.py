@@ -212,3 +212,30 @@ def test_own_temp_prefixes_match_c_drive_guard():
     import c_drive_guard
     assert "mts_s5c_" in h.OWN_TEMP_PREFIXES
     assert c_drive_guard.OWN_PREFIXES is h.OWN_TEMP_PREFIXES
+
+
+def test_kill_rc128_already_gone_counts_as_reaped(monkeypatch, tmp_path):
+    env(monkeypatch, tmp_path)
+    procs = [P(10, 99, "python.exe", "python run_all_tests.py"), P(1, 0, "claude.exe")]
+    lines = h.run(str(tmp_path), procs=procs, kill=lambda pid: (128, 'ERROR: The process "10" not found.'), now=NOW, post=False, **QUIET)
+    assert any("REAPED gate tree PID 10" in ln for ln in lines)
+    assert not any("kill failed" in ln for ln in lines)
+    lines = h.run(str(tmp_path), procs=procs, kill=lambda pid: (5, "Access is denied"), resnap=lambda: procs, now=NOW, post=False, **QUIET)
+    assert any("ORPHAN gate tree PID 10" in ln and "kill failed" in ln and "rc=5" in ln for ln in lines)   # unknown rc stays failed (fail closed)
+
+
+def test_failed_kill_retries_once_only_on_orphan_gate_leftovers(monkeypatch, tmp_path):
+    env(monkeypatch, tmp_path)
+    procs = [P(10, 99, "python.exe", "python run_all_tests.py"), P(1, 0, "claude.exe")]
+    after = procs + [P(11, 55, "python.exe", "python run_all_tests.py step"),     # leftover gate child, parent 55 dead: retried
+                     P(12, 56, "python.exe", "python unrelated_job.py")]          # dead ppid but not a gate: never touched
+    calls = []
+
+    def kill(pid):
+        calls.append(pid)
+        return (1, "Access is denied") if pid == 10 else (0, "")
+
+    lines = h.run(str(tmp_path), procs=procs, kill=kill, resnap=lambda: after, now=NOW, post=False, **QUIET)
+    assert calls.count(11) == 1 and 12 not in calls and calls.count(10) <= 2
+    assert sum(1 for pid in calls if pid == 11) == 1
+    assert any("ORPHAN gate tree PID 10" in ln and "kill failed" in ln and "rc=1" in ln for ln in lines)

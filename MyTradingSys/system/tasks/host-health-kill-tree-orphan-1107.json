@@ -6,19 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-08T01:40:01Z",
-    "misses": 28,
+    "folded": "2026-11-08T01:42:23Z",
+    "misses": 11,
     "reads": [
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/test_run_all_tests.py",
-      "scripts/dev/test_host_health.py",
-      "scripts/dev/host_health.py",
-      "scripts/dev/test_soak_six_slots.py",
-      "scripts/dev/test_ship_time_guard.py",
-      "scripts/dev/test_mts_doctor.py",
-      "MyTradingSys/system/TASK_REFINEMENT.md"
+      "scripts/dev/test_host_health.py"
     ],
-    "session": "agent-a5e48eb3035736192"
+    "session": "agent-a680d0e4901bc5141"
   },
   "created": "2026-11-07T18:20:49Z",
   "depends_on": [],
