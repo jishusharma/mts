@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest -q MyTradingSys/tools/live_aid/test_daily_playbook.py"
+  ],
+  "created": "2026-11-09T21:00:00Z",
+  "depends_on": [],
+  "done_when": [
+    "MyTradingSys/tools/live_aid/daily_playbook.py builds playbook_data.js per UTC day: for Asia 00-08Z, Europe 07-13Z, US 13-21Z the session high/low/range base rates from history, key levels (prior day/week H/L, open, VA), 2-3 scenarios with historical counts and invalidation, analyst calls (CBP), events, open ledger rows",
+    "Each scenario goes to scenario_ledger.py add with a score time, and yesterday's rows show as hit/miss on the page; Live Aid gets a Playbook tab (session cards, now-session highlighted); a phone-width artifact page republished by build_artifact.py",
+    "test_daily_playbook.py: fixture bars give the right session splits, base rates and ledger rows, fails on pre-change code; reuses monday_open_2026-11-09/monday_clocks.py logic instead of copying; shipped, Result names the build and today's scenario ids"
+  ],
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 11-09: the Monday playbook was one-off; he wants it daily, on Live Aid and on his screen, covering Asia, Europe and US sessions with key levels, scenarios Claude thinks may play out, trade ideas, insights and notes.",
+  "id": "daily-session-playbook-live-aid-1109",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "note": "Display only, no trade gate, no live tree change (deploy later per DEPLOY_RUNBOOK). Scenarios are context with counts, never signals. Design per the dense-symbols artifact memo: one bold line, tables, short cells. Binance REST is DNS-blocked on JIS-NB until the DoH fix lands: use data-api.binance.vision or archives.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T19:46:12Z",
+  "refs": [
+    "MyTradingSys/research/monday_open_2026-11-09/PLAYBOOK.md",
+    "MyTradingSys/research/monday_open_2026-11-09/monday_clocks.py",
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py"
+  ],
+  "result": "",
+  "scope_sha": "17fbce4b1fb7",
+  "size": "M",
+  "sources": [
+    "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
+  ],
+  "state": "ready",
+  "title": "Daily session playbook (Asia, Europe, US) on Live Aid and on the operator's screen, rebuilt every day",
+  "weight": "",
+  "worker": "session",
+  "status": "ready",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/",
+    "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_daily_playbook.py fails on pre-change code",
+  "steps": [
+    "write test_daily_playbook.py with fixture bars; run it red",
+    "build daily_playbook.py on monday_clocks.py logic; ledger rows per scenario",
+    "add the Live Aid Playbook tab and artifact page; run tests --quick; ship"
+  ],
+  "mutation_check": "MyTradingSys/tools/live_aid/test_daily_playbook.py"
+}

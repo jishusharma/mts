@@ -93,7 +93,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-04_malkan-window-12-18-vs-hindi.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-level-short-4h-count-1109` ready p1 SONNET: Malkan level short 4h: code the 5-layer stack in research/malkan_level_shorts_2026-11-09/READING.md (level, di
+  - `malkan-level-short-testnet-forward-1109` raw p2 JIS-NB: Testnet forward, context-only: Malkan level short div 3-10 close arm on BTC 4h (count: n=126, +0.11R net, not 
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)

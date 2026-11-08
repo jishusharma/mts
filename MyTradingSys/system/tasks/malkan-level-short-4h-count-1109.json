@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T20:28:35Z",
   "commands": [],
   "created": "2026-11-08T19:23:32Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "REPORT.md: no proven edge; best arm div 3-10 close n=126 +0.11R net (~0.9 SE), FULL 5-laye",
+      "ref": "ec3f2b590",
+      "utc": "2026-11-08T20:28:35Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Malkan 7-star captions (Gemini Flash) + B review: 3-star conditions marked INFERRED",
@@ -24,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "malkan-level-short-testnet-forward-1109",
   "note": "Inputs: SEVEN_STAR_CAPTIONS.md (fe14e397) sources the 7-star RD rules: 5-50 bars, both points >60 or <40. The 5 hand-picked points are a pattern, not an edge; the count decides.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "B (JIS-NUC, Opus)",
   "refreshed": "2026-11-08T20:21:51Z",
   "refs": [],
-  "result": "",
+  "result": "REPORT.md: no proven edge; best arm div 3-10 close n=126 +0.10R net (~0.9 SE), FULL 5-layer n=37 +0.13R (5 bps taker); operator points: base catches 5/5, full catches C3 only (matches READING.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/malkan_level_short.py",
     "MyTradingSys/backtest/layers/rsi/test_malkan_level_short.py",
@@ -43,13 +57,14 @@
   "scope_sha": "fe14e397755b",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "fail-first test on the 5 operator points",
     "layer: pivot-zone level, div or sweep, trigger, WT, HTF gate",
     "count 2017-2026 4h via bt_data.load_klines, fee-net, by regime/year, both arms",
     "REPORT.md; ship; file a testnet card only if fee-net expectancy > 0"
   ],
+  "taken": "2026-11-08T20:23:48Z",
   "tests": "MyTradingSys/backtest/layers/rsi/test_malkan_level_short.py::test_operator_points_fire (fail-first, fixture = 2026-08..10 4h bars)",
   "title": "Malkan level short 4h: code the 5-layer stack in research/malkan_level_shorts_2026-11-09/READING.md (level, divergence-or-sweep, RSI below MA+60 trigger, WaveTrend band cross, daily/weekly 60 fail), count every firing on BTC 4h 2017-2026 fee-net by regime; also test divergence window 3-10 vs swing-to-swing and close vs wick; current-phase version to testnet forward",
   "weight": "",
