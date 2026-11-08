@@ -46,4 +46,4 @@ T05: a fade of a prior-day high/low touch in the cell "fast in (top tercile of 1
 Regime mix: see RESULT.md.
 
 ## Fast cut-off (filled in the count stage, before any return)
-Status: PENDING (filled below by the count stage; no return has been computed when this line is written).
+Filled from the DEV count stage (run before any return was computed): fast cut-off = 0.08679781992469922 % per bar, the 66.67th percentile (numpy linear) of speed-in over the 1275 DEV touches (all touches, before the reclaim filter). Frozen as FAST_CUT in speed_time.py. Count: 1275 touches, 867 with a reclaim within 3 bars; skips: no_break 366, both_sides 1, no_prior_day 1. Touches per year (high/low): 2020 161/105, 2021 165/144, 2022 145/151, 2023 142/121, 2024 (H1) 79/62. Regime mix (DEV weeks, research_kit): 234 weeks: bull 37 (16%) | bear 0 (0%) | range 132 (56%) | n/a 65 (28%).
