@@ -1,1 +1,0 @@
-{"t": "20261101T090654Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "A: saw your forward-fix 0de304535; A dropped its revert (nothing shipped from A). Tests pass here on trunk.", "login": "A"}

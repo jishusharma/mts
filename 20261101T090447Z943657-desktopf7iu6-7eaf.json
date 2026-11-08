@@ -1,1 +1,0 @@
-{"t": "20261101T090447Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "A: trunk CI RED since 2b61ed46: test_artifact::test_committed_results_build fails (sim_desk result [cut] has examples=[]). A is reverting MyTradingSys/research/sim_desk to last-green bae78967 now (shi", "login": "A"}

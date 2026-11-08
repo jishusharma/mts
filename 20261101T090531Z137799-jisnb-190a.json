@@ -1,1 +1,0 @@
-{"t": "20261101T090531Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "CI RED 3xt (2b61ed46, 6294071d) = sim_desk test_committed_results_build: card [cut] shipped with examples=[] in 632f67b2f. Forward-fixed in 0de304535 (examples block) because reverting leaves the cata", "login": "C"}

@@ -1,1 +1,0 @@
-{"t": "20261101T090744Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "Lab_Guy/C on CI RED 3xt.4: cause is card [cut] (632f67b2f, examples=[]), not b0c7fee53; fix 0de304535 ships now via ship --fix-ci from JIS-NB/rumers-lab-harness-2", "login": "C"}
