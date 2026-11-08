@@ -569,10 +569,6 @@
     "2024-11-14",
     "08:30 AM"
    ],
-   "October 2025": [
-    "2025-11-14",
-    "08:30 AM"
-   ],
    "October 2026": [
     "2026-11-13",
     "08:30 AM"
@@ -586,7 +582,7 @@
     "08:30 AM"
    ],
    "September 2025": [
-    "2025-10-16",
+    "2025-11-25",
     "08:30 AM"
    ],
    "September 2026": [
@@ -598,6 +594,21 @@
     "08:30 AM"
    ]
   }
+ },
+ "corrections": {
+  "drop": [
+   "October 2025"
+  ],
+  "set": {
+   "September 2025": [
+    "2025-11-25",
+    "08:30 AM"
+   ]
+  },
+  "sources": [
+   "https://web.archive.org/web/20251120id_/https://www.bls.gov/schedule/news_release/ppi.htm",
+   "https://web.archive.org/web/20260201id_/https://www.bls.gov/schedule/news_release/ppi.htm"
+  ]
  },
  "fomc": [
   "2021-01-27",
@@ -655,6 +666,100 @@
   "2027-10-27",
   "2027-12-08"
  ],
+ "fomc_press_release": {
+  "2024-01-31": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240131a.htm"
+  },
+  "2024-03-20": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240320a.htm"
+  },
+  "2024-05-01": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240501a.htm"
+  },
+  "2024-06-12": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240612a.htm"
+  },
+  "2024-07-31": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240731a.htm"
+  },
+  "2024-09-18": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm"
+  },
+  "2024-11-07": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241107a.htm"
+  },
+  "2024-12-18": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241218a.htm"
+  },
+  "2025-01-29": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250129a.htm"
+  },
+  "2025-03-19": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250319a.htm"
+  },
+  "2025-05-07": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250507a.htm"
+  },
+  "2025-06-18": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250618a.htm"
+  },
+  "2025-07-30": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250730a.htm"
+  },
+  "2025-09-17": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm"
+  },
+  "2025-10-29": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20251029a.htm"
+  },
+  "2025-12-10": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20251210a.htm"
+  },
+  "2026-01-28": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260128a.htm"
+  },
+  "2026-03-18": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260318a.htm"
+  },
+  "2026-04-29": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm"
+  },
+  "2026-06-17": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260617a.htm"
+  },
+  "2026-07-29": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm"
+  },
+  "2026-09-16": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"
+  },
+  "2026-10-28": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+  }
+ },
  "note": "Public release dates. BLS: web.archive.org snapshots of bls.gov/schedule/news_release/<rel>.htm; FOMC: federalreserve.gov fomccalendars.htm",
  "skipped_snapshots": []
 }
