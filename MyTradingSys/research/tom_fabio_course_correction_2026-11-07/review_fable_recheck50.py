@@ -2,14 +2,20 @@
 Reads <cache>/events_1h.json (the census' own event list) and <cache>/binance_1h.json, re-derives entry, stop, target,
 outcome, fee_r and net_r for a deterministic 50-event sample (every k-th FAST_REJECTION event), then recounts the totals.
 Fee per FORMULAS.md s17/s18.5: taker 5 bps per side on entry and exit notional."""
-import json, sys, random, statistics as st, datetime as dt
+import json, sys, random, statistics as st, datetime as dt, importlib.util
 from pathlib import Path
+
+_fees_path = Path(__file__).resolve().parents[2] / 'backtest' / 'fees.py'   # no own cost constants: fees.py is the one source
+_spec = importlib.util.spec_from_file_location('mts_fees', _fees_path)
+_fees = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_fees)
 
 cache = Path(sys.argv[1])
 ev = json.loads((cache / "events_1h.json").read_text())
 bars = json.loads((cache / "binance_1h.json").read_text())
 idx = {b["t"]: i for i, b in enumerate(bars)}
-TAKER = 0.0005
+TAKER = _fees.BINANCE_TAKER            # per side, from fees.py
+RT_BPS = TAKER * 2e4                   # round trip in bps (two taker legs), from fees.py
 H = 24
 
 def my_sim(direction, entry, stop, fut):
@@ -29,8 +35,8 @@ def my_sim(direction, entry, stop, fut):
         gross = (exit_px - entry) * direction / dist
     # FORMULAS s18.5: fees on entry and exit notional
     fee_r = (TAKER * entry + TAKER * exit_px) / dist
-    fee_r_census_style = 10.0 / (dist / entry * 1e4)
-    return out, gross, fee_r, fee_r_census_style, gross - fee_r
+    r_census_style = RT_BPS / (dist / entry * 1e4)
+    return out, gross, fee_r, r_census_style, gross - fee_r
 
 fast = [e for e in ev if e["verdict"] == "FAST_REJECTION"]
 print(f"events total {len(ev)}; FAST_REJECTION {len(fast)}; gate-pass(fee_r<=0.25) {sum(1 for e in fast if e['sim']['fee_r']<=0.25)}")
@@ -40,7 +46,7 @@ for e in fast:
     i = idx[e["t"]]
     entry = bars[i]["c"]
     # stop = sweep extreme: recompute it is not possible without the classifier; use the implied stop from census sim: fee_r -> dist
-    dist = 10.0 / e["sim"]["fee_r"] / 1e4 * entry
+    dist = RT_BPS / e["sim"]["fee_r"] / 1e4 * entry
     stop = entry - e["dir"] * dist
     out, gross, fee_r, fee_c, net = my_sim(e["dir"], entry, stop, bars[i + 1:i + 1 + H])
     if out != e["sim"]["outcome"] or abs(gross - e["sim"]["gross_r"]) > 1e-6:
@@ -59,7 +65,7 @@ ok = 0
 for n, e in enumerate(sample, 1):
     i = idx[e["t"]]
     entry = bars[i]["c"]
-    dist = 10.0 / e["sim"]["fee_r"] / 1e4 * entry
+    dist = RT_BPS / e["sim"]["fee_r"] / 1e4 * entry
     stop = entry - e["dir"] * dist
     out, gross, fee_r, fee_c, net = my_sim(e["dir"], entry, stop, bars[i + 1:i + 1 + H])
     s = e["sim"]
@@ -69,7 +75,7 @@ for n, e in enumerate(sample, 1):
           f"{s['outcome']}/{s['gross_r']:+.2f}/{s['fee_r']:.3f}/{s['net_r']:+.3f} | {out}/{gross:+.2f}/{fee_r:.3f}/{gross-fee_r:+.3f} | {'yes' if m else 'NO'} |")
 print(f"\nsample match {ok}/{len(sample)}")
 # stop-distance geometry
-dists = [10.0 / e["sim"]["fee_r"] for e in fast]
+dists = [RT_BPS / e["sim"]["fee_r"] for e in fast]
 print(f"FAST stop distance bps: median {st.median(dists):.1f}, p25 {sorted(dists)[len(dists)//4]:.1f}, p75 {sorted(dists)[3*len(dists)//4]:.1f}")
 # hour-of-day split (UTC) of gate-pass FAST net R: session effect
 byh = {}
@@ -86,7 +92,7 @@ for rr in (2.0, 3.0):
     for e in fast:
         if e["sim"]["fee_r"] > 0.25:
             continue
-        i = idx[e["t"]]; entry = bars[i]["c"]; dist = 10.0 / e["sim"]["fee_r"] / 1e4 * entry; stop = entry - e["dir"] * dist
+        i = idx[e["t"]]; entry = bars[i]["c"]; dist = RT_BPS / e["sim"]["fee_r"] / 1e4 * entry; stop = entry - e["dir"] * dist
         target = entry + e["dir"] * rr * dist
         gross = None
         fut = bars[i + 1:i + 1 + H]
