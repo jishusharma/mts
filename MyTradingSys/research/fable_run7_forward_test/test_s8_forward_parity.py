@@ -90,16 +90,30 @@ def oracle_decisions(rows):
     return out
 
 
+HAVE_DATA = co.DATA.exists() and any(co.DATA.glob("BTCUSDT-4h-*.csv"))   # F:/MTS cache: absent on CI runners
+
+
+def _needs_data(c):
+    """Under pytest on a machine without the cached klines (CI) the data-bound tests are skipped; plain unittest still fails."""
+    try:
+        import pytest
+    except ImportError:
+        return c
+    return pytest.mark.skipif(not HAVE_DATA, reason="cached BTCUSDT 4h klines not on this machine (F:/MTS/data/fable_run6_klines)")(c)
+
+
 class FreezeAndGuard(unittest.TestCase):
+    @_needs_data
     def test_oracle_event_count_within_freeze_bar(self):
         n = len(oracle_set(load_bars()))
         self.assertLessEqual(abs(n - EXPECTED_EVENTS), EXPECTED_EVENTS * 0.01, f"|A|={n}, expected {EXPECTED_EVENTS} +-1 %")
 
+    @_needs_data
     def test_no_bar_at_or_after_cut_is_loaded(self):
         self.assertLess(max(r[0] for r in load_bars()), co.CUT_MS)
 
     def test_planted_sealed_timestamp_is_refused(self):
-        planted = list(load_bars()) + [(co.CUT_MS, 1.0, 1.0, 1.0, 1.0)]   # synthetic bar, no price data
+        planted = [(co.CUT_MS - H4_MS, 1.0, 1.0, 1.0, 1.0), (co.CUT_MS, 1.0, 1.0, 1.0, 1.0)]   # synthetic bars, no price data
         with self.assertRaises(ValueError):
             co.guard(planted, "planted")
 
@@ -113,7 +127,8 @@ def _gate_marker():
     except ImportError:
         return lambda c: c
     built = importlib.util.find_spec("krown_live") is not None
-    return pytest.mark.xfail(condition=not built, strict=True, reason="krown-s8-4h-testnet-build not shipped (krown_live missing)")
+    xf = pytest.mark.xfail(condition=not built, strict=True, reason="krown-s8-4h-testnet-build not shipped (krown_live missing)")
+    return lambda c: _needs_data(xf(c))
 
 
 @_gate_marker()

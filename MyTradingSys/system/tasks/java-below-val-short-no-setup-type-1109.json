@@ -1,39 +1,63 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=SetupCandidatesBuilderRulesTest+SetupCandidatesCriticalWave1Test+SetupCandidatesBuilderTierTest"
+  ],
   "created": "2026-11-08T18:45:48Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "SetupCandidatesBuilderRulesTest asserts on the CANDIDATE list: below_val + trend_healthy + val zone -> short tc_short; trend_unhealthy/transition/balance -> none; ct_long at VAL unchanged; consumers of setup-type strings handled; mvn green; new test fails on pre-change code.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make a breakdown-continuation short below VAL (TOM-3 / Event A) a real SetupCandidate: determineDirections adds short below VAL (fix 36513c888) but determineSetupType returns null for short at val/swing_low zones (:482). Add tc_short (mirror of tc_long :497) there for trend_healthy only; all other states stay null (fail closed). J2 (VAH health check) stays a flagged decision.",
   "id": "java-below-val-short-no-setup-type-1109",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SetupCandidatesBuilder: symmetric value-area rules (above VAH keeps ct_short, below VAL ad",
+      "ref": "36513c888310",
+      "utc": "2026-11-07T19:50:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Fable review REVIEW_FABLE.md J1, cross-checked in POSTMORTEM_OPUS.md C4a. Live path: builder never deploys; the operator/coordinator deploys per DEPLOY_RUNBOOK.md. Do not build under this refine step.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T20:04:53Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
     "src/main/java/datafeed/SetupCandidatesBuilder.java"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/SetupCandidatesBuilderRulesTest.java"
+  ],
+  "scope_out": [
+    "no deploy, no restart, no HALT, no live tree (Java live path: lane JIS-NB, manual/coordinator deploy only)",
+    "thresholds, other layers, the J2 VAH health decision"
+  ],
+  "scope_sha": "36513c888310",
+  "size": "S",
   "sources": [
     "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "grep consumers of setup-type strings; list them in the commit",
+    "write the failing candidate-list tests first (below_val short continuation, plus the fail-closed states and a non-trade balance-move/restart-state snapshot case per the live-path rule)",
+    "add the short continuation branch in determineSetupType val/swing_low zones for trend_healthy only; mvn tests green",
+    "sync.py ship; do not deploy"
+  ],
+  "tests": "SetupCandidatesBuilderRulesTest (new cases on the candidate list), SetupCandidatesCriticalWave1Test, SetupCandidatesBuilderTierTest",
   "title": "Java fix 36513c888 adds short below VAL but determineSetupType returns null for short at val zones (:482): breakdown continuation short still impossible; add a setup type + test on the candidate, not the direction list",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
