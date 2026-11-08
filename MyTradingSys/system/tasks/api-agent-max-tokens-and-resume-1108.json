@@ -18,9 +18,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "api credit: raw Messages API engine (api_agent.py) as api_job default; claude -p never bil",
-      "ref": "bb9714d34a63",
-      "utc": "2026-11-07T13:04:53Z"
+      "line": "api_agent, api_job: add claude-fable-5-1 (10/50 per MTok) with model test",
+      "ref": "1f739ab6c8ac",
+      "utc": "2026-11-07T20:21:22Z"
     }
   ],
   "layers": [],
@@ -30,7 +30,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T21:57:27Z",
+  "refreshed": "2026-11-07T21:58:22Z",
   "refs": [
     "scripts/dev/api_agent.py"
   ],
@@ -41,7 +41,7 @@
   "scope_out": [
     "no key handling change|no job launch|no change to the claude engine|no price table change"
   ],
-  "scope_sha": "bb9714d34a63",
+  "scope_sha": "1f739ab6c8ac",
   "size": "S",
   "sources": [
     "credit job news-effect-event-catalogue-1108 ended error_max_tokens 2026-11-08 21:56Z (F:/MTS/api_runs/news-effect-event-catalogue-1108/out.jsonl)"
