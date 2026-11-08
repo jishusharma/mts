@@ -15,6 +15,12 @@ import sys
 import urllib.request
 from collections import OrderedDict
 from pathlib import Path
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 HERE = Path(__file__).resolve().parent
 SAMPLE = HERE.parent.parent / "research" / "news_feeds_2026-10-30" / "sample_tree_news.json"
@@ -51,7 +57,7 @@ def fetch(t_from, t_to):
             t = t_from
             while t < t_to:
                 u = "%s?symbol=BTCUSDT&interval=1m&limit=1000&startTime=%d&endTime=%d" % (base, t, t_to)
-                with urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "news_study"}), timeout=20) as r:
+                with _doh_urlopen(urllib.request.Request(u, headers={"User-Agent": "news_study"}), timeout=20) as r:
                     page = json.loads(r.read().decode("utf-8"))
                 if not page:
                     break
