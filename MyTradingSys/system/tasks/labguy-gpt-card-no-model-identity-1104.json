@@ -4,19 +4,19 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-08T08:11:54Z",
-    "misses": 11,
+    "folded": "2026-11-08T18:56:31Z",
+    "misses": 24,
     "reads": [
       "scripts/dev/tasks.py",
-      "MyTradingSys/research/news_effects_2026-11/news_events.csv",
-      "MyTradingSys/system/ROUTING.md",
+      "scripts/dev/mts_signal.py",
       "MyTradingSys/system/LAYERS.md",
-      "MyTradingSys/system/CRITICAL_TEST_PLAN.md",
-      "MyTradingSys/backtest/test_tom_bt.py",
-      "MyTradingSys/system/DEVICES.md",
-      "MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
+      "MyTradingSys/system/LAB_RECIPES.md",
+      "scripts/dev/artifacts.py",
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/system/role_details/session_planner_details.md",
+      "MyTradingSys/system/TASK_REFINEMENT.md"
     ],
-    "session": "agent-aa34c82593cbfadbc"
+    "session": "agent-a1b2082446a57f180"
   },
   "created": "2026-11-04T13:18:04Z",
   "depends_on": [],
@@ -28,27 +28,45 @@
   "goal": "A gpt-* lab report carries its model id and vendor in the first header line, so a cross-vendor reviewer can tell a Codex run from a Gemini-authored one.",
   "id": "labguy-gpt-card-no-model-identity-1104",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "codex_run: status prints STALLED with the 401 cause when the host has no Codex login",
+      "ref": "c8aefddd030b",
+      "utc": "2026-11-08T02:04:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0c06863594a9 lab lab-crossvendor-stage: DONE (build)",
+      "ref": "MyTradingSys/system/LAB_RECIPES.md",
+      "utc": "2026-10-17T20:29:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (reviewer still required, IMPORTANT) (planner-a-1107b; twin check run, none). DECISION (OURS): identity in the report header line, not a card field. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: GPT/Codex lane: d-no-gpt-codex-credit-1106 and 401 stall; re-derive of a finished study, no roadmap exit",
+  "note": "REVIEWED:2026-11-09 ACCEPT (batch review, 1 FIX applied by session-planner-a-1108; was T0-ONLY 11-08) (reviewer still required, IMPORTANT) (planner-a-1107b; twin check run, none). DECISION (OURS): identity in the report header line, not a card field. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: GPT/Codex lane: d-no-gpt-codex-credit-1106 and 401 stall; re-derive of a finished study, no roadmap exit",
   "prio": 2,
   "refine_tries": 3,
   "refined_by": "",
+  "refreshed": "2026-11-08T18:56:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "scripts/dev/codex_run.py",
     "scripts/dev/test_codex_run.py",
-    "MyTradingSys/research/layer_lab/LAB_RECIPES.md (read)"
+    "MyTradingSys/system/LAB_RECIPES.md (read)"
   ],
   "scope_out": [
     "no change to which lane runs a card",
     "no live-tree edit, no deploy, no .secrets or .env read"
   ],
+  "scope_sha": "c8aefddd030b",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Find where codex_run builds result_receipt and trust",
     "Add the failing test",
