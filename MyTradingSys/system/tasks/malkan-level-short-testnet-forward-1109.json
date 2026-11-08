@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "B 2026-11-08: the count behind this card (61b035f47) read the sealed 2024-07+ windows (holdout_reads.csv: BURNED), so forward testnet data is the only clean test left. A parallel DEV-only count by C (11defa41f, reverted for CI) gave n=17, +0.245R at 1R, CI includes 0. Context-only run; kill at 30 trades net R <= 0.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
