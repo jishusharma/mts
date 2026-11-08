@@ -432,19 +432,19 @@ def test_git_hung_detects_old_git_processes_and_reports_pid_age_parent():
 
 def test_run_overlaps_the_slow_checks(tmp_path, monkeypatch):
     """doctor-speed-1108: the slow parts (card lint, twins, checklist, cost) wait on subprocesses/network: they run side by
-    side, so wall time is the slowest one, not the sum (was 12+2+12+... s one after another)."""
-    import time
+    side (wall time = the slowest, not the sum). Load-proof: each part waits for the others to start (a barrier); run one
+    after another it never gets them all in and times out."""
+    import threading
     mem = make_repo(tmp_path, "WARN t1 (ready): STALE latest never refreshed")
+    barrier = threading.Barrier(4)
 
-    def slow(ret):
+    def part(ret):
         def f(*a, **k):
-            time.sleep(0.6)
+            barrier.wait(timeout=20)      # BrokenBarrierError (-> failure) when the parts do not overlap
             return ret
         return f
-    monkeypatch.setattr(D, "card_warnings", slow([]))
-    monkeypatch.setattr(D, "dup_cards", slow([]))
-    monkeypatch.setattr(D, "checklist", slow([("X", "OK", "d")]))
-    monkeypatch.setattr(D, "cost_checkup", slow(["cost"]))
-    t = time.time()
+    monkeypatch.setattr(D, "card_warnings", part([]))
+    monkeypatch.setattr(D, "dup_cards", part([]))
+    monkeypatch.setattr(D, "checklist", part([("X", "OK", "d")]))
+    monkeypatch.setattr(D, "cost_checkup", part(["cost"]))
     D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)
-    assert time.time() - t < 1.5          # sequential would be >= 2.4 s
