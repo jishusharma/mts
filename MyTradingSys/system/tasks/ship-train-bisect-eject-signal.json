@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T20:23:28Z",
   "commands": [],
   "created": "2026-11-03T20:35:38Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "ship-train-bisect-eject-signal",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "4d4082353 + 2043a655d: scripts/dev/ship_train.py (bisect_batch, signal_eject, status wait)",
+      "ref": "6aab6c87c",
+      "utc": "2026-11-08T20:23:28Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -30,6 +37,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "ship-train-runner (PARKED: train machinery frozen by D7 week plan)",
   "note": "after ship-train-runner | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: ship-train machinery: frozen (D7 frozen list, week-plan move 5); the CI-red parity card is the ship-gate lever on the path REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
@@ -38,7 +46,12 @@
   "refs": [
     "MyTradingSys/system/SHIP_TRAIN.md"
   ],
-  "result": "",
+  "result": "4d4082353 + 2043a655d: scripts/dev/ship_train.py (bisect_batch, signal_eject, status wait), test_ship_train.py test_fake_red_ref_ejected_green_refs_land and test_signal_goes_to_host_with_slug_test_and_link; ship --train flag",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     ".github/workflows/train.yml",
     "scripts/dev/sync.py",
@@ -50,12 +63,13 @@
   "scope_sha": "05d8d613782f",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "per-ref parallel rerun and eject",
     "signal to author from ref name",
     "ship --train flag and status wait"
   ],
+  "taken": "2026-11-08T20:23:28Z",
   "tests": "new tests must fail on pre-change code once",
   "title": "Ship train 3/5: bisect, eject, signal author; sync.py ship --train",
   "weight": "",
