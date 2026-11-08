@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T01:37:02Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -21,23 +23,35 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already fixed on trunk by WIP save 675577abd: window_start uses min(a_i-4, b_i-30) clamped",
+      "ref": "6ab1b59ed",
+      "utc": "2026-11-08T01:37:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "revert flake-floor: drop leftover extra_tests.tsv registration",
-      "ref": "b0a5327cd2bd",
-      "utc": "2026-11-06T11:34:26Z"
+      "line": "news-catalogue: second build in news_effects_2026-11_b beside the landed one, cross-check",
+      "ref": "bc6f5e0cbc7e",
+      "utc": "2026-11-08T01:30:47Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "REVIEWED:2026-11-06 T0-ONLY | Refined 11-06 planner-c-1106c. Display only, no traded number changes. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: display-only defects in a study chart; no traded number changes",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T12:18:08Z",
+  "refreshed": "2026-11-08T01:36:35Z",
   "refs": [],
-  "result": "",
+  "result": "already fixed on trunk by WIP save 675577abd: window_start uses min(a_i-4, b_i-30) clamped at 0; span and arm (3-12 / 13-18 / >18) exported per trade; test_malkan_chart_window.py passes; no code change",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/malkan_div_trade_charts.py",
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/test_malkan_div_trade_charts.py",
@@ -46,17 +60,18 @@
   "scope_out": [
     "defects #2, #3, #5; study.py; any traded number; VALIDATION"
   ],
-  "scope_sha": "b0a5327cd2bd",
+  "scope_sha": "bc6f5e0cbc7e",
   "size": "S",
   "sources": [
     "MyTradingSys/research/rsi_divergence_mtf_gated_2026-11-04/REVIEW.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read REVIEW.md defects 1 and 4 and malkan_div_trade_charts.py L16-75",
     "write the failing test, fix L46 and add the band mark from the A-to-B span; register the new test in extra_tests.tsv (check the run_extra_tests orphan rule)",
     "run the test and run_all_tests.py --quick; ship with Result: and Next: END: display fixes"
   ],
+  "taken": "2026-11-08T01:36:37Z",
   "tests": "test_malkan_div_trade_charts.py: start-index and band assertions, both fail on current L46",
   "title": "fix malkan_div_trade_charts.py display defects (REVIEW.md #1, #4)",
   "weight": "ROUTINE",
