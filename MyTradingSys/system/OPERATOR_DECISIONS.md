@@ -2093,3 +2093,7 @@ Answer: fable-run7-forward-test started now as a Fable 5.1 session (the operator
 ## d-malkan-level-shorts-read-1109 (2026-11-09)
 Operator: asked where the Malkan RSI 40/60 layer is, whether 5-star and 7-star can be identified, and what confluence makes his marked 4h shorts (C1 08-28, C2 09-04, V1 09-23, V2 10-06, C3 10-21) tradable, including the no-divergence C3.
 Answer: research/malkan_level_shorts_2026-11-09/READING.md: all 5 reached >= 1R, only V1 fits the repo divergence rule (3-10 bars close to close); 5-star never fired (monthly/weekly never below 40); 7-star is a label only. Proposed 5-layer stack (OURS) goes to card malkan-level-short-4h-count-1109 for a 7y count, then testnet forward.
+
+## d-futures-data-every-station-1109 (2026-11-09)
+Operator: "it is a limitation that I do not accept. All stations must have this data" (Binance futures data blocked on JIS-NB).
+Answer: measured: the block is DNS-only (ISP DNS answers 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; real IP via Cloudflare DoH serves futures klines). Backtests already use futures history from data.binance.vision futures/um (from 2019-09) plus spot for 2017-2019; only live/REST futures is cut, including the Java feed's wss://fstream.binance.com. Card binance-futures-dns-block-fleet-1109; fix route awaits his pick (machine DNS setting is his to change; a repo-level resolver is the fleet-wide code option).
