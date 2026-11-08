@@ -13,29 +13,48 @@
   "id": "pages-follow-builds-gaps-1107",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "ce99161522fa pages follow builds: CBP desk + MTS Home republished (15:02Z/15:03Z builds), ",
+      "ref": "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md",
+      "utc": "2026-11-07T15:06:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Planner could not locate the sim_desk build file by name: the worker greps 'Updated' under MyTradingSys/research/sim_desk and adds it to scope. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: page stamp housekeeping; machinery freeze",
+  "note": "REVIEWED:2026-11-09 ACCEPT (batch review, 1 FIX applied by session-planner-a-1108; was T0-ONLY 11-08) (planner-a-1107b; twin check run, none). Planner could not locate the sim_desk build file by name: the worker greps 'Updated' under MyTradingSys/research/sim_desk and adds it to scope. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: page stamp housekeeping; machinery freeze",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T18:56:02Z",
   "refs": [
     "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md"
   ],
   "result": "",
   "scope_in": [
     "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md (read)",
-    "MyTradingSys/system/artifacts/artifacts.py",
+    "scripts/dev/artifacts.py",
     "scripts/dev/test_artifact_pages.py",
-    "scripts/dev/test_artifacts.py"
+    "scripts/dev/test_artifacts.py",
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py"
   ],
   "scope_out": [
     "no live-tree edit, no deploy, no .secrets or .env read"
   ],
+  "scope_sha": "05d8d613782f",
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read the spec section on Updated stamp and STALE",
     "Write one failing test per gap",

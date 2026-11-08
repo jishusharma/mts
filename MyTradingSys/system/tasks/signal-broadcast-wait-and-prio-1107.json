@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T18:56:16Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -22,13 +23,32 @@
   "goal": "mts_signal.py gets 'wait [--max M]' that returns on the first new inbound record for this host or login and prints it; prompt status lines sort ask > HIGH > age, cap 3 plus a count.",
   "id": "signal-broadcast-wait-and-prio-1107",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5b2506ea2c64 signals: wait + broadcast --wait / ask --wait-reply, sorted capped status lin",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-11-07T18:45:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Do not touch .claude/settings.json in this card (hook change = separate card). NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. ",
+  "note": "already shipped in 5b2506ea2 (wait, broadcast --wait, sorted capped status lines); verified by grep in mts_signal.py",
+  "pinned": false,
   "prio": 1,
+  "reason": "already shipped in 5b2506ea2 (wait, broadcast --wait, sorted capped status lines); verified by grep in mts_signal.py",
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T18:56:03Z",
   "refs": [
     "scripts/dev/mts_signal.py"
   ],
@@ -42,11 +62,12 @@
     "no .claude/settings.json edit",
     "no live-tree edit, no deploy, no .secrets or .env read"
   ],
+  "scope_sha": "05d8d613782f",
   "size": "M",
   "sources": [
     "operator 2026-11-07 ~17:40Z voice: broadcasts are fire-and-forget, senders never wait for the reply, receivers never check what is open; login C (the max console) must check broadcasts every wake and answer by priority; d-broadcast-wait-for-reply-1107"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "Read the existing wait/status code in mts_signal.py",
     "Write failing tests (any-signal wake, timeout, ordering, cap)",
@@ -55,7 +76,7 @@
     "Run test_mts_signal.py"
   ],
   "tests": "new cases in scripts/dev/test_mts_signal.py fail on current code",
-  "title": "Signal loop: broadcast --wait M blocks bounded and prints acks per host; prompt status lines sorted ask > HIGH > age, capped at 3 + count; wake checklist line in SUPER_SESSION.md",
+  "title": "Signal loop: wait [--max M] returns on first new inbound record (differs from ask --wait: any signal, not one ack); prompt status lines sorted ask > HIGH > age, capped at 3 + count; wake checklist lin",
   "weight": "IMPORTANT",
   "worker": "session"
 }
