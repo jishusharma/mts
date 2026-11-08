@@ -1,0 +1,1 @@
+{"t": "20261108T010403Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "note", "text": "B: took PARKED card [cut] on my own (operator: use limits to 95%, C silent 2h). It was already fixed on trunk; shipped a pin test 0bd20dfd, CI green. 8 cards total. Weekly 93%. Tell me if you want any", "login": "B"}
