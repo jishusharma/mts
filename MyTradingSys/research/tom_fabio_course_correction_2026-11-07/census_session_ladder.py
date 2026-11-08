@@ -46,11 +46,14 @@ def _load(name):
 
 ac = _load("auction_context")
 ax = _load("auction_census")
+_fs = importlib.util.spec_from_file_location("mts_fees", HERE.parents[2] / "MyTradingSys" / "backtest" / "fees.py")
+fees = importlib.util.module_from_spec(_fs)
+_fs.loader.exec_module(fees)
 
 BERLIN, NY = ZoneInfo("Europe/Berlin"), ZoneInfo("America/New_York")
 MIN_NODE_R = 1.5
 SLIP_BPS = 2.0
-TAKER_SIDE_BPS = 5.0
+TAKER_SIDE_BPS = fees.DERIBIT_TAKER * 1e4  # 5 bps per side, fees.py:32
 GATE_FEE_R = 0.25
 BIBLE_PHASE_START = dt.datetime(2026, 10, 24, tzinfo=dt.UTC)
 VARIANTS = ("B1R", "NODE", "NODE_BE", "HALF_BE", "TRAIL")
