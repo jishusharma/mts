@@ -76,3 +76,22 @@ Valid for the question it answers. Invalid as a test of the audit's method.
 5. `census-5m-15m-7y-session-ladder-1109`: the missing frame.
 
 Regime mix (this review's frame): 7y days bull 1032 / bear 830 / range 695 (census rule, OURS). Noticed: `tasks.py --help` output crashes a PowerShell reader on cp1251 (byte 0x98) - cosmetic, not filed.
+
+## Cross-check vs POSTMORTEM_OPUS.md (16d146464; written after both reports shipped independently)
+
+| Their point | Agree / disagree | Evidence |
+|---|---|---|
+| Census tested a 1R bracket; gross ~0 is what any symmetric bracket returns, says nothing about 3R at a 30 % hit rate (C2b, s3 row 1) | PARTLY. Agree the 1R shape is OURS and not the traders'; disagree that it says nothing | Recomputed the 1871 gate-pass fades with 2R and 3R targets, H=24: -0.035 R (SE 0.029) and -0.023 R (SE 0.033). Target size alone does not rescue it; BE/trail and node targets remain untested (their card tf-census-trader-exits-rescore-1109 is the right next count) |
+| 0.25 R fee gate is WRONG as a fix: it drops the traders' real trade (C1b) | PARTLY. Agree the levers are target size and maker entry; disagree that blocking 1-6 bps stops is wrong on BTC | 1h: 277/2148 (13 %) fail the gate, gate-pass gross still -0.010 R. 5m: 57/67 fail; a 6 bps stop pays 1.7 R taker or 0.8 R on the losing leg even with maker entry (their own s3 row 3). Fabio-size stops are not viable on BTC under either fee model |
+| Session gap is the biggest unmeasured split (s2 Session) | AGREE | UTC 4h blocks, gate-pass net R: 00-04 n=622 -0.003; 12-16 n=526 -0.180; 16-20 n=261 -0.067; 20-24 n=177 -0.006 (REVIEW a.) |
+| Ladder was used for size only, never gated; no with/against gap (C3b) | AGREE | FAST with -0.117 vs against -0.066 (CENSUS:139-140); AC:890-898 |
+| Census klines carry no delta, so Fabio's half was never tested (C5b) | AGREE, and I missed it | AC:604 `delta = float(b.get("delta", 0.0))`; Binance/Bybit kline rows have no delta field, so absorption reduces to wick shape + rel_vol (AC:620,636) |
+| 77 % and 80 % mislabelled SOURCED (C7, C8) | AGREE | RESULT.md:10,13; census ACCEPTED gate-pass -0.096 R (n=2798) |
+| Unit tests replay the Nov-6 bars that drove the reclaim_idx fix (C11) | AGREE | test_auction_context.py:102-145; REVAL:42 |
+| Java asymmetry PROVEN, fixed, counts not affected (C4a) | DISAGREE on "fixed" | `determineSetupType` returns null for short at every val zone (SetupCandidatesBuilder.java:482); the added direction is consumed by nothing; RulesTest asserts the direction list only. Card java-below-val-short-no-setup-type-1109 |
+| ACCEPTED stop at the level itself gives tiny stops, fee 0.54 R (s2 Stop) | AGREE | CENSUS:116 mean fee 0.540 R; CEN:135 `simulate(d, entry, price, ...)` |
+| 7y pool averages phases; phase-scoped testnet replaces another backtest (s4 row 1) | AGREE on the plan; add one fact | Per-year FAST gate-pass 2019-2026 all negative (-0.048 .. -0.183): no calendar year rescues the 1R fade, so a phase split must be finer than a year |
+| Fail rule: 8 losses in a row or net R < 0 after 20 trades | AGREE (mine: 30 gate-pass fades, net <= 0). Either is a pre-registered kill; pick one in the card | - |
+| Reproduction | They did not recount (scope); my recount stands | 2148 / 1871 / -0.087 R; 50/50 rows match (review_fable_recheck50.py) |
+
+Shared inputs: no data or code bug found in the census by either side; defects are labels, frame and the Java consumer.
