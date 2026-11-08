@@ -2069,3 +2069,11 @@ Answer: yes; the DSA lane pauses on this account until 2026-11-11 10:22; the Opu
 Operator: find the cause from other DeepSeek users; maybe too many requests sent continuously.
 Lead C: found the same suspension text in user reports of third-party web tools (OmniRoute, better-deepseek, ZeroScript); the best-supported pattern is fast repeated or agent-like use of the web chat, many new chats, regenerate, bridges and MCP, plus a wider wave of false positives; DeepSeek's terms ban automatic setups on the web service and account sharing, and no source names the exact trigger. Our bridge matches several of those patterns (205 auto-run commands on 11-07, peak 45 an hour, one account on three machines). Unproved. The official API is the sanctioned automation channel.
 Answer: yes; evidence handed to the Opus review card; price the DeepSeek API as an operator money decision after that review.
+
+## d-super-5h-monday-cbp-1108 (2026-11-08 ~18:15Z, operator, chat)
+Operator: start a super session for the next 5 h on the new approach (phase-first, testnet-forward, proper testing and reviews,
+nothing defective built upon); run the CBP module before the Monday open (small bounce before the drop, straight drop, or a
+bigger bounce; Krown sees lows broken and ~10 % more down); logins A and B do the work, Lead C spends little; C cap 85 % weekly
+until the 11-10 20:00Z reset; use the Platform credit; C instructs A and B with confirmation points so they keep working.
+Answer: PLAN_5H_2026-11-08.md (credit J1 monday-open-playbook-1109, Opus refute-review J2; B Gemini analyst extracts + card
+refresh + monday_watch.py; A reviews every ship + CBP events strip); hourly CHK signals; C cap 85 %.
