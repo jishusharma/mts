@@ -13,14 +13,25 @@
   "from_inbox": "",
   "goal": "Operator wants the two extra 7-star conditions. Our A-CQiV_UFB4 transcript (lines 291-298) grades reverse divergence 3/5/7 star and withholds the conditions; web search found no written source. Captions of his other 7-star and 3X3 videos are the remaining primary source.",
   "id": "gemini-malkan-7star-captions-1109",
+  "kind": "build",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: Malkan level shorts read on the 82-87k range (5 operator points measured)",
+      "ref": "17fbce4b1fb7",
+      "utc": "2026-11-08T19:23:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
-  "mutation_check": "",
+  "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_quote_spanning_timestamp_markers_is_found",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T19:46:12Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -29,17 +40,17 @@
   "scope_out": [
     "no repo code change|no invented conditions"
   ],
+  "scope_sha": "17fbce4b1fb7",
   "size": "S",
   "sources": [
     "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "fetch captions (yt-dlp subs, hi + en) for the listed videos and the 3X3 series list; grep star grades; write the table; verify quotes; ship"
   ],
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "Malkan 7-star: captions for XFO49JlODxI (Spinning Top 7 Star Setup), bH0mXqSXV3Y (Banknifty 7 Star Signal) and the rest of his 3X3 Swing Trading series after episode 8 (A-CQiV_UFB4, where 7-star = all reverse-divergence conditions met, conditions withheld); extract every star condition with verbatim quotes",
   "weight": "",
-  "worker": "agent",
-  "kind": "build"
+  "worker": "agent"
 }
