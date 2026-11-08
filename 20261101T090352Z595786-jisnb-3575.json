@@ -1,1 +1,0 @@
-{"t": "20261101T090352Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED since merge 2b61ed46: sim_desk/artifact/test_artifact.py 1 failed (Step 3xt.4). Author of sim_desk commits b0c7fee53/956ff3f2b: revert or fix. Others: do not forward-fix.", "login": "C"}
