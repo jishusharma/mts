@@ -23,7 +23,7 @@ MIN_TOTAL, MIN_PER_ERA, MIN_CLASS = 150, 30, 8
 START, END = dt.date(2024, 1, 1), dt.date(2026, 11, 7)
 INAUG = dt.datetime(2025, 1, 20, 17, 0)
 EXPECT_UTC = {"CPI": {"12:30", "13:30"}, "NFP": {"12:30", "13:30"}, "PPI": {"12:30", "13:30"}, "FOMC": {"18:00", "19:00"}}
-TOL_BPS = 0.02
+MATCH_LIMIT = 0.02
 
 
 def load():
@@ -157,7 +157,7 @@ def rederive(rows, online):
                     continue
                 want = (bars[t0 + (m - 1) * 60000][1] / ref - 1) * 1e4
                 got = float(r["%s_ret_%s_bps" % (pre, col)])
-                if abs(want - got) > TOL_BPS:
+                if abs(want - got) > MATCH_LIMIT:
                     out.append("rederive %s %s %s: csv %.2f vs %.2f bps" % (r["event_id"], sym, col, got, want))
     return out
 
