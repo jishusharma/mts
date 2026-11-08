@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/test_api_agent_models.py"
+  ],
+  "created": "2026-11-07T23:44:27Z",
+  "depends_on": [],
+  "done_when": "A written blind read of scripts/dev/api_agent.py (max_tokens default, one retry at double up to the 64000 ceiling, cost accounting of the dropped reply) lists each defect with line and a failing example, or says none found; findings go into the card result, no code change.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent blind read of the max_tokens change shipped by api-agent-max-tokens-and-resume-1108 (commit 478efba5): does the retry loop terminate, is the turn counter right, is a cut-off tool call ever sent back to the model, is cost counted once.",
+  "id": "gemini-blind-read-of-scripts-dev-api-age",
+  "kind": "build",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_api_agent_models.py::test_retry_on_max_tokens_stop",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/api_agent.py",
+    "scripts/dev/test_api_agent_models.py"
+  ],
+  "scope_out": [
+    "no code change",
+    "no key handling",
+    "no job launch"
+  ],
+  "size": "S",
+  "sources": [
+    "scripts/dev/api_agent.py"
+  ],
+  "state": "raw",
+  "steps": [
+    "1. read api_agent.py main() loop cold; list the cases where a max_tokens stop is retried, dropped or ended; compare with the four MaxTokens tests; report gaps"
+  ],
+  "tests": "scripts/dev/test_api_agent_models.py",
+  "title": "[GEMINI] blind read of scripts/dev/api_agent.py (max_tokens retry, api-agent-max-tokens-and-resume-1108)",
+  "weight": "",
+  "worker": ""
+}

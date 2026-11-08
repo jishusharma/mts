@@ -9,7 +9,8 @@ This runner speaks the plain API with four tools (read_file, write_file, list_di
 Writes <out>/out.jsonl: one JSON per API turn and a final {"type":"result", "total_cost_usd", "num_turns", "duration_ms",
 "result", "subtype"} record, the same shape api_job.py reads. Key: env ANTHROPIC_API_KEY, else env MTS_API_KEY_FILE, else
 F:/ClaudePlaform/key.txt; never printed. A tool call on a secret-like path is refused. Cost = tokens x PRICE_PER_MTOK (OURS,
-list price; the console is the bill). Stops at --max-usd, --max-turns, or when the model answers without a tool call.
+list price; the console is the bill). Stops at --max-usd, --max-turns, or when the model answers without a tool call. One reply is capped at --max-tokens (default
+32000 per model); a max_tokens stop retries the turn once at double the cap (ceiling 64000) before ending as error_max_tokens.
 """
 from __future__ import annotations
 import argparse
@@ -28,6 +29,9 @@ sys.dont_write_bytecode = True
 API = "https://api.anthropic.com/v1/messages"
 PRICE_PER_MTOK = {"claude-haiku-5-5": (1.0, 5.0), "claude-sonnet-5-5": (3.0, 15.0), "claude-opus-5-5": (5.0, 25.0),
                   "claude-fable-5-1": (10.0, 50.0)}  # OURS
+# One reply may be thinking plus a long file write; 8192 killed the event catalogue job (error_max_tokens, turn 26, 2026-11-08). OURS.
+DEFAULT_MAX_TOKENS = {"claude-haiku-5-5": 32000, "claude-sonnet-5-5": 32000, "claude-opus-5-5": 32000, "claude-fable-5-1": 32000}
+MAX_TOKENS_CEILING = 64000  # a max_tokens stop retries the same turn once at double the cap, never above this
 CACHE_READ_FACTOR = 0.1  # cached input is billed at a tenth (OURS placeholder, list price)
 BLOCKED = (".secrets", ".env", ".pem", ".ovpn", "key.txt", "cookies_", "background.js", "config.json", "api_key", "apikey")
 TOOLS = [
@@ -45,6 +49,10 @@ SYSTEM = ("You are a headless Builder working in one checkout with four tools. F
           "call: a `Result:` line first, then what you shipped or wrote, then `Noticed:`. Never ask questions; take the conservative "
           "default and say so. Never read secrets (.secrets, .env, keys); never run destructive git (reset, rebase, force-push); "
           "never touch the live tree, HALT or orders.")
+
+
+def default_max_tokens(model: str) -> int:
+    return DEFAULT_MAX_TOKENS.get(model, DEFAULT_MAX_TOKENS["claude-sonnet-5-5"])
 
 
 def get_key() -> str:
@@ -101,7 +109,7 @@ def call_api(key: str, body: dict, retries: int = 4) -> dict:
         req = urllib.request.Request(API, data=data, headers={"x-api-key": key, "anthropic-version": "2023-06-01",
                                                                "content-type": "application/json"})
         try:
-            with urllib.request.urlopen(req, timeout=600) as r:
+            with urllib.request.urlopen(req, timeout=900) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
             msg = e.read().decode("utf-8", "replace")[:400]
@@ -128,11 +136,12 @@ def main(argv=None) -> int:
     ap.add_argument("--model", default="claude-sonnet-5-5", choices=sorted(PRICE_PER_MTOK))
     ap.add_argument("--max-usd", type=float, required=True)
     ap.add_argument("--max-turns", type=int, default=100)
-    ap.add_argument("--max-tokens", type=int, default=8192)
+    ap.add_argument("--max-tokens", type=int, default=None, help="cap of one reply (default: per model, see DEFAULT_MAX_TOKENS)")
     ap.add_argument("--cwd", default=".")
     ap.add_argument("--out", required=True, help="folder for out.jsonl")
     ap.add_argument("--prompt-file", help="prompt text (default: stdin)")
     a = ap.parse_args(argv)
+    max_tokens = a.max_tokens or default_max_tokens(a.model)
     cwd = Path(a.cwd).resolve()
     out_dir = Path(a.out)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -148,6 +157,7 @@ def main(argv=None) -> int:
     turns = 0
     final = ""
     subtype = "success"
+    retries_used = 0
     while True:
         if turns >= a.max_turns:
             subtype, final = "error_max_turns", final or "stopped at the turn cap"
@@ -155,7 +165,7 @@ def main(argv=None) -> int:
         if cost >= a.max_usd:
             subtype, final = "error_max_budget_usd", final or f"stopped at the USD cap ({cost:.2f})"
             break
-        body = {"model": a.model, "max_tokens": a.max_tokens, "system": system, "tools": TOOLS, "messages": messages}
+        body = {"model": a.model, "max_tokens": max_tokens, "system": system, "tools": TOOLS, "messages": messages}
         for m in messages:  # one moving cache breakpoint on the last user block (system holds the other)
             if isinstance(m["content"], list):
                 for b in m["content"]:
@@ -167,6 +177,15 @@ def main(argv=None) -> int:
         resp = call_api(key, body)
         turns += 1
         cost += usd(a.model, resp.get("usage", {}))
+        if resp.get("stop_reason") == "max_tokens" and max_tokens < MAX_TOKENS_CEILING:
+            # truncated reply (a cut-off tool call is unusable): drop it, pay for it, redo this turn once with a bigger cap
+            log.write(json.dumps({"type": "retry", "turn": turns, "reason": "max_tokens", "max_tokens": max_tokens,
+                                  "usage": resp.get("usage"), "cost_so_far": round(cost, 5)}) + "\n")
+            log.flush()
+            max_tokens = min(max_tokens * 2, MAX_TOKENS_CEILING)
+            retries_used += 1
+            turns -= 1
+            continue
         log.write(json.dumps({"type": "assistant", "turn": turns, "stop_reason": resp.get("stop_reason"), "usage": resp.get("usage"),
                               "cost_so_far": round(cost, 5), "content": resp.get("content")}) + "\n")
         log.flush()
@@ -187,7 +206,7 @@ def main(argv=None) -> int:
             results.append({"type": "tool_result", "tool_use_id": tu["id"], "content": res})
         messages.append({"role": "user", "content": results})
     rec = {"type": "result", "subtype": subtype, "is_error": subtype != "success", "total_cost_usd": round(cost, 5), "num_turns": turns,
-           "duration_ms": int((time.time() - t0) * 1000), "model": a.model, "result": final[:4000], "engine": "api_agent",
+           "duration_ms": int((time.time() - t0) * 1000), "model": a.model, "max_tokens": max_tokens, "max_tokens_retries": retries_used, "result": final[:4000], "engine": "api_agent",
            "ended": dt.datetime.now(dt.timezone.utc).isoformat()}
     log.write(json.dumps(rec) + "\n")
     log.close()

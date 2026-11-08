@@ -101,7 +101,7 @@ def promote_shared(repo):
     by_id = {c.get("id"): c for c in cards}
     cited = set()
     for source in cards:
-        for item in source.get("scope_in", []):
+        for item in as_list(source.get("scope_in")):
             text = str(item)
             for cid in by_id:
                 if re.search(rf"(?<![A-Za-z0-9_-]){re.escape(cid)}(?![A-Za-z0-9_-])", text):
@@ -164,6 +164,15 @@ TWIN_STOP = set("the a an of to and in on for with is by from per at or as be it
                 "card cards run runs use used new via when what which who so are was were has have only after before".split())
 
 
+def as_list(v):
+    """A card list field as a list: a comma string splits, None/scalars never crash (DECISION OURS 2026-11-07)."""
+    if isinstance(v, str):
+        return [x.strip() for x in v.split(",") if x.strip()]
+    if isinstance(v, (list, tuple, set)):
+        return list(v)
+    return [] if v is None else [v]
+
+
 def _title_words(title):
     return [w for w in re.findall(r"[a-z][a-z0-9]+", title.lower()) if w not in TWIN_STOP and len(w) > 2]
 
@@ -171,8 +180,7 @@ def _title_words(title):
 def _paths(card):
     """Files a card names, one key per unit: `x.py` and its `test_x.py` count once; notes after the path are dropped."""
     out = set()
-    _l = lambda v: [x.strip() for x in v.split(",")] if isinstance(v, str) else (v or [])  # noqa: E731  (cards may hold a comma string)
-    for x in _l(card.get("refs")) + _l(card.get("scope_in")):
+    for x in as_list(card.get("refs")) + as_list(card.get("scope_in")):
         p = str(x).strip().split(" ", 1)[0].rstrip("/")
         if "/" in p:
             out.add(re.sub(r"^test_", "", p.rsplit("/", 1)[-1]) if p.endswith(".py") else p)
@@ -191,8 +199,8 @@ def _related(a, b):
     """Parent/child, acknowledged or same-batch pairs are not twins."""
     ia, ib = a.get("id", ""), b.get("id", "")
     ta, tb = _created(a), _created(b)
-    return (ib in (a.get("not_twin_of") or []) or ia in (b.get("not_twin_of") or []) or ib in (a.get("depends_on") or [])
-            or ia in (b.get("depends_on") or []) or ia.startswith(ib + "-need-") or ib.startswith(ia + "-need-")
+    return (ib in as_list(a.get("not_twin_of")) or ia in as_list(b.get("not_twin_of")) or ib in as_list(a.get("depends_on"))
+            or ia in as_list(b.get("depends_on")) or ia.startswith(ib + "-need-") or ib.startswith(ia + "-need-")
             or bool(ta and tb and abs((ta - tb).total_seconds()) <= TWIN_BATCH_MIN * 60))
 
 
@@ -201,7 +209,7 @@ def twin_pairs(cards, only=None):
     import math
     from collections import Counter
     live = [c for c in cards if c.get("state") not in FINAL and c.get("id")]
-    words = {c["id"]: _title_words(c.get("title", "")) for c in live}
+    words = {c["id"]: _title_words(str(c.get("title") or "")) for c in live}
     df = Counter(w for ws in words.values() for w in set(ws))
     pdf = Counter(p for c in live for p in _paths(c))
     n = len(live)
@@ -212,7 +220,7 @@ def twin_pairs(cards, only=None):
         return {w: x / s for w, x in v.items()}
 
     def score(a, b):
-        ta, tb = a.get("title", ""), b.get("title", "")
+        ta, tb = str(a.get("title") or ""), str(b.get("title") or "")
         ha, hb = ta.split(":", 1), tb.split(":", 1)
         if len(ha) == 2 and len(hb) == 2 and ha[0].strip().lower() == hb[0].strip().lower():
             ta, tb = ha[1], hb[1]                 # a series: compare the subjects
@@ -401,6 +409,8 @@ def problems(card, cards=None, reg=None, repo=None, lab_scope=False):
                     p.append("mutation_check test must assert rejection of dummy or shuffled output")
             except OSError:
                 p.append(f"mutation_check test file missing: {match.group(1)}")
+    if re.search(r"PRE_REG", str(card.get("done_when", ""))) and not re.search(r"(?i)context", str(card.get("done_when", ""))):
+        p.append("done_when names PRE_REG but not its ## Context section (Regime/Phase/Session/Entry lines); name it so a review ACCEPT cannot miss it")
     w = card.get("weight") or ""
     if w and w not in WEIGHTS:
         p.append(f"weight {w!r} not one of {', '.join(WEIGHTS)}")
@@ -663,6 +673,8 @@ def cmd_new(a):
     if bad:
         raise SystemExit(f"tasks: unknown layer {', '.join(bad)}; families: {', '.join(fams)}")
     card = blank(cid, a.title, prio=a.prio, lane=a.lane or "", refs=a.ref or [], from_inbox=a.from_inbox or "", layers=a.layer or [])
+    if a.sources:
+        card["sources"] = list(a.sources)
     if a.kind:
         card["kind"] = a.kind
     if a.crucial:
@@ -768,7 +780,7 @@ def likely_done_reason(card: dict, repo: Path = REPO) -> str:
     if not symbols:
         return ""
     scope_files: list[Path] = []
-    for s in card.get("scope_in", []):
+    for s in as_list(card.get("scope_in")):
         tok = str(s).split()[0].rstrip(",;") if str(s).strip() else ""
         tok = re.sub(r":\d[\d,\-]*$", "", tok).rstrip("/")
         if not tok:
@@ -973,7 +985,7 @@ def review_hashes(card, repo=None):
     code_files = {}
     spec_files = {}
     data_files = {}
-    for s in card.get("scope_in", []):
+    for s in as_list(card.get("scope_in")):
         t = str(s).split()[0].rstrip(",;") if str(s).strip() else ""
         t = re.sub(r":\d[\d,\-]*$", "", t).rstrip("/")
         if not t:
@@ -1222,7 +1234,7 @@ def result_bases(card, repo=None):
     """Explicit card citations in scope_in: card:ID, task JSON path, or an existing bare ID."""
     repo = Path(repo or REPO)
     found = {}
-    for item in card.get("scope_in", []):
+    for item in as_list(card.get("scope_in")):
         token = str(item).split()[0].rstrip(",;") if str(item).strip() else ""
         token = token.replace(chr(92), "/")
         explicit = token.startswith("card:")
@@ -1251,7 +1263,7 @@ def result_fingerprint(card, repo=None):
     repo = Path(repo or REPO)
     bases = result_bases(card, repo)
     scope = []
-    for item in card.get("scope_in", []):
+    for item in as_list(card.get("scope_in")):
         token = str(item).split()[0].rstrip(",;") if str(item).strip() else ""
         token = re.sub(r":\d[\d,\-]*$", "", token)
         cid = token[5:] if token.startswith("card:") else Path(token).stem if token.startswith("MyTradingSys/system/tasks/") else token
@@ -1584,7 +1596,7 @@ def exclusion(card, cards, reg, holds, claims, lane_st, as_of, host=None, repo=R
     own = claim_of(card, claims)
     if own:
         return ("claimed", f"claimed by {own.get('host', '?')}/{own.get('account', '?')}")
-    mine = [x.rstrip("/") for x in card.get("scope_in", [])]
+    mine = [x.rstrip("/") for x in as_list(card.get("scope_in"))]
     for slug in sorted(claims):
         hit = sync.area_overlap(mine, sync.claim_areas(claims[slug])) if mine else None
         if hit:
@@ -1650,7 +1662,7 @@ def batch_cards(rows, max_n=BATCH_MAX):
     import gate_select
     groups = []
     for r in rows:
-        scope = [x.replace("\\", "/") for x in r.get("scope_in") or []]
+        scope = [x.replace("\\", "/") for x in as_list(r.get("scope_in"))]
         if r.get("live_path") or not scope or any(gate_select.FULL_RE.match(x) or gate_select.is_gate_file(x) for x in scope):
             continue
         for g in groups:
@@ -1742,6 +1754,7 @@ def main(argv=None):
     n.add_argument("--lane", choices=LANES)
     n.add_argument("--prio", type=int, default=3, choices=range(1, 6))
     n.add_argument("--from-inbox")
+    n.add_argument("--source", "--sources", action="append", dest="sources", help="who or what filed it (DSA chat <host>)")
     n.add_argument("--kind", choices=tuple(CODEX_KINDS), help="lane CODEX only: audit | build | run")
     n.add_argument("--layer", action="append", help="layer family id (layer_index.json); repeat for several")
     n.add_argument("--crucial", action="store_true", help="lane CODEX: when the GPT lane is down this card waits for GPT instead of moving to DSA/Claude")

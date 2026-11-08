@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T21:32:01Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/test_role_loader.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk 1c2a874ec (Duty 0 section back in session_planner.md)",
+      "ref": "f4e938467",
+      "utc": "2026-11-07T21:32:01Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already done",
   "note": "DECISION (OURS): lane changed JIS-NB -> SONNET, a doc edit needs no live host. Refined by planner-refine-1104.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-04T13:01:42Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk 1c2a874ec (Duty 0 section back in session_planner.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/roles/session_planner.md",
     "MyTradingSys/tests/test_role_loader.py"
@@ -51,12 +64,13 @@
   "scope_sha": "0a2ea61e7569",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git show a67adc0c1 and 4e2544a2e for the Duty 0 text; measure the emitted size with role_loader.py",
     "Shorten other sections (not the token line) until Duty 0 fits under 9500",
     "Run test_role_loader.py"
   ],
+  "taken": "2026-11-07T21:32:01Z",
   "tests": "MyTradingSys/tests/test_role_loader.py: add a case asserting the session_planner emit length <= 9500 and Duty 0 present; fails on the current file (no Duty 0)",
   "title": "session_planner.md Duty 0 (Code Red lane starvation) re-add under the 9500-char hook cap: a67adc0c1 emitted 10785, file restored to 022aae906 bytes by the Lead 11-04",
   "weight": "",

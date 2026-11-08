@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-07T21:04:27Z",
   "commands": [],
   "created": "2026-11-06T21:57:11Z",
   "depends_on": [],
@@ -14,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "4 study.py writers now write <name>_rates.js into tools/live_aid/base_rates_input/ and bas",
+      "ref": "ba76f4715",
+      "utc": "2026-11-07T21:04:27Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: base_rates.js registry (5 rows) replaces four *_rates.js; panels show the window; ",
@@ -24,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Fifth writer found by grep: scenario_ledger.py. Source card prob-base-rates-registry-1106.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T18:34:51Z",
   "refs": [],
-  "result": "",
+  "result": "4 study.py writers now write <name>_rates.js into tools/live_aid/base_rates_input/ and base_rates.load_table reads it from there, so a re-run no longer recreates the deleted globals; scenario_ledger only cites the registry (no write path); new test in test_base_rates.py, 8 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/anticipation_map_2026-11-05/study.py",
     "MyTradingSys/research/bigcandle_story_2026-11-05/study.py",
@@ -47,13 +61,14 @@
   "scope_sha": "92ce6b02c527",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read base_rates.py to see the build input format",
     "Write the failing test",
     "Replace each OUT_JS write with a row for the build input",
     "Run test_base_rates.py and one study's dry path"
   ],
+  "taken": "2026-11-07T21:03:31Z",
   "tests": "new case in test_base_rates.py fails on current code",
   "title": "Five study.py scripts still write the deleted tools/live_aid/*_rates.js; a re-run silently recreates the old globals. Make each write its row into base_rates.py build input instead (Builder noticed 2026-11-07, card prob-base-rates-registry-1106)",
   "weight": "ROUTINE",

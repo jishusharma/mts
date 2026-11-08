@@ -1,34 +1,80 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "claim": "",
+  "closed": "2026-11-07T22:02:43Z",
+  "commands": [
+    "python -m unittest discover -s scripts/dev -p test_gate_select.py",
+    "python scripts/dev/tasks.py check ci-red-ship-gate-parity-1107"
+  ],
   "created": "2026-11-07T18:35:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "CI_RED_CENSUS.md lists 30 red runs with step, test and counts per class (counts from gh run view, labelled OURS: top 3 cut-off); the 3 new test_gate_select.py cases failed on the old code (output pasted in Result) and pass now; the whole test_gate_select.py passes; Result line states the share of the 30 red runs the new selection would have caught",
+  "est_turns": 24,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Trunk is red 26.7 % of the week because CI runs checks the ship smoke gate never selects (newest red: Step 4 pytest, test_aibridge_version_bump.py). Count the failing step and test of the last 30 red CI runs, then make gate_select.py select the top 3 classes.",
   "id": "ci-red-ship-gate-parity-1107",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "CI_RED_CENSUS.md: 30 red runs, top 3 classes = AIBridge tests (16+ runs, one persistent re",
+      "ref": "6848205ee",
+      "utc": "2026-11-07T22:02:43Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gate_select: PRE_REG.md/RESULT*.md bring step 3pc",
+      "ref": "bead7ee2c1f3",
+      "utc": "2026-11-07T18:20:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: SHIP_HEALTH.md item 2. gh run list 7 d: 238 of 847 finished CI runs failed, 92 red episodes, longest 782 min. All 60 sampled failures failed in the single job 'Offline gate'; the newest red log shows Step 4 pytest (test_aibridge_version_bump.py), a test the smoke gate did not select. Work: for the last 30 red runs list the failing CI step and test (gh run view --log-failed, grep 'Step .*: FAIL'), find which gate_select.py skipped, add the top 3 to the smoke selection or a pre-push check. Twin read: ci-auto-revert-red-trunk (done, reverts after the fact).",
+  "next": "END: operator reads census",
+  "note": "Source: SHIP_HEALTH.md item 2. gh run list 7 d: 238 of 847 finished CI runs failed, 92 red episodes, longest 782 min. All 60 sampled failures failed in the single job 'Offline gate'; the newest red log shows Step 4 pytest (test_aibridge_version_bump.py), a test the smoke gate did not select. Work: for the last 30 red runs list the failing CI step and test (gh run view --log-failed, grep 'Step .*: FAIL'), find which gate_select.py skipped, add the top 3 to the smoke selection or a pre-push check. Twin read: ci-auto-revert-red-trunk (done, reverts after the fact). | REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "refreshed": "2026-11-07T21:33:40Z",
+  "refs": [
+    "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md",
+    "scripts/dev/gate_select.py"
+  ],
+  "result": "CI_RED_CENSUS.md: 30 red runs, top 3 classes = AIBridge tests (16+ runs, one persistent red, bridge files already select the shards), 3pc PRE_REG lint (7; real gap: DEV_CHECK*.md docs ship ran no 3pc, fixed in DOC_MUST, test red on old code 1 failure, green after 50/50), 3xt extra tests (8; ubuntu vs Windows platform parity, not selectable). Only 1 of 3 classes was a selection gap; the share of the 30 reds a selection change would catch is the 3pc DEV_CHECK slice, small; most red is persistence and platform parity",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_gate_select.py",
+    "MyTradingSys/research/health_2026-11-07/CI_RED_CENSUS.md"
+  ],
+  "scope_out": [
+    ".github/workflows",
+    "live tree, no deploy, no restart",
+    "sync.py ship flow itself (only gate_select selection rules)"
+  ],
+  "scope_sha": "bead7ee2c1f3",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md section 2 (882 runs, 238 failed, 92 red episodes, 64 reverts)"
+  ],
+  "state": "done",
+  "steps": [
+    "gh run list --branch fast-track, take the last 30 failed CI runs; per run gh run view --log-failed, grep 'Step .*: FAIL' and the failing test file; write CI_RED_CENSUS.md: one row per run (run id, red commit, failed step, test file, changed files) plus counts per class",
+    "for the top 3 classes by count, add one test per class to test_gate_select.py FIRST: it feeds select() the changed files of a real red commit from the census and asserts the failing step is in the selected set; run it, it must fail on current gate_select.py",
+    "then change gate_select.py (smoke rules or ALWAYS) until the 3 tests pass and the existing test_gate_select.py cases stay green; add the red-class count to the commit message"
+  ],
+  "taken": "2026-11-07T21:51:19Z",
+  "tests": "scripts/dev/test_gate_select.py: 3 new cases, one per top red class (first: test_ci_red_aibridge_version_bump_step_selected), each fails on gate_select.py before the change",
   "title": "CI red 26.7 percent of the week (92 episodes, 64 reverts): run the CI-only failing checks in the ship smoke gate",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

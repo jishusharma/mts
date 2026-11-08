@@ -50,7 +50,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-01 T0-ONLY | PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9.",
+  "note": "REVIEWED:2026-11-01 T0-ONLY | PLANNER 2026-11-01: run-and-report on the Desk host (JIS-NB lane, precedent aibridge-072-desktop-install); DECISION (OURS): retest on current 0.7.9 before touching code, report is 4 releases old. One operator click (Chrome reload) cannot be automated. PLANNER 2026-11-02: current AIBridge is 0.7.11 (6913c301f idle-signal fix); retest on 0.7.11, not 0.7.9. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: AIBridge is 0.7.30 now (11ff4324a); card text is about 0.7.5; UNSURE if the F5 defect survives 0.7.27 (33ec4afc2)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

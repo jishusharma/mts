@@ -39,7 +39,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): distinct from republish-6-stale-artifact-pages-flagged (login C pages); these two slugs only. Needs the login that owns them, else park with the reason. Refined by planner-refine-1104.",
+  "note": "DECISION (OURS): distinct from republish-6-stale-artifact-pages-flagged (login C pages); these two slugs only. Needs the login that owns them, else park with the reason. Refined by planner-refine-1104. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: page republish housekeeping; artifacts.py stale still lists both pages REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T18:48:29Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/bg_watch.py"
+    ],
+    "session": "agent-af457c7a2edc6bd07"
+  },
   "created": "2026-11-07T16:37:36Z",
   "depends_on": [],
   "done_when": "Typing 'Start DSA bridge' in a DeepSeek chat with the bridge box posts the seed on NB, NUC and the laptop; audit.jsonl shows SEED ok, no bad_origin; RELEASES bumped; node tests green.",
@@ -17,7 +26,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Found by Lead C 2026-11-07 16:40Z from F:/AIBridge/src/audit.jsonl: SEED refused bad_origin at 15:47:51 (x2) and 16:32:37-38 (x3), each an operator press; agent 0.7.30 up on 7181. Login A (bridge free, 0 workers) per ask q-55f5d4. Per-host step after ship: aibridge_install.py --restart-agent via broadcast --cmd; extension reload per Chrome profile is the operator's.",
+  "note": "Found by Lead C 2026-11-07 16:40Z from F:/AIBridge/src/audit.jsonl: SEED refused bad_origin at 15:47:51 (x2) and 16:32:37-38 (x3), each an operator press; agent 0.7.30 up on 7181. Login A (bridge free, 0 workers) per ask q-55f5d4. Per-host step after ship: aibridge_install.py --restart-agent via broadcast --cmd; extension reload per Chrome profile is the operator's. | PARKED 2026-11-08: DSA bridge tooling, no card on the critical path reads it; machinery growth frozen. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

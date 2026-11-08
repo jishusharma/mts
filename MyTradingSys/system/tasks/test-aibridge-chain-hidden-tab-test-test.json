@@ -35,7 +35,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Never skip or delete the test. CI is green; only the loaded JIS-LAPTOP gate trips. REVIEWED:2026-11-04 HOLD (timeout scale, budget test file, 140 s entry already in tree)",
+  "note": "Never skip or delete the test. CI is green; only the loaded JIS-LAPTOP gate trips. REVIEWED:2026-11-04 HOLD (timeout scale, budget test file, 140 s entry already in tree) | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
