@@ -157,6 +157,30 @@ def refuse_live(repo):
             f"lands under an existing {branch_prefix(repo, socket.gethostname())}/ dir in another case and HEAD never resolves)")
 
 
+def refuse_shared_main(repo):
+    """ship-refuse-main-checkout-sweep-1109: the main checkout of a repo that has other worktrees is a shared hub (JIS-NB's
+    BinanceDataFeed); `ship --result` there committed 18 files of other sessions (ebdf4dc6b). Refuse before any commit.
+    A lone clone (cloud sessions, one worktree) and every linked worktree ship as before."""
+    if not (Path(repo) / ".git").is_dir():      # a linked worktree has a .git FILE: yours
+        return
+    others = len(worktrees(repo)) - 1
+    if others > 0:
+        raise SyncError(
+            f"ship refused: {repo} is the main checkout shared by {others} other worktree(s); its dirty files are "
+            f"other sessions' (HALT, AUTO_PAUSE, runtime data). Make your own:  python scripts/dev/sync.py start <slug>")
+
+
+# Never committed by `ship --result`: live switches and runtime data other processes own (ebdf4dc6b swept them in).
+NEVER_STAGE_NAMES = {"HALT", "AUTO_PAUSE"}
+NEVER_STAGE_RUNTIME_SUFFIXES = (".csv", ".jsonl", ".log", ".parquet")
+
+
+def never_stage(path):
+    p = path.replace(chr(92), "/")
+    name = p.rsplit("/", 1)[-1]
+    return name in NEVER_STAGE_NAMES or ("runtime/" in p and name.lower().endswith(NEVER_STAGE_RUNTIME_SUFFIXES))
+
+
 FETCH_TRIES = 3
 
 
@@ -794,6 +818,13 @@ def commit_pending(repo, result, subject=None, nxt=None):
         raise SyncError("ship --result needs the text of the Result line")
     _, work, _ = tree_state(repo)
     paths = [r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work]
+    if any(x.endswith("/") for x in paths):     # `?? dir/` rows: look inside, a HALT can hide in an untracked folder
+        inner = git(repo, "ls-files", "--others", "--exclude-standard", "--", *[x for x in paths if x.endswith("/")]).stdout.split(chr(10))
+        paths = [x for x in paths if not x.endswith("/")] + [x for x in inner if x.strip()]
+    held = [x for x in paths if never_stage(x)]
+    if held:
+        print(f"--result: left uncommitted (live switches / runtime data, never shipped): {', '.join(held)}")
+        paths = [x for x in paths if not never_stage(x)]
     if not paths:
         print("--result: no uncommitted files; existing commits keep their own messages")
         return commit_pending(repo, None, nxt=nxt)
@@ -2325,6 +2356,8 @@ def main(argv):
             if len(argv) != 1:
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
             repo = toplevel(Path.cwd())
+            refuse_live(repo)          # before commit_pending: a commit made here is already the damage
+            refuse_shared_main(repo)
             if next_text:
                 commit_pending(repo, result_text, commit_subject, next_text)
             elif result_text is not None:
