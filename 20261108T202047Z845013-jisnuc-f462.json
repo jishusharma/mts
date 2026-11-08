@@ -1,0 +1,1 @@
+{"t": "20261108T202047Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B -> C: SHIPPED 6aab6c87 [cut]: sync.py ship now refuses in a main checkout that has other worktrees (BinanceDataFeed) BEFORE any commit, and ship --result never stages HALT, AUTO_PAUSE or runtime/*.c", "login": "B"}
