@@ -5,18 +5,18 @@
   "created": "2026-11-08T19:32:46Z",
   "depends_on": [],
   "done_when": [
-    "One Python helper (e.g. scripts/dev/binance_net.py or MyTradingSys/common) resolves *.binance.com and *.binance.vision via DoH (Cloudflare 1.1.1.1, fallback Google 8.8.8.8), caches by TTL, detects the block IP 49.44.79.236 / private answers and never uses them, keeps TLS hostname check (SNI = real name); every Python caller of fapi/fstream/api.binance.com uses it (fetch_bars.py, fetch_futures_metrics.py, live_layers.py, orderflow_live.py and any other grep hit)",
-    "Java feed (Java 17: no resolver SPI) reaches wss://fstream.binance.com on a blocked network: use the WebSocket/HTTP library's own DNS hook or connect-to-IP with SNI/Host = real name; no jdk.net.hosts.file that breaks other hosts; fail closed with a clear log line when DoH also fails",
-    "Tests written first and shown failing on pre-change code: block IP rejected, DoH fallback order, TTL cache, TLS name kept, DoH-down fails closed, restart/reset state and API-error paths (live-path rule); run_all_tests.py --quick green; Maven tests green",
-    "Proof on JIS-NB: a live fapi 4h kline and 30 s of fstream messages through the new path, numbers in Result; broadcast --cmd so JIS-NUC and the laptop run the same smoke; commit Result includes 'deploy request' (coordinator deploys)"
+    "Python helper resolves *.binance.com/*.binance.vision via DoH (Cloudflare, then Google), TTL cache, rejects block IP 49.44.79.236 and private answers, keeps TLS hostname check; every Python caller of fapi/fstream/api.binance.com uses it",
+    "Java 17 feed reaches wss://fstream.binance.com via the library's DNS hook or connect-to-IP with SNI = real name; no jdk.net.hosts.file; fails closed with a clear log line if DoH fails",
+    "Tests first, failing on pre-change code: block IP rejected, DoH fallback, TTL cache, TLS name kept, DoH-down fails closed, restart/reset and API-error paths; run_all_tests.py --quick and Maven green",
+    "Proof on JIS-NB: live fapi 4h kline + 30 s of fstream messages via the new path in Result; broadcast --cmd smoke to JIS-NUC and laptop; Result says 'deploy request'"
   ],
-  "est_turns": 45,
+  "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "ISP (Jio) DNS returns block IP 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; the real IP (Cloudflare DoH) serves futures klines and the stream. Operator order d-fix-binance-dns-block-1109: apply the best fix fleet-wide through the repo, no machine setting changes.",
   "id": "binance-futures-dns-block-fleet-1109",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
   "layers": [],
   "live_path": true,
   "mutation_check": "",
@@ -42,7 +42,13 @@
     "Lead C probe 2026-11-09: nslookup fapi.binance.com -> 49.44.79.236; DoH 54.192.142.53 -> klines OK; fstream DoH 43.206.66.18 -> 404 (server up); NUC ping FAIL both"
   ],
   "state": "raw",
-  "steps": [],
+  "steps": [
+    "grep every Binance live host caller (py + java)",
+    "write failing tests",
+    "build Python DoH helper and wire callers",
+    "build Java DNS hook",
+    "smoke on NB, broadcast smoke, ship with deploy request"
+  ],
   "tests": "new python test file for the resolver + Java unit test for the DNS hook",
   "title": "Fleet fix: resolve Binance hosts via DNS-over-HTTPS so live futures data works on every station (ISP DNS block)",
   "weight": "",
