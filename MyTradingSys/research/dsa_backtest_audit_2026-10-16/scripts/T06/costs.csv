@@ -225,3 +225,4 @@ MyTradingSys/research/volume_2026-10-09/run_v2.py,21,COST,2,other,n/a,both,cost 
 MyTradingSys/research/volume_2026-10-09/run_v3.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v4.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py,39,COST10,2,other,round_trip,taker,cost in wt_extreme_cross_volmatch_2026-11,1,assign,COST10 = 2 * fees.BINANCE_TAKER * 100.0       # SOURCED fees.py: Binance USD-M taker both legs; % round trip
+MyTradingSys/backtest/fees.py,62,SLIPPAGE_RT_S13,0.0002,fraction,round_trip,both,slippage allowance FORMULAS s13,0,assign,SLIPPAGE_RT_S13 = 0.0002
