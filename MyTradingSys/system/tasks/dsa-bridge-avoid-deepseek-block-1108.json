@@ -20,7 +20,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Never try to get around the block; wait it out on that profile. Do the work on another profile or machine only if the operator allows. Build only what DSA_BLOCK_REVIEW.md ranks; the review replaces its first done_when item.",
+  "note": "Never try to get around the block; wait it out on that profile. Do the work on another profile or machine only if the operator allows. Build only what DSA_BLOCK_REVIEW.md ranks; the review replaces its first done_when item. Block text (operator screenshot 2026-11-08): account suspended for violation of user policies until 2026-11-11 10:22; account-level, not a rate notice. Do not use the bridge on that account before then.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

@@ -2059,3 +2059,8 @@ Answer: yes; card dsa-bridge-avoid-deepseek-block-1108 filed; operator pastes th
 Operator: look at all bugs raised on the DSA bridge; Opus reviews all past fixes, the DSA prompt and DeepSeek's latest rules on what automated requests get blocked; run it on the cloud platform; plan it if it makes sense.
 Lead C: it makes sense: one Opus job (cap about 8 USD) on the Platform, public pages only for the DeepSeek rules, no bridge code edited. The build card now waits on its ranked fix list so the pacing guard is built from the review, not from a guess.
 Answer: yes; card dsa-bridge-fix-review-opus-1108 (Opus, ready) runs next after the news synthesis; dsa-bridge-avoid-deepseek-block-1108 is blocked on it.
+
+## d-dsa-block-text-read-1108 (2026-11-08 ~11:00Z, operator, chat screenshot)
+Operator pasted the block page of the DSA chat profile (jishu, AWGP Google account): "Due to violation of user policies, your account has been suspended until November 11, 2026 10:22."
+Lead C: it is an account suspension for policy violation (not a rate-limit notice), about 3 days, and the profile was still running the bridge (Hands-free 0/200, v0.7.30). The chat list shows DSA task chats from NUC and boot sessions today, so more than one machine used this account. Cause still unproved; the Opus review ranks it. Rule until it ends: no bridge use, no workaround, no new account on this profile.
+Answer: yes; the DSA lane pauses on this account until 2026-11-11 10:22; the Opus review (credit) goes ahead.
