@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_soak_six_slots.py --durations=5 -q"
+  ],
+  "created": "2026-11-08T01:30:37Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/run_all_tests.py: test_soak_six_slots.py is excluded from smoke/ship and kept in --full and CI, and scripts/dev/test_run_all_tests.py has a case asserting it (fail-first); gate step under 5 min quoted in Result",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "test_soak_six_slots.py (3 supervisors x 180 virtual min x 10 seeds plus baseline runs) never holds a ship gate for 45+ min: cut seeds in smoke or run it only in --full, so the gate step stays under 5 min",
+  "id": "gate-soak-six-slots-hang-cap-1108",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): CRITICAL (gate), review needed, not ready. Twin: test-soak-six-slots-py-hangs-45-min-insi untracked in the main tree: same job; drop that one once this ships.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "scripts/dev/run_all_tests.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/test_run_all_tests.py",
+    "scripts/dev/test_soak_six_slots.py"
+  ],
+  "scope_out": [
+    "supervisor.py logic, CI workflow, live tree"
+  ],
+  "size": "S",
+  "sources": [
+    "raw card test-soak-six-slots-py-hangs-45-min-insi (untracked in main tree, owner not me)"
+  ],
+  "state": "raw",
+  "steps": [
+    "reproduce: python -m pytest scripts/dev/test_soak_six_slots.py --durations=5 -q under load; note the existing 150 s map entry (l.108) did not stop the hang",
+    "write the exclusion test first",
+    "exclude from smoke list; keep in --full; optionally cut seeds range(1,11) to range(1,4) when env SMOKE set"
+  ],
+  "tests": "scripts/dev/test_run_all_tests.py: new case asserting test_soak_six_slots.py not selected in smoke but selected in full (fail-first)",
+  "title": "test_soak_six_slots.py (3 h virtual x6) hangs 45+ min in the ship gate; cap or run only in --full (twin: test-soak-six-slots-py-hangs-45-min-insi, untracked in main tree)",
+  "weight": "CRITICAL",
+  "worker": "agent"
+}

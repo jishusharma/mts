@@ -1,34 +1,50 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_ship_time_guard.py scripts/dev/test_sync.py -q"
+  ],
   "created": "2026-11-07T18:20:53Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_ship_time_guard.py has a case where a fake failing gate step writes its id into the ship row's failed_steps; it fails on current sync.py and the file passes after",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "ship and ship_wall rows in gate_timing.jsonl carry failed_steps (step ids that failed the gate) so doctor SHIP-TIME can name repeat offenders",
   "id": "ship-record-gate-failure-step-1107",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: SHIP_HEALTH.md item 1. ship rows in gate_timing.jsonl carry ok:false but not which step failed; 7 d: 12 of 64 ships failed, top failing steps 3xm 3, 3gi 2, 3cm 2, 3af 2. Add failed_steps to the ship and ship_wall rows (sync.record_ship_timing), so doctor SHIP-TIME can name the repeat offenders. Test: fake failing step writes its id. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: gate telemetry; the CI-red parity card carries the failing-step census on the path",
+  "note": "DECISION (OURS): CRITICAL (sync.py is a gate file); needs CRITICAL review session, not ready. Twin check: ci-red-ship-gate-parity-1107 is done (CI census), not a twin.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refs": [
+    "scripts/dev/sync.py"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_ship_time_guard.py",
+    "scripts/dev/mts_doctor.py"
+  ],
+  "scope_out": [
+    "gate step selection, run_all_tests.py, deploy, live tree"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "write the failing test first (record_ship_timing/record_ship_wall accept failed_steps)",
+    "sync.ship finally-block (l.1369-1372): collect failing step ids from the gate result and pass failed_steps; keep never-raise",
+    "mts_doctor ship_time (l.483): name the top repeat failing steps in the WARN detail"
+  ],
+  "tests": "scripts/dev/test_ship_time_guard.py: fake failing step '3xm' -> row failed_steps==['3xm'] (fail-first)",
   "title": "ship: record WHY a gate failed (step ids) in gate_timing.jsonl; 12 of 64 ships failed in 7 d, 62 percent re-shipped within 10 min",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "agent"
 }
