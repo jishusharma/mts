@@ -1,235 +1,176 @@
-"""Malkan level-short 5-layer stack on 4h bars (card malkan-level-short-4h-count-1109). OBSERVATION / BACKTEST ONLY: no
-order placement, no live import. Spec: research/malkan_level_shorts_2026-11-09/READING.md + PRE_REG.md (every parameter is
-labelled there). All logic is causal: a value at bar i uses bars <= i; a higher-timeframe value is the last bar CLOSED at or
-before the entry bar's open.
-
-Layers: 1 level (confirmed 5/5 pivot-high zone that rejected price)  2 structure (divergence OR sweep)  3 trigger (RSI crosses
-below its MA)  4 WaveTrend cross-down  5 higher-timeframe RSI fail. `scan` returns one chain per entry bar with a flag per
-layer, so the caller can print the ladder (L1-3, +L4, +L5) and the firings (all five).
-
-Bars: dicts {t (open ms), o, h, l, c}. ind: {"rsi","ma","wt1","wt2","wt_ev"} aligned lists (None/NaN = not available).
-htf: {"d": (open_times, rsi), "w": (open_times, rsi)}.
 """
-import math
-from bisect import bisect_right
+Malkan level short (card malkan-level-short-4h-count-1109): the 5-layer confluence stack read from the operator's five
+BTC 4h shorts, research/malkan_level_shorts_2026-11-09/READING.md. Labels: the stack is OURS (built from his reads);
+the 60 line and RSI-under-its-MA trigger are SOURCED Malkan (WEB_RESEARCH.md, SEVEN_STAR_CAPTIONS.md); the level proxy
+is OURS (operator lines are hand-drawn, so a level = a confirmed pivot high or low that price has respected).
 
+Layers (a signal is the trigger bar i; every input is known at bar i's close; HTF bars count only once closed):
+  level     a bar in the last WINDOW bars tagged a pivot level from below: high >= L*(1-TOL), close <= L*(1+TOL)
+  structure bearish divergence (price higher high, RSI lower high; close or wick; window 3-10 or swing 5-50)
+            OR a sweep (high above a confirmed pivot high, close back under it) in the last WINDOW bars
+  trigger   RSI crosses under its 14 SMA this bar, RSI < 60, and RSI was >= 60 in the last 10 bars
+  wavetrend wt1 crossed under wt2 in the last 4 bars and wt1 peaked >= 45 in the last 8 (near the 53/60 band)
+  htf       last closed daily RSI <= 60 and falling, OR last closed weekly RSI back under 60 from >= 60 in 2 weeks
+Entry: the next 1-3 bars trade under the prior bar's open (fill there, or at the open on a gap). Stop: highest high
+from the level tag to entry, +5 bps. Exit: TARGET_R target or stop (stop first on a shared bar) or MAX_BARS close.
+"""
+from MyTradingSys.backtest.fees import BINANCE_TAKER
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
-from MyTradingSys.backtest.layers.rsi.rsi_ma import rsi_ma
-from MyTradingSys.backtest.layers.wavetrend import wavetrend
 
-H4_MS, DAY_MS, WEEK_MS = 4 * 3600000, 86400000, 7 * 86400000
+SIXTY = 60.0          # Malkan's line (SOURCED); kept local: malkan_40_60 owns its own copy (D2)
+WINDOW = 8            # bars back from the trigger in which the level tag / structure must sit (OURS)
+TOL = 0.005           # level tolerance (OURS)
+PIVOT = 5             # level pivots: 5 bars each side (OURS)
+LEVEL_LOOKBACK = 360  # 60 days of 4h bars (OURS)
+TARGET_R = 2.0
+MAX_BARS = 60
+FEE = BINANCE_TAKER    # taker per side (fees.py; no own cost constants)
 
-# --- parameters; label per PRE_REG.md (OURS unless a quote is named) ---
-PIVOT_K = 5                 # OURS: 5/5 pivot
-ZONE_WIDTH = 0.005          # OURS: zone 0.5 pct wide, centred on the pivot high
-REJECT = 0.01               # OURS: a low >= 1 pct under the pivot within k bars after it
-ZONE_LIFE = 540             # OURS: bars (90 days of 4h)
-WIN_MIN, WIN_MAX = 3, 10    # SOURCED: "between three and 10" (malkan_divergence_default.json), counted inclusive of both bars
-SWING_K, SWING_MAX = 3, 50  # OURS swing 3/3; cap 50 borrowed from the reverse-divergence quote (GbXnw_tNMtw_raw.txt:460)
-TRIGGER_WIN = 12            # OURS
-RSI_LEVEL = 60.0            # SOURCED (Malkan 40/60 regime level)
-ENTRY_WIN = 3               # OURS
-WT_BAND, WT_NEAR = 53.0, 5.0    # band SOURCED (wavetrend.py Crosses:9-12); tolerance OURS
-STOP_BACK, STOP_BUF = 3, 0.001  # OURS
-MIN_STOP = 0.004            # OURS: cost rule 0a (fees < 0.25 R needs a stop >= 0.40 pct)
-HORIZON = 60                # OURS: bars
-FEE = 0.0004                # task card: 0.04 pct taker per side
+BASE = frozenset({"level", "trigger"})
+FULL = frozenset({"level", "structure", "trigger", "wavetrend", "htf"})
+
+# Which of the 5 operator points the FULL stack catches on the fixture (pinned by the test; see REPORT.md)
+OPERATOR_POINTS_FULL_STACK = {"C1": False, "C2": False, "V1": False, "V2": False, "C3": True}
+# matches READING.md: only C3 shows all 5 layers; WaveTrend drops C2, V1, V2 (V1 crossed >4 bars early); HTF drops C1, C2, V1, V2
 
 
-def _ok(v):
-    return v is not None and not (isinstance(v, float) and math.isnan(v))
-
-
-def _pivot_high(x, r, k, strict_left=True):
-    n = len(x)
-    if r - k < 0 or r + k >= n:
-        return False
-    return all(x[q] < x[r] for q in range(r - k, r)) and all(x[q] <= x[r] for q in range(r + 1, r + k + 1))
-
-
-def build_zones(bars, k=PIVOT_K, width=ZONE_WIDTH, reject=REJECT):
-    """Confirmed pivot-high zones that rejected price once. Confirmed at the close of bar j+k."""
-    h = [b["h"] for b in bars]
-    out = []
-    for j in range(k, len(bars) - k):
-        if not _pivot_high(h, j, k):
-            continue
-        p = h[j]
-        if min(bars[q]["l"] for q in range(j + 1, j + k + 1)) > p * (1 - reject):
-            continue
-        out.append({"j": j, "confirm": j + k, "p": p, "lo": p * (1 - width / 2), "hi": p * (1 + width / 2)})
+def _sma(x, n):
+    out = [None] * len(x)
+    for i in range(n - 1, len(x)):
+        w = x[i - n + 1:i + 1]
+        if all(v is not None for v in w):
+            out[i] = sum(w) / n
     return out
 
 
-def _series(bars, basis):
-    return [b["c"] for b in bars] if basis == "close" else [b["h"] for b in bars]
+def _ema(x, p):
+    a, out = 2 / (p + 1), [x[0]]
+    for v in x[1:]:
+        out.append(a * v + (1 - a) * out[-1])
+    return out
 
 
-def structure_at(i, bars, ind, zone, arm):
-    """Layer 2 at setup bar i (bar already overlaps the zone). Returns {"kind","ref"} or None.
-    sweep: high pierces the zone pivot and the bar closes back under it. div: price higher than a reference high while the RSI
-    at that bar is lower; arm["div"] "W" = reference inside the 3-10 bar window (inclusive count), "S" = last confirmed 3/3 swing
-    high within 50 bars; arm["basis"] close|wick."""
-    b = bars[i]
-    if b["h"] > zone["p"] and b["c"] < zone["p"]:
-        return {"kind": "sweep", "ref": zone["j"]}
-    x = _series(bars, arm["basis"])
-    rsi = ind["rsi"]
-    if i < 1 or x[i] < x[i - 1] or not _ok(rsi[i]):
-        return None
-    if arm["div"] == "W":
-        for r in range(i - WIN_MIN + 1, max(i - WIN_MAX + 1, 1) - 1, -1):     # bars = i - r + 1 in [3, 10]
-            if r < 1 or r + 1 > i or not _ok(rsi[r]):
+def indicators(b):
+    c = [x["c"] for x in b]
+    rsi = rsi_core(c, 14)
+    ap = [(x["h"] + x["l"] + x["c"]) / 3 for x in b]
+    esa = _ema(ap, 10)
+    d = _ema([abs(a - e) for a, e in zip(ap, esa)], 10)
+    ci = [(a - e) / (0.015 * dd) if dd else 0.0 for a, e, dd in zip(ap, esa, d)]
+    wt1 = _ema(ci, 21)
+    return {"rsi": rsi, "rsi_ma": _sma(rsi, 14), "wt1": wt1, "wt2": _sma(wt1, 4)}
+
+
+def pivots(vals, k, kind):
+    """[(index, value)] of k-bar pivots; pivot j is known at bar j + k."""
+    out = []
+    for j in range(k, len(vals) - k):
+        w = vals[j - k:j + k + 1]
+        if (kind == "high" and vals[j] == max(w)) or (kind == "low" and vals[j] == min(w)):
+            out.append((j, vals[j]))
+    return out
+
+
+def _htf_rsi_asof(htf, step_ms):
+    """[(close_time_ms, rsi)] of higher-timeframe bars, keyed by the time each bar closes."""
+    r = rsi_core([x["c"] for x in htf], 14)
+    return [(x["t"] + step_ms, v) for x, v in zip(htf, r)]
+
+
+def _last_closed(series, t_close, n=1):
+    """the last n (close_time, rsi) rows closed at or before t_close, newest last."""
+    rows = [s for s in series if s[0] <= t_close and s[1] is not None]
+    return rows[-n:]
+
+
+def signals(b4, b1d, b1w, layers=FULL, div_window=(3, 10), price_mode="close", structure="either", step_ms=4 * 3600 * 1000):
+    """structure: "div", "sweep" or "either" (READING.md layer 2 is div OR sweep)."""
+    ind = indicators(b4)
+    rsi, ma, wt1, wt2 = ind["rsi"], ind["rsi_ma"], ind["wt1"], ind["wt2"]
+    h = [x["h"] for x in b4]
+    c = [x["c"] for x in b4]
+    px = c if price_mode == "close" else h
+    ph = pivots(h, PIVOT, "high")
+    lv = sorted(ph + pivots([x["l"] for x in b4], PIVOT, "low"))
+    sw = pivots(px, 2, "high")                      # structure swings, known 2 bars later
+    d_rsi = _htf_rsi_asof(b1d, 86400000)
+    w_rsi = _htf_rsi_asof(b1w, 7 * 86400000)
+    out, skip_to = [], -1
+    for i in range(30, len(b4) - 1):
+        if i < skip_to or rsi[i] is None or ma[i] is None or rsi[i - 1] is None or ma[i - 1] is None:
+            continue
+        ok = {}
+        ok["trigger"] = (rsi[i] < ma[i] and rsi[i] < SIXTY and (rsi[i - 1] >= ma[i - 1] or rsi[i - 1] >= SIXTY)
+                         and max(v for v in rsi[i - 10:i + 1] if v is not None) >= SIXTY)
+        if "trigger" in layers and not ok["trigger"]:
+            continue
+        lo = i - WINDOW
+        if "level" in layers:
+            known = [(j, v) for j, v in lv if j + PIVOT < i and i - j <= LEVEL_LOOKBACK]
+            ok["level"] = any(h[k] >= L * (1 - TOL) and c[k] <= L * (1 + TOL) and j + PIVOT < k
+                              for k in range(lo, i + 1) for j, L in known)
+            if not ok["level"]:
                 continue
-            if x[r] >= x[r - 1] and x[r] >= x[r + 1] and x[i] > x[r] and rsi[i] < rsi[r]:
-                return {"kind": "div", "ref": r}
-        return None
-    for r in range(i - SWING_K - 1, max(i - SWING_MAX, SWING_K) - 1, -1):    # most recent confirmed swing before i
-        if _pivot_high(x, r, SWING_K):
-            if _ok(rsi[r]) and x[i] > x[r] and rsi[i] < rsi[r]:
-                return {"kind": "div", "ref": r}
-            return None
-    return None
-
-
-def trigger_after(i, ind, tw=TRIGGER_WIN, strict60=False):
-    """Layer 3: first bar k in [i, i+tw] where RSI closes below its MA from at-or-above it, with RSI >= 60 at some bar since
-    the setup (bar i-1 on). strict60 also needs RSI[k] < 60."""
-    rsi, ma = ind["rsi"], ind["ma"]
-    n = len(rsi)
-    for k in range(max(i, 1), min(i + tw, n - 1) + 1):
-        if not all(_ok(v) for v in (rsi[k - 1], ma[k - 1], rsi[k], ma[k])):
-            continue
-        if not (rsi[k - 1] >= ma[k - 1] and rsi[k] < ma[k]):
-            continue
-        seen = [rsi[q] for q in range(max(i - 1, 0), k) if _ok(rsi[q])]
-        if not seen or max(seen) < RSI_LEVEL:
-            continue
-        if strict60 and not rsi[k] < RSI_LEVEL:
-            continue
-        return k
-    return None
-
-
-def entry_after(k, bars, win=ENTRY_WIN):
-    """First bar j in (k, k+win] whose low trades through the prior bar's open; fill min(open, prior open). (j, price) or None."""
-    for j in range(k + 1, min(k + win, len(bars) - 1) + 1):
-        ref = bars[j - 1]["o"]
-        if bars[j]["l"] <= ref:
-            return j, min(bars[j]["o"], ref)
-    return None
-
-
-def wt_ok(i, k, ref, ind):
-    """Layer 4: wt1 down-cross between setup-2 and trigger bar k, with a peak (4 bars to the cross) within WT_NEAR of the band
-    OR lower than the peak around the structure reference. NaN fails closed."""
-    ev, wt1 = ind["wt_ev"], ind["wt1"]
-    cross = [q for q in range(max(i - 2, 0), k + 1) if ev[q] == -1]
-    if not cross:
-        return False
-    c0 = cross[-1]
-    peak = [wt1[q] for q in range(max(c0 - 3, 0), c0 + 1) if _ok(wt1[q])]
-    if not peak:
-        return False
-    peak = max(peak)
-    if peak >= WT_BAND - WT_NEAR:
-        return True
-    refp = [wt1[q] for q in range(max(ref - 1, 0), min(ref + 2, len(wt1))) if _ok(wt1[q])]
-    return bool(refp) and peak < max(refp)
-
-
-def htf_asof(series, t, htf_ms, back=0):
-    """Value of the (back+1)-th last HTF bar CLOSED at or before t (open + htf_ms <= t), else None."""
-    times, vals = series
-    idx = bisect_right(times, t - htf_ms) - 1 - back
-    return vals[idx] if 0 <= idx < len(vals) else None
-
-
-def htf_ok(d, d_prev, w, w_prev):
-    """Layer 5: daily RSI below 60 and turning down, OR weekly RSI back under 60 after a prior-4-week max >= 60."""
-    if _ok(d) and _ok(d_prev) and d < RSI_LEVEL and d < d_prev:
-        return True
-    prev = [v for v in (w_prev or []) if _ok(v)]
-    return bool(_ok(w) and prev and w < RSI_LEVEL and max(prev) >= RSI_LEVEL)
-
-
-def simulate(bars, j, entry, stop, target_r=1.0, horizon=HORIZON):
-    """Short from `entry` on bar j. Per bar: stop first (a stop touch on the entry bar counts: its order is unknown), then the
-    target. hit1/hit2/mfe_r track the best excursion before the stop. Fee-net = gross - FEE*(entry+exit)/risk."""
-    risk = stop - entry
-    last = min(j + horizon, len(bars) - 1)
-    hit1 = hit2 = False
-    mfe = 0.0
-    out = None
-    for q in range(j, last + 1):
-        b = bars[q]
-        if b["h"] >= stop:
-            out = ("stop", q, stop, -1.0)
-            break
-        mfe = max(mfe, (entry - b["l"]) / risk)
-        hit1 = hit1 or mfe >= 1.0
-        hit2 = hit2 or mfe >= 2.0
-        if mfe >= target_r:
-            out = ("target", q, entry - target_r * risk, target_r)
-            break
-    if out is None:
-        px = bars[last]["c"]
-        out = ("time", last, px, (entry - px) / risk)
-    kind, q, px, rg = out
-    return {"outcome": kind, "exit_idx": q, "exit": px, "r_gross": rg, "r_net": rg - FEE * (entry + px) / risk,
-            "hit1": hit1, "hit2": hit2, "mfe_r": mfe, "risk_pct": risk / entry}
-
-
-def scan(bars, ind, htf, arm, k=PIVOT_K):
-    """Every chain (zone touch + structure + trigger + entry) with per-layer flags, one per entry bar (best zone kept)."""
-    n = len(bars)
-    zones = build_zones(bars, k=k)
-    for z in zones:   # a close above the zone top kills it
-        z["death"] = z["j"] + ZONE_LIFE
-        for q in range(z["confirm"] + 1, min(z["j"] + ZONE_LIFE, n - 1) + 1):
-            if bars[q]["c"] > z["hi"]:
-                z["death"] = q
+        if "structure" in layers:
+            s_known = [(j, v) for j, v in sw if j + 2 <= i and i - j <= 60]
+            div = False
+            for a in range(len(s_known) - 1):
+                for bb in range(a + 1, len(s_known)):
+                    j1, p1 = s_known[a]
+                    j2, p2 = s_known[bb]
+                    if j2 < lo or not (div_window[0] <= j2 - j1 <= div_window[1]):
+                        continue
+                    if p2 > p1 and rsi[j1] is not None and rsi[j2] is not None and rsi[j2] < rsi[j1]:
+                        div = True
+            sweep = any(h[k] > P and c[k] < P for k in range(lo, i + 1)
+                        for j, P in ph if j + PIVOT < k and k - j <= LEVEL_LOOKBACK)
+            ok["structure"] = {"div": div, "sweep": sweep, "either": div or sweep}[structure]
+            if not ok["structure"]:
+                continue
+        if "wavetrend" in layers:
+            cross = any(wt2[k] is not None and wt2[k - 1] is not None and wt1[k] < wt2[k] and wt1[k - 1] >= wt2[k - 1]
+                        for k in range(i - 3, i + 1))
+            ok["wavetrend"] = cross and max(wt1[i - 7:i + 1]) >= 45
+            if not ok["wavetrend"]:
+                continue
+        if "htf" in layers:
+            tc = b4[i]["t"] + step_ms
+            d2 = _last_closed(d_rsi, tc, 2)
+            w3 = _last_closed(w_rsi, tc, 3)
+            daily = len(d2) == 2 and d2[1][1] <= SIXTY and d2[1][1] < d2[0][1]
+            weekly = len(w3) == 3 and w3[2][1] < SIXTY and max(w3[0][1], w3[1][1]) >= SIXTY
+            ok["htf"] = daily or weekly
+            if not ok["htf"]:
+                continue
+        entry = j = None                               # one of the next 3 bars trades under the prior bar's open
+        for jj in range(i + 1, min(i + 4, len(b4))):
+            ref = b4[jj - 1]["o"]
+            if b4[jj]["l"] < ref:
+                entry, j = min(b4[jj]["o"], ref), jj
                 break
-    chains = {}
-    strict = bool(arm.get("strict60", False))
-    for z in zones:
-        for i in range(z["confirm"] + 1, min(z["death"], n - 1) + 1):
-            b = bars[i]
-            if not (b["h"] >= z["lo"] and b["l"] <= z["hi"]):
-                continue
-            s = structure_at(i, bars, ind, z, arm)
-            if s is None:
-                continue
-            kk = trigger_after(i, ind, strict60=strict)
-            if kk is None:
-                continue
-            if any(bars[q]["c"] > z["hi"] for q in range(i, kk + 1)):
-                continue        # closed above the level from the setup bar to the trigger: the level did not hold (OURS)
-            e = entry_after(kk, bars)
-            if e is None:
-                continue
-            j, px = e
-            stop = max(bars[q]["h"] for q in range(max(i - STOP_BACK, 0), j + 1)) * (1 + STOP_BUF)
-            t = bars[j]["t"]
-            l4 = wt_ok(i, kk, s["ref"], ind)
-            l5 = htf_ok(htf_asof(htf["d"], t, DAY_MS, 0), htf_asof(htf["d"], t, DAY_MS, 1), htf_asof(htf["w"], t, WEEK_MS, 0),
-                        [htf_asof(htf["w"], t, WEEK_MS, q) for q in range(1, 5)])
-            tight = (stop - px) / px < MIN_STOP
-            c = {"setup": i, "trigger": kk, "entry_idx": j, "entry": px, "stop": stop, "kind": s["kind"], "ref": s["ref"],
-                 "zone_p": z["p"], "t": t, "l1": True, "l2": True, "l3": True, "l4": l4, "l5": l5, "too_tight": tight,
-                 "fires": bool(l4 and l5 and not tight)}
-            old = chains.get(j)
-            if old is None or (c["fires"], c["zone_p"]) > (old["fires"], old["zone_p"]):
-                chains[j] = c
-    return [chains[j] for j in sorted(chains)]
+        if entry is None:
+            continue
+        stop = max(h[max(lo, 0):j + 1]) * 1.0005
+        if stop <= entry:
+            continue
+        out.append({"t_trigger": b4[i]["t"], "i": i, "j": j, "entry": entry, "stop": stop})
+        skip_to = i + 6
+    return out
 
 
-def indicators_and_htf(b4, bd, bw):
-    """RSI14 Wilder + SMA14 + WaveTrend (n1=10 n2=21) on 4h bars; daily/weekly RSI14 for the layer-5 gate."""
-    rsi = rsi_core([b["c"] for b in b4])
-    ma = rsi_ma(rsi, "SMA", 14)
-    rows = wavetrend.compute([(b["t"], b["h"], b["l"], b["c"]) for b in b4], H4_MS)
-    ind = {"rsi": rsi, "ma": ma, "wt1": [r.wt1 for r in rows], "wt2": [r.wt2 for r in rows], "wt_ev": [r.event for r in rows]}
-    htf = {"d": ([b["t"] for b in bd], rsi_core([b["c"] for b in bd])),
-           "w": ([b["t"] for b in bw], rsi_core([b["c"] for b in bw]))}
-    return ind, htf
+def outcome(bars, j, entry, stop, target_r=TARGET_R, fee=FEE, max_bars=MAX_BARS):
+    """short from bar j (the fill bar). Stop wins a bar that touches both. R net of a taker fee each side."""
+    risk = stop - entry
+    tgt, one_r = entry - target_r * risk, entry - risk
+    fee_r = fee * 2 * entry / risk     # round trip, in R
+    hit_1r = False
+    for k in range(j, min(j + max_bars, len(bars))):
+        if bars[k]["h"] >= stop:
+            return {"hit_1r": hit_1r, "gross_r": -1.0, "net_r": -1.0 - fee_r, "bars": k - j, "exit": "stop"}
+        if bars[k]["l"] <= one_r:
+            hit_1r = True
+        if bars[k]["l"] <= tgt:
+            return {"hit_1r": True, "gross_r": target_r, "net_r": target_r - fee_r, "bars": k - j, "exit": "target"}
+    k = min(j + max_bars, len(bars)) - 1
+    g = (entry - bars[k]["c"]) / risk
+    return {"hit_1r": hit_1r, "gross_r": g, "net_r": g - fee_r, "bars": k - j, "exit": "time"}
