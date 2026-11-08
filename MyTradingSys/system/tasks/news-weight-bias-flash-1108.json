@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/check_design.py",
     "python MyTradingSys/tools/live_aid/test_news_weight.py",
     "python MyTradingSys/tools/live_aid/news_study.py",
     "python MyTradingSys/tools/live_aid/build_artifact.py"
@@ -10,19 +11,12 @@
   "depends_on": [
     "news-design-synthesis-1108"
   ],
-  "done_when": [
-    "news_weight.js scores each headline 0-100 from 5 parts shown on hover: Tree importance (SOURCED), source tier (OURS table), class prior direction and size (OURS table), freshness half-life 15 min (OURS), confirmation by the BTC 1m move and volume since the headline time from the page's own feed",
-    "Two distinct sources of one class inside 10 min add a corroboration bonus (OURS); every number in the file is commented SOURCED or OURS",
-    "Each row shows weight and a LONG / SHORT / HOLD chip with its reason (HOLD when direction is ambiguous, the move already happened, or confirmation disagrees) and a 'prior' tag while the class table is OURS; no order, no sizing, no signal output",
-    "News tab pulses when weight >= 70 (OURS) or the bias of the top item flips, stops when he opens the tab; one-line banner shows title, weight and bias",
-    "tools/live_aid/test_news_weight.py: 6 fixtures (exchange hack, ETF approval, hot CPI, cool CPI, social rumour, stale item) give the expected bias and weight order; written first, fails on pre-change code",
-    "news_study.py prints per class the 15 m and 60 m BTC move after each sample item on public 1m klines (counts only, no edge claim); page rebuilt and shipped; Result names the build"
-  ],
+  "done_when": "Follows MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md sections 2-6; one fail-first test per rule in tools/live_aid/test_news_weight.py, all red on pre-change code (module missing). (1) WEIGHT: news_weight.js computes W = F x (P + K + I), 0-100: P = 40 x share of verified events with abs z15d > 2 read from research/news_effects_2026-11/news_events.csv (CPI 24, FOMC 12, NFP 10, PPI 3, every other class 3); K from the page's own BTC 1m feed since the headline minute (abs z15d >= 2 and vr5 >= 4 -> 20, abs z15d >= 4 -> 40, else 0; z15d on the prior-24h 1m stdev, never the prior hour); I = 2 x Tree importance; F = 1 for 15 min then linear to 0 at 60 min; before a scheduled t0 W = P + I; overlap within 4 h halves P; hover lists P K I F with SOURCED or OURS per part; test test_weight_parts (CPI with move z 7.6 v 28 importance 10 at 2 min = 84; unknown class, no move, importance 9 = 21). (2) BIAS: chip HOLD by default; LONG or SHORT only when K >= 20, the BTC move sign agrees and no opposite 'prior' tag; HOLD when K < 20, when prior and move disagree, when more than 35 min passed, when another event is within 4 h, and always for PPI; one reason word per chip; tests test_bias_hold_default, test_bias_long_short_on_move, test_bias_hold_late_overlap_ppi. (3) FLASH: tab pulses when W >= 60 or K = 40; stops when he opens the tab, when W falls under 60, or at 60 min; re-flash once on a new qualifying item or a LONG<->SHORT flip, never on a flip to HOLD; at most one flash per headline; tests test_flash_when, test_flash_stop. (4) REPEAT: no decay factor in W; the last same-class move (date, r15, z15d, vr5) is shown; the word 'flushed last time' when the previous same-class vr5 > 15; the previous sign never sets the chip; test test_repeat_no_decay. (5) CLASSES: per section 2, 'prior' tags only for ETF (LONG/SHORT by wording), hack SHORT, geopolitics SHORT, hot CPI SHORT, cool CPI LONG; no tag for TRUMP_POLICY, TARIFF_TRADE, COURT_LEGAL, PROTOCOL, BOJ_JAPAN; no source tier, no corroboration bonus, no era term; test test_class_table_calls. (6) news_study.py prints per class the 15 m and 60 m BTC move after each sample item on public 1m klines (counts only, no edge claim); REQUIREMENTS.md gets the section; page rebuilt and shipped; Result names the build and the 8 test names.",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Headlines in the Live Aid News panel say how much to care: a WEIGHT (how real and how applicable to BTC/ETH now) and a bias LONG, SHORT or HOLD with the reason, and the News tab flashes when weight is high. Context for his decision, never a gate.",
+  "goal": "Headlines in the Live Aid News panel say how much to care: W 0-100 = F x (P + K + I) per MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md section 3, a LONG / SHORT / HOLD chip with its reason (section 5) and a News tab flash (section 4). Context for his decision, never a gate; every number is a catalogue count or labelled OURS.",
   "id": "news-weight-bias-flash-1108",
   "lane": "SONNET",
   "latest": [
@@ -44,24 +38,27 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Weights are OURS priors until the event study and the live log score them; the chip shows 'prior' until then. Phase-first: ships now, a class prior that fails its count is dropped, not defended. Bias is a read for him to act on by hand (long, short or hold), never an order. Folds in the earlier pulse-tile idea. Public repo: no account data. HOLD 2026-11-08: build only after the news design synthesis is on trunk; its done_when and scope replace the lines above where they differ.",
+  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md: P values are counts (section 4 of REPORT.md), everything else is labelled OURS. Bias is a read for him to act on by hand, never an order. Direction is UNKNOWN for every class (0 surprise rows): the chip moves only on the market's own move. Public repo: no account data. Unblocks when the synthesis card is done (depends_on).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T19:58:13Z",
   "refs": [
-    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
   ],
   "result": "",
   "scope_in": [
-    "MyTradingSys/tools/live_aid/news_weight.js (new)",
+    "MyTradingSys/tools/live_aid/news_weight.js (new: W, chip, flash state per MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md)",
     "MyTradingSys/tools/live_aid/news_feed.js and build_artifact.py (wire only)",
     "MyTradingSys/tools/live_aid/test_news_weight.py and news_study.py (new)",
-    "MyTradingSys/tools/live_aid/REQUIREMENTS.md (one section)"
+    "MyTradingSys/tools/live_aid/REQUIREMENTS.md (one section)",
+    "reads MyTradingSys/research/news_effects_2026-11/news_events.csv for P (no edit)"
   ],
   "scope_out": [
-    "no trade gate, no order, no sizing, no signal feed: context only|no scheduler or background logger|no live tree touch|no headline archive in the repo beyond the existing 20-item sample|no edge claim from the study: counts only"
+    "no trade gate, no order, no sizing, no signal feed: context only|no scheduler or background logger|no live tree touch|no headline archive in the repo beyond the existing 20-item sample|no edge claim from the study: counts only",
+    "no source tier, no two-source corroboration bonus, no repeat-decay factor, no Trump-era term, no percent thresholds (NEWS_DESIGN drops them)|no number without a catalogue row or an OURS label|no edit to NEWS_DESIGN.md or the catalogue"
   ],
   "scope_sha": "d33c571f45be",
   "size": "M",
@@ -70,11 +67,11 @@
   ],
   "state": "blocked",
   "steps": [
-    "wait for the News panel (news_feed.js) on trunk; read REQUIREMENTS.md and STEPS.md; write test_news_weight.py with the 6 fixtures and run it red",
-    "write news_weight.js: five parts, class table (hack/drain -> SHORT, ETF approval/inflow -> LONG, SEC suit/ban -> SHORT, hot CPI -> SHORT, cool CPI -> LONG, rate cut -> LONG, war/sanction -> SHORT, delist -> SHORT that coin, else HOLD), every number labelled SOURCED or OURS in a comment",
-    "wire chip, hover breakdown and tab pulse into the panel; write news_study.py on public Binance 1m klines; rebuild the page; run tests --quick; ship"
+    "read MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 2-6), tools/live_aid/REQUIREMENTS.md, STEPS.md, news_feed.js on trunk; write test_news_weight.py with the 8 named tests and run it red",
+    "write news_weight.js: P from news_events.csv, K from the page's 1m feed (z15d on 24 h stdev, vr5), I from Tree, F by elapsed minutes; chip and reason per section 5; flash state per section 4; every OURS number commented OURS",
+    "wire chip, hover breakdown and tab pulse into the panel; news_study.py on public Binance 1m klines; rebuild the page; run_all_tests --quick; ship with Result naming the build and the 8 tests"
   ],
-  "tests": "MyTradingSys/tools/live_aid/test_news_weight.py",
+  "tests": "MyTradingSys/tools/live_aid/test_news_weight.py (fail-first, red on pre-change code: test_weight_parts, test_bias_hold_default, test_bias_long_short_on_move, test_bias_hold_late_overlap_ppi, test_flash_when, test_flash_stop, test_repeat_no_decay, test_class_table_calls)",
   "title": "News weight 0-100 + LONG/SHORT/HOLD bias chip per headline, News tab flashes on high weight; he acts, nothing auto",
   "weight": "",
   "worker": "session"

@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/check_design.py",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/events_extract.md",
     "python MyTradingSys/tools/live_aid/test_events_wire.py",
     "python MyTradingSys/tools/live_aid/build_artifact.py"
@@ -10,29 +11,25 @@
   "depends_on": [
     "news-design-synthesis-1108"
   ],
-  "done_when": [
-    "F:/CryptoScrapper/cbp_v2/extract_prompt.md asks for events_to_watch per video: name, utc (or 'week of'), analyst, expected effect LONG / SHORT / HOLD with the analyst's condition, one verbatim quote; re-run over the last 14 days of extractions.md; verify_extract_quotes.py exits 0",
-    "MyTradingSys/research/cbp/events_to_watch.json on trunk (public analyst context, no account data): de-duplicated by event + date, count of analysts naming it and their effect split; cbp_events_export.py rebuilds it from the CBP store",
-    "Live Aid News tab shows an Upcoming strip: next 5 events, countdown, analyst count, effect split; the tab flashes at T-60 min, T-15 min, T0 and when an incoming headline matches an event name; analysts split between LONG and SHORT show HOLD",
-    "tools/live_aid/test_events_wire.py: fixture with 3 events (past, +30 min, +3 days) gives the right strip order and flash state, a matching headline links to its event; fails on pre-change code; page rebuilt and shipped; Result names the build and the event count"
-  ],
+  "done_when": "Follows MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md sections 4 and 7; one fail-first test per rule in tools/live_aid/test_events_wire.py, all red on pre-change code (module missing). (1) EXTRACT: F:/CryptoScrapper/cbp_v2/extract_prompt.md asks for events_to_watch per video (name, utc or 'week of', analyst, LONG / SHORT / HOLD with the analyst's condition, one verbatim quote); re-run over the last 14 days of extractions.md; verify_extract_quotes.py exits 0. (2) EXPORT: MyTradingSys/research/cbp/events_to_watch.json on trunk (public analyst context, no account data), de-duplicated by event + date, with analyst count and effect split; cbp_events_export.py rebuilds it. (3) STRIP: events_strip.js shows the next 5 rows of CPI, NFP, FOMC statement, FOMC presser (T+30 min), PPI from the BLS and Fed schedule dates plus analyst-named events; per row countdown, P (same table as news_weight.js), last same-class move (date, r15, z15d, vr5 from research/news_effects_2026-11/news_events.csv), analyst count and L/S/H split; test test_strip_order_and_columns (fixture: past, +30 min, +3 days). (4) FLASH: at T-15 min and T0 for CPI, NFP and the FOMC statement, at T+30 for the presser; no flash for PPI, OURS classes, T-60 or 'week of' rows; shares the News tab pulse and its stop rules; test test_strip_flash_times. (5) HOLD: analysts split between LONG and SHORT show HOLD; analyst direction is a count beside the row, never the chip; the word 'stale' on shutdown-delayed prints; test test_strip_hold_and_stale. (6) LINK: an incoming headline that names a strip event links to its row and inherits its P; test test_headline_links_event. (7) page rebuilt and shipped; Result names the build, the event count and the 4 test names.",
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Analysts keep naming data and announcements to watch (CPI, FOMC, jobs, ETF deadlines, unlocks, hearings); CBP stores their stances but no dated event list, so the Live Aid cannot warn before one. Wire the named events from CBP into the Live Aid News tab.",
+  "goal": "Analysts name data and announcements to watch; wire them with the BLS/Fed release schedule into an Upcoming strip on the Live Aid News tab per MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md section 7, with the flash times of section 4. Context only, never a gate.",
   "id": "cbp-events-to-watch-wire-1108",
   "lane": "SONNET",
   "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Depends on the News panel being on trunk. CBP has no fire since 10-28 per an open card, so the extraction may need a manual run on F:/CryptoScrapper; if the YouTube fetch is blocked, backfill from the existing extractions.md only. Event times that analysts give loosely stay 'week of' and flash only at the day start. HOLD 2026-11-08: build only after the news design synthesis is on trunk; its done_when and scope replace the lines above where they differ.",
+  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md sections 4 and 7. Depends on the News panel and news_weight.js (P table) being on trunk. CBP has no fire since 10-28 per an open card: if the YouTube fetch is blocked, backfill from the existing extractions.md only. Loose analyst times stay 'week of' and show at day start without a flash. Unblocks when the synthesis card is done (depends_on).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-07T19:57:57Z",
   "refs": [
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
   ],
@@ -40,10 +37,12 @@
   "scope_in": [
     "F:/CryptoScrapper/cbp_v2/extract_prompt.md and cbp_events_export.py (outside the repo: copy the exported json only)",
     "MyTradingSys/research/cbp/events_to_watch.json (new)",
-    "MyTradingSys/tools/live_aid/events_strip.js, test_events_wire.py (new); build_artifact.py (wire only)"
+    "MyTradingSys/tools/live_aid/events_strip.js, test_events_wire.py (new); build_artifact.py (wire only)",
+    "reads MyTradingSys/research/news_effects_2026-11/news_events.csv and calendar_cache.json for schedule dates and last same-class moves (no edit)"
   ],
   "scope_out": [
-    "analyst calls are Context, never signals: no gate, no order, no sizing|no cookies or raw transcripts into the repo|no scheduler (export runs when CBP runs)|no live tree touch"
+    "analyst calls are Context, never signals: no gate, no order, no sizing|no cookies or raw transcripts into the repo|no scheduler (export runs when CBP runs)|no live tree touch",
+    "no flash at T-60, for PPI or for any OURS class (NEWS_DESIGN section 4)|no analyst direction as a chip|no number without a catalogue row or an OURS label|no edit to NEWS_DESIGN.md or the catalogue"
   ],
   "scope_sha": "",
   "size": "M",
@@ -52,11 +51,11 @@
   ],
   "state": "blocked",
   "steps": [
-    "read extract_prompt.md, extractions.md tail and the CBP rules; write the events_to_watch block into the prompt and re-run extraction over 14 days; verify quotes",
-    "write cbp_events_export.py -> events_to_watch.json; write test_events_wire.py red, then events_strip.js; flash logic shares the News tab pulse",
-    "rebuild page, run tests --quick, ship"
+    "read MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 4 and 7), extract_prompt.md, extractions.md tail and the CBP rules; write test_events_wire.py with the 4 named tests and run it red",
+    "write the events_to_watch block into the prompt and re-run extraction over 14 days; verify quotes; cbp_events_export.py -> events_to_watch.json",
+    "write events_strip.js (schedule rows + analyst rows, P, last same-class move, flash times sharing the News tab pulse); rebuild page, run_all_tests --quick, ship with Result naming build, event count and the 4 tests"
   ],
-  "tests": "MyTradingSys/tools/live_aid/test_events_wire.py",
+  "tests": "MyTradingSys/tools/live_aid/test_events_wire.py (fail-first, red on pre-change code: test_strip_order_and_columns, test_strip_flash_times, test_strip_hold_and_stale, test_headline_links_event)",
   "title": "CBP extraction gains events_to_watch (reports, announcements analysts name); Live Aid shows an upcoming strip with countdown and flashes the News tab near each event",
   "weight": "",
   "worker": "session"
