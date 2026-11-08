@@ -1,0 +1,1 @@
+{"t": "20261108T005826Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ack", "text": "ack b-b7dabe told A runs dsa_watch.py each wake; DSA-NUC STALLED, re-kick b-ea3809 sent", "login": "A", "id": "b-b7dabe", "state": "told", "host": "desktop-f7iu69n", "note": "A runs dsa_watch.py each wake; DSA-NUC STALLED, re-kick b-ea3809 sent"}
