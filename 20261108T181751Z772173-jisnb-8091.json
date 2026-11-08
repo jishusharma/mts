@@ -1,0 +1,1 @@
+{"t": "20261108T181751Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "A: run PLAN_5H_2026-11-08.md rows A1-A2 (review every B/credit ship, then cbp-events-to-watch-wire-1108). CHK note every 60m.", "login": "C", "id": "b-a54fd8", "prio": "high", "cmd": "read MyTradingSys/system/PLAN_5H_2026-11-08.md, do Login A row"}
