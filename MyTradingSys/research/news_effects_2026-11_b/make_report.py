@@ -103,7 +103,16 @@ def main():
     L += ["## 6. Ten largest BTC 60 m moves", "", "| event | quality | BTC 60m bps | ETH 60m bps |", "|---|---|---|---|"]
     for r in top:
         L.append("| %s | %s | %s | %s |" % (r["event_id"], r["ts_quality"], f(r["btc_ret_60m_bps"], 0), f(r["eth_ret_60m_bps"], 0)))
-    L += ["", "## Gaps (honest list)", "",
+    L += ["## 7. Cross-check against the catalogue already landed by another Builder (commit 6bfe981fb, folder news_effects_2026-11)", "",
+          "Same card built twice; this folder is the second, independent build and is kept beside the first, not over it. Compared once, offline:",
+          "- Both have 192 events; 158 event dates are in both, 24 only in the first, 20 only in this one (own-grouping events differ).",
+          "- On the 128 timed rows that share the same event minute, the first build's BTC 60 m return (percent x 100) equals this build's "
+          "bps value with median difference 0.0 bps and maximum 1.9 bps (its reference is the prior minute's close, this one is the event minute's open). "
+          "So the kline arithmetic agrees; differences are in which events exist and how time is graded.",
+          "- The first build has 5 analyst-named rows (it could read the CBP extractions); this build has none (gap 2). Treat the first build as the primary "
+          "catalogue and this one as an arithmetic cross-check plus the era/half-year tables above.",
+          ""]
+    L += ["## Gaps (honest list)", "",
           "1. Classes with fewer than 8 events are reported `unknown`, no number: %s." % ", ".join(small),
           "2. Analyst-named events from the CBP extractions and transcripts: NOT included. `F:/CryptoScrapper/cbp_v2/extractions.md` and the "
           "transcript store are absent on this machine (no F: drive). Only the repo's own Binance-hack report was used (HACK 2026-10-29).",

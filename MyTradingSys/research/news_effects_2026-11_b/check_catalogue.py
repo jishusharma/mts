@@ -148,6 +148,9 @@ def rederive(rows, online):
                 if not bars:
                     out.append("no sample for %s %s" % (r["event_id"], sym))
                     continue
+            if t0 not in bars or any(t0 + (m - 1) * 60000 not in bars for m in (5, 15, 60)):
+                out.append("rederive %s %s: no candle at event minute (timestamp or sample wrong)" % (r["event_id"], sym))
+                continue
             ref = bars[t0][0]
             for m, col in ((5, "5m"), (15, "15m"), (60, "60m")):
                 if r["ts_quality"] != "exact" and m < 60:

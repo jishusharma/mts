@@ -80,6 +80,12 @@ Magnitude only. Direction cannot be judged: the catalogue has no consensus-versu
 | NFP-2026-09-04-release | exact | -249 | -317 |
 | PPI-2025-08-14-release | exact | -240 | -383 |
 | TARIFF_TRADE-2025-10-10-china_100 | approx | -205 | -316 |
+## 7. Cross-check against the catalogue already landed by another Builder (commit 6bfe981fb, folder news_effects_2026-11)
+
+Same card built twice; this folder is the second, independent build and is kept beside the first, not over it. Compared once, offline:
+- Both have 192 events; 158 event dates are in both, 24 only in the first, 20 only in this one (own-grouping events differ).
+- On the 128 timed rows that share the same event minute, the first build's BTC 60 m return (percent x 100) equals this build's bps value with median difference 0.0 bps and maximum 1.9 bps (its reference is the prior minute's close, this one is the event minute's open). So the kline arithmetic agrees; differences are in which events exist and how time is graded.
+- The first build has 5 analyst-named rows (it could read the CBP extractions); this build has none (gap 2). Treat the first build as the primary catalogue and this one as an arithmetic cross-check plus the era/half-year tables above.
 
 ## Gaps (honest list)
 
