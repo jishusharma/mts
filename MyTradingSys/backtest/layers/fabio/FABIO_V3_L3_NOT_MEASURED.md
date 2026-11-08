@@ -9,3 +9,19 @@ count and the share were not re-derived). The IS-only rerun is pending on a mach
 **Fix:** `scan_model_b` IN_TRADE now returns `probe_idx` and the balance `bal`; `engine._manage` replays `model_b` on
 them, so those fills get the spec 5.2 exits. Test: `test_run_v3_l3.py::test_model_b_in_trade_fill_is_managed_not_scored_zero`
 (hand number 19/7 R; scored 0.0 on the old code). Models A, C, D unchanged.
+
+## Measured IS rerun (2026-11-08, IS only, DEV-only, no OOS number)
+
+`python -m MyTradingSys.backtest.layers.fabio.run_v3_l3 --is-only` on this host (F:/MTS/data present): 266 IS windows,
+OOS not run, selection frozen. Mean net R per window at 2 bps, managed Model B (spec 5.2 exits):
+
+| Model | Mean net R / window | Windows with a nonzero result (of 266) | Sum R |
+|---|---|---|---|
+| A | +0.0061 | 1 | +1.615 |
+| B | +0.0038 | 2 | +1.023 |
+| C | -0.0141 | 142 | -3.739 |
+| D | +0.00006 | 1 | +0.017 |
+
+Reading: A, B and D are nonzero in 1 to 2 windows of 266, so their means rest on one or two trades: no edge claim.
+C trades in 142 windows and loses (-3.74 R summed). The Model B fill count (the old 42 IS) is not in `is_only.json`
+(only per-window R), so it is NOT re-derived here: windows are not fills. Selection is the in-sample grid pick; label OURS.
