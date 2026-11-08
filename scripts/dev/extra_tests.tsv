@@ -250,3 +250,4 @@ scripts/dev/test_dsa_seed.py
 scripts/dev/test_signal_wait.py
 scripts/dev/test_api_agent_models.py
 MyTradingSys/tools/live_aid/test_news_feed.py
+MyTradingSys/research/news_effects_2026-11_b/test_catalogue.py

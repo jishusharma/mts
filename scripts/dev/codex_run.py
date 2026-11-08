@@ -198,14 +198,17 @@ def reading_age(home, now):
     return now - max(p.stat().st_mtime for p in files) if files else None
 
 
-def stall_findings(rows, ready, tried, lane_up, held, now, age=None):
+def stall_findings(rows, ready, tried, lane_up, held, now, age=None, auth_down=False):
     """The watchdog: what is silently wrong although nothing 'failed'. [] = healthy."""
     L = []
     left = [c for c in ready if tried.get(c["id"], 0) < MAX_ATTEMPTS]
     runs = [r for r in rows if not r.get("dry")]
     if left and lane_up and not held and runs:
         last = max(epoch_of(r.get("at")) for r in runs)
-        if last and now - last > STALL_S:
+        if last and now - last > STALL_S and auth_down:    # card labguy-codex-host-401-lane-stalled-1104: do not call a 401 host "lane up"
+            L.append(f"STALLED: {len(left)} card(s) ready, this host's Codex login returns 401 (IDLE host-auth), nothing ran for {(now - last) / 3600:.1f} h: "
+                     "log in to Codex on the lab host (the re-login goes out by mts_signal broadcast)")
+        elif last and now - last > STALL_S:
             L.append(f"STALLED: {len(left)} card(s) ready, lane up, no allowance hold, but nothing ran for {(now - last) / 3600:.1f} h: "
                      "read last_tick.txt and last_lane.txt on the lab host")
     tail = runs[-3:]
@@ -1116,7 +1119,7 @@ def status_text(ready, done, tried, rows, rl, now, last_tick="", unshipped=0, st
         L.append("  Last runs:")
         L += ["    " + run_line(r) for r in rows[-5:]] or ["    none"]
         look = needs_look(ready, tried, rows, unshipped, stopped, hold(rl, now), {c['id'] for c in done} | reopened(ready, rows),
-                          stall_findings(rows, ready, tried, lane_up, hold(rl, now) or guard_hold(last_tick), now, age), lab_hold=lab_hold)
+                          stall_findings(rows, ready, tried, lane_up, hold(rl, now) or guard_hold(last_tick), now, age, auth_down="IDLE host-auth" in (last_tick or "")), lab_hold=lab_hold)
         L.append("  NEEDS A LOOK: " + ("nothing" if not look else ""))
         L += [f"    - {x}" for x in look]
     return "\n".join(L)

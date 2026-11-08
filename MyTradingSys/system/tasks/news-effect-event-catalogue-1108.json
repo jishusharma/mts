@@ -5,6 +5,16 @@
     "python MyTradingSys/research/news_effects_2026-11/build_events.py",
     "python MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
   ],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-11-08T01:29:52Z",
+    "misses": 35,
+    "reads": [
+      "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-a53ad2bfa9ea0faf2"
+  },
   "created": "2026-11-07T20:07:24Z",
   "depends_on": [],
   "done_when": "Gaps listed honestly: classes with fewer than 8 events, events with no reliable timestamp, anything inferred; no weight, flash or bias rule is proposed in this card",

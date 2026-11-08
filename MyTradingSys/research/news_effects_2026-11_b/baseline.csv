@@ -1,0 +1,5 @@
+symbol,interval,median_abs_ret_bps,n_candles
+BTCUSDT,1h,20.89,25008
+BTCUSDT,1d,119.16,1042
+ETHUSDT,1h,28.8,25008
+ETHUSDT,1d,168.66,1042

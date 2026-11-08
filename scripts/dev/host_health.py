@@ -103,8 +103,17 @@ def queue_length():
 
 
 def kill_tree(pid):
+    """Returns (rc, stderr). rc 128 = PID not found = already gone. The injected kill= may also return a bare bool."""
     r = subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, text=True)
-    return r.returncode == 0
+    return r.returncode, (r.stderr or r.stdout or "").strip()
+
+
+def kill_result(res):
+    """Normalise a kill() result to (reaped, rc, stderr). Only rc 0 or 128 (already gone) is reaped; anything unknown fails closed."""
+    if isinstance(res, tuple):
+        rc, err = res[0], (res[1] if len(res) > 1 else "")
+        return rc in (0, 128), rc, err
+    return bool(res), None, ""
 
 
 def alive_pid(pid):
@@ -407,7 +416,7 @@ def post_strays(repo, strays):
     return len(new)
 
 
-def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=None, queue=None):
+def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=None, queue=None, resnap=None):
     """All four checks. Returns report lines. Each part is isolated: an error in one is logged and the rest still run.
     disk(repo) -> (lines, freed) and queue() -> lines default to check_disk / check_queue; tests inject stubs (the real disk scan hangs a test on a full C:)."""
     lines = []
@@ -430,9 +439,24 @@ def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=N
     def orphans():
         out = []
         for p in find_orphan_gates(procs, now):
-            ok = kill(p["pid"]) if reap else False
+            ok, rc, err = kill_result(kill(p["pid"])) if reap else (False, None, "")
+            if reap and not ok:
+                log(f"kill gate tree PID {p['pid']} rc={rc} stderr={err!r}")
+                # ONE retry, only on leftover gate processes (find_orphan_gates match) whose parent is already dead
+                try:
+                    again = resnap() if resnap else snapshot()
+                    aby = index(again)
+                    for q in find_orphan_gates(again, now):
+                        if q["ppid"] in aby:
+                            continue
+                        qok, qrc, qerr = kill_result(kill(q["pid"]))
+                        log(f"retry kill leftover gate PID {q['pid']} rc={qrc} stderr={qerr!r}")
+                        if q["pid"] == p["pid"]:
+                            ok = qok
+                except Exception as e:   # fail closed
+                    log(f"retry error: {e!r}")
             out.append(f"{'REAPED' if ok else 'ORPHAN'} gate tree PID {p['pid']} (no live claude.exe/ship above it)"
-                       + ("" if ok or not reap else " - kill failed"))
+                       + ("" if ok or not reap else f" - kill failed (rc={rc}: {err[:80]})"))
         return out
 
     def files():
@@ -461,7 +485,7 @@ def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=N
         out, report = [], []
         for s in found:
             if allow and allowed(s, allow):
-                ok = kill(s["pid"]) if reap else False
+                ok = kill_result(kill(s["pid"]))[0] if reap else False
                 out.append(f"{'REAPED' if ok else 'ALLOWED-BUT-NOT-KILLED'} stray PID {s['pid']} {s['name']} (policy allow-list)")
             else:
                 out.append(fmt_stray(s))

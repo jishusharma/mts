@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T01:35:51Z",
   "commands": [],
   "created": "2026-11-06T08:05:41Z",
   "depends_on": [],
@@ -14,23 +16,35 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already fixed on trunk by WIP save c622ce930: test_analyst_levels.py has the cases (75,000",
+      "ref": "da09ca2eb",
+      "utc": "2026-11-08T01:35:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "analyst_levels: per-symbol ladder (--symbol ETH) so alt levels can show",
-      "ref": "b8805425d4f9",
-      "utc": "2026-11-04T14:00:59Z"
+      "line": "WIP save: analyst-levels-fix-a (agent died at 5h limit 2026-11-06 08:55Z)",
+      "ref": "c622ce930530",
+      "utc": "2026-11-06T12:18:49Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. analyst_levels.py feeds CBP candidates; a lost level is a false negative, so IMPORTANT. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: CBP candidate parser defect, WIP save c622ce930 on trunk; not a roadmap exit",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T12:19:09Z",
+  "refreshed": "2026-11-08T01:35:36Z",
   "refs": [],
-  "result": "",
+  "result": "already fixed on trunk by WIP save c622ce930: test_analyst_levels.py has the cases (75,000 BTC -> 75000, 80k BTC, ETH 2030 kept, spot_1h pages past 1000 bars, empty klines raise a clear ValueError); 22/22 pass; no code change needed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/analyst_levels.py",
     "scripts/dev/test_analyst_levels.py"
@@ -38,17 +52,18 @@
   "scope_out": [
     "defects #4 and #5 (minor); hit-timing rule and timezone caveat (separate card); cbp validation; live runner"
   ],
-  "scope_sha": "b8805425d4f9",
+  "scope_sha": "c622ce930530",
   "size": "S",
   "sources": [
     "MyTradingSys/research/layer_lab/reports/analyst_levels_blind_read_REVIEW.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read MyTradingSys/research/layer_lab/reports/analyst_levels_blind_read_REVIEW.md defects 1-3 and analyst_levels.py L28-110",
     "write the 4 failing tests, then fix _NOT_PRICE and _YEAR so a price keeps its digits next to a ticker and ETH 2020-2039 stays valid, and page spot_1h or guard the empty list; no change to hit_from",
     "run test_analyst_levels.py then run_all_tests.py --quick; ship with Result: and Next: END: defects 1-3 fixed"
   ],
+  "taken": "2026-11-08T01:35:37Z",
   "tests": "scripts/dev/test_analyst_levels.py: the 4 new assertions, written first and failing on current analyst_levels.py (L32-35, L90-102)",
   "title": "fix analyst_levels.py parse defects (analyst_levels_blind_read_REVIEW.md #1-#3)",
   "weight": "IMPORTANT",
