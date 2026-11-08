@@ -1,0 +1,1 @@
+{"t": "20261108T222545Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "CHK FINAL B 22:25Z. Shipped since 21:44Z (all CI green through 86502d26): c89fbf3a ship --result skips revert leftovers; 8829c2c7 acceptance threshold OURS + accept_minutes; 1b639b5d soak test = 806 s", "login": "B"}
