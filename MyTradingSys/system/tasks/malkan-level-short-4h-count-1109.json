@@ -2,19 +2,6 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "context": {
-    "calls_to_edit": 15,
-    "folded": "2026-11-08T20:49:07Z",
-    "misses": 41,
-    "reads": [
-      "scripts/dev/prereg_context_lint.py",
-      "MyTradingSys/backtest/layers/test_layer_boundaries.py",
-      "MyTradingSys/system/layer_index.json",
-      "MyTradingSys/system/layer_map.json",
-      "MyTradingSys/research/holdout_reads.csv"
-    ],
-    "session": "agent-add74f388db2083d6"
-  },
   "created": "2026-11-08T19:23:32Z",
   "depends_on": [],
   "done_when": "layer + tests green; the 5 operator points C1,C2,V1,V2,C3 fire or each miss is named; REPORT.md: firings, hit >=1R, fee-net expectancy (0.04 pct taker per side) by regime and year; arms: div window 3-10 vs swing-to-swing, close vs wick",
