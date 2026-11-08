@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T01:43:46Z",
   "commands": [
     "python -m pytest scripts/dev/test_host_health.py -q"
   ],
@@ -25,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "kill rc128=reaped, stderr logged, one gate-only retry; 21 tests pass, 2 new fail on old co",
+      "ref": "a12b30f8b",
+      "utc": "2026-11-08T01:43:46Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
@@ -35,6 +42,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped",
   "note": "DECISION (OURS): IMPORTANT, kills processes\nREVIEWED: Lab_Guy 2026-11-08\nACCEPT (C1, IMPORTANT). Amended: retry limited to find_orphan_gates matches (no arbitrary dead-ppid kills), test (b) for the retry added, kill() contract stated. Checked: l.105/432-435 exist, kill is injectable, no ci.yml/test_sync.py in scope, no twin. Fail-closed: unknown rc stays ORPHAN.",
   "prio": 3,
   "refine_tries": 0,
@@ -43,7 +51,12 @@
   "refs": [
     "scripts/dev/host_health.py"
   ],
-  "result": "",
+  "result": "kill rc128=reaped, stderr logged, one gate-only retry; 21 tests pass, 2 new fail on old code (a12b30f8b)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/host_health.py",
     "scripts/dev/test_host_health.py"
@@ -56,12 +69,13 @@
   "sources": [
     "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add the rc=128 test (a) and the one-retry test (b) in test_host_health.py first, run, see both fail",
     "kill_tree (host_health.py l.105) returns rc+stderr (the injected kill= keeps a bool-or-(rc,stderr) contract, bool still accepted); rc 128 counts as reaped; stderr goes to health.log",
     "after a failed kill re-snapshot; retry ONLY on children that match find_orphan_gates (gate command line) with a dead ppid, never any dead-ppid process; update run() l.432-435 message"
   ],
+  "taken": "2026-11-08T01:43:46Z",
   "tests": "scripts/dev/test_host_health.py: new case fake kill rc=128 -> reaped, stderr logged; fail-first on pre-change code",
   "title": "host_health kill_tree: orphan gate kill reports failed when taskkill exits 128 (already gone) and hides the cause",
   "weight": "IMPORTANT",
