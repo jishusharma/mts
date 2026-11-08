@@ -4,32 +4,63 @@
   "commands": [],
   "created": "2026-11-08T03:53:13Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "news_events.csv has 0 rows with verified=N and ts_quality APPROX_INTRADAY unless dropped with a stated reason; check_catalogue.py passes; counts quoted in REPORT.md Gaps",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "The 68 rows in news_events.csv with verified=N get a primary-source minute timestamp (verify_source URL + verify_note) or are marked unfit, so t0 is not from memory.",
   "id": "news-effect-source-verify-ours-1108-prim",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect catalogue v2: verified flag, controls, analyst events, PPI fix",
+      "ref": "c686699d229c",
+      "utc": "2026-11-08T03:53:52Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c686699d229c news-effect catalogue v2: verified flag, controls, analyst events, PPI fix",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+      "utc": "2026-11-08T03:53:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Planner 2026-11-08. OURS labels stay until verified (SOURCED/OURS rule).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T08:11:21Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/news_events.csv",
+    "MyTradingSys/research/news_effects_2026-11/build_events.py",
+    "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md"
+  ],
+  "scope_out": [
+    "no change to returns columns; no trading code; public pages only"
+  ],
+  "scope_sha": "c686699d229c",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "List verified=N rows (python csv count: 68)",
+    "For each, read the primary page (exchange, agency, court) and record minute UTC in build_events.py",
+    "Rebuild csv, run check_catalogue.py, update REPORT.md Gaps counts"
+  ],
+  "tests": "check_catalogue.py asserts no verified=N row keeps class_label OURS without a Gaps line; fails on the current csv (68 N rows)",
   "title": "news-effect-source-verify-ours-1108: primary-source minute timestamps for the 68 unverified own-grouping rows",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
