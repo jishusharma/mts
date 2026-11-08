@@ -1,34 +1,49 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_host_health.py -q"
+  ],
   "created": "2026-11-07T18:20:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_host_health.py has a case with a fake kill returning 128 asserting no 'ORPHAN ... kill failed' line, that case fails on current host_health.py and the file passes after",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "kill_tree treats taskkill exit 128 (PID already gone) as reaped, logs stderr to health.log, and retries once on leftover children whose ppid is dead",
   "id": "host-health-kill-tree-orphan-1107",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: research/health_2026-11-07/SHIP_HEALTH.md item 1. scripts/dev/host_health.py kill_tree (l.105) runs taskkill /T /F, returns rc==0 only, drops stderr; run() l.432-435 prints 'ORPHAN ... - kill failed'. Measured: taskkill on a gone PID exits 128, counted as failure. Fix: treat 128 as reaped, log stderr to health.log, re-snapshot and kill leftover children whose ppid is dead (taskkill /T cannot reach them), retry once. Test with a fake kill returning 128. Not reproduced on this machine today (0 orphan gates). | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
+  "note": "DECISION (OURS): IMPORTANT, kills processes; reviewer stamp needed, not ready",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
+  "refs": [
+    "scripts/dev/host_health.py"
+  ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "scripts/dev/host_health.py",
+    "scripts/dev/test_host_health.py"
+  ],
+  "scope_out": [
+    "live tree, no process killed by the test, sync.py"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "add the rc=128 test in test_host_health.py first, run, see it fail",
+    "change kill_tree (host_health.py l.105) to return a result carrying rc and stderr; 128 counts as reaped; log stderr",
+    "after a failed kill re-snapshot and kill leftover children with a dead ppid, retry once; update run() l.432-435 message"
+  ],
+  "tests": "scripts/dev/test_host_health.py: new case fake kill rc=128 -> reaped, stderr logged; fail-first on pre-change code",
   "title": "host_health kill_tree: orphan gate kill reports failed when taskkill exits 128 (already gone) and hides the cause",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
