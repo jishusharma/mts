@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-11-07T15:45:52Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_supervisor.py::test_verify_cli_writes_stale uses a temp fixture and passes on any host",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Isolate host state in test_verify_cli_writes_stale",
   "id": "test-supervisor-py-test-verify-cli-write",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Pages hook guard: refresh marker stops respawn, login from env/cache, build time cap",
+      "ref": "779eb295f037",
+      "utc": "2026-11-07T15:42:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +28,25 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T03:57:14Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/test_supervisor.py"
+  ],
+  "scope_out": [
+    "supervisor.py behavior"
+  ],
+  "scope_sha": "779eb295f037",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "find host-state read",
+    "redirect to tmp_path"
+  ],
+  "tests": "python -m pytest scripts/dev/test_supervisor.py -k verify_cli_writes_stale",
   "title": "test_supervisor.py::test_verify_cli_writes_stale fails locally on JIS-LAPTOP trunk (CI green), so it likely reads host state instead of a temp fixture | done-when: the test passes on JIS-LAPTOP and in CI with host state isolated",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
