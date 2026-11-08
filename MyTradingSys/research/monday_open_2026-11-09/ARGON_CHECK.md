@@ -124,3 +124,12 @@ Per the card's `done_when` (`MyTradingSys/system/tasks/gemini-argon-krown-lows-b
 2. **Evidence-Based Decision Rule for Monday (`2026-11-09`, `OURS`):**
    - **Regime 1 — Sweep Holds (`1d close > 74,967.97` and `1w close >= 75,000`):** Treat `2026-11-06` (`74,888.00` [OURS]) as a completed liquidity sweep of `Sep-15` (`74,967.97` [OURS]), matching `MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md:22` (`"a sweep of the low, not a breakdown, until a daily close under 74,900"` [SOURCED]). Probability of `>= 10%` further downside (`<= 67,400` [OURS]) over the next `7` days is only **`19.4%–32.5%` [OURS]**.
    - **Regime 2 — Breakdown Confirmed (`1d close <= 74,888.00`):** Acceptance below the `Sep-15` / `Nov-6` floor shifts the historical `>= 10%` downside probability to **`56.2%–62.5%` within `7` days** and **`70.4%–83.3%` within `30` days** (median drop `-13.59%` to `-17.61%` [OURS]), activating Cluster A (`73,229` `200d SMA` [OURS]) immediately and Cluster B (`67,766` `200w SMA` / `67,399` `-10%` target [OURS]) as the primary magnet.
+
+---
+
+## Review (B, Claude Opus, 2026-11-08)
+
+- Independent recount from Binance spot 1d (data-api.binance.vision, my own fetch): monthly-low breaks 2017-09..2026-10 = 41 breaks, 19 reached -10 % (Argon: 40 / 18; the gap is one boundary month after the partial Aug-2017 listing month). Day-1 sweep-and-reclaim split matches exactly (22 breaks, 8 reached -10 %).
+- Quote gate re-run: PASS, 0 problems.
+- Caveat: the sweep vs close-below gap (36 % vs 56 %, n = 22 vs 18) is about 1.3 standard errors; it points the right way in all three definitions, but no single split is significant. Several definitions were tried (monthly, 20/50-day rolling, k=7/10 fractals); read the consistent direction, not any one number.
+- Playbook use: treat Krown's ~68k as conditional on a daily close under 74,888 (Regime 2), not as the base case from the 11-06 wick. ACCEPT.
