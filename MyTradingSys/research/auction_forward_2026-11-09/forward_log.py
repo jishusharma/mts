@@ -16,6 +16,7 @@ Output path is gitignored runtime data (runtime/ next to this file); never commi
 import importlib.util
 import json
 import sys
+from itertools import islice
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
@@ -58,7 +59,7 @@ def simulate_trade(plan, bars_after, half_price=None, target_price=None, wait_ba
         return {"filled": False, "exit_reason": "no_fill", "net_r": 0.0}
     gross, fee, rem, be, half_done = 0.0, fees["entry"] * entry / risk, 1.0, False, False
     reason = "open"
-    managed = bars_after[fill_i + 1: fill_i + 1 + max_hold]
+    managed = list(islice(bars_after, fill_i + 1, fill_i + 1 + max_hold))  # bars after the fill bar, supplied as they close
 
     def reached(b, p):
         return b["h"] >= p if d == 1 else b["l"] <= p

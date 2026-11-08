@@ -6,10 +6,11 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-08T23:22:17Z",
-    "misses": 32,
+    "folded": "2026-11-09T01:03:51Z",
+    "misses": 33,
     "reads": [
       "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+      "scripts/dev/run_all_tests.py",
       "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py"
     ],
     "session": "agent-a5e896f16457a1493"
