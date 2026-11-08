@@ -160,7 +160,7 @@ def launch(a) -> None:
         die("launch needs --card <id> or --prompt-file <path>")
     busy = running_jobs()
     if not a.dry_run and parallel_refused(busy, a.max_parallel):
-        die(f"REFUSED: {len(busy)} job(s) running, --max-parallel {a.max_parallel} (cap {MAX_PARALLEL_CAP}); running: {busy} (api_job.py status)")
+        die(f"REFUSED: one job at a time per machine (or --max-parallel N, cap {MAX_PARALLEL_CAP}); running: {busy} (api_job.py status)")
     d = RUNS / a.slug
     cmd = build_cmd(a.model, a.max_usd, a.max_turns, a.engine, a.cwd or str(REPO), str(d), a.max_tokens)
     if a.engine == "claude":
