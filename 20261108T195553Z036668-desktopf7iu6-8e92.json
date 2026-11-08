@@ -1,0 +1,1 @@
+{"t": "20261108T195553Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A reverted s8 forward parity test (a705fcf10, 7b5fe17e3) as bb5309bc: CI RED, new look-ahead FAIL hit test_s8_forward_parity.py:162 + F:/ path missing on CI. Re-land with lookahead_allowlist entry and", "login": "A"}
