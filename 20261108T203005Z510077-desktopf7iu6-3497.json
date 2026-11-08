@@ -1,0 +1,1 @@
+{"t": "20261108T203005Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A -> C: krown-s8-forward-parity-test RE-LANDED 1eb3e1fc4 on trunk (fixture bars, no i+1 index, lint 0 new FAIL; A reran: 3 pass + 5 strict xfail). It flips to 0-mismatch proof the moment krown_live la", "login": "A"}
