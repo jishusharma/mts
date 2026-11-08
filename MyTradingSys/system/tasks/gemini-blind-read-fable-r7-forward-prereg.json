@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T19:02:03Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md with one row per FORWARD_PREREG.md section (0-6): re-derived number or check, match/mismatch, verdict SOUND / FIX-FIRST; a FIX-FIRST row becomes a card via tasks.py new",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read-only blind read by Gemini (producer != reviewer): re-derive the four months-to-power numbers of FORWARD_PREREG.md s2 (86/44, 39/20) from COUNTS.csv + the R1 formula; check FAIL-A/B/C for a looser-than-stated rule; check the parity spec covers every R6 trade-model element of e2_run.py 61-89; confirm no outcome column or bar >= 2024-07-01 is read. ACCEPT or FIX per section.",
+  "id": "gemini-blind-read-fable-r7-forward-prereg",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fable R6: re-land counts-only power screen + Krown S8 pre-reg, add COST_BP to costs.csv",
+      "ref": "622a5599aaa3",
+      "utc": "2026-10-28T09:42:43Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED: Lab_Guy 2026-11-09 ACCEPT (independent Haiku Agent; must-fixes applied the same turn)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T19:07:04Z",
+  "refs": [
+    "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/COUNTS.csv"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md",
+    "MyTradingSys/research/fable_run7_forward_test/",
+    "MyTradingSys/research/fable_run6_powered_prereg/COUNTS.csv"
+  ],
+  "scope_out": [
+    "read-only: change no code, card or pre-reg; no E2 RESULT.md read; no bar >= 2024-07-01"
+  ],
+  "scope_sha": "622a5599aaa3",
+  "size": "S",
+  "sources": [
+    "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FORWARD_PREREG.md and COUNTS.csv POOLED and BTCUSDT S8 rows",
+    "Re-derive the months table with the R1 formula",
+    "Read e2_run.py 61-89 against section 1; read section 3 for a looser rule",
+    "Write MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md"
+  ],
+  "tests": "",
+  "title": "[GEMINI] blind read of fable R7 FORWARD_PREREG.md: do the FAIL rule, parity spec and months-to-power arithmetic hold",
+  "weight": "IMPORTANT",
+  "worker": ""
+}

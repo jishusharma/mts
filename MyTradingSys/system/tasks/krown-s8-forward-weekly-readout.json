@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/fable_run7_forward_test/readout.py --week <YYYY-MM-DD>",
+    "python -m pytest MyTradingSys/research/fable_run7_forward_test/test_readout.py -q"
+  ],
+  "created": "2026-11-08T19:02:02Z",
+  "depends_on": [],
+  "done_when": "READOUT_<date>.md and a new FORWARD_LOG.csv row on trunk for the week; FAIL/PARITY-FAIL card filed when triggered; commit Result: n trades, mean net R, DD R, streak, parity ok|fail; Next: krown-s8-forward-weekly-readout (re-queued) or the stop card",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Weekly run-and-report (coordinator re-queues each Monday; no scheduler): readout.py (week 1: write it) reads auto_trades.jsonl + journal/ for source layer:krown:s8_break:4h AND account krown_s8; fee-net R per trade from real fills; FORWARD_PREREG.md s3 FAIL-A/B/C + PARITY week check; CONTAMINATED/skipped counts, slip, phase tag; writes READOUT_<date>.md + FORWARD_LOG.csv row; stop card on FAIL.",
+  "id": "krown-s8-forward-weekly-readout",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "fable-run7-forward-test"
+  ],
+  "note": "REVIEWED: Lab_Guy 2026-11-09 ACCEPT (independent Haiku Agent; must-fixes applied the same turn)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T19:07:01Z",
+  "refs": [
+    "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/e2_run.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_run7_forward_test/",
+    "MyTradingSys/research/fable_run7_forward_test/readout.py",
+    "MyTradingSys/research/fable_run7_forward_test/test_readout.py",
+    "MyTradingSys/research/fable_run7_forward_test/FORWARD_LOG.csv"
+  ],
+  "scope_out": [
+    "read-only on execution/ and journal/; no trade, no HALT, no blocklist edit (the stop card asks the coordinator); no mainnet"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FORWARD_PREREG.md sections 3-4; first week: write readout.py + test_readout.py with the planted-ledger test",
+    "Run readout.py for the week; write READOUT_<date>.md; append FORWARD_LOG.csv",
+    "On FAIL or PARITY-FAIL: tasks.py new the coordinator stop card naming the rule and the date; ship"
+  ],
+  "tests": "test_readout.py with a planted auto_trades.jsonl: FAIL-A at exactly 12 R drawdown, not 11.9; FAIL-B at 12 losers; FAIL-C at n=30 with a negative upper bound; other-account fill listed CONTAMINATED and excluded; a non-replay entry raises PARITY-FAIL and stays in A-C as non_replay; a replay event with a skipped_busy or skipped_floor row is not a parity miss; one without any row is.",
+  "title": "Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}
