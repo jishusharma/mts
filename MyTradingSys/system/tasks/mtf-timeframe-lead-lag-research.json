@@ -1,6 +1,8 @@
 {
   "approved_by": "operator 2026-11-08 to B: \"check what are the planned Opus sessions, and you can run those here\"",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T21:32:56Z",
   "commands": [],
   "created": "2026-10-28T11:19:10Z",
   "crucial": "multi-timeframe synthesis across 5 TFs and two indicators with a causal flip definition; the 10-28 Sonnet read missed the lead-lag question the operator asked",
@@ -14,17 +16,30 @@
   "id": "mtf-timeframe-lead-lag-research",
   "kind": "run",
   "lane": "OPUS",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "REPORT.md (mtf_lead_lag_2026-11-09): 4h flips lead the daily RSI flip by 12-16 h (WT ~36 h",
+      "ref": "e7b9c116e",
+      "utc": "2026-11-08T21:32:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: context filter only; a combined R3 + level-trigger study would need its own pre-reg",
   "note": "Builds on live_reads/2026-10-28_lab_verify_mtf_bias_ladder (ladder states, 40-60 zone; DEV gave mostly-GREEN/few-40-60 +0.13% at 16 bars on 1h). Data on JIS-NUC: F:/MTS/data/binance_api_spot (4h/1d/1w/15m/5m from data-api.binance.vision).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "B (JIS-NUC, Opus)",
-  "refreshed": "2026-11-08T20:56:54Z",
+  "refreshed": "2026-11-08T21:32:24Z",
   "refs": [],
-  "result": "",
+  "result": "REPORT.md (mtf_lead_lag_2026-11-09): 4h flips lead the daily RSI flip by 12-16 h (WT ~36 h); rule R3 (4h+1h flip, daily RSI same side of 50) hits a daily flip within 7d 41% vs 23% base out of sample, but 3d fee-net +0.17% vs -0.10% (~1.2 SE): anticipation filter, not a trigger",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/mtf_lead_lag_2026-11-09/"
   ],
@@ -34,13 +49,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "PRE_REG (rules, TF pairs, horizons, DEV/VAL split) committed first",
     "fail-first causality test; flip detector per TF",
     "lead-lag tables + early-flip rule hit/false rates on DEV, then VALIDATION once",
     "REPORT.md, ship; file a follow-up card only if a VALIDATION rule beats baseline fee-net"
   ],
+  "taken": "2026-11-08T21:32:25Z",
   "tests": "MyTradingSys/research/mtf_lead_lag_2026-11-09/test_lead_lag.py::test_flip_detection_is_causal (fail-first: a flip is dated at the bar that closes the state change, never earlier)",
   "title": "Deep research: how bias forms across timeframes (1m..1D) and how RSI/WT states change per timeframe (lead-lag, 40-60 zone); build on live_reads/2026-10-28_lab_verify_mtf_bias_ladder; operator verbatim ask 2026-10-28; every screenshot read double-checked first, then audited",
   "weight": "",
