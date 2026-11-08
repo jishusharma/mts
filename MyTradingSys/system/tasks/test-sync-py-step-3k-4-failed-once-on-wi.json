@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T16:08:42Z",
   "commands": [],
   "created": "2026-11-03T19:48:11Z",
   "depends_on": [],
@@ -14,31 +16,43 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Flaky case: FastShipTest.test_fix_ci_flag_keeps_the_fast_gate (run 41703965492 job 1261542",
+      "ref": "c0341d758",
+      "utc": "2026-11-08T16:08:42Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
-      "ref": "dea81301a70a",
-      "utc": "2026-11-04T16:25:21Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: flake root-caused and fixed",
   "note": "REVIEWED:2026-11-04 ACCEPT (scope present; no fix for shared resource found) | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; CI flakes are the subject of the CI-red parity card",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:39Z",
+  "refreshed": "2026-11-08T15:58:54Z",
   "refs": [],
-  "result": "",
+  "result": "Flaky case: FastShipTest.test_fix_ci_flag_keeps_the_fast_gate (run 41703965492 job 126154254917: index.lock File exists on git add LAYERS.md). Cause: 6 sync.main(ship) tests mock toplevel=Path('.') but not stage_layers, which runs update-index/add/amend in the real checkout and races other shards. Fix: mock stage_layers in all 6; RealTreeGuardTest scan fails on the old file (lines 1773,1995,2030,2038,2049,2240). test_sync.py 172 passed twice (210s) on JIS-NUC.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/test_sync.py",
     "scripts/dev/run_all_tests.py"
   ],
   "scope_out": [],
-  "scope_sha": "dea81301a70a",
+  "scope_sha": "05d8d613782f",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the failing run 41703965492 job 126154254917 log and get the failing test name (the shard prints FAILED <test> before the summary).",
     "Read that case in scripts/dev/test_sync.py and name the resource it shares with the other 3 shard parts (temp dir, remote URL, branch name, or a wall-clock window).",
@@ -46,6 +60,7 @@
     "Fix the case so the resource is per-test (tmp_path, unique branch, injected clock).",
     "Done when: the new test fails on the old case and python -m pytest scripts/dev/test_sync.py -q is green, twice in a row."
   ],
+  "taken": "2026-11-08T15:58:55Z",
   "tests": "scripts/dev/test_sync.py: a case that runs the suspect case twice (or two shards in parallel) and would fail on the current shared resource; whole file green twice on JIS-NUC.",
   "title": "test_sync.py step 3k.4 failed once on windows-latest CI (run 41703965492, 09486897d) and passed on the next two ships; find the flaky case and make it deterministic",
   "weight": "",
