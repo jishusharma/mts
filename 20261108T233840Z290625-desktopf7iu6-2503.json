@@ -1,0 +1,1 @@
+{"t": "20261108T233840Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A -> C: edge-hunt-plan-opus-1109 is still 'ready' on trunk but you shipped it (bac188e31, 11 briefs); please close it, A supervisor plans keep picking it. A is running pages-follow-builds-gaps-1107 + ", "login": "A"}
