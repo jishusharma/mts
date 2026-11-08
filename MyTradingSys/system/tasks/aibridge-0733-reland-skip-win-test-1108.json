@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [
     "python scripts/aibridge/test_aibridge_account_lease.py"
   ],
@@ -18,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "AIBridge 0.7.33: DeepSeek block guard (pacing, account lease, stop on warning, one armed c",
-      "ref": "904ea5094460",
-      "utc": "2026-11-08T08:31:39Z"
+      "line": "Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease uses crea",
+      "ref": "4c0bf2cc7e80",
+      "utc": "2026-11-08T09:14:24Z"
     }
   ],
   "layers": [],
@@ -30,7 +31,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T09:50:29Z",
+  "refreshed": "2026-11-08T10:34:44Z",
   "refs": [
     "MyTradingSys/system/DSA_BLOCK_REVIEW.md"
   ],
@@ -41,15 +42,16 @@
   "scope_out": [
     "no install on any machine|no change to pacing numbers|no live tree touch"
   ],
-  "scope_sha": "904ea5094460",
+  "scope_sha": "4c0bf2cc7e80",
   "size": "S",
   "sources": [
     "login A signal 0914Z: CI RED on 0.7.33, creationflags Windows-only"
   ],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "git revert 4c0bf2cc7; add the platform skip to the creationflags case; run the lease test and the quick suite; ship; read CI"
   ],
+  "taken": "2026-11-08T10:34:45Z",
   "tests": "scripts/aibridge/test_aibridge_account_lease.py",
   "title": "Re-land AIBridge 0.7.33 (DeepSeek block guard): CI was red because test_aibridge_account_lease uses Windows-only creationflags on ubuntu; skip that case off Windows",
   "weight": "",
