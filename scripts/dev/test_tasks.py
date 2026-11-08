@@ -1548,3 +1548,20 @@ class TestCorruptCard(unittest.TestCase):
                 T.save(self.repo, good("B901", title="changed"))
         self.assertEqual((self.bad_dir / "B901.json").read_bytes(), before)
         self.assertEqual([p.name for p in self.bad_dir.glob("*.tmp")], [])
+
+
+class ShowVerbTest(unittest.TestCase):
+    def test_show_prints_card_json_via_cli(self):
+        import json
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d)
+            T.save(repo, good("B902", title="show me"))
+            old, T.REPO = T.REPO, repo
+            try:
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    rc = T.main(["show", "B902"])
+            finally:
+                T.REPO = old
+            self.assertEqual(rc, 0)
+            self.assertEqual(json.loads(buf.getvalue())["title"], "show me")

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T06:17:24Z",
   "commands": [],
   "context": {
     "calls_to_edit": 10,
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "stop-gap flatten landed 0f1f46644 + d7f1c493f, trunk CI green on 1b5d7664",
+      "ref": "ee20cc241",
+      "utc": "2026-11-08T06:17:24Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "B148 part 5 (D10: 10 min heartbeat age) and B146 gate on at 0.3 (D09); Inbox items recorde",
@@ -36,6 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped; follow-ups in stop-gap-flatten-follow-ups-review-of-75",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only. Stale guard 11-08: bug still on trunk (position_manager.py:340-342 raises ManagerHalted, scratch_r3/test_stop_gap_r3.py still unmoved); goal and design unchanged; placed on CRITICAL_PATH before the S2 restart drill.",
   "pinned": false,
   "prio": 3,
@@ -43,7 +51,12 @@
   "refined_by": "",
   "refreshed": "2026-11-07T21:41:19Z",
   "refs": [],
-  "result": "",
+  "result": "stop-gap flatten landed 0f1f46644 + d7f1c493f, trunk CI green on 1b5d7664",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/execution/position_manager.py; MyTradingSys/execution/test_stop_gap_offline.py; MyTradingSys/system/tasks/fable-r3-stop-gap-early-return.json"
   ],
@@ -55,12 +68,13 @@
   "sources": [
     "MyTradingSys/research/fable_runs_2026-10-28/R3_LIVE_REDTEAM.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Move scratch_r3/test_stop_gap_r3.py into MyTradingSys/execution/ as a repo test; run it and confirm it FAILS on current code with the F-GAP-1 assertion.",
     "Fix position_manager.py:340-342: when stop is None and entry_filled_total > 0, fail closed - re-place the protective stop from the journal (trigger from intent/plan, amount=entry_filled_total) or flatten + write HALT, then return/halt.",
     "Re-run the new test (must pass) and MyTradingSys/execution/testnet/offline/* (must stay green)."
   ],
+  "taken": "2026-11-08T06:17:24Z",
   "tests": "MyTradingSys/execution/test_stop_gap_offline.py (moved from scratch): fails on pre-fix code, passes post-fix; offline suite test_s3_unprotected_offline + others stay green.",
   "title": "fable R3: position_manager early return leaves open position naked when journal has entry but no stop (F-GAP-1, BLOCKS-LIVE)",
   "weight": "",
