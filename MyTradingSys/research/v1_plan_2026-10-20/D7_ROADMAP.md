@@ -26,6 +26,8 @@ Now: S2, S3, S4 in parallel (operator 2026-11-04, d-s1-defaults-1104; S1 signed;
 | S6 Mainnet decision | S5 exit | the operator decides mainnet at tiny fixed size with an experiment stop (M7); repo goes private first (CLAUDE.md); keys handled by the operator only | signed decision; builders still never touch keys or enable mainnet | operator's call |
 | v2 | S6 running | options via D6 seams (OPTIONS_PLAN P0-P5), then other markets | separate spec | after v1 |
 
+S3/S5 amended by d-phase-first-method-1106 (operator 2026-11-06): the S3 exit is a current-phase pattern with a PRE_REG Context going testnet-forward, not a multi-year VALIDATION pass; the testnet record is the fee-net OOS record S6 needs. Map: research/BACKTEST_MAP_2026-11-09.md.
+
 ## S3 run list (the one list of backtests still to run; operator 2026-10-31, d-s3-run-list)
 Rechecks already done, so these are not on the list: re-running 10 published verdicts on today's code (T07: 8 identical, mfe_exit fixed
 ad4e461d6, published_strats has no data here; no verdict flipped); the LC1 keep list against a fair control (0 of 12 keep); Q33 confluence
