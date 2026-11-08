@@ -41,12 +41,14 @@ def klines(iv, t0, t1):
 
 def hourly(start=dt.datetime(2020, 1, 1, tzinfo=UTC)):
     t0 = int(start.timestamp() * 1000)
+    now_ms = int(dt.datetime.now(UTC).timestamp() * 1000)
     old = json.loads(CACHE.read_text()) if CACHE.exists() else []
+    old = [b for b in old if int(b[0]) + HOUR <= now_ms]  # drop any cached bar still open at this moment
     if old:
         t0 = int(old[-1][0]) + HOUR
-    new = klines("1h", t0, int(dt.datetime.now(UTC).timestamp() * 1000))
+    new = klines("1h", t0, now_ms)
     bars = [tuple(b) for b in old] + new
-    CACHE.write_text(json.dumps(bars))
+    CACHE.write_text(json.dumps([b for b in bars if int(b[0]) + HOUR <= now_ms]))  # never cache the unfinished bar
     return bars
 
 
@@ -138,7 +140,7 @@ def part2(bars):
     for n in (2, 3, 5):
         for d in (dt.date(2026, 11, 8) + dt.timedelta(days=i) for i in range(0, 5)):
             ed = (d - dt.date(1970, 1, 1)).days
-            if ed % n == n - 1:
+            if ed % n == (0 if n == 3 else n - 1):  # Binance 3d bars verified from klines: open 11-07, close end of Mon 11-09
                 print(f"  {n}-day block (epoch anchor) closes at end of {d} {d.strftime('%a')}")
     print("  weekly bar closes Sun 2026-11-08 24:00Z; Mon 11-09 00:00Z opens the new week, day and 4h bar")
     print()
