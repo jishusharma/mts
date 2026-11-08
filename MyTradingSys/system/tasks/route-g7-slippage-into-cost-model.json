@@ -4,18 +4,18 @@
   "commands": [],
   "created": "2026-11-04T14:28:22Z",
   "depends_on": [],
-  "done_when": "the backtest cost model reads the G7 stop-slippage p90 as a labelled SOURCED-by-data constant with the SLIPPAGE.md line cited, golden numbers re-baselined in one commit, and a non-Claude spec review file exists (C2)",
-  "est_turns": null,
+  "done_when": "tom_bt.py/maker_model.py take a named stop-slip constant citing research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md; goldens re-baselined in one commit; a non-Claude spec review file exists beside the card",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Backtests charge stop-fill slippage from the G7 measured p90 (SOURCED by data, SLIPPAGE.md), as a stress case beside the delta-250ms mean default, instead of slip=0.0.",
   "id": "route-g7-slippage-into-cost-model",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; PARKED: tom_bt/maker_model edits need that review first. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: cost-model input for backtests; phase-first testnet-forward needs no backtest cost gate (d-phase-first-method-1106)",
+  "note": "Needs C2 non-Claude spec review stamp before ready (CRUCIAL). Planner 2026-11-08: filled; check blocked only on stamp.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
@@ -24,14 +24,26 @@
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/maker_model.py",
+    "MyTradingSys/backtest/test_tom_bt.py",
+    "MyTradingSys/backtest/test_maker_model.py"
+  ],
+  "scope_out": [
+    "no live-tree edit; no change to the G7 study itself; no layer re-run"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read SLIPPAGE.md table and the proposal at line 31 (mean default, p90 stress)",
+    "Write the spec and get the non-Claude (C2) review file",
+    "Add failing test, then the labelled constant (SOURCED, cite line)",
+    "Re-baseline goldens in one commit; run test_tom_bt.py and test_maker_model.py"
+  ],
+  "tests": "new case in MyTradingSys/backtest/test_tom_bt.py: stop fill with the G7 slip constant is worse than slip=0.0 by the constant and fails on current code; default-slip golden test unchanged",
   "title": "G7 stop-slippage p90 (2877e1fed) into the backtest cost model as a SOURCED-by-data stop cost",
   "weight": "CRUCIAL",
-  "worker": ""
+  "worker": "session"
 }
