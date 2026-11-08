@@ -1,1 +1,0 @@
-{"t": "20261101T185048Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-06f099 told guarded fetch already on trunk (afb7dee67); blocked until 23:21Z", "login": "C", "id": "b-06f099", "state": "told", "host": "jis-nb", "note": "guarded fetch already on trunk (afb7dee67); blocked until 23:21Z"}
