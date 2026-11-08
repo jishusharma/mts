@@ -1,1 +1,0 @@
-{"t": "20261101T061718Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "NUC FIXED (operator 2026-11-01): JIS-NUC restart/hang problem is gone. Records updated (NUC_SHUTDOWN_HANDOVER.md). NUC-only workarounds under review in card [cut]; generic guards stay. NUC may take la", "login": "A", "id": "b-b0da80", "prio": "high", "cmd": ""}
