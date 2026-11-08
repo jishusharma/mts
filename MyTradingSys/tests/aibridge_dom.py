@@ -69,7 +69,8 @@ window.chrome = {
     getPlatformInfo: function () {},
     sendMessage: function (msg, cb) {
       window.calls.push({ t: Date.now() - window.T0, type: msg.type, cmd: msg.cmd, task: msg.task, timeout_s: msg.timeout_s, rid: msg.rid, dry: msg.dry, event: msg.event });
-      if (msg.event) { cb({ ok: true, status: 200, body: { ok: true, event: true } }); return; }
+      // 0.7.33: the agent answers an account lease request (LEASE / LEASE_BEAT / LEASE_RELEASE <label>); window.leaseReply overrides it
+      if (msg.event) { cb({ ok: true, status: 200, body: /^LEASE/.test(msg.event) ? Object.assign({ ok: true, event: true, lease: 'ok', holder: 'H' }, window.leaseReply || {}) : { ok: true, event: true } }); return; }
       if (msg.type === 'version') { cb({ loaded: window.loadedVersion || window.AV(), disk: window.diskVersion || window.AV() }); return; }
       if (msg.type === 'reload') { window.reloaded = (window.reloaded || 0) + 1; cb({ ok: true }); return; }
       if (msg.type === 'ping') { cb({ ok: true, status: 200, body: { ok: true, agent: window.agentVersion || window.AV(), host: 'H', shell_version: '5.1', pwsh: true, running: window.agentRunning == null ? 0 : window.agentRunning } }); return; }
@@ -83,7 +84,10 @@ window.chrome = {
       }, r.delay_ms || 0);
     }
   },
-  storage: { local: { get: function (k, cb) { cb({}); }, set: function () {} }, onChanged: { addListener: function () {} } }
+  // window.store: what chrome.storage.local holds, pre-loaded by a test (a cooldown). set() only logs to window.saved, so pace history and
+  // armed-tab slots never persist unless a test sets window.storeLive = true (the old stub kept nothing; chain tests run on virtual time)
+  storage: { local: { get: function (k, cb) { var o = {}; (Array.isArray(k) ? k : [k]).forEach(function (x) { if (window.store && window.store[x] !== undefined) o[x] = window.store[x]; }); cb(o); },
+    set: function (o, cb) { window.saved = Object.assign(window.saved || {}, o); if (window.storeLive) window.store = Object.assign(window.store || {}, o); if (cb) cb(); } }, onChanged: { addListener: function () {} } }
 };
 window.AV = function () { return (window.AIBridgeLoop && window.AIBridgeLoop.VERSION) || '0.0.0'; };
 window.T0 = Date.now();
@@ -112,7 +116,7 @@ window.finish = function () {
   var dbg = {}; try { dbg = window.__aibDebug(); } catch (e) {}
   var st = document.querySelector('.aibridge-ctl .st');
   document.getElementById('result').textContent = JSON.stringify({ calls: window.calls, posted: window.posted, status: st ? st.textContent : null, dbg: dbg,
-    banner: (document.getElementById('aibridge-stop-banner') || {}).textContent || null, extra: window.extra || null });
+    banner: (document.getElementById('aibridge-stop-banner') || {}).textContent || null, extra: window.extra || null, saved: window.saved || null });
 };
 </script>
 <script src="loop.js"></script><script src="content.js"></script>
