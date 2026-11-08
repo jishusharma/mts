@@ -2077,3 +2077,7 @@ bigger bounce; Krown sees lows broken and ~10 % more down); logins A and B do th
 until the 11-10 20:00Z reset; use the Platform credit; C instructs A and B with confirmation points so they keep working.
 Answer: PLAN_5H_2026-11-08.md (credit J1 monday-open-playbook-1109, Opus refute-review J2; B Gemini analyst extracts + card
 refresh + monday_watch.py; A reviews every ship + CBP events strip); hourly CHK signals; C cap 85 %.
+
+## d-gemini-both-models-cap-raised-1108 (2026-11-08 ~18:25Z)
+Operator: "make sure we use both Gemini models well! And use Claude Platform. U also have your cap raised - so do the critical tasks."
+Answer: Gemini 4 Argon takes the heavy Monday research (gemini-argon-krown-lows-break-check-1109: Krown's lows-break claim tested on BTC history); Gemini 3.8 Flash takes the 4 fresh [GEMINI] blind reads of shipped work; both run on JIS-NUC via gemini_queue.py, B reviews and ships. Platform credit runs J1 Monday playbook (Sonnet $5) then J2 Opus refute-review ($3). Lead C cap raised (operator gave no number): Lead C spends on critical coordination only, default ceiling 90% weekly until he names one.
