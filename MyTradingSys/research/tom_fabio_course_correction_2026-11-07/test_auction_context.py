@@ -346,3 +346,15 @@ def test_claude_stage_d_fixes_stale_rejection_spread_range_and_causality():
     with pytest.raises(ValueError, match="Causality violation"):
         ac.evaluate_forming_candle([_bar(75000, 75100, 74900, 75050, t=2000, close_t=3000)], now_ms=1000)
 
+
+
+def test_acceptance_threshold_scales_with_bar_minutes():
+    """census-acceptance-threshold-mislabel-1109: accept80 = 2x30m closes = 60 min (SOURCED); 6 bars is OURS."""
+    pre = [_bar(79800, 79950, 79600, 79650, v=120.0) for _ in range(10)]
+    below = [_bar(79550 - 70 * k, 79560 - 70 * k, 79320 - 70 * k, 79350 - 70 * k, v=200.0) for k in range(6)]
+    bars = pre + below
+    assert ac.classify_level_interaction(bars, 79500.0, "support")["verdict"] == "ACCEPTED"          # default: 6 bars (OURS)
+    on5 = ac.classify_level_interaction(bars, 79500.0, "support", accept_minutes=60, bar_minutes=5)
+    assert on5["verdict"] != "ACCEPTED"                                                              # 60 min = 12 x 5m closes
+    on60 = ac.classify_level_interaction(bars, 79500.0, "support", accept_minutes=60, bar_minutes=60)
+    assert on60["verdict"] == "ACCEPTED"                                                             # 60 min = 1 x 1h close

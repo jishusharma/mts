@@ -523,6 +523,8 @@ def classify_level_interaction(
     zone_tol_pct: float = 0.15,
     level_kind: str = "boundary",
     max_bars_since_reclaim: int = 3,
+    accept_minutes: Optional[int] = None,
+    bar_minutes: int = 5,
 ) -> Dict[str, Any]:
     """Classify how price interacts with a structural level on intraday bars (e.g. 5m or 15m).
 
@@ -541,9 +543,11 @@ def classify_level_interaction(
            `touch_idx`, or opposing delta / absorption),
          - Not a vertical knife (`knife == False`).
       2. ACCEPTANCE BEYOND LEVEL (Value Migration -> Continuation / Never Fade):
-         - Price closes beyond `level_price` for `consec_beyond >= 6` consecutive bars (6x5m = 30m; SOURCED to `accept80.py`
-           2x30m closes below prior-day VAL = 77% continuation; OURS when applied to 5m bars or >= 4 consecutive bars while
-           still outside), or parks inside the zone (`bars_in_zone >= 6`) without rejecting.
+         - Price closes beyond `level_price` for `consec_beyond >= N` consecutive bars, or >= round(N*2/3) while still
+           outside, or parks inside the zone (`bars_in_zone >= 6`, OURS) without rejecting. Default N = 6 bars (OURS: on 5m
+           that is 30 min, half of the sourced duration; on 1h it is 6 h). `accept_minutes` + `bar_minutes` set
+           N = accept_minutes / bar_minutes; accept_minutes=60 is the SOURCED accept80.py duration (2 consecutive 30m closes
+           below prior-day VAL; REVIEW_FABLE.md:47, card census-acceptance-threshold-mislabel-1109).
       3. LVN_FAST_TRAVERSE (Impulse Vacuum Traverse -> Trend Continuation):
          - When `level_kind == 'lvn'` and price slices across `level_price` in 1-3 bars on high volume (`max_rel_vol >= 2.0`)
            and closes cleanly beyond `level_price` without reclaiming.
@@ -664,8 +668,11 @@ def classify_level_interaction(
             ),
         }
 
-    # 2. Check Acceptance (consecutive time at/beyond level builds value -> do NOT fade; OURS on 5m, SOURCED to accept80.py on 2x30m)
-    if max_consec_beyond >= 6 or (not currently_inside and consec_beyond >= 4) or (bars_in_zone >= 6 and not probed_beyond):
+    # 2. Check Acceptance (consecutive time at/beyond level builds value -> do NOT fade). N = 6 bars OURS by default;
+    #    accept_minutes / bar_minutes gives the SOURCED accept80.py 60 min (2x30m closes) on any timeframe.
+    n_acc = 6 if accept_minutes is None else max(1, round(accept_minutes / max(1, bar_minutes)))
+    n_early = max(1, round(n_acc * 2 / 3))
+    if max_consec_beyond >= n_acc or (not currently_inside and consec_beyond >= n_early) or (bars_in_zone >= 6 and not probed_beyond):
         return {
             "verdict": "ACCEPTED",
             "trade_bias": "continuation" if not currently_inside else "balance_hold",
@@ -680,7 +687,8 @@ def classify_level_interaction(
             "knife": knife,
             "reason": (
                 f"Price spent {consec_beyond} consecutive bars ({bars_beyond} total) beyond / {bars_in_zone} bars in zone: "
-                "level accepted (no rejection; threshold OURS on 5m, SOURCED to accept80.py on 2x30m)."
+                f"level accepted (no rejection; threshold {n_acc} bars: "
+                + ("OURS default" if accept_minutes is None else f"{accept_minutes} min / {bar_minutes}m bars") + ")."
             ),
         }
 
