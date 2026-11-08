@@ -8,7 +8,11 @@
   "created": "2026-11-07T20:07:32Z",
   "crucial": "combines two high-model reviews into the design the news builds must follow; the highest model is the operator's order for this step",
   "depends_on": [],
-  "done_when": "The two build cards (weight and bias; CBP events wire) get rewritten done_when and scope lines that match NEWS_DESIGN.md and name the fail-first test for each rule; tasks.py check passes on both; Result lists what changed in each",
+  "done_when": [
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md: per news class a keep, change or drop call with its evidence count; the weight formula using only parts the evidence supports; flash rules (when, how long, what stops it); bias rules for long, short and hold including when to say hold; repeat-decay rule; open disagreements between the reviews stated, not hidden",
+    "Layout follows OPERATOR_PREFS.md and the dense-symbols artifact design memo: one bold result line, tables, short cells, vertical bars where he must read, no essay; a one-screen text mock of the News tab",
+    "The two blocked news build cards get rewritten done_when and scope lines that match NEWS_DESIGN.md and name the fail-first test per rule; tasks.py check passes on both; Result lists what changed in each"
+  ],
   "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],

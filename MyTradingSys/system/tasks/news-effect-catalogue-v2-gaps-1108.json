@@ -7,7 +7,15 @@
   ],
   "created": "2026-11-08T01:19:33Z",
   "depends_on": [],
-  "done_when": "Report adds: reaction by surprise sign for CPI, NFP, FOMC (count, median 1 h move, direction hit rate), the repeat table recomputed on verified rows only, and a before and after 2025-01-20 split; check_catalogue.py extended first and red, then green; shipped, Result names verified counts",
+  "done_when": [
+    "news_events.csv gains columns actual, consensus, prior and surprise_sign (hot, cool, in line) for every CPI, PPI, NFP and FOMC row, each from a cited public source (URL column); rows with no findable consensus say 'none', are left out of surprise stats, never filled by guess",
+    "Every ETF, hack, Trump policy, tariff, geopolitics, court, BoJ, protocol and macro row has a primary or news-archive URL and a minute timestamp checked against it; unsourced rows are marked unverified and kept out of every table; the report counts verified vs unverified per class",
+    "At least 30 analyst-named events from the CBP transcripts and extractions added with transcript id and a verbatim quote that verify_extract_quotes.py accepts; the report compares each analyst's stated expectation to the measured 1 h move",
+    "Report adds reaction by surprise sign for CPI, NFP, FOMC (count, median 1 h move, direction hit rate), the repeat table on verified rows only, and a before and after 2025-01-20 split",
+    "Data errors from the Opus review fixed: the two non-release PPI rows (2025-10-16, 2025-11-14) removed, the real 2025-11-25 PPI added, the 2025-10-10 tariff row time marked unverified until sourced; CPI plus FOMC same-day pairs flagged as overlapping",
+    "Same-clock control table: up to 3 clean weekdays before each scheduled release at the same UTC minute, event z15 vs control per scheduled class; speed and persistence columns shown only beside the random-walk null (P(abs r60 > abs r15) = 0.73); z15 baseline must not depend on the session",
+    "check_catalogue.py extended first and red, then green; tests --quick run; shipped; Result names the verified counts per class"
+  ],
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -19,13 +27,14 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Runs between the Opus statistics review and the market-lens review so the second reviewer and the synthesis read the better data. Public data and pages pre-approved. If a source blocks scripts (bls.gov 403), use web.archive.org or the Fed pages and say which.",
+  "note": "Runs between the Opus statistics review and the market-lens review so the second reviewer and the synthesis read the better data. Public data and pages pre-approved. If a source blocks scripts (bls.gov 403), use web.archive.org or the Fed pages and say which. The Opus review (on trunk) is an input, not a reason to skip checks: re-measure what it flags.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T01:19:33Z",
   "refs": [
-    "MyTradingSys/research/news_effects_2026-11/REPORT.md"
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+    "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md (read first: only CPI and NFP size effects are safe; direction needs surprise data)"
   ],
   "result": "",
   "scope_in": [

@@ -10,7 +10,12 @@
   "depends_on": [
     "news-design-synthesis-1108"
   ],
-  "done_when": "tools/live_aid/test_events_wire.py: fixture JSON with 3 events (past, +30 min, +3 days) gives the right strip order and flash state, and a matching headline links to its event; fails on pre-change code; page rebuilt and shipped; Result names the build and the number of events extracted",
+  "done_when": [
+    "F:/CryptoScrapper/cbp_v2/extract_prompt.md asks for events_to_watch per video: name, utc (or 'week of'), analyst, expected effect LONG / SHORT / HOLD with the analyst's condition, one verbatim quote; re-run over the last 14 days of extractions.md; verify_extract_quotes.py exits 0",
+    "MyTradingSys/research/cbp/events_to_watch.json on trunk (public analyst context, no account data): de-duplicated by event + date, count of analysts naming it and their effect split; cbp_events_export.py rebuilds it from the CBP store",
+    "Live Aid News tab shows an Upcoming strip: next 5 events, countdown, analyst count, effect split; the tab flashes at T-60 min, T-15 min, T0 and when an incoming headline matches an event name; analysts split between LONG and SHORT show HOLD",
+    "tools/live_aid/test_events_wire.py: fixture with 3 events (past, +30 min, +3 days) gives the right strip order and flash state, a matching headline links to its event; fails on pre-change code; page rebuilt and shipped; Result names the build and the event count"
+  ],
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
