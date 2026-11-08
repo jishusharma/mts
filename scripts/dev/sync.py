@@ -181,6 +181,14 @@ def never_stage(path):
     return name in NEVER_STAGE_NAMES or ("runtime/" in p and name.lower().endswith(NEVER_STAGE_RUNTIME_SUFFIXES))
 
 
+def was_deleted_on_trunk(repo, path):
+    """ship-result-sweeps-untracked-1109: True when `path` was once tracked on origin/<trunk> and is not there now
+    (a reverted or removed file reappearing on disk). Brand-new files have no history and ship as before."""
+    if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{path}", check=False).returncode == 0:
+        return False
+    return bool(git(repo, "log", "-1", "--format=%h", f"origin/{TRUNK}", "--", path, check=False).stdout.strip())
+
+
 FETCH_TRIES = 3
 
 
@@ -821,6 +829,13 @@ def commit_pending(repo, result, subject=None, nxt=None):
     if any(x.endswith("/") for x in paths):     # `?? dir/` rows: look inside, a HALT can hide in an untracked folder
         inner = git(repo, "ls-files", "--others", "--exclude-standard", "--", *[x for x in paths if x.endswith("/")]).stdout.split(chr(10))
         paths = [x for x in paths if not x.endswith("/")] + [x for x in inner if x.strip()]
+    untracked = {r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work if r.startswith("??")}
+    untracked |= {x for x in paths if x not in {r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work}}  # expanded `?? dir/`
+    revived = [x for x in paths if x in untracked and was_deleted_on_trunk(repo, x)]
+    if revived:
+        print(f"--result: left uncommitted (deleted on origin/{TRUNK}, back on disk: a revert's leftovers; `git add` to ship on purpose): "
+              f"{', '.join(revived)}")
+        paths = [x for x in paths if x not in revived]
     held = [x for x in paths if never_stage(x)]
     if held:
         print(f"--result: left uncommitted (live switches / runtime data, never shipped): {', '.join(held)}")

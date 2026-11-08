@@ -1,36 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T22:15:31Z",
   "commands": [],
   "created": "2026-11-08T18:44:57Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "function returns {date, start_ms, end_ms, vah, val, poc} of the last session ending at or before now_ms; July and January windows differ by 1 h; bars outside the window or after now_ms never enter; test_auction_context passes",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Add prior_ny_session_profile(bars, now_ms) to auction_context.py: VAH/VAL/POC of the last COMPLETED New York cash session (09:30-16:00 America/New_York; 13:30-20:00 UTC in EDT, 14:30-21:00 UTC in EST, US DST rule computed, no tzdata), beside the UTC-day profile. Tom/Fabio's cash-session analogue (TOM-281, Pz8f0wWW12M:654); context for the testnet-forward plan.",
   "id": "tf-ny-session-va-profile-1109",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "auction_context.prior_ny_session_profile(bars, now_ms): VAH/VAL/POC of the last completed ",
+      "ref": "1b639b5d8",
+      "utc": "2026-11-08T22:15:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auction_context: acceptance threshold labelled OURS; sourced 60 min via accept_minutes (ce",
+      "ref": "8829c2c7992a",
+      "utc": "2026-11-08T21:49:02Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "tf-testnet-forward-range-phase-amend-1109",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "B (JIS-NUC, Opus)",
+  "refreshed": "2026-11-08T22:14:39Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "auction_context.prior_ny_session_profile(bars, now_ms): VAH/VAL/POC of the last completed NY cash session (09:30-16:00 NY, DST by US rule, weekends skipped, no holidays), zero lookahead; ny_session_window(day). Not wired: C wires it into the testnet-forward plan",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py"
+  ],
+  "scope_out": [
+    "wiring into the live testnet plan (C, JIS-NB lane)"
+  ],
+  "scope_sha": "8829c2c7992a",
+  "size": "S",
   "sources": [
     "Opus post-mortem 2026-11-09 POSTMORTEM_OPUS.md (tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "fail-first test (DST windows, causality)",
+    "ny_session_window + prior_ny_session_profile",
+    "tests, ship, tell C"
+  ],
+  "taken": "2026-11-08T22:14:40Z",
+  "tests": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py::test_prior_ny_session_profile_dst_and_causal",
   "title": "Build prior NY-session (13:30-20:00 UTC, DST-aware) VAH/VAL/POC for BTC beside the UTC-day profile, as the cash-session analogue Tom and Fabio use (TOM-281, Pz8f0wWW12M:654); feed the testnet-forward plan",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

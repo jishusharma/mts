@@ -330,6 +330,57 @@ def compute_volume_profile(
     }
 
 
+def _us_dst(day) -> bool:
+    """US daylight time (Energy Policy Act 2005): from the 2nd Sunday of March to the 1st Sunday of November.
+    Day-level: the cash session (09:30-16:00) never straddles the 02:00 switch."""
+    import datetime as _dt
+    y = day.year
+    mar1, nov1 = _dt.date(y, 3, 1), _dt.date(y, 11, 1)
+    start = mar1 + _dt.timedelta(days=(6 - mar1.weekday()) % 7 + 7)      # 2nd Sunday of March
+    end = nov1 + _dt.timedelta(days=(6 - nov1.weekday()) % 7)             # 1st Sunday of November
+    return start <= day < end
+
+
+def ny_session_window(day) -> tuple:
+    """(start_ms, end_ms) UTC of the New York cash session 09:30-16:00 America/New_York on `day`
+    (tf-ny-session-va-profile-1109; TOM-281, Pz8f0wWW12M:654). EDT = UTC-4, EST = UTC-5."""
+    import datetime as _dt
+    off = 4 if _us_dst(day) else 5
+    base = _dt.datetime(day.year, day.month, day.day, tzinfo=_dt.timezone.utc)
+    start = base + _dt.timedelta(hours=9 + off, minutes=30)
+    end = base + _dt.timedelta(hours=16 + off)
+    return int(start.timestamp() * 1000), int(end.timestamp() * 1000)
+
+
+def prior_ny_session_profile(bars: Sequence[Dict[str, float]], now_ms: int, bin_size: float = DEFAULT_BIN_SIZE,
+                             step_ms: Optional[int] = None) -> Optional[Dict[str, Any]]:
+    """VAH/VAL/POC of the last NY cash session that ended at or before `now_ms`, from intraday bars (keys t,o,h,l,c,v).
+    Only bars that open and close inside the session window and close by now_ms enter (zero lookahead). None when the
+    bars hold no completed weekday session within the last 6 days. US exchange holidays are not modelled."""
+    import datetime as _dt
+    if not bars:
+        return None
+    if step_ms is None:
+        step_ms = (bars[1]["t"] - bars[0]["t"]) if len(bars) > 1 else 300_000
+    day = _dt.datetime.fromtimestamp(now_ms / 1000, _dt.timezone.utc).date()
+    for back in range(0, 6):
+        d = day - _dt.timedelta(days=back)
+        if d.weekday() >= 5:              # no cash session on Saturday/Sunday (US holidays not modelled)
+            continue
+        s0, s1 = ny_session_window(d)
+        if s1 > now_ms:
+            continue
+        sess = [b for b in bars if s0 <= b["t"] and b["t"] + step_ms <= s1 and b["t"] + step_ms <= now_ms]
+        if not sess:
+            continue
+        prof = compute_volume_profile(sess, bin_size=bin_size)
+        if not prof:
+            return None
+        return {"date": d.isoformat(), "start_ms": s0, "end_ms": s1, "bars": len(sess),
+                "vah": float(prof["vah"]), "val": float(prof["val"]), "poc": float(prof["poc"])}
+    return None
+
+
 def build_mtf_context(
     monthly_bars: Sequence[Dict[str, float]],
     weekly_bars: Sequence[Dict[str, float]],
@@ -523,6 +574,8 @@ def classify_level_interaction(
     zone_tol_pct: float = 0.15,
     level_kind: str = "boundary",
     max_bars_since_reclaim: int = 3,
+    accept_minutes: Optional[int] = None,
+    bar_minutes: int = 5,
 ) -> Dict[str, Any]:
     """Classify how price interacts with a structural level on intraday bars (e.g. 5m or 15m).
 
@@ -541,9 +594,11 @@ def classify_level_interaction(
            `touch_idx`, or opposing delta / absorption),
          - Not a vertical knife (`knife == False`).
       2. ACCEPTANCE BEYOND LEVEL (Value Migration -> Continuation / Never Fade):
-         - Price closes beyond `level_price` for `consec_beyond >= 6` consecutive bars (6x5m = 30m; SOURCED to `accept80.py`
-           2x30m closes below prior-day VAL = 77% continuation; OURS when applied to 5m bars or >= 4 consecutive bars while
-           still outside), or parks inside the zone (`bars_in_zone >= 6`) without rejecting.
+         - Price closes beyond `level_price` for `consec_beyond >= N` consecutive bars, or >= round(N*2/3) while still
+           outside, or parks inside the zone (`bars_in_zone >= 6`, OURS) without rejecting. Default N = 6 bars (OURS: on 5m
+           that is 30 min, half of the sourced duration; on 1h it is 6 h). `accept_minutes` + `bar_minutes` set
+           N = accept_minutes / bar_minutes; accept_minutes=60 is the SOURCED accept80.py duration (2 consecutive 30m closes
+           below prior-day VAL; REVIEW_FABLE.md:47, card census-acceptance-threshold-mislabel-1109).
       3. LVN_FAST_TRAVERSE (Impulse Vacuum Traverse -> Trend Continuation):
          - When `level_kind == 'lvn'` and price slices across `level_price` in 1-3 bars on high volume (`max_rel_vol >= 2.0`)
            and closes cleanly beyond `level_price` without reclaiming.
@@ -664,8 +719,11 @@ def classify_level_interaction(
             ),
         }
 
-    # 2. Check Acceptance (consecutive time at/beyond level builds value -> do NOT fade; OURS on 5m, SOURCED to accept80.py on 2x30m)
-    if max_consec_beyond >= 6 or (not currently_inside and consec_beyond >= 4) or (bars_in_zone >= 6 and not probed_beyond):
+    # 2. Check Acceptance (consecutive time at/beyond level builds value -> do NOT fade). N = 6 bars OURS by default;
+    #    accept_minutes / bar_minutes gives the SOURCED accept80.py 60 min (2x30m closes) on any timeframe.
+    n_acc = 6 if accept_minutes is None else max(1, round(accept_minutes / max(1, bar_minutes)))
+    n_early = max(1, round(n_acc * 2 / 3))
+    if max_consec_beyond >= n_acc or (not currently_inside and consec_beyond >= n_early) or (bars_in_zone >= 6 and not probed_beyond):
         return {
             "verdict": "ACCEPTED",
             "trade_bias": "continuation" if not currently_inside else "balance_hold",
@@ -680,7 +738,8 @@ def classify_level_interaction(
             "knife": knife,
             "reason": (
                 f"Price spent {consec_beyond} consecutive bars ({bars_beyond} total) beyond / {bars_in_zone} bars in zone: "
-                "level accepted (no rejection; threshold OURS on 5m, SOURCED to accept80.py on 2x30m)."
+                f"level accepted (no rejection; threshold {n_acc} bars: "
+                + ("OURS default" if accept_minutes is None else f"{accept_minutes} min / {bar_minutes}m bars") + ")."
             ),
         }
 
