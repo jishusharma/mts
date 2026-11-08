@@ -1,15 +1,17 @@
 {
   "approved_by": "",
-  "asks": "Which tight-stop and wick-touch layers (ids) to rerun, and is Deribit 1m 2024-05 history on a host? Default: park until both exist.",
-  "commands": [],
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/critical_test_wave2_2026-10-30/item6_venue_gap_tight.py"
+  ],
   "created": "2026-11-05T02:28:50Z",
   "depends_on": [],
-  "done_when": "sim_desk/results/venue-gap-tight-stop-deribit.json exports the tight-stop and wick-touch layer rerun on Deribit 1m 2024-05 with n, fee-net mean and the p50/p95 gap used",
-  "est_turns": null,
+  "done_when": "sim_desk/results/venue-gap-tight-stop-deribit.json exports n, fee-net mean R and the p50/p95 gap used for 3 variants x 2 venues; item6_venue_gap.py unchanged, new script beside it.",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Rerun rsi_levels (1h RSI(14) touch, OURS) with stops 0.10% and 0.15% and a wick-touch entry variant on Binance and Deribit 1m 2024-05 (DEV), to show whether the 6/13.6 bps level gap flips the net result.",
   "id": "venue-gap-tight-stop-rerun-on-deribit",
   "lane": "DSA-NB",
   "layers": [
@@ -17,20 +19,29 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model DSA run-and-report (DeepSeek bridges closed per ROUTING hold: waits, or Sonnet on JIS-NB). PARKED until Deribit 1m history is on a machine and a layer list is pre-registered.",
+  "note": "REVIEWED:2026-11-09 T0-ONLY (session-planner-a-1108). DECISION (OURS): layer list = rsi_levels x {0.10%, 0.15%, wick-touch} (the stand-in item 6 already used), pre-registered here; DeepSeek bridges closed so lane DSA-NB runs as Sonnet on a host with F:/MTS/data (item6 host). Needs IMPORTANT reviewer stamp.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/critical_test_wave2_2026-10-30/item6_venue_gap.py (read)",
+    "MyTradingSys/research/critical_test_wave2_2026-10-30/item6_venue_gap_tight.py (new)"
+  ],
+  "scope_out": [
+    "no HOLDOUT/VALIDATION bars (loader stops at 2024-07-01); no live tree; public data only"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Copy item6_venue_gap.py to item6_venue_gap_tight.py; add stop_pct and wick_touch parameters (variants: 0.10, 0.15, wick-touch at 1%)",
+    "Run on host with F:/MTS/data/deribit/BTC-PERPETUAL-1m-2024-05.csv; export the JSON",
+    "Write RESULT line: net R per variant per venue, with the gap used"
+  ],
+  "tests": "new case in test beside script: tight-stop variant n equals item6 n at stop 1% (fails before the script exists)",
   "title": "Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)",
   "weight": "IMPORTANT",
-  "worker": ""
+  "worker": "session"
 }
