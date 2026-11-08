@@ -1,0 +1,1 @@
+{"t": "20261108T181747Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "B: run PLAN_5H_2026-11-08.md rows B1-B3 (Gemini analyst extracts, refresh 42 stale cards, monday_watch.py after J1+J2). CHK note every 60m.", "login": "C", "id": "b-0c4093", "prio": "high", "cmd": "read MyTradingSys/system/PLAN_5H_2026-11-08.md, do Login B row"}
