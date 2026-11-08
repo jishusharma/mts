@@ -253,3 +253,4 @@ MyTradingSys/tools/live_aid/test_news_feed.py
 MyTradingSys/research/news_effects_2026-11_b/test_catalogue.py
 MyTradingSys/execution/test_stop_gap_offline.py
 MyTradingSys/tests/test_indicator_map.py
+MyTradingSys/tools/live_aid/test_events_wire.py

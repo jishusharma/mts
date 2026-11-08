@@ -7,6 +7,22 @@
     "python MyTradingSys/tools/live_aid/test_events_wire.py",
     "python MyTradingSys/tools/live_aid/build_artifact.py"
   ],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-11-08T09:39:26Z",
+    "misses": 44,
+    "reads": [
+      "MyTradingSys/research/news_effects_2026-11/news_events.csv",
+      "MyTradingSys/research/news_effects_2026-11/analyst_events.md",
+      "MyTradingSys/tools/live_aid/test_news_feed.py",
+      "MyTradingSys/tools/live_aid/live_aid.html",
+      "MyTradingSys/research/news_effects_2026-11/calendar_cache.json",
+      "MyTradingSys/tools/live_aid/build_artifact.py",
+      "MyTradingSys/tools/live_aid/news_feed.js",
+      "MyTradingSys/tools/live_aid/build_cycle_flag.py"
+    ],
+    "session": "agent-ae752dd3816816a2f"
+  },
   "created": "2026-11-07T19:57:56Z",
   "depends_on": [
     "news-design-synthesis-1108"
