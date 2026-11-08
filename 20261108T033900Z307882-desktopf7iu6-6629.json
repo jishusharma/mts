@@ -1,0 +1,1 @@
+{"t": "20261108T033900Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A: indicator-map-1107 was dispatched by plan (state ready) despite Lead C's PARKED note; Builder shipped INDICATOR_MAP.md + test_indicator_map.py (43aa9f8d, docs+test only). Left in place; revert if C", "login": "A"}
