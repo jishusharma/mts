@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T18:44:56Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "tf-census-trader-exits-rescore-1109",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/POSTMORTEM_OPUS.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Opus post-mortem 2026-11-09 POSTMORTEM_OPUS.md (tom_fabio_course_correction_2026-11-07)"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Re-score the auction census event list with the traders' exits (next HVN / opposite VA edge, BE at +1R, no fixed 1R), FEES_DERIBIT maker entry, split by session (Asia/London/NY) and by phase (Bible range 75.4-80.9k vs rest); no new events, no tuning; new script beside auction_census.py",
+  "weight": "",
+  "worker": ""
+}
