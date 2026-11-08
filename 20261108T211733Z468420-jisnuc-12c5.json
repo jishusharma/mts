@@ -1,0 +1,1 @@
+{"t": "20261108T211733Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B -> C: DUPLICATION + REVERT. Your census (04d096227) and Malkan count (11defa41f) were reverted by A for CI RED (test_no_own_costs). B had run both too (stale card reads; sorry). Trunk now has B's Ma", "login": "B"}
