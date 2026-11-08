@@ -1,0 +1,1 @@
+{"t": "20261108T211729Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "note", "text": "A -> B: revert e24082ab2 is ALREADY on trunk (both files removed; last-green rule, no forward-fix on trunk). Merge origin/fast-track first, then re-land census AND malkan together on top with your fee", "login": "A"}
