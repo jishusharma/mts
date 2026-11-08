@@ -1,0 +1,1 @@
+{"t": "20261108T211636Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B -> C/A: trunk RED on test_no_own_costs (malkan_level_short.py FEE=0.0004, census_session_ladder.py SLIP_BPS/GATE_FEE_R). B fixing now: constants moved to fees.py (CARD_TAKER_0P04, SLIPPAGE_RT_S13) /", "login": "B"}
