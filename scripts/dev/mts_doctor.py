@@ -21,7 +21,6 @@ import subprocess
 import sys
 import time
 from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -1005,24 +1004,11 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     repo = Path(repo)
     files = tracked(repo)
     docs = ai_files(repo, files)
+    findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + card_warnings(repo)
+                + dup_cards(repo) + skills(repo, docs) + hook_drift(repo))
     day = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     out = Path(out_dir) if out_dir else repo / OUT_REL
-    # The slow parts are subprocess / network waits (tasks.py lint ~12 s, tasks.py twins ~2 s, the GitHub audit ~10 s, the
-    # checklist ~12 s): run them side by side so a run costs the slowest one, not the sum. Result order is unchanged.
-    if process:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import health_audit
-    with ThreadPoolExecutor(max_workers=5) as ex:
-        f_cards = ex.submit(card_warnings, repo)
-        f_dups = ex.submit(dup_cards, repo)
-        f_checks = ex.submit(checklist, repo, process, now)
-        f_audit = ex.submit(health_audit.build, hours) if process else None
-        f_cost = ex.submit(cost_checkup, repo, now)
-        findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + f_cards.result()
-                    + f_dups.result() + skills(repo, docs) + hook_drift(repo))
-        checks = f_checks.result()
-        audit_text = f_audit.result() if f_audit else None
-        cost_lines = f_cost.result()
+    checks = checklist(repo, process, now)
     lines = [health_line(checks), "", f"# MTS doctor report {day}", "", "Checklist (OK / WARN / unavailable)", ""]
     lines += [f"- [{s}] {n}: {d}" for n, s, d in checks]
     lines += ["", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",
@@ -1031,14 +1017,16 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     lines += ["Findings: " + ", ".join(f"{k} {v}" for k, v in counts.items()), ""]
     lines += [f"- [{k}] {where}: {msg} | fix: {fix}" for k, where, msg, fix in findings] or ["- none"]
     if process:
-        text = audit_text
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import health_audit
+        text = health_audit.build(hours)
         prev = previous_metrics(out, day)
         now_m = dict(kv.split("=", 1) for kv in re.search(r"^METRICS (.*)$", text, re.M).group(1).split()) if "METRICS " in text else {}
         delta = [f"{k} {prev[k]} -> {v}" for k, v in now_m.items() if k in prev and prev[k] != v]
         lines += ["", "Part 2: process health (trunk and CI at run time)", "",
                   "Since the previous report: " + (", ".join(delta) if delta else ("no change" if prev else "no earlier report")), "",
                   text.replace("# health audit", "## Process detail", 1)]
-    lines += ["", *cost_lines]
+    lines += ["", *cost_checkup(repo, now)]
     out.mkdir(parents=True, exist_ok=True)
     path = out / f"REPORT_{day}.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")

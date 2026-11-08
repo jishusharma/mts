@@ -198,32 +198,3 @@ class T(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-
-class SignalRowsTest(unittest.TestCase):
-    def test_reads_without_checkout_when_hub_worktree_is_dirty(self):
-        """doctor-speed-1108: the Supervisors section failed on `git checkout -q -B mts-signals FETCH_HEAD` when the hub's
-        worktree blocked the checkout. signal_rows reads FETCH_HEAD blobs and never touches the worktree."""
-        import json, os, subprocess, tempfile
-        import mts_signal
-        with tempfile.TemporaryDirectory() as d:
-            d = Path(d)
-            g = lambda cwd, *a: subprocess.run(["git", "-C", str(cwd), *a], check=True, capture_output=True)
-            origin, hub = d / "origin", d / "hub"
-            origin.mkdir()
-            g(origin, "init", "-q")
-            g(origin, "checkout", "-q", "--orphan", "mts-signals")
-            (origin / "2026-11-08T00-00-00_a.json").write_text(json.dumps({"kind": "x", "n": 1}), newline="\n")
-            g(origin, "add", "-A")
-            g(origin, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "s")
-            g(d, "clone", "-q", "--no-checkout", str(origin), str(hub))
-            (hub / "2026-11-08T00-00-00_a.json").write_text("local junk", newline="\n")   # blocks any checkout of that path
-            old = os.environ.get("MTS_SIGNALS_HOME")
-            os.environ["MTS_SIGNALS_HOME"] = str(hub)
-            try:
-                self.assertEqual(sb.signal_rows(d), [{"kind": "x", "n": 1}])
-            finally:
-                if old is None:
-                    del os.environ["MTS_SIGNALS_HOME"]
-                else:
-                    os.environ["MTS_SIGNALS_HOME"] = old

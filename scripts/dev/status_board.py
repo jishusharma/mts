@@ -489,41 +489,12 @@ def sec_value():
 def supervisors():
     """(rows, ready_n, now) from the signals branch (fetched) and the tree's cards."""
     import mts_signal
+    h = mts_signal.ensure(REPO)
+    if h is None:
+        raise RuntimeError("no signals clone")
     now = datetime.now(timezone.utc)
     ready = claude_ready(cards())
-    return supervisor_rows(beats_from_rows(signal_rows(REPO), now), ready, now), ready, now
-
-
-def signal_rows(repo, sig=None):
-    """Signal rows of the signals branch, read-only: fetch, then read the blobs of FETCH_HEAD. Never `checkout -B` (that
-    fails when the hub's worktree is dirty or locked by a running supervisor, which broke this section)."""
-    sig = sig or __import__("mts_signal")
-    h = sig.home()
-    if not (h / ".git").exists():
-        if sig.ensure(repo) is None:      # first use only: creates the hub
-            raise RuntimeError("no signals clone")
-    fetched = sig.git(h, "fetch", "-q", "origin", sig.BRANCH, check=False)
-    ref = "FETCH_HEAD" if fetched.returncode == 0 else "HEAD"
-    names = [n for n in sig.git(h, "ls-tree", "--name-only", ref, check=False).stdout.splitlines()
-             if re.match(r"2.*\.json$", n)]
-    if not names:
-        return []
-    r = subprocess.run(["git", "-C", str(h), "cat-file", "--batch"], input="".join(f"{ref}:{n}\n" for n in names).encode(),
-                       capture_output=True, timeout=60)
-    rows, buf, i = [], r.stdout, 0
-    while i < len(buf):
-        j = buf.index(b"\n", i)
-        head = buf[i:j].split()
-        if len(head) != 3:                 # "<name> missing"
-            i = j + 1
-            continue
-        size = int(head[2])
-        try:
-            rows.append(json.loads(buf[j + 1:j + 1 + size].decode("utf-8")))
-        except ValueError:
-            pass
-        i = j + 1 + size + 1
-    return rows
+    return supervisor_rows(beats_from_rows(mts_signal.load(h), now), ready, now), ready, now
 
 
 def sec_supervisors():
