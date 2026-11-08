@@ -2097,3 +2097,7 @@ Answer: research/malkan_level_shorts_2026-11-09/READING.md: all 5 reached >= 1R,
 ## d-futures-data-every-station-1109 (2026-11-09)
 Operator: "it is a limitation that I do not accept. All stations must have this data" (Binance futures data blocked on JIS-NB).
 Answer: measured: the block is DNS-only (ISP DNS answers 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; real IP via Cloudflare DoH serves futures klines). Backtests already use futures history from data.binance.vision futures/um (from 2019-09) plus spot for 2017-2019; only live/REST futures is cut, including the Java feed's wss://fstream.binance.com. Card binance-futures-dns-block-fleet-1109; fix route awaits his pick (machine DNS setting is his to change; a repo-level resolver is the fleet-wide code option).
+
+## d-fix-binance-dns-block-1109 (2026-11-09)
+Operator: "whatever is the correct fix, you should apply it ... people are paying TDS on Binance, so don't worry about it. Fix whatever is the best fix for us."
+Answer: repo-level fix (reaches every station through sync, no machine setting changed): Binance hosts are resolved through DNS-over-HTTPS (Cloudflare, then Google), cached with TTL, TLS still checks the real hostname; Python fetchers + live layers and the Java feed (Java 17, BinanceLiquidationAccumulator / StateCodeEmitter on wss://fstream.binance.com). Sonnet session builds card binance-futures-dns-block-fleet-1109; live path, so the coordinator deploys after tests.
