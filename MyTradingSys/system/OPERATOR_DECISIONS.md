@@ -2089,3 +2089,7 @@ Answer: start from the map, then the Fable/Opus reviews, then the testnet-forwar
 ## d-krown-4h-testnet-forward-start-1109 (2026-11-09)
 Operator: asked how the roadmap moves on with no edge; Lead C proposed reviews cross-check, one trader-exits backtest, and testnet-forward of the setups we understand; operator pressed "Yes, start it" for the Krown 4h testnet forward test now, alongside the reviews.
 Answer: fable-run7-forward-test started now as a Fable 5.1 session (the operator's yes is the operator-run start the card requires). The old HOLD (72 months to power) is replaced by d-phase-first-method-1106: frozen R6 Krown S8 4h rule trades on testnet until it fails; the pre-reg fixes the fail rule and parity test, not a power gate. Testnet only; builders never trade, the build card wires the signal.
+
+## d-malkan-level-shorts-read-1109 (2026-11-09)
+Operator: asked where the Malkan RSI 40/60 layer is, whether 5-star and 7-star can be identified, and what confluence makes his marked 4h shorts (C1 08-28, C2 09-04, V1 09-23, V2 10-06, C3 10-21) tradable, including the no-divergence C3.
+Answer: research/malkan_level_shorts_2026-11-09/READING.md: all 5 reached >= 1R, only V1 fits the repo divergence rule (3-10 bars close to close); 5-star never fired (monthly/weekly never below 40); 7-star is a label only. Proposed 5-layer stack (OURS) goes to card malkan-level-short-4h-count-1109 for a 7y count, then testnet forward.
