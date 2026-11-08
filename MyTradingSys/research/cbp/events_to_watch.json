@@ -1,0 +1,59 @@
+{
+ "note": "Analyst context only (CBP transcripts); never a signal. long/short/hold = one vote per analyst, split = hold.",
+ "events": [
+  {
+   "event": "pol-20241106",
+   "date": "2024-11-06",
+   "analysts": 1,
+   "long": 0,
+   "short": 0,
+   "hold": 1,
+   "quote": "crash low. Yeah, but why wasn't the price moving 6 months earlier when Trump was uh elected right there on that day and then inaugurated and all that. What they knew at the time or at least the smart money insiders, they were maybe gamble b"
+  },
+  {
+   "event": "pol-20250120",
+   "date": "2025-01-20",
+   "analysts": 1,
+   "long": 0,
+   "short": 0,
+   "hold": 1,
+   "quote": "uh heavily exposed here to their futures contracts in January of 2025. So, uh Trump was inaugurated, we had that top at $109,000, and then the price collapses 33%. So, they again were at their tops, but it's Notice how it's getting lower hi"
+  },
+  {
+   "event": "fomc-2026-09-16",
+   "date": "2026-09-16",
+   "analysts": 1,
+   "long": 0,
+   "short": 1,
+   "hold": 0,
+   "quote": "think there's there's competing forces. And when you look at the ROI of Bitcoin after a rate hike in September of a midterm year, you can see that the last two times there was a rate hike in September of a midterm year, Bitcoin was flat for"
+  },
+  {
+   "event": "cpi-2026-10-14",
+   "date": "2026-10-14",
+   "analysts": 3,
+   "long": 0,
+   "short": 0,
+   "hold": 3,
+   "quote": "for the Russell? Because right now, we have a 10-year yield that is down after a hot CPI report and a hot PPI report. Okay? To me, that's the sign that yields are in the topping process. When you have a bad print and yields come down, is th"
+  },
+  {
+   "event": "ppi-2026-10-15",
+   "date": "2026-10-15",
+   "analysts": 1,
+   "long": 0,
+   "short": 0,
+   "hold": 1,
+   "quote": "it as a higher probability of a hold rather than a hike. And then of course tomorrow is PPI which probably matters more for such discussions anyways. that's the way that I understand things. Not that I'm going to pretend to pretend to have "
+  },
+  {
+   "event": "fomc-2026-10-28",
+   "date": "2026-10-28",
+   "analysts": 2,
+   "long": 0,
+   "short": 0,
+   "hold": 2,
+   "quote": "like it does now, but then it bounces back up again around the midterms. If you look at rate hike expectations, the odds of a rate hike now in October are 85%. 85, right? Now, if they don't raise rates in October because of some, hey, we're"
+  }
+ ]
+}
