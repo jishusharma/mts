@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T15:51:48Z",
   "commands": [],
   "created": "2026-11-06T16:50:11Z",
   "depends_on": [],
@@ -14,23 +16,35 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already fixed on trunk by a17dac0d2: _paths uses as_list for refs/scope_in; PathsCommaStri",
+      "ref": "04fcd5da2",
+      "utc": "2026-11-08T15:51:48Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "tasks: reuse sync route-tag parser and add tasks.py drop",
-      "ref": "e67cad3d17f0",
-      "utc": "2026-11-06T19:06:13Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done_when met by a17dac0d2",
   "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Haiku (mechanical, one function). | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; the tasks.as_list fix was reverted cb214227a",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T14:23:32Z",
+  "refreshed": "2026-11-08T15:51:30Z",
   "refs": [],
-  "result": "",
+  "result": "Already fixed on trunk by a17dac0d2: _paths uses as_list for refs/scope_in; PathsCommaStringTest (test_tasks.py:160) covers the string case; tasks.py twins exits 0 on 05d8d6137 (62 pairs). No code change.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -38,15 +52,16 @@
   "scope_out": [
     "no card file edits"
   ],
-  "scope_sha": "e67cad3d17f0",
+  "scope_sha": "05d8d613782f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce with us-session-prep-1106",
     "Normalise scope_in to a list in twin_pairs",
     "Add the test"
   ],
+  "taken": "2026-11-08T15:51:31Z",
   "tests": "scripts/dev/test_tasks.py: twin_pairs on two cards, one with scope_in as a str, raises nothing (fails now)",
   "title": "tasks.py twins crashes on cards whose scope_in is a string (us-prep-failclosed-fixes, us-session-prep-1106)",
   "weight": "ROUTINE",
