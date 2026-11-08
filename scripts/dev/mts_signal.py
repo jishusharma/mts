@@ -837,127 +837,8 @@ def ask_block(rows, ev, at=None):
     return "\n".join(out)
 
 
-<<<<<<< Updated upstream
 def _ask_items(rows, at=None):
     """[(0, t, line)] for each ask this host sent that is still open, with its state and the time before which a re-ask is refused."""
-=======
-# ---- asks: mandatory ack + answer, minimum wait before a re-ask, one escalation past the deadline ----------------------
-
-ASK_TYPES = {"ask": (15, 60), "resend": (15, 30), "task": (30, 240)}   # OURS (operator 2026-10-30): (minimum wait, deadline) in minutes
-
-
-def _norm(text):
-    return re.sub(r"\s+", " ", str(text or "")).strip().lower()
-
-
-def ask_state(rows, qid):
-    """none < told (seen) < done (answered); one answer from any host closes the ask."""
-    best = "none"
-    for r in rows:
-        if r.get("kind") == "ack" and r.get("id") == qid and RANK.get(r.get("state"), 0) > RANK[best]:
-            best = r["state"]
-    return best
-
-
-def asks_open(rows):
-    """Asks of the last KEEP_DAYS not yet answered, oldest first."""
-    cutoff, lim = stamp(now() - timedelta(days=KEEP_DAYS)), future_limit()
-    return [r for r in rows if r.get("kind") == "ask" and r.get("id") and cutoff <= r.get("t", "") <= lim
-            and ask_state(rows, r["id"]) not in TERMINAL]
-
-
-def asks_from_me(rows):
-    return [r for r in rows if r.get("kind") == "ask" and r.get("id") and hosts.same_host(str(r.get("from", "")).split("/")[0], host())]
-
-
-def ask_due(a):
-    return _t(a) + timedelta(minutes=int(a.get("due", ASK_TYPES["ask"][1])))
-
-
-def ask_wait_end(a):
-    return _t(a) + timedelta(minutes=int(a.get("wait", ASK_TYPES["ask"][0])))
-
-
-def escalated_to(rows, qid):
-    return [r.get("to") for r in rows if r.get("kind") == "esc" and r.get("id") == qid]
-
-
-def ask_for_me(rows, a, hostname=None):
-    """Addressed to this host (any of its names), to its login letter, to all, or escalated here; never the asker's own host."""
-    hostname = hostname or host()
-    if hosts.same_host(str(a.get("from", "")).split("/")[0], hostname):
-        return False
-    to = str(a.get("to", ""))
-    mine = (login() == to.upper() and hosts.same_host(hostname, host())) if to.upper() in LOGIN_LETTERS else to_me(to, hostname)
-    return mine or any(to_me(t, hostname) for t in escalated_to(rows, a["id"]) if t != "all")
-
-
-def sup_host(rows, letter):
-    """The supervisor host of a login: sup= of its newest BUDGET line, else ''."""
-    for r in reversed(rows):
-        m = re.match(r"BUDGET login=%s\b.*?\bsup=(\S+)" % re.escape(letter), str(r.get("text", "")))
-        if m:
-            return m.group(1).lower()
-    return ""
-
-
-def target_login(rows, a):
-    to = str(a.get("to", ""))
-    if to.upper() in LOGIN_LETTERS:
-        return to.upper()
-    for r in reversed(rows):
-        if r.get("login") and hosts.same_host(str(r.get("from", "")).split("/")[0], to):
-            return str(r["login"]).upper()
-    return str(a.get("login", "")).upper()       # to=all: the asker's own login supervisor routes it
-
-
-def escalate(rows, at=None, send_fn=None):
-    """Past the deadline and unanswered, with no esc record yet: one esc record to the target login's supervisor host
-    (else all). Returns [(qid, to)]. Called from every prompt hook and `asks`, so no scheduler is needed."""
-    at = at or now()
-    out = []
-    for a in asks_open(rows):
-        if at <= ask_due(a) or escalated_to(rows, a["id"]):
-            continue
-        to = sup_host(rows, target_login(rows, a)) or "all"
-        mins = int((at - _t(a)).total_seconds() // 60)
-        text = "ESCALATED %s: %s asked %s %d min ago, no answer (deadline %s min): %s" % (a["id"], a.get("from", "?"), a.get("to"), mins, a.get("due"), a.get("text", ""))
-        (send_fn or (lambda t, x: send(t, to=x["to"], kind="esc", extra=x)))(text, {"id": a["id"], "to": to})
-        out.append((a["id"], to))
-    return out
-
-
-def ask_rows(rows, at=None):
-    """[{id, from, to, type, state, age_min, due_min, overdue, esc}] for open asks, oldest first (asks --json, status_board)."""
-    at = at or now()
-    return [{"id": a["id"], "from": a.get("from", "?"), "to": a.get("to"), "type": a.get("type", "ask"), "state": ask_state(rows, a["id"]),
-             "age_min": int((at - _t(a)).total_seconds() // 60), "due_min": int(a.get("due", 0)), "overdue": at > ask_due(a),
-             "esc": ",".join(escalated_to(rows, a["id"])), "text": a.get("text", "")} for a in asks_open(rows)]
-
-
-def ask_block(rows, ev, at=None):
-    """For the target: an unseen ask is loud on every prompt; a told one only at SessionStart or once overdue."""
-    at = at or now()
-    if is_worker_env():
-        return ""
-    out = []
-    for a in asks_open(rows):
-        if not ask_for_me(rows, a):
-            continue
-        st, late = ask_state(rows, a["id"]), at > ask_due(a)
-        if st == "told" and not late and ev != "SessionStart":
-            continue
-        tag = "OVERDUE %d min" % ((at - ask_due(a)).total_seconds() // 60) if late else "answer by %s" % ask_due(a).strftime("%H%MZ")
-        out.append("[MTS ASK %s %s from %s at %s %s %s %s] %s" % (DOT, a["id"], a.get("from", "?"), a["t"][9:13] + "Z", DOT, st, tag, a.get("text", "")))
-        if st == "none":
-            out.append("Reply required, before the current task: python scripts/dev/mts_signal.py ack %s told; when answered: "
-                       'ack %s done --note "<answer>". Name %s in your reply.' % (a["id"], a["id"], a["id"]))
-    return "\n".join(out)
-
-
-def asker_status(rows, at=None):
-    """For the asker's host: each open ask with its state, and the time before which a re-ask is refused."""
->>>>>>> Stashed changes
     at = at or now()
     out = []
     for a in asks_from_me(rows):
@@ -970,7 +851,6 @@ def asker_status(rows, at=None):
             hint = "OVERDUE, escalated to %s" % (",".join(escalated_to(rows, a["id"])) or "(next hook)")
         else:
             hint = "answer due %s" % ask_due(a).strftime("%H%MZ")
-<<<<<<< Updated upstream
         out.append((0, a.get("t", ""), "[MTS ASK %s to %s] %s, %d min old; %s" % (a["id"], a.get("to"), st, (at - _t(a)).total_seconds() // 60, hint)))
     return out
 
@@ -978,10 +858,6 @@ def asker_status(rows, at=None):
 def asker_status(rows, at=None):
     """For the asker's host: each open ask with its state, and the time before which a re-ask is refused."""
     return "\n".join(x[2] for x in _ask_items(rows, at))
-=======
-        out.append("[MTS ASK %s to %s] %s, %d min old; %s" % (a["id"], a.get("to"), st, (at - _t(a)).total_seconds() // 60, hint))
-    return "\n".join(out)
->>>>>>> Stashed changes
 
 
 def new_ask(text, to="all", typ="ask", wait=None, due=None, at=None):
@@ -1006,7 +882,6 @@ def new_ask(text, to="all", typ="ask", wait=None, due=None, at=None):
                  % (qid, to, w, max(w, d)))
 
 
-<<<<<<< Updated upstream
 # ---- wait: one bounded loop that returns on the first new inbound signal (1-minute signals, operator 2026-11-07) --------------
 
 WAIT_POLL = 60      # OURS: seconds between fetches of the signals branch; the operator's target is an answer within 1 minute
@@ -1060,8 +935,6 @@ def wait_print(res):
     return rc
 
 
-=======
->>>>>>> Stashed changes
 def _handle(payload, sid, ev, auto):
     head = login_line() if ev == "SessionStart" else ""
     got = _handle_rows(payload, sid, ev, auto)
@@ -1110,12 +983,7 @@ def _handle_rows(payload, sid, ev, auto):
         except Exception:
             pass
     if ev == "UserPromptSubmit":
-<<<<<<< Updated upstream
         out.append(status_block(rows))
-=======
-        out.append(sender_status(rows))
-        out.append(asker_status(rows))
->>>>>>> Stashed changes
     if ev != "SessionStart":
         out.append(news(rows, sid, seen_f, sd, fetch))
     return "\n".join(t for t in out if t)
@@ -1421,7 +1289,6 @@ def main(argv):
         ap.add_argument("--type", default="ask", choices=sorted(ASK_TYPES))
         ap.add_argument("--wait", type=int, default=None, help="minimum wait in minutes before a re-ask")
         ap.add_argument("--due", type=int, default=None, help="deadline in minutes; unanswered past it escalates once")
-<<<<<<< Updated upstream
         ap.add_argument("--wait-reply", type=float, default=0, help="after sending, run `wait` this many minutes and print the first reply (--wait is the re-ask minimum)")
         a = ap.parse_args(argv[1:])
         t0 = stamp()
@@ -1429,11 +1296,6 @@ def main(argv):
         print(msg)
         if qid and a.wait_reply and not msg.startswith("NOT"):
             wait_print(wait_signal(a.wait_reply, since=t0))
-=======
-        a = ap.parse_args(argv[1:])
-        qid, msg = new_ask(a.text, to=a.to, typ=a.type, wait=a.wait, due=a.due)
-        print(msg)
->>>>>>> Stashed changes
         return 0 if qid and not msg.startswith("NOT") else (3 if qid else 1)
     if cmd == "asks":
         h = ensure()

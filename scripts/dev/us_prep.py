@@ -80,7 +80,6 @@ def macro(fetch):
 
 # ---------- klines ----------
 def klines(fetch, interval, start_ms, end_ms):
-<<<<<<< Updated upstream
     """[(open_ms, o, h, l, c, v)] for bars opening in [start, end). Raises ValueError on a partial series
     (empty/short page, gap, stalled paging): fail closed, a partial series is never returned."""
     rows, t0, step = [], start_ms, TF_MS[interval]
@@ -100,21 +99,6 @@ def klines(fetch, interval, start_ms, end_ms):
         if prev is None or prev + step <= t0:
             raise ValueError("partial klines: paging stalled")
         t0 = prev + step
-=======
-    """[(open_ms, o, h, l, c, v)] for bars opening in [start, end). Raises on failure."""
-    rows, t0 = [], start_ms
-    while t0 < end_ms:
-        page = fetch(f"{SPOT}?symbol=BTCUSDT&interval={interval}&limit=1000&startTime={t0}&endTime={end_ms - 1}")
-        if not page:
-            break
-        for r in page:
-            if r[0] < end_ms:
-                rows.append((int(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])))
-        nxt = int(page[-1][0]) + TF_MS[interval]
-        if nxt <= t0:
-            break
-        t0 = nxt
->>>>>>> Stashed changes
     return rows
 
 
@@ -177,7 +161,6 @@ def btc(date, asof, fetch):
         return r
 
     def window(h0, h1):
-<<<<<<< Updated upstream
         s, full = d0 + h0 * 3600_000, d0 + h1 * 3600_000
         e = min(full, a_ms)
         if e <= s:
@@ -185,12 +168,6 @@ def btc(date, asof, fetch):
         r = hlc(klines(fetch, "1m", s, e))
         r["partial"] = e < full  # window still open at as-of: H/L so far, not the finished window
         return r
-=======
-        s, e = d0 + h0 * 3600_000, min(d0 + h1 * 3600_000, a_ms)
-        if e <= s:
-            return None
-        return hlc(klines(fetch, "1m", s, e))
->>>>>>> Stashed changes
 
     today = _safe(klines, fetch, "1m", d0, a_ms)
     if today != UNKNOWN and today:
@@ -257,11 +234,7 @@ def render_md(b):
         L.append(f"- BTC prior day H {_f(pd['H'])} L {_f(pd['L'])} C {_f(pd['C'])} | {vas}")
     for k in ("asia", "london"):
         v = c[k]
-<<<<<<< Updated upstream
         L.append(f"- {k} H/L: " + (UNKNOWN if v == UNKNOWN else f"{_f(v['H'])} / {_f(v['L'])}" + (" PARTIAL (window open)" if v.get("partial") else "")))
-=======
-        L.append(f"- {k} H/L: " + (UNKNOWN if v == UNKNOWN else f"{_f(v['H'])} / {_f(v['L'])}"))
->>>>>>> Stashed changes
     L.append(f"- last {_f(c['last'])} | day VWAP {_f(c['vwap'])}")
     for tf, v in c["bb"].items():
         L.append(f"- BB(20,2) {tf}: " + (UNKNOWN if v == UNKNOWN else f"{_f(v['lower'])} / {_f(v['mid'])} / {_f(v['upper'])}"))
@@ -292,35 +265,24 @@ def _ledger():
     return mod
 
 
-<<<<<<< Updated upstream
 def score_p4(date, fetch=http_json, ledger_rows=None, outdir=OUTDIR, now=None):
     """Refuses to score a window that has not ended (now < window end): PENDING, never a partial score."""
     now = now or dt.datetime.now(dt.timezone.utc)
-=======
-def score_p4(date, fetch=http_json, ledger_rows=None, outdir=OUTDIR):
->>>>>>> Stashed changes
     sl = _ledger()
     rows = sl.load() if ledger_rows is None else ledger_rows
     found = [p for p in ("P1", "P2", "P3") if (Path(outdir) / f"{date}_{p}.json").exists()]
     day0 = dt.datetime.fromisoformat(date).replace(tzinfo=dt.timezone.utc)
-<<<<<<< Updated upstream
     s_end = _ms(day0) + 21 * 3600_000
     sess = "PENDING" if _ms(now) < s_end else _safe(lambda: hlc(klines(fetch, "1m", _ms(day0) + (13 * 60 + 30) * MIN, s_end)))
-=======
-    sess = _safe(lambda: hlc(klines(fetch, "1m", _ms(day0) + (13 * 60 + 30) * MIN, _ms(day0) + 21 * 3600_000)))
->>>>>>> Stashed changes
     res = {"date": date, "phases_found": found, "phases_missing": [p for p in ("P1", "P2", "P3") if p not in found],
            "session": sess, "scenarios": [], "context_only": True}
     for r in rows:
         if not str(r["given_utc"]).startswith(date):
             continue
         try:
-<<<<<<< Updated upstream
             if _ms(now) < _ms(sl.parse_utc(r["end_utc"])):
                 res["scenarios"].append({"id": r["id"], "likely": r["likely"], "up": r["up"], "down": r["down"], "outcome": "PENDING", "score": "PENDING"})
                 continue
-=======
->>>>>>> Stashed changes
             bars = klines(fetch, "1m", _ms(sl.parse_utc(r["given_utc"])), _ms(sl.parse_utc(r["end_utc"])))
             if not bars:
                 raise ValueError("no bars")
@@ -336,11 +298,7 @@ def render_p4_md(res):
     L = [f"# US prep {res['date']} P4 score - context, never a signal", "",
          f"- phases found {res['phases_found']} missing {res['phases_missing']} (a missed phase is logged, never skipped silently)"]
     s = res["session"]
-<<<<<<< Updated upstream
     L.append("- session 13:30-21:00Z H/L/C: " + (s if isinstance(s, str) else f"{_f(s['H'])} / {_f(s['L'])} / {_f(s['C'])}"))
-=======
-    L.append("- session 13:30-21:00Z H/L/C: " + (UNKNOWN if s == UNKNOWN else f"{_f(s['H'])} / {_f(s['L'])} / {_f(s['C'])}"))
->>>>>>> Stashed changes
     for x in res["scenarios"]:
         L.append(f"- {x['id']} likely {x['likely']} up {x['up']} down {x['down']}: {x['outcome']} -> {x['score']}")
     if not res["scenarios"]:

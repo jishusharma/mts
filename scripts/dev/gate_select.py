@@ -59,10 +59,7 @@ DOC_MUST = {
     "3tl": CARD_RE,                                                                 # dsabr-c1..c8 promoted to ready: red at 3tl
     "3af": re.compile(r"^MyTradingSys/system/OPERATOR_DECISIONS\.md$"),            # Home hub excerpt over its 30000 B cap
     "4d": re.compile(r"^MyTradingSys/system/handover/[^/]+\.md$"),                 # test_integrity forbidden refs
-<<<<<<< Updated upstream
     "3pc": re.compile(r"^(?:.*/)?(PRE_REG[^/]*|RESULT[^/]*|DEV_CHECK[^/]*)\.md$"),                         # PRE_REG without Phase/Session/Entry lines: two reached trunk 11-06, CI red
-=======
->>>>>>> Stashed changes
 }
 
 

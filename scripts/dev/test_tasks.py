@@ -624,7 +624,6 @@ class StateTagTest(NextSkipsClaimedTest):
         self.assertEqual(rc, 1)
         self.assertIn("STALE", self.run_cli("list")[1])
 
-<<<<<<< Updated upstream
     def test_empty_scope_sha_refreshed_after_change_is_fresh(self):
         self.commit("src/a.py", "x=1" + NL, "2026-10-01T00:00:00+00:00")
         c = good("TS1", refreshed="2026-10-05T00:00:00+00:00", scope_sha="")
@@ -639,8 +638,6 @@ class StateTagTest(NextSkipsClaimedTest):
         T.save(self.repo, c)
         self.assertIn("scope changed", T.TS.stale_reason(T.get(self.repo, "TS1"), self.repo))
 
-=======
->>>>>>> Stashed changes
     def test_card_file_named_in_scope_still_counts(self):
         f = "MyTradingSys/system/tasks/BASE.json"
         self.commit(f, "{}" + NL)
@@ -1551,7 +1548,6 @@ class TestCorruptCard(unittest.TestCase):
                 T.save(self.repo, good("B901", title="changed"))
         self.assertEqual((self.bad_dir / "B901.json").read_bytes(), before)
         self.assertEqual([p.name for p in self.bad_dir.glob("*.tmp")], [])
-<<<<<<< Updated upstream
 
 
 class ShowVerbTest(unittest.TestCase):
@@ -1569,5 +1565,3 @@ class ShowVerbTest(unittest.TestCase):
                 T.REPO = old
             self.assertEqual(rc, 0)
             self.assertEqual(json.loads(buf.getvalue())["title"], "show me")
-=======
->>>>>>> Stashed changes

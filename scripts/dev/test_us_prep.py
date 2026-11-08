@@ -12,10 +12,7 @@ import us_prep as up  # noqa: E402  (fails with ImportError before the module ex
 
 MIN = 60_000
 D0 = dt.datetime(2026, 11, 5, tzinfo=dt.timezone.utc)
-<<<<<<< Updated upstream
 LATE = dt.datetime(2026, 11, 5, 21, 30, tzinfo=dt.timezone.utc)
-=======
->>>>>>> Stashed changes
 IV_MS = {"1m": MIN, "15m": 15 * MIN, "1h": 60 * MIN, "4h": 240 * MIN, "1d": 1440 * MIN}
 
 
@@ -73,7 +70,6 @@ def test_fixture_day_1105():
     assert abs(m["kospi_pct"] - (-5.3)) < 0.01 and abs(m["nq_pct"] - (-0.6)) < 0.01
     assert len(m["reasons"]) == 2
     btc = b["btc"]
-<<<<<<< Updated upstream
     near = lambda x, y: abs(x - y) < 0.01  # noqa: E731
     # exact values, derived independently from the fixture formula _price (not from us_prep)
     pd = btc["prior_day"]
@@ -88,25 +84,12 @@ def test_fixture_day_1105():
     for tf, (lo, mid, hi) in want.items():
         bb = btc["bb"][tf]
         assert near(bb["lower"], lo) and near(bb["mid"], mid) and near(bb["upper"], hi), tf
-=======
-    assert btc["prior_day"]["C"] == 80900.0
-    assert btc["prior_day"]["H"] > btc["prior_day"]["C"] > btc["prior_day"]["L"]
-    va = btc["prior_day"]["value_area"]
-    assert va["VAL"] <= va["POC"] <= va["VAH"]
-    assert btc["asia"]["H"] > btc["asia"]["L"]
-    assert btc["london"]["H"] > btc["london"]["L"]
-    assert btc["vwap"] < 80900.0
-    for tf in ("15m", "1h", "4h", "1d"):
-        bb = btc["bb"][tf]
-        assert bb["lower"] < bb["mid"] < bb["upper"]
->>>>>>> Stashed changes
     assert b["context_only"] is True
     # P4: close of the day (21:15Z) is 75.2k
     b4 = up.build_brief("P4", "2026-11-05", fetch=fake_fetch)
     assert abs(b4["btc"]["last"] - 75200.0) < 10.0
 
 
-<<<<<<< Updated upstream
 def test_fixture_exact_values():
     test_fixture_day_1105()
 
@@ -156,8 +139,6 @@ def test_p4_pending(tmp_path):
     assert "PENDING" in up.render_p4_md(res)
 
 
-=======
->>>>>>> Stashed changes
 def test_unknown_fail_closed():
     b = up.build_brief("P2", "2026-11-05", fetch=dead_fetch)
     assert b["macro"]["flag"] == "UNKNOWN"
@@ -179,11 +160,7 @@ def test_p4_scorer_and_write(tmp_path):
     b1 = up.build_brief("P1", "2026-11-05", fetch=fake_fetch)
     up.write_brief(b1, tmp_path)
     assert (tmp_path / "2026-11-05_P1.json").exists() and (tmp_path / "2026-11-05_P1.md").exists()
-<<<<<<< Updated upstream
     res = up.score_p4("2026-11-05", fetch=fake_fetch, ledger_rows=ledger, outdir=tmp_path, now=LATE)
-=======
-    res = up.score_p4("2026-11-05", fetch=fake_fetch, ledger_rows=ledger, outdir=tmp_path)
->>>>>>> Stashed changes
     assert res["phases_found"] == ["P1"] and res["phases_missing"] == ["P2", "P3"]
     assert [s["id"] for s in res["scenarios"]] == ["S1"]
     assert res["scenarios"][0]["outcome"] == "DOWN" and res["scenarios"][0]["score"] == "HIT"
@@ -193,11 +170,7 @@ def test_p4_scorer_and_write(tmp_path):
 def test_p4_scorer_unreachable_is_unknown(tmp_path):
     ledger = [{"id": "S1", "given_utc": "2026-11-05T14:45Z", "end_utc": "2026-11-05T21:00Z", "likely": "DOWN",
                "up": "80000", "down": "76000", "text": "x", "outcome": "", "touched_utc": "", "score": ""}]
-<<<<<<< Updated upstream
     res = up.score_p4("2026-11-05", fetch=dead_fetch, ledger_rows=ledger, outdir=tmp_path, now=LATE)
-=======
-    res = up.score_p4("2026-11-05", fetch=dead_fetch, ledger_rows=ledger, outdir=tmp_path)
->>>>>>> Stashed changes
     assert res["scenarios"][0]["score"] == "UNKNOWN" and res["session"] == "UNKNOWN"
 
 

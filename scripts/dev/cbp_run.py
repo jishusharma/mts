@@ -294,7 +294,6 @@ def rebuild_dashboard(run=subprocess.run):
                 run([sys.executable, str(tool)], check=False)
             except Exception as e:  # noqa: BLE001
                 print("cbp: " + name + " failed: " + str(e))
-<<<<<<< Updated upstream
     announce_republish()
 
 
@@ -319,8 +318,6 @@ def announce_republish(out=print, ask=None, login=None, reg=None):
             (ask or mts_signal.new_ask)(text)
     except Exception as e:  # noqa: BLE001
         print("cbp: republish note failed: " + str(e))
-=======
->>>>>>> Stashed changes
 
 
 def main(argv=None, now=None):

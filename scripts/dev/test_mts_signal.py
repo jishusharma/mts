@@ -875,7 +875,6 @@ class TempInsideGitRepo(unittest.TestCase):
         finally:
             shutil.rmtree(scratch, ignore_errors=True)
 
-<<<<<<< Updated upstream
 class WhoAgentTest(unittest.TestCase):
     def _who(self, agent):
         old = os.environ.pop("MTS_AGENT", None)
@@ -902,7 +901,5 @@ class WhoAgentTest(unittest.TestCase):
         self.assertIn("H1", out.upper())
 
 
-=======
->>>>>>> Stashed changes
 if __name__ == "__main__":
     unittest.main()

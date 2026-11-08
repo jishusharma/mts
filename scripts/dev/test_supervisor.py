@@ -1472,7 +1472,6 @@ def test_plan_lines_codex_gemini_zero_runs_planner_without_nuc_heartbeat():
     assert not any(l.startswith("RUN Session_Planner") for l in ok)
     only = S.plan_lines("A", "JIS-NB", p, live, dict(ctx, codex_ready=7, gemini_ready=4), gate_key=False)
     assert any("CODEX 7" in l and l.startswith("RUN Session_Planner") for l in only)
-<<<<<<< Updated upstream
 
 
 def test_prompt_with_missing_card_fails(tmp_path):
@@ -1545,5 +1544,3 @@ def test_republish_notes_time_cap_becomes_a_note(monkeypatch):
     out = S.republish_notes("C")
     gate.set()
     assert len(out) == 1 and out[0].startswith("NOTE REPUBLISH check timed out")
-=======
->>>>>>> Stashed changes

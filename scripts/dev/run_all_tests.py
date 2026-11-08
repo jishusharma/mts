@@ -55,11 +55,8 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_hosts.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_api_job.py",
-<<<<<<< Updated upstream
     "scripts/dev/test_api_job_gpt.py",
     "scripts/dev/test_weekplan.py",
-=======
->>>>>>> Stashed changes
     "scripts/dev/test_route_audit.py",
     "scripts/dev/test_nowin.py",
     "scripts/dev/test_wt_maint.py",
@@ -602,14 +599,11 @@ def build_plan(quick):
     # 29 of 33 reports never said what regime their window was). Every PRE_REG not frozen before the rule carries a `## Context` section
     # (Regime/Phase/Session/Entry), every result a `Regime mix:` line. <1 s; exit 1 on an offender.
     add("3pc", "PRE_REG context lint: new pre-registrations state regime/phase/session/entry, results state the regime mix", [sys.executable, "scripts/dev/prereg_context_lint.py"], "Step 3pc: PRE_REG context lint")
-<<<<<<< Updated upstream
 
     # Step 3cm: committed merge-conflict markers (2026-11-06: PLAN_API_CREDITS had marker rows on trunk; the 8dbd7408f revert put markers in 5
     # task cards). git ls-files text scan, <1 s; exit 1 names file:line. 3cmt = its fail-first test.
     add("3cmt", "Conflict marker lint tests", [sys.executable, "scripts/dev/test_conflict_marker_lint.py"], "Step 3cmt: Conflict marker lint tests")
     add("3cm", "Conflict markers: no tracked text file has a line starting with seven < or > and a space (conflict_marker_lint.py)", [sys.executable, "scripts/dev/conflict_marker_lint.py"], "Step 3cm: Conflict marker lint")
-=======
->>>>>>> Stashed changes
 
     # Step 4: pytest (math + doc tests), sharded so the slowest step no longer sets the gate's wall time (2026-10-16: one process
     # took 919 s of a 15 min gate). 4/4b/4c = MyTradingSys/tests files round-robin, 4d = doc size/contract tests, 4e = backtest

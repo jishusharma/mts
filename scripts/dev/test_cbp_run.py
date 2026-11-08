@@ -159,7 +159,6 @@ def test_rebuild_dashboard_survives_failed_fetch(tmp_path, monkeypatch):
     assert calls == ["fetch_board_data.py", "build_board.py"]  # build still runs on the last data
 
 
-<<<<<<< Updated upstream
 def test_announce_republish_prints_line_and_asks_when_not_a_publisher(tmp_path, monkeypatch):
     (tmp_path / "cbp_v2").mkdir()
     (tmp_path / "cbp_v2" / "cbp_board.html").write_text("<html></html>", encoding="utf-8")
@@ -180,8 +179,6 @@ def test_announce_republish_silent_without_a_board(tmp_path, monkeypatch):
     assert out == []
 
 
-=======
->>>>>>> Stashed changes
 def _fake_fetch_env(tmp_path, monkeypatch, codes):
     import json
     (tmp_path / "cbp_v2").mkdir()

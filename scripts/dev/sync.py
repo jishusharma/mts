@@ -3,11 +3,7 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-<<<<<<< Updated upstream
   python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>] [--train]  # --train (off by default): push queue/<host>/<slug>, wait on the train status file (ship_train.py; exit 4 = ejected); a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
-=======
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
->>>>>>> Stashed changes
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
                                            # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
@@ -788,11 +784,8 @@ def commit_pending(repo, result, subject=None, nxt=None):
     commit whose body ends `Result: <text>` (and `Next: <tag>`). Clean tree: nothing to commit (commits already made keep their own
     messages), except that --next alone adds an empty `route tag` commit carrying it. Returns the file count."""
     tail = (chr(10) + "Next: " + nxt.strip().removeprefix("Next:").strip()) if nxt else ""
-<<<<<<< Updated upstream
     if (result is not None or nxt) and git(repo, "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
         raise SyncError("ship refused: HEAD does not resolve (unborn or unreadable ref, e.g. during git auto-gc); a commit now would be an orphan initial commit")
-=======
->>>>>>> Stashed changes
     if result is None:
         if nxt:
             git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
@@ -1305,11 +1298,7 @@ def stage_layers(repo, fold=False):
     return True
 
 
-<<<<<<< Updated upstream
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep, push_ref=None):
-=======
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
->>>>>>> Stashed changes
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
     after_slug (SV3): wait for predecessor order ticket to finish or lapse before running the gate; never holds a gate slot while waiting.
@@ -1386,11 +1375,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 write_ship_stamp(repo)
                 if release_slug and not released:
                     released = release_side(repo, release_slug)
-<<<<<<< Updated upstream
                 print(f"shipped {len(files)} file(s) to origin/{dest}" + (f"; released {release_slug}" if released else ""))
-=======
-                print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
->>>>>>> Stashed changes
                 if released:
                     drop_gateway_hold(repo, release_slug)
                 pages.report()
@@ -2350,7 +2335,6 @@ def main(argv):
                 raise SyncError(f"staged but not committed: {files}; git commit them or use --result")
             check_route_tags(repo)
             stage_layers(repo, fold=True)
-<<<<<<< Updated upstream
             train_ref = train_since = None
             if train:
                 import ship_train
@@ -2369,9 +2353,6 @@ def main(argv):
                 if verdict == "landed":
                     tidy_after_ship(repo)
                 return TRAIN_EJECT_EXIT if verdict == "ejected" else 0
-=======
-            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
->>>>>>> Stashed changes
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 tidy_after_ship(repo)

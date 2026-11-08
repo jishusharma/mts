@@ -8,11 +8,7 @@
   python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
   python scripts/dev/tasks.py brief <id>            # the <= 30 line session prompt for one card
-<<<<<<< Updated upstream
   python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" --next "<card-id | stage | END: why | new:title>" | drop <id> --reason "<why>" | apply-op <id> bump|hold|drop|approve [--note ..]
-=======
-  python scripts/dev/tasks.py take <id> [--claim <slug>] | done <id> --result "<what>" --next "<card-id | stage | END: why | new:title>" | apply-op <id> bump|hold|drop|approve [--note ..]
->>>>>>> Stashed changes
   python scripts/dev/tasks.py tag <id> [--refresh] [--add kind:ref --line "<one line>"]   # state tag + LATEST pointers (TASK_REFINEMENT.md)
   python scripts/dev/tasks.py stale [--refresh]     # ready/active cards whose scope paths changed after their pointers were refreshed
   python scripts/dev/tasks.py sweep [--apply]       # cards whose registry rows are all CLOSED/WONTFIX -> done
@@ -1417,7 +1413,6 @@ def route_next(card, value):
     if value is None:
         return None
     import route_audit as RA
-<<<<<<< Updated upstream
     import sync
     kind, val = RA.parse_next(value, allow_new=True)
     if kind is None:
@@ -1428,15 +1423,6 @@ def route_next(card, value):
         cid = re.sub(r"[^a-z0-9]+", "-", val.lower()).strip("-")[:40]
         if cid in ("none", "fix"):
             raise SystemExit(f'ship refused: Next card {cid} does not exist; file it (tasks.py new "<title>" --id {cid}) or {sync.NEXT_FIX}')
-=======
-    kind, val = RA.parse_next(value, allow_new=True)
-    if kind is None:
-        raise SystemExit(f'tasks: --next: {val}; use --next "<card-id | stage | END: reason | new:<title>>"')
-    if kind == "card" and not path_of(REPO, val).exists():
-        raise SystemExit(f'tasks: --next card {val} does not exist; use --next new:"<title>" to file it')
-    if kind == "new":
-        cid = re.sub(r"[^a-z0-9]+", "-", val.lower()).strip("-")[:40]
->>>>>>> Stashed changes
         if not path_of(REPO, cid).exists():
             save(REPO, blank(cid, val, prio=card.get("prio", 3), refs=[path_of(REPO, card["id"]).as_posix()]))
             print(f"filed raw card {cid} (next of {card['id']})")
@@ -1444,7 +1430,6 @@ def route_next(card, value):
     return value.strip() if kind != "end" else f"END: {val}"
 
 
-<<<<<<< Updated upstream
 def cmd_drop(a):
     c = get(REPO, a.id)
     c.update(state="dropped", pinned=False, closed=now(), note=a.reason[:300], reason=a.reason)
@@ -1452,8 +1437,6 @@ def cmd_drop(a):
     print(f"{a.id}: dropped")
 
 
-=======
->>>>>>> Stashed changes
 def cmd_done(a):
     c = get(REPO, a.id)
     if c.get("flow"):
