@@ -48,7 +48,8 @@ def run_js(expr, data):
     br = _browser()
     if not br:
         pytest.skip("neither node nor Edge/Chrome available")
-    html = ("<body><script>" + src + "\ntry{" + body + "document.body.textContent='@@'+JSON.stringify(R)+'@@';}"
+    html = ("<body><script>var module={exports:{}};" + src +  # module defined, as in node -e (CI failure 42473425810)
+             "\ntry{" + body + "document.body.textContent='@@'+JSON.stringify(R)+'@@';}"
             "catch(e){document.body.textContent='@@ERR '+e+'@@';}</script></body>")
     with tempfile.TemporaryDirectory() as d:
         f = Path(d) / "t.html"

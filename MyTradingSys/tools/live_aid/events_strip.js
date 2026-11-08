@@ -71,5 +71,6 @@
   }
 
   var api = { P: P, countdown: countdown, flashTimes: flashTimes, flashDue: flashDue, rows: rows, linkHeadline: linkHeadline, html: html };
-  if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.EVSTRIP = api;
+  root.EVSTRIP = api;                                 // always: node -e defines module, so exports-else-global left EVSTRIP undefined on CI
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : this);
