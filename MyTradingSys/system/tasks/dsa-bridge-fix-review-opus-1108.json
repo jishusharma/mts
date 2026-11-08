@@ -35,7 +35,7 @@
     "reads: MyTradingSys/system/tasks/*dsa*.json and *aibridge*.json, DSA_SESSION_PROMPT.md, AIBRIDGE_LANE.md, DSA_DELEGATION.md, scripts/aibridge/docs, scripts/aibridge/RELEASES.json, F:/AIBridge/docs and HANDOFF files; public web pages by curl; audit.jsonl counts only. writes: DSA_BLOCK_REVIEW.md and check_dsa_review.py"
   ],
   "scope_out": [
-    "never open any file named background.js or config.json, .secrets, .env or tokens; no edit of the bridge or the prompt; no login, no bypass of any block or bot check; no account creation"
+    "never open any file named background.js or config.json, any secret, credential or token file; no edit of the bridge or the prompt; no login, no bypass of any block or bot check; no account creation"
   ],
   "scope_sha": "",
   "size": "M",
