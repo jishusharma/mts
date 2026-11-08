@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-11-08 chat ~10:50Z: Opus reviews all DSA bridge fixes, prompt and DeepSeek rules on the cloud platform",
   "asks": "",
+  "closed": "2026-11-08T06:21:42Z",
   "commands": [
     "python MyTradingSys/system/check_dsa_review.py"
   ],
@@ -20,17 +21,30 @@
   "goal": "The DSA bridge has a long bug history (about 60 cards and the AIBridge release notes) and DeepSeek blocked a profile until 2026-11-11. One independent high-model pass reads all past bugs and fixes, the DSA session prompt and the newest public DeepSeek terms on automated access, and returns one ranked fix list the build card can follow.",
   "id": "dsa-bridge-fix-review-opus-1108",
   "lane": "OPUS",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/system/DSA_BLOCK_REVIEW.md: 76 bug rows in 10 repeat classes (all design faul",
+      "ref": "ee20cc241",
+      "utc": "2026-11-08T06:21:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Runs on the Platform credit with Opus 5.5. The block cause is unproved until the operator pastes the block text; say so in the review. Public pages are pre-approved reading. Block text (operator screenshot 2026-11-08): account suspended for violation of user policies until 2026-11-11 10:22; account-level, not a rate notice. Do not use the bridge on that account before then. Evidence already found 2026-11-08 (start from it, verify, do not just repeat): same message 'Due to violation of user policies, your account has been suspended until <date>' reported by users of third-party DeepSeek web tools: github.com/cheaper-inference/OmniRoute/issues/16972 (cookie web-session relay; maintainers say DeepSeek anti-abuse flags unofficial web sessions, advise the official API), github.com/EdgeTypE/better-deepseek/issues/186 and #229 (many duplicates; owner's test: the same request repeated fast, many new chats and heavy regenerate trigger it; agent-like heavy use, MCP and bridges suspected, anecdotal; some suspensions look like false positives in a wider wave), github.com/sebattfg/ZeroScript-Free/issues/82 (extension, 3 day suspension after a night of use) and #115. Official terms (cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html, updated 2026-03-27): s3.5(3) bans robots, spiders or other automatic setups to capture content; s3.3 lets DeepSeek screen user behaviour with technical tools; s2.3 bans lending or sharing an account; s8.2 allows suspension; no numeric rate limit stated. So far no source names the exact trigger; every cause stays unproved. The official API is the sanctioned channel for automation.",
+  "next": "dsa-bridge-avoid-deepseek-block-1108",
+  "note": "Runs on the Platform credit with Opus 5.5. The block cause is unproved until the operator pastes the block text; say so in the review. Public pages are pre-approved reading. Block text (operator screenshot 2026-11-08): account suspended for violation of user policies until 2026-11-11 10:22; account-level, not a rate notice. Do not use the bridge on that account before then. Evidence already found 2026-11-08 (start from it, verify, do not just repeat): same message 'Due to violation of user policies, your account has been suspended until <date>' reported by users of third-party DeepSeek web tools: github.com/cheaper-inference/OmniRoute/issues/16972 (cookie web-session relay; maintainers say DeepSeek anti-abuse flags unofficial web sessions, advise the official API), github.com/EdgeTypE/better-deepseek/issues/186 and #229 (many duplicates; owner's test: the same request repeated fast, many new chats and heavy regenerate trigger it; agent-like heavy use, MCP and bridges suspected, anecdotal; some suspensions look like false positives in a wider wave), github.com/sebattfg/ZeroScript-Free/issues/82 (extension, 3 day suspension after a night of use) and #115. Official terms (cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html, updated 2026-03-27): s3.5(3) bans robots, spiders or other automatic setups to capture content; s3.3 lets DeepSeek screen user behaviour with technical tools; s2.3 bans lending or sharing an account; s8.2 allows suspension; no numeric rate limit stated. So far no source names the exact trigger; every cause stays unproved. The official API is the sanctioned channel for automation. | DECISION (OURS) 2026-11-08 Builder: (1) desk_queue bridge rows read for title and status only, to set open/closed in the bug table (scope listed tasks/; desk rows are the DSA-filed bug reports). (2) dsa-audit-* and rv-dsa-* cards left out: strategy audits, not bridge bugs. (3) Open Platform ToS returned 403; not quoted. (4) tasks.py done run before the single ship so the close rides the same push. (5) companion GEMINI blind-read card filed for the review and check script.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T05:10:33Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/system/DSA_BLOCK_REVIEW.md: 76 bug rows in 10 repeat classes (all design faults), 12 ranked fixes (pacing guard, one machine per account, stop on warning first); check_dsa_review.py PASS",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "reads: MyTradingSys/system/tasks/*dsa*.json and *aibridge*.json, DSA_SESSION_PROMPT.md, AIBRIDGE_LANE.md, DSA_DELEGATION.md, scripts/aibridge/docs, scripts/aibridge/RELEASES.json, F:/AIBridge/docs and HANDOFF files; public web pages by curl; audit.jsonl counts only. writes: DSA_BLOCK_REVIEW.md and check_dsa_review.py"
   ],
@@ -42,10 +56,11 @@
   "sources": [
     "operator chat 2026-11-08 ~10:50Z: look at all DSA bridge bugs, Opus reviews past fixes, the DSA prompt and DeepSeek's latest blocking rules, on the cloud platform"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write check_dsa_review.py first and run it red; build the bug table from the cards and release notes; fetch the public DeepSeek terms; write the prompt and fix sections; run the check green; ship"
   ],
+  "taken": "2026-11-08T06:21:42Z",
   "tests": "MyTradingSys/system/check_dsa_review.py",
   "title": "Opus review of every DSA bridge bug and fix, the DSA prompt, and DeepSeek's latest rules on automated use: one ranked fix list",
   "weight": "",

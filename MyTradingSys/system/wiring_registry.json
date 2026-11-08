@@ -1032,6 +1032,11 @@
    "disp": "WIRE",
    "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py",
    "ref": "adx-di-tradingview-crosscheck-1107"
+  },
+  "MyTradingSys/system/check_dsa_review.py": {
+   "disp": "REPRO",
+   "ref": "dsa-bridge-fix-review-opus-1108",
+   "why": "Structure check of MyTradingSys/system/DSA_BLOCK_REVIEW.md (bug table, repeat classes, DeepSeek rules, behaviours, prompt replacements, ranked fix list); run by hand, named in the review and its card."
   }
  }
 }
