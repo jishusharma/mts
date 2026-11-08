@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): CRITICAL (run_all_tests.py is a gate), needs CRITICAL review, not ready. Twin warn test-aibridge-chain-hidden-tab-test-test read: different file.",
+  "note": "DECISION (OURS): CRITICAL (run_all_tests.py is a gate), needs CRITICAL review, not ready. Twin warn test-aibridge-chain-hidden-tab-test-test read: different file. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defect: wrong mechanism. run_all_tests.py l.93-108 TEST_FILE_SECONDS only balances shards (l.618-626) and makes targeted_tests() skip the file (l.789, SLOW_FILE_S 'stay in their shard only'); step 4c still runs the file in smoke, so a map entry cannot defer it and the done_when 'deferred from smoke' test cannot pass. The step-3 line 'like test_soak_six_slots.py:150' is the same misreading. Fix the card: either (a) a per-file local-skip list consulted where the shard chunk is built (l.620-626) and kept in CI/--full, with a fail-first test on build_plan, or (b) cap the subprocess timeout inside test_aibridge_exploratory.py (in scope). Pick one, name the function, say how --full/CI still run it. Also: 'step 4c wall under 240 s' needs the load condition. Twin checked: test-aibridge-chain-hidden-tab-test-test is a different file (no overlap).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",

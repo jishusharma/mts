@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): CRITICAL (gate), review needed, not ready. Twin: test-soak-six-slots-py-hangs-45-min-insi untracked in the main tree: same job; drop that one once this ships.",
+  "note": "DECISION (OURS): CRITICAL (gate), review needed, not ready. Twin: test-soak-six-slots-py-hangs-45-min-insi untracked in the main tree: same job; drop that one once this ships. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defects: (1) the selection site is unnamed. test_soak_six_slots.py is scripts/dev, not MyTradingSys/tests, so the TEST_FILE_SECONDS=150 entry (l.108) only feeds gate_impact.estimate / unit() timing (l.843-883) and does nothing for exclusion; find which step actually launches it (3xt extras via gate_select.extra_subset when a changed file references it, or step 3 list) and name it. (2) fail-first unproven: the proposed 'not selected in smoke' test may already pass on current code; the test must build the plan/subset for a change that references soak_six_slots.py/supervisor and show it selected today. (3) step 1 reproduction under load is not a test; the hang (45+ min vs measured 135-164 s) may be a different cause (a real-sleep path or the --baseline runs), say what was measured before excluding. (4) the seed cut range(1,11)->range(1,4) edits a test that guards supervisor.py; exclusion from smoke removes the only local check of supervisor changes, so state which gate (CI) catches it. (5) duplicate of untracked raw test-soak-six-slots-py-hangs-45-min-insi and gate-flakes-under-load (blocked, lists the soak test): merge the intent into one card.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
