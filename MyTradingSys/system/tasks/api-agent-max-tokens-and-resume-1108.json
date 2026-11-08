@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T23:45:28Z",
   "commands": [
     "python scripts/dev/test_api_agent_models.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "api_agent reply cap 8192->32000 (retry to 64000), api_job --max-tokens passthrough; test_a",
+      "ref": "478efba51",
+      "utc": "2026-11-07T23:45:28Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "api_agent, api_job: add claude-fable-5-1 (10/50 per MTok) with model test",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: runner fix shipped; relaunch of news-effect-event-catalogue-1108 is the queue's call",
   "note": "Unblocks the research chain: catalogue, both reviews and the synthesis all write long files. Check the 32000 value against the model's documented max output before setting it; use the lower of the two.",
   "prio": 1,
   "refine_tries": 0,
@@ -34,7 +42,12 @@
   "refs": [
     "scripts/dev/api_agent.py"
   ],
-  "result": "",
+  "result": "api_agent reply cap 8192->32000 (retry to 64000), api_job --max-tokens passthrough; test_api_agent_models 8/8; commit 478efba5",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/api_agent.py, scripts/dev/api_job.py, scripts/dev/test_api_agent_models.py"
   ],
@@ -46,10 +59,11 @@
   "sources": [
     "credit job news-effect-event-catalogue-1108 ended error_max_tokens 2026-11-08 21:56Z (F:/MTS/api_runs/news-effect-event-catalogue-1108/out.jsonl)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "add the three test cases and run them red; change the default, add the passthrough, add the retry on max_tokens; run the test and a dry-run launch; ship"
   ],
+  "taken": "2026-11-07T23:45:28Z",
   "tests": "scripts/dev/test_api_agent_models.py",
   "title": "Credit runner: max_tokens 8192 kills big research jobs (event catalogue died at turn 26, error_max_tokens); raise default, pass it through api_job, say so in the status line",
   "weight": "",

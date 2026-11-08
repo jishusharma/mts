@@ -219,6 +219,15 @@ class Home(unittest.TestCase):
         off = [p["title"] for p in d["pages"] if p["owner"] != self.reg["home_login"]]
         self.assertEqual(off, [])
 
+    def test_hub_needs_you_lists_only_open_questions_and_leaves_room(self):
+        """Card hub-waiting-list-stale-decisions-1106: recorded decisions (Applied:/Operator bodies, dated headings) are not open
+        questions; the hub carried 16 waiting items and broke its size test. Pinned on the real decisions file."""
+        import make_home as mh
+        waiting = mh.waiting(Path(__file__).resolve().parents[2])
+        self.assertLessEqual(len(waiting), 6, [w["id"] for w in waiting])
+        html = mh.render(mh.build(self.reg))
+        self.assertLess(len(html.encode("utf-8")), 27000)
+
     def test_hub_folds_link_help_and_stays_compact(self):
         """Operator 2026-10-25: MTS Home was too big to navigate. The link-failure help and the old copies are folded, and the
         three live blocks (needs you, pages, sessions) come before them."""

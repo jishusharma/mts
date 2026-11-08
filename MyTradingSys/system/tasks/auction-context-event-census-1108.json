@@ -2,16 +2,27 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 12,
+    "folded": "2026-11-07T23:34:52Z",
+    "misses": 13,
+    "reads": [
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py",
+      "MyTradingSys/system/DEVICES.md"
+    ],
+    "session": "agent-a5a3903e5f13da275"
+  },
   "created": "2026-11-07T18:31:32Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUCTION_CENSUS_1108.md exists with parsed counts, fee-net R, SOURCED/OURS labels and a Regime mix: line",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Count every FAST_REJECTION / ACCEPTED / KNIFE event classify_level_interaction fires on at prior-day VA edges and HTF extremes (5m window 2026-10-03..11-07, 7y 1h), fee-net R forward, split by htf bias with/against",
   "id": "auction-context-event-census-1108",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,21 +30,32 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T23:32:05Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
     "MyTradingSys/research/wicks_2026-11/CENSUS_5m_2026-10-03_11-07.md"
   ],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_census.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUCTION_CENSUS_1108.md"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "",
+  "size": "S",
   "sources": [
     "Lead C review 2026-11-08 of Argon's Tom/Fabio audit (1a79739e, research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md); operator asked what really needs to be done"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "fetch public bars",
+    "write census script + tests",
+    "run, write note",
+    "ship"
+  ],
+  "tests": "test_auction_census.py: fee-net sim, gate, dedupe; must fail on pre-change code (module absent)",
   "title": "Count, not 4 stories: run classify_level_interaction over CENSUS_5m 2026-10-03..11-07 and 7y daily at prior-day VA edges + HTF extremes; FAST_REJECTION vs ACCEPTED vs KNIFE counts, fee-net R forward",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

@@ -49,7 +49,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     // 0.7.30: the "Start DSA bridge" seed. The token stays here in the worker; the page only gets the text back.
     pickMachine(msg.host).then(mc => {
       if (!mc) return { ok: false, status: 0, text: '' };
-      return fetch(mc.url.replace(/\/run$/, '/seed'), { method: 'GET', cache: 'no-store', headers: { 'X-AIBridge-Token': mc.token } })
+      return fetch(mc.url.replace(/\/run$/, '/seed'), { method: 'POST', cache: 'no-store', headers: { 'X-AIBridge-Token': mc.token } })
         .then(r => r.text().then(t => ({ ok: r.status === 200, status: r.status, text: t })));
     })
     .then(x => sendResponse(x), e => sendResponse({ ok: false, status: 0, text: '', error: String(e) }));

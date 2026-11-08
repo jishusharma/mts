@@ -776,7 +776,7 @@
     refreshUi();
   }
 
-  // 0.7.30: "Start DSA bridge" typed as the whole message is swapped for the seed (agent GET /seed through the worker) and sent.
+  // 0.7.30: "Start DSA bridge" typed as the whole message is swapped for the seed (agent POST /seed through the worker) and sent.
   // Enter or the send button with exactly that text is caught before DeepSeek sees it. Agent down: nothing is sent, the phrase stays.
   var seeding = false;
   function fetchSeed() {
