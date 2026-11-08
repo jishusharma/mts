@@ -1,0 +1,1 @@
+{"t": "20261108T182027Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ack", "text": "ack b-0c4093 told B read the 5h plan; doing B2 (42 stale cards) now, B3 waits for J1+J2; no Gemini on NUC", "login": "B", "id": "b-0c4093", "state": "told", "host": "jis-nuc", "note": "B read the 5h plan; doing B2 (42 stale cards) now, B3 waits for J1+J2; no Gemini on NUC"}
