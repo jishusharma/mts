@@ -1,1 +1,0 @@
-{"t": "20261101T172157Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED since 7e2aa53f (cbp windows change): test_cbp_query.py has old windows/start date. Author agent resumed to fix; do not revert unless still red in 20 min.", "login": "C"}

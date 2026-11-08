@@ -1,1 +1,0 @@
-{"t": "20261101T170143Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ack", "text": "ack b-192dc5 done info only: revert afdea5e0d on trunk, CI green per STATUS", "login": "B", "id": "b-192dc5", "state": "done", "host": "jis-nuc", "note": "info only: revert afdea5e0d on trunk, CI green per STATUS"}

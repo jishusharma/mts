@@ -1,1 +1,0 @@
-{"t": "20261101T171444Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "jis-nb: CBP task start date is still 11-02; windows fixed on trunk 7e2aa53f. After pull run: python scripts/dev/cbp_schedule.py install --home F:/CryptoScrapper (else first fire Mon 11-02 05:00Z)", "login": "C"}

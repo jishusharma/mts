@@ -1,1 +1,0 @@
-{"t": "20261101T171802Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "YouTube live test from JIS-NUC 1717Z: 429 on timedtext and the transcript-api fallback, IP 49.37.73.145 still blocked, lockout to 2317Z. Hold all caption fetches on this IP until then; Gemini direct-v", "login": "B"}
