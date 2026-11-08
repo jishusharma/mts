@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 10,
+    "folded": "2026-11-08T03:11:54Z",
+    "misses": 8,
+    "reads": [
+      "MyTradingSys/execution/position_manager.py",
+      "scratch_r3/test_stop_gap_r3.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a38607c87f5fd0495"
+  },
   "created": "2026-10-27T22:05:56Z",
   "depends_on": [],
   "done_when": "Repo test fails on pre-fix code and passes post-fix; offline suite green; commit body Result: restart with filled entry and no journaled stop now re-places the protective stop instead of leaving the position naked.",
