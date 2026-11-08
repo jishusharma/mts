@@ -5,10 +5,12 @@
     "python F:/AIBridge/tests/agent_live_selftest.py"
   ],
   "created": "2026-11-08T05:08:38Z",
-  "depends_on": [
-    "dsa-bridge-fix-review-opus-1108"
+  "done_when": [
+    "Pacing guard in the bridge payload (scripts/aibridge): at least 60 s between auto posts per account, at most 15 an hour and 80 a day, random 10-30 s jitter; a refused post says paced; test_aibridge_pacing.py replays the 2026-11-07 audit timestamps and fails on 0.7.32",
+    "Account lease: hands-free refuses to arm when another host holds the same account label; test_aibridge_account_lease.py with two fake hosts, fails on 0.7.32",
+    "Stop on warning: logout, captcha, busy or suspended text turns hands-free off, no retry, audit row, 24 h cooldown per profile; handsfree.test.js case fails on 0.7.32",
+    "One armed chat per account (max_parallel 8 to 1); handsfree.test.js case second_tab_refused fails on 0.7.32; payload version bumped; no install on any machine (operator step)"
   ],
-  "done_when": "Sanctioned fallback priced: DeepSeek API cost per DSA run for unattended work, written as a one-line operator money decision, no key handled",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
@@ -28,7 +30,7 @@
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys\\system\\DSA_BLOCK_NOTE.md, F;C:\\Users\\E-ngineers\\Git\\AIBridge\\src policy and extension pacing (reads audit counts only)"
+    "scripts/aibridge (src, extension except background.js tokens, tests), MyTradingSys/system/DSA_BLOCK_REVIEW.md ranks 1 to 4"
   ],
   "scope_out": [
     "never read F:/AIBridge/src/config.json or extension/background.js tokens; no login attempts; no bypass of any bot check; no account creation"
@@ -38,12 +40,13 @@
   "sources": [
     "operator chat 2026-11-08 ~10:40Z (d-dsa-deepseek-block-find-cause-1108); audit.jsonl counts 11-07"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "write the note from audit counts and the pasted block text; design the guard; build it first as a failing replay test"
   ],
   "tests": "node F:/AIBridge/tests/loop.test.js",
   "title": "DSA bridge: find why DeepSeek blocked the AWGP profile until 11-11 and stop it recurring (pacing, daily cap, one machine per account)",
   "weight": "",
-  "worker": "session"
+  "worker": "session",
+  "depends_on": []
 }
