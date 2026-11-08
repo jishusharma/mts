@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T20:23:27Z",
   "commands": [
     "curl -s -m 15 'https://news.treeofalpha.com/api/news?limit=20'",
     "python MyTradingSys/tools/live_aid/test_news_feed.py",
@@ -23,6 +24,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "a65df6891: news_feed.js (15 s poll only while visible, 20/poll), sample_tree_news.json (20",
+      "ref": "6aab6c87c",
+      "utc": "2026-11-08T20:23:27Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge origin/fast-track (news_weight) into events strip: keep both script tags, renderers,",
@@ -40,6 +47,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: N2 pulse tile built; headlines log N5 needs an operator ask",
   "note": "Labels: poll 15 s OURS; importance threshold 7 OURS (5-9 items/day measured 10-30); importance score SOURCED (Tree). Free tier is ~15 s late (measured). PUBLIC repo: no account data, headlines are public market data.",
   "prio": 1,
   "refine_tries": 0,
@@ -49,7 +57,12 @@
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
     "MyTradingSys/items/T054_us_session_news_correlation.md"
   ],
-  "result": "",
+  "result": "a65df6891: news_feed.js (15 s poll only while visible, 20/poll), sample_tree_news.json (20 items), test_news_feed.py 15 tests (14 failed pre-change), REQUIREMENTS R23, page rebuilt",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/news_feed.js (new)",
     "MyTradingSys/tools/live_aid/build_artifact.py (wire the panel; follow STEPS.md)",
@@ -65,13 +78,14 @@
   "sources": [
     "operator 2026-11-08 00:15 IST: TradingView News panel screenshot (abf74fdf6d47) 'Do u see such news! as here'; third ask after T054 (09-28) and news_feeds_2026-10-30; nothing built"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read tools/live_aid/REQUIREMENTS.md + STEPS.md + build_artifact.py to see how panels are built and tested",
     "curl the Tree endpoint once, save 20 items as the sample; write test_news_feed.py (parse, importance >= 7 mark, N6 tags) and run it: must fail before news_feed.js/parser exists",
     "write news_feed.js (fetch 15 s while visible, document.hidden pauses, render 12 rows, mark >= 7, tag words); wire into build_artifact.py; rebuild; read 3 headlines back from the built page",
     "REQUIREMENTS.md section; sync.py ship --release <slug> with Result and Next: END or N2 pulse tile card"
   ],
+  "taken": "2026-11-08T20:23:27Z",
   "tests": "MyTradingSys/tools/live_aid/test_news_feed.py (fails pre-change: module missing)",
   "title": "News headlines in MTS: Tree News REST poll (15 s, while a page is open) into live_aid + a headlines log; importance >= 7 marked; no scheduler",
   "weight": "",
