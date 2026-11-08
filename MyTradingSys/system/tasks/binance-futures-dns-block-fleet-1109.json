@@ -1,7 +1,27 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/tests/dev/test_binance_doh.py -q -p no:cacheprovider",
+    "mvn -q -o test -Dtest=BinanceDohTest,BinanceClientTest",
+    "python scripts/dev/binance_doh_smoke.py"
+  ],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-11-08T20:29:09Z",
+    "misses": 127,
+    "reads": [
+      "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+      "MyTradingSys/backtest/layers/fabio/htf_context_live.py",
+      "MyTradingSys/backtest/layers/fabio/orderflow_live.py",
+      "MyTradingSys/runtime/kline_archiver.py",
+      "scripts/dev/market_guide.py",
+      "scripts/dev/us_prep.py",
+      "MyTradingSys/backtest/fetch_bars.py",
+      "MyTradingSys/backtest/layers/alerts/live_layers.py"
+    ],
+    "session": "89cea4a3-f57d-4af0-88cd-85495a8a1e98"
+  },
   "created": "2026-11-08T19:32:46Z",
   "depends_on": [],
   "done_when": [
@@ -16,6 +36,7 @@
   "from_inbox": "",
   "goal": "ISP (Jio) DNS returns block IP 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; the real IP (Cloudflare DoH) serves futures klines and the stream. Operator order d-fix-binance-dns-block-1109: apply the best fix fleet-wide through the repo, no machine setting changes.",
   "id": "binance-futures-dns-block-fleet-1109",
+  "kind": "build",
   "lane": "JIS-NB",
   "layers": [],
   "live_path": true,
@@ -52,6 +73,5 @@
   "tests": "new python test file for the resolver + Java unit test for the DNS hook",
   "title": "Fleet fix: resolve Binance hosts via DNS-over-HTTPS so live futures data works on every station (ISP DNS block)",
   "weight": "",
-  "worker": "session",
-  "kind": "build"
+  "worker": "session"
 }
