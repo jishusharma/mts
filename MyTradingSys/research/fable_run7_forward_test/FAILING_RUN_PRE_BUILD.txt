@@ -1,0 +1,17 @@
+...E
+======================================================================
+ERROR: setUpClass (test_s8_forward_parity.LiveParity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-krown-s8-forward-parity-test\MyTradingSys\research\fable_run7_forward_test\test_s8_forward_parity.py", line 104, in setUpClass
+    cls.live = import_live()                         # ImportError = FAIL
+               ~~~~~~~~~~~^^
+  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-krown-s8-forward-parity-test\MyTradingSys\research\fable_run7_forward_test\test_s8_forward_parity.py", line 63, in import_live
+    import krown_live  # ImportError propagates: the test FAILS, never skips
+    ^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'krown_live'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.818s
+
+FAILED (errors=1)

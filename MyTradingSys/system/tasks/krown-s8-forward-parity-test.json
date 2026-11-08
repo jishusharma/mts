@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T19:22:33Z",
   "commands": [],
   "created": "2026-11-08T19:02:01Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "parity test written; recorded run FAILING pre-build (ModuleNotFoundError krown_live; 3 ora",
+      "ref": "0f7ab44f0",
+      "utc": "2026-11-08T19:22:33Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "fable R7: forward pre-reg, frozen Krown S8 4h trades Deribit testnet until it fails",
@@ -27,6 +34,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "krown-s8-4h-testnet-build",
   "note": "REVIEWED: Lab_Guy 2026-11-09 ACCEPT (independent Haiku Agent; must-fixes applied the same turn)",
   "prio": 2,
   "refine_tries": 0,
@@ -37,7 +45,12 @@
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
     "MyTradingSys/research/fable_run6_powered_prereg/e2_run.py"
   ],
-  "result": "",
+  "result": "parity test written; recorded run FAILING pre-build (ModuleNotFoundError krown_live; 3 oracle/guard tests pass: |A| within 277 +-1 pct, sealed bar refused)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_run7_forward_test/test_s8_forward_parity.py",
     "MyTradingSys/research/fable_run7_forward_test/"
@@ -51,13 +64,14 @@
   "sources": [
     "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FORWARD_PREREG.md section 1 and e2_run.py 42-60 (signals, stop_for) and counts_only.load",
     "Build set A (oracle) and the +-1 percent freeze assert; plant a sealed bar and assert refusal",
     "Build set B via krown_live.s8_events (import at test time; ImportError = FAIL) and the layer_signal checks",
     "Run on the pre-build tree, record the failing output in the card result; ship"
   ],
+  "taken": "2026-11-08T19:22:33Z",
   "tests": "test_s8_forward_parity.py: FAILS without krown_live (ImportError = FAIL, not skip); fails when one oracle event is removed from set B (planted mismatch); a planted synthetic timestamp >= 2024-07-01 (no price data) is refused by the guard; |A| within 277 +-1 pct; every alert through layer_signal gives stop pct to 4 dp, targets 2x, hold 24,000 min; floor-skip and busy-skip counts equal the oracle's.",
   "title": "Krown S8 forward test: replay parity test, live decision code must reproduce R6's 277 BTC events with 0 mismatches",
   "weight": "IMPORTANT",
