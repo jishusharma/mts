@@ -56,8 +56,6 @@ tr.nowline td { color: var(--accent); font-weight: 600; border-top: 1px dashed v
 .st { font: 600 11px var(--sans); letter-spacing: .05em; }
 .st.fresh { color: var(--up); } .st.stale, .st.norow { color: var(--amber); } .st.nofetch { color: var(--down); }
 tr.hi td { font-weight: 600; }
-#p-news.flash .hd h2 { animation: evflash 1s steps(2) infinite; }
-@keyframes evflash { 50% { color: var(--amber); } }
 .chip { font: 600 11px var(--sans); padding: 0 4px; border-radius: 3px; border: 1px solid var(--amber); color: var(--amber); margin-left: 4px; }
 input, select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: 15px var(--mono); padding: 5px 7px; width: 100%; min-width: 0; box-sizing: border-box; }
 input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -274,8 +272,6 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th>Source</th><th>Headline</th><th>Reading for BTC</th><th>How it usually reacts</th></tr></thead><tbody id="news"></tbody></table></div>
       <span class="tag">Reading = word rules (OURS), a label on the headline, never a forecast; UNKNOWN when the headline gives no basis. "How it usually reacts" quotes a study only where one exists (research/news_feeds_2026-10-30/REPORT.md section 3), else says not measured.</span>
       <span class="tag" id="news-gaps"></span>
-      <div class="scroll"><table id="ev-strip"><thead><tr><th>Upcoming</th><th>In</th><th>P</th><th>Last same-class move (BTC)</th><th>Analysts</th><th>Chip</th></tr></thead><tbody id="ev-rows"></tbody></table></div>
-      <span class="tag" id="ev-note">Upcoming strip: BLS and Fed schedule plus analyst-named events (CBP), events_strip.js. P = class table of NEWS_DESIGN.md section 3 (SOURCED, catalogue rows); analyst split is a count, never the chip. Flash at T-15 and T0 (CPI, NFP, FOMC statement) and T+30 (presser), none for PPI. Context only.</span>
     </section>
 
     <section id="p-an">
@@ -336,8 +332,6 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 
 <script src="live_aid_indicators.js"></script>
 <script src="news_feed.js"></script>
-<script src="events_strip.js"></script>
-<script src="events_strip_data.js"></script>
 <script src="analyst_data.js"></script>
 <script src="base_rates.js"></script>
 <script src="premarket_risk.js"></script>
@@ -898,7 +892,6 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderLiq(now);
     renderFund(now);
     renderNews(now);
-    try { renderStrip(now); } catch (e) { $('ev-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderMoney(now);
     renderCal(now);
     var a15 = S.a15;
@@ -1195,16 +1188,6 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   }
   function ago(ms) { var m = Math.floor(ms / 60000); return m < 1 ? 'now' : m < 60 ? m + 'm' : Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0'); }
   function headline(x) { return String(x.title || '').split('\n')[0].slice(0, 220); }
-  // Upcoming strip (events_strip.js + events_strip_data.js). The hd of the News panel pulses on a flash time until the tab is opened.
-  var EVS = window.EVSTRIP, EVD = window.EVENTS_STRIP_DATA, evPrev = 0, evRows = [];
-  function renderStrip(now) {
-    if (!EVS || !EVD) { $('ev-rows').innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
-    var rs = EVS.rows(now, EVD, 5); evRows = rs;
-    $('ev-rows').innerHTML = EVS.html(rs);
-    if (evPrev && rs.some(function (r) { return EVS.flashDue(r, evPrev, now); })) $('p-news').classList.add('flash');
-    if (S.view === 'news') $('p-news').classList.remove('flash');
-    evPrev = now;
-  }
   function renderNews(now) {
     var live = !!S.news.t && now - S.news.t <= 60000;
     $('age-news').textContent = S.news.t ? Math.round((now - S.news.t) / 1000) + 's' : '--';
@@ -1217,8 +1200,6 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     $('news').innerHTML = S.news.items.slice(0, S.view === 'news' ? 60 : 12).map(function (x) {
       var r = NF.row(x), hi = r.hi, t = esc(r.headline), u = r.url, rd = A.newsRead(x);
       var tags = r.tags.map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
-      var lk = EVS && evRows.length ? EVS.linkHeadline(r.headline, evRows) : null;
-      if (lk) tags += '<a class="chip" href="#ev-' + esc(lk.id) + '" title="names a strip event: inherits its class P (NEWS_DESIGN section 7)">strip ' + esc(lk.id) + (lk.p == null ? '' : ' P' + lk.p) + '</a>';
       return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + r.utc + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
         (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags +
         '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + '</td></tr>';

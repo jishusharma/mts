@@ -9,7 +9,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 # Every page-local script is inlined; a tag left as a src= would read "—" in the Artifact (2026-11-06: tf_strip.js).
-TAGS = ('<script src="live_aid_indicators.js"></script>', '<script src="news_feed.js"></script>', '<script src="events_strip.js"></script>', '<script src="events_strip_data.js"></script>', '<script src="tf_strip.js"></script>', '<script src="ma_strip.js"></script>',
+TAGS = ('<script src="live_aid_indicators.js"></script>', '<script src="news_feed.js"></script>', '<script src="tf_strip.js"></script>', '<script src="ma_strip.js"></script>',
         '<script src="cycle_flag_data.js"></script>', '<script src="cycle_flag.js"></script>')
 TAG = TAGS[0]
 NOTE = ('<p class="tag" id="preview-note">Preview copy. The claude.ai viewer blocks exchange connections, so every feed '
