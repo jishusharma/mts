@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-11-08T11:12:25Z",
   "commands": [
     "python scripts/aibridge/test_aibridge_account_lease.py"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Re-landed AIBridge 0.7.33 (09b4afae8, CI green run 42473373422). Lease live-agent test ski",
+      "ref": "cbaa75451",
+      "utc": "2026-11-08T11:12:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease uses crea",
@@ -27,6 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: operator installs 0.7.33 (aibridge_install.py --restart-agent) after the DeepSeek suspension lifts 2026-11-11",
   "note": "Linux CI runs this test; a skip must name the reason. If the test file path differs, find it with git ls-files | grep account_lease.",
   "prio": 1,
   "refine_tries": 0,
@@ -35,7 +43,12 @@
   "refs": [
     "MyTradingSys/system/DSA_BLOCK_REVIEW.md"
   ],
-  "result": "",
+  "result": "Re-landed AIBridge 0.7.33 (09b4afae8, CI green run 42473373422). Lease live-agent test skipped off Windows and uses a foreign host name. Nothing installed on any machine.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/ (test file only, plus the revert of 4c0bf2cc7)"
   ],
@@ -47,7 +60,7 @@
   "sources": [
     "login A signal 0914Z: CI RED on 0.7.33, creationflags Windows-only"
   ],
-  "state": "active",
+  "state": "done",
   "steps": [
     "git revert 4c0bf2cc7; add the platform skip to the creationflags case; run the lease test and the quick suite; ship; read CI"
   ],
