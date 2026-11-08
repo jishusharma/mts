@@ -240,14 +240,12 @@
       "code": [
         "MyTradingSys/backtest/layers/rsi/malkan_40_60.py",
         "MyTradingSys/backtest/layers/rsi/malkan_mtf.py",
-        "MyTradingSys/backtest/layers/rsi/malkan_level_short.py",
         "MyTradingSys/backtest/layers/kurisko/quad_rotation.py",
         "MyTradingSys/backtest/layers/kurisko/stoch_core.py"
       ],
       "ledger": [],
       "results": [
-        "MyTradingSys/research/rsi_divergence_mtf_2026-10-09",
-        "MyTradingSys/research/malkan_level_shorts_2026-11-09"
+        "MyTradingSys/research/rsi_divergence_mtf_2026-10-09"
       ],
       "roadmap": [],
       "cards": [

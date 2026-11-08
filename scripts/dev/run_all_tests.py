@@ -105,7 +105,7 @@ TEST_FILE_SECONDS = {
     "test_net_rr_floor_single_source.py": 8,
     "test_sync_where_unborn.py": 6,
     "test_dsa_direct_mode.py": 6,
-    "test_soak_six_slots.py": 150,                   # pure CPU, 135-164 s: smoke leaves it to CI (card soak-six-slots-smoke-cap)
+    "test_soak_six_slots.py": 806,                   # pure CPU: 806 s idle on JIS-NUC 2026-11-08 (was 135-164 s on 10-22); card gate-soak-six-slots-hang-cap-1108
 }
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
