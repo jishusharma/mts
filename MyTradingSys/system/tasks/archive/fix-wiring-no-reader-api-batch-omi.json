@@ -1,7 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/fix-wiring-no-reader-api-batch-omi.json
   "closed": "2026-10-29T21:09:30Z",
+=======
+  "closed": "2026-10-28T16:54:33Z",
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/fix-wiring-no-reader-api-batch-omi.json
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -28,9 +32,15 @@
   "latest": [
     {
       "kind": "ship",
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/fix-wiring-no-reader-api-batch-omi.json
       "line": "Already fixed by ae025c07a (QUICK_ANSWERS names both readers + test); wiring_scan --check ",
       "ref": "b8548229a",
       "utc": "2026-10-29T21:09:30Z"
+=======
+      "line": "no change needed: wiring_scan --check PASS, no NO-READER line on trunk (verified by Superv",
+      "ref": "77c86d19b",
+      "utc": "2026-10-28T16:54:33Z"
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/fix-wiring-no-reader-api-batch-omi.json
     },
     {
       "auto": true,
@@ -51,7 +61,11 @@
   "refs": [
     "MyTradingSys/research/fix_verification_2026-10-28/REPORT.md"
   ],
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/fix-wiring-no-reader-api-batch-omi.json
   "result": "Already fixed by ae025c07a (QUICK_ANSWERS names both readers + test); wiring_scan --check prints 0 NO-READER, 5 reader tests pass",
+=======
+  "result": "no change needed: wiring_scan --check PASS, no NO-READER line on trunk (verified by Supervisor A)",
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/fix-wiring-no-reader-api-batch-omi.json
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -72,7 +86,11 @@
     "Add a reader (import/call) where one is missing, else add a small documented allowlist in wiring_scan.py for CLI entry points and list these two",
     "Re-run wiring_scan.py --check and confirm both WARN lines are gone"
   ],
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/fix-wiring-no-reader-api-batch-omi.json
   "taken": "2026-10-29T21:09:30Z",
+=======
+  "taken": "2026-10-28T16:54:33Z",
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/fix-wiring-no-reader-api-batch-omi.json
   "tests": "scripts/dev/test_wiring_scan.py::test_cli_entrypoint_allowlist_suppresses_no_reader (new, must fail on pre-change code)",
   "title": "wiring_scan.py --check WARN NO-READER for api_batch.py and operator_material_index.py: add the reader or allowlist (fix report FAIL a)",
   "weight": "ROUTINE",

@@ -428,6 +428,7 @@ def test_git_hung_detects_old_git_processes_and_reports_pid_age_parent():
     assert st == "OK"
 
 
+<<<<<<< Updated upstream
 
 
 def test_run_overlaps_the_slow_checks(tmp_path, monkeypatch):
@@ -448,3 +449,5 @@ def test_run_overlaps_the_slow_checks(tmp_path, monkeypatch):
     monkeypatch.setattr(D, "checklist", part([("X", "OK", "d")]))
     monkeypatch.setattr(D, "cost_checkup", part(["cost"]))
     D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)
+=======
+>>>>>>> Stashed changes

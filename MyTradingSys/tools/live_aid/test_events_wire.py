@@ -36,9 +36,15 @@ def _browser():
 
 def run_js(expr, data):
     """Evaluate expr (JS, sees E = EVSTRIP and D = data) and return its JSON value."""
+    return run_many([(expr, data)])[0]
+
+
+def run_many(items):
+    """Evaluate several (expr, data) pairs in ONE runtime launch (each Edge launch costs seconds; a loaded gate host timed out)."""
     assert JS.exists(), "events_strip.js missing"
     src = JS.read_text(encoding="utf-8")
-    body = "var D=%s; var R=(function(E){return %s;})(window.EVSTRIP);" % (json.dumps(data), expr)
+    body = "var R=[];" + "".join("R.push((function(E,D){return %s;})(window.EVSTRIP,%s));" % (e, json.dumps(d))
+                                 for e, d in items)
     node = shutil.which("node")
     if node:
         p = subprocess.run([node, "-e", "var window={};" + src + "\n" + body + "process.stdout.write(JSON.stringify(R))"],
@@ -99,23 +105,28 @@ def test_strip_order_and_columns():
 
 def test_strip_flash_times():
     T = NOW + 3 * 60 * MIN
-    for cls, want in (("CPI", [T - 15 * MIN, T]), ("NFP", [T - 15 * MIN, T]), ("FOMC", [T - 15 * MIN, T]),
-                      ("FOMC_PRESSER", [T]), ("PPI", [])):
-        row = rows_of(data([sched("r", cls, T)]))[0]
-        assert run_js("E.flashTimes(D.row)", {"row": row}) == want, cls
-    row = rows_of(data([sched("r", "CPI", T)]))[0]
-    due = lambda prev, now: run_js("E.flashDue(D.row, %d, %d)" % (prev, now), {"row": row})
-    assert due(T - 61 * MIN, T - 59 * MIN) is False                   # T-60: countdown only
-    assert due(T - 16 * MIN, T - 14 * MIN) is True                    # T-15
-    assert due(T - 14 * MIN, T - MIN) is False
-    assert due(T - MIN, T + MIN) is True                              # T0
-    assert due(T, T + 5 * MIN) is False                               # already fired
+    cases = (("CPI", [T - 15 * MIN, T]), ("NFP", [T - 15 * MIN, T]), ("FOMC", [T - 15 * MIN, T]),
+             ("FOMC_PRESSER", [T]), ("PPI", []))
     nd = data([], {"hack-1": {"n": 2, "L": 0, "S": 2, "H": 0}},
               [{"id": "hack-1", "label": "Named", "t0": T}, {"id": "wk-1", "label": "Week of", "weekOf": T}])
-    rows = rows_of(nd)                                                # OURS row and 'week of' row: no flash, no P
+    got = run_many([("E.rows(%d, D, 5)" % NOW, data([sched("r", cls, T)])) for cls, _ in cases]
+                   + [("E.rows(%d, D, 5)" % NOW, nd)])
+    rows_by_cls = [g[0] for g in got[:5]]
+    rows = got[5]                                                     # OURS row and 'week of' row: no flash, no P
     assert [r["id"] for r in rows] == ["hack-1", "wk-1"] and all(r["p"] is None for r in rows)
     assert rows[1]["loose"] is True and rows[0]["loose"] is False
-    assert [run_js("E.flashTimes(D.row)", {"row": r}) for r in rows] == [[], []]
+    crow = rows_by_cls[0]
+    dues = [(T - 61 * MIN, T - 59 * MIN, False),                      # T-60: countdown only
+            (T - 16 * MIN, T - 14 * MIN, True),                       # T-15
+            (T - 14 * MIN, T - MIN, False),
+            (T - MIN, T + MIN, True),                                 # T0
+            (T, T + 5 * MIN, False)]                                  # already fired
+    out = run_many([("E.flashTimes(D.row)", {"row": r}) for r in rows_by_cls]
+                   + [("E.flashDue(D.row, %d, %d)" % (a, b), {"row": crow}) for a, b, _ in dues]
+                   + [("E.flashTimes(D.row)", {"row": r}) for r in rows])
+    assert out[:5] == [w for _, w in cases]
+    assert out[5:10] == [w for _, _, w in dues]
+    assert out[10:] == [[], []]
 
 
 def test_strip_hold_and_stale():
@@ -134,10 +145,9 @@ def test_strip_hold_and_stale():
 def test_headline_links_event():
     T = NOW + 20 * MIN
     rows = rows_of(data([sched("cpi-x", "CPI", T), sched("ppi-x", "PPI", T + MIN)]))
-    link = lambda title: run_js("E.linkHeadline(D.title, D.rows)", {"rows": rows, "title": title})
-    assert link("US CPI (YoY) (Oct) actual 3.1% vs 3.0% expected") == {"id": "cpi-x", "p": 24}
-    assert link("Producer Price Index rises 0.2%") == {"id": "ppi-x", "p": 3}
-    assert link("Binance lists a new token") is None
+    titles = ["US CPI (YoY) (Oct) actual 3.1% vs 3.0% expected", "Producer Price Index rises 0.2%", "Binance lists a new token"]
+    got = run_many([("E.linkHeadline(D.title, D.rows)", {"rows": rows, "title": t}) for t in titles])
+    assert got == [{"id": "cpi-x", "p": 24}, {"id": "ppi-x", "p": 3}, None]
 
 
 # ---- export rules (events_to_watch.json, schedule times) ----

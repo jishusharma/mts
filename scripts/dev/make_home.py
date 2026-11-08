@@ -31,7 +31,10 @@ WRITE_FIRST = ("research_map",)  # pages where Jis writes, shown first
 DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
 TASKS = "MyTradingSys/system/tasks"
 NO_ANSWER = ("", "(none yet)")
+<<<<<<< Updated upstream
 RECORDED_HEAD = re.compile(r"(?:d-|\d{4}-\d{2}-\d{2})")  # OURS: decision-log headings; open questions are q-* or DECISION NEEDED
+=======
+>>>>>>> Stashed changes
 # A parked card is the operator's only when its ask is addressed to him; the rest wait on machines (DSA desks, captions, other cards).
 FOR_OPERATOR = re.compile(r"(?-i:\bJis\b)|operator (to|reader|G3|marks)|the operator G3", re.I)  # "Jis" exact: JIS-NB is a host
 SUPER = "MyTradingSys/system/SUPER_SESSION.md"
@@ -87,8 +90,11 @@ def waiting(repo):
         head, _, body = sec.partition("\n")
         if re.search(r"\bdecided\b", head, re.I):
             continue
+<<<<<<< Updated upstream
         if RECORDED_HEAD.match(head) or re.search(r"(?m)^Applied:|^Operator \((?:voice|chat)|^Operator:", body):
             continue  # a recorded operator decision (dated or d- heading, Applied:/Operator body), not an open question
+=======
+>>>>>>> Stashed changes
         ans = re.search(r"(?m)^Answer: *(.*)$", body)
         if (ans and ans.group(1).strip() not in NO_ANSWER) or '"answer"' in body or '"status": "DECIDED"' in body:
             continue

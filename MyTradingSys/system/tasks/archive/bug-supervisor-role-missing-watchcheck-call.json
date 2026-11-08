@@ -1,7 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/bug-supervisor-role-missing-watchcheck-call.json
   "closed": "2026-10-29T22:23:00Z",
+=======
+  "closed": "2026-10-28T15:59:02Z",
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/bug-supervisor-role-missing-watchcheck-call.json
   "commands": [],
   "created": "2026-10-28T15:55:44Z",
   "depends_on": [],
@@ -16,9 +20,15 @@
   "latest": [
     {
       "kind": "ship",
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/bug-supervisor-role-missing-watchcheck-call.json
       "line": "Verified roles/supervisor.md step 3 wires watchcheck call; test_role_budget.py and test_supervisor.py pass",
       "ref": "61bc6005e",
       "utc": "2026-10-29T22:23:00Z"
+=======
+      "line": "roles/supervisor.md step 3 now calls watchcheck as last call (96d2531c); test_role_budget.",
+      "ref": "96d2531c2",
+      "utc": "2026-10-28T15:59:02Z"
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/bug-supervisor-role-missing-watchcheck-call.json
     },
     {
       "auto": true,
@@ -44,7 +54,11 @@
   "refined_by": "",
   "refreshed": "2026-10-28T15:57:21Z",
   "refs": [],
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/bug-supervisor-role-missing-watchcheck-call.json
   "result": "Commit 942762397b5a wired watchcheck into supervisor.md step 3 as the last call; test_role_budget.py (5 passed) and test_supervisor.py -k watchcheck (4 passed) pass.",
+=======
+  "result": "roles/supervisor.md step 3 now calls watchcheck as last call (96d2531c); test_role_budget.py 5 passed",
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/bug-supervisor-role-missing-watchcheck-call.json
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -61,7 +75,11 @@
   "steps": [
     "Add the watchcheck call + restart-on-exit-4 rule to supervisor.md step 3; retoken; fit byte budget"
   ],
+<<<<<<< Updated upstream:MyTradingSys/system/tasks/archive/bug-supervisor-role-missing-watchcheck-call.json
   "taken": "2026-10-29T22:23:00Z",
+=======
+  "taken": "2026-10-28T15:59:02Z",
+>>>>>>> Stashed changes:MyTradingSys/system/tasks/bug-supervisor-role-missing-watchcheck-call.json
   "tests": "MyTradingSys/tests/test_role_budget.py; scripts/dev/test_supervisor.py -k watchcheck",
   "title": "BUG: roles/supervisor.md 'Every wake' step never calls supervisor.py watchcheck (SUPER_SESSION.md step 5's own fail-closed last-call rule), so a watcher that exits immediately or never starts goes undetected -- caused a 70min-stalled Opus Agent worker to go unreported tonight",
   "weight": "",

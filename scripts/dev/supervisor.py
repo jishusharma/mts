@@ -693,7 +693,10 @@ def wait_for_transition(
     login: str | None = None,
     home=None,
     clock=None,
+<<<<<<< Updated upstream
     signals=None,
+=======
+>>>>>>> Stashed changes
 ) -> tuple[int, str]:
     """Record baseline at start and poll every `interval` seconds after fetching.
     Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
@@ -701,16 +704,22 @@ def wait_for_transition(
     unused (_actionable), at most once per plan (`<login>-woke.txt`); exits (3, reason) when `timeout` seconds elapse with no transition.
     stall-fix-1104: with `login`, also exits (0, RESET ...) AT that login's next 5 h reset when it falls inside the timeout (never past it: soak 50 min cap), and
     any time a running api_job.py job finishes; the marker records stdout so watchcheck can refuse a detached (`&`) watcher.
+<<<<<<< Updated upstream
     1-minute signals (operator 2026-11-07): in production (no injected probe/fetcher/sleeper) it also fetches the mts-signals branch every
     SIGNAL_STEP s and exits 0 (SIGNAL ...) on a new ask or HIGH broadcast for this host; `signals` injects that check (a callable returning a reason or None).
+=======
+>>>>>>> Stashed changes
     """
     clock = clock or _now_utc
     timeout_s = parse_duration(timeout)
     reset_at = _next_reset(login, home, clock())
     if reset_at and reset_at > clock() + timedelta(seconds=timeout_s):
         reset_at = None     # the timeout wakes the session first; its next watcher catches the reset
+<<<<<<< Updated upstream
     if signals is None and probe is None and fetcher is None and sleeper is None:
         signals = _signals_check()
+=======
+>>>>>>> Stashed changes
     marker = _watcher_file(login, home)
     token = uuid.uuid4().hex
     try:
@@ -721,7 +730,11 @@ def wait_for_transition(
     except OSError:
         pass
     try:
+<<<<<<< Updated upstream
         return _wait_loop(repo, shas, timeout_s, interval, probe, fetcher, sleeper, login, home, reset_at, clock, signals)
+=======
+        return _wait_loop(repo, shas, timeout_s, interval, probe, fetcher, sleeper, login, home, reset_at, clock)
+>>>>>>> Stashed changes
     finally:
         try:     # unlink only our own marker: a newer watcher (other pid/token) may have rewritten it
             d = json.loads(marker.read_text(encoding="utf-8"))
@@ -748,6 +761,7 @@ def _next_reset(login: str | None, home, now: datetime) -> datetime | None:
     return None
 
 
+<<<<<<< Updated upstream
 SIGNAL_STEP = 60    # OURS: seconds between signal checks of a watcher (the 1-minute reply target)
 
 
@@ -771,6 +785,9 @@ def _signals_check():
 
 
 def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home, reset_at=None, clock=None, signals=None) -> tuple[int, str]:
+=======
+def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home, reset_at=None, clock=None) -> tuple[int, str]:
+>>>>>>> Stashed changes
     sha_list = parse_shas_arg(shas)
     timeout_s = parse_duration(timeout)
     interval_s = max(1, parse_duration(interval))
@@ -787,13 +804,18 @@ def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, ho
 
     clock = clock or _now_utc
     while elapsed < timeout_s:
+<<<<<<< Updated upstream
         step = min(min(interval_s, SIGNAL_STEP) if signals else interval_s, timeout_s - elapsed)
+=======
+        step = min(interval_s, timeout_s - elapsed)
+>>>>>>> Stashed changes
         if reset_at:
             step = max(1, min(step, int((reset_at - clock()).total_seconds()) + 5))
         sleep_fn(step)
         elapsed += step
         if reset_at and clock() >= reset_at:
             return 0, f"TRANSITION RESET 5 h window of {login} reset at {reset_at.strftime('%H:%MZ')}: get_usage, plan, spend it"
+<<<<<<< Updated upstream
         if signals:
             try:
                 sig = signals()
@@ -804,6 +826,8 @@ def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, ho
             if elapsed - last_full < interval_s and elapsed < timeout_s:
                 continue
         last_full = elapsed
+=======
+>>>>>>> Stashed changes
         try:
             fetch_fn(repo)
         except Exception:
@@ -1285,13 +1309,21 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
             L.append(f"NOTE CI RED: usage gate refuses a spawn ({refuse}); no worker is spawned this wake, revert by hand "
                      f"or wait for the gate ({ci.get('message', '')[:80]})")
         else:
+<<<<<<< Updated upstream
             L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]}) | {COMMIT_RULE}")
+=======
+            L.append(f"SPAWN CI RED: one worker on the pinned ci-* card only; nothing else ships ({ci.get('message', '')[:80]})")
+>>>>>>> Stashed changes
     picks = ctx.get("picks", [])
     if plan["new"] and picks and not ci.get("red"):
         # WORKERS.md rule 2 / roles/supervisor.md:35: Claude Builder cards run as background Agents; only interactive roles are sessions
         kind = lambda p: "agent" if (p.get("role") or "Builder") == "Builder" else (p.get("worker") or "?")
         L.append(f"SPAWN {len(picks)}: " + ", ".join(f"{p['id']} ({p.get('role') or 'Builder'}, {kind(p)}, "
+<<<<<<< Updated upstream
                                                   f"{'own' if p.get('own', True) else 'peer'})" for p in picks) + f" | {COMMIT_RULE}")
+=======
+                                                  f"{'own' if p.get('own', True) else 'peer'})" for p in picks))
+>>>>>>> Stashed changes
     elif plan["new"] and not picks:
         L.append("NOTE no Claude card fits this host: Session_Planner (foreground Agent) refines raw cards, or idle")
     # shared lanes: exactly one live supervisor (lane_owner) acts on each
@@ -1515,10 +1547,13 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
                    _usage_rows())
     prev = _last_plan(login, home)
     notes, ctx = [], {}
+<<<<<<< Updated upstream
     try:
         ctx["week_pace"] = week_pace_lines(repo, login, float(rd["week"]), pl["week_reset"], now, pl)
     except Exception as e:
         notes.append(f"NOTE WEEK PACE failed ({type(e).__name__}: {str(e)[:80]})")
+=======
+>>>>>>> Stashed changes
     wp = work_period(login, now, rd["sid"], work_hours, work_until, home, write=send)
     ctx["work"] = wp
     ctx["transit_now"] = transit_reason(pl, now, context_tokens, wave_start or wave_start_from(hist, now, rd["sid"]), _utc(wp.get("until")))

@@ -107,6 +107,7 @@ def test_fold_writes_trunk_reads_only_into_the_card_and_commits_it(tmp_path):
     # O3 CUT1: a second fold of the identical transcript writes nothing new -> skipped, no new commit
     assert G.fold(tp, str(root), now=SINCE)[0] == "skipped"
     assert len(json.load(open(root / "MyTradingSys/system/tasks/card-a.json"))["context"]["reads"]) == 2
+<<<<<<< Updated upstream
     assert _git(root, "log", "--oneline").count("fold context") == 0   # the fold never commits on its own
 
 
@@ -121,6 +122,9 @@ def test_fold_commit_not_shipped(tmp_path):
     assert [x for x in pushed if x] == ["real work"]   # no fold-only commit in the pushed range
     assert "MyTradingSys/system/tasks/card-a.json" in _git(root, "show", "--name-only", "--format=", "HEAD")
     assert _git(root, "status", "--short").strip() == ""
+=======
+    assert _git(root, "log", "--oneline").count("fold context") == 1   # only the first fold committed
+>>>>>>> Stashed changes
 
 
 def test_fold_without_card_or_transcript_is_unfolded_not_an_error(tmp_path):

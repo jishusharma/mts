@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import api_job  # noqa: E402
 
 
+<<<<<<< Updated upstream
 def test_build_cmd_api_engine_is_default_and_carries_caps(tmp_path):
     cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200, cwd="C:/x", out_dir="F:/MTS/api_runs/s")
     flat = " ".join(cmd)
@@ -23,6 +24,10 @@ def test_build_cmd_api_engine_is_default_and_carries_caps(tmp_path):
 
 def test_build_cmd_never_carries_the_key_and_sets_every_guard(tmp_path):
     cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200, engine="claude")
+=======
+def test_build_cmd_never_carries_the_key_and_sets_every_guard(tmp_path):
+    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200)
+>>>>>>> Stashed changes
     flat = " ".join(cmd)
     assert "sk-ant" not in flat and "key.txt" not in flat
     for flag in ("--max-budget-usd", "8.0", "--max-turns", "200", "--permission-mode", "bypassPermissions",

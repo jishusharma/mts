@@ -198,6 +198,7 @@ class T(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+<<<<<<< Updated upstream
 
 
 class SignalRowsTest(unittest.TestCase):
@@ -227,3 +228,5 @@ class SignalRowsTest(unittest.TestCase):
                     del os.environ["MTS_SIGNALS_HOME"]
                 else:
                     os.environ["MTS_SIGNALS_HOME"] = old
+=======
+>>>>>>> Stashed changes

@@ -1,14 +1,21 @@
 """Headless Builder jobs on the Claude API credit: one launcher so every super session runs them the same way.
 
+<<<<<<< Updated upstream
   python scripts/dev/api_job.py launch <slug> --card <card-id> --model claude-opus-5-5 --max-usd 8 [--max-turns 200] [--max-tokens 32000] [--dry-run]
+=======
+  python scripts/dev/api_job.py launch <slug> --card <card-id> --model claude-opus-5-5 --max-usd 8 [--max-turns 200] [--dry-run]
+>>>>>>> Stashed changes
   python scripts/dev/api_job.py launch <slug> --prompt-file p.txt ...        (a prompt of your own instead of a card brief)
   python scripts/dev/api_job.py status [<slug>]          running | done (cost, turns, minutes, last line) for one or all runs
   python scripts/dev/api_job.py ledger <slug> --outcome "shipped <sha>; <number>"   append the Spent row (PLAN_API_CREDITS_*.md)
   python scripts/dev/api_job.py total                    USD in the Spent ledger (today and all)
 
+<<<<<<< Updated upstream
 Engine (2026-11-07): default `--engine api` runs scripts/dev/api_agent.py on the raw Messages API, the only path the promotional
 credit pays; `--engine claude` (`claude -p`) carries the claude-code beta, which the org refuses ("credit balance is too low"), and
 with an OAuth login present it silently bills that login's subscription (every Spent row before 2026-11-07 was such a run).
+=======
+>>>>>>> Stashed changes
 Rules (PLAN_API_CREDITS_2026-11-04.md): one job at a time per machine; every job carries --max-budget-usd; the key is read from
 F:/ClaudePlaform/key.txt (env MTS_API_KEY_FILE overrides) into the child's environment only, never printed, logged or put in a
 prompt; a prompt that names a secret-like path is refused; hooks are off under a nested headless run (disableAllHooks), so the
@@ -34,8 +41,12 @@ RUNS = Path(os.environ.get("MTS_API_RUNS", "F:/MTS/api_runs"))
 KEY_FILE_DEFAULT = "F:/ClaudePlaform/key.txt"
 LEDGER = REPO / "MyTradingSys/system/PLAN_API_CREDITS_2026-11-04.md"
 BLOCKED = (".secrets", ".env", ".pem", ".key", "api_key", "apikey", "key.txt", ".ovpn")
+<<<<<<< Updated upstream
 MODEL_NAMES = {"claude-opus-5-5": "Opus 5.5", "claude-sonnet-5-5": "Sonnet 5.5", "claude-haiku-5-5": "Haiku 5.5",
                "claude-fable-5-1": "Fable 5.1"}
+=======
+MODEL_NAMES = {"claude-opus-5-5": "Opus 5.5", "claude-sonnet-5-5": "Sonnet 5.5", "claude-haiku-5-5": "Haiku 5.5"}
+>>>>>>> Stashed changes
 
 PREAMBLE = """You are Builder. Headless job on the Claude API credit; hooks are off, so these rules replace them.
 Boot: python scripts/dev/sync.py start {slug} --worker; work only in the printed WORKTREE (git -C <tree> for git, never cd x && git).
@@ -76,12 +87,16 @@ def child_env(base: dict, kf: Path) -> dict:
     return env
 
 
+<<<<<<< Updated upstream
 def build_cmd(model: str, max_usd: float, max_turns: int, engine: str = "api", cwd: str = "", out_dir: str = "",
               max_tokens: int | None = None) -> list[str]:
     if engine == "api":  # raw Messages API: the only path the promotional credit pays (measured 2026-11-07, see api_agent.py)
         cmd = [sys.executable, str(REPO / "scripts/dev/api_agent.py"), "--model", model, "--max-usd", str(max_usd),
                "--max-turns", str(max_turns), "--cwd", cwd or str(REPO), "--out", out_dir]
         return cmd + ["--max-tokens", str(max_tokens)] if max_tokens else cmd
+=======
+def build_cmd(model: str, max_usd: float, max_turns: int) -> list[str]:
+>>>>>>> Stashed changes
     exe = shutil.which("claude") or "claude"
     return [exe, "-p", "--model", model, "--permission-mode", "bypassPermissions",
             "--settings", '{"disableAllHooks":true}', "--max-budget-usd", str(max_usd), "--max-turns", str(max_turns),
@@ -153,6 +168,7 @@ def launch(a) -> None:
     busy = running_jobs()
     if busy and not a.dry_run:
         die(f"REFUSED: one job at a time per machine; running: {busy} (api_job.py status)")
+<<<<<<< Updated upstream
     d = RUNS / a.slug
     cmd = build_cmd(a.model, a.max_usd, a.max_turns, a.engine, a.cwd or str(REPO), str(d), a.max_tokens)
     if a.engine == "claude":
@@ -161,13 +177,24 @@ def launch(a) -> None:
     if a.dry_run:
         print("DRY-RUN", " ".join(cmd))
         print(f"DRY-RUN prompt {len(prompt)} chars -> {d / 'prompt.txt'}; cwd {a.cwd or REPO}; max_tokens {a.max_tokens or 'default'}")
+=======
+    cmd = build_cmd(a.model, a.max_usd, a.max_turns)
+    d = RUNS / a.slug
+    if a.dry_run:
+        print("DRY-RUN", " ".join(cmd))
+        print(f"DRY-RUN prompt {len(prompt)} chars -> {d / 'prompt.txt'}; cwd {a.cwd or REPO}")
+>>>>>>> Stashed changes
         return
     kf = key_file()
     if not kf.exists():
         die(f"key file missing: {kf}")
     d.mkdir(parents=True, exist_ok=True)
     io.open(d / "prompt.txt", "w", encoding="utf-8", newline="\n").write(prompt)
+<<<<<<< Updated upstream
     meta = {"slug": a.slug, "card": a.card, "model": a.model, "max_usd": a.max_usd, "max_turns": a.max_turns, "max_tokens": a.max_tokens, "engine": a.engine,
+=======
+    meta = {"slug": a.slug, "card": a.card, "model": a.model, "max_usd": a.max_usd, "max_turns": a.max_turns,
+>>>>>>> Stashed changes
             "started": dt.datetime.now(dt.timezone.utc).isoformat(), "host": os.environ.get("COMPUTERNAME", ""), "cwd": a.cwd or str(REPO)}
     io.open(d / "meta.json", "w", encoding="utf-8", newline="\n").write(json.dumps(meta, indent=1))
     out = io.open(d / "out.jsonl", "ab")
@@ -179,7 +206,11 @@ def launch(a) -> None:
                          cwd=a.cwd or str(REPO), creationflags=flags)
     p.stdin.write(prompt.encode("utf-8"))
     p.stdin.close()
+<<<<<<< Updated upstream
     print(f"LAUNCHED {a.slug} pid {p.pid} model {a.model} cap ${a.max_usd} max_tokens {a.max_tokens or 'default'} -> {d / 'out.jsonl'}")
+=======
+    print(f"LAUNCHED {a.slug} pid {p.pid} model {a.model} cap ${a.max_usd} -> {d / 'out.jsonl'}")
+>>>>>>> Stashed changes
     print(wait_line())
 
 
@@ -197,7 +228,11 @@ def status(a) -> None:
                 pass
         state = "done" if r["done"] else "running"
         cost = f"${r['cost']:.2f}" if r["cost"] is not None else "-"
+<<<<<<< Updated upstream
         print(f"{d.name:40s} {state:8s} {meta.get('model', '?'):18s} cost {cost:7s} turns {r['turns'] or '-':>4} {r['minutes'] if r['minutes'] is not None else '-':>3} min {r['subtype'] or ''} max_tokens {meta.get('max_tokens') or 'default'} | {r['text'].splitlines()[0][:90] if r['text'] else ''}")
+=======
+        print(f"{d.name:40s} {state:8s} {meta.get('model', '?'):18s} cost {cost:7s} turns {r['turns'] or '-':>4} {r['minutes'] if r['minutes'] is not None else '-':>3} min {r['subtype'] or ''} | {r['text'].splitlines()[0][:90] if r['text'] else ''}")
+>>>>>>> Stashed changes
 
 
 def ledger_append(plan: Path, date: str, job: str, model: str, cost: float, turns, outcome: str) -> None:
@@ -252,11 +287,15 @@ def main(argv=None) -> None:
     l.add_argument("--model", default="claude-sonnet-5-5", choices=sorted(MODEL_NAMES))
     l.add_argument("--max-usd", type=float, required=True)
     l.add_argument("--max-turns", type=int, default=200)
+<<<<<<< Updated upstream
     l.add_argument("--max-tokens", type=int, default=None,
                    help="cap of one reply, passed to api_agent.py (default: its per-model default, 32000; one retry at double on a cut-off)")
     l.add_argument("--cwd", help="run from this checkout (default: this repo)")
     l.add_argument("--engine", default="api", choices=("api", "claude"),
                    help="api = raw Messages API via api_agent.py (bills the credit); claude = `claude -p` (bills the subscription)")
+=======
+    l.add_argument("--cwd", help="run from this checkout (default: this repo)")
+>>>>>>> Stashed changes
     l.add_argument("--dry-run", action="store_true")
     l.set_defaults(fn=launch)
     s = sub.add_parser("status")

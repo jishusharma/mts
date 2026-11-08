@@ -489,6 +489,7 @@ def sec_value():
 def supervisors():
     """(rows, ready_n, now) from the signals branch (fetched) and the tree's cards."""
     import mts_signal
+<<<<<<< Updated upstream
     now = datetime.now(timezone.utc)
     ready = claude_ready(cards())
     return supervisor_rows(beats_from_rows(signal_rows(REPO), now), ready, now), ready, now
@@ -524,6 +525,14 @@ def signal_rows(repo, sig=None):
             pass
         i = j + 1 + size + 1
     return rows
+=======
+    h = mts_signal.ensure(REPO)
+    if h is None:
+        raise RuntimeError("no signals clone")
+    now = datetime.now(timezone.utc)
+    ready = claude_ready(cards())
+    return supervisor_rows(beats_from_rows(mts_signal.load(h), now), ready, now), ready, now
+>>>>>>> Stashed changes
 
 
 def sec_supervisors():

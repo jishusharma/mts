@@ -83,6 +83,7 @@ class Symbols(unittest.TestCase):
             self.assertIn("ETH rows", buf.getvalue())
 
 
+<<<<<<< Updated upstream
 class Defects(unittest.TestCase):
     def test_price_followed_by_ticker_kept(self):
         self.assertEqual(al.parse_levels("target 80k BTC"), [80000])
@@ -120,6 +121,8 @@ class Defects(unittest.TestCase):
             al.mark([], [], datetime.now(timezone.utc))
 
 
+=======
+>>>>>>> Stashed changes
 class Hit(unittest.TestCase):
     def test_publish_day_bars_never_count(self):
         """Only the date is stored: a touch on the publish day may predate the video, so hit starts the next UTC day."""

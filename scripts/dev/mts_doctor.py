@@ -1038,7 +1038,11 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
         lines += ["", "Part 2: process health (trunk and CI at run time)", "",
                   "Since the previous report: " + (", ".join(delta) if delta else ("no change" if prev else "no earlier report")), "",
                   text.replace("# health audit", "## Process detail", 1)]
+<<<<<<< Updated upstream
     lines += ["", *cost_lines]
+=======
+    lines += ["", *cost_checkup(repo, now)]
+>>>>>>> Stashed changes
     out.mkdir(parents=True, exist_ok=True)
     path = out / f"REPORT_{day}.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
