@@ -1180,9 +1180,9 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
-def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None):
+def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
-    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship. Never raises."""
+    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
     try:
         p = Path(path or os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -1201,6 +1201,7 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
             "retry": round(float(retry_s), 2),
             "secs": round(float(wait_s + run_s + retry_s), 2),
             "ok": bool(ok),
+            "failed_steps": [str(x) for x in (failed_steps or [])],
             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "sha": short_sha,
         }
@@ -1217,9 +1218,30 @@ def _timing_path(repo):
     return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
 
 
-def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True):
+def failed_step_ids(repo, offset=0, path=None):
+    """Ids of gate step rows with ok:false written after byte `offset` of gate_timing.jsonl (ship/ship_wall rows skipped),
+    first-seen order, de-duplicated. Never raises: [] when the log cannot be read."""
+    try:
+        p = Path(path) if path else _timing_path(repo)
+        out = []
+        with open(p, "rb") as fh:
+            fh.seek(offset)
+            for ln in fh.read().decode("utf-8", "ignore").splitlines():
+                try:
+                    r = json.loads(ln)
+                    sid = str(r["step"])
+                    if r.get("ok") is False and sid not in ("ship", "ship_wall") and sid not in out:
+                        out.append(sid)
+                except (ValueError, KeyError, TypeError, AttributeError):
+                    continue
+        return out
+    except Exception:
+        return []
+
+
+def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True, failed_steps=None):
     """Append one `ship_wall` row (the whole ship, start to end) to gate_timing.jsonl; over SHIP_SLOW_S print one
-    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. Never raises."""
+    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. The row also carries failed_steps (ids of failed gate steps). Never raises."""
     try:
         p = Path(path) if path else _timing_path(repo)
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -1235,7 +1257,7 @@ def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True):
                         continue
         r = git(repo, "rev-parse", "--short=8", "HEAD", check=False)
         row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": bool(ok),
-               "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
+               "failed_steps": [str(x) for x in (failed_steps or [])], "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
         with open(p, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(row) + "\n")
         if wall_s > SHIP_SLOW_S:
@@ -1368,8 +1390,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
         raise SyncError(f"push still rejected after {SHIP_PUSH_TRIES} tries:\n{r.stderr}")
     finally:
         if files:
-            record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
-            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok)
+            failed = [] if ok else failed_step_ids(repo, log_off)
+            record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok, failed_steps=failed)
+            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok, failed_steps=failed)
 
 
 def news(repo, hours=24):

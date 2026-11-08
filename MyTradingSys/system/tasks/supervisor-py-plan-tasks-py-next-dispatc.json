@@ -1,0 +1,41 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T03:38:54Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_supervisor.py: a ready card with PARKED note yields no SPAWN line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make PARKED notes and depends_on block dispatch in supervisor plan and tasks next",
+  "id": "supervisor-py-plan-tasks-py-next-dispatc",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "IMPORTANT: reviewer stamp needed",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py scripts/dev/tasks.py"
+  ],
+  "scope_out": [
+    "card content"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [
+    "failing test first",
+    "filter PARKED and unmet depends_on in plan and next"
+  ],
+  "tests": "python -m pytest scripts/dev/test_supervisor.py -k parked",
+  "title": "supervisor.py plan / tasks.py next dispatch ready cards whose note says PARKED (indicator-map-1107 was built 11-08 despite 'PARKED: machinery growth frozen') and ignore depends_on notes in free text; make parked/depends_on block dispatch (done when: test with a PARKED-note ready card yields no SPAWN line)",
+  "weight": "IMPORTANT",
+  "worker": "agent"
+}

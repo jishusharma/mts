@@ -232,6 +232,16 @@ def test_ship_time_median_max_missing_log(tmp_path):
     assert D.ship_time(log, now)[0] == "unavailable"                                                    # the old per-sync row no longer decides
 
 
+def test_ship_time_names_repeat_failing_steps(tmp_path):
+    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    log = tmp_path / "t.jsonl"
+    rows = [{"step": "ship_wall", "secs": 130, "utc": "2026-10-25T10:00:00Z", "sha": "a", "ok": False, "failed_steps": f}
+            for f in (["3xm"], ["3xm", "5b"], ["3xm"], [])]
+    log.write_text(chr(10).join(json.dumps(r) for r in rows) + chr(10), encoding="utf-8")
+    st, msg = D.ship_time(log, now)
+    assert st == "WARN" and "failing steps: 3xm x3, 5b x1" in msg
+
+
 def test_hook_reg_missing_hooks_and_behind(tmp_path):
     git = lambda *a: subprocess.run(["git", "-C", str(tmp_path), "-c", "user.name=t", "-c", "user.email=t@t", *a], check=True, capture_output=True)
     git("init", "-q")

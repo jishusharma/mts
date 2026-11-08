@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-11-07T18:38:32Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/mts_doctor.py runs under 60 s and scripts/dev/status_board.py Supervisors section renders; test in scripts/dev/test_status_board.py",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make mts_doctor.py run under 60 s and fix status_board Supervisors section checkout failure",
   "id": "mts-doctor-py-takes-over-120-s-status-bo",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.ship: record failed gate step ids in ship/ship_wall rows; doctor SHIP-TIME names repe",
+      "ref": "072e743e6aec",
+      "utc": "2026-11-08T02:43:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +28,25 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T03:57:29Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_doctor.py scripts/dev/status_board.py"
+  ],
+  "scope_out": [
+    "doctor check semantics"
+  ],
+  "scope_sha": "072e743e6aec",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "profile doctor checks",
+    "replace git checkout -B mts-signals with read-only fetch/show"
+  ],
+  "tests": "python -m pytest scripts/dev/test_status_board.py",
   "title": "mts_doctor.py takes over 120 s; status_board.py Supervisors section fails on git checkout -q -B mts-signals FETCH_HEAD (done when: doctor under 60 s, status_board section renders)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

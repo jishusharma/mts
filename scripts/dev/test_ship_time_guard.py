@@ -75,5 +75,37 @@ class ShipWall(unittest.TestCase):
         sync.record_ship_wall("/nonexistent/\0bad", 500, path="/nonexistent/\0bad/x.jsonl")
 
 
+class ShipFailedSteps(unittest.TestCase):
+    """Ship rows say WHY a gate failed: ids of the step rows with ok:false written after the ship's start offset."""
+
+    def test_rows_carry_failed_steps(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            log = Path(d) / "t.jsonl"
+            sync.record_ship_timing(d, 1, 2, 0, ok=False, sha="abc", path=log, failed_steps=["3xm"])
+            sync.record_ship_wall(d, 5, path=log, ok=False, failed_steps=["3xm"])
+            rows = [json.loads(x) for x in log.read_text(encoding="utf-8").splitlines()]
+            self.assertEqual([r["failed_steps"] for r in rows], [["3xm"], ["3xm"]])
+
+    def test_failed_step_ids_come_from_step_rows_after_offset(self):
+        import tempfile
+        nl = chr(10)
+        with tempfile.TemporaryDirectory() as d:
+            log = Path(d) / "t.jsonl"
+            log.write_text(json.dumps({"step": "old", "ok": False}) + nl, encoding="utf-8")
+            off = log.stat().st_size
+            with log.open("a", encoding="utf-8", newline=nl) as fh:
+                for r in ({"step": "3xm", "ok": False}, {"step": "4", "ok": True}, {"step": "3xm", "ok": False},
+                          {"step": "5b", "ok": False}, {"step": "ship", "ok": False}, {"step": "ship_wall", "ok": False}):
+                    fh.write(json.dumps(r) + nl)
+                fh.write("not json" + nl)
+            self.assertEqual(sync.failed_step_ids(d, off, path=log), ["3xm", "5b"])
+            self.assertEqual(sync.failed_step_ids(d, 0, path=Path(d) / "missing.jsonl"), [])
+
+    def test_ship_finally_passes_failed_steps(self):
+        src = Path(sync.__file__).read_text(encoding="utf-8")
+        self.assertIn("failed_steps=failed", src)
+
+
 if __name__ == "__main__":
     unittest.main()
