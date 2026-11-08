@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T10:58:57Z",
   "commands": [
     "python MyTradingSys/research/news_effects_2026-11/check_design.py",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/events_extract.md",
@@ -45,10 +46,18 @@
   "goal": "Analysts name data and announcements to watch; wire them with the BLS/Fed release schedule into an Upcoming strip on the Live Aid News tab per MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md section 7, with the flash times of section 4. Context only, never a gate.",
   "id": "cbp-events-to-watch-wire-1108",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Upcoming strip + events_to_watch.json (6 events) + 6 tests fail-first, shipped 4766b45a; p",
+      "ref": "4766b45ad",
+      "utc": "2026-11-08T10:58:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: re-extraction needs a host with F:/CryptoScrapper",
   "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md sections 4 and 7. Depends on the News panel and news_weight.js (P table) being on trunk. CBP has no fire since 10-28 per an open card: if the YouTube fetch is blocked, backfill from the existing extractions.md only. Loose analyst times stay 'week of' and show at day start without a flash. Unblocks when the synthesis card is done (depends_on). Checked against a65df68 (News poll gate + news_feed.js R23, 2026-11-08): news_feed.js already exists with NEWSFEED.row; wire into it, never a second panel; scope unchanged.",
   "prio": 1,
   "refine_tries": 0,
@@ -59,7 +68,12 @@
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
   ],
-  "result": "",
+  "result": "Upcoming strip + events_to_watch.json (6 events) + 6 tests fail-first, shipped 4766b45a; part (1) re-extraction skipped (no F:/CryptoScrapper)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "F:/CryptoScrapper/cbp_v2/extract_prompt.md and cbp_events_export.py (outside the repo: copy the exported json only)",
     "MyTradingSys/research/cbp/events_to_watch.json (new)",
@@ -75,12 +89,13 @@
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 4 and 7), extract_prompt.md, extractions.md tail and the CBP rules; write test_events_wire.py with the 4 named tests and run it red",
     "write the events_to_watch block into the prompt and re-run extraction over 14 days; verify quotes; cbp_events_export.py -> events_to_watch.json",
     "write events_strip.js (schedule rows + analyst rows, P, last same-class move, flash times sharing the News tab pulse); rebuild page, run_all_tests --quick, ship with Result naming build, event count and the 4 tests"
   ],
+  "taken": "2026-11-08T10:58:57Z",
   "tests": "MyTradingSys/tools/live_aid/test_events_wire.py (fail-first, red on pre-change code: test_strip_order_and_columns, test_strip_flash_times, test_strip_hold_and_stale, test_headline_links_event)",
   "title": "CBP extraction gains events_to_watch (reports, announcements analysts name); Live Aid shows an upcoming strip with countdown and flashes the News tab near each event",
   "weight": "",
