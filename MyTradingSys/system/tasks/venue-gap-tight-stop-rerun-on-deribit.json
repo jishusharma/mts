@@ -1,6 +1,6 @@
 {
   "approved_by": "",
-  "asks": "",
+  "asks": "Which tight-stop and wick-touch layers (ids) to rerun, and is Deribit 1m 2024-05 history on a host? Default: park until both exist.",
   "commands": [],
   "created": "2026-11-05T02:28:50Z",
   "depends_on": [],
@@ -19,7 +19,7 @@
   "mutation_check": "",
   "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model DSA run-and-report (DeepSeek bridges closed per ROUTING hold: waits, or Sonnet on JIS-NB). PARKED until Deribit 1m history is on a machine and a layer list is pre-registered.",
   "prio": 3,
-  "refine_tries": 1,
+  "refine_tries": 2,
   "refined_by": "",
   "refs": [],
   "result": "",

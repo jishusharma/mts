@@ -2,6 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-08T08:11:54Z",
+    "misses": 11,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "MyTradingSys/research/news_effects_2026-11/news_events.csv",
+      "MyTradingSys/system/ROUTING.md",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/system/CRITICAL_TEST_PLAN.md",
+      "MyTradingSys/backtest/test_tom_bt.py",
+      "MyTradingSys/system/DEVICES.md",
+      "MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
+    ],
+    "session": "agent-aa34c82593cbfadbc"
+  },
   "created": "2026-11-04T13:18:04Z",
   "depends_on": [],
   "done_when": "scripts/dev/codex_run.py writes 'MODEL: <id> VENDOR: <vendor>' on line 2 of every report it saves, and a result without it gets trust UNCHECKED; test_codex_run.py covers both; fails on current code.",
