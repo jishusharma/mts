@@ -11,7 +11,17 @@
   "depends_on": [
     "news-design-synthesis-1108"
   ],
-  "done_when": "Follows MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md sections 4 and 7; one fail-first test per rule in tools/live_aid/test_events_wire.py, all red on pre-change code (module missing). (1) EXTRACT: F:/CryptoScrapper/cbp_v2/extract_prompt.md asks for events_to_watch per video (name, utc or 'week of', analyst, LONG / SHORT / HOLD with the analyst's condition, one verbatim quote); re-run over the last 14 days of extractions.md; verify_extract_quotes.py exits 0. (2) EXPORT: MyTradingSys/research/cbp/events_to_watch.json on trunk (public analyst context, no account data), de-duplicated by event + date, with analyst count and effect split; cbp_events_export.py rebuilds it. (3) STRIP: events_strip.js shows the next 5 rows of CPI, NFP, FOMC statement, FOMC presser (T+30 min), PPI from the BLS and Fed schedule dates plus analyst-named events; per row countdown, P (same table as news_weight.js), last same-class move (date, r15, z15d, vr5 from research/news_effects_2026-11/news_events.csv), analyst count and L/S/H split; test test_strip_order_and_columns (fixture: past, +30 min, +3 days). (4) FLASH: at T-15 min and T0 for CPI, NFP and the FOMC statement, at T+30 for the presser; no flash for PPI, OURS classes, T-60 or 'week of' rows; shares the News tab pulse and its stop rules; test test_strip_flash_times. (5) HOLD: analysts split between LONG and SHORT show HOLD; analyst direction is a count beside the row, never the chip; the word 'stale' on shutdown-delayed prints; test test_strip_hold_and_stale. (6) LINK: an incoming headline that names a strip event links to its row and inherits its P; test test_headline_links_event. (7) page rebuilt and shipped; Result names the build, the event count and the 4 test names.",
+  "done_when": [
+    "Follows MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md sections 4 and 7; one fail-first test per rule in tools/live_aid/test_events_wire.py, all red on pre-change code (module missing).",
+    "(1) EXTRACT: F:/CryptoScrapper/cbp_v2/extract_prompt.md asks for events_to_watch per video (name, utc or 'week of', analyst, LONG / SHORT / HOLD with the analyst's condition, one verbatim quote); re-run over the last 14 days of extractions.md; verify_extract_quotes.py exits 0.",
+    "(2) EXPORT: MyTradingSys/research/cbp/events_to_watch.json on trunk (public analyst context, no account data), de-duplicated by event + date, with analyst count and effect split; cbp_events_export.py rebuilds it.",
+    "(3) STRIP: events_strip.js shows the next 5 rows of CPI, NFP, FOMC statement, FOMC presser (T+30 min), PPI from the BLS and Fed schedule dates plus analyst-named events; per row countdown, P (same table as news_weight.js), last same-class move (date, r15, z15d, vr5 from research/news_effects_2026-11/news_events.csv), analyst count and L/S/H split;",
+    "(cont.) test test_strip_order_and_columns (fixture: past, +30 min, +3 days).",
+    "(4) FLASH: at T-15 min and T0 for CPI, NFP and the FOMC statement, at T+30 for the presser; no flash for PPI, OURS classes, T-60 or 'week of' rows; shares the News tab pulse and its stop rules; test test_strip_flash_times.",
+    "(5) HOLD: analysts split between LONG and SHORT show HOLD; analyst direction is a count beside the row, never the chip; the word 'stale' on shutdown-delayed prints; test test_strip_hold_and_stale.",
+    "(6) LINK: an incoming headline that names a strip event links to its row and inherits its P; test test_headline_links_event.",
+    "(7) page rebuilt and shipped; Result names the build, the event count and the 4 test names."
+  ],
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -23,11 +33,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md sections 4 and 7. Depends on the News panel and news_weight.js (P table) being on trunk. CBP has no fire since 10-28 per an open card: if the YouTube fetch is blocked, backfill from the existing extractions.md only. Loose analyst times stay 'week of' and show at day start without a flash. Unblocks when the synthesis card is done (depends_on).",
+  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md sections 4 and 7. Depends on the News panel and news_weight.js (P table) being on trunk. CBP has no fire since 10-28 per an open card: if the YouTube fetch is blocked, backfill from the existing extractions.md only. Loose analyst times stay 'week of' and show at day start without a flash. Unblocks when the synthesis card is done (depends_on). Checked against a65df68 (News poll gate + news_feed.js R23, 2026-11-08): news_feed.js already exists with NEWSFEED.row; wire into it, never a second panel; scope unchanged.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T19:57:57Z",
+  "refreshed": "2026-11-08T09:03:42Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
@@ -49,7 +59,7 @@
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "read MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 4 and 7), extract_prompt.md, extractions.md tail and the CBP rules; write test_events_wire.py with the 4 named tests and run it red",
     "write the events_to_watch block into the prompt and re-run extraction over 14 days; verify quotes; cbp_events_export.py -> events_to_watch.json",

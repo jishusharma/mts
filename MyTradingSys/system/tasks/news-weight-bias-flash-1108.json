@@ -11,7 +11,16 @@
   "depends_on": [
     "news-design-synthesis-1108"
   ],
-  "done_when": "Follows MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md sections 2-6; one fail-first test per rule in tools/live_aid/test_news_weight.py, all red on pre-change code (module missing). (1) WEIGHT: news_weight.js computes W = F x (P + K + I), 0-100: P = 40 x share of verified events with abs z15d > 2 read from research/news_effects_2026-11/news_events.csv (CPI 24, FOMC 12, NFP 10, PPI 3, every other class 3); K from the page's own BTC 1m feed since the headline minute (abs z15d >= 2 and vr5 >= 4 -> 20, abs z15d >= 4 -> 40, else 0; z15d on the prior-24h 1m stdev, never the prior hour); I = 2 x Tree importance; F = 1 for 15 min then linear to 0 at 60 min; before a scheduled t0 W = P + I; overlap within 4 h halves P; hover lists P K I F with SOURCED or OURS per part; test test_weight_parts (CPI with move z 7.6 v 28 importance 10 at 2 min = 84; unknown class, no move, importance 9 = 21). (2) BIAS: chip HOLD by default; LONG or SHORT only when K >= 20, the BTC move sign agrees and no opposite 'prior' tag; HOLD when K < 20, when prior and move disagree, when more than 35 min passed, when another event is within 4 h, and always for PPI; one reason word per chip; tests test_bias_hold_default, test_bias_long_short_on_move, test_bias_hold_late_overlap_ppi. (3) FLASH: tab pulses when W >= 60 or K = 40; stops when he opens the tab, when W falls under 60, or at 60 min; re-flash once on a new qualifying item or a LONG<->SHORT flip, never on a flip to HOLD; at most one flash per headline; tests test_flash_when, test_flash_stop. (4) REPEAT: no decay factor in W; the last same-class move (date, r15, z15d, vr5) is shown; the word 'flushed last time' when the previous same-class vr5 > 15; the previous sign never sets the chip; test test_repeat_no_decay. (5) CLASSES: per section 2, 'prior' tags only for ETF (LONG/SHORT by wording), hack SHORT, geopolitics SHORT, hot CPI SHORT, cool CPI LONG; no tag for TRUMP_POLICY, TARIFF_TRADE, COURT_LEGAL, PROTOCOL, BOJ_JAPAN; no source tier, no corroboration bonus, no era term; test test_class_table_calls. (6) news_study.py prints per class the 15 m and 60 m BTC move after each sample item on public 1m klines (counts only, no edge claim); REQUIREMENTS.md gets the section; page rebuilt and shipped; Result names the build and the 8 test names.",
+  "done_when": [
+    "Follows MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md sections 2-6; one fail-first test per rule in tools/live_aid/test_news_weight.py, all red on pre-change code (module missing).",
+    "(1) WEIGHT: news_weight.js computes W = F x (P + K + I), 0-100: P = 40 x share of verified events with abs z15d > 2 read from research/news_effects_2026-11/news_events.csv (CPI 24, FOMC 12, NFP 10, PPI 3, every other class 3); K from the page's own BTC 1m feed since the headline minute (abs z15d >= 2 and vr5 >= 4 -> 20, abs z15d >= 4 -> 40, else 0;",
+    "(cont.) z15d on the prior-24h 1m stdev, never the prior hour); I = 2 x Tree importance; F = 1 for 15 min then linear to 0 at 60 min; before a scheduled t0 W = P + I; overlap within 4 h halves P; hover lists P K I F with SOURCED or OURS per part; test test_weight_parts (CPI with move z 7.6 v 28 importance 10 at 2 min = 84; unknown class, no move, importance 9 = 21).",
+    "(2) BIAS: chip HOLD by default; LONG or SHORT only when K >= 20, the BTC move sign agrees and no opposite 'prior' tag; HOLD when K < 20, when prior and move disagree, when more than 35 min passed, when another event is within 4 h, and always for PPI; one reason word per chip; tests test_bias_hold_default, test_bias_long_short_on_move, test_bias_hold_late_overlap_ppi.",
+    "(3) FLASH: tab pulses when W >= 60 or K = 40; stops when he opens the tab, when W falls under 60, or at 60 min; re-flash once on a new qualifying item or a LONG<->SHORT flip, never on a flip to HOLD; at most one flash per headline; tests test_flash_when, test_flash_stop.",
+    "(4) REPEAT: no decay factor in W; the last same-class move (date, r15, z15d, vr5) is shown; the word 'flushed last time' when the previous same-class vr5 > 15; the previous sign never sets the chip; test test_repeat_no_decay.",
+    "(5) CLASSES: per section 2, 'prior' tags only for ETF (LONG/SHORT by wording), hack SHORT, geopolitics SHORT, hot CPI SHORT, cool CPI LONG; no tag for TRUMP_POLICY, TARIFF_TRADE, COURT_LEGAL, PROTOCOL, BOJ_JAPAN; no source tier, no corroboration bonus, no era term; test test_class_table_calls.",
+    "(6) news_study.py prints per class the 15 m and 60 m BTC move after each sample item on public 1m klines (counts only, no edge claim); REQUIREMENTS.md gets the section; page rebuilt and shipped; Result names the build and the 8 test names."
+  ],
   "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
@@ -23,26 +32,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-1106-46cfc9",
-      "ref": "d33c571f45be",
-      "utc": "2026-11-06T21:24:19Z"
+      "line": "live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
+      "ref": "a65df6891719",
+      "utc": "2026-11-07T20:34:14Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d33c571f45be Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-110",
+      "line": "a65df6891719 live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
       "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
-      "utc": "2026-11-06T21:24:19Z"
+      "utc": "2026-11-07T20:34:14Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md: P values are counts (section 4 of REPORT.md), everything else is labelled OURS. Bias is a read for him to act on by hand, never an order. Direction is UNKNOWN for every class (0 surprise rows): the chip moves only on the market's own move. Public repo: no account data. Unblocks when the synthesis card is done (depends_on).",
+  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md: P values are counts (section 4 of REPORT.md), everything else is labelled OURS. Bias is a read for him to act on by hand, never an order. Direction is UNKNOWN for every class (0 surprise rows): the chip moves only on the market's own move. Public repo: no account data. Unblocks when the synthesis card is done (depends_on). Checked against a65df68 (News poll gate + news_feed.js R23, 2026-11-08): news_feed.js already exists with NEWSFEED.row; wire into it, never a second panel; scope unchanged.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T19:58:13Z",
+  "refreshed": "2026-11-08T09:03:40Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
@@ -60,12 +69,12 @@
     "no trade gate, no order, no sizing, no signal feed: context only|no scheduler or background logger|no live tree touch|no headline archive in the repo beyond the existing 20-item sample|no edge claim from the study: counts only",
     "no source tier, no two-source corroboration bonus, no repeat-decay factor, no Trump-era term, no percent thresholds (NEWS_DESIGN drops them)|no number without a catalogue row or an OURS label|no edit to NEWS_DESIGN.md or the catalogue"
   ],
-  "scope_sha": "d33c571f45be",
+  "scope_sha": "a65df6891719",
   "size": "M",
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
   ],
-  "state": "blocked",
+  "state": "ready",
   "steps": [
     "read MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 2-6), tools/live_aid/REQUIREMENTS.md, STEPS.md, news_feed.js on trunk; write test_news_weight.py with the 8 named tests and run it red",
     "write news_weight.js: P from news_events.csv, K from the page's 1m feed (z15d on 24 h stdev, vr5), I from Tree, F by elapsed minutes; chip and reason per section 5; flash state per section 4; every OURS number commented OURS",
