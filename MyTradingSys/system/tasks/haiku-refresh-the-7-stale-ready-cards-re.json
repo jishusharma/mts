@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-11-08T19:20:23Z",
   "commands": [
     "python scripts/dev/tasks.py stale"
   ],
@@ -15,17 +16,30 @@
   "goal": "STALE flags block dispatch of ready cards. For each card tasks.py stale lists, read the card and the commit that changed its scope paths; refresh if it still holds, else park it with tasks.py tried.",
   "id": "haiku-refresh-the-7-stale-ready-cards-re",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "stale 41 -> 2 (shipped 0f7ab44f). Left: dsa-seed-full-task-list-1107, weekly-plan-per-logi",
+      "ref": "0f7ab44f0",
+      "utc": "2026-11-08T19:20:23Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "haiku-sweep-5-open-raw-refined-twin-pair",
   "note": "REVIEWED:2026-11-09 T0-ONLY (session-planner-a-1108). Seeded from D11_PROGRAMME.md s6 Haiku lane.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T18:54:47Z",
   "refs": [],
-  "result": "",
+  "result": "stale 41 -> 2 (shipped 0f7ab44f). Left: dsa-seed-full-task-list-1107, weekly-plan-per-login-wired-into-supervi: scope_in is one pipe-joined string with prose, refresh cannot re-stamp scope_sha; fix is a scope edit, out of this card's scope_out",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks (card JSON, via tasks.py tag --refresh or tried only)"
   ],
@@ -35,7 +49,7 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "active",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/tasks.py stale and save the list",
     "Per card: git log the scope paths since its refreshed date, read the card, then tasks.py tag <id> --refresh or tasks.py tried <id>",

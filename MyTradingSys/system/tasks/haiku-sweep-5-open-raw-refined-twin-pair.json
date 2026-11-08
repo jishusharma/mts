@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T19:21:03Z",
   "commands": [
     "python scripts/dev/tasks.py twins"
   ],
@@ -14,17 +16,30 @@
   "goal": "Open twin pairs waste worker turns. Read both cards of the 5 highest-scored pairs from tasks.py twins; if one is a true duplicate (same goal and scope), drop it and name the keeper id in the drop reason.",
   "id": "haiku-sweep-5-open-raw-refined-twin-pair",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "5 pairs, none dropped, all not a twin: aibridge-072-desktop-install/aibridge-desk-no-injec",
+      "ref": "0f7ab44f0",
+      "utc": "2026-11-08T19:21:03Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no-more-B-sized-card",
   "note": "REVIEWED:2026-11-09 T0-ONLY (session-planner-a-1108). Seeded from D11_PROGRAMME.md s6 Haiku lane.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T18:54:50Z",
   "refs": [],
-  "result": "",
+  "result": "5 pairs, none dropped, all not a twin: aibridge-072-desktop-install/aibridge-desk-no-inject-after-075 (different scope_in, 075 is ready); host-legacy-tasks-unregister/wake-sleeping-sessions (different files, different goals); gap-g8-deribit-parity/venue-gap-tight-stop-rerun-on-deribit (different scope, venue-gap is ready); gate-4c-edge-shard-timeout/test-aibridge-chain-hidden-tab (different tests, chain card is ready); confluence-s5-fable-verdict/tom-btc-validation (different files, tom is blocked). Possible later look: aibridge-072-desktop-install looks obsolete at AIBridge 0.7.33",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks (card JSON, via tasks.py drop only)"
   ],
@@ -34,13 +49,14 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run python scripts/dev/tasks.py twins and take the top 5 pairs",
     "tasks.py show both cards of each pair and compare goal and scope_in",
     "True duplicate: tasks.py drop <id> --reason 'dup of <keeper>'; else log not-a-twin",
     "Run twins and lint; counts in the commit body"
   ],
+  "taken": "2026-11-08T19:20:24Z",
   "tests": "tasks.py twins pair count falls by the number dropped; tasks.py lint exits 0",
   "title": "Haiku: sweep 5 open raw/refined twin pairs (tasks.py twins), drop true duplicates with the keeper id in the note",
   "weight": "ROUTINE",
