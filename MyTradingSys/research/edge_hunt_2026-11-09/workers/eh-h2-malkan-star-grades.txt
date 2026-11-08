@@ -1,0 +1,63 @@
+# Edge-hunt worker brief: eh-h2-malkan-star-grades
+Model: claude-haiku-5-5 (Haiku 5.5) | max_usd: 1.40 | max_turns: 60 | wave: 1 | trials: T02, T03 | operator lens: L5 (Malkan star grades)
+Launch (coordinator only): python scripts/dev/api_job.py launch eh-h2-malkan-star-grades --prompt-file MyTradingSys/research/edge_hunt_2026-11-09/workers/eh-h2-malkan-star-grades.txt --model claude-haiku-5-5 --max-usd 1.40 --max-turns 60 --engine api
+Plan: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md | Trials: TRIALS.md | Card: edge-hunt-plan-opus-1109 (planner); slug = branch name.
+
+## Hypothesis
+Malkan grades multi-timeframe RSI setups as 5-star and 7-star (SEVEN_STAR_CAPTIONS.md s3, rows marked SOURCED). The repo has only a label (malkan_mtf.seven_star). Count how often each fires on BTC/ETH daily and whether the long trade is fee-net positive at his stated RR (T02 7-star, T03 5-star).
+
+## Data
+BTCUSDT, ETHUSDT spot 1d from 2017-08 (fetch --spot-history --tfs 1d); weekly and monthly by resampling closed daily bars. RSI14 Wilder (MyTradingSys/backtest/layers/rsi; check it is Wilder). DEV 2017-08..2024-06 (the first 14 months are warm-up for the monthly RSI), VALIDATION once.
+
+## Exact rules (frozen; SOURCED or OURS per row)
+| Item | T02 7-star MTF long | T03 5-star MTF long | Label |
+|---|---|---|---|
+| Higher TF | last CLOSED monthly RSI14 >= 60 | last closed monthly RSI14 > 60 AND last closed weekly RSI14 > 60 | SOURCED (Wvq1TZh8aF0:8; 2HcJ3NeZmEQ:8, -CBvFi40sIQ:8) |
+| Daily | daily RSI14 < 40 at the signal bar AND a daily regular bullish divergence ending on it (MyTradingSys/backtest/layers/rsi/rsi_divergence.py, params malkan_divergence_default.json, close to close, 3-10 bars) | daily RSI14 low within 38..42 (pullback to 40) and the bar closes green: close > open AND close > prior close | words SOURCED; 38..42 and the green definition OURS; divergence params SOURCED (rsi_divergence) |
+| Entry | next daily open (taker) | next daily open (taker) | OURS |
+| Stop | the lowest low of the divergence span | the signal bar low | OURS (structural, d-stops-follow-trade-1106) |
+| Target | 4R ("stop loss unchanged, target doubled" over the 5-star 1:2+) | 2R ("1:2+") | SOURCED-derived; time stop 40 daily bars OURS |
+| One trade at a time per symbol; a new signal inside an open trade is skipped and counted | | | OURS |
+| Exploratory count only (no trial, no returns): PRD/NRD reverse divergence 5-50 bars with both points > 60 (PRD) or < 40 (NRD) per GbXnw_tNMtw:456-465, events per year | | | SOURCED base rules |
+Expect very few events (monthly RSI >= 60 and daily < 40 is rare). n < 30 = INCONCLUSIVE by the DEV screen; say so plainly and list every event (date, symbol, R).
+
+## Output
+results/eh-h2-malkan-star-grades/{PRE_REG.md, RESULT.md, star_grades.py, test_star_grades.py, events.csv (date, symbol, grade, R only)}
+
+## Done check (must pass before ship)
+python -c "import pathlib,re;t=pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h2-malkan-star-grades/RESULT.md').read_text(encoding='utf-8');assert re.match(r'Verdict: ',t) and 'T02' in t and 'T03' in t and 'Regime mix:' in t and pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h2-malkan-star-grades/PRE_REG.md').exists()"
+
+You are a headless Builder on the Claude API credit (edge-hunt wave 2026-11-09). Hooks are off; these rules replace them.
+Never ask questions: take the conservative default, write it as `DECISION (OURS): ...` in your RESULT.md, continue.
+
+## Boot and hard rules
+- Boot: `python scripts/dev/sync.py start eh-h2-malkan-star-grades --worker`; work only in the printed WORKTREE (use `git -C <tree>` for git; never `cd x && git`).
+- Read first: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md (s5 shared rules) and TRIALS.md (your trial ids). Your trial rules below are frozen; do not add, split or re-cut trials.
+- Testnet/research only. Never read .secrets/, .env or keys; never deploy, restart processes, touch HALT or orders, open trades; never commit to master; never rebase, reset or force-push. Write files with LF newlines (newline='\n').
+- Never commit market data, runtime, order or account data (public repo). Cache downloads OUTSIDE the repo (F:/MTS/Dumps/backtest/... if F: exists, else %TEMP%/mts_eh_cache). Commit only code, PRE_REG.md, RESULT.md and small summary tables (counts, per-cell stats; no raw bars).
+- Scope: write only under MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h2-malkan-star-grades/. Import repo code read-only (MyTradingSys/backtest/bt/bt_data.py, MyTradingSys/backtest/fees.py, MyTradingSys/backtest/splits.py, MyTradingSys/backtest/research_kit.py, MyTradingSys/backtest/layers/rsi/*.py, MyTradingSys/backtest/layers/wavetrend/wavetrend.py); never edit them. If a repo function is wrong for your rule, copy the needed lines into your own file and say so.
+
+## Data (public, no keys)
+- Fetch: `python MyTradingSys/backtest/fetch_binance_archive.py --start <YYYY-MM-DD> --end 2025-06-30 --symbols BTCUSDT[,ETHUSDT] --interval <tf> --datasets klines,fundingRate --out <cache>` (USD-M futures from 2019-09), or `--spot-history --tfs <tfs> --out-spot <cache>` for spot 2017-08+ (4h/1d history). Host data.binance.vision only; api.binance.com and fapi are DNS-blocked on some stations (d-futures-data-every-station-1109). Never fetch past 2025-06-30.
+- Build higher timeframes (12h, 1d, 1w, 1M) by resampling closed lower-TF bars in UTC (weeks Monday 00:00 UTC); a higher-TF value is usable only after its bar has closed (no lookahead; test it).
+
+## Splits, fees, statistics (fixed for the wave)
+- DEV = data start .. 2024-06-30. VALIDATION = 2024-07-01 .. 2025-06-30: read ONCE, only for a trial that passed the DEV screen. HOLDOUT = 2025-07-01 onward: never loaded (it is the current phase; testnet forward is its out-of-sample record, d-phase-first-method-1106). Your loader must refuse bars past the split end, and a test must show it.
+- Fees: market or stop-order entries use regime A (fees.py taker 0.0005 per side) plus 2 bps round-trip slippage (FORMULAS.md s13) plus funding records over the hold (fundingRate archive; side_sign convention of FORMULAS s13). Limit entries at a level use regime B (fees.py FEES_DERIBIT: maker entry and target 0, taker stop and timeout 0.0005) plus 1 bp slippage on taker legs; a limit fills only when a later bar trades strictly through it; unfilled = no trade (count them). Spot-history trials: perp funding exists only from 2019-09; apply the fundingRate archive where it exists, 0 before 2019-09, and say so in RESULT.
+- R: fee_r = round-trip cost in bps / stop distance in bps; net R = gross R - fee_r - funding R. Stop wins a same-bar tie. A trade open at the time stop is closed at that bar's close (taker).
+- Statistics: SE clustered by UTC day (by ISO week for 4h/1d trades). DEV screen: n >= 30 AND mean net R > 0 AND 95 % CI lower bound > 0. VALIDATION (once): one-sided p for mean net R > 0, Holm at m = 15 across the wave (TRIALS.md). Report n, hit rate, mean gross R, mean fee_r, mean net R, SE, CI, the MDE at 80 % power, and the per-year table on DEV.
+- Verdict per trial: PASS = DEV screen passed and the VALIDATION Holm test passed with mean > 0; FAIL = DEV mean net R <= 0 with the CI upper bound below the MDE; INCONCLUSIVE otherwise. A PASS files one raw card: `python scripts/dev/tasks.py new --lane SONNET --prio 2 "testnet-forward <trial id>: <one line>"`, and RESULT says the next step is testnet forward, never a longer backtest.
+- Labels: every parameter is SOURCED (quote file:line) or OURS. Do not invent trader conditions; when a source leaves a value open, pick it once, label it OURS, and never tune it on the outcome.
+- Context: PRE_REG.md and RESULT.md each carry a `## Context` block (regime, phase, session, entry; MyTradingSys/backtest/PRE_REG_TEMPLATE.md:80-89) and a `Regime mix:` line (research_kit regime tag, DEV weeks).
+
+## Order of work
+1. PRE_REG.md: copy your rules table below, your OURS fills and your trial ids; commit it on your branch BEFORE any return is computed.
+2. Tests first: `test_<name>.py` in your folder (hand-built bars for every rule, the split refusal, no-lookahead on higher TFs, the fee/R arithmetic). Run it once FAILING before the code exists; paste that run's last line in RESULT.md.
+3. Count pass (events per year and side, regime mix, no returns). 4. DEV. 5. VALIDATION once if screened in. 6. RESULT.md: first line `Verdict: <T..>=<PASS|FAIL|INCONCLUSIVE> ...`, then the plain-words answer, the tables, the DECISION (OURS) list and `## Noticed`.
+7. `python scripts/dev/run_all_tests.py --quick` green.
+
+## Ship
+- `python scripts/dev/sync.py ship --release eh-h2-malkan-star-grades`. Commit body: a `Result: <trial ids, verdicts, mean net R +-SE, n>` line, a `Next: <card-id | testnet-forward | END: why>` line, last line `Co-Authored-By: Claude Haiku 5.5 <noreply@anthropic.com>`.
+- Then the feeder rule (ANNOUNCEMENTS A-20261104-1): `python scripts/dev/tasks.py new --lane CODEX --prio 3 --kind audit "[GEMINI] blind read of <your main .py path>"`.
+- Report it shipped only when `git -C <tree> cherry origin/fast-track <sha>` is empty.
+- Stop at the turn cap or budget and report what you have. Final reply at most 6 lines: `Result:` first, the content sha, then `Noticed:` (or `Noticed: none`).

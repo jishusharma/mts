@@ -1,0 +1,62 @@
+# Edge-hunt worker brief: eh-o1-confluence-dose-response
+Model: claude-opus-5-5 (Opus 5.5) | max_usd: 5.00 | max_turns: 110 | wave: 3 | trials: T13 | operator lens: L4, L1, L2 (how he stacks reasons)
+Launch (coordinator only): python scripts/dev/api_job.py launch eh-o1-confluence-dose-response --prompt-file MyTradingSys/research/edge_hunt_2026-11-09/workers/eh-o1-confluence-dose-response.txt --model claude-opus-5-5 --max-usd 5.00 --max-turns 110 --engine api
+Plan: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md | Trials: TRIALS.md | Card: edge-hunt-plan-opus-1109 (planner); slug = branch name.
+
+## Hypothesis
+The operator never trades one signal; he stacks a level, a sweep, RSI at a line on several timeframes, a divergence, an RSI/MA trigger and the higher-timeframe RSI (READING.md stack, d-rsi-40-60-line-behaviour-1104, d-wicks-research-plan-first-1107). Every past study tested one layer at a time and paid a large m. Test the stack as ONE dose-response hypothesis: at level touches, does fee-net R rise with the number of his reasons present (T13)? One slope test, so no cell-by-cell multiple testing.
+
+## Data
+BTCUSDT, ETHUSDT spot 1h and 4h 2017-08..2025-06; 1d/1w resampled. If the wave-2 results of eh-s1, eh-s3 and eh-h5 have shipped (git log origin/fast-track -- MyTradingSys/research/edge_hunt_2026-11-09/results), import or copy their layer functions and cite the commit; otherwise implement the layer definitions from those workers' briefs (workers/eh-s1-*.txt, eh-s3-*.txt, eh-h5-*.txt) exactly as written. Do not read those workers' DEV results before freezing your PRE_REG (write in PRE_REG whether you saw them).
+
+## Exact rules (frozen; SOURCED or OURS per row)
+| Item | Rule | Label |
+|---|---|---|
+| Event | a 1h or 4h bar that trades into a level: a confirmed swing pivot (5 each side) high for shorts / low for longs, unbroken by a close, price within 0.3 % of it; one event per level per 24 bars | OURS |
+| Score (0-5), each layer computed on bars up to the event bar | S1 sweep: the bar trades beyond the level and closes back inside / S2 line confluence: RSI14 of the trade TF within +-2 of 60 (short) or 40 (long) AND at least one other TF of {1h, 4h, 12h, 1d} within +-2 of the same line / S3 divergence: eh-s1 layer 2 (wick or close, swing to swing, 3..20 bars) / S4 trigger: eh-h5 signal bar on this or the previous bar / S5 HTF: eh-s1 layer 5 | each layer's label as in its source brief |
+| Entry | the event bar close (taker), fade direction (short at highs, long at lows) | OURS |
+| Stop / exit | the extreme of the last 6 bars beyond the level / 2.5R or 30 bars | OURS |
+| Primary test (T13) | OLS of net R on score (0-5) with SEs clustered by UTC day, both TFs and symbols pooled; one-sided H1: slope > 0. DEV screen for T13 = slope > 0 with its 95 % CI lower bound > 0 AND the score >= 3 group having n >= 30 and mean net R > 0. VALIDATION once (Holm m = 15) | OURS |
+| Exploratory | mean net R per score level; leave-one-layer-out slopes; per TF | - |
+Report the score distribution first (count pass): if score >= 3 has < 30 DEV events, T13 is INCONCLUSIVE by rule; say so.
+
+## Output
+results/eh-o1-confluence-dose-response/{PRE_REG.md, RESULT.md, confluence_score.py, test_confluence_score.py, score_cells.csv}
+
+## Done check (must pass before ship)
+python -c "import pathlib,re;t=pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-response/RESULT.md').read_text(encoding='utf-8');assert re.match(r'Verdict: ',t) and 'T13' in t and 'Regime mix:' in t and pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-response/PRE_REG.md').exists()"
+
+You are a headless Builder on the Claude API credit (edge-hunt wave 2026-11-09). Hooks are off; these rules replace them.
+Never ask questions: take the conservative default, write it as `DECISION (OURS): ...` in your RESULT.md, continue.
+
+## Boot and hard rules
+- Boot: `python scripts/dev/sync.py start eh-o1-confluence-dose-response --worker`; work only in the printed WORKTREE (use `git -C <tree>` for git; never `cd x && git`).
+- Read first: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md (s5 shared rules) and TRIALS.md (your trial ids). Your trial rules below are frozen; do not add, split or re-cut trials.
+- Testnet/research only. Never read .secrets/, .env or keys; never deploy, restart processes, touch HALT or orders, open trades; never commit to master; never rebase, reset or force-push. Write files with LF newlines (newline='\n').
+- Never commit market data, runtime, order or account data (public repo). Cache downloads OUTSIDE the repo (F:/MTS/Dumps/backtest/... if F: exists, else %TEMP%/mts_eh_cache). Commit only code, PRE_REG.md, RESULT.md and small summary tables (counts, per-cell stats; no raw bars).
+- Scope: write only under MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-response/. Import repo code read-only (MyTradingSys/backtest/bt/bt_data.py, MyTradingSys/backtest/fees.py, MyTradingSys/backtest/splits.py, MyTradingSys/backtest/research_kit.py, MyTradingSys/backtest/layers/rsi/*.py, MyTradingSys/backtest/layers/wavetrend/wavetrend.py); never edit them. If a repo function is wrong for your rule, copy the needed lines into your own file and say so.
+
+## Data (public, no keys)
+- Fetch: `python MyTradingSys/backtest/fetch_binance_archive.py --start <YYYY-MM-DD> --end 2025-06-30 --symbols BTCUSDT[,ETHUSDT] --interval <tf> --datasets klines,fundingRate --out <cache>` (USD-M futures from 2019-09), or `--spot-history --tfs <tfs> --out-spot <cache>` for spot 2017-08+ (4h/1d history). Host data.binance.vision only; api.binance.com and fapi are DNS-blocked on some stations (d-futures-data-every-station-1109). Never fetch past 2025-06-30.
+- Build higher timeframes (12h, 1d, 1w, 1M) by resampling closed lower-TF bars in UTC (weeks Monday 00:00 UTC); a higher-TF value is usable only after its bar has closed (no lookahead; test it).
+
+## Splits, fees, statistics (fixed for the wave)
+- DEV = data start .. 2024-06-30. VALIDATION = 2024-07-01 .. 2025-06-30: read ONCE, only for a trial that passed the DEV screen. HOLDOUT = 2025-07-01 onward: never loaded (it is the current phase; testnet forward is its out-of-sample record, d-phase-first-method-1106). Your loader must refuse bars past the split end, and a test must show it.
+- Fees: market or stop-order entries use regime A (fees.py taker 0.0005 per side) plus 2 bps round-trip slippage (FORMULAS.md s13) plus funding records over the hold (fundingRate archive; side_sign convention of FORMULAS s13). Limit entries at a level use regime B (fees.py FEES_DERIBIT: maker entry and target 0, taker stop and timeout 0.0005) plus 1 bp slippage on taker legs; a limit fills only when a later bar trades strictly through it; unfilled = no trade (count them). Spot-history trials: perp funding exists only from 2019-09; apply the fundingRate archive where it exists, 0 before 2019-09, and say so in RESULT.
+- R: fee_r = round-trip cost in bps / stop distance in bps; net R = gross R - fee_r - funding R. Stop wins a same-bar tie. A trade open at the time stop is closed at that bar's close (taker).
+- Statistics: SE clustered by UTC day (by ISO week for 4h/1d trades). DEV screen: n >= 30 AND mean net R > 0 AND 95 % CI lower bound > 0. VALIDATION (once): one-sided p for mean net R > 0, Holm at m = 15 across the wave (TRIALS.md). Report n, hit rate, mean gross R, mean fee_r, mean net R, SE, CI, the MDE at 80 % power, and the per-year table on DEV.
+- Verdict per trial: PASS = DEV screen passed and the VALIDATION Holm test passed with mean > 0; FAIL = DEV mean net R <= 0 with the CI upper bound below the MDE; INCONCLUSIVE otherwise. A PASS files one raw card: `python scripts/dev/tasks.py new --lane SONNET --prio 2 "testnet-forward <trial id>: <one line>"`, and RESULT says the next step is testnet forward, never a longer backtest.
+- Labels: every parameter is SOURCED (quote file:line) or OURS. Do not invent trader conditions; when a source leaves a value open, pick it once, label it OURS, and never tune it on the outcome.
+- Context: PRE_REG.md and RESULT.md each carry a `## Context` block (regime, phase, session, entry; MyTradingSys/backtest/PRE_REG_TEMPLATE.md:80-89) and a `Regime mix:` line (research_kit regime tag, DEV weeks).
+
+## Order of work
+1. PRE_REG.md: copy your rules table below, your OURS fills and your trial ids; commit it on your branch BEFORE any return is computed.
+2. Tests first: `test_<name>.py` in your folder (hand-built bars for every rule, the split refusal, no-lookahead on higher TFs, the fee/R arithmetic). Run it once FAILING before the code exists; paste that run's last line in RESULT.md.
+3. Count pass (events per year and side, regime mix, no returns). 4. DEV. 5. VALIDATION once if screened in. 6. RESULT.md: first line `Verdict: <T..>=<PASS|FAIL|INCONCLUSIVE> ...`, then the plain-words answer, the tables, the DECISION (OURS) list and `## Noticed`.
+7. `python scripts/dev/run_all_tests.py --quick` green.
+
+## Ship
+- `python scripts/dev/sync.py ship --release eh-o1-confluence-dose-response`. Commit body: a `Result: <trial ids, verdicts, mean net R +-SE, n>` line, a `Next: <card-id | testnet-forward | END: why>` line, last line `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
+- Then the feeder rule (ANNOUNCEMENTS A-20261104-1): `python scripts/dev/tasks.py new --lane CODEX --prio 3 --kind audit "[GEMINI] blind read of <your main .py path>"`.
+- Report it shipped only when `git -C <tree> cherry origin/fast-track <sha>` is empty.
+- Stop at the turn cap or budget and report what you have. Final reply at most 6 lines: `Result:` first, the content sha, then `Noticed:` (or `Noticed: none`).

@@ -78,3 +78,13 @@ def test_launch_wait_line_names_the_harness_tracked_watcher():
     """stall-fix-1104: the printed bg_watch line was run with `&` and woke nobody (L1 idle 09:35Z-12:40Z)."""
     w = api_job.wait_line()
     assert "supervisor.py wait" in w and "run_in_background" in w and "bg_watch" not in w
+
+
+def test_max_parallel_default_one_and_capped_at_four():
+    """edge-hunt wave 11-09: default keeps one job per machine; --max-parallel allows more, never above 4."""
+    assert api_job.parallel_refused([], 1) is False
+    assert api_job.parallel_refused(["a"], 1) is True
+    assert api_job.parallel_refused(["a", "b", "c"], 4) is False
+    assert api_job.parallel_refused(["a", "b", "c", "d"], 4) is True
+    assert api_job.parallel_refused(["a", "b", "c", "d"], 10) is True  # cap
+    assert api_job.parallel_refused(["a"], 0) is True  # 0 or bad input falls back to 1

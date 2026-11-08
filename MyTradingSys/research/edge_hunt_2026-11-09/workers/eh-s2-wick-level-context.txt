@@ -1,0 +1,66 @@
+# Edge-hunt worker brief: eh-s2-wick-level-context
+Model: claude-sonnet-5-5 (Sonnet 5.5) | max_usd: 3.50 | max_turns: 90 | wave: 2 | trials: T09, T10 | operator lens: L2, L9 (wicks with the whole context)
+Launch (coordinator only): python scripts/dev/api_job.py launch eh-s2-wick-level-context --prompt-file MyTradingSys/research/edge_hunt_2026-11-09/workers/eh-s2-wick-level-context.txt --model claude-sonnet-5-5 --max-usd 3.50 --max-turns 90 --engine api
+Plan: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md | Trials: TRIALS.md | Card: edge-hunt-plan-opus-1109 (planner); slug = branch name.
+
+## Hypothesis
+The operator: "MTS has to find a way to buy and sell into wicks with the whole context" (d-wicks-research-plan-first-1107). WICKS_NOTE s2/s6 lists what made the Friday 74,900 wick different: an HTF level on first touch, high sweep volume, a fast reclaim and no knife. Build that context gate with a maker entry and the traders' payoff (target the next level, break-even at +1R), and test long (T09) and short (T10).
+
+## Data
+BTCUSDT USD-M futures 15m + 1d + fundingRate 2019-09..2025-06; daily pivots from closed daily bars.
+
+## Exact rules (frozen; SOURCED or OURS per row)
+| Item | T09 long (T10 = mirror at highs) | Label |
+|---|---|---|
+| HTF level | prior ISO-week low, prior calendar-month low, or an unbroken daily pivot low (5 days each side, confirmed only after the right side closes) | SOURCED in kind (Tom weekly/daily map, TOM-041; WICKS_NOTE s6 "daily/weekly low"); pivot 5 OURS |
+| First touch | no 15m bar traded below the level since it formed | operator's "first try" (decision record); OURS |
+| Sweep | 15m low < level and a close back above the level within 3 bars | wick_census V-sweep, OURS |
+| Effort | the sweep bar's volume >= 3.0 x the median of the prior 96 bars (Friday case: 12x) | WICKS_NOTE s2 (fact); 3.0 OURS |
+| Knife veto | fall >= 2 % from the highest high of the 12 bars before the sweep with the largest counter-move < 25 % of the fall -> no trade | d-wicks-research-plan-first-1107 defaults (OURS) |
+| Entry | maker limit buy AT the level, placed at the reclaim close, live 4 bars; fills only if a later bar's low trades strictly below the level | Tom's limit order at the zone (TOM-005); fill rule and 4 bars OURS |
+| Stop | the sweep extreme (lowest low of the sweep bars), no buffer | TOM-072 "below the last liquidity" |
+| Target | the nearest HTF level above (prior-day high, prior-week high, unbroken daily pivot high) at least 2.5R away; if the nearest one is under 2.5R, skip (counted) | TOM-018 "next high-volume price" in kind; 2.5R OURS (POSTMORTEM s3 plan) |
+| Management | stop to entry once price reaches +1R; time stop 96 bars | Fabio fast break-even SOURCED in kind (fZlNGWvd2Ko:43-61); 96 OURS |
+| Fees | regime B (maker entry and target, taker stop/BE/timeout) | PLAN s5 |
+| Exploratory | regime A version; by UTC 4h block (Asia 68 % in the 5-week census); by level type; no-volume-gate version; fill rate | - |
+
+## Output
+results/eh-s2-wick-level-context/{PRE_REG.md, RESULT.md, wick_context.py, test_wick_context.py, cells.csv}
+
+## Done check (must pass before ship)
+python -c "import pathlib,re;t=pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-s2-wick-level-context/RESULT.md').read_text(encoding='utf-8');assert re.match(r'Verdict: ',t) and 'T09' in t and 'T10' in t and 'Regime mix:' in t and pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-s2-wick-level-context/PRE_REG.md').exists()"
+
+You are a headless Builder on the Claude API credit (edge-hunt wave 2026-11-09). Hooks are off; these rules replace them.
+Never ask questions: take the conservative default, write it as `DECISION (OURS): ...` in your RESULT.md, continue.
+
+## Boot and hard rules
+- Boot: `python scripts/dev/sync.py start eh-s2-wick-level-context --worker`; work only in the printed WORKTREE (use `git -C <tree>` for git; never `cd x && git`).
+- Read first: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md (s5 shared rules) and TRIALS.md (your trial ids). Your trial rules below are frozen; do not add, split or re-cut trials.
+- Testnet/research only. Never read .secrets/, .env or keys; never deploy, restart processes, touch HALT or orders, open trades; never commit to master; never rebase, reset or force-push. Write files with LF newlines (newline='\n').
+- Never commit market data, runtime, order or account data (public repo). Cache downloads OUTSIDE the repo (F:/MTS/Dumps/backtest/... if F: exists, else %TEMP%/mts_eh_cache). Commit only code, PRE_REG.md, RESULT.md and small summary tables (counts, per-cell stats; no raw bars).
+- Scope: write only under MyTradingSys/research/edge_hunt_2026-11-09/results/eh-s2-wick-level-context/. Import repo code read-only (MyTradingSys/backtest/bt/bt_data.py, MyTradingSys/backtest/fees.py, MyTradingSys/backtest/splits.py, MyTradingSys/backtest/research_kit.py, MyTradingSys/backtest/layers/rsi/*.py, MyTradingSys/backtest/layers/wavetrend/wavetrend.py); never edit them. If a repo function is wrong for your rule, copy the needed lines into your own file and say so.
+
+## Data (public, no keys)
+- Fetch: `python MyTradingSys/backtest/fetch_binance_archive.py --start <YYYY-MM-DD> --end 2025-06-30 --symbols BTCUSDT[,ETHUSDT] --interval <tf> --datasets klines,fundingRate --out <cache>` (USD-M futures from 2019-09), or `--spot-history --tfs <tfs> --out-spot <cache>` for spot 2017-08+ (4h/1d history). Host data.binance.vision only; api.binance.com and fapi are DNS-blocked on some stations (d-futures-data-every-station-1109). Never fetch past 2025-06-30.
+- Build higher timeframes (12h, 1d, 1w, 1M) by resampling closed lower-TF bars in UTC (weeks Monday 00:00 UTC); a higher-TF value is usable only after its bar has closed (no lookahead; test it).
+
+## Splits, fees, statistics (fixed for the wave)
+- DEV = data start .. 2024-06-30. VALIDATION = 2024-07-01 .. 2025-06-30: read ONCE, only for a trial that passed the DEV screen. HOLDOUT = 2025-07-01 onward: never loaded (it is the current phase; testnet forward is its out-of-sample record, d-phase-first-method-1106). Your loader must refuse bars past the split end, and a test must show it.
+- Fees: market or stop-order entries use regime A (fees.py taker 0.0005 per side) plus 2 bps round-trip slippage (FORMULAS.md s13) plus funding records over the hold (fundingRate archive; side_sign convention of FORMULAS s13). Limit entries at a level use regime B (fees.py FEES_DERIBIT: maker entry and target 0, taker stop and timeout 0.0005) plus 1 bp slippage on taker legs; a limit fills only when a later bar trades strictly through it; unfilled = no trade (count them). Spot-history trials: perp funding exists only from 2019-09; apply the fundingRate archive where it exists, 0 before 2019-09, and say so in RESULT.
+- R: fee_r = round-trip cost in bps / stop distance in bps; net R = gross R - fee_r - funding R. Stop wins a same-bar tie. A trade open at the time stop is closed at that bar's close (taker).
+- Statistics: SE clustered by UTC day (by ISO week for 4h/1d trades). DEV screen: n >= 30 AND mean net R > 0 AND 95 % CI lower bound > 0. VALIDATION (once): one-sided p for mean net R > 0, Holm at m = 15 across the wave (TRIALS.md). Report n, hit rate, mean gross R, mean fee_r, mean net R, SE, CI, the MDE at 80 % power, and the per-year table on DEV.
+- Verdict per trial: PASS = DEV screen passed and the VALIDATION Holm test passed with mean > 0; FAIL = DEV mean net R <= 0 with the CI upper bound below the MDE; INCONCLUSIVE otherwise. A PASS files one raw card: `python scripts/dev/tasks.py new --lane SONNET --prio 2 "testnet-forward <trial id>: <one line>"`, and RESULT says the next step is testnet forward, never a longer backtest.
+- Labels: every parameter is SOURCED (quote file:line) or OURS. Do not invent trader conditions; when a source leaves a value open, pick it once, label it OURS, and never tune it on the outcome.
+- Context: PRE_REG.md and RESULT.md each carry a `## Context` block (regime, phase, session, entry; MyTradingSys/backtest/PRE_REG_TEMPLATE.md:80-89) and a `Regime mix:` line (research_kit regime tag, DEV weeks).
+
+## Order of work
+1. PRE_REG.md: copy your rules table below, your OURS fills and your trial ids; commit it on your branch BEFORE any return is computed.
+2. Tests first: `test_<name>.py` in your folder (hand-built bars for every rule, the split refusal, no-lookahead on higher TFs, the fee/R arithmetic). Run it once FAILING before the code exists; paste that run's last line in RESULT.md.
+3. Count pass (events per year and side, regime mix, no returns). 4. DEV. 5. VALIDATION once if screened in. 6. RESULT.md: first line `Verdict: <T..>=<PASS|FAIL|INCONCLUSIVE> ...`, then the plain-words answer, the tables, the DECISION (OURS) list and `## Noticed`.
+7. `python scripts/dev/run_all_tests.py --quick` green.
+
+## Ship
+- `python scripts/dev/sync.py ship --release eh-s2-wick-level-context`. Commit body: a `Result: <trial ids, verdicts, mean net R +-SE, n>` line, a `Next: <card-id | testnet-forward | END: why>` line, last line `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`.
+- Then the feeder rule (ANNOUNCEMENTS A-20261104-1): `python scripts/dev/tasks.py new --lane CODEX --prio 3 --kind audit "[GEMINI] blind read of <your main .py path>"`.
+- Report it shipped only when `git -C <tree> cherry origin/fast-track <sha>` is empty.
+- Stop at the turn cap or budget and report what you have. Final reply at most 6 lines: `Result:` first, the content sha, then `Noticed:` (or `Noticed: none`).

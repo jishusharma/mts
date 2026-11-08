@@ -9,7 +9,7 @@
 Engine (2026-11-07): default `--engine api` runs scripts/dev/api_agent.py on the raw Messages API, the only path the promotional
 credit pays; `--engine claude` (`claude -p`) carries the claude-code beta, which the org refuses ("credit balance is too low"), and
 with an OAuth login present it silently bills that login's subscription (every Spent row before 2026-11-07 was such a run).
-Rules (PLAN_API_CREDITS_2026-11-04.md): one job at a time per machine; every job carries --max-budget-usd; the key is read from
+Rules (PLAN_API_CREDITS_2026-11-04.md): one job at a time per machine unless --max-parallel N (cap 4); every job carries --max-budget-usd; the key is read from
 F:/ClaudePlaform/key.txt (env MTS_API_KEY_FILE overrides) into the child's environment only, never printed, logged or put in a
 prompt; a prompt that names a secret-like path is refused; hooks are off under a nested headless run (disableAllHooks), so the
 Builder preamble below carries the CLAUDE.md rules. Output: F:/MTS/api_runs/<slug>/{out.jsonl,err.txt,meta.json,prompt.txt}.
@@ -140,6 +140,14 @@ def wait_line() -> str:
             "redirect); it wakes you when this job ends and AT the 5 h reset; then end the turn with `supervisor.py watchcheck`")
 
 
+MAX_PARALLEL_CAP = 4  # OURS: operator 11-09 edge-hunt wave; waves of at most 4 (rate limit and a readable status)
+
+
+def parallel_refused(busy: list, max_parallel: int) -> bool:
+    """True when another job may not start: default 1 keeps one job per machine; never more than MAX_PARALLEL_CAP."""
+    return len(busy) >= max(1, min(int(max_parallel or 1), MAX_PARALLEL_CAP))
+
+
 def launch(a) -> None:
     if a.card:
         brief = card_brief(a.card)
@@ -151,8 +159,8 @@ def launch(a) -> None:
     else:
         die("launch needs --card <id> or --prompt-file <path>")
     busy = running_jobs()
-    if busy and not a.dry_run:
-        die(f"REFUSED: one job at a time per machine; running: {busy} (api_job.py status)")
+    if not a.dry_run and parallel_refused(busy, a.max_parallel):
+        die(f"REFUSED: {len(busy)} job(s) running, --max-parallel {a.max_parallel} (cap {MAX_PARALLEL_CAP}); running: {busy} (api_job.py status)")
     d = RUNS / a.slug
     cmd = build_cmd(a.model, a.max_usd, a.max_turns, a.engine, a.cwd or str(REPO), str(d), a.max_tokens)
     if a.engine == "claude":
@@ -257,6 +265,7 @@ def main(argv=None) -> None:
     l.add_argument("--cwd", help="run from this checkout (default: this repo)")
     l.add_argument("--engine", default="api", choices=("api", "claude"),
                    help="api = raw Messages API via api_agent.py (bills the credit); claude = `claude -p` (bills the subscription)")
+    l.add_argument("--max-parallel", type=int, default=1, help="allow up to N credit jobs at once on this machine (default 1, cap 4)")
     l.add_argument("--dry-run", action="store_true")
     l.set_defaults(fn=launch)
     s = sub.add_parser("status")
