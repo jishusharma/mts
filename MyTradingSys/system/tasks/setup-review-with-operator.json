@@ -23,16 +23,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "plan: 5h super plan for Monday open, CBP playbook card, operator decision",
-      "ref": "a5bbf4cecfb4",
-      "utc": "2026-11-08T18:17:26Z"
+      "line": "decision: d-krown-4h-testnet-forward-start-1109 (Fable R7 started, phase-first replaces po",
+      "ref": "27d1eb64afad",
+      "utc": "2026-11-08T18:54:37Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "a5bbf4cecfb4 plan: 5h super plan for Monday open, CBP playbook card, operator decision",
+      "line": "27d1eb64afad decision: d-krown-4h-testnet-forward-start-1109 (Fable R7 started, phase-firs",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-08T18:17:26Z"
+      "utc": "2026-11-08T18:54:37Z"
     },
     {
       "kind": "report",
@@ -48,7 +48,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:21:01Z",
+  "refreshed": "2026-11-08T19:12:47Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -58,7 +58,7 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "a5bbf4cecfb4",
+  "scope_sha": "27d1eb64afad",
   "size": "M",
   "sources": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",
