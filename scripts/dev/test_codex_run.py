@@ -349,6 +349,18 @@ class StatusTest(unittest.TestCase):
         self.assertIn("does not run the lab", away)
         self.assertNotIn("NEEDS A LOOK", away)
 
+    def test_status_says_stalled_when_the_host_returns_401(self):
+        """Card labguy-codex-host-401-lane-stalled-1104: 401 IDLE host-auth, last run long ago, 27 ready: a STALLED line with the hours
+        and the card count that names the 401 login, not the generic 'lane up' text."""
+        rows = [self.ROW | {"outcome": "DONE", "at": "2026-10-09T01:00:00Z"}]
+        ready = [card("lab-%d" % i) for i in range(27)]
+        t = R.status_text(ready, [], {}, rows, None, 1791784000, "06:30Z IDLE host-auth: Codex returned 401 on this host (no login)")
+        line = next(x for x in t.splitlines() if "STALLED" in x)
+        self.assertIn("27 card(s)", line)
+        self.assertIn("401", line)
+        self.assertIn("76.8 h", line)
+        self.assertNotIn("lane up", line)
+
     def test_brief_status_drops_the_delivered_block_and_keeps_queue_and_needs_a_look(self):
         done = card("lab-old", state="done", closed="2026-10-11T08:00:00Z", result="SOUND")
         t = R.status_text([card("lab-a"), card("lab-b"), card("lab-c")], [done], {}, [self.ROW | {"outcome": "DONE"}], None, 1791784000, "06:30Z IDLE", brief=True)
