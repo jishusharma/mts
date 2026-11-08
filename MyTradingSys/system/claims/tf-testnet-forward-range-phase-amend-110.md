@@ -1,6 +1,6 @@
-task: tf-testnet-forward-range-phase-amend-1109 refine
-host: JIS-NB
+task: tf-testnet-forward-range-phase-amend-1109
+host: DESKTOP-F7IU69N
 account: gemini-queue
 area: -
-epoch: 1794168470
-expires_at: 1794179270
+epoch: 1794179995
+expires_at: 1794190795
