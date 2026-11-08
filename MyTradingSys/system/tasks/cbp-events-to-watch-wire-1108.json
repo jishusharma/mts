@@ -33,11 +33,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md sections 4 and 7. Depends on the News panel and news_weight.js (P table) being on trunk. CBP has no fire since 10-28 per an open card: if the YouTube fetch is blocked, backfill from the existing extractions.md only. Loose analyst times stay 'week of' and show at day start without a flash. Unblocks when the synthesis card is done (depends_on).",
+  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md sections 4 and 7. Depends on the News panel and news_weight.js (P table) being on trunk. CBP has no fire since 10-28 per an open card: if the YouTube fetch is blocked, backfill from the existing extractions.md only. Loose analyst times stay 'week of' and show at day start without a flash. Unblocks when the synthesis card is done (depends_on). Checked against a65df68 (News poll gate + news_feed.js R23, 2026-11-08): news_feed.js already exists with NEWSFEED.row; wire into it, never a second panel; scope unchanged.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T19:57:57Z",
+  "refreshed": "2026-11-08T09:03:42Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",

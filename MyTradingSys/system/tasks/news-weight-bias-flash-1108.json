@@ -32,26 +32,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-1106-46cfc9",
-      "ref": "d33c571f45be",
-      "utc": "2026-11-06T21:24:19Z"
+      "line": "live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
+      "ref": "a65df6891719",
+      "utc": "2026-11-07T20:34:14Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d33c571f45be Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-110",
+      "line": "a65df6891719 live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
       "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
-      "utc": "2026-11-06T21:24:19Z"
+      "utc": "2026-11-07T20:34:14Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md: P values are counts (section 4 of REPORT.md), everything else is labelled OURS. Bias is a read for him to act on by hand, never an order. Direction is UNKNOWN for every class (0 surprise rows): the chip moves only on the market's own move. Public repo: no account data. Unblocks when the synthesis card is done (depends_on).",
+  "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md: P values are counts (section 4 of REPORT.md), everything else is labelled OURS. Bias is a read for him to act on by hand, never an order. Direction is UNKNOWN for every class (0 surprise rows): the chip moves only on the market's own move. Public repo: no account data. Unblocks when the synthesis card is done (depends_on). Checked against a65df68 (News poll gate + news_feed.js R23, 2026-11-08): news_feed.js already exists with NEWSFEED.row; wire into it, never a second panel; scope unchanged.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T19:58:13Z",
+  "refreshed": "2026-11-08T09:03:40Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
@@ -69,7 +69,7 @@
     "no trade gate, no order, no sizing, no signal feed: context only|no scheduler or background logger|no live tree touch|no headline archive in the repo beyond the existing 20-item sample|no edge claim from the study: counts only",
     "no source tier, no two-source corroboration bonus, no repeat-decay factor, no Trump-era term, no percent thresholds (NEWS_DESIGN drops them)|no number without a catalogue row or an OURS label|no edit to NEWS_DESIGN.md or the catalogue"
   ],
-  "scope_sha": "d33c571f45be",
+  "scope_sha": "a65df6891719",
   "size": "M",
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
