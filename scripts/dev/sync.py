@@ -1182,7 +1182,7 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
 
 def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
-    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship. Never raises."""
+    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
     try:
         p = Path(path or os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -1241,7 +1241,7 @@ def failed_step_ids(repo, offset=0, path=None):
 
 def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True, failed_steps=None):
     """Append one `ship_wall` row (the whole ship, start to end) to gate_timing.jsonl; over SHIP_SLOW_S print one
-    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. Never raises."""
+    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. The row also carries failed_steps (ids of failed gate steps). Never raises."""
     try:
         p = Path(path) if path else _timing_path(repo)
         p.parent.mkdir(parents=True, exist_ok=True)
