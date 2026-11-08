@@ -1,6 +1,7 @@
 {
  "_calibration": "Testnet calibration from 2026-10-08 (operator 2026-10-07: all layers fire, sizes 20 to 1000 USD, base 20). Blocklist parked, not deleted; restore it from trade_blocklist_parked before any mainnet use.",
  "accounts": {
+  "layer:krown:": "krown_s8",
   "layer:turn_of_candle:": "jishu_1",
   "layer:rsi:rsi_events:5m": "jishu_2",
   "layer:rsi:rsi_events:15m": "jishu_3",
