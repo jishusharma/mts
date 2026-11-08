@@ -1,39 +1,74 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T21:49:00Z",
   "commands": [],
   "created": "2026-11-08T18:45:47Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "docstring and reason text say OURS for 6 bars and cite accept80 = 60 min; accept_minutes=60, bar_minutes=5 needs 12 closes; bar_minutes=60 needs 1; default call unchanged; test_auction_context passes",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "classify_level_interaction's ACCEPTED rule (6 consecutive closes beyond) is labelled SOURCED to accept80.py, but accept80 is 2x30m closes = 60 min = 12 5m bars (REVIEW_FABLE.md:47). Relabel the 6-bar default OURS, and add accept_minutes + bar_minutes so a caller can ask for the sourced 60 min on any timeframe. Default behaviour unchanged.",
   "id": "census-acceptance-threshold-mislabel-1109",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "auction_context ACCEPTED: 6-bar default relabelled OURS; accept_minutes/bar_minutes give t",
+      "ref": "c89fbf3a4",
+      "utc": "2026-11-08T21:49:00Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Tom & Fabio Layers: End-to-End Audit, Course Correction, MTF Auction Context Engine, and 4",
+      "ref": "9358461e241c",
+      "utc": "2026-11-07T18:23:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: label fix shipped",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
-  "refined_by": "",
+  "refined_by": "B (JIS-NUC, Opus)",
+  "refreshed": "2026-11-08T21:48:25Z",
   "refs": [
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "auction_context ACCEPTED: 6-bar default relabelled OURS; accept_minutes/bar_minutes give the SOURCED accept80 60 min on any TF (12x5m, 1x1h); default unchanged, census numbers unaffected",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py"
+  ],
+  "scope_out": [
+    "re-running the census (no result changes at default)"
+  ],
+  "scope_sha": "9358461e241c",
+  "size": "S",
   "sources": [
     "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "fail-first test",
+    "accept_minutes/bar_minutes params, OURS labels",
+    "tests, ship"
+  ],
+  "taken": "2026-11-08T21:48:27Z",
+  "tests": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py::test_acceptance_threshold_scales_with_bar_minutes",
   "title": "auction_context ACCEPTED threshold 6x5m labelled SOURCED to accept80 2x30m: sourced duration is 12x5m (60 min), on 1h bars 6 = 6 h; relabel OURS and make the threshold bars-per-timeframe",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

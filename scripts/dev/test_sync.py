@@ -2115,6 +2115,63 @@ class ShipResultFlagTest(unittest.TestCase):
             with self.assertRaises(sync.SyncError):
                 sync.commit_pending(td, "  ")
 
+    def test_commit_pending_never_stages_halt_or_runtime_data(self):
+        """ship-refuse-main-checkout-sweep-1109: ebdf4dc6b swept another session's HALT, AUTO_PAUSE and runtime CSVs into a ship."""
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            rt = Path(td) / "MyTradingSys" / "runtime"
+            rt.mkdir(parents=True)
+            (rt / "fills.csv").write_text("x", encoding="utf-8")
+            (rt / "NOTES.md").write_text("doc", encoding="utf-8")
+            ex = Path(td) / "execution"
+            ex.mkdir()
+            (ex / "HALT").write_text("", encoding="utf-8")
+            (ex / "AUTO_PAUSE").write_text("", encoding="utf-8")
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(sync.commit_pending(td, "mine only"), 2)
+            shipped = set(g("show", "--name-only", "--format=", "HEAD").split())
+            self.assertEqual(shipped, {"a.txt", "MyTradingSys/runtime/NOTES.md"})
+            self.assertIn("HALT", out.getvalue())
+
+    def test_commit_pending_leaves_reverted_untracked_file_behind(self):
+        """ship-result-sweeps-untracked-1109: 954009888 swept 2 files of a reverted census (deleted on trunk, back on disk) into a ship."""
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")          # tracked change at the root
+            (Path(td) / "b.txt").write_text("new", encoding="utf-8")          # new file next to it: ships
+            stray = Path(td) / "other" / "stray.py"
+            stray.parent.mkdir()
+            stray.write_text("x", encoding="utf-8")
+            g("add", "other/stray.py"); g("commit", "-q", "-m", "land")
+            g("rm", "-q", "other/stray.py"); g("commit", "-q", "-m", "revert")
+            g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+            stray.parent.mkdir(exist_ok=True)
+            stray.write_text("x", encoding="utf-8")                           # a reverted file reappears: left behind
+            staged = Path(td) / "lab" / "keep.md"
+            staged.parent.mkdir()
+            staged.write_text("k", encoding="utf-8")
+            g("add", "lab/keep.md")                                           # staged by hand: ships
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                sync.commit_pending(td, "mine only")
+            shipped = set(g("show", "--name-only", "--format=", "HEAD").split())
+            self.assertEqual(shipped, {"a.txt", "b.txt", "lab/keep.md"})
+            self.assertIn("other/stray.py", out.getvalue())
+
+    def test_refuse_shared_main_checkout(self):
+        """A main checkout with other worktrees is a shared hub: ship refuses before any commit; a lone clone (cloud) ships."""
+        with tempfile.TemporaryDirectory() as td:
+            main = Path(td) / "main"
+            main.mkdir()
+            g = self.make_repo(str(main))
+            sync.refuse_shared_main(main)          # lone clone: allowed
+            g("worktree", "add", "-q", "--detach", str(Path(td) / "wt"))
+            with self.assertRaises(sync.SyncError):
+                sync.refuse_shared_main(main)
+            sync.refuse_shared_main(Path(td) / "wt")   # a linked worktree is yours: allowed
+
     def test_stage_layers_commits_a_modified_layers_md_only(self):
         with tempfile.TemporaryDirectory() as td:
             g = self.make_repo(td)

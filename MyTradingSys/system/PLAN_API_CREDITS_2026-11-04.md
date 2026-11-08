@@ -161,3 +161,6 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-06 | cc-s3-10sym-m3-1106 | Sonnet 5.5 | 0.99 | 39 | FAIL (not shipped, trunk CI red): pooled n 1981, fee-net -0.047R CI -0.110..+0.016, 2/10 symbols positive; branch JIS-NB/cc-s3-10sym-m3-1106 5392a26aa; cap was 6.0 |
 | 2026-11-06 | pre-us-10sym-n1-1106 | Sonnet 5.5 | 2.72 | 108 | FAIL powered: pooled n 1393 on 10 symbols, fee-net -2.47 bps of K (t -0.56); ship pending (gate stopped on test_gemini_claim_skip trunk flake); cap was 3.0 |
 | 2026-11-06 | flip-review-1106 | Haiku 5.5 | 0.03 | 1 | REVIEW.md of candle_flip_probability_2026-11: 12 findings, 1 blocker (clustering) fixed, rerun in RESULT.md; cap was 3.0 |
+| 2026-11-08 | monday-open-playbook-1109 | Sonnet 5.5 | 5.01 | 78 | hit 5 USD cap before ship; Lead C shipped its PLAYBOOK + ledger rows; cap was 5.0 |
+| 2026-11-08 | edge-hunt-plan-opus-1109b | Opus 5.5 | 6.04 | 52 | PLAN.md + TRIALS.md (m=15) + 11 briefs; hit 6 USD cap before ship, Lead C shipped; cap was 6.0 |
+| 2026-11-08 | edge-hunt-plan-opus-1109 | Opus 5.5 | 0.09 | 4 | refused stale card, nothing built; cap was 6.0 |

@@ -1,6 +1,6 @@
 """R7 replay parity test (FORWARD_PREREG.md section 1, steps 1-5): the live decision code must reproduce R6's BTC S8 4h events.
 
-Oracle A  = e2_run.signals + e2_run.stop_for on cached BTCUSDT 4h DEV klines (2020-01-01..2024-06-30, counts_only.load).
+Oracle A  = e2_run.signals + e2_run.stop_for on the committed BTCUSDT 4h DEV kline fixture (2020-01-01..2024-06-30; same bars counts_only.load returns).
 Candidate B = krown_live.s8_events(bars in the runner's klines_to_bars shape).  PASS iff A == B (0 mismatches, diff printed).
 
 Contract the build card (krown-s8-4h-testnet-build) must satisfy, in MyTradingSys/backtest/layers/krown/krown_live.py:
@@ -10,8 +10,10 @@ Contract the build card (krown-s8-4h-testnet-build) must satisfy, in MyTradingSy
       (layer "krown", sub "s8_break", tf "4h": t -> t_close).
   decide(alert, mark, position_flat) -> "take" | "skipped_busy" | "skipped_floor"
       mark = last price at decision time (the parity test passes the next bar's open); floor = |mark-stop|/mark < 0.0056.
-Import failure = FAIL (never skip). Reads only cached bars < 2024-07-01; run: python -m unittest test_s8_forward_parity -v
+Import failure = FAIL (never skip). Reads only fixture bars < 2024-07-01; run: python -m unittest test_s8_forward_parity -v
 """
+import csv
+import gzip
 import importlib.util
 import sys
 import unittest
@@ -33,10 +35,16 @@ SIDE = {1: "long", -1: "short"}
 _CACHE = {}
 
 
+FIXTURE = HERE / "btcusdt_4h_dev.csv.gz"   # public Binance USDM BTCUSDT 4h klines 2020-01-01..2024-06-30 (o,h,l,c only), repo-relative
+
+
 def load_bars():
     if "bars" not in _CACHE:
-        rows, _ = co.load("BTCUSDT", "4h", lambda *_: None)
-        co.guard(rows, "BTCUSDT 4h")
+        with gzip.open(FIXTURE, "rt", encoding="utf-8", newline="") as fh:
+            rd = csv.reader(fh)
+            next(rd)
+            rows = [(int(p[0]), float(p[1]), float(p[2]), float(p[3]), float(p[4])) for p in rd]
+        co.guard(rows, "BTCUSDT 4h fixture")
         _CACHE["bars"] = rows
     return _CACHE["bars"]
 
@@ -90,30 +98,16 @@ def oracle_decisions(rows):
     return out
 
 
-HAVE_DATA = co.DATA.exists() and any(co.DATA.glob("BTCUSDT-4h-*.csv"))   # F:/MTS cache: absent on CI runners
-
-
-def _needs_data(c):
-    """Under pytest on a machine without the cached klines (CI) the data-bound tests are skipped; plain unittest still fails."""
-    try:
-        import pytest
-    except ImportError:
-        return c
-    return pytest.mark.skipif(not HAVE_DATA, reason="cached BTCUSDT 4h klines not on this machine (F:/MTS/data/fable_run6_klines)")(c)
-
-
 class FreezeAndGuard(unittest.TestCase):
-    @_needs_data
     def test_oracle_event_count_within_freeze_bar(self):
         n = len(oracle_set(load_bars()))
         self.assertLessEqual(abs(n - EXPECTED_EVENTS), EXPECTED_EVENTS * 0.01, f"|A|={n}, expected {EXPECTED_EVENTS} +-1 %")
 
-    @_needs_data
     def test_no_bar_at_or_after_cut_is_loaded(self):
         self.assertLess(max(r[0] for r in load_bars()), co.CUT_MS)
 
     def test_planted_sealed_timestamp_is_refused(self):
-        planted = [(co.CUT_MS - H4_MS, 1.0, 1.0, 1.0, 1.0), (co.CUT_MS, 1.0, 1.0, 1.0, 1.0)]   # synthetic bars, no price data
+        planted = list(load_bars()) + [(co.CUT_MS, 1.0, 1.0, 1.0, 1.0)]   # synthetic bar, no price data
         with self.assertRaises(ValueError):
             co.guard(planted, "planted")
 
@@ -127,8 +121,7 @@ def _gate_marker():
     except ImportError:
         return lambda c: c
     built = importlib.util.find_spec("krown_live") is not None
-    xf = pytest.mark.xfail(condition=not built, strict=True, reason="krown-s8-4h-testnet-build not shipped (krown_live missing)")
-    return lambda c: _needs_data(xf(c))
+    return pytest.mark.xfail(condition=not built, strict=True, reason="krown-s8-4h-testnet-build not shipped (krown_live missing)")
 
 
 @_gate_marker()
@@ -163,8 +156,7 @@ class LiveParity(unittest.TestCase):
         n = len(bars)
         batch = {(a["t_close"], a["side"], a["stop"]) for a in self.alerts if a["t_close"] >= bars[n - 300]["t"]}
         inc = set()
-        for k in range(n - 299, n + 1):                  # newest bar index k-1; only events ON the newest bar count; the runner's
-                                                         # window is bounded, so feed 1500 bars (BBWP needs ~110) not the whole history
+        for k in range(n - 299, n + 1):                  # newest bar index k-1; only events ON the newest bar count
             newest = bars[k - 1]["t"]
             inc |= {(a["t_close"], a["side"], a["stop"]) for a in emit(self.live, bars[max(0, k - 1500):k]) if a["t_close"] == newest}
         self.assertEqual(diff_rows(batch, inc), [], "incremental run differs from batch (look-ahead or repaint)")
@@ -174,6 +166,7 @@ class LiveParity(unittest.TestCase):
         cfg = at.load_config(MTS / "execution" / "auto_trader_config.json")
         by_t = {r[0]: i for i, r in enumerate(self.rows)}
         want = oracle_decisions(self.rows)
+        open_at = {r[0]: r[1] for r in self.rows}
         got = {}
         free_from = -1
         for a in sorted((x for x in self.alerts if in_window(x["t_close"])), key=lambda x: x["t_close"]):
@@ -181,7 +174,9 @@ class LiveParity(unittest.TestCase):
             if i + 1 >= len(self.rows):
                 continue
             flat = i >= free_from
-            d = self.live.decide(a, self.rows[i + 1][1], flat)
+            # The decision is taken at the OPEN of the bar after the signal bar (signal bar is sealed by then): mark = that open,
+            # looked up by timestamp, so decide() sees only the price live has at decision time.
+            d = self.live.decide(a, open_at[a["t_close"] + H4_MS], flat)
             got[a["t_close"]] = d
             if d != "take":
                 continue
