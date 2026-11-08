@@ -31,16 +31,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "plan: 5h super plan for Monday open, CBP playbook card, operator decision",
-      "ref": "a5bbf4cecfb4",
-      "utc": "2026-11-08T18:17:26Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/fable-run7-forward-test",
+      "ref": "34417a1f4c3a",
+      "utc": "2026-11-08T19:07:42Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "a5bbf4cecfb4 plan: 5h super plan for Monday open, CBP playbook card, operator decision",
-      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-08T18:17:26Z"
+      "line": "34417a1f4c3a Merge remote-tracking branch 'origin/fast-track' into JIS-NB/fable-run7-forwa",
+      "ref": "MyTradingSys/system/LAYERS.md",
+      "utc": "2026-11-08T19:07:42Z"
     },
     {
       "kind": "report",
@@ -56,7 +56,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:20:53Z",
+  "refreshed": "2026-11-08T19:12:45Z",
   "refs": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
   ],
@@ -79,7 +79,7 @@
     "no live tree",
     "no change to registry tile urls"
   ],
-  "scope_sha": "a5bbf4cecfb4",
+  "scope_sha": "34417a1f4c3a",
   "size": "M",
   "sources": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md",

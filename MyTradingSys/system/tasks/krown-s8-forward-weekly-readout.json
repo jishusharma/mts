@@ -16,7 +16,15 @@
   "id": "krown-s8-forward-weekly-readout",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fable R7: forward pre-reg, frozen Krown S8 4h trades Deribit testnet until it fails",
+      "ref": "f1597a359857",
+      "utc": "2026-11-08T19:07:40Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -29,7 +37,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T19:07:01Z",
+  "refreshed": "2026-11-08T19:12:44Z",
   "refs": [
     "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
@@ -45,7 +53,7 @@
   "scope_out": [
     "read-only on execution/ and journal/; no trade, no HALT, no blocklist edit (the stop card asks the coordinator); no mainnet"
   ],
-  "scope_sha": "",
+  "scope_sha": "f1597a359857",
   "size": "S",
   "sources": [
     "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"

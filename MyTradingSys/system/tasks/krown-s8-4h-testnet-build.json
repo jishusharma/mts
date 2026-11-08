@@ -24,9 +24,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "RSI 40/60 + Malkan/Krown divergence flags as an alert-only live confluence feed",
-      "ref": "e7ac0429b897",
-      "utc": "2026-11-03T22:21:03Z"
+      "line": "fable R7: forward pre-reg, frozen Krown S8 4h trades Deribit testnet until it fails",
+      "ref": "f1597a359857",
+      "utc": "2026-11-08T19:07:40Z"
     }
   ],
   "layers": [
@@ -41,7 +41,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T19:06:56Z",
+  "refreshed": "2026-11-08T19:12:43Z",
   "refs": [
     "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
@@ -63,7 +63,7 @@
     "live tree .mts_live, deploy, HALT, process restart, any order by hand, mainnet, .secrets, .env",
     "no real bar >= 2024-07-01 in any fixture (a synthetic timestamp planted only to assert the guard refuses is allowed); no E2 RESULT.md read"
   ],
-  "scope_sha": "e7ac0429b897",
+  "scope_sha": "f1597a359857",
   "size": "M",
   "sources": [
     "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"

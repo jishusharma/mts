@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "plan: 5h super plan for Monday open, CBP playbook card, operator decision",
-      "ref": "a5bbf4cecfb4",
-      "utc": "2026-11-08T18:17:26Z"
+      "line": "decision: d-krown-4h-testnet-forward-start-1109 (Fable R7 started, phase-first replaces po",
+      "ref": "27d1eb64afad",
+      "utc": "2026-11-08T18:54:37Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "a5bbf4cecfb4 plan: 5h super plan for Monday open, CBP playbook card, operator decision",
+      "line": "27d1eb64afad decision: d-krown-4h-testnet-forward-start-1109 (Fable R7 started, phase-firs",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-08T18:17:26Z"
+      "utc": "2026-11-08T18:54:37Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:20:59Z",
+  "refreshed": "2026-11-08T19:12:46Z",
   "refs": [
     "MyTradingSys/research/malkan_window_wide_2026-11/RESULT.md"
   ],
@@ -47,7 +47,7 @@
     "MyTradingSys/research/malkan_window_wide_2026-11/"
   ],
   "scope_out": [],
-  "scope_sha": "a5bbf4cecfb4",
+  "scope_sha": "27d1eb64afad",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "fable R6: re-land counts-only power screen + Krown S8 pre-reg, add COST_BP to costs.csv",
-      "ref": "622a5599aaa3",
-      "utc": "2026-10-28T09:42:43Z"
+      "line": "fable R7: forward pre-reg, frozen Krown S8 4h trades Deribit testnet until it fails",
+      "ref": "f1597a359857",
+      "utc": "2026-11-08T19:07:40Z"
     }
   ],
   "layers": [
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T19:07:04Z",
+  "refreshed": "2026-11-08T19:12:42Z",
   "refs": [
     "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
     "MyTradingSys/research/fable_run6_powered_prereg/COUNTS.csv"
@@ -45,7 +45,7 @@
   "scope_out": [
     "read-only: change no code, card or pre-reg; no E2 RESULT.md read; no bar >= 2024-07-01"
   ],
-  "scope_sha": "622a5599aaa3",
+  "scope_sha": "f1597a359857",
   "size": "S",
   "sources": [
     "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"

@@ -13,7 +13,15 @@
   "id": "krown-s8-forward-parity-test",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fable R7: forward pre-reg, frozen Krown S8 4h trades Deribit testnet until it fails",
+      "ref": "f1597a359857",
+      "utc": "2026-11-08T19:07:40Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
@@ -23,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T19:06:58Z",
+  "refreshed": "2026-11-08T19:12:43Z",
   "refs": [
     "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
     "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
@@ -38,7 +46,7 @@
     "e2_run.py, counts_only.py, krown layer code, PRE_REG.md: read only (frozen)",
     "no E2 RESULT.md read; no live tree; no trade"
   ],
-  "scope_sha": "",
+  "scope_sha": "f1597a359857",
   "size": "S",
   "sources": [
     "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"
