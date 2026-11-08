@@ -19,7 +19,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Phase-first (d-phase-first-method-1106): analyst calls are Context (cbp-is-the-context-source). Layout: dense symbols, tables, cells under 8 words. Krown's newest video is 2026-11-08 M4mTHyPxMUM in the store.",
+  "note": "Phase-first (d-phase-first-method-1106): analyst calls are Context (cbp-is-the-context-source). Layout: dense symbols, tables, cells under 8 words. Krown's newest video is 2026-11-08 M4mTHyPxMUM in the store. DECISION (OURS) 2026-11-08: (1) the operator's 'Krown 10% lower low on a correlation' is Krown's 11-05 month-breach statistic (e2-KjJdWbgM, median -10.5%) plus Benjamin's 10-11% (szWg0zCAbF0); recorded as such, Krown's newest videos (11-07, 11-08) hold no BTC call. (2) Ledger: three rows S009-S011 on shared levels, only B (S009) carries a side (DOWN), A and C are NONE so nested rows do not double count; decode table in PLAYBOOK s.6. (3) Transcripts copied into the git-ignored raw_transcripts_canonical so verify_extract_quotes can run; none committed. (4) Full run_all_tests --quick shards died at the ~10 min cap under machine load (shard 1 and 2 FAIL with no failing test shown); ran --quick --smoke --changed-file: 8 of 9 steps PASS, step 4f (holds test_scenario_ledger.py) timed out at 240 s from load; test_scenario_ledger.py alone: 6 passed.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
