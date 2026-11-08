@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T18:45:50Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "census-5m-15m-7y-session-ladder-1109",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Run the auction census on 7y 5m and 15m (public mirror) in session blocks with the HTF ladder as gate and node-to-node targets: the frame Tom/Fabio trade, untested; report by session and htf bias, fee-net, pre-registered",
+  "weight": "",
+  "worker": ""
+}
