@@ -31,4 +31,10 @@ t('empty and non-string input do not match', () => {
 t('the panel line for a down agent is fixed text', () => {
   assert.strictEqual(L.SEED_DOWN_TEXT, 'agent down: run aibridge_install.py --restart-agent');
 });
+t('the seed request is a POST (a GET from the worker carries no Origin and the agent refuses it bad_origin)', () => {
+  const bg = require('fs').readFileSync(require('path').join(__dirname, '../extension/background.js'), 'utf8');
+  const m = bg.match(/'\/seed'\), \{ method: '(\w+)'/);
+  assert.ok(m, 'seed fetch not found in background.js');
+  assert.strictEqual(m[1], 'POST');
+});
 console.log(n + ' passed');

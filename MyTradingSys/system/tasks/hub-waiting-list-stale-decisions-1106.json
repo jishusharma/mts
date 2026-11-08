@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T00:56:57Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -26,47 +28,60 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already fixed on trunk: make_home.waiting() skips recorded decisions (Applied:/Operator bo",
+      "ref": "0228eed60",
+      "utc": "2026-11-08T00:56:57Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"cards: power-gate ceiling decision and candle-flip probability study (design note)",
-      "ref": "979196d6515f",
-      "utc": "2026-11-06T15:01:13Z"
+      "line": "cards: news research chain (catalogue, 2 reviews, synthesis), fable runner model; news bui",
+      "ref": "868113947539",
+      "utc": "2026-11-07T20:08:09Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "979196d6515f Revert \"cards: power-gate ceiling decision and candle-flip probability study ",
+      "line": "868113947539 cards: news research chain (catalogue, 2 reviews, synthesis), fable runner mo",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-06T15:01:13Z"
+      "utc": "2026-11-07T20:08:09Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: MTS Home housekeeping; machinery freeze REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T15:02:02Z",
+  "refreshed": "2026-11-08T00:56:16Z",
   "refs": [
     "MyTradingSys/system/artifacts/mts_home.html"
   ],
-  "result": "",
+  "result": "already fixed on trunk: make_home.waiting() skips recorded decisions (Applied:/Operator bodies, dated heads) and returns 2 open items, hub html 22555 B < 27000; pinned with a new test in test_artifacts.py (cannot show red on old code: the fix landed earlier)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/make_home.py",
     "scripts/dev/test_artifacts.py",
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "979196d6515f",
+  "scope_sha": "868113947539",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List the 16 waiting items and mark which are recorded decisions (DECISION:/Applied:/operator (voice) bodies)",
     "Parser rule or Answer: lines; test fails on the old file",
     "Rebuild and republish mts_home (artifacts.py publish-record)"
   ],
+  "taken": "2026-11-08T00:56:17Z",
   "tests": "scripts/dev/test_artifacts.py::Home::test_waiting_skips_recorded_decisions (new)",
   "title": "MTS Home 'needs you' list shows 14 decided entries as open; hub hit its 30 KB limit",
   "weight": "",

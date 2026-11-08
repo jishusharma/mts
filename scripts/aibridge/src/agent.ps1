@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.30'
+$AgentVersion = '0.7.32'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
@@ -297,9 +297,9 @@ function Handle-Client {
             $client.Close(); return
         }
 
-        # 0.7.30: GET /seed. The extension swaps the typed phrase "Start DSA bridge" for this text (spec SPEC_START_DSA_TRIGGER.md).
+        # 0.7.30: /seed (0.7.31: POST, so the browser sends an Origin header like /run; GET carried none and was refused bad_origin). The extension swaps the typed phrase "Start DSA bridge" for this text (spec SPEC_START_DSA_TRIGGER.md).
         # Same origin and token checks as /run (token in the X-AIBridge-Token header); one fixed command, nothing from the request is run.
-        if ($method -eq 'GET' -and $path -eq '/seed') {
+        if ($method -eq 'POST' -and $path -eq '/seed') {
             if ($config.allowed_origins -notcontains $reqOrigin) {
                 $audit.cmd = 'SEED'; $audit.result = 'refused'; $audit.reason = 'bad_origin'
                 Write-Audit $audit
@@ -313,6 +313,19 @@ function Handle-Client {
                 $client.Close(); return
             }
             $seedRoot = if ($config.repo_root) { [string]$config.repo_root } else { 'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed' }
+            # 0.7.32: the checkout at repo_root may be stale (no `start` subcommand in dsa.py). seed_root in config.json wins; else when
+            # dsa.py there lacks --print, run from the newest sibling worktree of that repo whose dsa.py has it. Read-only: git worktree list.
+            if ($config.seed_root) { $seedRoot = [string]$config.seed_root }
+            else {
+                $dsaHas = { param($r) $p = Join-Path $r 'scripts\dev\dsa.py'; (Test-Path -LiteralPath $p) -and (Select-String -LiteralPath $p -SimpleMatch -Pattern '--print' -Quiet) }
+                if (-not (& $dsaHas $seedRoot)) {
+                    try {
+                        $wts = @(& git -C $seedRoot worktree list --porcelain 2>$null | Where-Object { $_ -like 'worktree *' } | ForEach-Object { $_.Substring(9) })
+                        $best = $wts | Where-Object { & $dsaHas $_ } | Sort-Object { (Get-Item -LiteralPath (Join-Path $_ 'scripts\dev\dsa.py')).LastWriteTime } -Descending | Select-Object -First 1
+                        if ($best) { $seedRoot = [string]$best }
+                    } catch { }
+                }
+            }
             $seedPy = if ($config.seed_python) { [string]$config.seed_python } else { 'python' }
             $seedCmd = "& '" + ($seedPy -replace "'", "''") + "' scripts/dev/dsa.py start --print"
             $audit.cmd = 'SEED dsa.py start --print'; $audit.cwd = $seedRoot; $audit.timeout_s = 10

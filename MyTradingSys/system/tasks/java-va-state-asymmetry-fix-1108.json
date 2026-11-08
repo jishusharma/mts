@@ -1,17 +1,28 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "mvn -q test -Dtest=SetupCandidatesBuilderRulesTest"
+  ],
   "created": "2026-11-07T18:31:32Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Maven test: determineDirections(below_val) contains short; setupType(daily_vah,short,trend_healthy)==ct_short; both fail on pre-change code",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make the value-area direction/setup rules symmetric: price above VAH keeps ct_short, price below VAL adds short",
   "id": "java-va-state-asymmetry-fix-1108",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SpikeFade A-C3 volume gate on price arm, A-S2 stop scaled per symbol (OURS 0.40 pct), clas",
+      "ref": "2bffd375c4d2",
+      "utc": "2026-11-05T03:07:04Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,21 +30,31 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T19:48:18Z",
   "refs": [
-    "src/main/java/datafeed/SetupCandidatesBuilder.java",
-    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
+    "src/main/java/datafeed/SetupCandidatesBuilder.java"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "Lead C review 2026-11-08 of Argon's Tom/Fabio audit (1a79739e, research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md); operator asked what really needs to be done"
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/SetupCandidatesBuilderRulesTest.java"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "live tree, thresholds, other layers"
+  ],
+  "scope_sha": "2bffd375c4d2",
+  "size": "S",
+  "sources": [
+    "AUDIT_AND_COURSE_CORRECTION.md root cause 4"
+  ],
+  "state": "ready",
+  "steps": [
+    "edit determineSetupType vah branch",
+    "edit determineDirections below_val",
+    "update + add tests, mvn"
+  ],
+  "tests": "SetupCandidatesBuilderRulesTest",
   "title": "Java SetupCandidatesBuilder: above_vah kills ct_short (trend_healthy, line ~307/477) and below_val never adds short (line ~320); fix both, test fails pre-change",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

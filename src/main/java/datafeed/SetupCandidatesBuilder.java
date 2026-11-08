@@ -319,6 +319,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             dirs.add("long");
         } else if ("below_val".equals(priceVsVa)) {
             dirs.add("long");
+            dirs.add("short");
         } else { // in_va
             if ("above".equals(priceVsPoc)) {
                 dirs.add("short");
@@ -474,7 +475,7 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
         if ("transition".equals(state)) return null;
         // CT setups
         if (zoneType.contains("vah") || zoneType.contains("swing_high") || zoneType.equals("prior_day_vah")) {
-            if ("trend_healthy".equals(state)) return null;
+            // Mirror of the val branch below: price above VAH (trend_healthy by classifyState) must not kill ct_short.
             return isShort ? "ct_short" : null;
         }
         if (zoneType.contains("val") || zoneType.contains("swing_low") || zoneType.equals("prior_day_val")) {
