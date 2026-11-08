@@ -64,6 +64,7 @@ def test_agent_wires_the_lease_into_the_event_path():
     assert "lease.ps1" in agent and "Invoke-AccountLease" in agent and "account_in_use" in agent
 
 
+@pytest.mark.skipif(sys.platform != "win32", reason="aibridge_scratch launches the agent with subprocess creationflags, which exists only on Windows")
 def test_live_agent_grants_then_refuses_when_another_host_holds_the_account(tmp_path):
     """The real agent over HTTP (scratch copy): an arm request is granted; with another host's fresh lease file it is refused account_in_use."""
     import sys
@@ -81,9 +82,9 @@ def test_live_agent_grants_then_refuses_when_another_host_holds_the_account(tmp_
         assert ask("LEASE_BEAT awgp")[1].get("lease") == "ok"
         assert ask("LEASE_RELEASE awgp")[1].get("lease") == "ok"
         assert not (lease_dir / "awgp.json").exists()
-        (lease_dir / "awgp.json").write_text(json.dumps({"account": "awgp", "host": "JIS-NUC", "ts": int(time.time())}), encoding="utf-8")
+        (lease_dir / "awgp.json").write_text(json.dumps({"account": "awgp", "host": "ELSEWHERE-1", "ts": int(time.time())}), encoding="utf-8")
         code, body = ask("LEASE awgp")
-        assert code == 200 and body.get("lease") == "account_in_use" and body.get("holder") == "JIS-NUC", body
+        assert code == 200 and body.get("lease") == "account_in_use" and body.get("holder") == "ELSEWHERE-1", body
         assert ask("LEASE other")[1].get("lease") == "ok"
     finally:
         ag.close()
