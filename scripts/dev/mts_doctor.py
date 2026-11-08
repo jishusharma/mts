@@ -487,6 +487,7 @@ def ship_time(log, now=None, hours=24):
     if not log.is_file():
         return "unavailable", f"{log.as_posix()} missing (written by sync.py record_ship_timing / run_all_tests.py record_timing on this machine)"
     now = now or datetime.now(timezone.utc)
+    fails = {}
     ships, gates, cur = [], [], {}      # cur: sha -> [steps seen, first start, last end]; a repeated step number is a new gate run
     for ln in log.read_text(encoding="utf-8", errors="ignore").splitlines():
         try:
@@ -499,6 +500,8 @@ def ship_time(log, now=None, hours=24):
             continue
         if r.get("step") == "ship_wall":
             ships.append(secs)
+            for sid in r.get("failed_steps") or []:
+                fails[str(sid)] = fails.get(str(sid), 0) + 1
             continue
         if r.get("step") == "ship":
             continue
@@ -513,6 +516,8 @@ def ship_time(log, now=None, hours=24):
         return "unavailable", f"no rows in the last {hours} h of {log.as_posix()}"
     parts = [f"ship_wall n={len(ships)} median {_median(ships):.0f}s p90 {_p90(ships):.0f}s" if ships else "ship_wall no rows"]
     parts.append(f"gate n={len(g)} median {_median(g) / 60:.1f} max {max(g) / 60:.1f} min" if g else "gate no rows")
+    if fails:
+        parts.append("failing steps: " + ", ".join(f"{k} x{v}" for k, v in sorted(fails.items(), key=lambda kv: (-kv[1], kv[0]))[:3]))
     if ships and max(_median(ships), _p90(ships)) > SHIP_MAX_S:
         return "WARN", f"{'; '.join(parts)}; ship over {SHIP_MAX_S}s: profile the slowest gate steps in {log.as_posix()}"
     return "OK", "; ".join(parts)
