@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python F:/AIBridge/tests/agent_live_selftest.py"
+  ],
+  "created": "2026-11-08T05:08:38Z",
+  "depends_on": [
+    "dsa-bridge-fix-review-opus-1108"
+  ],
+  "done_when": "Sanctioned fallback priced: DeepSeek API cost per DSA run for unattended work, written as a one-line operator money decision, no key handled",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "DeepSeek blocked the AWGP Chrome profile until 2026-11-11; the bridge sent 205 auto-run commands on 11-07 (peak 45 an hour) across parallel chats and three machines. Without a cause and a pacing guard the next block hits any DSA profile.",
+  "id": "dsa-bridge-avoid-deepseek-block-1108",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Never try to get around the block; wait it out on that profile. Do the work on another profile or machine only if the operator allows. Build only what DSA_BLOCK_REVIEW.md ranks; the review replaces its first done_when item.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T05:08:39Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys\\system\\DSA_BLOCK_NOTE.md, F;C:\\Users\\E-ngineers\\Git\\AIBridge\\src policy and extension pacing (reads audit counts only)"
+  ],
+  "scope_out": [
+    "never read F:/AIBridge/src/config.json or extension/background.js tokens; no login attempts; no bypass of any bot check; no account creation"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator chat 2026-11-08 ~10:40Z (d-dsa-deepseek-block-find-cause-1108); audit.jsonl counts 11-07"
+  ],
+  "state": "blocked",
+  "steps": [
+    "write the note from audit counts and the pasted block text; design the guard; build it first as a failing replay test"
+  ],
+  "tests": "node F:/AIBridge/tests/loop.test.js",
+  "title": "DSA bridge: find why DeepSeek blocked the AWGP profile until 11-11 and stop it recurring (pacing, daily cap, one machine per account)",
+  "weight": "",
+  "worker": "session"
+}

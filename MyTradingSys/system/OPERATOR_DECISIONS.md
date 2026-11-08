@@ -2044,3 +2044,18 @@ Answer: yes; order on the credit: news panel, refine-batch (with stale guard), n
 Operator: compare past news events first, from analyst transcripts and online sources, before and after Trump took office; the same news sometimes does not work twice; research before fixing how to flash and weight; the question goes to several reviews by different models (Fable, Opus), a higher model combines them, then the fix is built in his style and order.
 Lead C: the weight/flash and CBP events build cards now wait. Chain on the Platform credit: catalogue (Sonnet, 150+ events, measured on public 1m klines, before/after 2025-01-20, repeat decay) -> Opus review (statistics lens) and a second review (market-structure lens, Fable if the runner supports it) in parallel-free sequence, each blind to the other -> synthesis by the highest model, NEWS_DESIGN.md plus rewrite of both build cards in his preferences -> build. Tooling card adds the Fable model id to the credit runner.
 Answer: yes; research chain first, builds after; no weight, flash or bias rule is final until NEWS_DESIGN.md.
+
+## d-credit-use-all-before-1117-no-hurry-1108 (2026-11-08 ~10:40Z, operator, chat)
+Operator (console screenshot): $24.82 spent so far, $75.18 left, the credit expires 2026-11-17. Run everything that can run on the Platform credit today, to use the full capacity before it expires, but not in a hurry.
+Lead C: about 9 days left, so a pace of about 8 USD a day; one headless job at a time on this machine, each job needs fail-first tests and a cap; no padding work: only cards that survive the stale guard and sit on the critical path, in its order. Fable and Opus jobs go first because those lanes have no other budget.
+Answer: yes; today's queue on the Platform: news design synthesis (running, Fable), news panel finish, news weight, CBP events, stop-gap early return, ci-red gate parity, then day-end Fable review of what shipped.
+
+## d-dsa-deepseek-block-find-cause-1108 (2026-11-08 ~10:40Z, operator, chat)
+Operator: DeepSeek blocked the AWGP Chrome profile until 2026-11-11, probably because the AIBridge did too much automatically. Find why, and make the DSA bridge work without getting blocked.
+Lead C evidence so far: the bridge audit log shows 205 commands on 11-07 (22 to 96 on earlier days), peak 45 an hour (one about every 80 s) between 16:00 and 18:00Z; every command is one auto-sent reply plus one model message, and up to 8 run at once across parallel chats on three machines. Cause not proven: the block text itself has not been read by us. Fix path: pacing and daily cap in the extension, one machine per account at a time, and a sanctioned channel (DeepSeek API, a money decision) for unattended work.
+Answer: yes; card dsa-bridge-avoid-deepseek-block-1108 filed; operator pastes the exact block text.
+
+## d-dsa-opus-review-all-fixes-on-credit-1108 (2026-11-08 ~10:50Z, operator, chat)
+Operator: look at all bugs raised on the DSA bridge; Opus reviews all past fixes, the DSA prompt and DeepSeek's latest rules on what automated requests get blocked; run it on the cloud platform; plan it if it makes sense.
+Lead C: it makes sense: one Opus job (cap about 8 USD) on the Platform, public pages only for the DeepSeek rules, no bridge code edited. The build card now waits on its ranked fix list so the pacing guard is built from the review, not from a guess.
+Answer: yes; card dsa-bridge-fix-review-opus-1108 (Opus, ready) runs next after the news synthesis; dsa-bridge-avoid-deepseek-block-1108 is blocked on it.
