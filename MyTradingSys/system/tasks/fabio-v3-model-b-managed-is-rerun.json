@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T11:56:02Z",
   "commands": [
     "python scripts/dev/desk.py post \"fabio v3 L3 IS-only rerun, managed Model B\" --need \"python -m MyTradingSys.backtest.layers.fabio.run_v3_l3 --is-only --out F:/MTS/data/fabio_v3_bt_isonly; copy is_only.json IS net R per model A-D + Model B fill count into FABIO_V3_L3_NOT_MEASURED.md\" --done-when \"NOT_MEASURED.md has measured IS net R, no OOS number\" --target JIS-NB"
   ],
@@ -19,6 +20,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "IS rerun measured (266 windows): mean net R A +0.0061 B +0.0038 C -0.0141 D +0.00006; ship",
+      "ref": "2eda09a40",
+      "utc": "2026-11-08T11:56:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "fabio v3: manage Model B IN_TRADE fills instead of scoring 0 R",
@@ -36,13 +43,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: IS numbers measured, Model B fill count still not derived",
   "note": "REVIEWED:2026-11-01 ACCEPT Dependency fabio-v3-l3-is-only-flag done (d92a7373ae18). Lane JIS-NB: needs F:/MTS/data; post the desk task from commands.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-01T02:48:41Z",
   "refs": [],
-  "result": "",
+  "result": "IS rerun measured (266 windows): mean net R A +0.0061 B +0.0038 C -0.0141 D +0.00006; shipped 2eda09a4; Model B fill count not derived",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/fabio/FABIO_V3_L3_NOT_MEASURED.md"
   ],
@@ -52,11 +65,12 @@
   "scope_sha": "483a6b035782",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Wait for fabio-v3-l3-is-only-flag to be done, then post the desk task from commands (JIS-NB lane; run-and-report is never a builder).",
     "Desk host runs the command, copies the IS numbers (mean net R at 2 bps per model, n windows, Model B fill count) into FABIO_V3_L3_NOT_MEASURED.md, labels them IS and DEV-only, ships. Verify: content commit sha; git cherry origin/fast-track <sha> empty; git ls-tree -r origin/fast-track --name-only lists the delivered files."
   ],
+  "taken": "2026-11-08T11:56:02Z",
   "tests": "none (run card)",
   "title": "Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model",
   "weight": "IMPORTANT",

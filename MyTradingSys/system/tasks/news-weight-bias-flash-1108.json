@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T11:38:43Z",
   "commands": [
     "python MyTradingSys/research/news_effects_2026-11/check_design.py",
     "python MyTradingSys/tools/live_aid/test_news_weight.py",
@@ -30,6 +31,18 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "live_aid News panel W + LONG/SHORT/HOLD chip + News row flash: MyTradingSys/tools/live_aid",
+      "ref": "b3b20cfce",
+      "utc": "2026-11-08T11:38:43Z"
+    },
+    {
+      "kind": "decision",
+      "line": "DECISION (OURS): flash = W>=60 or K=40 on a headline under 60 min, ends when none qualifie",
+      "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
+      "utc": "2026-11-08T10:50:39Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
@@ -47,17 +60,23 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "cbp-events-to-watch-wire-1108",
   "note": "Rewritten 2026-11-08 by news-design-synthesis-1108 from NEWS_DESIGN.md: P values are counts (section 4 of REPORT.md), everything else is labelled OURS. Bias is a read for him to act on by hand, never an order. Direction is UNKNOWN for every class (0 surprise rows): the chip moves only on the market's own move. Public repo: no account data. Unblocks when the synthesis card is done (depends_on). Checked against a65df68 (News poll gate + news_feed.js R23, 2026-11-08): news_feed.js already exists with NEWSFEED.row; wire into it, never a second panel; scope unchanged.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T09:03:40Z",
+  "refreshed": "2026-11-08T10:50:39Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md"
   ],
-  "result": "",
+  "result": "live_aid News panel W + LONG/SHORT/HOLD chip + News row flash: MyTradingSys/tools/live_aid/news_weight.js; CPI z7.6 v28 imp10 at 2 min = 84, unknown class imp9 = 21; 8 named tests green (test_weight_parts, test_bias_hold_default, test_bias_long_short_on_move, test_bias_hold_late_overlap_ppi, test_flash_when, test_flash_stop, test_repeat_no_decay, test_class_table_calls); ship b3b20cfce",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/news_weight.js (new: W, chip, flash state per MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md)",
     "MyTradingSys/tools/live_aid/news_feed.js and build_artifact.py (wire only)",
@@ -74,12 +93,13 @@
   "sources": [
     "operator 2026-11-08 ~19:50Z chat: news must carry weight (how real and applicable, will it have the anticipated effect), flash the news tab, let him act long / short / hold; analysts name reports and announcements to watch, wire them from CBP"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 2-6), tools/live_aid/REQUIREMENTS.md, STEPS.md, news_feed.js on trunk; write test_news_weight.py with the 8 named tests and run it red",
     "write news_weight.js: P from news_events.csv, K from the page's 1m feed (z15d on 24 h stdev, vr5), I from Tree, F by elapsed minutes; chip and reason per section 5; flash state per section 4; every OURS number commented OURS",
     "wire chip, hover breakdown and tab pulse into the panel; news_study.py on public Binance 1m klines; rebuild the page; run_all_tests --quick; ship with Result naming the build and the 8 tests"
   ],
+  "taken": "2026-11-08T11:38:43Z",
   "tests": "MyTradingSys/tools/live_aid/test_news_weight.py (fail-first, red on pre-change code: test_weight_parts, test_bias_hold_default, test_bias_long_short_on_move, test_bias_hold_late_overlap_ppi, test_flash_when, test_flash_stop, test_repeat_no_decay, test_class_table_calls)",
   "title": "News weight 0-100 + LONG/SHORT/HOLD bias chip per headline, News tab flashes on high weight; he acts, nothing auto",
   "weight": "",
