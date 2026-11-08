@@ -1,0 +1,39 @@
+{
+ "approved_by": "",
+ "asks": "",
+ "commands": [],
+ "created": "2026-11-08T18:45:50Z",
+ "depends_on": [],
+ "done_when": "",
+ "est_turns": null,
+ "formula_id": "",
+ "formula_ids": [],
+ "from_inbox": "",
+ "goal": "",
+ "id": "audit-77pct-acceptance-misread-1109",
+ "lane": "HAIKU",
+ "layers": [],
+ "live_path": false,
+ "mutation_check": "",
+ "note": "MERGED from tf-acceptance-77-label-placebo-1109: add a placebo for the 77% (random day, same half-VA-width touch) and put the 44% Event R next to Trade 2's 'Dalton 80%' line (RESULT.md:9).",
+ "prio": 2,
+ "refine_tries": 0,
+ "refined_by": "",
+ "refs": [
+  "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
+  "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
+ ],
+ "result": "",
+ "scope_in": [],
+ "scope_out": [],
+ "size": "",
+ "sources": [
+  "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
+ ],
+ "state": "raw",
+ "steps": [],
+ "tests": "",
+ "title": "AUDIT_AND_COURSE_CORRECTION.md and card auction-plan-testnet-forward-1108 quote accept80 77 pct as continuation win rate; RESULT.md: half VA width drift, descriptive, no fees; census ACCEPTED at 1R = -0.096 R; restate both and the scenario_ledger row",
+ "weight": "",
+ "worker": ""
+}

@@ -1,36 +1,67 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T18:59:37Z",
   "commands": [],
   "created": "2026-11-08T18:44:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "grep -n 'OURS' on MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py line 14 and MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md lines 10,51,104 shows the 77% marked OURS; AUDIT line 95 has '44% on BTC (value_area_acceptance RESULT.md:9)'; test_auction_context.py still passes.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "The 77% acceptance claim reads as OURS (accept80 count, no fees, no placebo) and Trade 2's Dalton-80% line shows the measured 44% Event R beside it. Docs and comments only; the placebo run is split to a DSA card.",
   "id": "tf-acceptance-77-label-placebo-1109",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Tom & Fabio Layers: End-to-End Audit, Course Correction, MTF Auction Context Engine, and 4",
+      "ref": "9358461e241c",
+      "utc": "2026-11-07T18:23:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "9358461e241c Tom & Fabio Layers: End-to-End Audit, Course Correction, MTF Auction Context ",
+      "ref": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+      "utc": "2026-11-07T18:23:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "merged into audit-77pct-acceptance-misread-1109 + census-acceptance-threshold-mislabel-1109 (Fable twins)",
+  "pinned": false,
   "prio": 3,
+  "reason": "merged into audit-77pct-acceptance-misread-1109 + census-acceptance-threshold-mislabel-1109 (Fable twins)",
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T18:53:37Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "Opus post-mortem 2026-11-09 POSTMORTEM_OPUS.md (tom_fabio_course_correction_2026-11-07)"
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no logic change; no placebo run (split card); no other study"
+  ],
+  "scope_sha": "9358461e241c",
+  "size": "S",
+  "sources": [
+    "POSTMORTEM_OPUS.md C8"
+  ],
+  "state": "dropped",
+  "steps": [
+    "Read POSTMORTEM_OPUS.md C8 and value_area_acceptance_2026-11-05/RESULT.md:9",
+    "auction_context.py:14 and :544: change SOURCED to OURS for the 77% (accept80 count, no fees, no placebo)",
+    "AUDIT_AND_COURSE_CORRECTION.md lines 10, 51, 104: add 'OURS, no placebo' to the 77%; line 95: add the 44% Event R",
+    "Run test_auction_context.py"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py (unchanged, comment-only edit; no new test, ROUTINE docs card)",
   "title": "Relabel the 77% acceptance claim OURS (accept80 count is OURS, no placebo/fees) in auction_context.py:14,544 and AUDIT; add the 44% Event R next to the 'Dalton 80%' line of Trade 2; placebo run for the 77% (random-day half-width touch)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

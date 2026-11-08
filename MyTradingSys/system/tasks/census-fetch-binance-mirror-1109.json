@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T18:45:49Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "census-fetch-binance-mirror-1109",
+  "lane": "HAIKU",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "auction_census.py: api.binance.com unreachable from JIS-NB (fetch failed); use data-api.binance.vision; add slippage 2 bps RT (FORMULAS s13) to fee_r (understated ~20 pct)",
+  "weight": "",
+  "worker": ""
+}
