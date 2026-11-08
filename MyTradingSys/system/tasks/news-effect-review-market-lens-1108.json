@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-11-08 chat ~20:20Z: reviews by Fable and Opus, combined by a higher model (d-news-research-first-reviews-synthesis-1108)",
   "asks": "",
+  "closed": "2026-11-08T19:58:27Z",
   "commands": [
     "python MyTradingSys/research/news_effects_2026-11/check_review.py REVIEW_MARKET.md"
   ],
@@ -16,6 +17,12 @@
   "id": "news-effect-review-market-lens-1108",
   "lane": "OPUS",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped 9c66361a0 (2026-11-08): REVIEW_MARKET.md; card was left open",
+      "ref": "324ff28ff",
+      "utc": "2026-11-08T19:58:27Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,6 +41,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: review shipped",
   "note": "Independent lens 2. Model: Fable when api_job supports it (see the runner model card), otherwise Opus 5.5; record which in the ledger line.",
   "prio": 1,
   "refine_tries": 0,
@@ -43,7 +51,12 @@
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/research/mts_bible/BIBLE.md"
   ],
-  "result": "",
+  "result": "Already shipped 9c66361a0 (2026-11-08): REVIEW_MARKET.md; card was left open",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/news_effects_2026-11/REVIEW_MARKET.md (new)"
   ],
@@ -55,10 +68,11 @@
   "sources": [
     "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the catalogue report and csv; write the review from the market-structure lens"
   ],
+  "taken": "2026-11-08T19:58:27Z",
   "tests": "MyTradingSys/research/news_effects_2026-11/check_review.py",
   "title": "Independent second review (Fable if the credit runner supports it, else Opus) of the news-effect catalogue from the market-structure and surprise lens",
   "weight": "",
