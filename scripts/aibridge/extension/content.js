@@ -106,7 +106,7 @@
       for (var i = 0; i < sleepers.length; i++) { if (sleepers[i].due <= now) sleepers[i].fin(); else keep.push(sleepers[i]); }
       sleepers = keep;
     }
-    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick(); versionTick();
+    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick(); versionTick(); guardTick();
   }
   // a page holding a Web Lock is not frozen by Chrome's tab lifecycle while it sits in the background
   try { if (navigator.locks && navigator.locks.request) navigator.locks.request('aibridge-keepalive-' + tabId, function () { return new Promise(function () {}); }); } catch (e) {}
@@ -429,6 +429,7 @@
     return false;
   }
   async function postToChat(text, myToken, maxMs) {
+    if (!(await paceGate(myToken))) return false;
     var t0 = Date.now(), lim = maxMs || CFG.aibridge_wait_ms;
     while (true) {
       if (myToken !== token) return false;
@@ -477,17 +478,106 @@
     ui.count.textContent = runs + '/' + CFG.aibridge_cap;
     ui.box.className = 'aibridge-ctl' + (autoRun ? ' on' : '');
   }
+  // ---- 0.7.33: DeepSeek block guard (card dsa-bridge-avoid-deepseek-block-1108; pure rules in loop.js) ----
+  // State lives in chrome.storage.local, so every chat tab of one browser profile (= one DeepSeek account) shares it.
+  var PACE_KEY = 'aibridge_pace', ARMED_KEY = 'aibridge_armed', COOL_KEY = 'aibridge_cooldown_until', ACCT_KEY = 'aibridge_account';
+  var armedHere = false, acctLabel = L.leaseAccount(''), lastBeat = 0, lastWarnChk = 0, paceAudited = 0;
+  function sget(keys) { return new Promise(function (res) { try { chrome.storage.local.get(keys, function (r) { res(r || {}); }); } catch (e) { res({}); } }); }
+  function sset(o) { return new Promise(function (res) { try { chrome.storage.local.set(o, function () { res(); }); } catch (e) { res(); } }); }
+  // one event to the agent (audit row, or the account lease); resolves with the worker's response or null
+  function sendEvent(text) {
+    return new Promise(function (res) {
+      if (!alive()) { res(null); return; }
+      try { chrome.runtime.sendMessage({ type: 'airun', event: String(text).slice(0, 400), auto: true, rid: newRid() }, function (r) { void chrome.runtime.lastError; res(r || null); }); } catch (e) { res(null); }
+    });
+  }
+  // what the page shows outside the chat messages: dialogs, alerts, toasts (DSA may write "captcha" in a message; that is not a warning)
+  function pageSnapshot() {
+    var o = [];
+    try {
+      var l = document.querySelectorAll('[role="dialog"], [role="alertdialog"], [role="alert"], [aria-modal="true"], [class*="modal" i], [class*="toast" i], [class*="dialog" i]');
+      for (var i = 0; i < l.length && o.length < 12; i++) { if (!isOurs(l[i])) o.push(String(l[i].innerText || l[i].textContent || '').slice(0, 400)); }
+    } catch (e) {}
+    var cf = false, pw = false;
+    try { cf = !!document.querySelector('iframe[src*="captcha" i], iframe[src*="turnstile" i], iframe[src*="recaptcha" i], iframe[src*="geetest" i], #captcha, [class*="captcha" i]'); } catch (e) {}
+    try { pw = !!document.querySelector('input[type="password"]'); } catch (e) {}
+    return { href: location.href, overlays: o, captchaFrame: cf, hasPassword: pw };
+  }
+  function refuseArm(reason, text) {
+    autoRun = false; stopHold = true; token++; pending = []; watch = null;
+    auditEvent('arm refused (' + reason + '): ' + text);
+    setStatus(text); showStopBanner(text); refreshUi();
+  }
+  // hands-free arms only when: no warning cooldown on this profile, no warning on the page, no other armed tab, the agent grants the account lease
+  async function tryArm() {
+    var now = Date.now(), r = await sget([COOL_KEY, ARMED_KEY, ACCT_KEY]);
+    acctLabel = L.leaseAccount(r[ACCT_KEY]);
+    if (L.cooldownLeft(r[COOL_KEY], now)) { refuseArm('cooldown', 'AIBridge hands-free refused: ' + L.cooldownText(r[COOL_KEY], now) + '. Use the chat by hand.'); return; }
+    var w = L.warnState(pageSnapshot());
+    if (w.warn) { await sset((function () { var o = {}; o[COOL_KEY] = L.cooldownUntil(now); return o; })()); refuseArm('warning', L.warnStopText(w)); return; }
+    var g = L.armGate(r[ARMED_KEY] || {}, tabId, now);
+    if (!g.ok) { refuseArm('second_tab_refused', 'second_tab_refused: chat ' + g.holder + ' in this browser profile is already armed. One armed chat per DeepSeek account: untick it there first.'); return; }
+    var lr = L.parseLeaseReply(await sendEvent(L.leaseEvent('acquire', acctLabel)));
+    if (!lr.ok) { refuseArm(lr.reason, lr.text); return; }
+    var o2 = {}; o2[ARMED_KEY] = g.reg; await sset(o2);
+    armedHere = true; autoRun = true; runs = 0; stopHold = false; lastBeat = now; lastWarnChk = now;
+    refreshUi(); preflight('on:');
+  }
+  async function releaseArm() {
+    var r = await sget([ARMED_KEY]), o = {}; o[ARMED_KEY] = L.armRelease(r[ARMED_KEY] || {}, tabId); await sset(o);
+    await sendEvent(L.leaseEvent('release', acctLabel));
+  }
+  // every second while armed: warning page -> off + cooldown; every 30 s: keep the tab slot and the lease alive
+  function guardTick() {
+    if (!autoRun || !armedHere) return;
+    var now = Date.now();
+    if (now - lastWarnChk >= 1000) {
+      lastWarnChk = now;
+      var w = L.warnState(pageSnapshot());
+      if (w.warn) { onWarning(w); return; }
+    }
+    if (now - lastBeat >= 30000) { lastBeat = now; beatArm(); }
+  }
+  async function onWarning(w) {
+    var o = {}; o[COOL_KEY] = L.cooldownUntil(Date.now()); await sset(o);
+    auditEvent('WARNING ' + w.warn + ' | hands-free off, no retry, 24 h cooldown on this profile');
+    stopAuto(L.warnStopText(w), true);
+  }
+  async function beatArm() {
+    var now = Date.now(), r = await sget([ARMED_KEY]), g = L.armGate(r[ARMED_KEY] || {}, tabId, now);
+    if (!autoRun) return;
+    if (!g.ok) { stopAuto('second_tab_refused: chat ' + g.holder + ' in this profile is armed too. One armed chat per DeepSeek account.'); return; }
+    var o = {}; o[ARMED_KEY] = g.reg; await sset(o);
+    var lr = L.parseLeaseReply(await sendEvent(L.leaseEvent('beat', acctLabel)));
+    if (autoRun && lr.reason === 'account_in_use') stopAuto(lr.text);
+  }
+  // pacing: every auto post waits for the guard (60 s + 10-30 s jitter since the last post of this profile, 15 an hour, 80 a day).
+  // A short wait is shown and waited out; an hour or day limit refuses the post (says paced) and hands-free stops.
+  async function paceGate(myToken) {
+    var jit = L.paceJitter();
+    while (true) {
+      if (myToken !== token) return false;
+      var now = Date.now(), r = await sget([PACE_KEY]), hist = (r[PACE_KEY] || []).filter(function (x) { return typeof x === 'number' && now - x < 86400000; });
+      var c = L.paceCheck(hist, now, jit);
+      if (c.ok) { hist.push(now); var o = {}; o[PACE_KEY] = hist.slice(-200); await sset(o); return true; }
+      if (c.cap !== 'gap' || c.waitMs > 120000) { lastPostErr = L.paceText(c); auditEvent('post refused: ' + lastPostErr); return false; }
+      setStatus(L.paceText(c));
+      if (now - paceAudited > 60000) { paceAudited = now; auditEvent('post waits: ' + L.paceText(c)); }
+      await sleep(Math.min(c.waitMs, 1000));
+    }
+  }
   // 0.7.18: every stop and retry reason goes to the agent's audit log (the banner is invisible there)
   function auditEvent(text) {
     try { if (alive()) chrome.runtime.sendMessage({ type: 'airun', event: String(text).slice(0, 400), auto: true, rid: newRid() }, function () { void chrome.runtime.lastError; }); } catch (e) {}
   }
   var emptyFirst = 0;
-  function stopAuto(why) {
+  function stopAuto(why, final) {
     auditEvent('auto OFF: ' + (why || 'stopped'));
     emptyFirst = 0;
     autoRun = false; stopHold = true; token++; pending = []; watch = null;
+    if (armedHere) { armedHere = false; releaseArm(); }
     setStatus(why || 'stopped');
-    showStopBanner(L.stopNotice(why));
+    showStopBanner(final ? why : L.stopNotice(why));
     refreshUi();
   }
   // visible banner (extension DOM element, not a sent message) so a silent auto-off is impossible
@@ -683,6 +773,7 @@
   setInterval(replyTick, 1000);
   setInterval(watchdog, 2000);
   setInterval(linkCheck, 1000);
+  setInterval(guardTick, 1000);
   setInterval(versionTick, 5000);   // gated to once a minute inside; onTick also calls it
   setInterval(function () { if (location.href !== lastHref) { lastHref = location.href; if (!lastSend || Date.now() - lastSend > 15000) histUntil = Date.now() + 6000; } }, 500);
   document.addEventListener('click', function (e) { var t = e.target; if (!t || !t.closest || isOurs(t) || !t.closest('button, [role="button"]')) return; var inp = findInput(); if (!inp) return; var box = inp; for (var u = 0; u < 4 && box.parentElement; u++) box = box.parentElement; if (box.contains(t)) lastSend = Date.now(); }, true);
@@ -769,8 +860,7 @@
     });
     try { var pos = (sessionStorage.getItem('aibridge_ctl_pos') || '').split(','); if (pos.length === 2 && pos[0]) { box.style.left = pos[0]; box.style.top = pos[1]; box.style.right = 'auto'; box.style.bottom = 'auto'; } } catch (e) {}
     cb.addEventListener('change', function () {
-      autoRun = cb.checked;
-      if (autoRun) { runs = 0; stopHold = false; preflight('on:'); } else stopAuto('off: click Run on each block');
+      if (cb.checked) { autoRun = false; tryArm(); } else stopAuto('off: click Run on each block');
       refreshUi();
     });
     refreshUi();
