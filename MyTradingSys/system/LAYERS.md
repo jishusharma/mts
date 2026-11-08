@@ -30,7 +30,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
-  - `live-aid-balance-acceptance-1105` ready p2 SONNET: live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); b
+  - `tom-fabio-rebuild-from-beginner-videos-1109` ready p1 CODEX: Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what c
   - `tom-btc-dev-backtest` blocked p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
@@ -93,7 +93,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-04_malkan-window-12-18-vs-hindi.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-level-short-4h-count-1109` raw p1 SONNET: Malkan level short 4h: code the 5-layer stack in research/malkan_level_shorts_2026-11-09/READING.md (level, di
+  - `malkan-level-short-4h-count-1109` ready p1 SONNET: Malkan level short 4h: code the 5-layer stack in research/malkan_level_shorts_2026-11-09/READING.md (level, di
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
@@ -218,6 +218,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
   - `krown-s8-4h-testnet-build` ready p2 JIS-NB: Krown S8 4h forward test: wire the frozen R6 rule to Deribit testnet (BTC-PERPETUAL, own account, targets_r ex
+  - `krown-s8-forward-parity-test` ready p2 SONNET: Krown S8 forward test: replay parity test, live decision code must reproduce R6's 277 BTC events with 0 mismat
   - `gemini-blind-read-fable-r7-forward-prereg` ready p3 CODEX: [GEMINI] blind read of fable R7 FORWARD_PREREG.md: do the FAIL rule, parity spec and months-to-power arithmeti
   - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p

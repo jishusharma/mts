@@ -17,7 +17,7 @@
   },
   "created": "2026-11-06T14:16:56Z",
   "depends_on": [],
-  "done_when": "live_aid.html shows a trendline cell per timeframe row and liquidation rungs on the ladder; tf_strip.js has pure functions for both with spec tests on hand-computed numbers that fail with the functions absent; REQUIREMENTS.md gains R20; ships with --wait-ci.",
+  "done_when": "Trendline half BUILT (7f5a8a6be, R22). Left: live_aid.html shows liquidation rungs on the ladder (cluster levels, beyond the Liquidations panel and 5-min tile); a pure function for them with a spec test on hand-computed numbers that fails with it absent; REQUIREMENTS.md gains the next free R row (R20-R23 taken); ships with --wait-ci.",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],

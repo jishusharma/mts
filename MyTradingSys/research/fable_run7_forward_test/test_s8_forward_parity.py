@@ -1,6 +1,6 @@
 """R7 replay parity test (FORWARD_PREREG.md section 1, steps 1-5): the live decision code must reproduce R6's BTC S8 4h events.
 
-Oracle A  = e2_run.signals + e2_run.stop_for on cached BTCUSDT 4h DEV klines (2020-01-01..2024-06-30, counts_only.load).
+Oracle A  = e2_run.signals + e2_run.stop_for on the committed BTCUSDT 4h DEV kline fixture (2020-01-01..2024-06-30; same bars counts_only.load returns).
 Candidate B = krown_live.s8_events(bars in the runner's klines_to_bars shape).  PASS iff A == B (0 mismatches, diff printed).
 
 Contract the build card (krown-s8-4h-testnet-build) must satisfy, in MyTradingSys/backtest/layers/krown/krown_live.py:
@@ -9,8 +9,10 @@ Contract the build card (krown-s8-4h-testnet-build) must satisfy, in MyTradingSy
        entry_price:<signal close>, stop:<far side of bars i-9..i>, bbwp:<float>}
   decide(alert, mark, position_flat) -> "take" | "skipped_busy" | "skipped_floor"
       mark = last price at decision time (the parity test passes the next bar's open); floor = |mark-stop|/mark < 0.0056.
-Import failure = FAIL (never skip). Reads only cached bars < 2024-07-01; run: python -m unittest test_s8_forward_parity -v
+Import failure = FAIL (never skip). Reads only fixture bars < 2024-07-01; run: python -m unittest test_s8_forward_parity -v
 """
+import csv
+import gzip
 import importlib.util
 import sys
 import unittest
@@ -32,10 +34,16 @@ SIDE = {1: "long", -1: "short"}
 _CACHE = {}
 
 
+FIXTURE = HERE / "btcusdt_4h_dev.csv.gz"   # public Binance USDM BTCUSDT 4h klines 2020-01-01..2024-06-30 (o,h,l,c only), repo-relative
+
+
 def load_bars():
     if "bars" not in _CACHE:
-        rows, _ = co.load("BTCUSDT", "4h", lambda *_: None)
-        co.guard(rows, "BTCUSDT 4h")
+        with gzip.open(FIXTURE, "rt", encoding="utf-8", newline="") as fh:
+            rd = csv.reader(fh)
+            next(rd)
+            rows = [(int(p[0]), float(p[1]), float(p[2]), float(p[3]), float(p[4])) for p in rd]
+        co.guard(rows, "BTCUSDT 4h fixture")
         _CACHE["bars"] = rows
     return _CACHE["bars"]
 
@@ -152,6 +160,7 @@ class LiveParity(unittest.TestCase):
         cfg = at.load_config(MTS / "execution" / "auto_trader_config.json")
         by_t = {r[0]: i for i, r in enumerate(self.rows)}
         want = oracle_decisions(self.rows)
+        open_at = {r[0]: r[1] for r in self.rows}
         got = {}
         free_from = -1
         for a in sorted((x for x in self.alerts if in_window(x["t_close"])), key=lambda x: x["t_close"]):
@@ -159,7 +168,9 @@ class LiveParity(unittest.TestCase):
             if i + 1 >= len(self.rows):
                 continue
             flat = i >= free_from
-            d = self.live.decide(a, self.rows[i + 1][1], flat)
+            # The decision is taken at the OPEN of the bar after the signal bar (signal bar is sealed by then): mark = that open,
+            # looked up by timestamp, so decide() sees only the price live has at decision time.
+            d = self.live.decide(a, open_at[a["t_close"] + H4_MS], flat)
             got[a["t_close"]] = d
             if d != "take":
                 continue

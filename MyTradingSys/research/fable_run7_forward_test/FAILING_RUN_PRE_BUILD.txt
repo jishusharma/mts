@@ -1,17 +1,24 @@
-...E
+Re-landed 2026-11-09 (fixture-based, repo-relative). Pre-build run, krown_live absent from tree, plain unittest (marks ignored):
+test_no_bar_at_or_after_cut_is_loaded (test_s8_forward_parity.FreezeAndGuard.test_no_bar_at_or_after_cut_is_loaded) ... ok
+test_oracle_event_count_within_freeze_bar (test_s8_forward_parity.FreezeAndGuard.test_oracle_event_count_within_freeze_bar) ... ok
+test_planted_sealed_timestamp_is_refused (test_s8_forward_parity.FreezeAndGuard.test_planted_sealed_timestamp_is_refused) ... ok
+setUpClass (test_s8_forward_parity.LiveParity) ... ERROR
+
 ======================================================================
 ERROR: setUpClass (test_s8_forward_parity.LiveParity)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-krown-s8-forward-parity-test\MyTradingSys\research\fable_run7_forward_test\test_s8_forward_parity.py", line 118, in setUpClass
+  File "C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-krown-s8-parity-reland-1108\MyTradingSys\research\fable_run7_forward_test\test_s8_forward_parity.py", line 126, in setUpClass
     cls.live = import_live()                         # ImportError = FAIL
                ~~~~~~~~~~~^^
-  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-krown-s8-forward-parity-test\MyTradingSys\research\fable_run7_forward_test\test_s8_forward_parity.py", line 64, in import_live
+  File "C:\Users\e-ngineers\IdeaProjects\mts-desktop-f7iu69n-krown-s8-parity-reland-1108\MyTradingSys\research\fable_run7_forward_test\test_s8_forward_parity.py", line 72, in import_live
     import krown_live  # ImportError propagates: the test FAILS, never skips
     ^^^^^^^^^^^^^^^^^
 ModuleNotFoundError: No module named 'krown_live'
 
 ----------------------------------------------------------------------
-Ran 3 tests in 0.756s
+Ran 3 tests in 0.213s
 
 FAILED (errors=1)
+
+pytest (CI path): 3 passed, 5 xfailed (strict) until krown_live lands, then all must pass.

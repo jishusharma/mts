@@ -2101,3 +2101,11 @@ Answer: measured: the block is DNS-only (ISP DNS answers 49.44.79.236 for fapi/f
 ## d-fix-binance-dns-block-1109 (2026-11-09)
 Operator: "whatever is the correct fix, you should apply it ... people are paying TDS on Binance, so don't worry about it. Fix whatever is the best fix for us."
 Answer: repo-level fix (reaches every station through sync, no machine setting changed): Binance hosts are resolved through DNS-over-HTTPS (Cloudflare, then Google), cached with TTL, TLS still checks the real hostname; Python fetchers + live layers and the Java feed (Java 17, BinanceLiquidationAccumulator / StateCodeEmitter on wss://fstream.binance.com). Sonnet session builds card binance-futures-dns-block-fleet-1109; live path, so the coordinator deploys after tests.
+
+## d-tom-fabio-rebuild-from-source-1109 (2026-11-09)
+Operator: "Tom is launching videos about how a beginner can trade ... so simple ... we need to think right this time. From the beginning ... build carefully."
+Answer: rebuild in steps from their own words. Step 1 card tom-fabio-rebuild-from-beginner-videos-1109 (Gemini, captions verified): a rulebook where every rule has a quote, plus what candles cannot see (order flow). Then code one rule at a time and measure what each adds, with testnet forward from the first version. The running real-frame census (tf-real-frame) stays as the baseline.
+
+## d-edge-hunt-credit-wave-1109 (2026-11-09)
+Operator: run our own edge hunt on the cloud credit: 5 Haiku, 2-3 Sonnet, 2 Opus, 1 Fable ("table", voice), all on the credit; an Opus session first reads everything done, redone and failed plus the latest decisions, and how he thinks (RSI, wicks, levels), then decides what each worker does.
+Answer: card edge-hunt-plan-opus-1109 runs first on the credit (Opus, cap 6 USD) and writes PLAN.md, OPERATOR_LENS, 11 worker briefs and a fixed TRIALS list; the wave (5 Haiku, 3 Sonnet, 2 Opus, 1 Fable, total cap 36 USD) then launches on api_job.py --engine api only, in waves of at most 4. Reserve about 25 USD of the credit (expires 2026-11-17).

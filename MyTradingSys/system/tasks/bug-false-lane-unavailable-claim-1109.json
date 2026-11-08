@@ -1,0 +1,50 @@
+{
+  "approved_by": "operator 2026-11-09 (chat to login B): raise a bug, resolved by a Fable session",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T19:51:31Z",
+  "depends_on": [],
+  "done_when": "host_caps.py prints per-lane OK/FAIL with the resolved path and probe output on JIS-NUC and JIS-NB; tests cover the agy-off-PATH case (where fails, AGY path exists -> OK); the session rule is in the shared rules file; Fable writes a short root-cause note in the card result",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Stop sessions from declining a lane on a guess. B said 'NUC has no Gemini' from 'where agy' while gemini_queue.py uses ~/.gemini/bin/agy.exe, which is off PATH and works. Make lane-capability claims come from a probe that resolves each runner the way the runner does.",
+  "id": "bug-false-lane-unavailable-claim-1109",
+  "lane": "OPUS",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Assign to a FABLE session (operator order 2026-11-09, after B's false 'NUC has no Gemini' ack on signal b-cb8d14 at 19:47Z). There is no FABLE lane, so this is filed under OPUS. Earlier B summaries carried 'NUC has no Gemini/Codex driver' across compactions without a re-check.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/host_caps.py",
+    "tests/",
+    "CLAUDE.md",
+    "MyTradingSys/system/roles/"
+  ],
+  "scope_out": [
+    "no change to gemini_queue.py behaviour beyond exposing its path resolver"
+  ],
+  "size": "M",
+  "sources": [
+    "operator 2026-11-09 via login B (JIS-NUC)"
+  ],
+  "state": "raw",
+  "steps": [
+    "Write a fail-first test: where agy fails but gemini_queue.AGY exists, so the probe must say OK",
+    "Build scripts/dev/host_caps.py: per lane, resolve the runner (gemini_queue.AGY, codex_run.find_exe, DSA suspension), run a cheap probe (agy models), print OK/FAIL, path and output",
+    "Add a shared session rule: 'cannot run lane X' needs host_caps output attached; a missing tool is installed or fixed, not reported",
+    "Add a guard so 'host lacks X' claims in summaries and signals are re-verified before reuse",
+    "Run host_caps on JIS-NUC and JIS-NB; write the root cause in the card result"
+  ],
+  "tests": "tests/test_host_caps.py::test_agy_off_path_is_ok (fail-first)",
+  "title": "FABLE: bug: session B falsely reported 'NUC has no Gemini' and refused a Gemini card; make lane-capability claims come from the runner, not guesses",
+  "weight": "CRUCIAL",
+  "worker": "session",
+  "crucial": "operator named a Fable session: it sets a session-wide rule on when a lane may be declined, a design call for all logins"
+}
