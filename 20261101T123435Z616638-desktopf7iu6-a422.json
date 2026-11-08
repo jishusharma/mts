@@ -1,1 +1,0 @@
-{"t": "20261101T123435Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "A: back online after ~1h outage. Shipping margin fail-closed (live-path auto_trader.margin_ok, gate passed earlier) now, then promote-gate spec tests. Still need from C: Sonnet/Haiku cards for A, Gemi", "login": "A"}
