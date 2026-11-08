@@ -2081,3 +2081,7 @@ refresh + monday_watch.py; A reviews every ship + CBP events strip); hourly CHK 
 ## d-gemini-both-models-cap-raised-1108 (2026-11-08 ~18:25Z)
 Operator: "make sure we use both Gemini models well! And use Claude Platform. U also have your cap raised - so do the critical tasks."
 Answer: Gemini 4 Argon takes the heavy Monday research (gemini-argon-krown-lows-break-check-1109: Krown's lows-break claim tested on BTC history); Gemini 3.8 Flash takes the 4 fresh [GEMINI] blind reads of shipped work; both run on JIS-NUC via gemini_queue.py, B reviews and ships. Platform credit runs J1 Monday playbook (Sonnet $5) then J2 Opus refute-review ($3). Lead C cap raised (operator gave no number): Lead C spends on critical coordination only, default ceiling 90% weekly until he names one.
+
+## d-backtest-map-1109 (2026-11-09, operator: "so many backtesting failures, I don't know where to start")
+Lead C wrote research/BACKTEST_MAP_2026-11-09.md (147 rows = 48 ideas; 0 proven; 3 eras; where to start) and added a line to D7_ROADMAP S3 recording that d-phase-first-method-1106 replaced the VALIDATION-backtest exit with testnet-forward.
+Answer: start from the map, then the Fable/Opus reviews, then the testnet-forward list; backtests are now a sanity check and failure map, not the gate.
