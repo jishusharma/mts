@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T18:59:37Z",
   "commands": [],
   "created": "2026-11-08T18:44:59Z",
   "depends_on": [],
@@ -31,8 +32,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-09 T0-ONLY (session-planner-a-1108). DECISION (OURS): placebo run split out to card placebo-for-the-77-acceptance-claim-rand; this card is the Haiku-safe relabel.",
+  "note": "merged into audit-77pct-acceptance-misread-1109 + census-acceptance-threshold-mislabel-1109 (Fable twins)",
+  "pinned": false,
   "prio": 3,
+  "reason": "merged into audit-77pct-acceptance-misread-1109 + census-acceptance-threshold-mislabel-1109 (Fable twins)",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T18:53:37Z",
@@ -50,7 +53,7 @@
   "sources": [
     "POSTMORTEM_OPUS.md C8"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read POSTMORTEM_OPUS.md C8 and value_area_acceptance_2026-11-05/RESULT.md:9",
     "auction_context.py:14 and :544: change SOURCED to OURS for the 77% (accept80 count, no fees, no placebo)",
