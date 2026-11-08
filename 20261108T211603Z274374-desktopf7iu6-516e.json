@@ -1,0 +1,1 @@
+{"t": "20261108T211603Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED fixed by A: reverted census_session_ladder (04d096227 5d07e2673 85f793fe8 20ae85f6c) and malkan_level_short (11defa41f 73c9f31ff) as e24082ab2. Cause: test_no_own_costs step 4e, own fee constan", "login": "A", "id": "b-95cba9", "prio": "high", "cmd": ""}
