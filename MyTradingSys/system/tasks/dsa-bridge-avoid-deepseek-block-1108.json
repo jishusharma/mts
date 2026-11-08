@@ -5,7 +5,9 @@
     "python F:/AIBridge/tests/agent_live_selftest.py"
   ],
   "created": "2026-11-08T05:08:38Z",
-  "depends_on": [],
+  "depends_on": [
+    "dsa-bridge-fix-review-opus-1108"
+  ],
   "done_when": "Sanctioned fallback priced: DeepSeek API cost per DSA run for unattended work, written as a one-line operator money decision, no key handled",
   "est_turns": 30,
   "formula_id": "",
@@ -18,7 +20,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Never try to get around the block; wait it out on that profile. Do the work on another profile or machine only if the operator allows.",
+  "note": "Never try to get around the block; wait it out on that profile. Do the work on another profile or machine only if the operator allows. Build only what DSA_BLOCK_REVIEW.md ranks; the review replaces its first done_when item.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -36,7 +38,7 @@
   "sources": [
     "operator chat 2026-11-08 ~10:40Z (d-dsa-deepseek-block-find-cause-1108); audit.jsonl counts 11-07"
   ],
-  "state": "ready",
+  "state": "blocked",
   "steps": [
     "write the note from audit counts and the pasted block text; design the guard; build it first as a failing replay test"
   ],

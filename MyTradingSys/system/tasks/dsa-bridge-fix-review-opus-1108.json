@@ -1,0 +1,53 @@
+{
+  "approved_by": "operator 2026-11-08 chat ~10:50Z: Opus reviews all DSA bridge fixes, prompt and DeepSeek rules on the cloud platform",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/system/check_dsa_review.py"
+  ],
+  "created": "2026-11-08T05:10:07Z",
+  "crucial": "independent high-model review that fixes how the DSA bridge is paced after an account block; wrong pacing risks another block and loss of the DSA lane",
+  "depends_on": [],
+  "done_when": [
+    "DSA_BLOCK_REVIEW.md table: every DSA/AIBridge bug card and release-note fix (id, symptom, fix, open or closed, repeat class); repeats counted per class; classes with 2 or more repeats named design faults",
+    "DeepSeek rules section: public terms text on automated use of chat.deepseek.com and the API, each with date and URL; says what could not be fetched; each bridge behaviour (auto-send, rate, parallel chats, one account on several machines, fixed-format messages, command text) ranked likely, possible or unlikely to trigger a block, marked proved or unproved",
+    "DSA prompt section: lines that make the model emit many AIRUN blocks, retry loops or long unattended runs, with replacement text inside the document; DSA_SESSION_PROMPT.md itself is not edited",
+    "Ranked fix list, 12 items at most: failure prevented, one-line fail-first test, owner lane; first three are pacing guard, one machine per account, stop on warning; check_dsa_review.py written first (red) then green: no empty table cell, every item names a test"
+  ],
+  "est_turns": 35,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The DSA bridge has a long bug history (about 60 cards and the AIBridge release notes) and DeepSeek blocked a profile until 2026-11-11. One independent high-model pass reads all past bugs and fixes, the DSA session prompt and the newest public DeepSeek terms on automated access, and returns one ranked fix list the build card can follow.",
+  "id": "dsa-bridge-fix-review-opus-1108",
+  "lane": "OPUS",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Runs on the Platform credit with Opus 5.5. The block cause is unproved until the operator pastes the block text; say so in the review. Public pages are pre-approved reading.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T05:10:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "reads: MyTradingSys/system/tasks/*dsa*.json and *aibridge*.json, DSA_SESSION_PROMPT.md, AIBRIDGE_LANE.md, DSA_DELEGATION.md, scripts/aibridge/docs, scripts/aibridge/RELEASES.json, F:/AIBridge/docs and HANDOFF files; public web pages by curl; audit.jsonl counts only. writes: DSA_BLOCK_REVIEW.md and check_dsa_review.py"
+  ],
+  "scope_out": [
+    "never open any file named background.js or config.json, .secrets, .env or tokens; no edit of the bridge or the prompt; no login, no bypass of any block or bot check; no account creation"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator chat 2026-11-08 ~10:50Z: look at all DSA bridge bugs, Opus reviews past fixes, the DSA prompt and DeepSeek's latest blocking rules, on the cloud platform"
+  ],
+  "state": "ready",
+  "steps": [
+    "write check_dsa_review.py first and run it red; build the bug table from the cards and release notes; fetch the public DeepSeek terms; write the prompt and fix sections; run the check green; ship"
+  ],
+  "tests": "MyTradingSys/system/check_dsa_review.py",
+  "title": "Opus review of every DSA bridge bug and fix, the DSA prompt, and DeepSeek's latest rules on automated use: one ranked fix list",
+  "weight": "",
+  "worker": "session"
+}

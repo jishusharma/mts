@@ -2054,3 +2054,8 @@ Answer: yes; today's queue on the Platform: news design synthesis (running, Fabl
 Operator: DeepSeek blocked the AWGP Chrome profile until 2026-11-11, probably because the AIBridge did too much automatically. Find why, and make the DSA bridge work without getting blocked.
 Lead C evidence so far: the bridge audit log shows 205 commands on 11-07 (22 to 96 on earlier days), peak 45 an hour (one about every 80 s) between 16:00 and 18:00Z; every command is one auto-sent reply plus one model message, and up to 8 run at once across parallel chats on three machines. Cause not proven: the block text itself has not been read by us. Fix path: pacing and daily cap in the extension, one machine per account at a time, and a sanctioned channel (DeepSeek API, a money decision) for unattended work.
 Answer: yes; card dsa-bridge-avoid-deepseek-block-1108 filed; operator pastes the exact block text.
+
+## d-dsa-opus-review-all-fixes-on-credit-1108 (2026-11-08 ~10:50Z, operator, chat)
+Operator: look at all bugs raised on the DSA bridge; Opus reviews all past fixes, the DSA prompt and DeepSeek's latest rules on what automated requests get blocked; run it on the cloud platform; plan it if it makes sense.
+Lead C: it makes sense: one Opus job (cap about 8 USD) on the Platform, public pages only for the DeepSeek rules, no bridge code edited. The build card now waits on its ranked fix list so the pacing guard is built from the review, not from a guess.
+Answer: yes; card dsa-bridge-fix-review-opus-1108 (Opus, ready) runs next after the news synthesis; dsa-bridge-avoid-deepseek-block-1108 is blocked on it.
