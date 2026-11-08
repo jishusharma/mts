@@ -140,7 +140,7 @@ def test_cluster_se_matches_hand_calc():
 
 
 def test_costs_constant_is_regime_a():
-    assert abs(sg.COST_RT_BPS - 12.0) < 1e-12
+    assert abs(sg.rt_cost_bps() - 12.0) < 1e-12
 
 
 if __name__ == "__main__":

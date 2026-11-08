@@ -39,7 +39,9 @@ DEV_END_EXCL = ms(2024, 7, 1)       # DEV = ..2024-06-30
 VAL_START = DEV_END_EXCL
 VAL_END_EXCL = ms(2025, 7, 1)       # VALIDATION = 2024-07-01..2025-06-30; HOLDOUT (2025-07-01+) refused
 TIME_STOP_BARS = 40                 # OURS
-COST_RT_BPS = 2 * fees.DERIBIT_TAKER * 1e4 + 2.0   # regime A: 10 bps taker round trip + 2 bps slippage
+def rt_cost_bps():
+    """Regime A: 10 bps taker round trip (fees.DERIBIT_TAKER both legs) + 2 bps slippage."""
+    return 2 * fees.DERIBIT_TAKER * 1e4 + 2.0
 HOLM_M = 15                         # TRIALS.md, wave-wide
 
 
@@ -129,7 +131,7 @@ def last_usable(closes, vals, day_open_ms):
 
 def fee_r(entry, stop):
     stop_bps = (entry - stop) / entry * 1e4
-    return COST_RT_BPS / stop_bps
+    return rt_cost_bps() / stop_bps
 
 
 def funding_r(rates, t0, t1, entry, risk):
