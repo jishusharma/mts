@@ -225,19 +225,3 @@ Claude-only per prompt 5d); OPERATOR gives the word for the critical prompt file
 
 Not ranked, by design: anything that gets around a block or a bot check, a second account, a new profile to continue on the
 suspended account before 2026-11-11, or rotating machines. Wait the suspension out.
-
-## 7. Built in AIBridge 0.7.33 (card dsa-bridge-avoid-deepseek-block-1108, ranks 1 to 4; not installed on any machine)
-
-| rank | what is in the payload | fail-first test (fails on 0.7.32) |
-|---|---|---|
-| 1 | loop.js paceCheck/paceReplay; content.js paceGate before every auto post: 60 s + 10-30 s jitter, 15 an hour, 80 a day per browser profile; a refused post says `paced`; a short gap is waited out, an hour or day limit stops hands-free | test_aibridge_pacing.py (replay of the 11-07 shape: 205 wanted posts, at most 80 granted, none under 70 s apart), handsfree.test.js pace cases |
-| 2 | src/lease.ps1 + agent event path (`LEASE`, `LEASE_BEAT`, `LEASE_RELEASE <label>`): one host per account label, 180 s heartbeat; arming needs the lease reply `ok`, an old agent (no reply) refuses as lease_unconfirmed | test_aibridge_account_lease.py (two fake hosts, plus the live scratch agent), test_aibridge_guard_dom.py |
-| 3 | loop.js warnState: dialog/alert/toast text, captcha frame, login redirect or password field; content.js turns hands-free off, no retry, audit row `WARNING ...`, 24 h cooldown stored per profile, arming refused during it | handsfree.test.js stop_on_warning, test_aibridge_guard_dom.py |
-| 4 | one armed chat per profile (armGate registry in chrome.storage.local, 90 s silent expiry); policy_patch max_parallel 8 to 1 | handsfree.test.js second_tab_refused |
-
-Limits, stated: the lease crosses machines only through a folder every host sees (config `lease_dir`, an operator step); without it
-the lease covers one host. The account label is the storage key `aibridge_account` (default `deepseek-default`, so two unlabelled
-profiles on two hosts exclude each other: the conservative default). The 11-07 replay timestamps are rebuilt from the audit counts in
-section 2, not copied from audit.jsonl (runtime data). The agent's own 8-connection cap (concurrency.ps1) is unchanged: the selftest
-needs concurrent runs, and the one-chat rule sits in the extension. Ranks 5 to 12 are not built here. Operator steps: install the
-payload (aibridge_install.py), restart the agent, reload the extension, set `lease_dir` on every host, label each profile.

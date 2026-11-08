@@ -45,7 +45,7 @@ TOKEN = 'selftest' + os.urandom(8).hex()
 work = tempfile.mkdtemp(prefix='aibridge_selftest_')
 sdir = os.path.join(work, 'src')
 os.makedirs(sdir)
-for f in ('agent.ps1', 'checks.ps1', 'concurrency.ps1', 'lease.ps1', 'audit.ps1'):
+for f in ('agent.ps1', 'checks.ps1', 'concurrency.ps1', 'audit.ps1'):
     shutil.copy(os.path.join(SRC, f), sdir)
 os.makedirs(os.path.join(work, 'scripts'))
 os.makedirs(os.path.join(work, 'tasks'))

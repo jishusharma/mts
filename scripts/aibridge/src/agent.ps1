@@ -1,12 +1,11 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.33'
+$AgentVersion = '0.7.32'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
 . (Join-Path $root 'checks.ps1')
 . (Join-Path $root 'audit.ps1')
 . (Join-Path $root 'concurrency.ps1')
-. (Join-Path $root 'lease.ps1')
 
 foreach ($o in $config.allowed_origins) {
     $ol = ([string]$o).ToLower()
@@ -392,23 +391,6 @@ function Handle-Client {
         # already checked; this only writes one audit row and never runs anything.
         if ($req.event) {
             $ev = ([string]$req.event) -replace '[\r\n]+', ' '
-            # 0.7.33: account lease over the same event path (token and origin already checked). LEASE <label> = arm, LEASE_BEAT = renew
-            # (not audited), LEASE_RELEASE = hands-free went off. The lease folder is config lease_dir, else run\leases beside src.
-            if ($ev -match '^(LEASE|LEASE_BEAT|LEASE_RELEASE) (\S+)') {
-                $lkind = $Matches[1]; $lacct = $Matches[2]
-                $ldir = if ($config.lease_dir) { [string]$config.lease_dir } else { Join-Path (Split-Path -Parent $root) 'run\leases' }
-                $lact = if ($lkind -eq 'LEASE_RELEASE') { 'release' } elseif ($lkind -eq 'LEASE_BEAT') { 'beat' } else { 'acquire' }
-                $lr = Invoke-AccountLease -Account $lacct -Dir $ldir -Me $env:COMPUTERNAME -Action $lact
-                $lreply = if ($lr.ok) { 'ok' } elseif ($lr.reason -eq 'account_in_use') { 'account_in_use' } else { 'refused' }
-                if ($lact -ne 'beat' -or -not $lr.ok) {
-                    $audit.cmd = 'EXT-EVENT lease ' + $lact + ' ' + $lacct + ' -> ' + $lr.reason + $(if ($lr.holder) { ' holder=' + $lr.holder } else { '' })
-                    $audit.result = $(if ($lr.ok) { 'event' } else { 'refused' }); $audit.reason = $(if ($lr.ok) { 'ext_event' } else { [string]$lr.reason })
-                    Write-Audit $audit
-                }
-                $lbody = [ordered]@{ ok = $true; event = $true; lease = $lreply; holder = [string]$lr.holder; host = $env:COMPUTERNAME } | ConvertTo-Json -Compress
-                Send-Resp $stream 200 'OK' $lbody $corsOrigin
-                $client.Close(); return
-            }
             if ($ev.Length -gt 400) { $ev = $ev.Substring(0, 400) }
             $audit.cmd = 'EXT-EVENT ' + $ev; $audit.result = 'event'; $audit.reason = 'ext_event'
             Write-Audit $audit

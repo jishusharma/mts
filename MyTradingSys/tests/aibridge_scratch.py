@@ -25,7 +25,7 @@ class Scratch:
         self.work = tempfile.mkdtemp(prefix="aib_probe_")
         self.sdir = os.path.join(self.work, "src")
         os.makedirs(self.sdir)
-        for f in ("agent.ps1", "checks.ps1", "concurrency.ps1", "lease.ps1", "audit.ps1"):
+        for f in ("agent.ps1", "checks.ps1", "concurrency.ps1", "audit.ps1"):
             shutil.copy(PAYLOAD / "src" / f, self.sdir)
         os.makedirs(os.path.join(self.work, "scripts"))
         os.makedirs(os.path.join(self.work, "tasks"))

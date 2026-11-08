@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.33';
+  L.VERSION = '0.7.32';
 
   // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's POST /seed.
   // Case-insensitive; one trailing . or ! allowed; a longer sentence, a second line or a second message is an ordinary message (no swap).
@@ -354,97 +354,6 @@
   };
   // page length without our UI and without the chat input's own text (a contenteditable draft is part of body.textContent)
   L.pageLen = function (bodyLen, oursLen, inputInBodyLen) { return bodyLen - oursLen - (inputInBodyLen || 0); };
-
-  // ---- 0.7.33: DeepSeek block guard (card dsa-bridge-avoid-deepseek-block-1108, MyTradingSys/system/DSA_BLOCK_REVIEW.md ranks 1-4) ----
-  // DeepSeek suspended the AWGP profile until 2026-11-11 after 205 auto runs in one day (peak 45 an hour, gaps under 10 s, three
-  // machines, parallel chats). The guard below paces every auto post, stops on a warning page, and arms one chat per account.
-  // OURS: the numbers are the review's (60 s, 15 an hour, 80 a day, jitter 10-30 s, 24 h cooldown); no public DeepSeek page names a limit.
-  L.PACE = { minGapMs: 60000, perHour: 15, perDay: 80, jitterMinMs: 10000, jitterMaxMs: 30000 };
-  L.paceJitter = function (rand) {
-    var r = (typeof rand === 'function' ? rand() : Math.random());
-    return L.PACE.jitterMinMs + Math.floor(r * (L.PACE.jitterMaxMs - L.PACE.jitterMinMs));
-  };
-  // posts = epoch ms of the auto posts already made on this account (profile); jitterMs = this post's own draw.
-  // -> {ok:true} or {ok:false, reason:'paced', cap:'gap'|'hour'|'day', waitMs}. A refused post says paced.
-  L.paceCheck = function (posts, now, jitterMs, cfg) {
-    var c = cfg || L.PACE, ps = (posts || []).filter(function (x) { return typeof x === 'number' && x <= now; }).sort(function (a, b) { return a - b; });
-    var best = null;
-    function refuse(cap, waitMs) { if (!best || waitMs > best.waitMs) best = { ok: false, reason: 'paced', cap: cap, waitMs: Math.max(1, Math.ceil(waitMs)) }; }
-    if (ps.length) { var need = c.minGapMs + (jitterMs || 0), since = now - ps[ps.length - 1]; if (since < need) refuse('gap', need - since); }
-    [['hour', 3600000, c.perHour], ['day', 86400000, c.perDay]].forEach(function (w) {
-      var win = ps.filter(function (x) { return now - x < w[1]; });
-      if (win.length >= w[2]) refuse(w[0], win[win.length - w[2]] + w[1] - now);
-    });
-    return best || { ok: true, waitMs: 0 };
-  };
-  // replay: each time is a post the bridge wanted to make; the guard grants it or refuses it as paced (a refused row is not retried here)
-  L.paceReplay = function (times, rand) {
-    var granted = [], refused = [];
-    (times || []).slice().sort(function (a, b) { return a - b; }).forEach(function (t) {
-      var r = L.paceCheck(granted, t, L.paceJitter(rand));
-      if (r.ok) granted.push(t); else refused.push({ t: t, reason: r.reason, cap: r.cap, waitMs: r.waitMs });
-    });
-    return { granted: granted, refused: refused };
-  };
-  L.paceText = function (r) {
-    var s = Math.round((r && r.waitMs || 0) / 1000);
-    return 'paced: ' + (r && r.cap === 'day' ? 'the 80 posts a day limit is reached' : r && r.cap === 'hour' ? 'the 15 posts an hour limit is reached' : 'at least 60 s between posts') + '; next post allowed in ' + s + ' s';
-  };
-
-  // stop on warning: overlays = text of dialogs/alerts/toasts on the page (never the chat messages: DSA may write the word captcha).
-  // -> {warn: '' or reason text, kind}. kind: suspended | captcha | logout | unusual | busy.
-  L.warnState = function (page) {
-    var pg = page || {}, href = String(pg.href || ''), path = href.replace(/^[a-z]+:\/\/[^\/]*/i, '');
-    var texts = (pg.overlays || []).map(function (x) { return String(x || '').replace(/\s+/g, ' ').trim(); }).filter(Boolean);
-    var rules = [
-      ['suspended', /suspended|violation of (the )?user policies|account (has been |is )?(banned|disabled|blocked|restricted)/i],
-      ['captcha', /captcha|verify (that )?you are (a )?human|human verification|are you a robot|security (check|verification)/i],
-      ['logout', /logged out|signed out|session (has )?expired|(log|sign) ?in again|(log|sign) ?in to continue|please (log|sign) ?in/i],
-      ['unusual', /unusual activity|suspicious activity|abnormal (activity|traffic|behavio)/i],
-      ['busy', /server is busy|servers are busy|too many requests|rate limit|requests are too frequent|try again later/i]
-    ];
-    for (var i = 0; i < rules.length; i++) {
-      for (var j = 0; j < texts.length; j++) if (rules[i][1].test(texts[j])) return { warn: rules[i][0] + ': ' + texts[j].slice(0, 160), kind: rules[i][0] };
-      if (rules[i][0] === 'captcha' && pg.captchaFrame) return { warn: 'captcha: a captcha frame is on the page', kind: 'captcha' };
-      if (rules[i][0] === 'logout') {
-        if (/^\/(a\/)?(sign[_-]?in|log[_-]?in|signin)(\/|\?|#|$)/i.test(path)) return { warn: 'logout: the page moved to ' + path.slice(0, 60), kind: 'logout' };
-        if (pg.hasPassword) return { warn: 'logout: a password field is on the page', kind: 'logout' };
-      }
-    }
-    return { warn: '', kind: '' };
-  };
-  L.COOLDOWN_MS = 24 * 3600 * 1000;
-  L.cooldownUntil = function (now) { return now + L.COOLDOWN_MS; };
-  L.cooldownLeft = function (until, now) { return (typeof until === 'number' && until > now) ? until - now : 0; };
-  L.cooldownText = function (until, now) {
-    var m = Math.ceil(L.cooldownLeft(until, now) / 60000);
-    return 'cooldown after a DeepSeek warning (24 h per profile): ' + Math.floor(m / 60) + ' h ' + (m % 60) + ' min left';
-  };
-  L.warnStopText = function (w) {
-    return 'DeepSeek showed a warning (' + ((w && w.warn) || 'unknown') + '). Hands-free is OFF, no retry, and stays off for 24 h on this profile. Do not log in again or switch machine to continue.';
-  };
-
-  // one armed chat per account: the armed tabs of a profile are kept in one registry {tabId: lastBeatMs}; a silent tab expires after ARM_TTL_MS.
-  L.MAX_ARMED_PER_ACCOUNT = 1;
-  L.ARM_TTL_MS = 90000;
-  L.armGate = function (reg, tabId, now, ttlMs) {
-    var ttl = ttlMs || L.ARM_TTL_MS, out = {}, holder = null;
-    Object.keys(reg || {}).forEach(function (k) { if (typeof reg[k] === 'number' && now - reg[k] <= ttl) { out[k] = reg[k]; if (k !== tabId && !holder) holder = k; } });
-    if (holder) return { ok: false, reason: 'second_tab_refused', holder: holder, reg: out };
-    out[tabId] = now;
-    return { ok: true, reg: out };
-  };
-  L.armRelease = function (reg, tabId) { var out = {}; Object.keys(reg || {}).forEach(function (k) { if (k !== tabId) out[k] = reg[k]; }); return out; };
-
-  // account lease: the agent holds {account, host, heartbeat}; hands-free arms only when it says ok (one machine per account).
-  L.leaseAccount = function (raw) { return String(raw == null ? '' : raw).toLowerCase().replace(/[^a-z0-9._-]/g, '_').slice(0, 40) || 'deepseek-default'; };
-  L.leaseEvent = function (kind, label) { return (kind === 'release' ? 'LEASE_RELEASE ' : kind === 'beat' ? 'LEASE_BEAT ' : 'LEASE ') + L.leaseAccount(label); };
-  L.parseLeaseReply = function (resp) {
-    var b = resp && resp.ok && resp.status === 200 ? (resp.body || {}) : null;
-    if (b && b.lease === 'ok') return { ok: true, reason: 'ok', text: '' };
-    if (b && b.lease === 'account_in_use') return { ok: false, reason: 'account_in_use', text: 'account_in_use: another machine (' + (b.holder || '?') + ') holds this DeepSeek account; one machine per account. Hands-free stays off here.' };
-    return { ok: false, reason: 'lease_unconfirmed', text: 'lease_unconfirmed: the agent did not confirm the account lease (agent too old or down: python scripts/dev/aibridge_install.py --restart-agent). Hands-free stays off.' };
-  };
 
   root.AIBridgeLoop = L;
   if (typeof module !== 'undefined') module.exports = L;
