@@ -39,7 +39,7 @@
   "refined_by": "B (JIS-NUC, Opus)",
   "refreshed": "2026-11-08T20:21:51Z",
   "refs": [],
-  "result": "REPORT.md: no proven edge; best arm div 3-10 close n=126 +0.11R net (~0.9 SE), FULL 5-layer n=37 +0.14R; operator points: base catches 5/5, full catches C3 only (matches READING.md)",
+  "result": "REPORT.md: no proven edge; best arm div 3-10 close n=126 +0.10R net (~0.9 SE), FULL 5-layer n=37 +0.13R (5 bps taker); operator points: base catches 5/5, full catches C3 only (matches READING.md)",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"

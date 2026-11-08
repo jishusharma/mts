@@ -14,6 +14,7 @@ Layers (a signal is the trigger bar i; every input is known at bar i's close; HT
 Entry: the next 1-3 bars trade under the prior bar's open (fill there, or at the open on a gap). Stop: highest high
 from the level tag to entry, +5 bps. Exit: TARGET_R target or stop (stop first on a shared bar) or MAX_BARS close.
 """
+from MyTradingSys.backtest.fees import BINANCE_TAKER
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
 
 SIXTY = 60.0          # Malkan's line (SOURCED); kept local: malkan_40_60 owns its own copy (D2)
@@ -23,7 +24,7 @@ PIVOT = 5             # level pivots: 5 bars each side (OURS)
 LEVEL_LOOKBACK = 360  # 60 days of 4h bars (OURS)
 TARGET_R = 2.0
 MAX_BARS = 60
-FEE = 0.0004          # taker per side
+FEE = BINANCE_TAKER    # taker per side (fees.py; no own cost constants)
 
 BASE = frozenset({"level", "trigger"})
 FULL = frozenset({"level", "structure", "trigger", "wavetrend", "htf"})
@@ -161,7 +162,7 @@ def outcome(bars, j, entry, stop, target_r=TARGET_R, fee=FEE, max_bars=MAX_BARS)
     """short from bar j (the fill bar). Stop wins a bar that touches both. R net of a taker fee each side."""
     risk = stop - entry
     tgt, one_r = entry - target_r * risk, entry - risk
-    fee_r = 2 * fee * entry / risk
+    fee_r = fee * 2 * entry / risk     # round trip, in R
     hit_1r = False
     for k in range(j, min(j + max_bars, len(bars))):
         if bars[k]["h"] >= stop:

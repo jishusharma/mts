@@ -1,8 +1,8 @@
 # Malkan level short, BTC 4h, counted 2017-08 .. 2026-11
 
-**No arm is a proven edge. The best arm uses Malkan's own sourced divergence window (3-10 bars, close to close): 126 trades, +0.11 R per trade after fees, positive in bull and bear and in 6 of 10 years. That is about 0.9 standard errors from zero, with 10 arms tried. The full 5-layer stack fires 37 times in 9 years (+0.14 R, about 0.6 SE). Worth a cheap testnet forward look; not worth money.**
+**No arm is a proven edge. The best arm uses Malkan's own sourced divergence window (3-10 bars, close to close): 126 trades, +0.10 R per trade after fees, positive in bull and bear and in 6 of 10 years. That is about 0.9 standard errors from zero, with 10 arms tried. The full 5-layer stack fires 37 times in 9 years (+0.13 R, about 0.6 SE). Worth a cheap testnet forward look; not worth money.**
 
-Card `malkan-level-short-4h-count-1109`. Layer: `MyTradingSys/backtest/layers/rsi/malkan_level_short.py` (rules in its docstring). Runner: `count.py` writes `COUNT.json`. Data: Binance spot BTCUSDT 4h/1d/1w, closed bars only, from data-api.binance.vision, 20,208 4h bars. Every trade: short, stop at the highest high since the level tag +5 bps, target 2R, 60-bar time stop, stop wins a shared bar, 0.04 % taker fee each side. Regime = daily close above or below its 200-day SMA.
+Card `malkan-level-short-4h-count-1109`. Layer: `MyTradingSys/backtest/layers/rsi/malkan_level_short.py` (rules in its docstring). Runner: `count.py` writes `COUNT.json`. Data: Binance spot BTCUSDT 4h/1d/1w, closed bars only, from data-api.binance.vision, 20,208 4h bars. Every trade: short, stop at the highest high since the level tag +5 bps, target 2R, 60-bar time stop, stop wins a shared bar, 0.05 % taker fee each side (fees.BINANCE_TAKER). Regime = daily close above or below its 200-day SMA.
 
 ## Context
 
@@ -25,23 +25,25 @@ This matches READING.md's own table, where only C3 shows all five layers. The te
 
 | Arm | n | hit 1R | win 2R | gross R | net R | bull net (n) | bear net (n) |
 |---|---|---|---|---|---|---|---|
-| base level + trigger | 529 | 0.48 | 0.30 | +0.01 | -0.03 | -0.07 (282) | +0.06 (217) |
-| + structure (div or sweep) | 482 | 0.49 | 0.31 | +0.03 | -0.00 | | |
-| + structure div 3-10 close (SOURCED window) | 126 | 0.49 | 0.37 | +0.15 | **+0.11** | +0.12 (70) | +0.14 (49) |
-| + structure div 5-50 close | 254 | 0.50 | 0.32 | -0.00 | -0.04 | | |
-| + structure div 5-50 wick | 273 | 0.48 | 0.31 | +0.02 | -0.02 | | |
-| + structure sweep | 472 | 0.49 | 0.31 | +0.04 | +0.01 | | |
-| + WaveTrend | 201 | 0.48 | 0.32 | +0.11 | +0.08 | +0.01 (117) | +0.31 (69) |
-| + HTF 60 fail | 148 | 0.51 | 0.33 | +0.12 | +0.08 | +0.08 (67) | +0.11 (76) |
-| FULL 5 layers | 37 | 0.49 | 0.35 | +0.17 | +0.14 | +0.20 (24) | -0.07 (11) |
-| FULL, div 5-50 wick | 10 | 0.50 | 0.40 | +0.35 | +0.31 | | |
+| base level + trigger | 529 | 0.48 | 0.30 | +0.01 | -0.04 | | |
+| + structure (div or sweep) | 482 | 0.49 | 0.31 | +0.03 | -0.01 | | |
+| + structure div 3-10 close (SOURCED window) | 126 | 0.49 | 0.37 | +0.15 | **+0.10** | | |
+| + structure div 5-50 close | 254 | 0.50 | 0.32 | -0.00 | -0.05 | | |
+| + structure div 5-50 wick | 273 | 0.48 | 0.31 | +0.02 | -0.03 | | |
+| + structure sweep | 472 | 0.49 | 0.31 | +0.04 | -0.00 | | |
+| + WaveTrend | 201 | 0.48 | 0.32 | +0.11 | +0.07 | | |
+| + HTF 60 fail | 148 | 0.51 | 0.33 | +0.12 | +0.07 | | |
+| FULL 5 layers | 37 | 0.49 | 0.35 | +0.17 | +0.13 | | |
+| FULL, div 5-50 wick | 10 | 0.50 | 0.40 | +0.35 | +0.30 | | |
+
+Bull / bear split (net R, n): base level+trigger: bull -0.08 (282), bear +0.05 (217); +structure div 3-10 close: bull +0.11 (70), bear +0.13 (49); +wavetrend: bull -0.00 (117), bear +0.30 (69); +htf: bull +0.07 (67), bear +0.10 (76); FULL (5 layers): bull +0.19 (24), bear -0.08 (11).
 
 Rough standard error per trade at a 2R target is about 1.4 R, so SE = 1.4/sqrt(n): 0.12 R at n=126, 0.23 R at n=37. Nothing here clears 2 SE.
 
 ## Answers to the card's two questions
 
 1. **Window: 3-10 bars beats swing to swing.** Widening to 5-50 bars (what the operator's 4h reads needed, 15-19 bars) doubles the count and takes the result to zero. Malkan's sourced short window is the only divergence arm with a positive sign.
-2. **Close vs wick: no difference** at 5-50 bars (-0.04 vs -0.02 R).
+2. **Close vs wick: no difference** at 5-50 bars (-0.05 vs -0.03 R).
 
 ## What it means
 
