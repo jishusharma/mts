@@ -15,7 +15,22 @@
   "goal": "A second reviewer, different model and different lens, asks why the same news sometimes does not work twice: positioning, surprise vs expectation, who was already in the trade, regime, liquidity, time of day, and what reflexive effects the catalogue misses.",
   "id": "news-effect-review-market-lens-1108",
   "lane": "OPUS",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect-review-market-lens-1108: market-structure review of the news-effect catalogue",
+      "ref": "9c66361a0c20",
+      "utc": "2026-11-08T04:57:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9c66361a0c20 news-effect-review-market-lens-1108: market-structure review of the news-effe",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REVIEW_MARKET.md",
+      "utc": "2026-11-08T04:57:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +38,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T20:07:51Z",
+  "refreshed": "2026-11-08T18:20:55Z",
   "refs": [
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/research/mts_bible/BIBLE.md"
@@ -35,7 +50,7 @@
   "scope_out": [
     "no edits to the catalogue|no weight or flash rule|do not read any other review file"
   ],
-  "scope_sha": "",
+  "scope_sha": "9c66361a0c20",
   "size": "S",
   "sources": [
     "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"

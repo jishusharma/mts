@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend entry, MTS Home",
-      "ref": "dea81301a70a",
-      "utc": "2026-11-04T16:25:21Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:39Z",
+  "refreshed": "2026-11-08T18:21:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
     "MyTradingSys/aibridge extension code (content.js, loop.js)",
     "deleting or skipping the test"
   ],
-  "scope_sha": "dea81301a70a",
+  "scope_sha": "05d8d613782f",
   "size": "S",
   "sources": [],
   "state": "ready",

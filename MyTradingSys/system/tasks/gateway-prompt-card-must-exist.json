@@ -28,9 +28,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Weekly plan per login wired into Supervisor (re-land, supervisor.md trimmed to budget)",
-      "ref": "39446115d946",
-      "utc": "2026-11-06T13:10:30Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "layers": [],
@@ -41,7 +41,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T14:42:32Z",
+  "refreshed": "2026-11-08T18:20:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +51,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "39446115d946",
+  "scope_sha": "05d8d613782f",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 7"

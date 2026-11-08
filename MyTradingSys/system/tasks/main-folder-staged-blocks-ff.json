@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "mts_doctor: add GIT-HUNG check and guard scope_in network git calls with timeout and no-pr",
-      "ref": "d6d63cf459d6",
-      "utc": "2026-11-02T06:42:18Z"
+      "line": "Pages hook guard: refresh marker stops respawn, login from env/cache, build time cap",
+      "ref": "779eb295f037",
+      "utc": "2026-11-07T15:42:11Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T16:01:28Z",
+  "refreshed": "2026-11-08T18:20:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,7 +38,7 @@
   "scope_out": [
     "no touch of the JIS-NUC main folder itself (a per-machine step goes out as mts_signal broadcast); no sync.py change; no live tree"
   ],
-  "scope_sha": "d6d63cf459d6",
+  "scope_sha": "779eb295f037",
   "size": "S",
   "sources": [],
   "state": "ready",

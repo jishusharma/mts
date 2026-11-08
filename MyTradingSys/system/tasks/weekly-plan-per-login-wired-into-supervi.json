@@ -32,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Pages hook guard: refresh marker stops respawn, login from env/cache, build time cap",
-      "ref": "779eb295f037",
-      "utc": "2026-11-07T15:42:11Z"
+      "line": "test_supervisor: pin MTS_LOGIN in test_verify_cli_writes_stale (host-independent)",
+      "ref": "5d2844c0f5a5",
+      "utc": "2026-11-08T12:05:43Z"
     }
   ],
   "layers": [],
@@ -44,7 +44,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T18:34:22Z",
+  "refreshed": "2026-11-08T18:21:08Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -56,7 +56,7 @@
     "no change to exhaust.py maths",
     "no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "779eb295f037",
+  "scope_sha": "5d2844c0f5a5",
   "size": "S",
   "sources": [],
   "state": "ready",

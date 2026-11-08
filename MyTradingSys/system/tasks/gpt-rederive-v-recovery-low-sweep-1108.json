@@ -17,16 +17,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as default; textbook",
-      "ref": "f12c86c02044",
-      "utc": "2026-11-07T17:57:17Z"
+      "line": "FORMULAS s31: squeeze dots VERIFIED-TV 4/4 (operator read 09-20 ON, 09-21 OFF on TradingVi",
+      "ref": "358e8e20f323",
+      "utc": "2026-11-07T18:36:45Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "f12c86c02044 squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as defa",
+      "line": "358e8e20f323 FORMULAS s31: squeeze dots VERIFIED-TV 4/4 (operator read 09-20 ON, 09-21 OFF",
       "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
-      "utc": "2026-11-07T17:57:17Z"
+      "utc": "2026-11-07T18:36:45Z"
     }
   ],
   "layers": [],
@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T18:32:07Z",
+  "refreshed": "2026-11-08T18:20:46Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +49,7 @@
     "no edit to the source files",
     "no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "f12c86c02044",
+  "scope_sha": "358e8e20f323",
   "size": "S",
   "sources": [
     "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/RESULT.md"

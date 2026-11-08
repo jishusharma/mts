@@ -16,16 +16,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "wide: lint-clean causal pivot (same counts)",
-      "ref": "8f0ebdd75c4d",
-      "utc": "2026-11-06T14:44:51Z"
+      "line": "plan: 5h super plan for Monday open, CBP playbook card, operator decision",
+      "ref": "a5bbf4cecfb4",
+      "utc": "2026-11-08T18:17:26Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "c65bdabae969 d-slow-boot-audit-1106: NUC leftover finding",
+      "line": "a5bbf4cecfb4 plan: 5h super plan for Monday open, CBP playbook card, operator decision",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-06T12:58:44Z"
+      "utc": "2026-11-08T18:17:26Z"
     }
   ],
   "layers": [],
@@ -35,7 +35,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T14:56:48Z",
+  "refreshed": "2026-11-08T18:20:59Z",
   "refs": [
     "MyTradingSys/research/malkan_window_wide_2026-11/RESULT.md"
   ],
@@ -47,7 +47,7 @@
     "MyTradingSys/research/malkan_window_wide_2026-11/"
   ],
   "scope_out": [],
-  "scope_sha": "8f0ebdd75c4d",
+  "scope_sha": "a5bbf4cecfb4",
   "size": "S",
   "sources": [],
   "state": "ready",

@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "bigcandle story: big-candle stories x top-trader class x phase base rates + live_aid panel",
-      "ref": "b2010203f032",
-      "utc": "2026-11-05T14:07:16Z"
+      "line": "Merge origin/fast-track (news_weight) into events strip: keep both script tags, renderers,",
+      "ref": "3db35c5f403d",
+      "utc": "2026-11-08T12:36:04Z"
     },
     {
       "auto": true,
@@ -40,7 +40,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T07:53:18Z",
+  "refreshed": "2026-11-08T18:20:50Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +51,7 @@
     "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
   ],
   "scope_out": [],
-  "scope_sha": "b2010203f032",
+  "scope_sha": "3db35c5f403d",
   "size": "M",
   "sources": [],
   "state": "ready",

@@ -31,16 +31,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "ship: regenerated LAYERS.md",
-      "ref": "d98f410e5257",
-      "utc": "2026-11-05T06:08:44Z"
+      "line": "plan: 5h super plan for Monday open, CBP playbook card, operator decision",
+      "ref": "a5bbf4cecfb4",
+      "utc": "2026-11-08T18:17:26Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d98f410e5257 ship: regenerated LAYERS.md",
-      "ref": "MyTradingSys/system/LAYERS.md",
-      "utc": "2026-11-05T06:08:44Z"
+      "line": "a5bbf4cecfb4 plan: 5h super plan for Monday open, CBP playbook card, operator decision",
+      "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "utc": "2026-11-08T18:17:26Z"
     },
     {
       "kind": "report",
@@ -56,7 +56,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:37Z",
+  "refreshed": "2026-11-08T18:20:53Z",
   "refs": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md"
   ],
@@ -79,7 +79,7 @@
     "no live tree",
     "no change to registry tile urls"
   ],
-  "scope_sha": "d98f410e5257",
+  "scope_sha": "a5bbf4cecfb4",
   "size": "M",
   "sources": [
     "MyTradingSys/system/artifacts/MTS_HOME_AUDIT_2026-11-03.md",

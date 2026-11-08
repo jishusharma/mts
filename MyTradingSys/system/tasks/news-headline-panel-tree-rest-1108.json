@@ -25,16 +25,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-1106-46cfc9",
-      "ref": "d33c571f45be",
-      "utc": "2026-11-06T21:24:19Z"
+      "line": "Merge origin/fast-track (news_weight) into events strip: keep both script tags, renderers,",
+      "ref": "3db35c5f403d",
+      "utc": "2026-11-08T12:36:04Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d33c571f45be Merge remote-tracking branch 'origin/fast-track' into claude/pattern-book-110",
+      "line": "06baadc50339 live_aid: News weight W 0-100, LONG/SHORT/HOLD chip and News row flash (news_",
       "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
-      "utc": "2026-11-06T21:24:19Z"
+      "utc": "2026-11-08T10:51:00Z"
     }
   ],
   "layers": [],
@@ -44,7 +44,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T18:55:20Z",
+  "refreshed": "2026-11-08T18:20:59Z",
   "refs": [
     "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
     "MyTradingSys/items/T054_us_session_news_correlation.md"
@@ -60,7 +60,7 @@
   "scope_out": [
     "no trade gate, no sizing, no signal: context only (CBP rule)|no scheduler, no background logger|no CoinGlass (key-gated) in this card|no headline text stored in the repo beyond the 20-item sample|no live tree (.mts_live) touch"
   ],
-  "scope_sha": "d33c571f45be",
+  "scope_sha": "3db35c5f403d",
   "size": "M",
   "sources": [
     "operator 2026-11-08 00:15 IST: TradingView News panel screenshot (abf74fdf6d47) 'Do u see such news! as here'; third ask after T054 (09-28) and news_feeds_2026-10-30; nothing built"

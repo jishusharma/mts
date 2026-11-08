@@ -28,9 +28,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "mts_signal: ship done only on a completed ship; failed ship = note; 15 min repeat window",
-      "ref": "848838d182e2",
-      "utc": "2026-11-05T07:36:53Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "layers": [],
@@ -41,7 +41,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:36Z",
+  "refreshed": "2026-11-08T18:20:34Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -50,7 +50,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "848838d182e2",
+  "scope_sha": "05d8d613782f",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 15"

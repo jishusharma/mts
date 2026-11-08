@@ -31,9 +31,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "republish stale artifact pages (night hygiene)",
-      "ref": "f6746acf7b7f",
-      "utc": "2026-11-05T00:36:53Z"
+      "line": "republish MTS Layers page (mts_layer_map); card republish-mts-home-and-mts-layers-stale- s",
+      "ref": "347c034ff55b",
+      "utc": "2026-11-07T18:08:11Z"
     }
   ],
   "layers": [],
@@ -43,7 +43,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:37Z",
+  "refreshed": "2026-11-08T18:21:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -53,7 +53,7 @@
   "scope_out": [
     "page design changes; pages owned by another login (skip and list the reason)"
   ],
-  "scope_sha": "f6746acf7b7f",
+  "scope_sha": "347c034ff55b",
   "size": "S",
   "sources": [],
   "state": "ready",
