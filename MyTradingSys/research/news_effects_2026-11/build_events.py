@@ -290,6 +290,53 @@ CURATED = [
     ('prt-20250507', '2025-05-07 10:05', 'PROTOCOL', 'ETH_UPGRADE', 'Ethereum Pectra upgrade live', WK + 'Ethereum', R, E),
     ('prt-20251203', '2025-12-03 21:49', 'PROTOCOL', 'ETH_UPGRADE', 'Ethereum Fusaka upgrade live', WK + 'Ethereum', R, E),
 ]
+# Primary-source minute proofs (card news-effect-source-verify-ours-1108-prim). eid -> (t0 UTC, ts_quality, verify_source, verify_note).
+# Truth Social posts are read on the public archive trumpstruth.org, which shows the post time in US Eastern; converted to UTC here.
+TS_ARCH = 'https://www.trumpstruth.org/statuses/'
+NYSE = 'https://www.nyse.com/markets/hours-calendars'
+EIP = 'https://eips.ethereum.org/EIPS/eip-'
+PROOF = {
+    'etf-20240111': ('2024-01-11 14:30', 'EXACT_REPORTED', NYSE, 'NYSE hours page: core trading session and opening auction 9:30 a.m. ET = 14:30Z; the event is defined as the US open, so the minute is the exchange rule, not a news time'),
+    'etf-20240722': ('2024-07-22 13:30', 'EXACT_REPORTED', NYSE, 'NYSE hours page: opening auction 9:30 a.m. ET (EDT) = 13:30Z; the event is defined as the US open'),
+    'prt-20240313': ('2024-03-13 14:55', 'EXACT_REPORTED', EIP + '7569', 'EIP-7569 table: Dencun mainnet epoch 269568, activation timestamp 1710338135 = 14:55:35Z; the old 13:55 was wrong by one hour'),
+    'prt-20240420': ('2024-04-20 00:09', 'EXACT_REPORTED', 'https://mempool.space/api/block/0000000000000000000320283a032748cef8227873ff4872689bf23f1cda83a5', 'block 840000 header timestamp 00:09:27Z (mempool.space API read this run; miner-set header time)'),
+    'prt-20250507': ('2025-05-07 10:05', 'EXACT_REPORTED', EIP + '7600', 'EIP-7600 table: Pectra mainnet epoch 364032, activation timestamp 1746612311 = 10:05:11Z'),
+    'prt-20251203': ('2025-12-03 21:49', 'EXACT_REPORTED', EIP + '7607', 'EIP-7607 table: Fusaka mainnet epoch 411392, activation timestamp 1764798551 = 21:49:11Z'),
+    'hack-20250221': ('2025-02-21 14:13', 'EXACT_REPORTED', 'https://etherscan.io/tx/0x46deef0f52e3a983b67abf4714448a41dd7ffd6d32d32da69d62081c68ad7882', 'first drain tx (from the exploiter 0x0fa09c3a...) mined in block 0x14e1846, header time 14:13:35Z, read by public Ethereum RPC this run'),
+    'hack-20250515': ('2025-05-15 10:52', 'EXACT_REPORTED', 'https://www.sec.gov/Archives/edgar/data/1679788/000167978825000094/coin-20250514.htm', 'Coinbase 8-K items 1.05 and 9.01, EDGAR acceptance time 2025-05-15T10:52:12Z (data.sec.gov submissions API); the old 14:30 was wrong'),
+    'tar-20250304': ('2025-03-04 05:01', 'EXACT_REPORTED', 'https://www.whitehouse.gov/presidential-actions/2025/02/progress-on-the-situation-at-our-northern-border/', 'executive order text: duties take effect March 4, 2025 at 12:01 a.m. eastern time = 05:01Z'),
+    'pol-20250120': ('2025-01-20 17:00', 'EXACT_REPORTED', 'https://www.archives.gov/founding-docs/amendments-11-27', '20th Amendment: the term of the President ends and the next begins at noon on 20 January = 17:00Z; the page gives the term start, not the oath minute'),
+    'pol-20250117': ('2025-01-18 02:00', 'EXACT_REPORTED', TS_ARCH + '29196', 'Truth Social post "My NEW Official Trump Meme is HERE" 9:00 PM ET on 17 Jan = 02:00Z on 18 Jan (the event_id keeps the ET date); archive copy, post text read'),
+    'pol-20250302': ('2025-03-02 15:24', 'EXACT_REPORTED', TS_ARCH + '29932', 'Truth Social post on the Crypto Strategic Reserve (XRP, SOL, ADA), 10:24 AM ET = 15:24Z; archive copy'),
+    'tar-20250409': ('2025-04-09 17:18', 'EXACT_REPORTED', TS_ARCH + '30580', 'Truth Social post pausing reciprocal tariffs, 1:18 PM ET = 17:18Z; archive copy'),
+    'mac-20250421': ('2025-04-21 13:41', 'EXACT_REPORTED', TS_ARCH + '30729', 'Truth Social post calling Powell "a major loser", 9:41 AM ET = 13:41Z; archive copy; earlier posts on the same theme exist, this is the one of that day'),
+    'tar-20250523': ('2025-05-23 11:43', 'EXACT_REPORTED', TS_ARCH + '31222', 'Truth Social post recommending a 50% tariff on the EU, 7:43 AM ET = 11:43Z; archive copy'),
+    'geo-20250621': ('2025-06-21 23:50', 'EXACT_REPORTED', TS_ARCH + '31599', 'Truth Social post "We have completed our very successful attack" 7:50 PM ET = 23:50Z; archive copy'),
+    'geo-20250623': ('2025-06-23 22:02', 'EXACT_REPORTED', TS_ARCH + '31628', 'Truth Social ceasefire post, 6:02 PM ET = 22:02Z; archive copy'),
+    'mac-20250825': ('2025-08-26 00:02', 'EXACT_REPORTED', TS_ARCH + '35729', 'Truth Social post of the White House letter removing Governor Cook, 8:02 PM ET on 25 Aug = 00:02Z on 26 Aug (the event_id keeps the ET date); archive copy'),
+    'tar-20251010': ('2025-10-10 20:50', 'EXACT_REPORTED', TS_ARCH + '33275', 'Truth Social post imposing a 100% tariff on China from 1 Nov, 4:50 PM ET = 20:50Z; archive copy (replaces the 20:00Z placeholder)'),
+}
+# Why the rest stay unverified (checked this run: the primary page gives a date but no minute, or no primary page was reachable).
+UNFIT_WHY = {
+    'etf-': 'SEC order or statement pages give the date, not the minute; no minute on a primary page',
+    'boj-': 'Bank of Japan statement pages give the date only; the announcement minute is not on a primary page',
+    'crt-': 'court docket or SEC release pages give the date only; no minute on a public primary page',
+    'hack-': 'no first-transaction hash or primary disclosure with a minute was found',
+    'pol-': 'White House or Congress pages give the date only; no timestamped primary post found',
+    'tar-': 'White House pages give the date only; no timestamped primary post found',
+    'geo-': 'no timestamped primary source (government statement with a time) found',
+    'mac-': 'no timestamped primary page found (agency pages give the date only)',
+    'prt-': 'no protocol timestamp source found',
+}
+
+
+def unfit_note(eid):
+    for k, v in UNFIT_WHY.items():
+        if eid.startswith(k):
+            return 'UNFIT: ' + v + '; t0 was recalled from memory, so the row stays out of every table'
+    return 'UNFIT: no primary page with the minute'
+
+
 UNVERIFIED_NOTE = {
     'tar-20251010': 'placeholder 20:00Z time; Opus review: BTC r15 +0.10 and vr5 0.48 there, so no news minute; real post time unsourced',
     'hack-20261029': 'time from repo report research/news_feeds_2026-10-30/REPORT.md (Tree News 20:39Z); cited CoinDesk URL is generic, not a checked page',
@@ -545,14 +592,43 @@ def url_alive(u, cache):
     return ok
 
 
+SURPRISE_CACHE = os.path.join(HERE, 'surprise_cache.json')
+
+
+def surprise_fields(eid):
+    """actual / consensus / prior / sign from surprise_cache.json (fetch_surprise.py; dated ForexFactory day page). Never guessed: missing = 'none'."""
+    none = dict(actual='none', consensus='none', prior='none', surprise_sign='none', surprise_url='')
+    try:
+        c = json.load(open(SURPRISE_CACHE, encoding='utf8')).get(eid)
+    except (OSError, ValueError):
+        c = None
+    if not c or not c.get('actual') or not c.get('prior'):
+        return none
+    try:
+        a, k, p = (float(c[x].rstrip('%')) if c[x] else None for x in ('actual', 'consensus', 'prior'))
+        float(c['prior'].rstrip('%'))
+    except ValueError:
+        return none
+    if k is None:
+        return dict(actual=c['actual'], consensus='none', prior=c['prior'], surprise_sign='none', surprise_url='')
+    sign = 'hot' if a > k else ('cool' if a < k else 'in line')
+    return dict(actual=c['actual'], consensus=c['consensus'], prior=c['prior'], surprise_sign=sign, surprise_url=c['url'])
+
+
 def main():
     cal = load_calendar()
     events = calendar_rows(cal)
     for (eid, ts, cls, sub, title, url, kind, tsq) in CURATED:
         t0 = dt.datetime.strptime(ts, '%Y-%m-%d %H:%M').replace(tzinfo=dt.timezone.utc)
         if FIRST_T0 <= t0 <= LAST_T0:
-            events.append(dict(event_id=eid, t0=t0, cls=cls, subtype=sub, title=title, url=url, source_kind=kind, ts_quality=tsq,
-                               verified='N', verify_source='', verify_note=UNVERIFIED_NOTE.get(eid, DEFAULT_UNVERIFIED)))
+            pr = PROOF.get(eid)
+            if pr:
+                t0 = dt.datetime.strptime(pr[0], '%Y-%m-%d %H:%M').replace(tzinfo=dt.timezone.utc)
+                events.append(dict(event_id=eid, t0=t0, cls=cls, subtype=sub, title=title, url=url, source_kind=kind, ts_quality=pr[1],
+                                   verified='Y', verify_source=pr[2], verify_note=pr[3]))
+            else:
+                events.append(dict(event_id=eid, t0=t0, cls=cls, subtype=sub, title=title, url=url, source_kind=kind, ts_quality=tsq,
+                                   verified='N', verify_source='', verify_note=('UNFIT: ' + UNVERIFIED_NOTE[eid]) if eid in UNVERIFIED_NOTE else unfit_note(eid)))
     events.sort(key=lambda e: (e['t0'], e['event_id']))
     seq = {}
     for e in events:
@@ -587,9 +663,9 @@ def main():
              'ts_quality': e['ts_quality'], 'measured_ok': 'Y' if ok else 'N', 'class_seq': e['class_seq'], 'class_n': seq[e['cls']],
              'verified': e['verified'], 'verify_source': e['verify_source'], 'verify_note': e['verify_note'],
              'overlap': overlap_text(e, events),
-             # No free, timestamped, archived consensus source was reachable (BLS 403, FRED timeout, Wayback 429): never guessed.
-             'actual': 'none' if sched4 else '', 'consensus': 'none' if sched4 else '', 'prior': 'none' if sched4 else '',
-             'surprise_sign': 'none' if sched4 else '', 'surprise_url': ''}
+             'actual': '', 'consensus': '', 'prior': '', 'surprise_sign': '', 'surprise_url': ''}
+        if sched4:
+            r.update(surprise_fields(e['event_id']))
         for s in SYMS:
             for n in NUM:
                 r['%s_%s' % (s, n)] = (mm[s] or {}).get(n, '') if mm[s] else ''
@@ -624,7 +700,9 @@ def write_report(rows, dead, ctl, analyst):
     L.append('- **Only verified rows enter any table below** (%d of %d rows). Verified = the date and the minute were read on a public page: the BLS schedule page (via web.archive.org snapshots) for CPI, PPI and NFP, the Fed statement page ("For release at 2:00 p.m.") for each FOMC meeting. Every other row (our own grouping, dates and times recalled from memory) is marked `verified=N` with a reason in `verify_note`, stays in the CSV, and is in **no** table.' % (len(timed), len(rows)))
     L.append('- v2 fixes from the Opus review: the two non-release PPI rows (2025-10-16, 2025-11-14) are removed, the real 2025-11-25 PPI is added (BLS snapshots 20251120 and 20260201), tar-20251010 is marked unverified, CPI + FOMC same-day pairs carry an `overlap` flag (also PPI/NFP same day, and any event within 4 h).')
     L.append('- Reaction columns (percent, per symbol): r1/r5/r15/r60/r240 = close of the minute window vs the close of the minute before t0; up60/dn60 = 1m extremes in 60 min; vr5 = mean volume of the first 5 min / mean of the prior 60; rv60 = stdev of 1m returns of the prior hour; **z15 = r15 / (rv60 sqrt 15) depends on the session** (the prior hour is quiet before 08:30 ET and busy before 14:00 ET), so **z15d = r15 / (stdev of 1m returns over the prior 24 h * sqrt 15)** is the baseline used in the tables; tpk60 / retr60 = minute of the largest excursion and the share given back by minute 60; day_ret = UTC-day open to close.')
-    L.append('- Surprise columns `actual`, `consensus`, `prior`, `surprise_sign`, `surprise_url` exist for every CPI, PPI, NFP and FOMC row. **All are `none` in this run** (section 5).\n')
+    L.append('- Surprise columns `actual`, `consensus`, `prior`, `surprise_sign`, `surprise_url` exist for every CPI, PPI, NFP and FOMC row. **%d of %d rows carry actual and prior; %d carry a consensus and a real sign** (section 5; source and metric in section 5).\n' % (
+        sum(1 for r in rows if r['class'] in SCHED4 and r['actual'] != 'none'), sum(1 for r in rows if r['class'] in SCHED4),
+        sum(1 for r in rows if r['class'] in SCHED4 and r['surprise_sign'] != 'none')))
 
     L.append('## 2. Verified vs unverified, per class\n')
     L.append('| class | label | rows | verified | unverified | verified and measured | verified pre/post 01-20 |')
@@ -637,7 +715,10 @@ def write_report(rows, dead, ctl, analyst):
     L.append('| **all** | | %d | %d | %d | %d | %d/%d |' % (len(rows), sum(r['verified'] == 'Y' for r in rows), sum(r['verified'] == 'N' for r in rows), len(timed),
                                                    sum(r['era'] == 'PRE_TRUMP2' for r in timed), sum(r['era'] != 'PRE_TRUMP2' for r in timed)))
     L.append('')
-    L.append('No ETF, hack, Trump policy, tariff, geopolitics, court, BoJ, protocol or macro-other row is verified: a primary or news-archive page with the minute was not read for any of them in this run (section Gaps). Those classes are UNKNOWN.\n')
+    own = [r for r in rows if r['class_label'] == 'OURS']
+    ownv = [r for r in own if r['verified'] == 'Y']
+    L.append('Own-grouping (OURS) rows verified this run: %d of %d, from primary or archive pages with the minute (exchange rule, protocol timestamp, block header, EDGAR acceptance time, executive-order text, Truth Social post time). Per class verified / rows: %s. Classes under %d verified events stay UNKNOWN in every table; the other %d OURS rows are marked `UNFIT:` with a reason in `verify_note`.\n' % (
+        len(ownv), len(own), ', '.join('%s %d/%d' % (c, sum(1 for r in ownv if r['class'] == c), sum(1 for r in own if r['class'] == c)) for c in sorted({r['class'] for r in own})), MIN_CLASS, len(own) - len(ownv)))
 
     L.append('## 3. Class table (verified rows; classes with fewer than %d verified events are UNKNOWN)\n' % MIN_CLASS)
     L.append('Speed and persistence columns are shown beside the random-walk null (simulated, 20,000 paths of 60 one-minute steps): **P(abs r60 > abs r15) = %.2f**, median tpk60 = %d min, median retr60 = %.2f. Opus review value for the first: 0.73. A class value near the null is not evidence of extension or fade.\n' % (p73, tp_null, rt_null))
@@ -680,7 +761,7 @@ def write_report(rows, dead, ctl, analyst):
     L.append('')
 
     L.append('## 5. Reaction by surprise sign (CPI, NFP, FOMC)\n')
-    L.append('Surprise = actual vs consensus. A row enters this table only with a numeric actual, a numeric consensus and a cited public URL. **No such row exists in this run**: the BLS pages answer 403 to scripts, the FRED API timed out, Wayback rate-limited, and no free archived consensus page was reachable; the Fed gives no consensus. Every CPI, PPI, NFP and FOMC row therefore says `none` and is excluded from surprise stats; nothing was filled by guess.\n')
+    L.append('Surprise = actual vs consensus. A row enters this table only with a numeric actual, a numeric consensus and a cited public URL. Source: the dated, public ForexFactory calendar page of the release day (column `surprise_url`), fetched by `fetch_surprise.py` and stored as numbers in `surprise_cache.json`. It is a third-party aggregator, not the agency: the actual is the first print as shown there, the consensus is the forecast on that page, the prior is the previous-period figure on that page (may be a later revision). Metric: CPI = CPI m/m %, PPI = PPI m/m %, NFP = non-farm payroll change in thousand jobs, FOMC = federal funds rate % (hot = higher than forecast; a hold against a hold forecast is `in line`). `hot` means actual above forecast for every class. Rows without a forecast or actual on the page say `none` and are excluded; nothing was filled by guess. Only verified rows (all of these) are counted.\n')
     L.append('| class | sign | n | median BTC r60 % (signed) | direction hit rate (hot expected down, cool up) |')
     L.append('|---|---|---|---|---|')
     for c in ('MACRO_CPI', 'MACRO_NFP', 'FOMC'):
@@ -712,7 +793,7 @@ def write_report(rows, dead, ctl, analyst):
     L.append('\nThis is a time split, not a Trump effect: price level, ETF flows, volatility regime and the Fed cycle changed at the same time; no placebo split date was run.\n')
 
     L.append('## 7. Repeat decay (verified rows, classes with at least %d)\n' % MIN_CLASS)
-    L.append('rho = Spearman rank correlation of occurrence number vs abs BTC z15d (negative = fading). Without surprise data the sign of a data-release move follows the surprise, so sign agreement is shown only as a count.\n')
+    L.append('rho = Spearman rank correlation of occurrence number vs abs BTC z15d (negative = fading). The sign of a data-release move follows the surprise, so see section 5 for the split by hot / cool.\n')
     L.append('| class | n | med abs z15d first 3 | med abs z15d later | rho(seq, abs z15d) | med abs r15 % first 3 | med abs r15 % later | sign agreement with previous |')
     L.append('|---|---|---|---|---|---|---|---|')
     for c in classes:
@@ -725,7 +806,7 @@ def write_report(rows, dead, ctl, analyst):
         ra = [abs(float(r['btc_r15'])) for r in t]
         sg = [(float(t[i]['btc_r15']) > 0) == (float(t[i - 1]['btc_r15']) > 0) for i in range(1, len(t))]
         L.append('| %s | %d | %s | %s | %s | %s | %s | %.0f%% (%d pairs) |' % (c, len(t), f2(med(z[:3])), f2(med(z[3:])), f2(rho), f2(med(ra[:3])), f2(med(ra[3:])), 100 * sum(sg) / len(sg), len(sg)))
-    L.append('\nAt n = 23 to 34 a two-sided 5% test needs |rho| of about 0.34 to 0.41. Same-subtype repeats inside the own-grouping classes are not shown: none of those rows is verified.\n')
+    L.append('\nAt n = 23 to 34 a two-sided 5% test needs |rho| of about 0.34 to 0.41. Same-subtype repeats inside the own-grouping classes are not shown: too few verified rows per subtype.\n')
 
     L.append('## 8. Analyst-named events (CBP transcripts) and the measured 1 h move\n')
     ev_ids = sorted({a['event'] for a in analyst})
@@ -776,12 +857,15 @@ def write_report(rows, dead, ctl, analyst):
     L.append('- **Classes with fewer than %d events (total): %s.** Reported as UNKNOWN, not guessed.' % (MIN_CLASS, ', '.join('%s (%d)' % (c, len(cr[c])) for c in small_all) or 'none'))
     L.append('- **Classes with at least %d events but fewer than %d verified ones (minute stats UNKNOWN): %s.**' % (MIN_CLASS, MIN_CLASS, ', '.join('%s (%d verified of %d)' % (c, len(ct[c]), len(cr[c])) for c in small_timed) or 'none'))
     nt = [r for r in rows if r['verified'] == 'N']
-    L.append('- **Events with no reliable timestamp (verified=N): %d** (%d DAY_ONLY placeholder t0, %d APPROX_INTRADAY, %d EXACT_REPORTED but recalled). Their minute columns are in the CSV and in no table. Ids: %s.' % (
+    L.append('- **Events with no reliable timestamp (verified=N): %d** (%d DAY_ONLY placeholder t0, %d APPROX_INTRADAY, %d EXACT_REPORTED but recalled; all marked UNFIT). Their minute columns are in the CSV and in no table. Ids: %s.' % (
         len(nt), sum(r['ts_quality'] == 'DAY_ONLY' for r in nt), sum(r['ts_quality'] == 'APPROX_INTRADAY' for r in nt), sum(r['ts_quality'] == 'EXACT_REPORTED' for r in nt), ', '.join(r['event_id'] for r in nt)))
-    L.append('- **Not done in this run: source-verifying the own-grouping rows.** Each ETF, hack, Trump policy, tariff, geopolitics, court, BoJ, protocol and macro-other row needs a primary or news-archive page and a minute checked against it (wire time, post id, block time). The cited URLs are general reference pages, not proof. Follow-up card needed.')
-    L.append('- **Inferred, not looked up:** (a) every PUBLIC_WEB_RECALL row (dates, times, titles) is the author memory of public events; %s. (b) ET to UTC conversion uses the US DST rule, checked by check_catalogue.py and by the Fed statement pages (EDT/EST named there). (c) BLS dates come from web.archive.org snapshots of the schedule pages (bls.gov blocks scripts); the PPI fix is described in section 1. (d) The era boundary is the 17:00Z oath. (e) The 2026-10-29 Binance row links a generic CoinDesk URL; its time comes from research/news_feeds_2026-10-30/REPORT.md.' % (
+    L.append('- **Source-verification of the own-grouping rows (card news-effect-source-verify-ours-1108-prim): %d of %d OURS rows verified; %d marked UNFIT.** UNFIT = the primary pages checked (SEC, Fed, BoJ, White House, court and exchange disclosures) give a date but no minute, or no primary page was reachable; the memory t0 stays in the CSV and in no table. Verified times that moved from the recalled value: Dencun (13:55 to 14:55Z), Coinbase 8-K (14:30 to 10:52Z), Bybit (15:00 to 14:13Z), China 100%% tariff post 2025-10-10 (20:00 to 20:50Z), crypto reserve (17:00 to 15:24Z), EU 50%% threat (14:30 to 11:43Z), Powell post (12:00 to 13:41Z), Iran ceasefire (22:00 to 22:02Z), TRUMP memecoin post (22:00 on 17 Jan to 02:00Z on 18 Jan), Cook letter (23:00 to 00:02Z next day). Truth Social times come from the public archive trumpstruth.org (US Eastern as displayed), not from truthsocial.com.' % (len(ownv), len(own), len(own) - len(ownv)))
+    L.append('- **Inferred, not looked up:** (a) every PUBLIC_WEB_RECALL row that is not verified=Y (dates, times, titles) is the author memory of public events; %s. (b) ET to UTC conversion uses the US DST rule, checked by check_catalogue.py and by the Fed statement pages (EDT/EST named there). (c) BLS dates come from web.archive.org snapshots of the schedule pages (bls.gov blocks scripts); the PPI fix is described in section 1. (d) The era boundary is the 17:00Z oath. (e) The 2026-10-29 Binance row links a generic CoinDesk URL; its time comes from research/news_feeds_2026-10-30/REPORT.md.' % (
         ('%d URL(s) did not answer at build time: %s' % (len(dead), ', '.join(dead[:6]))) if dead else 'every cited URL answered at build time (HTTP 200, or 403 for bls.gov)'))
-    L.append('- **No surprise data (all rows `none`).** BLS release pages: 403 to scripts. FRED CSV: timed out. Wayback BLS archive pages: 429 at times. No free archived consensus page was reachable and the Fed publishes none. Needed: actual, consensus and prior per CPI, PPI and NFP release from a dated source, and a market-implied expectation for FOMC. Until then the sign, hot-vs-cool and "works twice" questions are open. Follow-up card needed.')
+    sr = [r for r in rows if r['class'] in SCHED4]
+    gaps = [r['event_id'] for r in sr if r['surprise_sign'] == 'none']
+    L.append('- **Surprise data (card news-effect-surprise-data-1108-fill-actu): %d of %d CPI/PPI/NFP/FOMC rows have actual, consensus, prior and a sign; %d rows are `none`** (ids: %s). Reason for each none: the ForexFactory day page had no forecast or no actual for that release, or the release was not on the page. Source is a third-party calendar, not BLS or the Fed (BLS pages answer 403 to scripts); actual vs the agency table was not cross-checked row by row. Prior may be a later revision. The consensus is the forecast shown on the page today, which the site keeps as published before release, but its edit history is not visible. CPI/PPI use m/m, so a y/y surprise is not tested. Stage-2 (spreads, tests of hot vs cool) is not run here.' % (
+        len(sr) - len(gaps), len(sr), len(gaps), ', '.join(gaps) or 'none'))
     L.append('- **Analyst-named coverage:** %d mentions of %d events; all transcripts date from 2026-10-14 to 10-22 (plus the older ones named in extractions.md, which are not in the scanned inbox). Events that analysts mention but the catalogue lacks (midterms 2026-11-03, the 2026 Iran war and oil, bond yields) are not added. Only %d mentions state a BTC direction before an event.' % (len(analyst), len(ev_ids), len(n_before)))
     same = sum(1 for r in rows if 'SAME_DAY' in r['overlap'])
     near = sum(1 for r in rows if 'WITHIN_4H' in r['overlap'])

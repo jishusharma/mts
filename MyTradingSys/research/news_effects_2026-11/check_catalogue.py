@@ -109,8 +109,18 @@ def check_v2(rows, ok_rows):
     check('verified=N carries a verify_note', all(r['verify_note'] for r in rows if r['verified'] == 'N'))
     check('every SCHEDULED calendar row is verified (BLS schedule / Fed press release)',
           all(r['verified'] == 'Y' for r in rows if r['ts_quality'] == 'SCHEDULED' and r['source_kind'] == 'PUBLIC_CALENDAR'))
-    check('no recalled (PUBLIC_WEB_RECALL) row is verified without a checked page',
-          all(r['verified'] == 'N' for r in rows if r['source_kind'] == 'PUBLIC_WEB_RECALL'))
+    check('a verified recalled (PUBLIC_WEB_RECALL) row cites a source other than its own reference URL and an EXACT_REPORTED time',
+          all(r['verify_source'] != r['url'] and 'wikipedia.org' not in r['verify_source'] and r['ts_quality'] == 'EXACT_REPORTED'
+              for r in rows if r['source_kind'] == 'PUBLIC_WEB_RECALL' and r['verified'] == 'Y'))
+    # card news-effect-source-verify-ours-1108-prim: every verified=N row is marked UNFIT with a reason; no unexplained APPROX_INTRADAY
+    unfit = [r for r in rows if r['verified'] == 'N']
+    check('every verified=N row is marked UNFIT with a reason (no memory-only t0 left unexplained)',
+          all(r['verify_note'].startswith('UNFIT: ') and len(r['verify_note']) > 20 for r in unfit),
+          str([r['event_id'] for r in unfit if not r['verify_note'].startswith('UNFIT: ')][:5]))
+    check('no verified=N APPROX_INTRADAY row without an UNFIT reason',
+          all(r['verify_note'].startswith('UNFIT: ') for r in unfit if r['ts_quality'] == 'APPROX_INTRADAY'))
+    check('verified=N OURS-class rows are counted in REPORT.md Gaps (count quoted)',
+          os.path.exists(REPORT_PATH) and ('verified=N): %d' % len(unfit)) in open(REPORT_PATH, encoding='utf8').read(), 'unfit=%d' % len(unfit))
     cnt = {}
     for r in rows:
         c = cnt.setdefault(r['class'], [0, 0])
@@ -136,13 +146,34 @@ def check_v2(rows, ok_rows):
             bad.append(r['event_id'])
     check('surprise columns: every CPI/PPI/NFP/FOMC row has actual, consensus, prior and sign; sign none only with consensus none; real sign needs numbers + URL',
           not bad, str(bad[:5]))
+    # card news-effect-surprise-data-1108-fill-actu: filled rows exist, carry a URL, and the sign matches actual vs consensus
+    sr = [r for r in rows if r['class'] in SURPRISE_CLASSES]
+    filled = [r for r in sr if r['surprise_sign'] != 'none']
+    check('surprise: at least 60% of CPI/PPI/NFP/FOMC rows are filled (the rest listed in REPORT.md Gaps)',
+          len(filled) >= 0.6 * len(sr), '%d of %d' % (len(filled), len(sr)))
+
+    def _sign_ok(r):
+        try:
+            a, k = float(r['actual'].rstrip('%')), float(r['consensus'].rstrip('%'))
+        except ValueError:
+            return False
+        return r['surprise_sign'] == ('hot' if a > k else ('cool' if a < k else 'in line'))
+    check('surprise: every filled row has a https surprise_url and a sign consistent with actual vs consensus',
+          all(r['surprise_url'].startswith('https://') and _sign_ok(r) for r in filled),
+          str([r['event_id'] for r in filled if not (r['surprise_url'].startswith('https://') and _sign_ok(r))][:5]))
+    if os.path.exists(REPORT_PATH):
+        rep_txt = open(REPORT_PATH, encoding='utf8').read()
+        check('REPORT.md section 5 is populated from filled rows and Gaps lists the none rows',
+              '%d of %d CPI/PPI/NFP/FOMC rows have actual, consensus, prior and a sign' % (len(filled), len(sr)) in rep_txt)
     ns = {k: sum(1 for r in rows if r['class'] in SURPRISE_CLASSES and r['surprise_sign'] == k) for k in SURPRISE_SIGNS}
     check('surprise counts', True, str(ns))
     # opus data fixes
     check('phantom PPI rows removed', 'ppi-2025-10-16' not in by and 'ppi-2025-11-14' not in by)
     p = by.get('ppi-2025-11-25')
     check('real PPI 2025-11-25 13:30Z present', bool(p) and p['t0_utc'] == '2025-11-25T13:30:00Z')
-    check('tar-20251010 marked unverified', 'tar-20251010' in by and by['tar-20251010']['verified'] == 'N')
+    check('tar-20251010 t0 is the Truth Social post minute 20:50Z, verified from the archive (the 20:00Z placeholder is gone)',
+          'tar-20251010' in by and by['tar-20251010']['t0_utc'] == '2025-10-10T20:50:00Z' and by['tar-20251010']['verified'] == 'Y'
+          and 'trumpstruth.org/statuses/' in by['tar-20251010']['verify_source'])
     check('CPI + FOMC same-day pair flagged overlapping',
           'fomc-2024-06-12' in by['cpi-2024-06-12']['overlap'] and 'cpi-2024-06-12' in by['fomc-2024-06-12']['overlap'])
     sched = [r for r in rows if r['ts_quality'] == 'SCHEDULED' and r['source_kind'] == 'PUBLIC_CALENDAR']
