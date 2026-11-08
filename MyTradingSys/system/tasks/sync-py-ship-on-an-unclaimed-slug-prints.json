@@ -4,14 +4,23 @@
   "commands": [],
   "created": "2026-11-07T15:25:26Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/sync.py ship on an unclaimed slug exits non-zero; test in scripts/dev/test_sync.py",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "sync.py ship without a claim must exit non-zero with a claim hint",
   "id": "sync-py-ship-on-an-unclaimed-slug-prints",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync: document failed_steps in record_ship_* docstrings",
+      "ref": "6f230a74c2b2",
+      "utc": "2026-11-08T02:54:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -19,16 +28,25 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T03:57:10Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py"
+  ],
+  "scope_out": [
+    "auto-claim"
+  ],
+  "scope_sha": "6f230a74c2b2",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "failing test",
+    "return nonzero with hint"
+  ],
+  "tests": "python -m pytest scripts/dev/test_sync.py -k unclaimed",
   "title": "sync.py ship on an unclaimed slug prints 'no claim ... on origin/claims' and exits rc 0 having shipped nothing; should exit non-zero or auto-claim | done-when: ship without a claim exits non-zero with a claim hint, test added",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

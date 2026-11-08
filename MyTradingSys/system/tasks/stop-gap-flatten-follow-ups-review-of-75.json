@@ -2,33 +2,50 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-08T03:56:55Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/supervisor.py"
+    ],
+    "session": "agent-a9f5f8e23b429c9f0"
+  },
   "created": "2026-11-08T03:11:54Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "each of the 5 cases has a failing-first test in test_stop_gap_offline.py",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Harden stop-gap flatten: retry after failed close, cancel resting entry orders on error paths, retry get_position, honest already-flat message",
   "id": "stop-gap-flatten-follow-ups-review-of-75",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "IMPORTANT: needs reviewer stamp before ready; live-path: restart/reset, API-error tests required",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "stop-gap flatten module and test_stop_gap_offline.py"
+  ],
+  "scope_out": [
+    "live tree deploy"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "stop-gap flatten follow-ups (review of 75767271): retry flatten on later manager runs after a failed close; cancel resting entry_1 orders on unreadable/foreign/non-flat error paths; derive sweep labels also from the intent event's compiled plan; _retry_call around get_position; honest message when already flat; tests for transient get_position failure and resting entry (done when: each case has a failing-first test in test_stop_gap_offline.py)",
-  "weight": "",
-  "worker": ""
+  "steps": [
+    "locate stop-gap flatten code via where_is.py",
+    "write failing tests per case",
+    "fix"
+  ],
+  "tests": "python -m pytest -k stop_gap_offline",
+  "title": "stop-gap flatten follow-ups (review of 75767271): retry flatten after failed close; cancel resting entry_1 on error paths; sweep labels from intent plan; _retry_call on get_position; honest already-flat message (done when: failing-first test per case in test_stop_gap_offline.py)",
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
