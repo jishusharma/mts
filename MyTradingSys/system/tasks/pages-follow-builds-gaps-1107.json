@@ -2,6 +2,21 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-11-08T23:49:29Z",
+    "misses": 22,
+    "reads": [
+      "scripts/dev/artifacts.py",
+      "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+      "scripts/dev/make_home.py",
+      "scripts/dev/test_artifacts.py",
+      "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md",
+      "scripts/dev/make_layers_board.py",
+      "MyTradingSys/system/artifacts/registry.json"
+    ],
+    "session": "agent-a871757a35978e2a8"
+  },
   "created": "2026-11-07T15:47:31Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_artifact_pages.py has three cases (one per gap) that fail on current code and pass after; python scripts/dev/artifacts.py check (or the page check in SPEC_PAGES_FOLLOW_BUILDS.md) reports no STALE right after a rebuild + publish-record.",

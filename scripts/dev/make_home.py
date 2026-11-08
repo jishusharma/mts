@@ -343,7 +343,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     data = build(af.load())
     out = Path(a.out)
-    out.write_text(af.put_stamp(render(data)), encoding="utf-8", newline="\n")
+    af.write_stamped(out, render(data))
     print(f"wrote {out} ({len(data['pages'])} pages, {len(data['waiting'])} questions waiting, {len(data['retire'])} old copies to delete)")
     return 0
 
