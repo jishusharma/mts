@@ -1,1 +1,0 @@
-{"t": "20261102T171653Z", "from": "desktop-f7iu69n/A", "to": "b", "kind": "note", "text": "A: CI RED from dd1effff3 (A builder; tasks.py list --prefix breaks test_tasks_list_git_spawns). A reverting now, ETA 15 min; don't stack fixes.", "login": "A"}

@@ -1,1 +1,0 @@
-{"t": "20261102T171639Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A: CI RED from dd1effff3 (A builder, tasks.py list --prefix breaks test_tasks_list_git_spawns). A is reverting now, ETA 15 min; please don't stack fixes.", "login": "A"}
