@@ -166,3 +166,48 @@ def test_planted_defects_are_caught(ctx, tmp_path):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
+
+
+# ---- pages-follow-builds-gaps-1107: three gaps in the Updated stamp / STALE flow (static, run everywhere) ----
+def _af():
+    """scripts/dev/artifacts.py loaded by path: scripts/dev on sys.path would shadow sim_desk's own desk module for other tests."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("mts_artifacts_t", REPO / "scripts" / "dev" / "artifacts.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+def test_gap1_sim_desk_build_writes_updated_stamp_no_browser(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("sim_build_artifact", REPO / "MyTradingSys/research/sim_desk/artifact/build_artifact.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    out = tmp_path / "index.html"
+    mod.main(["--out", str(out)])
+    html = out.read_text(encoding="utf-8")
+    assert re.search(r"Updated \d{4}-\d\d-\d\d \d\d:\d\d UTC", html), "sim_desk build has no Updated stamp"
+    assert html.index("mts-updated") < html.index('<div id="app">'), "stamp is not first"
+
+
+def test_gap2_home_not_stale_after_publish_record_of_another_page_no_browser():
+    """MTS Home embeds each page's `behind` flag; publish-record of another page flips it and made Home look changed."""
+    af = _af()
+    a = '<html><body><script>const DATA={"pages":[{"slug":"x","pub":"2026-11-01","behind":true}]};</script></body></html>'
+    b = a.replace('"behind":true', '"behind":false').replace("2026-11-01", "2026-11-09")
+    assert af.content_hash(a) == af.content_hash(b)
+    assert af.content_hash(a) != af.content_hash(a.replace('"slug":"x"', '"slug":"y"'))
+
+
+def test_gap3_rebuild_with_same_content_keeps_stamp_no_browser(tmp_path):
+    """A rebuild whose content is unchanged must not rewrite the stamp minute (it dirtied the tree on every build)."""
+    af = _af()
+    from datetime import datetime, timezone
+    page = "<html><body><main>hi</main></body></html>"
+    f = tmp_path / "p.html"
+    af.write_stamped(f, page, datetime(2026, 11, 7, 15, 4, tzinfo=timezone.utc))
+    first = f.read_bytes()
+    af.write_stamped(f, page, datetime(2026, 11, 7, 16, 9, tzinfo=timezone.utc))
+    assert f.read_bytes() == first
+    af.write_stamped(f, page.replace("hi", "ho"), datetime(2026, 11, 7, 16, 9, tzinfo=timezone.utc))
+    assert b"16:09 UTC" in f.read_bytes()
