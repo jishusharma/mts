@@ -103,10 +103,6 @@
    "disp": "TOOL",
    "why": "DEV-only chart renderer: draws Malkan regular and PRD/NRD flags plus separate KROWN-CONFLUENCE hidden flags on 1d/1w charts for operator review; covered by test_div_flags_chart.py, no live imports."
   },
-  "MyTradingSys/backtest/layers/rsi/malkan_level_short.py": {
-   "disp": "TOOL",
-   "why": "malkan-level-short-4h-count-1109: Malkan level-short stack, run by research/malkan_level_shorts_2026-11-09/count.py (output REPORT.md). Not live: testnet card malkan-level-short-testnet-forward-1109 decides wiring."
-  },
   "MyTradingSys/backtest/layers/rsi/run_t090_anchor_probe.py": {
    "disp": "REPRO",
    "ref": "T090",
