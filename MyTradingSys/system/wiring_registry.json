@@ -969,10 +969,6 @@
    "disp": "TOOL",
    "why": "Builds the one-page live feed mock LIVE_ONEPAGE_MOCK_2026-11-04.html from the orderflow CSV; run by hand (d-sim-ux-1104), mock only."
   },
-  "MyTradingSys/tools/live_aid/build_artifact.py": {
-   "disp": "TOOL",
-   "why": "Builds the one-file claude.ai Artifact preview of live_aid.html (indicators inlined); run by hand when the live aid page changes, named in tools/live_aid/STEPS.md."
-  },
   "MyTradingSys/tools/live_aid/events_wire.py": {
    "disp": "TOOL",
    "why": "Writes research/cbp/events_to_watch.json and events_strip_data.js (Upcoming strip in live_aid.html); run by hand when CBP extractions or the BLS/Fed calendar change."
