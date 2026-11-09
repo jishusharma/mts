@@ -70,6 +70,10 @@ def doc_must(files, all_nums):
 LOOKAHEAD_STEP = "3la"
 LOOKAHEAD_RE = re.compile(r"^(MyTradingSys/(?!tests/)(?:.*/)?(?!test_)[^/]+\.py|scripts/dev/lookahead_(lint\.py|allowlist\.tsv)|"
                           r"MyTradingSys/tests/test_lookahead_lint\.py)$")
+# test_no_own_costs.py (shard 4e) scans every non-test .py under backtest/research for own fee/cost constants; no test imports those modules,
+# so mention-matching never picked 4e and a `FEE = 0.0004` research file went red only in CI.
+COST_STEP = "4e"
+COST_RE = re.compile(r"^MyTradingSys/(backtest|research)/(?!(.*/)?test_[^/]*$).*\.py$")
 SHARD_PREFIX = "4"                    # every pytest shard is numbered 4, 4b, 4c ...
 
 
@@ -289,6 +293,8 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
             return "full", list(all_nums), f"full: {f} is on the live path (FULL_RE)"
         if LOOKAHEAD_RE.match(f) and LOOKAHEAD_STEP in all_nums:
             picked.add(LOOKAHEAD_STEP)
+        if COST_RE.match(f) and COST_STEP in all_nums:
+            picked.add(COST_STEP)
         if _is_config(f):
             base = PurePosixPath(f).name
             picked.update(_name_matches(f, steps))
