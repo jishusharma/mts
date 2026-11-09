@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.33';
+  L.VERSION = '0.7.34';
 
   // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's POST /seed.
   // Case-insensitive; one trailing . or ! allowed; a longer sentence, a second line or a second message is an ordinary message (no swap).
@@ -358,8 +358,10 @@
   // ---- 0.7.33: DeepSeek block guard (card dsa-bridge-avoid-deepseek-block-1108, MyTradingSys/system/DSA_BLOCK_REVIEW.md ranks 1-4) ----
   // DeepSeek suspended the AWGP profile until 2026-11-11 after 205 auto runs in one day (peak 45 an hour, gaps under 10 s, three
   // machines, parallel chats). The guard below paces every auto post, stops on a warning page, and arms one chat per account.
-  // OURS: the numbers are the review's (60 s, 15 an hour, 80 a day, jitter 10-30 s, 24 h cooldown); no public DeepSeek page names a limit.
-  L.PACE = { minGapMs: 60000, perHour: 15, perDay: 80, jitterMinMs: 10000, jitterMaxMs: 30000 };
+  // OURS: 0.7.33 used the review's 60 s, 15 an hour, 80 a day, jitter 10-30 s; 0.7.34 (operator 2026-11-09: too slow) loosens to
+  // 20 s + 5-15 s jitter, 30 an hour, 200 a day, still under the 11-07 suspension day (peak 45 an hour, 205 a day). 24 h cooldown kept.
+  // No public DeepSeek page names a limit.
+  L.PACE = { minGapMs: 20000, perHour: 30, perDay: 200, jitterMinMs: 5000, jitterMaxMs: 15000 };
   L.paceJitter = function (rand) {
     var r = (typeof rand === 'function' ? rand() : Math.random());
     return L.PACE.jitterMinMs + Math.floor(r * (L.PACE.jitterMaxMs - L.PACE.jitterMinMs));
@@ -388,7 +390,7 @@
   };
   L.paceText = function (r) {
     var s = Math.round((r && r.waitMs || 0) / 1000);
-    return 'paced: ' + (r && r.cap === 'day' ? 'the 80 posts a day limit is reached' : r && r.cap === 'hour' ? 'the 15 posts an hour limit is reached' : 'at least 60 s between posts') + '; next post allowed in ' + s + ' s';
+    return 'paced: ' + (r && r.cap === 'day' ? 'the ' + L.PACE.perDay + ' posts a day limit is reached' : r && r.cap === 'hour' ? 'the ' + L.PACE.perHour + ' posts an hour limit is reached' : 'at least ' + Math.round(L.PACE.minGapMs / 1000) + ' s between posts') + '; next post allowed in ' + s + ' s';
   };
 
   // stop on warning: overlays = text of dialogs/alerts/toasts on the page (never the chat messages: DSA may write the word captcha).
