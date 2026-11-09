@@ -48,7 +48,9 @@ DESCRIPTIVE_CROP_PROMPT_TEMPLATE = (
     "In particular, report what exact numbers are readable for the order/price tags."
 )
 
-AGY_BIN = Path("C:/Users/E-ngineers/.gemini/bin/agy.exe")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from agy_path import find_agy  # NUC or laptop install path (ROUTING.md Gemini access)
+AGY_BIN = find_agy()
 FRAMES_DIR = Path("F:/MTS/data/tom_videos/frames")
 DEFAULT_SCRATCH = Path("F:/MTS/scratch/argon_run")
 REPO_ROOT = Path(__file__).resolve().parents[2]

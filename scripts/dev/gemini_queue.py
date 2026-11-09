@@ -18,7 +18,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REPO = Path(__file__).resolve().parents[2]
-AGY = Path.home() / '.gemini' / 'bin' / 'agy.exe'
+from agy_path import find_agy  # NUC or laptop install path (ROUTING.md Gemini access)
+AGY = find_agy()
 ROOT = Path(os.environ.get('MTS_GQ_ROOT') or ('F:/MTS/gq' if Path('F:/').exists() else Path.home() / '.gemini' / 'mts-gq'))
 PY = sys.executable
 

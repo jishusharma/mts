@@ -46,11 +46,11 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
   research/lab_guy/TANDEM_PLAN_2026-10-18.md. Where two disagreed the newer operator-dated rule was taken; conflicts are at the bottom.
 
 ## Gemini access: one rule (operator 2026-11-10, replaces every older Gemini host/lane line)
-Requirement: ANY Claude login (A, B, C), on ANY machine, starts Gemini work on EITHER Gemini account (`gemini-nuc`, `gemini-laptop`) itself, with no wait on a person or an idle app. The binary is `agy.exe` (`~/.gemini/bin/agy.exe`), never a `gemini` CLI.
+Requirement: ANY Claude login (A, B, C), on ANY machine, starts Gemini work on EITHER Gemini account (`gemini-nuc`, `gemini-laptop`) itself, with no wait on a person or an idle app. The binary is `agy.exe` (NUC `~/.gemini/bin`, laptop `~/AppData/Local/agy/bin`), never a `gemini` CLI.
 | From \ To | NUC Gemini | Laptop Gemini |
 |---|---|---|
 | Desktop (JIS-NB) | SSH gate + one-shot /IT schtask: `gemini_queue.py run <card>:low` (works, checked 2026-11-09) | BLOCKED: laptop has no sshd (LENOVO_SETUP.md); operator one-time admin step opens it |
-| Laptop (login A) | SSH gate (key needed on laptop) | local `agy.exe` if installed (UNVERIFIED 2026-11-10) |
+| Laptop (login A) | SSH gate (key needed on laptop) | local `agy.exe` (VERIFIED 2026-11-09 22:30Z at `~/AppData/Local/agy/bin`, models argon/flash low-med-high, opus, sonnet, gpt-oss; scripts find it via `scripts/dev/agy_path.py`) |
 | NUC (login B) | local `agy.exe` | BLOCKED: same sshd step |
 Target state: both Gemini accounts signed in to `agy` on both hosts (operator signs in once; never a session), so either host serves either account. Until then: one host down or quota out = use the other host, never wait. "Hand-started only", "Gemini = NUC only" and "one account per machine" lines elsewhere are superseded by this section. Launcher card: gemini-any-host-launcher-1109.
 
