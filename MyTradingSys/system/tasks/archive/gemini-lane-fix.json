@@ -6,7 +6,7 @@
   ],
   "created": "2026-10-28T06:49:37Z",
   "depends_on": [],
-  "done_when": "NOT_IN_DATA: scope and done-when were in the NUC prompt only; rewrite from the prompt or the ship commit; minimum: gemini lane runs and a start signal is seen (card handover-log-cap-and-gemini-lane-verify)",
+  "done_when": "Per MyTradingSys/research/gemini_lane_fix_2026-10-28T081956Z.md: (A) push_claim_commit jitters 0.5-4.0 s between lost-race retries, tests in test_sync.py fail on pre-change code; (B) gemini_queue.run_job accepts model flash|argon with :low effort default; (C) the 7 failed NUC cards handled. The NUC prompt text itself is NOT_IN_DATA.",
   "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
@@ -35,7 +35,8 @@
   "refs": [],
   "result": "",
   "scope_in": [
-    "scripts/dev/gemini_queue.py"
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/sync.py"
   ],
   "scope_out": [
     "unrelated files; live tree"
