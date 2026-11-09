@@ -19,6 +19,7 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 _BT = HERE.parents[3] / "backtest"          # MyTradingSys/backtest (read-only imports)
 sys.path.insert(0, str(_BT))
+sys.path.insert(0, str(HERE.parents[4]))      # repo root: research_kit loads malkan_mtf, which imports MyTradingSys.*
 import fees  # noqa: E402
 import research_kit  # noqa: E402
 import splits  # noqa: E402
@@ -503,7 +504,6 @@ def cmd_dev():
                 rows.append(row(trial, "DEV", "regime_tag_exploratory", str(g), summarize([x for x, y in zip(tr, tags) if y == g])))
         out.append("no-volume-gate: " + str(summarize(trN)))
         out.append("regime A: " + str(summarize(trA)))
-    (HERE / "cells.csv").write_text("", encoding="utf-8")
     with open(HERE / "cells.csv", "w", newline="\n", encoding="utf-8") as f:
         w = csv.writer(f, lineterminator="\n")
         w.writerow(CELL_HEAD)
