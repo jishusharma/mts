@@ -15,7 +15,7 @@ CACHE = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "bars.json"
 sys.path.insert(0, str(HERE.parent.parent / "backtest"))
 from fees import BINANCE_TAKER  # noqa: E402  shared cost source (T06): 2 x taker = 0.10 % round trip
 DAYS = 180
-FEE_BP = 2 * BINANCE_TAKER * 1e4
+FEE_BP = BINANCE_TAKER * 2 * 1e4
 M15 = 900_000
 DAYMS = 86_400_000
 
