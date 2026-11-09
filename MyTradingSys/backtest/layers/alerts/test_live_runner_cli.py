@@ -139,6 +139,24 @@ class TestMainOnce(unittest.TestCase):
         for name in ("default_fetch", "default_levels"):  # no network in tests: the level-touch feed fails closed
             self.addCleanup(setattr, lt, name, getattr(lt, name))
             setattr(lt, name, lambda *a, **k: (_ for _ in ()).throw(OSError("no network in tests")))
+        from MyTradingSys.backtest.layers.alerts import sister_signals as ss   # same for the sister feed (card sister-signals-wired-1109)
+        self.addCleanup(setattr, ss, "default_fetch", ss.default_fetch)
+        ss.default_fetch = lambda *a, **k: (_ for _ in ()).throw(OSError("no network in tests"))
+
+    def test_loop_runs_sister_after_each_poll(self):
+        seen = []
+        orig = cli.sister_after_poll
+        cli.sister_after_poll = lambda *a, **k: seen.append(a)
+        self.addCleanup(setattr, cli, "sister_after_poll", orig)
+        cli.default_fetch_klines, keep = (lambda s, i, l: [_row(0, 1, 1, 1, 1, 1, 1), _row(60000, 2, 2, 2, 2, 2, 2)]), cli.default_fetch_klines
+        self.addCleanup(setattr, cli, "default_fetch_klines", keep)
+        cli.main(["--tfs", "1h", "--state-path", str(Path(self.tmpdir) / "s.json"), "--alerts-dir", str(Path(self.tmpdir) / "a"),
+                  "--toast-path", str(Path(self.tmpdir) / "t.jsonl"), "--once"])
+        self.assertEqual(len(seen), 1)
+
+    def test_sister_error_never_stops_the_runner(self):
+        self.assertEqual(cli.sister_after_poll(Path(self.tmpdir) / "s.json", Path(self.tmpdir) / "a", None), [])
+        self.assertTrue((Path(self.tmpdir) / "a" / "sister_signals.jsonl").exists())  # one degraded line
 
     def test_loop_runs_level_touch_after_each_poll(self):
         from MyTradingSys.backtest.layers.alerts import live_level_touch as lt

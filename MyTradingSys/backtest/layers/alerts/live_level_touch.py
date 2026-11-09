@@ -119,14 +119,15 @@ def _fmt_zone(z):
     return f'{z["level"]:,.0f} {"+".join(z["who"])}'
 
 
-def brief_text(slot, price, levels, since, next_event, scenario_ids, now_ms):
+def brief_text(slot, price, levels, since, next_event, scenario_ids, now_ms, sister=None):
     zs = _zones(levels)
     above = [z for z in zs if z["level"] > price][:2]
     below = [z for z in reversed([z for z in zs if z["level"] <= price])][:2]
     touched = "; ".join(f'{x["level"]:,.0f} {x["who"]} (wick {x["price"]:,.0f} {x["utc"]})' for x in since) or "none"
     return (f'SESSION BRIEF {slot} {_stamp(now_ms)} {SYMBOL} {price:,.0f} | above: {", ".join(map(_fmt_zone, above)) or "none"}'
             f' | below: {", ".join(map(_fmt_zone, below)) or "none"} | touched since last brief: {touched}'
-            f' | next: {next_event or "n/a"} | playbook: {", ".join(scenario_ids) if scenario_ids else "n/a"}')
+            f' | next: {next_event or "n/a"} | playbook: {", ".join(scenario_ids) if scenario_ids else "n/a"}'
+            + (f" | {sister}" if sister else ""))   # sister-signals-wired-1109: Monday EU brief only
 
 
 def _write(alerts, alerts_dir, toast_path):
@@ -167,7 +168,8 @@ def poll(fetch, levels, state_path, alerts_dir, toast_path, now_ms, brief_ctx=No
             ctx = {}
         price = ctx.get("price") or (bars[-1]["c"] if bars else None)
         if price:
-            text = brief_text(slot, price, lv, st["since_brief"], ctx.get("next_event"), ctx.get("scenario_ids"), now_ms)
+            text = brief_text(slot, price, lv, st["since_brief"], ctx.get("next_event"), ctx.get("scenario_ids"), now_ms,
+                              sister=ctx.get("sister"))
             alerts.append({"layer": "level_touch", "sub": "brief", "tf": "1m", "event": "SESSION BRIEF", "symbol": SYMBOL,
                            "slot": slot, "t_close": now_ms, "text": text})
             st["brief_done"].append(f'{_utc(now_ms).strftime("%Y-%m-%d")}|{slot}')
