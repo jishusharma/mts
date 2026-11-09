@@ -11,3 +11,11 @@ DECISION (OURS): record NOT_IN_DATA rather than write rules from memory or from 
 Retry: after the lockout (`fetch_captions_timed.py --analyst Tom --status`), on a machine/IP not blocked:
 `python scripts/dev/fetch_captions_timed.py --analyst Tom --out MyTradingSys/research/tom_swing_2026-11-09 M7ompiwv5co`
 then continue with done_when steps 2-4 (extract + verify_extract_quotes.py, map to trendline_core.py / TRENDLINE_CONTRACT.md v1, PRE_REG.md for BTC 4h and 1d with fees from MyTradingSys/backtest/fees.py).
+
+## Retry 2026-11-10 (tom-swing-retry-1110): still blocked, no request made
+
+- `fetch_captions_timed.py --analyst Tom --status`: BLOCKED until 2026-11-10T13:54:09+00:00 (this host, lockout level 2 of 3: 6/24/72 h, OURS). The wrapper refused locally (`YT_BLOCKED`), so no request left the machine. C's "lockout level reset" is per its own host/IP; this host's guard state is separate.
+- Not evaded: no proxy, no state edit, no other fetch path.
+- Next retry: at or after 2026-11-10T13:54:09Z on this host, or now on a machine whose `--status` shows clear. Same command as above; then done_when steps 2-4.
+
+DECISION (OURS): stop at the guard, record the new retry time, ship NOT_IN_DATA only.

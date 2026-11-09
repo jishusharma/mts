@@ -66,7 +66,7 @@ Used from the desktop JIS-NB (Claude Code Win App), same queue and ritual as A a
 | JIS-NUC | B | `gemini-nuc`: Antigravity plugin in VS Code |
 | Desktop (JIS-NB, JIS-DESKTOP) | C (Max) | none |
 
-Two Gemini accounts, one per machine above. Login letters name Claude logins only. The API credit key lives at F:/ClaudePlaform/key.txt on the desktop and on the NUC, never in the repo.
+Two Gemini accounts, today one per machine above; any Claude login may use either from any machine (ROUTING.md "Gemini access", operator 2026-11-10). Login letters name Claude logins only. The API credit key lives at F:/ClaudePlaform/key.txt on the desktop and on the NUC, never in the repo.
 
 History (2026-10-15, decision q21): until 2026-10-15 the repo put A on JIS-NB and B on JIS-NUC. A session on JIS-NUC whose Claude login is jishu.sharma@gmail.com
 owns the Control Room Ep6gA5 and the other pages then filed under jishu.awgp, and cannot read EoHi2q (then filed under jishu.sharma).

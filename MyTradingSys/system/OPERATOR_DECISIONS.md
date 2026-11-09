@@ -2189,3 +2189,15 @@ He likes the Home page, momentum and live liquidations. Asks:
 - He asked where price stands with respect to the level (approaching, touching, rejected, accepted), what validates or voids the read, and that ideas be flashed. He also asked to weight BB, wicks, volume, CVD and OI, and said many analyst calls at a level mean wait for the close.
 - Built levelstory.js. It reads completed 15m closes: Tom acceptance = 2 closes beyond; Fabio absorption = aggressive delta into the level that cannot close through. It adds BB 15m, wick, relative volume, OI and WT 15m. Home shows the state, evidence chips and the valid/void line, and an IDEA flash when the levels agree.
 - Measured 180 d (research/level_story_1110): ideas are right 49 % (n 2,852); the weights do not separate outcomes. The card and the flash say "coin flip so far". Opposite ideas at two levels cancel.
+
+## 2026-11-09 22Z Live Aid Positions: all venues, Binance route (operator; health miss)
+Operator: "we already have a workaround [for Binance futures] and it was working ... why just two [venues]? ... list everything" (CoinGlass aggregate).
+Health miss (Lead C): I explained the page label "Binance blocked here" as fact without checking; the DoH fix (runtime/binance_doh.py, d-fix-binance-dns-block-1109) exists but is Python only, and the Live Aid page fetches from the browser, so it never used it. The 11-09 order (item 6 above: aggregate OI+CVD from the big venues, find a route for Binance/OKX) was not delivered; the label was hard-coded.
+Measured 11-09 22Z from JIS-NB (public endpoints, Origin claude.ai): browser-direct OK = Bybit, Deribit, Gate, Hyperliquid; reachable, no CORS = HTX, MEXC; ISP-blocked (000) = Binance fapi, OKX, Bitget, BitMEX, Kraken Futures, BingX.
+Decision: Live Aid session (local_8343982a) makes the label dynamic, adds Gate + Hyperliquid now, and builds a Python poller (binance_doh generalised, public data, fail closed) for the rest, feeding the page. Rule: before explaining a page label to him, check it against the code and the repo's fixes.
+
+## 2026-11-09 22Z Gemini: any login, any account, from anywhere (operator)
+Operator: "there are two Gemini accounts, not just on NUC but also on Lenovo ... Any login should be able to run any Gemini accounts from anywhere. This is the main requirement. You have to remove all the contradictions."
+Done: ROUTING.md section "Gemini access: one rule" is now the single source; HOW_MTS_RUNS (dropped "hand-started only" and the wrong "no Claude login" on the laptop), CLOUD_ACCOUNTS ("one per machine") and GEMINI_START (NUC-only title) point to it.
+Measured gaps: desktop -> NUC works (SSH gate status ok 22Z); laptop has no sshd, so no other machine can start laptop Gemini; agy CLI on the laptop UNVERIFIED (broadcast asks login A to check); second Gemini account not signed in on either host.
+Operator-only steps (system setting / sign-in, never a session): enable sshd on the laptop (LENOVO_SETUP.md line 29 command); sign the other Gemini account into agy on each host.
