@@ -1,0 +1,1 @@
+{"t": "20261109T011813Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED fixed by A (b58a3983): reverted A's forward_log logger (99ee786b7..436deeb42) and C's eh-h1 spinning_top (acd413094 57dddeb68 c69efe329): test_no_own_costs found own fee literals. 3rd time toda", "login": "A", "id": "b-bb5554", "prio": "high", "cmd": ""}
