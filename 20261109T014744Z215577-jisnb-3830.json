@@ -1,0 +1,1 @@
+{"t": "20261109T014744Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Binance DoH fix on trunk: pull fast-track, run the smoke, then ack done with the output line", "login": "C", "id": "b-9ee9a9", "prio": "high", "cmd": "cd <repo> then git pull --ff-only then python scripts/dev/binance_doh_smoke.py (expect SMOKE OK)"}
