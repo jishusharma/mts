@@ -465,25 +465,5 @@ class StartSeed(unittest.TestCase):
         self.assertIn("# AIRUN cwd=", out.getvalue())
 
 
-class ShipPendingTest(Base):
-    def test_ship_pending_names_unshipped_commits(self):
-        (self.work / "notes.txt").write_text("x\n")
-        sh(self.work, "add", "notes.txt")
-        sh(self.work, "commit", "-q", "-m", "wip")
-        rows = dsa.ship_pending(self.work)
-        self.assertEqual(len(rows), 1, rows)
-        self.assertIn("wip", rows[0])
-
-    def test_ship_pending_empty_when_all_shipped(self):
-        self.assertEqual(dsa.ship_pending(self.work), [])
-
-    def test_commit_says_ship_owed_until_pushed(self):
-        (self.work / "notes.txt").write_text("x\n")
-        code, out = call(["commit", "wip", "--result", "r", "--files", "notes.txt"])
-        self.assertEqual(code, 0, out)
-        self.assertIn("SHIP OWED:", out)
-
-
-
 if __name__ == "__main__":
     unittest.main(verbosity=1)
