@@ -1,1 +1,0 @@
-{"t": "20261102T034217Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-06f099 told retried once after lockout window: HTTP 429 again, guard re-locked; no more fetches from this IP", "login": "C", "id": "b-06f099", "state": "told", "host": "jis-nb", "note": "retried once after lockout window: HTTP 429 again, guard re-locked; no more fetches from this IP"}
