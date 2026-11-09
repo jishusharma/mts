@@ -1014,6 +1014,8 @@ main>#p-pos:not(.off){flex:0 0 auto}
   function renderHome(now, px, L, MOM) {
     if (!window.LAHOME) { $('p-home').innerHTML = '<p class="err">home.js not found next to this page</p>'; return; }
     window.LAHOME.injectCss(document);
+    var r5 = S.tf['5m'];
+    if (!(px > 0) && r5 && r5.length) px = +r5[r5.length - 1][4];   // no live ticker yet: last 5m close (same venue as the candles)
     var mm = mapModel(now, px, L), M = window.LAMAP, pd = window.PLAYBOOK_DATA;
     var votes = mm.votes.slice(); if (M && pd) votes[5] = M.playbookVote(pd, now);
     var ev = M && pd ? M.nextEvent(pd, now) : null;
@@ -1041,7 +1043,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     Array.prototype.forEach.call(document.querySelector('main').children, function (el) {
       if (el.id === 'back') el.classList.add('off');
       else if (el.id === 'tabs' || el.id === 'flash') el.classList.remove('off');
-      else if (el.id === 'p-pos' && v === 'intrade') el.classList.remove('off');
+      else if (el.id === 'p-pos' && (v === 'intrade' || v === 'momentum')) el.classList.remove('off');   // position bar holds the More-detail toggle
       else el.classList.toggle('off', !!vw && el.id !== id && !el.querySelector('#' + id));
     });
     Array.prototype.forEach.call(document.querySelectorAll('.cols > section'), function (el) { el.classList.toggle('off', !!vw && el.id !== id); });

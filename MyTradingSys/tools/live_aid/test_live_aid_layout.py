@@ -101,51 +101,61 @@ def _ov(page):
     return page.eval_on_selector_all("#ov tr[data-go]", "rs => rs.map(r => [r.dataset.go, Array.from(r.children).map(c => c.innerText)])")
 
 
-def test_now_table_is_on_top_and_fits_one_screen(browser):
+def test_home_is_landing_tab_and_page_never_scrolls(browser):
+    # operator 2026-11-09: every app is ONE page, tab bar, no page scroll; Home = candles + named levels + rail
     ctx, page, errs = _open(browser)
     try:
         assert not errs, errs
+        assert page.evaluate("location.hash") == "#home"
+        vis = lambda sel: page.eval_on_selector(sel, "e => e.offsetParent !== null")
+        assert vis("#tabs") and vis("#p-home") and not vis("#p-ov") and not vis("#p-tfs"), "home alone under the tab bar"
+        tabs = page.eval_on_selector_all("#tabs a", "as => as.map(a => a.innerText)")
+        assert tabs[0] == "Home", tabs
+        assert page.eval_on_selector_all("#p-home .hm-svg rect.hm-bd", "rs => rs.length") >= 5   # candles drawn
+        for h in ("#home", "#now", "#usopen", "#news"):
+            page.evaluate(f"location.hash = '{h}'"); page.wait_for_timeout(200)
+            sc = page.evaluate("[Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), window.innerHeight, getComputedStyle(document.body).overflow]")
+            assert sc[0] <= sc[1] + 1 or sc[2] == "hidden", (h, sc)
+    finally:
+        ctx.close()
+
+
+def test_now_table_rows(browser):
+    ctx, page, errs = _open(browser)
+    try:
+        assert not errs, errs
+        page.evaluate("location.hash = '#now'"); page.wait_for_timeout(300)
         rows = _ov(page)
         assert [r[1][0] for r in rows[:4]] == ["Momentum", "Levels", "Coil", "Pierce"], rows
         assert {"money", "news", "verdict", "liq", "fund", "macro", "usopen", "intrade"} <= {r[0] for r in rows}, rows
-        box = page.eval_on_selector("#p-ov", "e => e.getBoundingClientRect().bottom - document.querySelector('#p-tfs').getBoundingClientRect().height - 12")
-        assert box <= 900, box                                                       # no scroll for the decision rows (timeframe strip R19 sits above, not counted)
-        first = page.evaluate("Array.from(document.querySelector('main').children).filter(e => e.offsetParent !== null).map(e => e.id || e.className).slice(0, 3)")
-        assert first == ["p-tfs", "p-pos", "p-ov"], first                     # R19: timeframe strip on top
-        # Momentum cell: RSI per timeframe, equal to the strip's printed RSI (1m and 5m are in data in the fixture)
         strip = {r[0]: r[1] for r in page.eval_on_selector_all("#strip tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")}
         mom = dict(rows)["momentum"][1]
         for tf in ("1m", "5m"):
             rsi = re.match(r"[\d.]+", strip[tf]).group(0)
             assert f"{tf} {rsi}" in mom, (tf, rsi, mom)
-        assert "15m NOT_IN_DATA" in mom, mom                                           # 20 bars < 40: as the strip says
+        assert "15m NOT_IN_DATA" in mom, mom
         news = dict(rows)["news"][1]
         assert "POTENTIAL BINANCE HACK ONGOING" in news and "NEGATIVE" in news and "3 high" in news, news
     finally:
         ctx.close()
 
 
-def test_click_opens_detail_and_back_returns(browser):
+def test_click_opens_detail_and_tabs_return(browser):
     ctx, page, errs = _open(browser)
     try:
         vis = lambda sel: page.eval_on_selector(sel, "e => e.offsetParent !== null")
+        page.click("#tabs a[href='#now']"); page.wait_for_timeout(200)
         page.click("#ov tr[data-go=momentum]")
         page.wait_for_timeout(200)
         assert page.evaluate("location.hash") == "#momentum"
-        assert vis("#p-strip") and vis("#back") and not vis("#p-ov") and not vis("#p-levels") and not vis("#p-news"), "momentum detail"
-        page.click("#back a")
-        page.wait_for_timeout(200)
-        assert page.evaluate("location.hash") in ("", "#")
-        assert vis("#p-ov") and vis("#p-strip") and not vis("#back"), "top view after Back link"
-        page.click("#ov tr[data-go=news]")
-        page.wait_for_timeout(200)
-        assert vis("#p-news") and not vis("#p-ov") and not vis("#p-strip"), "news detail"
-        page.go_back()
-        page.wait_for_timeout(300)
-        assert vis("#p-ov") and not vis("#back"), "browser Back returns to the top table"
+        assert vis("#p-strip") and not vis("#p-ov") and not vis("#p-levels") and not vis("#p-news"), "momentum detail"
+        page.go_back(); page.wait_for_timeout(300)
+        assert vis("#p-ov") and not vis("#p-strip"), "browser Back returns to the Now tab"
         page.click("#ov tr[data-go=pierce]")
         page.wait_for_timeout(200)
         assert vis("#p-coil") and not vis("#p-ov"), "pierce opens the coil and pierce panel"
+        page.click("#tabs a[href='#home']"); page.wait_for_timeout(200)
+        assert vis("#p-home") and not vis("#p-coil"), "Home tab returns"
         assert not errs, errs
     finally:
         ctx.close()
