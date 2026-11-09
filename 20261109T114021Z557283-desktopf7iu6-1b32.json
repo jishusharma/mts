@@ -1,0 +1,1 @@
+{"t": "20261109T114021Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "HOLD deploy of sister_signals hook (card sister-signals-wired-1109): diff reviewed, live-loop stall risk (sync 3x10s fetch per poll) + flip spam found; builder fixing in a follow-up ship. Deploy only ", "login": "A"}
