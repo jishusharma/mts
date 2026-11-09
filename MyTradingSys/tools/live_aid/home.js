@@ -193,7 +193,7 @@
     var m = ctx.money;
     if (!m) return '<div class="hm-card"><div class="hm-h">Positions</div><div class="hm-nid">waiting for open-interest samples</div></div>';
     var ar = function (x, lab) { var c = x > 0.0005 ? 'up' : x < -0.0005 ? 'down' : 'dim'; return '<span class="hm-ar ' + c + '">' + (c === 'up' ? '▲' : c === 'down' ? '▼' : '◆') + '<small>' + lab + '</small></span>'; };
-    return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub">' + esc(m.label) + ', ' + m.n + ' venues (Deribit, Bybit; Binance blocked here)</span></div><div class="hm-mon">' + ar(m.dp, 'price') + ar(m.doi, 'open positions') + '<span class="hm-say">' + esc(m.text) + '</span></div></div>';
+    return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub" title="Exchanges read: ' + m.n + '. Binance futures data is blocked on this machine.">change over the last ' + esc(m.label) + ' \u00b7 from Deribit + Bybit</span></div><div class="hm-mon">' + ar(m.dp, 'price') + ar(m.doi, 'open positions') + '<span class="hm-say">' + esc(m.text) + '</span></div></div>';
   }
   function newsCard(ctx) {
     var list = (ctx.news || []).filter(function (x) { return ctx.now - x.t <= 3600000; }).sort(function (a, b) { return b.score - a.score || b.t - a.t; }).slice(0, 4);
@@ -240,6 +240,6 @@
     '#flash{display:none;gap:6px;flex-direction:column}#flash.on{display:flex}#flash .fl{padding:6px 12px;border-radius:6px;font:700 15px system-ui;color:#111;animation:hmfl 1s ease-in-out 6}#flash .fl.up{background:var(--up)}#flash .fl.down{background:var(--down);color:#fff}#flash .fl.amber{background:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
-  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL };
+  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

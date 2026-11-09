@@ -114,6 +114,21 @@ def test_short_setup_when_price_pokes_through_a_level():
     assert s["side"] == "SHORT" and s["level"] == 75450
 
 
+def test_positions_subtitle_in_plain_words():
+    # operator 2026-11-10: "15 min, 2 venues (Deribit, Bybit; Binance blocked here)" read as "versions"; the blocked note goes to the tooltip
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    js = "const H=require(process.argv[1]);console.log(H._moneyCard({money:{label:'15 min',n:2,dp:0.001,doi:-0.002,text:'x'}}))"
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=30)
+    assert out.returncode == 0, out.stderr[-1500:]
+    import re
+    m = re.search(r'<span class="hm-sub" title="([^"]*)">([^<]*)</span>', out.stdout)
+    assert m, out.stdout
+    assert m.group(2) == "change over the last 15 min " + chr(183) + " from Deribit + Bybit"
+    assert "Binance" in m.group(1)
+
+
 def test_long_setup_at_low():
     g = {"hi": 0.4, "rows": [{"tf": "7m", "r": {"div": {"rsi": 1, "wt": 1, "cvd": 0}}}]}
     s = _node("setup", g, LAD, 73800, "WAIT")
