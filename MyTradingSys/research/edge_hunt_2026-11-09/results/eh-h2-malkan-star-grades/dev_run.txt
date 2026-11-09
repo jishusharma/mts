@@ -1,0 +1,22 @@
+DEV 2018-10-01..2024-06-30 (signals), data to 2024-06-30
+T02 candidates=8 trades=7 overlap_skipped=0 invalid=0 censored=1
+  summary {'n': 7, 'hit': 0.5714285714285714, 'gross': 1.1339458393087518, 'fee_r': 0.024683172896877045, 'funding_r': 0.05085860768880629, 'net': 1.0584040587230685, 'se': 1.012235780530298, 'lo': -0.9255780711163155, 'hi': 3.0423861885624524, 'mde': 2.834260185484834}
+  screen=no
+  year 2020: n=1 net=+3.808
+  year 2021: n=5 net=+0.627
+  year 2022: n=1 net=+0.464
+  BTCUSDT: cand=6 trades=5
+  ETHUSDT: cand=2 trades=2
+T03 candidates=9 trades=8 overlap_skipped=1 invalid=0 censored=0
+  summary {'n': 8, 'hit': 0.375, 'gross': 0.125, 'fee_r': 0.039579625963538784, 'funding_r': 0.013104067941429164, 'net': 0.07231630609503203, 'se': 0.5087355189070396, 'lo': -0.9248053109627655, 'hi': 1.0694379231528295, 'mde': 1.4244594529397108}
+  screen=no
+  year 2020: n=1 net=-1.027
+  year 2021: n=5 net=-0.447
+  year 2024: n=2 net=+1.921
+  BTCUSDT: cand=5 trades=4
+  ETHUSDT: cand=4 trades=4
+EXPLORATORY BTCUSDT PRD events=12 per_year=2.09
+EXPLORATORY BTCUSDT NRD events=4 per_year=0.70
+EXPLORATORY ETHUSDT PRD events=11 per_year=1.91
+EXPLORATORY ETHUSDT NRD events=2 per_year=0.35
+regime mix (BTC, DEV weeks): 300 weeks: bull 72 (24%) | bear 0 (0%) | range 223 (74%) | n/a 5 (2%)
