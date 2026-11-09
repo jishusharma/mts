@@ -2121,3 +2121,7 @@ Answer: yes. Deploy the green DoH fix to the live tree (DESKTOP-F7IU69N, C:\MTS\
 ## d-own-the-open-files-1109 (2026-11-09)
 Operator: "only u are running since more than 48 hrs! So u have to resolve these if no one else is looking into."
 Answer: the Lead resolves uncommitted files left in the JIS-NB main checkout when no live session owns them: ship real work from a fresh tree, gitignore or drop scratch, never touch HALT, AUTO_PAUSE or runtime order data.
+
+## d-live-aid-bias-map-1109 (2026-11-09)
+Operator: "Use less - i will never read all these things ... no visuals/graphs/symbols that i prefer ... I page Stuff without scrolls - actionable stuff with no clutter! And I need it on live Aid Tab ... All Live Aid must be deduped! ... playbook it more like all sections combined from the live aid? It is more like a bias and understanding Map of live Aid?"
+Answer: yes. The playbook becomes the Live Aid Map tab: one screen, no scroll, bias dial from the agreement of existing Live Aid sections, a price ladder of the 3 nearest zones each side, a session timeline, at most 3 scenario cards; one level registry dedupes every Live Aid tab. Card live-aid-bias-map-one-screen-1109.
