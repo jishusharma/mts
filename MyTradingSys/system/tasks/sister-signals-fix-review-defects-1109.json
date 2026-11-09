@@ -6,12 +6,14 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-09T14:57:49Z",
-    "misses": 14,
+    "folded": "2026-11-09T17:05:19Z",
+    "misses": 19,
     "reads": [
+      "scripts/dev/test_tasks.py",
       "MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py",
       "MyTradingSys/backtest/layers/alerts/sister_signals.json",
-      "MyTradingSys/backtest/layers/alerts/test_sister_signals.py"
+      "MyTradingSys/backtest/layers/alerts/test_sister_signals.py",
+      "MyTradingSys/system/WORKERS.md"
     ],
     "session": "agent-acddeb672ef56e0c4"
   },
@@ -19,7 +21,7 @@
   "crucial": true,
   "depends_on": [],
   "done_when": "test_sister_signals.py has a failing-first test per defect and all pass; ship gate green.",
-  "est_turns": 40,
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -27,13 +29,23 @@
   "id": "sister-signals-fix-review-defects-1109",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sister_signals: fix 6 review defects (save-before-emit, 2-confirm flip, last-2-lows STOP, ",
+      "ref": "9bd153f55b37",
+      "utc": "2026-11-09T14:57:52Z"
+    }
+  ],
   "layers": [],
-  "live_path": true,
+  "live_path": false,
   "mutation_check": "each new test fails on 97d223b00 version of sister_signals.py",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T17:03:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -46,10 +58,16 @@
     "test_sync.py",
     ".mts_live"
   ],
+  "scope_sha": "9bd153f55b37",
   "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "failing-first tests",
+    "fix sister_signals.py",
+    "wire BACKGROUND in live_runner_cli",
+    "ship"
+  ],
   "tests": "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py -q",
   "title": "Fix 6 reviewer defects in sister_signals (commit 8a4bf6bff): save-before-emit, 2-confirm flips, last-2-lows STOP, corrupt state UNKNOWN, pinned source, non-blocking fetch; each with a failing-first test",
   "weight": "",
