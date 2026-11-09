@@ -4,32 +4,57 @@
   "commands": [],
   "created": "2026-11-09T06:31:08Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-census-1109-py.md exists; line 1 has counts (MATCH/DIFF/NOT_IN_DATA) and each DIFF row has file:line and a one-line repro; or 'no findings' plus the list of clauses checked.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Blind read of census_1109.py against its own docstring rules: no number outside a RESULT file, HOLDOUT never read, no prices (percent and timestamps only), candles fetched once.",
   "id": "gemini-blind-read-census-1109-py",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim desk: 11-09 studies table (census, T01-T12, Malkan arms, operator 5 points) with verdi",
+      "ref": "005e69ff9f79",
+      "utc": "2026-11-09T07:52:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS, planner-A-1110b): refined from raw. Gemini queue, load as <card>:low. Blind read: use only the files named, do not open sibling RESULT or review files first.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T20:16:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/census_1109.py (read)",
+    "MyTradingSys/research/sim_desk/census_1109.py (module docstring rules only) (read)",
+    "MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-census-1109-py.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the read files",
+    "no live-tree edit, no deploy, no .secrets or .env read",
+    "no trade, no order"
+  ],
+  "scope_sha": "005e69ff9f79",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/census_1109.py (module docstring rules only)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the docstring (lines 1-10) as the spec",
+    "Read the code; list each rule MATCH/DIFF/NOT_IN_DATA (any price leak, any HOLDOUT path, any re-fetch)",
+    "Write the table, counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of MyTradingSys/research/sim_desk/census_1109.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

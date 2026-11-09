@@ -4,32 +4,57 @@
   "commands": [],
   "created": "2026-11-08T02:21:10Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-news-check-review-1108.md exists; line 1 has counts (MATCH/DIFF/NOT_IN_DATA) and each DIFF row has file:line and a one-line repro; or 'no findings' plus the list of clauses checked.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Blind read of check_review.py against its docstring: each of the 5 checks (verdict table, 5 numbered ways, 10 re-checked events, 3 method changes, independence statement) rejects a bad review and accepts a good one.",
   "id": "gemini-blind-read-news-check-review-1108",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect-review-opus-1108: independent Opus review of the news-effect catalogue",
+      "ref": "90119ad0e4f9",
+      "utc": "2026-11-08T02:21:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS, planner-A-1110b): refined from raw. Gemini queue, load as <card>:low. Blind read: use only the files named, do not open sibling RESULT or review files first.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T20:16:24Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/check_review.py (read)",
+    "MyTradingSys/research/news_effects_2026-11/check_review.py (module docstring, 5 checks) (read)",
+    "MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-news-check-review-1108.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the read files",
+    "no live-tree edit, no deploy, no .secrets or .env read",
+    "no trade, no order"
+  ],
+  "scope_sha": "90119ad0e4f9",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/news_effects_2026-11/check_review.py (module docstring, 5 checks)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the docstring as the spec",
+    "Per check write one passing and one failing input (scratch string, not committed); list MATCH/DIFF",
+    "Write the table, counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of MyTradingSys/research/news_effects_2026-11/check_review.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

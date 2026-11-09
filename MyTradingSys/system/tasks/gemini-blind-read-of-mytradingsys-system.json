@@ -4,32 +4,65 @@
   "commands": [],
   "created": "2026-11-08T06:21:36Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-of-mytradingsys-system.md exists; line 1 has counts (MATCH/DIFF/NOT_IN_DATA) and each DIFF row has file:line and a one-line repro; or 'no findings' plus the list of clauses checked.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Blind read of check_dsa_review.py against its docstring and DSA_BLOCK_REVIEW.md: each of the 6 structural checks catches a bad review (missing section, under 40 rows, bad class count, missing URL or date).",
   "id": "gemini-blind-read-of-mytradingsys-system",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease u",
+      "ref": "5b6548bb8521",
+      "utc": "2026-11-08T10:34:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "5b6548bb8521 Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_ac",
+      "ref": "MyTradingSys/system/DSA_BLOCK_REVIEW.md",
+      "utc": "2026-11-08T10:34:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS, planner-A-1110b): refined from raw. Gemini queue, load as <card>:low. Blind read: use only the files named, do not open sibling RESULT or review files first.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T20:16:28Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/system/check_dsa_review.py (read)",
+    "MyTradingSys/system/check_dsa_review.py (module docstring, 6 checks) (read)",
+    "MyTradingSys/system/DSA_BLOCK_REVIEW.md (read)",
+    "MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-of-mytradingsys-system.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the read files",
+    "no live-tree edit, no deploy, no .secrets or .env read",
+    "no trade, no order"
+  ],
+  "scope_sha": "5b6548bb8521",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/check_dsa_review.py (module docstring, 6 checks)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the docstring as the spec",
+    "Read the code, then DSA_BLOCK_REVIEW.md; per check note MATCH/DIFF and one failing input",
+    "Write the table, counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of MyTradingSys/system/DSA_BLOCK_REVIEW.md and MyTradingSys/system/check_dsa_review.py",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

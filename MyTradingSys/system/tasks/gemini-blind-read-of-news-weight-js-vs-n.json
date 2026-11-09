@@ -4,32 +4,64 @@
   "commands": [],
   "created": "2026-11-08T10:50:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Report MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-of-news-weight-js-vs-n.md exists; line 1 has counts (MATCH/DIFF/NOT_IN_DATA) and each DIFF row has file:line and a one-line repro; or 'no findings' plus the list of clauses checked.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Blind read of news_weight.js against NEWS_DESIGN.md sections 2-6: class table, W = F x (P + K + I) 0-100, flash rules, bias LONG/SHORT/HOLD, repeat-decay.",
   "id": "gemini-blind-read-of-news-weight-js-vs-n",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: News weight W 0-100, LONG/SHORT/HOLD chip and News row flash (news_weight.js)",
+      "ref": "06baadc50339",
+      "utc": "2026-11-08T10:51:00Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7757c3e00697 news-design-synthesis-1108: NEWS_DESIGN.md + check_design.py; two news build ",
+      "ref": "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md",
+      "utc": "2026-11-08T05:36:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS, planner-A-1110b): refined from raw. Gemini queue, load as <card>:low. Blind read: use only the files named, do not open sibling RESULT or review files first.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T20:16:31Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/news_weight.js (read)",
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 2-6) (read)",
+    "MyTradingSys/research/layer_lab/reports/<UTC date>_gemini-blind-read-of-news-weight-js-vs-n.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the read files",
+    "no live-tree edit, no deploy, no .secrets or .env read",
+    "no trade, no order"
+  ],
+  "scope_sha": "06baadc50339",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md (sections 2-6)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read NEWS_DESIGN.md sections 2-6 as the spec",
+    "Read news_weight.js; one row per rule MATCH/DIFF/NOT_IN_DATA",
+    "Write the table, counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of news_weight.js vs NEWS_DESIGN.md 2-6 (1108)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
