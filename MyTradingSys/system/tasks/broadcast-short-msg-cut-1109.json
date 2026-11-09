@@ -1,37 +1,62 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_mts_signal.py"
+  ],
   "created": "2026-11-09T13:55:37Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_mts_signal.py: sender_note for a 40-char text with a 40-char hex key has no 'Cut to 200' and names the redaction; a >200-char text still says Cut to 200; the first assertion fails on current code",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "sender_note says 'Cut to 200 characters (N lost)' only when the text was truncated; a short broadcast where clean() replaced a token with [cut] is told 'a token-like string was redacted', never a length cut.",
   "id": "broadcast-short-msg-cut-1109",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "signal-hook-every-session-1109: signals reach sessions outside a clone",
+      "ref": "f56d163dc0f2",
+      "utc": "2026-11-09T14:16:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Planner 2026-11-10: the [cut]-on-card-id half shipped in 4a9a5c29a (slug exemption); only the false 'Cut to 200' sender note remains. ROUTINE: no stamp needed.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T19:34:04Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "clean() slug rule (4a9a5c29a already keeps card ids)",
+    "hook wiring",
+    "live tree"
+  ],
+  "scope_sha": "f56d163dc0f2",
+  "size": "S",
   "sources": [
     "Lead C 11-09: 40-char broadcasts reported 'Cut to 200 (29 lost)' and A received literal [cut] with no card id (b-8065e4, b-02f9c3)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reproduce: sender_note('x '+'a1'*20+' y') returns 'Cut to 200 (N lost)' because cut = normalised len - len(clean) counts the [cut] swap (mts_signal.py:521)",
+    "Write the failing test first",
+    "Count truncation as max(0, len(normalised)-TEXT_MAX); if clean() output contains '[cut]' add a redaction line",
+    "Run python scripts/dev/test_mts_signal.py"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py: new case on sender_note, 40-char text with a hex key (fails on current code)",
   "title": "mts_signal broadcast cuts short messages and drops the body",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

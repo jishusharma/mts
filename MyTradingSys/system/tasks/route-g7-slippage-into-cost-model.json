@@ -4,15 +4,19 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-09T10:02:36Z",
-    "misses": 11,
+    "folded": "2026-11-09T19:35:53Z",
+    "misses": 26,
     "reads": [
-      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
-      "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md",
-      "MyTradingSys/execution/position_manager.py",
-      "MyTradingSys/execution/test_stop_gap_offline.py"
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/desk.py",
+      "scripts/dev/test_mts_signal.py",
+      "scripts/dev/test_desk.py",
+      "MyTradingSys/system/GEMINI_START.md",
+      "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+      "MyTradingSys/backtest/layers/FORMULAS.md",
+      "MyTradingSys/backtest/layers/rsi/malkan_level_short_live.py"
     ],
-    "session": "agent-a9fc82019cc1aa3bc"
+    "session": "agent-a08f5376570af318e"
   },
   "created": "2026-11-04T14:28:22Z",
   "depends_on": [],
