@@ -1,0 +1,1 @@
+{"t": "20261109T145737Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ack", "text": "ack b-14f747 done B/NUC: sister deploy HELD; q-55e95f now covers fdbf20a0 only; B waits for A's fix ship", "login": "B", "id": "b-14f747", "state": "done", "host": "jis-nuc", "note": "B/NUC: sister deploy HELD; q-55e95f now covers fdbf20a0 only; B waits for A's fix ship"}
