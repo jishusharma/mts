@@ -164,3 +164,11 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-08 | monday-open-playbook-1109 | Sonnet 5.5 | 5.01 | 78 | hit 5 USD cap before ship; Lead C shipped its PLAYBOOK + ledger rows; cap was 5.0 |
 | 2026-11-08 | edge-hunt-plan-opus-1109b | Opus 5.5 | 6.04 | 52 | PLAN.md + TRIALS.md (m=15) + 11 briefs; hit 6 USD cap before ship, Lead C shipped; cap was 6.0 |
 | 2026-11-08 | edge-hunt-plan-opus-1109 | Opus 5.5 | 0.09 | 4 | refused stale card, nothing built; cap was 6.0 |
+| 2026-11-09 | eh-h1-spinning-top-7star | Haiku 5.5 | 1.30 | 42 | T01 FAIL n=108 -0.217R; cap was 1.4 |
+| 2026-11-09 | eh-h2-malkan-star-grades | Haiku 5.5 | 1.18 | 46 | T02/T03 INCONCLUSIVE (7-star n=7); cap was 1.4 |
+| 2026-11-09 | eh-h3-first-touch-sweep | Haiku 5.5 | 1.26 | 47 | T04 FAIL n=1150 -0.221R; cap was 1.4 |
+| 2026-11-09 | eh-h4-speed-time-at-level | Haiku 5.5 | 1.40 | 62 | budget cap before code; T05 not run; cap was 1.4 |
+| 2026-11-09 | daily-session-playbook-live-aid-1109 | Sonnet 5.5 | 4.03 | 53 | cap before commit; finish job launched; cap was 4.0 |
+| 2026-11-09 | eh-s2-wick-level-context | Sonnet 5.5 | 3.56 | 41 | cap before ship; finish job launched; cap was 3.5 |
+| 2026-11-09 | eh-h5-rsi-ma-cross-trigger | Haiku 5.5 | 1.10 | 50 | T06 INCONCLUSIVE +0.048R n=1322; cap was 1.4 |
+| 2026-11-09 | eh-s3-rsi-line-confluence | Sonnet 5.5 | 3.54 | 53 | cap before ship; cap was 3.5 |
