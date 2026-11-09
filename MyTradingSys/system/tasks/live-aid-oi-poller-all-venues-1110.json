@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "body": "Goal: the Home Positions card and Money tab show the open positions of all big BTC perp venues (CoinGlass-style total), not only the ones a browser on JIS-NB can reach.\n\nVenue table, measured from JIS-NB on 2026-11-10 by the Super Session with curl and Origin claude.ai:\n\n| Venue | In page now? | Why not |\n|---|---|---|\n| Deribit, Bybit | yes | - |\n| Gate | yes (11-10) | - |\n| Hyperliquid | yes (11-10) | - |\n| HTX (api.hbdm.com), MEXC (contract.mexc.com) | no | reachable but no CORS: needs the poller |\n| Binance fapi, OKX, Bitget, BitMEX, Kraken Futures, BingX | no | ISP DNS block, http 000: needs the poller with DoH |\n| CME | no | no free live OI API: skip unless a free source is found |\n\nBuild:\n- Generalise MyTradingSys/runtime/binance_doh.py (DoH resolve, then pin the IP with SNI) into a host-agnostic helper.\n- Write MyTradingSys/tools/live_aid/oi_poller.py, public market data only. Every 30 s it fetches BTC USDT-perp OI per venue, in BTC (state each venue's contract size: SOURCED from the venue docs).\n- It writes runtime_data/live_aid/oi_snapshot.js as window.LIVEAID_OI_SNAP = {t, venues: {NAME: {btc, px, t, err}}}. Write it atomically; it is gitignored, never committed.\n- The page loads the file every 30 s (a script tag reload, so no CORS is needed). It calls omPush per venue only when that venue's t is under 60 s old. Failure is closed: a stale or missing file reads NOT_IN_DATA, never a guess.\n- Add OMV entries for each venue, so the label and shares stay dynamic.\n\nNever: machine DNS changes, Chrome settings, keys, or any order or account endpoint.\n\nTests:\n- Parse one recorded reply per venue into BTC with numbers worked out by hand.\n- A stale snapshot must be ignored.\n- The poller must survive one venue timing out.\n- Restart and reset state: no state file leftovers.\n\nDone when the Home subtitle on JIS-NB lists 8 or more venues with shares, and the Money tab has a column per venue.",
+  "commands": [],
+  "created": "2026-11-09T22:33:02Z",
+  "depends_on": [],
+  "done_when": "On JIS-NB the Home subtitle lists 8 or more venues with shares and the Money tab has a column per venue; tests pass.",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Home Positions and the Money tab show open positions from every big BTC perp venue (CoinGlass-style total), including the venues a browser on JIS-NB cannot reach.",
+  "id": "live-aid-oi-poller-all-venues-1110",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid Home: At the level card (state, evidence, valid/void) + idea flash",
+      "ref": "373fb2661ddf",
+      "utc": "2026-11-09T21:14:35Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T22:34:08Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/oi_poller.py (new)",
+    "MyTradingSys/runtime/binance_doh.py (generalise the DoH pinning into a host-agnostic helper)",
+    "MyTradingSys/tools/live_aid/live_aid.html (load the snapshot, OMV entries)",
+    ".gitignore (runtime_data/live_aid/)"
+  ],
+  "scope_out": [],
+  "scope_sha": "373fb2661ddf",
+  "size": "M",
+  "sources": [
+    "Super Session relay of operator 11-10"
+  ],
+  "state": "ready",
+  "steps": [
+    "Generalise binance_doh into resolve-by-DoH and pin the IP with SNI for any host",
+    "Venue adapters (public OI only) for Binance, OKX, Bitget, BitMEX, Kraken Futures, BingX, HTX and MEXC, giving BTC USDT-perp OI in BTC; contract sizes SOURCED from venue docs",
+    "Every 30 s, write runtime_data/live_aid/oi_snapshot.js atomically as window.LIVEAID_OI_SNAP={t,venues:{NAME:{btc,px,t,err}}}",
+    "The page reloads the snapshot script every 30 s and calls omPush only for venues younger than 60 s; stale = NOT_IN_DATA",
+    "Add OMV columns so the label and shares stay dynamic"
+  ],
+  "tests": [
+    "test_oi_poller.py: recorded reply per venue -> BTC (hand-computed); fails first because oi_poller.py is missing",
+    "a stale snapshot is ignored by the page (replay)",
+    "one venue timing out does not stop the others",
+    "restart leaves no stale state"
+  ],
+  "title": "Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kraken Futures, BingX, HTX, MEXC writes runtime OI snapshot the page reads",
+  "weight": "",
+  "worker": "session"
+}

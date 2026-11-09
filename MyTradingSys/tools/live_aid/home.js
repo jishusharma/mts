@@ -206,11 +206,17 @@
     var w15 = l.win['15m'] || { long: 0, short: 0 }, word = !(w15.long + w15.short) ? '15 min quiet' : w15.long >= 2 * w15.short ? '15 min: longs forced out (selling fuel spent if price sits on a floor)' : w15.short >= 2 * w15.long ? '15 min: shorts forced out (buying fuel spent if price sits on a ceiling)' : '15 min: both sides';
     return '<div class="hm-card"><div class="hm-h">Liquidations <span class="hm-sub">red = longs forced out, green = shorts; faded = page not open that long</span></div><div class="hm-lcs">' + cols + '</div><div class="hm-say">' + esc(word) + '</div></div>';
   }
+  // Venues that answered this cycle with their share of the open positions in BTC: "Bybit 38% + Hyperliquid 27% + ..." (operator 11-10)
+  function venueWords(m) {
+    var v = (m.venues || []).slice().sort(function (a, b) { return b.btc - a.btc; });
+    if (!v.length) return m.n + ' venue' + (m.n === 1 ? '' : 's');
+    return v.map(function (x) { return x.name + (isFinite(x.share) && v.length > 1 ? ' ' + Math.round(x.share * 100) + '%' : ''); }).join(' + ');
+  }
   function moneyCard(ctx) {
     var m = ctx.money;
     if (!m) return '<div class="hm-card"><div class="hm-h">Positions</div><div class="hm-nid">waiting for open-interest samples</div></div>';
     var ar = function (x, lab) { var c = x > 0.0005 ? 'up' : x < -0.0005 ? 'down' : 'dim'; return '<span class="hm-ar ' + c + '">' + (c === 'up' ? '▲' : c === 'down' ? '▼' : '◆') + '<small>' + lab + '</small></span>'; };
-    return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub" title="Exchanges read: ' + m.n + '. Binance futures data is blocked on this machine.">change over the last ' + esc(m.label) + ' \u00b7 from Deribit + Bybit</span></div><div class="hm-mon">' + ar(m.dp, 'price') + ar(m.doi, 'open positions') + '<span class="hm-say">' + esc(m.text) + '</span></div></div>';
+    return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub" title="' + esc((m.missing && m.missing.length ? 'Not read: ' + m.missing.join('; ') : 'All venues read')) + '">change over the last ' + esc(m.label) + ' \u00b7 from ' + esc(venueWords(m)) + '</span></div><div class="hm-mon">' + ar(m.dp, 'price') + ar(m.doi, 'open positions') + '<span class="hm-say">' + esc(m.text) + '</span></div></div>';
   }
   function newsCard(ctx) {
     var list = (ctx.news || []).filter(function (x) { return ctx.now - x.t <= 3600000; }).sort(function (a, b) { return b.score - a.score || b.t - a.t; }).slice(0, 4);

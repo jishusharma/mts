@@ -278,7 +278,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   <section id="p-money">
     <div class="hd"><h2>What the money is doing</h2><span class="src" title="Price vs open interest per venue over 5 / 15 / 60 min. Six-state sentences, flat under 0.1 %, venues disagree at 0.2 % up vs 0.2 % down, FLUSH / SQUEEZE = a Bybit 5m bar with its wick 0.25 % past the previous close while OI falls 0.2 %, trapped line at OI +0.2 % since the event: OURS (spec fixed before use). Lines marked MEASURED come from C24 (Bybit 5m 07-02..10-30, oi_after_flush.py). Feeds SOURCED: Deribit ticker, Bybit tickers + REST open-interest, Binance fapi openInterest.">OURS + MEASURED</span><span class="tag" id="m-feeds"></span></div>
     <div class="vrow"><span class="huge" id="m-call">--</span><span class="sub" id="m-sub"></span></div>
-    <div class="scroll"><table><thead><tr><th>Window</th><th>Price</th><th>Deribit OI</th><th>Bybit OI</th><th>Binance OI</th><th>All venues OI</th><th>What it means</th></tr></thead><tbody id="m-rows"></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>Window</th><th>Price</th><th>Deribit OI</th><th>Bybit OI</th><th>Binance OI</th><th>Gate OI</th><th>Hyperliquid OI</th><th>All venues OI</th><th>What it means</th></tr></thead><tbody id="m-rows"></tbody></table></div>
     <ul id="m-lines" class="it"></ul>
     <span class="tag">Says where positions are going, not where price goes next. Only lines marked MEASURED carry a base rate; no size, no orders.</span>
   </section>
@@ -403,7 +403,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
             liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' },
             tt: { pos: null, acc: null, t: 0, err: '' }, ph: { d1: null, w1: null, t: 0, err: '' },
-            om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
+            om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, GATE: { live: [], rest: [], err: '' }, HYPERLIQUID: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -548,6 +548,23 @@ main>#p-pos:not(.off){flex:0 0 auto}
       S.om.BYBIT.rest = kl.map(function (x) { return { t: +x[0], px: +x[1], oi: ois[+x[0]], btc: ois[+x[0]] }; })
         .filter(function (x) { return x.oi > 0; }).sort(function (a, b) { return a.t - b.t; });
     }, function (e) { S.om.barsErr = 'Bybit open-interest REST failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+  // Gate and Hyperliquid (operator 11-10: all big venues, like the CoinGlass total). Both answer browsers directly (CORS *).
+  // Gate BTC_USDT perp: OI in BTC = position_size (contracts) x quanto_multiplier (BTC per contract). Hyperliquid BTC: openInterest is in BTC.
+  function loadGateOi() {
+    var st = S.om.GATE;
+    getJson('https://api.gateio.ws/api/v4/futures/usdt/contracts/BTC_USDT').then(function (j) {
+      var btc = +j.position_size * +j.quanto_multiplier; st.err = '';
+      if (btc > 0) omPush('GATE', +j.last_price, btc, btc); else st.err = 'Gate: no open interest in reply';
+    }, function (e) { st.err = 'api.gateio.ws failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+  function loadHlOi() {
+    var st = S.om.HYPERLIQUID, ctl = new AbortController(), to = setTimeout(function () { ctl.abort(); }, 8000);
+    fetch('https://api.hyperliquid.xyz/info', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{"type":"metaAndAssetCtxs"}', signal: ctl.signal })
+      .then(function (r) { clearTimeout(to); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function (j) {
+        var i = j[0].universe.map(function (u) { return u.name; }).indexOf('BTC'), c = i >= 0 ? j[1][i] : null; st.err = '';
+        if (c && +c.openInterest > 0) omPush('HYPERLIQUID', +c.markPx, +c.openInterest, +c.openInterest); else st.err = 'Hyperliquid: BTC not in reply';
+      }, function (e) { st.err = 'api.hyperliquid.xyz failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
   }
   function loadBinanceOi(hist) {
     var st = S.om.BINANCE;
@@ -1113,7 +1130,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   window.addEventListener('hashchange', route);
 
   // ---------- what the money is doing (maths in live_aid_indicators.js, spec OI_COMMENTARY_SPEC.md) ----------
-  var OMV = [['DERIBIT', 'Deribit'], ['BYBIT', 'Bybit'], ['BINANCE', 'Binance']];
+  var OMV = [['DERIBIT', 'Deribit'], ['BYBIT', 'Bybit'], ['BINANCE', 'Binance'], ['GATE', 'Gate'], ['HYPERLIQUID', 'Hyperliquid']];
   function omCell(w) { return w.err ? '<td title="' + esc(w.err) + '">' + NID + '</td>' : '<td class="' + cls(w.doi) + '">' + sgn(w.doi * 100, 2) + '%</td>'; }
   function renderMoney(now) {
     var H = {}; OMV.forEach(function (v) { H[v[0]] = omHist(v[0]); });
@@ -1125,7 +1142,14 @@ main>#p-pos:not(.off){flex:0 0 auto}
     if (head) {
       var m = head.net.state.money;
       $('m-call').innerHTML = '<span class="' + (m === 'in' ? 'up' : m === 'out' ? 'down' : '') + '">' + esc(head.net.state.text) + '</span>';
-      S.moneyHead = { text: head.net.state.text, label: head.label, n: head.net.n, dp: head.net.dp, doi: head.net.doi };
+      // venues that answered this cycle (a sample in the last staleMs), whether or not their window is full yet; share = BTC of OI
+      var fresh = function (key) { var l = S.om[key].live; return l.length && now - l[l.length - 1].t <= A.OM.staleMs ? l[l.length - 1] : null; };
+      var on = OMV.filter(function (v) { var f = fresh(v[0]); return f && f.btc > 0; }).map(function (v) { return { name: v[1], btc: fresh(v[0]).btc }; });
+      if (!on.length) on = head.vs.filter(function (v) { return !v.w.err && v.btc > 0; });
+      var tot = on.reduce(function (s, v) { return s + v.btc; }, 0);
+      S.moneyHead = { text: head.net.state.text, label: head.label, n: head.net.n, dp: head.net.dp, doi: head.net.doi,
+        venues: on.map(function (v) { return { name: v.name, btc: v.btc, share: tot ? v.btc / tot : NaN }; }),
+        missing: OMV.filter(function (v) { return !on.some(function (o) { return o.name === v[1]; }); }).map(function (v) { var e = S.om[v[0]]; return v[1] + (e && e.err ? ': ' + e.err : ': no data yet'); }) };
       $('m-sub').textContent = head.label + ', ' + head.net.n + ' of ' + head.net.of + ' venues: price ' + sgn(head.net.dp * 100, 2) + ' %, open interest ' + sgn(head.net.doi * 100, 2) + ' %';
     } else { $('m-call').innerHTML = NID; $('m-sub').textContent = 'no venue has open-interest samples yet'; }
     $('m-rows').innerHTML = rows.map(function (r) {
@@ -1666,6 +1690,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   loadMaFast(); setInterval(loadMaFast, 15000); loadMaMid(); setInterval(loadMaMid, 60000); loadMaSlow(); setInterval(loadMaSlow, 300000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
+  loadGateOi(); setInterval(loadGateOi, 30000); loadHlOi(); setInterval(loadHlOi, 30000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   loadCal();
   route();

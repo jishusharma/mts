@@ -119,14 +119,16 @@ def test_positions_subtitle_in_plain_words():
     node = shutil.which("node")
     if not node:
         pytest.skip("node not installed")
-    js = "const H=require(process.argv[1]);console.log(H._moneyCard({money:{label:'15 min',n:2,dp:0.001,doi:-0.002,text:'x'}}))"
+    js = ("const H=require(process.argv[1]);console.log(H._moneyCard({money:{label:'15 min',n:3,dp:0.001,doi:-0.002,text:'x',"
+          "venues:[{name:'Bybit',btc:50,share:0.5},{name:'Hyperliquid',btc:30,share:0.3},{name:'Deribit',btc:20,share:0.2}],missing:['Binance: blocked']}}))")
     out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=30)
     assert out.returncode == 0, out.stderr[-1500:]
     import re
     m = re.search(r'<span class="hm-sub" title="([^"]*)">([^<]*)</span>', out.stdout)
     assert m, out.stdout
-    assert m.group(2) == "change over the last 15 min " + chr(183) + " from Deribit + Bybit"
-    assert "Binance" in m.group(1)
+    # operator 11-10: list only the venues that answered, biggest first, with their share; the missing ones go to the tooltip
+    assert m.group(2) == "change over the last 15 min " + chr(183) + " from Bybit 50% + Hyperliquid 30% + Deribit 20%"
+    assert "Binance: blocked" in m.group(1) and "Binance" not in m.group(2)
 
 
 def _vee(n_down=100, n_up=5):
