@@ -182,6 +182,11 @@ def who():
     return base + "/" + a if a else base
 
 
+def same_ack_host(a, b):
+    """hosts.same_host that also takes an ack host spelled `host/login` (jis-nb/C) as that host."""
+    return hosts.same_host(str(a or "").split("/")[0], str(b or "").split("/")[0])
+
+
 def now():
     return datetime.now(timezone.utc)
 
@@ -558,7 +563,7 @@ def ack_state(rows, bid, hostname):
     """Best state this host reached for broadcast bid: none < told < expired (a by-hand/done-after-close still wins: done > expired)."""
     best = "none"
     for r in rows:
-        if r.get("kind") == "ack" and r.get("id") == bid and hosts.same_host(r.get("host", ""), hostname) \
+        if r.get("kind") == "ack" and r.get("id") == bid and same_ack_host(r.get("host", ""), hostname) \
                 and RANK.get(r.get("state"), 0) > RANK[best]:
             best = r["state"]
     return best
@@ -575,7 +580,7 @@ def told_ack(rows, b, hostname, login_letter=""):
     for r in rows:
         if r.get("kind") != "ack" or r.get("id") != b["id"] or r.get("state") != "told":
             continue
-        mine = hosts.same_host(r.get("host", ""), hostname) or (login_letter and str(r.get("login", "")).upper() == login_letter)
+        mine = same_ack_host(r.get("host", ""), hostname) or (login_letter and str(r.get("login", "")).upper() == login_letter)
         if mine and _ack_dt(r) and (best is None or r["t"] > best["t"]):
             best = r
     return best
@@ -631,7 +636,7 @@ def hosts_active(rows, hours=24, at=None):
     """Hosts with any record in the last `hours` (a future-stamped record does not count)."""
     at = at or now()
     since, lim = stamp(at - timedelta(hours=hours)), stamp(at + timedelta(minutes=FUTURE_MIN))
-    out = {hosts.key(r.get("host") or str(r.get("from", "")).split("/")[0]) for r in rows if since <= r.get("t", "") <= lim}
+    out = {hosts.key(str(r.get("host") or r.get("from", "")).split("/")[0]) for r in rows if since <= r.get("t", "") <= lim}
     out.discard("")
     return out
 
@@ -655,7 +660,7 @@ def hosts_seen(rows, at=None):
     out = set()
     for r in rows:
         if cutoff <= r.get("t", "") <= lim:
-            out.add(hosts.key(r.get("host") or str(r.get("from", "")).split("/")[0]))
+            out.add(hosts.key(str(r.get("host") or r.get("from", "")).split("/")[0]))
     out.discard("")
     return out
 
@@ -1437,7 +1442,7 @@ def main(argv):
         for b in bs:
             print("%s HIGH from %s at %s: %s" % (b["id"], b.get("from", "?"), b["t"], b.get("text", "")))
             for t in sorted(targets(rows, b)):
-                notes = [r.get("note") for r in rows if r.get("kind") == "ack" and r.get("id") == b["id"] and hosts.same_host(r.get("host"), t) and r.get("note")]
+                notes = [r.get("note") for r in rows if r.get("kind") == "ack" and r.get("id") == b["id"] and same_ack_host(r.get("host"), t) and r.get("note")]
                 print("  %-16s %s%s" % (t, ack_state(rows, b["id"], t), "  " + notes[-1] if notes else ""))
         if not bs:
             print("no such broadcast" if want else "no open HIGH broadcasts")
