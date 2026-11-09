@@ -139,7 +139,7 @@ class Notice(unittest.TestCase):
             json.dump({"schema": 1, "rows": [row("Michael", ["main support at 75k"])], "rejected": []}, open(store, "w"))
             real = al.recent_rows
             with mock.patch.object(al, "recent_rows", lambda days, now, store_=None: real(days, now, store)), \
-                    mock.patch.object(al, "spot_1h", side_effect=OSError("offline")):
+                    mock.patch.object(al, "perp_1h", side_effect=OSError("offline")), mock.patch.object(al, "spot_1h", side_effect=OSError("offline")):
                 out = shot.notice([{"id": "abc123", "ext": "png", "w": 10, "h": 10, "route": "paste"}], [])
         self.assertIn("ANALYST LEVELS", out)
         self.assertIn("75,000", out)
@@ -193,7 +193,7 @@ class MutationKills(unittest.TestCase):
             store = os.path.join(d, "rows.json")
             json.dump({"schema": 1, "rows": [row("Michael", ["support 75k"])], "rejected": []}, open(store, "w"))
             buf = io.StringIO()
-            with mock.patch.object(al, "spot_1h", side_effect=AssertionError("network")), contextlib.redirect_stdout(buf):
+            with mock.patch.object(al, "perp_1h", side_effect=AssertionError("network")), mock.patch.object(al, "spot_1h", side_effect=AssertionError("network")), contextlib.redirect_stdout(buf):
                 al.main(["--offline", "--json", "--store", store])
         out = json.loads(buf.getvalue())
         self.assertIsNone(out["price"])

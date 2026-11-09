@@ -8,7 +8,7 @@ Eagle_Eyes nor the dashboard showed them. This is the one place that turns CBP r
   python scripts/dev/analyst_levels.py --symbol ETH    # another symbol (band in SYMBOL_BANDS)
   python scripts/dev/analyst_levels.py --json          # for the dashboard
 
-Levels are parsed from each row's `pointers` (prices inside SYMBOL_BANDS[symbol]; BTC 40k..200k); hit = traded through since 00:00 UTC of the day AFTER
+Levels are parsed from each row's `pointers` (prices inside SYMBOL_BANDS[symbol]; BTC 40k..200k); hit = traded within TOUCH_TOL (0.05 %) of the level since 00:00 UTC of the day AFTER
 the publish date (only the date is stored, so publish-day bars could predate the video: audit 2026-10-30 finding 3).
 """
 import argparse
@@ -22,6 +22,15 @@ from datetime import datetime, timedelta, timezone
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, os.path.join(ROOT, "MyTradingSys"))
 import cbp  # noqa: E402
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run from outside the repo root layout
+    sys.path.insert(0, ROOT)
+    from MyTradingSys.runtime.binance_doh import urlopen as _urlopen
+
+# A wick within 0.05 % of a level counts as a touch (OURS, one constant; 11-08 21:55Z BTC spot low 73,510 vs level 73,500 = 0.014 %,
+# perp traded ~73,333). Used by mark() here and by the live LEVEL TOUCH alert.
+TOUCH_TOL = 0.0005
 
 # Per-symbol price band a pointer number must fall in to count as a level. BTC 40k..200k as before; the rest are OURS
 # (not sourced from any analyst): wide enough for the 2026 range of the name, tight enough to drop counts and dates.
@@ -87,6 +96,40 @@ def recent_rows(days, now, store=None):
     return [r for r in cbp.load(store)["rows"] if not cbp.validate_row(r) and (r.get("published") or "") >= cutoff]
 
 
+def touched(level, low, high, tol=TOUCH_TOL):
+    """True when the bar range [low, high] comes within `tol` (fraction of the level) of `level`, or crosses it."""
+    return low <= level * (1 + tol) and high >= level * (1 - tol)
+
+
+def _pages(url_fmt, since, timeout, symbol):
+    out, start = [], int(since.timestamp() * 1000)
+    for _ in range(20):
+        with _urlopen(url_fmt.format(symbol=symbol, start=start), timeout=timeout) as f:
+            page = json.load(f)
+        out += [(k[0] // 1000, float(k[2]), float(k[3]), float(k[4])) for k in page]
+        if len(page) < 1000:
+            break
+        start = page[-1][0] + 3_600_000
+    return out
+
+
+def perp_1h(since, timeout=15, symbol="BTC"):
+    """Binance USDT-M perpetual 1h klines (fapi.binance.com, via binance_doh) from `since` to now, paged like spot_1h."""
+    return _pages("https://fapi.binance.com/fapi/v1/klines?symbol={symbol}USDT&interval=1h&limit=1000&startTime={start}",
+                  since, timeout, symbol)
+
+
+def bars_with_source(since, timeout=15, symbol="BTC"):
+    """(bars, "perp"|"spot"): perp first (the operator trades it), spot when perp fails or is empty."""
+    try:
+        bars = perp_1h(since, timeout, symbol)
+        if bars:
+            return bars, "perp"
+    except (OSError, ValueError):
+        pass
+    return spot_1h(since, timeout, symbol), "spot"
+
+
 def spot_1h(since, timeout=15, symbol="BTC"):
     """Public Binance spot 1h klines (data-api.binance.vision) from `since` (UTC datetime) to now.
     One call returns at most 1000 bars (~41.6 days), so page forward until the series reaches the present."""
@@ -115,7 +158,7 @@ def mark(lv, bars, now):
     for x in lv:
         t0 = hit_from(x["published"]).timestamp()
         seg = [b for b in bars if b[0] >= t0]
-        x["hit"] = bool(seg) and min(b[2] for b in seg) <= x["level"] <= max(b[1] for b in seg)
+        x["hit"] = bool(seg) and touched(x["level"], min(b[2] for b in seg), max(b[1] for b in seg))
         x["dist_pct"] = round((x["level"] / price - 1) * 100, 2)
         x["expired"] = cbp.parse_expiry(x["expires_at"]) <= now if x["expires_at"] else False
     return price
@@ -152,7 +195,7 @@ def hook_block(days=7, band_pct=6.0):
         price = None
         try:
             since = min(datetime.fromisoformat(x["published"]) for x in lv).replace(tzinfo=timezone.utc)
-            price = mark(lv, spot_1h(since, timeout=3), now)
+            price = mark(lv, bars_with_source(since, timeout=3)[0], now)
             lv = [x for x in lv if abs(x["dist_pct"]) <= band_pct]
         except Exception:
             pass
@@ -172,14 +215,15 @@ def main(argv=None):
     now = datetime.now(timezone.utc)
     rows = recent_rows(a.days, now, a.store)
     lv = ladder(rows, a.symbol)
-    price = None
+    price, source = None, None
     if not a.offline and lv:
         since = min(datetime.fromisoformat(x["published"]) for x in lv).replace(tzinfo=timezone.utc)
-        price = mark(lv, spot_1h(since, symbol=a.symbol), now)
+        bars, source = bars_with_source(since, symbol=a.symbol)
+        price = mark(lv, bars, now)
     if a.json:
-        print(json.dumps(dict(asof=now.isoformat(timespec="seconds"), price=price, levels=lv), indent=1))
+        print(json.dumps(dict(asof=now.isoformat(timespec="seconds"), price=price, source=source, levels=lv), indent=1))
     else:
-        print(render(lv, price, symbol=a.symbol))
+        print(render(lv, price, symbol=a.symbol) + (f"\n  (source: {source}; touch tol {TOUCH_TOL:.2%})" if source else ""))
 
 
 if __name__ == "__main__":
