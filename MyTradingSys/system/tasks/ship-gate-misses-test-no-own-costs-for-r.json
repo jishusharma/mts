@@ -2,35 +2,74 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T02:49:42Z",
+    "misses": 30,
+    "reads": [
+      "scripts/dev/test_gate_select.py",
+      "scripts/dev/route_audit.py",
+      "MyTradingSys/research/sim_desk/artifact/test_artifact.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_route_audit.py",
+      "MyTradingSys/backtest/layers/FORMULAS.md",
+      "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+      "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+    ],
+    "session": "agent-ab972783ae29b1bb1"
+  },
   "created": "2026-11-09T01:18:47Z",
   "crucial": true,
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "python scripts/dev/test_gate_select.py passes; the new test fails on pre-change gate_select.py (git stash check) and select() of MyTradingSys/research/x/y.py returns step 4e plus 3xm cost inventory",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A smoke ship that adds/changes a non-test .py under MyTradingSys/backtest or MyTradingSys/research must run test_no_own_costs.py (pytest shard 4e) before push; today only the T06 cost inventory (MUST_EXTRAS in gate_select.py) is forced, so 4 own-cost offenders reached CI red.",
   "id": "ship-gate-misses-test-no-own-costs-for-r",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-09 ACCEPT (Sonnet review Agent a353b14f257bedb92; its one FIX, steps never edited gate_select.py, applied). DECISION (OURS): weight stays CRUCIAL not CRITICAL: the change only ADDS shard 4e to a smoke ship, it can never drop a step, so it fails safe. Twin check: MUST_EXTRAS already forces T06 test_cost_inventory (3xm); the miss is test_no_own_costs in shard 4e.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T02:49:05Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_gate_select.py"
+  ],
+  "scope_out": [
+    "run_all_tests.py step plan; live-path rules (FULL_RE)"
+  ],
+  "scope_sha": "05d8d613782f",
+  "size": "S",
+  "sources": [
+    "git log: b58a3983e, e24082ab2 (CI RED reverts 11-08/09)"
+  ],
+  "state": "ready",
+  "steps": [
+    "In scripts/dev/gate_select.py add COST_SCAN_STEP='4e' and COST_SCAN_RE (non-test .py under MyTradingSys/backtest or MyTradingSys/research, same regex as the T06 MUST_EXTRAS entry)",
+    "In gate_select.explain(), inside the code loop (works with and without step_files), picked.add(COST_SCAN_STEP) when 4e is in all_nums and COST_SCAN_RE matches; shard 4e holds test_no_own_costs.py (BACKTEST_PYTEST_PATHS)",
+    "In scripts/dev/test_gate_select.py add a 4e step to STEPS and a test: select() on MyTradingSys/research/x/census_foo.py and MyTradingSys/backtest/bar.py includes 4e with nothing mentioning them (also with step_files); a test_*.py or .md or .json under research does not add 4e",
+    "Run python scripts/dev/test_gate_select.py; confirm the new test fails with gate_select.py stashed"
+  ],
+  "tests": "scripts/dev/test_gate_select.py new test_cost_scan_shard_forced_for_research_backtest_py fails on current gate_select (4e absent for an unmentioned research .py)",
   "title": "Ship gate misses test_no_own_costs for research paths: CI went RED 3x on 11-08/09 (census, malkan, forward_log, spinning_top). Done when gate_select maps any new/changed .py under MyTradingSys/research or backtest to the cost test, with a test that fails on pre-change gate_select",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "agent"
 }

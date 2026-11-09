@@ -4,33 +4,43 @@
   "commands": [],
   "created": "2026-11-08T22:24:46Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "FORMULAS.md s13 value equals trade_costs.net_return default; python -m pytest MyTradingSys/backtest/layers/positioning/test_trade_costs.py passes; caller list in the card result",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "FORMULAS.md s13 (line 353) states trade_costs slip_rt default 0.0002; code default may be 0.0004 (commit 1f01b94c2 raised it, then a revert pair). Make doc and code agree on one value and list which studies relied on the default.",
   "id": "slip-rt-doc-code-mismatch-1109",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+    "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
+  ],
+  "scope_out": [
+    "any study re-run"
+  ],
+  "size": "S",
   "sources": [
     "B census run 2026-11-08"
   ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read trade_costs.py net_return default and git log -S slip_rt to find the current default",
+    "Conservative default (OURS): the code value wins (4 bps if that is current); edit FORMULAS.md line 353 to it and label it OURS, note round-trip total 0.14%",
+    "grep callers of net_return without slip_rt; list the study files in the card result"
+  ],
+  "tests": "test_trade_costs.py: a test pins the default slip_rt to the value FORMULAS.md states (reads the doc line); fails on current doc/code mismatch",
   "title": "FORMULAS.md s13 says trade_costs slip_rt default is 0.0002 (2 bps RT) but trade_costs.net_return defaults slip_rt=0.0004 (4 bps); decide which is right, fix the other, list studies that used the default",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "agent"
 }
