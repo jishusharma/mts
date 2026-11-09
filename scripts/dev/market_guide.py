@@ -31,6 +31,12 @@ _dev_dir = os.path.dirname(os.path.abspath(__file__))
 if _dev_dir not in sys.path:
     sys.path.insert(0, _dev_dir)
 from shot import falsifier_status  # noqa: E402, F401
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 TF_MS = {"5m": 300000, "15m": 900000, "1h": 3600000, "4h": 14400000}
 TFS = ["5m", "15m", "1h", "4h"]
@@ -362,7 +368,7 @@ def fetch_orderflow(now_ms, timeout=10):
     import urllib.request
 
     def get(url):
-        with urllib.request.urlopen(url, timeout=timeout) as r:
+        with _doh_urlopen(url, timeout=timeout) as r:
             return json.loads(r.read().decode())
     try:
         k = fapi_kline_bars(get(FAPI + "/fapi/v1/klines?symbol=BTCUSDT&interval=1m&limit=1500"), now_ms)

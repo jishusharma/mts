@@ -18,6 +18,12 @@ from MyTradingSys.backtest.layers.alerts.alert_emitter import append_alerts_json
 from MyTradingSys.backtest.layers.rsi.rsi_core import rsi_core
 from MyTradingSys.backtest.layers.rsi.rsi_events import rsi_events
 from MyTradingSys.backtest.layers.fabio.fabio_cvd_absorption import cvd_absorption_events
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 
 def klines_to_bars(raw: list) -> list:
@@ -87,7 +93,7 @@ def default_fetch_klines(symbol: str, interval: str, limit: int) -> list:
         "limit": limit
     })
     
-    with urllib.request.urlopen(url, timeout=10) as resp:
+    with _doh_urlopen(url, timeout=10) as resp:
         body = resp.read()
         
     return json.loads(body)
@@ -356,7 +362,7 @@ HIST_NEED_BARS = {"session_levels": 2900, "candle_close": 10200, "levels_conflue
 def _hist_default_page(symbol, interval, start_ms, limit):
     url = "https://api.binance.com/api/v3/klines?" + urllib.parse.urlencode(
         {"symbol": symbol, "interval": interval, "startTime": int(start_ms), "limit": int(limit)})
-    with urllib.request.urlopen(url, timeout=10) as resp:
+    with _doh_urlopen(url, timeout=10) as resp:
         return json.loads(resp.read())
 
 

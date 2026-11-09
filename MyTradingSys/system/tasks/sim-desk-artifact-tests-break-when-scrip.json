@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-09T03:24:30Z",
+  "commands": [],
+  "created": "2026-11-08T23:56:52Z",
+  "depends_on": [],
+  "done_when": "pytest MyTradingSys/research/sim_desk/artifact/test_artifact.py scripts/dev/test_artifacts.py -q: 0 failed (reproduced 1 failed 27 passed before)",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "EquityStability.test_derived_band_matches_desk_monte_carlo imports 'desk' by name; with scripts/dev on sys.path (run with scripts/dev/test_artifacts.py) scripts/dev/desk.py shadows sim_desk/desk.py and the test errors with no attribute monte_carlo.",
+  "id": "sim-desk-artifact-tests-break-when-scrip",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_artifact+test_artifacts together 79 passed 3 skipped; load_sim_desk by explicit path",
+      "ref": "19a23c5a9",
+      "utc": "2026-11-09T03:24:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim_desk test_artifact: shared NODE_TIMEOUT, skip on TimeoutExpired",
+      "ref": "f21bea28df79",
+      "utc": "2026-11-07T20:20:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: fixed",
+  "note": "REVIEWED:2026-11-09 T0-ONLY (ROUTINE, check passed, repro run: colon form / 1 failed 27 passed)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T02:48:23Z",
+  "refs": [],
+  "result": "test_artifact+test_artifacts together 79 passed 3 skipped; load_sim_desk by explicit path",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/artifact/test_artifact.py"
+  ],
+  "scope_out": [
+    "scripts/dev/desk.py, sim_desk/desk.py"
+  ],
+  "scope_sha": "f21bea28df79",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/sim_desk/artifact/build_artifact.py:723"
+  ],
+  "state": "done",
+  "steps": [
+    "In test_artifact.py replace 'import desk' (line 357) by loading MyTradingSys/research/sim_desk/desk.py with importlib.util.spec_from_file_location, the way build_artifact.py:723 does",
+    "Run: python -m pytest MyTradingSys/research/sim_desk/artifact/test_artifact.py scripts/dev/test_artifacts.py -q"
+  ],
+  "taken": "2026-11-09T03:24:30Z",
+  "tests": "that pytest command fails on current test_artifact.py (AttributeError: module desk has no attribute monte_carlo), passes after",
+  "title": "sim_desk artifact tests break when scripts/dev is on sys.path: scripts/dev/desk.py shadows sim_desk desk module; done when test_artifact.py::EquityStability passes run together with scripts/dev/test_artifacts.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
