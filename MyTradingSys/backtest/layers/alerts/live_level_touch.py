@@ -27,6 +27,7 @@ BRIEF_SLOTS = {"EU": (7, 0), "US": (13, 30)}   # UTC hour, minute
 BRIEF_WINDOW_MIN = 60   # a brief is sent only within an hour of its slot: a late restart never sends a stale one
 FRESH_BARS = 15         # first run (no state): look back this many 1m bars, never older backlog
 KEEP_DAYS = 3
+TOAST_KEEP = 10
 LOG_NAME = "level_touch.jsonl"
 UTC = timezone.utc
 
@@ -135,6 +136,9 @@ def _write(alerts, alerts_dir, toast_path):
         with open(toast_path, "a", encoding="utf-8", newline="\n") as f:
             for a in alerts:
                 f.write(json.dumps({"t": a["t_close"], "event": a["event"], "text": a["text"]}, sort_keys=True) + "\n")
+        rows = [json.loads(x) for x in pathlib.Path(toast_path).read_text(encoding="utf-8").splitlines()[-TOAST_KEEP:] if x.strip()]
+        # the Live Aid page is a static file: it reads the newest toasts from this script tag (toast.js), no fetch
+        pathlib.Path(toast_path).with_suffix(".js").write_text("window.LIVE_TOASTS = " + json.dumps(rows) + ";\n", encoding="utf-8", newline="\n")
 
 
 def poll(fetch, levels, state_path, alerts_dir, toast_path, now_ms, brief_ctx=None):

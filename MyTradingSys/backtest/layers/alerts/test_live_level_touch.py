@@ -85,6 +85,13 @@ class Poll(unittest.TestCase):
             self.assertEqual(json.loads(log[0])["layer"], "level_touch")
             self.assertIn("LEVEL TOUCH", json.loads(read_lines(Path(d) / "toasts.jsonl")[0])["text"])
 
+    def test_toast_script_feed_for_the_static_page(self):
+        with tempfile.TemporaryDirectory() as d:
+            self.run_poll(d, lambda: [bar(T, 73_510.0, 73_700.0)])
+            js = (Path(d) / "toasts.js").read_text(encoding="utf-8")
+            self.assertTrue(js.startswith("window.LIVE_TOASTS = ["))
+            self.assertIn("LEVEL TOUCH BTCUSDT 73,500", js)
+
     def test_restart_does_not_refire(self):
         with tempfile.TemporaryDirectory() as d:
             self.run_poll(d, lambda: [bar(T, 73_510.0, 73_700.0)])
