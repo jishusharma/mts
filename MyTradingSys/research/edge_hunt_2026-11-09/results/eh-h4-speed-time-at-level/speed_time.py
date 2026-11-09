@@ -20,6 +20,8 @@ import numpy as np
 
 HERE = Path(__file__).resolve().parent
 BT = HERE.parents[3] / "backtest"          # MyTradingSys/backtest (read-only imports)
+sys.path.insert(0, str(HERE.parents[4]))
+from MyTradingSys.backtest import fees  # noqa: E402  (single cost module, T06-F2)
 SLUG = "eh-h4-speed-time-at-level"
 _F = Path("F:/MTS/Dumps/backtest") / SLUG
 CACHE = _F if Path("F:/MTS").exists() else Path(tempfile.gettempdir()) / "mts_eh_cache" / SLUG
@@ -40,7 +42,7 @@ HOLDOUT_MS = VAL_END_MS            # HOLDOUT starts here and is never loaded
 WARM_MS = 2 * DAY_MS               # VALIDATION loads 2 warm-up days (DEV bars) for prior-day levels only
 WINDOWS = {"DEV": (DEV_START_MS, DEV_END_MS), "VALIDATION": (DEV_END_MS, VAL_END_MS)}
 
-COST_RT = 0.0012                   # regime A taker 5 bps per side (fees.py DERIBIT_TAKER) + 2 bps RT slippage
+COST_RT = round(2 * fees.DERIBIT_TAKER + fees.SLIPPAGE_RT_S13, 12)   # regime A taker 5 bps per side + 2 bps RT slippage (fees.py; FORMULAS s13) = 0.0012
 TIME_BARS = 96
 FAST_CUT = 0.08679781992469922                    # PENDING: DEV 66.67th percentile of touch speed, set by the count stage
 Z_MDE = 1.959963984540054 + 0.841621233572914   # 97.5 % + 80 % power

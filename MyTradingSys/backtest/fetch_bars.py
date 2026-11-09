@@ -16,6 +16,12 @@ Run: python MyTradingSys/backtest/fetch_bars.py
 """
 import json, time, statistics as st, urllib.request
 from pathlib import Path
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "Dumps" / "backtest"
@@ -24,7 +30,7 @@ MIN = 60_000
 
 def get(url):
     req = urllib.request.Request(url, headers={"User-Agent": "MTS-T051-fetch/1.0"})
-    with urllib.request.urlopen(req, timeout=20) as r:
+    with _doh_urlopen(req, timeout=20) as r:
         return json.loads(r.read().decode("utf-8"))
 
 
