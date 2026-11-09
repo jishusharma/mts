@@ -17,7 +17,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): CRITICAL (gate); twin gate-flakes-under-load-test-lease-py-tes is blocked: read it first. Parked 2026-11-08 off CRITICAL_PATH, kept refined, not ready. Needs CRITICAL review. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defects: (1) three goals in one M card; split into profiling card (GATE_SLOW_STEPS.md only, no code) then one card per step. (2) 4f = PYTEST_LAYER_PATHS live-path layer tests; test_run_all_tests.py asserts {5b,4f} stay in the local ship gate (test_a_ship_leaves_the_slow_coordination_steps_to_ci); splitting/moving 4f contradicts that invariant, needs an explicit live-path decision and fail-closed test, else drop 4f. (3) fail-first test names only 3xt, none for 3sig or 4f. (4) 695 s to <240 s median for 3xt is unproven and moving tests to CI-only lowers local coverage; the 'import-graph covered' criterion is undefined, name the check. (5) overlaps gate-flakes-under-load (blocked, scope has test_mts_signal.py) and gate-soak-six-slots-hang-cap-1108 (run_all_tests.py map): sequence them, one run_all_tests.py editor at a time. (6) done_when quotes medians from a 'fresh sample' with no sample size or load condition.",
+  "note": "DECISION (OURS): CRITICAL (gate); twin gate-flakes-under-load-test-lease-py-tes is blocked: read it first. Parked 2026-11-08 off CRITICAL_PATH, kept refined, not ready. Needs CRITICAL review. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defects: (1) three goals in one M card; split into profiling card (GATE_SLOW_STEPS.md only, no code) then one card per step. (2) 4f = PYTEST_LAYER_PATHS live-path layer tests; test_run_all_tests.py asserts {5b,4f} stay in the local ship gate (test_a_ship_leaves_the_slow_coordination_steps_to_ci); splitting/moving 4f contradicts that invariant, needs an explicit live-path decision and fail-closed test, else drop 4f. (3) fail-first test names only 3xt, none for 3sig or 4f. (4) 695 s to <240 s median for 3xt is unproven and moving tests to CI-only lowers local coverage; the 'import-graph covered' criterion is undefined, name the check. (5) overlaps gate-flakes-under-load (blocked, scope has test_mts_signal.py) and gate-soak-six-slots-hang-cap-1108 (run_all_tests.py map): sequence them, one run_all_tests.py editor at a time. (6) done_when quotes medians from a 'fresh sample' with no sample size or load condition. | DROPPED 2026-11-10 (planner-A-1110b): LAB_GUY defects 1-6 stand (three goals, 4f invariant, unproven targets); split into gate-slow-steps-profile-1110 (profiling doc only, no code). Code cards per step are cut only after that doc names numbers.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -38,7 +38,7 @@
   "sources": [
     "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "pytest --durations=20 on test_mts_signal.py: name the slow tests and why (6 min)",
     "list 3xt and 4f files by seconds from gate_timing.jsonl; mark the import-graph-covered ones",

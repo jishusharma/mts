@@ -6,18 +6,18 @@
   ],
   "created": "2026-11-08T01:30:37Z",
   "depends_on": [],
-  "done_when": "scripts/dev/run_all_tests.py per-file seconds map (l.95-108) names test_aibridge_exploratory.py with a measured value, and a scripts/dev/test_run_all_tests.py case shows the file is deferred from smoke (fails on current code); step 4c wall time quoted in Result is under 240 s",
+  "done_when": "scripts/dev/test_run_all_tests.py case: file in no shard chunk of build_plan(True), in one chunk of build_plan(False); step 4c wall time on an idle machine quoted in Result and under 240 s.",
   "est_turns": 16,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "The smoke-gate pytest shard 4c no longer times out on MyTradingSys/tests/test_aibridge_exploratory.py (20 tests, headless Edge/Chrome plus run-task.ps1 subprocesses up to 180 s each): give the file a per-file seconds entry so smoke leaves it to CI, or a shorter subprocess cap",
+  "goal": "Smoke (quick) gate shard 4c no longer runs MyTradingSys/tests/test_aibridge_exploratory.py (20 tests, headless Edge/Chrome plus run-task.ps1 subprocesses up to 180 s each); CI and --full (build_plan(quick=False)) still run it.",
   "id": "gate-4c-edge-shard-timeout-aibridge-exploratory-1108",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): CRITICAL (run_all_tests.py is a gate), needs CRITICAL review, not ready. Twin warn test-aibridge-chain-hidden-tab-test-test read: different file. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defect: wrong mechanism. run_all_tests.py l.93-108 TEST_FILE_SECONDS only balances shards (l.618-626) and makes targeted_tests() skip the file (l.789, SLOW_FILE_S 'stay in their shard only'); step 4c still runs the file in smoke, so a map entry cannot defer it and the done_when 'deferred from smoke' test cannot pass. The step-3 line 'like test_soak_six_slots.py:150' is the same misreading. Fix the card: either (a) a per-file local-skip list consulted where the shard chunk is built (l.620-626) and kept in CI/--full, with a fail-first test on build_plan, or (b) cap the subprocess timeout inside test_aibridge_exploratory.py (in scope). Pick one, name the function, say how --full/CI still run it. Also: 'step 4c wall under 240 s' needs the load condition. Twin checked: test-aibridge-chain-hidden-tab-test-test is a different file (no overlap).",
+  "note": "DECISION (OURS): CRITICAL (run_all_tests.py is a gate), needs CRITICAL review, not ready. Twin warn test-aibridge-chain-hidden-tab-test-test read: different file. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defect: wrong mechanism. run_all_tests.py l.93-108 TEST_FILE_SECONDS only balances shards (l.618-626) and makes targeted_tests() skip the file (l.789, SLOW_FILE_S 'stay in their shard only'); step 4c still runs the file in smoke, so a map entry cannot defer it and the done_when 'deferred from smoke' test cannot pass. The step-3 line 'like test_soak_six_slots.py:150' is the same misreading. Fix the card: either (a) a per-file local-skip list consulted where the shard chunk is built (l.620-626) and kept in CI/--full, with a fail-first test on build_plan, or (b) cap the subprocess timeout inside test_aibridge_exploratory.py (in scope). Pick one, name the function, say how --full/CI still run it. Also: 'step 4c wall under 240 s' needs the load condition. Twin checked: test-aibridge-chain-hidden-tab-test-test is a different file (no overlap). | DECISION (OURS, planner-A-1110b): took LAB_GUY option (a): per-file skip consulted in build_plan(quick) where the shard chunk is built (l.~620), kept in CI/--full because CI runs build_plan(False); TEST_FILE_SECONDS is not used (it only balances shards). Idle-machine condition added to the wall-time claim. Still CRITICAL: needs the real stamp; planner never writes it.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -37,13 +37,13 @@
   "sources": [
     "smoke-gate Step 4c Edge shard timeout (planner-a-1108 brief)"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
-    "time the file alone: python -m pytest MyTradingSys/tests/test_aibridge_exploratory.py --durations=10 -q",
-    "write the deferral test first, see it fail",
-    "add the measured seconds to the map like test_soak_six_slots.py:150 (SLOW_FILE_S=30 keeps it in CI shard only)"
+    "time the file alone: python -m pytest MyTradingSys/tests/test_aibridge_exploratory.py --durations=10 -q (idle machine, note load)",
+    "write the fail-first test on build_plan(True): file absent from every pytest shard chunk (today present); build_plan(False): present",
+    "add SMOKE_SKIP_FILES = {test_aibridge_exploratory.py} in run_all_tests.py and filter it from `top` (l.~620, before the greedy balance) only when quick is True"
   ],
-  "tests": "scripts/dev/test_run_all_tests.py: new case asserting test_aibridge_exploratory.py is left to CI in smoke (fail-first)",
+  "tests": "scripts/dev/test_run_all_tests.py: new case on build_plan(True) vs build_plan(False) (fail-first: today both contain the file)",
   "title": "Edge shard step 4c times out in the smoke gate: MyTradingSys/tests/test_aibridge_exploratory.py runs headless Edge per test",
   "weight": "CRITICAL",
   "worker": "session"
