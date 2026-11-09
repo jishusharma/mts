@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T09:52:45Z",
   "commands": [],
   "created": "2026-11-09T05:41:35Z",
   "depends_on": [],
@@ -21,6 +22,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Map tab shipped in 4ac3eddee (gemini-queue): 51 visible words, no scroll at 1920x1040 and ",
+      "ref": "88c1920c0",
+      "utc": "2026-11-09T09:52:45Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/daily-session-playbook-live-a",
@@ -31,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "Design memo: dense symbols, colour, vertical bars where he must read, cells of 8 words or fewer, no essay. The current playbook output (S012-S020 scenarios, 11 levels) is the input to shrink, not to add to. DECISION (OURS) 11-09: (1) dial = six verdicts already on the page (analysts, price vs VWAP, RSI 1h, RSI 4h, pierce, playbook lean), LONG/SHORT by the verdict board's own lean rule (2+ and 2x), else HOLD; HOLD shows up/down counts, under 3 in data shows 'n of 6 in data'. (2) The old text cards stay behind a closed Detail line (test_daily_playbook asserts them); the 11-level line, the analyst list and the extra next-event line are removed. (3) Phone page carries only the playbook's own verdict, so its dial reads HOLD; the live page has all six. (4) MA levels = 4h/1d/1w 200 EMA, 200 SMA, 55 EMA only. (5) Not rewired to the registry: the Now-table Levels row, the verdict watch list and the Levels panel keep their own lists.",
   "prio": 1,
   "refine_tries": 0,
@@ -39,7 +47,12 @@
   "refs": [
     "MyTradingSys/system/OPERATOR_PREFS.md"
   ],
-  "result": "",
+  "result": "Map tab shipped in 4ac3eddee (gemini-queue): 51 visible words, no scroll at 1920x1040 and 400x860; closed by Supervisor A, duplicate build dropped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/ (playbook.js, daily_playbook.py, live_aid.html, build_artifact.py, new map.js, level registry)"
   ],
@@ -51,12 +64,13 @@
   "sources": [
     "operator chat 2026-11-09 ~06Z, d-live-aid-bias-map-1109"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write test_live_aid_map.py first (word budget, no-scroll height at 1920x1040 and 400x860, dedupe), run it red",
     "build the level registry and the Map tab; replace the playbook wall of text",
     "screenshot both sizes, run tests --quick, ship, republish the phone page"
   ],
+  "taken": "2026-11-09T09:52:45Z",
   "tests": "MyTradingSys/tools/live_aid/test_live_aid_map.py",
   "title": "Live Aid Map tab: today's playbook as a one-screen colour-coded bias map built from all Live Aid sections, levels deduped across Live Aid",
   "weight": "",
