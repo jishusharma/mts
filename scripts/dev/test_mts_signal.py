@@ -547,6 +547,22 @@ class SignalTest(unittest.TestCase):
         self.machine("jis-nb", "pro")
         self.assertNotIn("status]", self.ups())              # other machines get the action block, not the sender status
 
+    def test_acks_view_counts_ack_from_host_login_alias(self):
+        import contextlib
+        import io
+        bid = self.high()
+        self.machine("jis-nb", "pro")
+        S.send("hello", kind="note")
+        S.send("ack %s done ok" % bid, kind="ack", extra={"id": bid, "state": "done", "host": "jis-nb/C", "login": "C", "note": "ok"})
+        self.machine("jis-nuc", "sharma")
+        rows = S.load(S.ensure())
+        self.assertEqual(S.ack_state(rows, bid, "jis-nb"), "done")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            S.main(["acks", bid])
+        self.assertRegex(buf.getvalue(), r"jis-desktop\s+done")
+        self.assertNotIn("jis-desktop/c", buf.getvalue())
+
     def test_stop_blocks_once_unless_reply_has_the_line_or_stop_hook_active(self):
         import json
         bid = self.high()
