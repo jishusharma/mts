@@ -1,7 +1,23 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T23:49:36Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": 14,
+    "folded": "2026-11-08T23:49:29Z",
+    "misses": 22,
+    "reads": [
+      "scripts/dev/artifacts.py",
+      "MyTradingSys/research/sim_desk/artifact/build_artifact.py",
+      "scripts/dev/make_home.py",
+      "scripts/dev/test_artifacts.py",
+      "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md",
+      "scripts/dev/make_layers_board.py",
+      "MyTradingSys/system/artifacts/registry.json"
+    ],
+    "session": "agent-a871757a35978e2a8"
+  },
   "created": "2026-11-07T15:47:31Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_artifact_pages.py has three cases (one per gap) that fail on current code and pass after; python scripts/dev/artifacts.py check (or the page check in SPEC_PAGES_FOLLOW_BUILDS.md) reports no STALE right after a rebuild + publish-record.",
@@ -14,6 +30,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "3 gap tests added; write_stamped keeps stamp on unchanged content; behind blanked in conte",
+      "ref": "2b457dda4",
+      "utc": "2026-11-08T23:49:36Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,6 +54,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: gaps closed",
   "note": "REVIEWED:2026-11-09 ACCEPT (batch review, 1 FIX applied by session-planner-a-1108; was T0-ONLY 11-08) (planner-a-1107b; twin check run, none). Planner could not locate the sim_desk build file by name: the worker greps 'Updated' under MyTradingSys/research/sim_desk and adds it to scope. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: page stamp housekeeping; machinery freeze",
   "prio": 2,
   "refine_tries": 0,
@@ -40,7 +63,12 @@
   "refs": [
     "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md"
   ],
-  "result": "",
+  "result": "3 gap tests added; write_stamped keeps stamp on unchanged content; behind blanked in content_hash; sim_desk build stamps",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/SPEC_PAGES_FOLLOW_BUILDS.md (read)",
     "scripts/dev/artifacts.py",
@@ -54,13 +82,14 @@
   "scope_sha": "05d8d613782f",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the spec section on Updated stamp and STALE",
     "Write one failing test per gap",
     "Fix: stamp from content hash not wall minute; sim_desk build emits Updated; publish-record runs before the registry embed",
     "Run both test files"
   ],
+  "taken": "2026-11-08T23:49:36Z",
   "tests": "three new cases in scripts/dev/test_artifact_pages.py fail on current code",
   "title": "pages-follow-builds gaps: sim_desk build lacks the Updated stamp; mts_home STALE right after publish-record (registry embedded); stamp minute dirties the tree on every build",
   "weight": "IMPORTANT",
