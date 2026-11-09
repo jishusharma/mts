@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T02:44:43Z",
   "commands": [
     "python -m pytest MyTradingSys/research/auction_forward_2026-11-09 -q"
   ],
@@ -25,10 +26,18 @@
   "goal": "One forward run replaces auction-plan-testnet-forward-1108 and this amend: build_auction_trade_plan as CONTEXT only (no gate, no order) for 2 setups (failed-auction reclaim at an HTF level; VA acceptance continuation), range 75.4-80.9k (BIBLE.md:28). Kill rule: after 30 gate-pass fades net R <= 0, stop and report (null -0.087 R).",
   "id": "tf-testnet-forward-range-phase-amend-1109",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "context-only forward logger 0753ff25d: forward_log.py + 10 tests, kill-rule count, range-e",
+      "ref": "3073b47c8",
+      "utc": "2026-11-09T02:44:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: logger built; starting a forward run is a deploy step for Lead C",
   "note": "MERGED auction-plan-testnet-forward-1108 into this card (tasks.py twins; the older card is dropped, same ship). Sources: REVIEW_FABLE.md d, POSTMORTEM_OPUS.md s3. Kill rule = Fable's (30 gate-pass fades, net R <= 0) in place of the 8-loss/20-trade rule. HTF bias logged, not a gate. Levels: range edges, PDH/PDL, UTC-day VA now, NY-session VA when tf-ny-session-va-profile-1109 lands. Labels: phase SOURCED (Bible), entry maker limit SOURCED TOM-005, 3 bars/2.5R/half split OURS.",
   "prio": 1,
   "refine_tries": 0,
@@ -37,7 +46,12 @@
   "refs": [
     "MyTradingSys/system/tasks/auction-plan-testnet-forward-1108.json"
   ],
-  "result": "",
+  "result": "context-only forward logger 0753ff25d: forward_log.py + 10 tests, kill-rule count, range-end detector, fees via FEES_DERIBIT; A verified test_no_own_costs 6 pass on trunk",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/auction_forward_2026-11-09/",
     "MyTradingSys/system/tasks/"
@@ -51,13 +65,14 @@
   "sources": [
     "Opus post-mortem 2026-11-09 POSTMORTEM_OPUS.md (tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read REVIEW_FABLE.md d, POSTMORTEM_OPUS.md s3 and auction_context.py:762 build_auction_trade_plan",
     "log schema + logger: probe beyond level, reclaim within 3 bars, rel_vol>=2 or opposing delta (OURS), maker limit at the level, no fill in 3 bars = no trade, stop beyond sweep, target opposite edge or HVN skipped under 2.5R (OURS), BE +1R, half off at POC (OURS)",
     "scenario_ledger.py add for every claim the log tests (eagle_eyes_picture_2026-10-28/scenario_ledger.py), same turn",
     "kill-rule counter + phase-end detector; ship; tf-delta-at-level-testnet-log-1109 and tf-ny-session-va-profile-1109 plug into the same log"
   ],
+  "taken": "2026-11-09T02:44:43Z",
   "tests": "test for the logger on 3 hand-computed events (fill, no fill within 3 bars, BE at +1R) plus the kill-rule counter; fails on pre-change code (new files)",
   "title": "Amend auction-plan-testnet-forward-1108 with the phase-scoped plan in POSTMORTEM_OPUS.md s3: range 75.4-80.9k, London/NY only, maker limit at the level, stop at the sweep invalidation, target >=2.5R to the opposite edge or HVN, BE +1R, fails at 8 losses in a row or net<0 after 20; HTF bias logged, not used as a gate",
   "weight": "ROUTINE",

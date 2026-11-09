@@ -13,7 +13,6 @@ MyTradingSys/backtest/fees.py,32,DERIBIT_TAKER,0.0005,fraction,per_side,taker,fe
 MyTradingSys/backtest/fees.py,33,DERIBIT_MAKER,0.0,fraction,per_side,maker,fee in fees.py,0,assign,DERIBIT_MAKER = 0.0
 MyTradingSys/backtest/fees.py,36,BINANCE_TAKER,0.0005,fraction,per_side,taker,fee in fees.py,0,assign,BINANCE_TAKER = 0.0005
 MyTradingSys/backtest/fees.py,37,BINANCE_MAKER,0.0002,fraction,per_side,maker,fee in fees.py,0,assign,BINANCE_MAKER = 0.0002
-MyTradingSys/backtest/fees.py,60,SLIPPAGE_RT_S13,0.0002,fraction,round_trip,n/a,slip in fees.py,0,assign,"SLIPPAGE_RT_S13 = 0.0002  # FORMULAS.md s13: 2 bp round trip (1 bp per side), SOURCED"
 MyTradingSys/backtest/layers/cryptocred/cc_bt_adapter.py,17,(literal),0.0005,fraction,n/a,both,cost in layers,0,literal_in_text,def signals_to_trades(signals: list; bars: list; mark_bars: list = None; funding: list = (); taker_fee: float = 0.0005; 
 MyTradingSys/backtest/layers/cryptocred/cc_htf_count.py,66,cost_r,2,other,n/a,taker,cost in layers,1,assign,cost_r = 2 * F.DERIBIT_TAKER / risk_pct          # all_taker; two legs; conservative
 MyTradingSys/backtest/layers/cryptocred/run_cc_setups.py,135,funding_paid_pct,0.0,pct,per_8h,n/a,fund in layers,1,assign,"""funding_paid_pct"": 0.0}"
@@ -226,3 +225,4 @@ MyTradingSys/research/volume_2026-10-09/run_v2.py,21,COST,2,other,n/a,both,cost 
 MyTradingSys/research/volume_2026-10-09/run_v3.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v4.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py,39,COST10,2,other,round_trip,taker,cost in wt_extreme_cross_volmatch_2026-11,1,assign,COST10 = 2 * fees.BINANCE_TAKER * 100.0       # SOURCED fees.py: Binance USD-M taker both legs; % round trip
+MyTradingSys/backtest/fees.py,62,SLIPPAGE_RT_S13,0.0002,fraction,round_trip,both,slippage allowance FORMULAS s13,0,assign,SLIPPAGE_RT_S13 = 0.0002

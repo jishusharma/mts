@@ -1050,6 +1050,11 @@
    "disp": "REPRO",
    "ref": "dsa-bridge-fix-review-opus-1108",
    "why": "Structure check of MyTradingSys/system/DSA_BLOCK_REVIEW.md (bug table, repeat classes, DeepSeek rules, behaviours, prompt replacements, ranked fix list); run by hand, named in the review and its card."
+  },
+  "src/main/java/datafeed/DohSmoke.java": {
+   "disp": "TOOL",
+   "ref": "binance-futures-dns-block-fleet-1109",
+   "why": "Hand-run smoke for the Binance DoH path: java -cp target/classes;<deps> datafeed.DohSmoke 30 prints one live fapi 4h kline and counts 30 s of fstream aggTrade messages; exits non-zero if none."
   }
  }
 }

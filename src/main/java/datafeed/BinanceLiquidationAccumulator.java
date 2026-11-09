@@ -64,6 +64,7 @@ public class BinanceLiquidationAccumulator extends WebSocketClient {
             t.setDaemon(true);
             return t;
         });
+        setDnsResolver(BinanceDoh.instance()); // ISP DNS block fix: fstream via DoH, SNI stays fstream.binance.com
         setConnectionLostTimeout(30);
         this.logDir = logDir;
         this.logQueue = new ArrayBlockingQueue<>(queueCap);

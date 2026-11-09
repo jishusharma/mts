@@ -63,6 +63,16 @@ class ParseNext(unittest.TestCase):
         for bad in ("", "END:", "END:   ", 'new:"x"', "?? what"):
             self.assertIsNone(RA.parse_next(bad)[0], bad)
 
+    def test_card_id_with_trailing_colon(self):
+        self.assertEqual(RA.parse_next("some-card-id: reason here"), ("card", "some-card-id"))
+        self.assertEqual(RA.parse_next("some-card-id:reason"), ("card", "some-card-id"))
+        self.assertEqual(RA.parse_next("backtest: next step"), ("stage", "backtest"))
+
+    def test_reject_gives_fix_hint(self):
+        why = RA.parse_next("?? what")[1]
+        self.assertIn("fix:", why)
+        self.assertNotIn(chr(10), why)
+
     def test_exempt(self):
         self.assertTrue(RA.exempt("claim foo", ["x.py"]))
         self.assertTrue(RA.exempt("Revert \"x\"", ["x.py"]))
