@@ -19,7 +19,7 @@
   "crucial": true,
   "depends_on": [],
   "done_when": "test_sister_signals.py has a failing-first test per defect and all pass; ship gate green.",
-  "est_turns": null,
+  "est_turns": 40,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -53,5 +53,5 @@
   "tests": "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py -q",
   "title": "Fix 6 reviewer defects in sister_signals (commit 8a4bf6bff): save-before-emit, 2-confirm flips, last-2-lows STOP, corrupt state UNKNOWN, pinned source, non-blocking fetch; each with a failing-first test",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
