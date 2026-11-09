@@ -1,0 +1,1 @@
+{"t": "20261109T145339Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "HOLD deploy of 8a4bf6bff (sister_signals in live alert loop): review NOT-SAFE: inline fetch ~70s loop stall, re-fire on write fail, flip spam. Fix ship coming from A.", "login": "A", "id": "b-14f747", "prio": "high", "cmd": ""}
