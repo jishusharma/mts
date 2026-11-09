@@ -693,6 +693,15 @@ class SignalTest(unittest.TestCase):
         self.assertEqual(len(S.roll_lines(rows, 1, at)), 3)                # old-pc is outside a 1 h window, CONFLICT line stays
         self.assertNotIn("example.test", text)
 
+    def test_clean_keeps_card_ids_and_cuts_keys(self):
+        # operator 11-09: a 32-char card id arrived as [cut], the NUC got "gemini_queue.py run [cut]:low"
+        cmd = "python scripts/dev/gemini_queue.py run tom-swing-trendline-extract-1109:low"
+        self.assertEqual(S.clean(cmd), cmd)
+        self.assertIn("tom-fabio-rebuild-from-beginner-videos-1109", S.clean("own tom-fabio-rebuild-from-beginner-videos-1109 now"))
+        for secret in ("sk-ant-api03-" + "Ab9xQ" * 12, "3a904876-e92c-4569-8b37-acd0ef507736", "a1b2c3d4" * 5,
+                       "ghp_" + "abcdefghij" * 4, "abcdefghijklmnopqrstuvwxyz-abcdefghijk-xy"):
+            self.assertEqual(S.clean("k " + secret), "k [cut]", secret)
+
     def test_clean_cuts_email_addresses(self):
         self.assertEqual(S.clean("mail alice.fake@example.test now"), "mail [cut] now")
 
