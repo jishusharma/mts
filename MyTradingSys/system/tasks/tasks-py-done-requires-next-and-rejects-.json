@@ -1,34 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_desk.py"
+  ],
   "created": "2026-11-07T18:52:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_desk.py: finish() commit body contains a 'Next: END:' line (fails on current code: desk.py:165-167 writes Result/Operator only); tasks.py done --help still shows --next required",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "desk.py finish() commits a body that carries a Next: line (Next: END: desk task <id> done|failed) so the ship gate no longer refuses desk done commits; tasks.py done keeps requiring --next and a ready/active card (DECISION OURS: by design, doc it in --help).",
   "id": "tasks-py-done-requires-next-and-rejects-",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: 5-day wiring audit & fixes (4b2 successor_wake, 48h exhaust radar, 6 coordination ",
+      "ref": "eb305a9f043c",
+      "utc": "2026-10-27T22:21:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
+  "note": "Planner 2026-11-10: PARKED 2026-11-08 marker dropped, now UNPARKED (S, small). The 'rejects raw state' half is by design (cmd_done l.1444), not changed. If test_desk.py does not exist, create it in scope.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T19:34:27Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/desk.py",
+    "scripts/dev/test_desk.py"
+  ],
+  "scope_out": [
+    "tasks.py done semantics",
+    "sync.py gate",
+    "live tree"
+  ],
+  "scope_sha": "eb305a9f043c",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read desk.py finish (:156-168) and the Next: grammar (route_audit.parse_next, sync.NEXT_FIX)",
+    "Write the failing test on the commit body (monkeypatch commit_ship)",
+    "Append 'Next: END: desk task <id> <status>' to body in finish()",
+    "Run python scripts/dev/test_desk.py"
+  ],
+  "tests": "scripts/dev/test_desk.py: finish() body has a Next: END line (fails on current code)",
   "title": "tasks.py done requires --next and rejects raw state; desk.py done lacks --next causing Next line ship refusals",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

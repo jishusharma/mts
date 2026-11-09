@@ -4,15 +4,19 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-09T10:02:36Z",
-    "misses": 11,
+    "folded": "2026-11-09T19:41:23Z",
+    "misses": 32,
     "reads": [
-      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
-      "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md",
       "MyTradingSys/execution/position_manager.py",
-      "MyTradingSys/execution/test_stop_gap_offline.py"
+      "MyTradingSys/backtest/layers/positioning/trade_costs.py",
+      "scripts/dev/role_loader.py",
+      "scripts/dev/test_stop_guard.py",
+      "MyTradingSys/tests/test_role_loader.py",
+      "MyTradingSys/execution/test_stop_gap_offline.py",
+      "MyTradingSys/backtest/layers/positioning/test_trade_costs.py",
+      "MyTradingSys/research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md"
     ],
-    "session": "agent-a9fc82019cc1aa3bc"
+    "session": "agent-a4de069cda9d65774"
   },
   "created": "2026-11-04T14:28:22Z",
   "depends_on": [],
@@ -27,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Needs C2 non-Claude spec review stamp before ready (CRUCIAL). Planner 2026-11-08: filled; check blocked only on stamp.",
+  "note": "Needs C2 non-Claude spec review stamp before ready (CRUCIAL). Planner 2026-11-08: filled; check blocked only on stamp. | LABGUY 2026-11-10 NOT STAMPED (C2 needs a non-Claude spec reviewer; CRUCIAL stays). Defects: put the stop-slip constant in MyTradingSys/backtest/fees.py (scope_in lacks it; costs come from fees.py), not tom_bt/maker_model; goal says p90 stress, SLIPPAGE.md:31 says mean default + p90 stress, pick one in done_when.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",

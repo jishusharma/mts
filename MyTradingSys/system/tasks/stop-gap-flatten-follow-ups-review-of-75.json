@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "IMPORTANT: needs reviewer stamp before ready; live-path: restart/reset, API-error tests required",
+  "note": "IMPORTANT: needs reviewer stamp before ready; live-path: restart/reset, API-error tests required | LABGUY 2026-11-10 NOT STAMPED. Defects: position_manager.py is a live-path file, set live_path true (=C3, needs coordinator + restart/reset/API-error tests); done_when says 5 tests but tests field says 5 + API-error + restart/reset (7); the 5 follow-ups are not itemised from 75767271.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

@@ -1,34 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_mts_signal.py"
+  ],
   "created": "2026-11-07T18:52:19Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_mts_signal.py: a high broadcast with an ack row from host alias 'jis-nb/C' lists that host as done in the acks view; fails on current code",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "`mts_signal.py acks` shows a host as done/told when its ack row exists in the log, even if the ack's host spelling differs from the broadcast target (jis-nb/C b-9656a0 was in read, absent from acks).",
   "id": "mts-signal-py-acks-view-misses-ack-prese",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "signal-hook-every-session-1109: signals reach sessions outside a clone",
+      "ref": "f56d163dc0f2",
+      "utc": "2026-11-09T14:16:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
+  "note": "Planner 2026-11-10: filled from the title only; reproduce first, if the fixture already passes, close as not-reproducible with the evidence. PARKED 2026-11-08 (housekeeping) stays; UNPARKED 2026-11-10 only when a ready buffer is short.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T19:34:05Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py",
+    "scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "broadcast text",
+    "hook wiring",
+    "live tree"
+  ],
+  "scope_sha": "f56d163dc0f2",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reproduce with a fixture: rows = broadcast + ack from 'jis-nb/C'; run main(['acks', id]) and see the host missing (cmd == 'acks', mts_signal.py:1428; targets() l.665 uses hosts.key, ack lookup uses hosts.same_host)",
+    "Write the failing test",
+    "Make ack_state and targets use one host key function (hosts.key) for sender and target",
+    "Run python scripts/dev/test_mts_signal.py"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py: acks view with alias host 'jis-nb/C' (fails on current code)",
   "title": "mts_signal.py acks view misses ack present in read log (jis-nb/C b-9656a0 shown in read, absent from acks)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

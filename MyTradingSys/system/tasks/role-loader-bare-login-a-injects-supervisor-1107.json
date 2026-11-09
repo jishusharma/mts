@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Hook files: process-control path, no live-tree touch. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: owned by login A (PLAN_8H lane A4)",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Hook files: process-control path, no live-tree touch. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: owned by login A (PLAN_8H lane A4) | LABGUY 2026-11-10 NOT STAMPED. Defect: card step 'Login A alone -> no role' reverses an operator order (role_loader.py:228, 2026-10-26: 'login C alone starts the Supervisor'); keep only the stop_guard host check (supervisor_reason:100) or log an operator decision first.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
