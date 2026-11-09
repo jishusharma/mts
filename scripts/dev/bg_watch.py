@@ -1,6 +1,9 @@
 """bg_watch.py - background tasks that run past their wall-time cap, and aged raw cards (bg-process-audit 2026-10-28).
 
   python scripts/dev/bg_watch.py report        STALLED-BG / RAW-AGED lines (nothing printed = nothing over its cap)
+  python scripts/dev/bg_watch.py shells [--limit MIN] [--kill]
+                                               list (default) or kill bash/sh processes older than MIN (default 30); rule: no
+                                               background shell over 30 min, always set a timeout
   python scripts/dev/bg_watch.py until --file F --pattern RE [--timeout S] [--interval S]
                                                a poll loop WITH a deadline: exit 0 when RE appears in F, 124 on timeout
                                                (use it instead of `until grep ...; do sleep 5; done`, which has none)
@@ -316,7 +319,22 @@ def live_loops(now: float | None = None, lister=None) -> list[dict]:
     return sorted(out, key=lambda r: -r["age"])
 
 
-def _win_shells() -> list[dict]:
+SHELL_LIMIT_MIN = 30   # DECISION (OURS) bug-background-shell-runs-12h-1109: no background shell lives past 30 min (operator 2026-11-09)
+
+
+def live_shells(limit_min: float = SHELL_LIMIT_MIN, now: float | None = None, lister=None) -> list[dict]:
+    """Every bash/sh process older than `limit_min` (default 30), whatever its command: the 12 h `cat` heredoc shell finished its
+    work in seconds and never exited, and a cap per kind only helps when a transcript scan runs. Listing only; [] on error."""
+    now = now or time.time()
+    try:
+        rows = lister() if lister else _win_shells(False)
+    except Exception:
+        return []
+    out = [{**r, "age": (now - r["start"]) / 60} for r in rows if (now - r["start"]) / 60 > limit_min]
+    return sorted(out, key=lambda r: -r["age"])
+
+
+def _win_shells(sleepers_only: bool = True) -> list[dict]:
     import subprocess
     if os.name != "nt":
         return []
@@ -327,7 +345,7 @@ def _win_shells() -> list[dict]:
     rows = []
     for line in r.stdout.splitlines():
         parts = line.split("\t", 2)
-        if len(parts) == 3 and "sleep" in parts[2]:
+        if len(parts) == 3 and (not sleepers_only or "sleep" in parts[2]):
             try:
                 rows.append({"pid": int(parts[0]), "start": _ts(parts[1]), "cmd": parts[2]})
             except ValueError:
@@ -368,6 +386,9 @@ def report_lines(repo: Path, root: Path | None = None, now: float | None = None,
         lines.append(f"ORPHAN-LOOP pid {p['pid']} {p['age']:.0f}m > cap {CAPS['poll-loop']}m: bare poll loop with no deadline: "
                      f"{' '.join(p['cmd'].split())[:70]} -> stop it (taskkill /PID {p['pid']} /T) unless a task you own is "
                      f"waiting on it; use `bg_watch.py until --file F --pattern RE --timeout S`")
+    for p in (live_shells(SHELL_LIMIT_MIN, now, lister) if lister else []):
+        lines.append(f"OLD-SHELL pid {p['pid']} {p['age']:.0f}m > {SHELL_LIMIT_MIN}m: {' '.join(p['cmd'].split())[:70]} -> "
+                     f"stop it unless a task you own waits on it (`bg_watch.py shells --kill`)")
     raw = raw_aged(repo, now)
     if raw:
         top = ", ".join(f"{i} {h:.0f}h" for i, h in raw[:3])
@@ -386,6 +407,16 @@ def main(argv=None) -> int:
         if rc:
             print(f"bg_watch until: TIMEOUT after {opts.get('--timeout', 600)} s, no match for {opts['--pattern']!r} in {opts['--file']}")
         return rc
+    if argv[:1] == ["shells"]:
+        opts = {k: v for k, v in zip(argv[1::2], argv[2::2])}
+        kill = "--kill" in argv
+        lim = float(opts.get("--limit", SHELL_LIMIT_MIN))
+        for r in live_shells(lim):
+            print(f"OLD-SHELL pid {r['pid']} {r['age']:.0f}m > {lim:.0f}m: {' '.join(r['cmd'].split())[:80]}"
+                  + (f" -> taskkill /PID {r['pid']} /T" if not kill else " -> killing"))
+            if kill and r["pid"] != os.getpid():
+                os.system(f"taskkill /PID {r['pid']} /T /F >nul 2>&1")
+        return 0
     if argv[:1] != ["report"]:
         print(__doc__)
         return 2

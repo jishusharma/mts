@@ -2,6 +2,20 @@
   "approved_by": "operator 2026-11-09 (chat to login B): log a bug",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T15:57:35Z",
+    "misses": 17,
+    "reads": [
+      "scripts/dev/bg_watch.py",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "MyTradingSys/system/WORKERS.md",
+      "scripts/dev/test_bg_watch.py",
+      "scripts/dev/test_mts_signal.py",
+      "MyTradingSys/system/SUPERVISOR.md"
+    ],
+    "session": "agent-a6fee7faefea15b60"
+  },
   "created": "2026-11-09T07:57:34Z",
   "depends_on": [],
   "done_when": "A test or probe lists background shells older than a limit (default 30 min) and kills or flags them; the rule 'no background shell over 30 min, always set a timeout' is in the shared session rules; root cause of the hang-after-finish is written in the card result.",
