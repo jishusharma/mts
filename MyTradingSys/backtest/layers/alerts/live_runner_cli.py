@@ -357,7 +357,9 @@ HIST_SYMBOL = "BTCUSDT"                      # the runner default; a different -
 HIST_TF_MS = {"1m": 60000, "5m": 300000, "15m": 900000, "1h": 3600000, "4h": 14400000}
 HIST_PAGE = 1000
 HIST_NEED_BARS = {"session_levels": 2900, "candle_close": 10200, "levels_confluence": 24480,  # 2 d / 7.1 d / 17 d of 1m
-                  "krown_s8": 300}  # 300 x 4h = 50 d; BBWP needs ~110 bars, the runner window is 99
+                  "krown_s8": 300,  # 300 x 4h = 50 d; BBWP needs ~110 bars, the runner window is 99
+                  # Malkan level short: 360-bar level lookback + 30 warm-up + 8 window + 63 outcome tail, RSI(14) settled
+                  "malkan_ls_4h": 600, "malkan_ls_1d": 120, "malkan_ls_1w": 52}  # 100 d / 120 d / 52 w; weekly RSI(14) needs 15 w + 3 rows
 
 
 def _hist_default_page(symbol, interval, start_ms, limit):
@@ -433,6 +435,57 @@ def make_history_layer(adapter, tf, need, store):
             return []
         return adapter(win)
     _layer.raw = adapter
+    return _layer
+
+
+# Closed daily / weekly bars for the Malkan level short (htf layer). The runner polls only the 4h bars, so these are read
+# on their own: the last daily/weekly bar that CLOSED at or before the 4h bar's close, `need` bars ending there.
+# Binance weeks open Monday 00:00 UTC (epoch day 0 is a Thursday: +4 days). Fail closed: error / gap / short -> None.
+HTF_STEP_MS = {"1d": 86400000, "1w": 7 * 86400000}
+HTF_ORIGIN_MS = {"1d": 0, "1w": 4 * 86400000}
+
+
+def htf_closed(store, tf, t_close_ms, need):
+    try:
+        step, org = HTF_STEP_MS[tf], HTF_ORIGIN_MS[tf]
+        last_open = ((t_close_ms - org) // step) * step + org - step
+        have, start, pages = [], last_open - (need - 1) * step, 0
+        while start <= last_open:
+            pages += 1
+            if pages > 5:
+                raise ValueError("htf paging did not converge")
+            page = [b for b in klines_to_bars(store.fetch_page(store.symbol, tf, start, HIST_PAGE)) if start <= b["t"] <= last_open]
+            if not page:
+                break
+            have += page
+            start = have[-1]["t"] + step
+        if len(have) != need or have[-1]["t"] != last_open or any(b["t"] - a["t"] != step for a, b in zip(have, have[1:])):
+            raise ValueError("htf %s: %d bars, last %s, want %d ending %s" % (tf, len(have), have[-1]["t"] if have else None, need, last_open))
+        return have
+    except Exception as exc:  # noqa: BLE001 - fail closed
+        print(json.dumps({"key": "history", "error": "htf_%s: %s" % (tf, exc)}), file=sys.stderr, flush=True)
+        return None
+
+
+def make_malkan_level_short_layer(store, journal_path=None):
+    """fn(bars4h) -> events: the context-only Malkan level short (malkan_level_short_live.step: alert + paper journal).
+    4h history from the store, closed daily/weekly bars via htf_closed (cached per 4h bar); any miss -> []."""
+    from MyTradingSys.backtest.layers.rsi import malkan_level_short_live as mls
+    cache = {}
+
+    def _layer(bars):
+        b4 = store.get("4h", bars, HIST_NEED_BARS["malkan_ls_4h"])
+        if not b4:
+            return []
+        tc = b4[-1]["t"] + HIST_TF_MS["4h"]
+        for tf in ("1d", "1w"):
+            if cache.get(tf, (None,))[0] != tc:
+                got = htf_closed(store, tf, tc, HIST_NEED_BARS["malkan_ls_" + tf])
+                if got is None:
+                    return []
+                cache[tf] = (tc, got)
+        return mls.step(b4, cache["1d"][1], cache["1w"][1], journal_path or mls.JOURNAL_DEFAULT)
+    _layer.raw = _layer
     return _layer
 
 
@@ -538,6 +591,12 @@ def build_default_registry(fetch_funding=None, history_fetch=None) -> dict:
     entries.append({"layer": "krown", "sub": "s8_break", "tf": "4h",
                     "fn": make_history_layer(krown_live.s8_events, "4h", HIST_NEED_BARS["krown_s8"], store),
                     "params_id": "krown_s8_4h_r7_2026-11-09", "confirm_lag_bars": 0})
+
+    # Malkan level short forward test (research/malkan_level_shorts_2026-11-09/FORWARD_PREREG.md): div 3-10 close arm on closed
+    # BTCUSDT 4h bars, CONTEXT-ONLY: the event has shadow_side/collection_only and no "side", no layer_rules entry, so the
+    # auto-trader rejects it as unmapped; the paper outcome goes to a git-ignored journal. No order path.
+    entries.append({"layer": "malkan", "sub": "level_short", "tf": "4h", "fn": make_malkan_level_short_layer(store),
+                    "params_id": "malkan_level_short_4h_div3_10_2026-11-09", "confirm_lag_bars": 0})
 
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry
