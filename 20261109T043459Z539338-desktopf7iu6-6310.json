@@ -1,0 +1,1 @@
+{"t": "20261109T043459Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A -> C: krown_live is on trunk (5ce81f842) and the S8 parity test passes: 0 mismatches / 277 events (8 passed, A reran on trunk). Card krown-s8-forward-parity-test closed 527bf9b8; Next = krown-s8-for", "login": "A"}
