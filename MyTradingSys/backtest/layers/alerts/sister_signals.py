@@ -15,6 +15,7 @@ Hindi) to notes_dir, outside the repo; the operator reads and sends them himself
 import json
 import pathlib
 import sys
+import threading
 import time
 from datetime import datetime, timezone
 
@@ -37,7 +38,8 @@ def compute_state(daily, weekly, price, cfg):
     """daily / weekly: CLOSED bars (dicts t, c, l), oldest first. price: the latest trade price."""
     d = sorted(daily, key=lambda b: b["t"])
     w = sorted(weekly, key=lambda b: b["t"])
-    if (w and w[-1]["c"] < cfg["stop_weekly"]) or any(b["l"] < cfg["stop_low"] for b in d):
+    # STOP low: only the last 2 closed daily lows (an old wick must not latch STOP for 14 days; DECISION OURS)
+    if (w and w[-1]["c"] < cfg["stop_weekly"]) or any(b["l"] < cfg["stop_low"] for b in d[-2:]):
         return "STOP"
     if w and w[-1]["c"] > cfg["confirm_weekly"]:
         return "CONFIRMED"
@@ -52,13 +54,24 @@ def compute_state(daily, weekly, price, cfg):
 # ---------- state ----------
 
 def _empty():
-    return {"state": None, "since": None, "last_fetch": 0, "degraded": False, "notes_done": []}
+    return {"state": None, "since": None, "last_fetch": 0, "degraded": False, "notes_done": [],
+            "pending": None, "pending_n": 0, "source": None}
 
 
-def load_state(path):
+def load_state(path, report=None):
+    """A missing file is a quiet first poll. An unreadable or non-dict file is corruption: report["corrupt"] is set so poll
+    logs one UNKNOWN alert and re-baselines (it must not act like a quiet first poll)."""
+    p = pathlib.Path(path)
+    if not p.exists():
+        return _empty()
     try:
-        return {**_empty(), **json.loads(pathlib.Path(path).read_text(encoding="utf-8"))}
+        raw = json.loads(p.read_text(encoding="utf-8"))
+        if not isinstance(raw, dict) or raw.get("state") not in (None, *STATES):
+            raise ValueError("not a sister state")
+        return {**_empty(), **raw}
     except (OSError, ValueError):
+        if report is not None:
+            report["corrupt"] = True
         return _empty()
 
 
@@ -181,45 +194,129 @@ def _toast(alerts, toast_path):
     p.with_suffix(".js").write_text("window.LIVE_TOASTS = " + json.dumps(rows) + ";\n", encoding="utf-8", newline="\n")
 
 
-def poll(fetch, state_path, alerts_dir, toast_path, notes_dir, now_ms, cfg=None):
-    """fetch() -> dict(daily, weekly, price, prices, source). Fetches at most every fetch_every_min. Returns alerts. Never raises."""
-    cfg = cfg or load_config()
-    st = load_state(state_path)
-    if now_ms - int(st["last_fetch"] or 0) < int(cfg["fetch_every_min"]) * 60_000:
-        return []
-    st["last_fetch"] = now_ms
+def _emit(alerts, alerts_dir, toast_path):
+    """Log + toast. State is already saved, so a write failure here can never re-fire; it is one stderr line."""
     try:
-        data = fetch()
+        append_alerts_jsonl(alerts, pathlib.Path(alerts_dir) / LOG_NAME)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[sister_signals] alert log not written: {type(exc).__name__}: {exc}", file=sys.stderr)
+    try:
+        _toast(alerts, toast_path)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[sister_signals] toast not written: {type(exc).__name__}: {exc}", file=sys.stderr)
+
+
+def _line(event, now_ms, text):
+    return {"layer": "sister", "sub": "plan", "tf": "1d", "event": event, "t_close": now_ms, "text": text}
+
+
+class BackgroundFetch:
+    """Runs fetch(source) in a daemon thread so the live loop never waits on the network; poll reads the cached result."""
+
+    def __init__(self, fn):
+        self.fn = fn
+        self._lock = threading.Lock()
+        self._thread = None
+        self._result = None      # ("ok", data) | ("err", exc)
+
+    def busy(self):
+        with self._lock:
+            return self._thread is not None and self._thread.is_alive()
+
+    def kick(self, source=None):
+        with self._lock:
+            if self._thread is not None and self._thread.is_alive():
+                return
+
+            def run():
+                try:
+                    r = ("ok", self.fn(source=source) if source else self.fn())
+                except Exception as exc:  # noqa: BLE001
+                    r = ("err", exc)
+                with self._lock:
+                    self._result = r
+            self._thread = threading.Thread(target=run, daemon=True, name="sister-fetch")
+            self._thread.start()
+
+    def harvest(self):
+        with self._lock:
+            r, self._result = self._result, None
+            return r
+
+
+def poll(fetch, state_path, alerts_dir, toast_path, notes_dir, now_ms, cfg=None):
+    """fetch(source=None) -> dict(daily, weekly, price, prices, source); a BackgroundFetch is kicked and read next pass.
+    Fetches at most every fetch_every_min. A flip needs 2 consecutive identical computed states. State is saved BEFORE any
+    alert is written. Returns alerts."""
+    cfg = cfg or load_config()
+    rep = {}
+    st = load_state(state_path, rep)
+    if rep.get("corrupt"):
+        save_state(st, state_path)           # the empty baseline replaces the corrupt file: the line fires once
+        _emit([_line("SISTER UNKNOWN", now_ms, "SISTER UNKNOWN: state file unreadable; re-baselining from the next good fetch, "
+                     "no flip can be judged this pass.")], alerts_dir, toast_path)
+    due = now_ms - int(st["last_fetch"] or 0) >= int(cfg["fetch_every_min"]) * 60_000
+    pin = st["source"]
+    if hasattr(fetch, "kick"):
+        outcome = fetch.harvest()
+        if outcome is None:
+            if due and not fetch.busy():
+                st["last_fetch"] = now_ms
+                save_state(st, state_path)
+                fetch.kick(pin)
+            return []
+    else:
+        if not due:
+            return []
+        st["last_fetch"] = now_ms
+        try:
+            outcome = ("ok", fetch(source=pin) if pin else fetch())
+        except Exception as exc:  # noqa: BLE001
+            outcome = ("err", exc)
+    try:
+        if outcome[0] == "err":
+            raise outcome[1]
+        data = outcome[1]
+        if pin and data.get("source") != pin:
+            raise ValueError(f"source switched {pin} -> {data.get('source')}: failing closed")
         state = compute_state(data["daily"], data["weekly"], float(data["price"]), cfg)
     except Exception as exc:  # noqa: BLE001 - fail closed: no flip, ONE degraded line until the next good fetch
-        if not st["degraded"]:
-            st["degraded"] = True
-            append_alerts_jsonl([{"layer": "sister", "sub": "plan", "tf": "1d", "event": "SISTER DEGRADED", "t_close": now_ms,
-                                  "text": f"SISTER DEGRADED: {type(exc).__name__}: {exc}"}], pathlib.Path(alerts_dir) / LOG_NAME)
+        first = not st["degraded"]
+        st["degraded"] = True
         save_state(st, state_path)
+        if first:
+            _emit([_line("SISTER DEGRADED", now_ms, f"SISTER DEGRADED: {type(exc).__name__}: {exc}")], alerts_dir, None)
         return []
     st["degraded"] = False
+    st["source"] = pin or data.get("source")
     prev = st["state"]
     alerts = []
-    if prev is not None and state != prev:
-        text = (f"SISTER {prev} -> {state} BTC {data['price']:,.0f} ({data.get('source', '?')}) {_stamp(now_ms)}: "
-                f"{STATE_LINES[state][1]} Draft notes in {notes_dir}.")
-        alerts.append({"layer": "sister", "sub": "plan", "tf": "1d", "event": "SISTER", "from": prev, "to": state,
-                       "price": data["price"], "t_close": now_ms, "utc": _stamp(now_ms), "text": text})
+    if prev is None:
         st["since"] = now_ms
-        write_notes(state, data.get("prices") or {"BTC": data["price"]}, cfg, notes_dir, now_ms, "flip")
-    elif prev is None:
-        st["since"] = now_ms
+        st["state"], st["pending"], st["pending_n"] = state, None, 0
+    elif state == prev:
+        st["pending"], st["pending_n"] = None, 0
+    else:
+        st["pending_n"] = int(st["pending_n"] or 0) + 1 if st["pending"] == state else 1
+        st["pending"] = state
+        if st["pending_n"] >= 2:             # DECISION (OURS): 2 identical computed states in a row confirm a flip
+            text = (f"SISTER {prev} -> {state} BTC {data['price']:,.0f} ({data.get('source', '?')}) {_stamp(now_ms)}: "
+                    f"{STATE_LINES[state][1]} Draft notes in {notes_dir}.")
+            alerts.append({"layer": "sister", "sub": "plan", "tf": "1d", "event": "SISTER", "from": prev, "to": state,
+                           "price": data["price"], "t_close": now_ms, "utc": _stamp(now_ms), "text": text})
+            st["since"] = now_ms
+            st["state"], st["pending"], st["pending_n"] = state, None, 0
     day = _utc(now_ms).strftime("%Y-%m-%d")
-    if prev is not None and _in_monday_slot(now_ms, cfg) and day not in st["notes_done"]:
-        if not alerts:   # a flip in this pass already wrote today's notes
-            write_notes(state, data.get("prices") or {"BTC": data["price"]}, cfg, notes_dir, now_ms, "monday")
+    monday = prev is not None and _in_monday_slot(now_ms, cfg) and day not in st["notes_done"]
+    if monday:
         st["notes_done"] = (st["notes_done"] + [day])[-8:]
-    st["state"] = state
+    save_state(st, state_path)               # before ANY write below: a failure there can never re-fire
+    prices = data.get("prices") or {"BTC": data["price"]}
     if alerts:
-        append_alerts_jsonl(alerts, pathlib.Path(alerts_dir) / LOG_NAME)
-        _toast(alerts, toast_path)
-    save_state(st, state_path)
+        write_notes(st["state"], prices, cfg, notes_dir, now_ms, "flip")
+        _emit(alerts, alerts_dir, toast_path)
+    elif monday:
+        write_notes(st["state"], prices, cfg, notes_dir, now_ms, "monday")
     return alerts
 
 
@@ -243,7 +340,7 @@ SPOT = "https://api.binance.com/api/v3"
 
 def _get(url):
     from MyTradingSys.runtime.binance_doh import urlopen
-    with urlopen(url, timeout=10) as r:
+    with urlopen(url, timeout=3) as r:
         return json.loads(r.read())
 
 
@@ -253,11 +350,14 @@ def _bars(base, interval, limit, now_ms, span):
     return closed, float(ks[-1][4])
 
 
-def default_fetch(now_ms=None):
-    """BTC closed 1d/1w bars + last price (perp, spot fallback) and spot-or-perp prices for the note coins."""
+def default_fetch(now_ms=None, source=None):
+    """BTC closed 1d/1w bars + last price (perp, spot fallback) and spot-or-perp prices for the note coins.
+    source="perp"|"spot" pins one source with no fallback (poll pins the first one that worked; DECISION OURS)."""
     now_ms = now_ms or int(time.time() * 1000)
     last_exc = None
     for name, base in (("perp", PERP), ("spot", SPOT)):
+        if source and name != source:
+            continue
         try:
             daily, price = _bars(base, "1d", 14, now_ms, DAY_MS)
             weekly, _ = _bars(base, "1w", 6, now_ms, WEEK_MS)
@@ -272,3 +372,7 @@ def default_fetch(now_ms=None):
         except Exception as exc:  # noqa: BLE001
             last_exc = exc
     raise last_exc
+
+
+# One shared background fetcher for the live loop (the loop never waits on the network; timeout 3 s per call).
+BACKGROUND = BackgroundFetch(lambda source=None: default_fetch(source=source))

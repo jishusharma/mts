@@ -155,7 +155,14 @@ class TestMainOnce(unittest.TestCase):
         self.assertEqual(len(seen), 1)
 
     def test_sister_error_never_stops_the_runner(self):
-        self.assertEqual(cli.sister_after_poll(Path(self.tmpdir) / "s.json", Path(self.tmpdir) / "a", None), [])
+        import time
+        from MyTradingSys.backtest.layers.alerts import sister_signals as ss
+        self.assertEqual(cli.sister_after_poll(Path(self.tmpdir) / "s.json", Path(self.tmpdir) / "a", None, 10_000_000), [])
+        for _ in range(100):                      # the fetch runs in a daemon thread; the next pass reads its cached error
+            if not ss.BACKGROUND.busy():
+                break
+            time.sleep(0.05)
+        self.assertEqual(cli.sister_after_poll(Path(self.tmpdir) / "s.json", Path(self.tmpdir) / "a", None, 10_001_000), [])
         self.assertTrue((Path(self.tmpdir) / "a" / "sister_signals.jsonl").exists())  # one degraded line
 
     def test_loop_runs_level_touch_after_each_poll(self):
