@@ -140,7 +140,3 @@ the session ran on JIS-NB):
 - Result: your last reply ended without a final answer. The files _c30_p1.py, _c30_p2.py, _c30_p3.py were not written.
 - Rule: after a drop notice, re-send the blocks once. If a second drop happens, turn hands-free off.
 - This cost one retry and one wasted verify turn.
-
-## 2026-11-07 DSA JIS-NUC: a ship that returns no receipt
-- task=mts-ship at 18:06Z returned no [AIRUN RESULT] and no ERROR LOCK_EXPIRED; work sat unshipped 30 min and only an operator question found it.
-- Fix (repo side): dsa.py ship_pending(root); boot prints ship_pending:, commit prints SHIP OWED: until pushed; 3 tests in test_dsa.py (step 3ds). Bridge side filed desk 20261107-184318-mts-ship-task-gave-no-receipt-for-30-min.
