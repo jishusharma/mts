@@ -29,7 +29,8 @@ try:
 except Exception:  # pragma: no cover
     pass
 
-AGY = Path.home() / '.gemini' / 'bin' / 'agy.exe'
+from agy_path import find_agy  # NUC or laptop install path (ROUTING.md Gemini access)
+AGY = find_agy()
 GEMINI_FAMILY = {'flash': 'gemini-3.8-flash', 'argon': 'gemini-4-argon', 'sonnet': 'claude-sonnet-5-5', 'opus': 'claude-opus-5-5'}
 BLOCKED = ('.secrets', '.env', '.pem', '.key')
 
