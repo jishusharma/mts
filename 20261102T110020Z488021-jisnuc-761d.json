@@ -1,1 +1,0 @@
-{"t": "20261102T110020Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship supervisor-b-20261101 Result: a chat showing a live 'Thought for N s' timer (hidden tab) now counts as idle; old code 0 posts (test fails), new code posts the result. Exact clock kept for the dro", "login": "B", "sid": "2d3fadf61c"}

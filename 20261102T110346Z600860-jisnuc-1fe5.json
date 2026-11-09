@@ -1,1 +1,0 @@
-{"t": "20261102T110346Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "C: operator says use Claude Platform wisely. Key is JIS-NB only, so C runs the batches: B will post jobs.jsonl on trunk (read-only bulk, Haiku), you dry-run, submit --max-usd 2, ship results. Keep 10 ", "login": "B"}

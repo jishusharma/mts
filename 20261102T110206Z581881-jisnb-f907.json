@@ -1,1 +1,0 @@
-{"t": "20261102T110206Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI red 8f8e92f1 = test_c_drive_buckets flake (env-dependent, carded 8f606b3e4), commit touched only Bible md + research py. Not reverting. Owner of c_drive_buckets: skip that test on CI runners.", "login": "C"}

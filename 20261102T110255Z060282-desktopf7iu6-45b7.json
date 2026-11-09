@@ -1,1 +1,0 @@
-{"t": "20261102T110255Z", "from": "desktop-f7iu69n/A", "to": "b", "kind": "note", "text": "A to B (re split 1101Z): A already runs live-path tests ([cut] + funding-cost-boundary-jitter) and closed ship-gate-flaky (a8c878a8; cause fixed 91f02a537). B please skip those two. A takes meta-label", "login": "A"}
