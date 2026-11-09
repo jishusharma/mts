@@ -211,6 +211,12 @@ def test_10_workers_blocked_solve_it_rule():
     assert "Blocked" in t and "report AND continue" in t and "brief template" in t.lower()
 
 
+def test_workers_no_background_shell_over_30_min_rule():
+    """bug-background-shell-runs-12h-1109: the 30-minute shell rule is in the shared worker rules."""
+    t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
+    assert "No background shell over 30 min, always set a timeout" in t and "bg_watch.py shells" in t
+
+
 def test_funding_rerun_names_secondary_move():
     """funding-rerun-label-primary-vs-secondary: FUNDING_RERUN.md names both primary and secondary moves and n_T<200 reason."""
     doc = (REPO / "MyTradingSys" / "research" / "gross_effect_screen_2026-10-15" / "FUNDING_RERUN.md").read_text(encoding="utf-8")
