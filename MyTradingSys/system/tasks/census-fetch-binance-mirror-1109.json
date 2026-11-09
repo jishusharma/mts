@@ -23,14 +23,14 @@
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_census.py"
   ],
-  "result": "",
+  "result": "MERGED into census-5m-15m-7y-session-ladder-1109 (done): data-api.binance.vision mirror used; slippage stress arm added (trade_costs slip_rt 4 bps RT; FORMULAS s13 text says 2 bps: mismatch noted in CENSUS_5M15M_1109.md)",
   "scope_in": [],
   "scope_out": [],
   "size": "",
   "sources": [
     "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "auction_census.py: api.binance.com unreachable from JIS-NB (fetch failed); use data-api.binance.vision; add slippage 2 bps RT (FORMULAS s13) to fee_r (understated ~20 pct)",

@@ -1,104 +1,57 @@
-# REPORT: Malkan level-short stack, BTCUSDT 4h, PRE_DEV + DEV 2017-08 .. 2024-06 (card malkan-level-short-4h-count-1109)
+# Malkan level short, BTC 4h, counted 2017-08 .. 2026-11
 
-**Result: the stack fires 17 times in 6.9 years (primary arm); 11 of 17 reach >= 1R before the stop; fee-net +0.245 R/trade at a 1R exit (CI +-0.47: includes 0). N = 17 is underpowered, not "no edge"; the 8-arm trial count and the layer ladder (post-hoc gate) mean this is a count, not an edge. No testnet card (kill rule needs N >= 30).**
+**No arm is a proven edge. The best arm uses Malkan's own sourced divergence window (3-10 bars, close to close): 126 trades, +0.10 R per trade after fees, positive in bull and bear and in 6 of 10 years. That is about 0.9 standard errors from zero, with 10 arms tried. The full 5-layer stack fires 37 times in 9 years (+0.13 R, about 0.6 SE). Worth a cheap testnet forward look; not worth money.**
 
-Regime mix: bull 45.7% / bear 38.3% / range 8.1% of 4h bars (daily close vs 200d SMA +-5%), 7.9% warm-up (NOT_IN_DATA). Split: PRE_DEV 2017-08..2021-12 and DEV 2022-01..2024-06 read; VALIDATION 2024-07..2025-06 and HOLDOUT 2025-07.. **sealed, not read** (PRE_REG.md; the card's "2017-2026" is cut at the gate, DECISION OURS, conservative). The 2026 klines are a fixture for the operator-point recall check only (logged in research/holdout_reads.csv; no performance computed there).
+Card `malkan-level-short-4h-count-1109`. Layer: `MyTradingSys/backtest/layers/rsi/malkan_level_short.py` (rules in its docstring). Runner: `count.py` writes `COUNT.json`. Data: Binance spot BTCUSDT 4h/1d/1w, closed bars only, from data-api.binance.vision, 20,208 4h bars. Every trade: short, stop at the highest high since the level tag +5 bps, target 2R, 60-bar time stop, stop wins a shared bar, 0.05 % taker fee each side (fees.BINANCE_TAKER). Regime = daily close above or below its 200-day SMA.
 
-Files: layer `backtest/layers/rsi/malkan_level_short.py`, tests `test_malkan_level_short.py` (26, fail-first), `PRE_REG.md`, `run_count.py`, `tables.md` (every arm, regime, year, 1R and 2R), `fetch_klines.py` (public Binance spot klines via data-api.binance.vision; the 4h/1d/1w CSVs stay out of git, only the small 2026 fixture is committed).
+## Context
 
-## The 5 operator points (recall check on his 2026 chart; 2026 is outside DEV, so recall only)
+- Regime mix: 7y pooled, split bull/bear below. Phase: none (the current 75.4-80.9k range is too short for a count; that is what testnet is for). Session: none (4h). Entry: stop order under the prior bar's open within 3 bars.
+- Level = OURS proxy: a confirmed 5/5 pivot high or low within 60 days, tagged from below (high within 0.5 %, close not more than 0.5 % above). The operator's lines are hand-drawn and cannot be counted.
 
-| Point | Fired? | Detail |
-|---|---|---|
-| C1 (08-28) | YES, layers 1-4, on all 8 arms | sweep of the 08-25 zone, entry 79,660 = his 79,660; layer 5 (HTF fail) NOT met (as READING.md: layer 5 is seen in V2/C3 only) so it is not a full firing |
-| C3 (10-21/22) | YES, all 5 layers, on all 8 arms | sweep of the 10-12 high, entry 82,925 = his 82,925 (10-22 04) |
-| C2 (09-03/04) | MISS, layer 2 | a level trade with no divergence and no sweep; the stack needs structure by design |
-| V1 (09-23) | MISS, layer 1 | his red line 86,807 vs the nearest confirmed 5/5 pivot zone 87,396 (zone floor 87,177); the setup bar high 86,975 never reaches it: the pivot proxy for a hand-drawn line |
-| V2 (10-06) | MISS, layer 1 | setup high 86,800 under the zone floor 87,002 of the 87,220 pivot; the 86,999 pivot confirms 10-05 20, after the setup; his 15-bar divergence is also outside the 3-10 window |
+## The five operator points
 
-So 2 of 5 reproduce exactly (entry prices to the dollar), 3 miss for named reasons. 2 of 5 on a proxy level is the honest recall; level definition = OURS and unconfirmed by the operator (PRE_REG 0g).
+| Point | Base (level + trigger) | Full 5 layers | Dropped by |
+|---|---|---|---|
+| C1 08-28 | fires | no | HTF (daily/weekly never failed 60) |
+| C2 09-04 | fires | no | WaveTrend (peak 38.8), HTF |
+| V1 09-23 | fires | no | WaveTrend (crossed down more than 4 bars before the trigger), HTF |
+| V2 10-06 | fires | no | WaveTrend, HTF |
+| C3 10-22 | fires | **yes** | - |
 
-## Arms (window 3-10 vs swing-to-swing; close vs wick; two trigger forms; sweep OR'd in every arm)
+This matches READING.md's own table, where only C3 shows all five layers. The test pins it (`test_malkan_level_short.py`).
 
-Ladder = chains at layers 1-3, then with WaveTrend (+L4), then with the HTF gate (+L5 = firings). Hit >=1R = reached 1R before the stop, among non-overlapping firings (all firings are non-overlapping here). Fee 0.04% per side on entry and exit notional, stop-first on a same-bar tie, time exit at 60 bars.
+## Count by arm (all years)
 
-| arm (div / basis / trigger) | L1-3 chains | +L4 | +L5 = firings | too tight | non-overlap trades | hit >=1R | target 1R hit | net R/trade 1R exit | CI | net R/trade 2R exit | CI |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| window 3-10 / close / cross | 163 | 76 | 17 | 0 | 17 | 64.7% | 64.7% | +0.245 | 0.47 | +0.081 | 0.69 |
-| window 3-10 / close / cross+RSI<60 | 94 | 36 | 10 | 0 | 10 | 50.0% | 50.0% | -0.051 | 0.66 | -0.328 | 0.79 |
-| window 3-10 / wick / cross | 168 | 75 | 15 | 0 | 15 | 66.7% | 66.7% | +0.285 | 0.50 | +0.034 | 0.73 |
-| window 3-10 / wick / cross+RSI<60 | 100 | 37 | 9 | 0 | 9 | 55.6% | 55.6% | +0.061 | 0.70 | -0.247 | 0.86 |
-| swing-swing / close / cross | 163 | 76 | 16 | 0 | 16 | 62.5% | 62.5% | +0.201 | 0.49 | -0.035 | 0.70 |
-| swing-swing / close / cross+RSI<60 | 94 | 37 | 10 | 0 | 10 | 50.0% | 50.0% | -0.051 | 0.66 | -0.328 | 0.79 |
-| swing-swing / wick / cross | 159 | 71 | 14 | 0 | 14 | 64.3% | 64.3% | +0.237 | 0.53 | +0.110 | 0.77 |
-| swing-swing / wick / cross+RSI<60 | 96 | 36 | 9 | 0 | 9 | 55.6% | 55.6% | +0.061 | 0.70 | -0.247 | 0.86 |
+| Arm | n | hit 1R | win 2R | gross R | net R | bull net (n) | bear net (n) |
+|---|---|---|---|---|---|---|---|
+| base level + trigger | 529 | 0.48 | 0.30 | +0.01 | -0.04 | | |
+| + structure (div or sweep) | 482 | 0.49 | 0.31 | +0.03 | -0.01 | | |
+| + structure div 3-10 close (SOURCED window) | 126 | 0.49 | 0.37 | +0.15 | **+0.10** | | |
+| + structure div 5-50 close | 254 | 0.50 | 0.32 | -0.00 | -0.05 | | |
+| + structure div 5-50 wick | 273 | 0.48 | 0.31 | +0.02 | -0.03 | | |
+| + structure sweep | 472 | 0.49 | 0.31 | +0.04 | -0.00 | | |
+| + WaveTrend | 201 | 0.48 | 0.32 | +0.11 | +0.07 | | |
+| + HTF 60 fail | 148 | 0.51 | 0.33 | +0.12 | +0.07 | | |
+| FULL 5 layers | 37 | 0.49 | 0.35 | +0.17 | +0.13 | | |
+| FULL, div 5-50 wick | 10 | 0.50 | 0.40 | +0.35 | +0.30 | | |
 
-- Window 3-10 vs swing-to-swing: 17 vs 16 firings (close basis), 15 vs 14 (wick): the window question moves almost nothing, because 12 of 17 firings are sweeps (layer 2 is mostly the sweep branch, not divergence).
-- Close vs wick: 17 vs 15 (window), 16 vs 14 (swing). Wick basis fires slightly less and scores slightly higher net; the CI overlaps.
-- Strict "RSI also < 60" trigger: 9-10 firings and net near 0 or negative. V1-type reads (RSI 76) are lost under it.
-- All 8 arms are exploratory, trial count 8; none is selected.
+Bull / bear split (net R, n): base level+trigger: bull -0.08 (282), bear +0.05 (217); +structure div 3-10 close: bull +0.11 (70), bear +0.13 (49); +wavetrend: bull -0.00 (117), bear +0.30 (69); +htf: bull +0.07 (67), bear +0.10 (76); FULL (5 layers): bull +0.19 (24), bear -0.08 (11).
 
-## Primary arm detail (window 3-10 / close / cross)
+Rough standard error per trade at a 2R target is about 1.4 R, so SE = 1.4/sqrt(n): 0.12 R at n=126, 0.23 R at n=37. Nothing here clears 2 SE.
 
-Ladder (non-overlapping trades within each tier, 1R exit, fee-net 0.04%/side):
+## Answers to the card's two questions
 
-| tier | trades | hit >=1R | target 1R hit | net R/trade | CI |
-|---|---|---|---|---|---|
-| L1-3 | 145 | 43.4% | 43.4% | -0.145 | +-0.16 |
-| L1-4 | 72 | 43.1% | 43.1% | -0.148 | +-0.23 |
-| L1-5 (firings) | 17 | 64.7% | 64.7% | +0.245 | +-0.47 |
+1. **Window: 3-10 bars beats swing to swing.** Widening to 5-50 bars (what the operator's 4h reads needed, 15-19 bars) doubles the count and takes the result to zero. Malkan's sourced short window is the only divergence arm with a positive sign.
+2. **Close vs wick: no difference** at 5-50 bars (-0.05 vs -0.03 R).
 
-Firings by regime, 1R exit (non-overlapping):
+## What it means
 
-| regime | trades | hit >=1R | target hit | net R/trade | CI |
-|---|---|---|---|---|---|
-| bull | 10 | 80.0% | 80.0% | +0.558 | +-0.53 |
-| bear | 6 | 50.0% | 50.0% | -0.060 | +-0.88 |
-| range | 1 | 0.0% | 0.0% | -1.059 | +- |
-| warm-up | 0 | | | | |
+- The sweep (a lower high that runs a pivot high and closes back under it) is nearly always present at a level tag, so as written it filters nothing (482 of 529). Layer 2 only adds information through divergence.
+- WaveTrend and HTF each lift the base by about +0.1 R, mostly in bear regimes. Stacking all five leaves 4 trades a year.
+- The five hand-picked points all caught 1R+; the counted base catches 1R only 48 % of the time. The reads are a pattern, as READING.md said, not an edge.
 
-Firings by year, 1R exit:
+## Next
 
-| year | trades | hit >=1R | target hit | net R/trade | CI |
-|---|---|---|---|---|---|
-| 2017 | 0 | | | | |
-| 2018 | 0 | | | | |
-| 2019 | 1 | 100.0% | 100.0% | +0.968 | +- |
-| 2020 | 1 | 0.0% | 0.0% | -1.058 | +- |
-| 2021 | 3 | 66.7% | 66.7% | +0.295 | +-1.31 |
-| 2022 | 3 | 66.7% | 66.7% | +0.284 | +-1.28 |
-| 2023 | 6 | 50.0% | 50.0% | -0.053 | +-0.90 |
-| 2024 | 3 | 100.0% | 100.0% | +0.942 | +-0.02 |
-
-Firings by regime, 2R exit (non-overlapping):
-
-| regime | trades | hit >=1R | target hit | net R/trade | CI |
-|---|---|---|---|---|---|
-| bull | 10 | 80.0% | 40.0% | +0.280 | +-0.93 |
-| bear | 6 | 50.0% | 33.3% | -0.060 | +-1.25 |
-| range | 1 | 0.0% | 0.0% | -1.059 | +- |
-| warm-up | 0 | | | | |
-
-Firings by year, 2R exit:
-
-| year | trades | hit >=1R | target hit | net R/trade | CI |
-|---|---|---|---|---|---|
-| 2017 | 0 | | | | |
-| 2018 | 0 | | | | |
-| 2019 | 1 | 100.0% | 100.0% | +1.968 | +- |
-| 2020 | 1 | 0.0% | 0.0% | -1.058 | +- |
-| 2021 | 3 | 66.7% | 33.3% | -0.038 | +-1.96 |
-| 2022 | 3 | 66.7% | 33.3% | -0.050 | +-1.95 |
-| 2023 | 6 | 50.0% | 33.3% | +0.152 | +-1.20 |
-| 2024 | 3 | 100.0% | 33.3% | -0.058 | +-1.94 |
-
-Firings (all, overlapping allowed): 17; kind: 12 sweep / 5 div.
-
-Reading: layers 1-4 alone (145 / 72 trades) lose money fee-net (-0.145 and -0.148 R); the HTF layer is what turns it positive, and that layer was added after the operator's reads (hindsight). Bull regime carries 10 of 17 firings. 2017-2018 has zero firings (WaveTrend/RSI warm-up and the HTF gate). Year cells hold 0-6 trades: no year is evidence.
-
-## Verdict and next
-
-- Count answered: 17 / 16 / 15 / 14 / 10 / 9 firings by arm over 6.9 years of 4h BTC; only 2 of the 5 operator points reproduce (C1, C3).
-- Fee-net expectancy primary arm +0.245 R (1R exit), +0.081 R (2R exit); both CI cross 0. N < 30 on every arm: underpowered. Kill rule met on N, so NO testnet card is filed. The DEV stack stays unvalidated; one VALIDATION read would need a new PRE_REG naming ONE arm (candidate: the primary).
-- No like-for-like null (same stop, random level touch) was run; item 9 of the readiness template remains open.
-- Parameters: all OURS except the 3-10 window, the 60 RSI level and the 53/60 WaveTrend bands (SOURCED, quotes in PRE_REG.md and the module header).
+- Testnet forward, context-only (phase-first): the `div 3-10 close` arm on BTC 4h in the current range, with a kill line of 30 trades at net R <= 0. Filed raw for JIS-NB as `malkan-level-short-testnet-forward-1109` (live path belongs to C's lane).
+- Not done: the long side, and other symbols.
