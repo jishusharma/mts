@@ -1,4 +1,4 @@
-# GEMINI START - first-message prompt for a Google (Antigravity) builder session (Google AI Pro, JIS-NUC)
+# GEMINI START - first-message prompt for a Google (Antigravity) builder session (Google AI Pro, JIS-NUC and the Lenovo laptop; who may start it: ROUTING.md "Gemini access")
 
 The Gemini lane binary is `agy.exe` (`C:/Users/E-ngineers/.gemini/bin/agy.exe`, not on PATH), never a `gemini` CLI: test with `agy.exe models`; a missing `gemini` command never means "no Gemini on this host".
 
