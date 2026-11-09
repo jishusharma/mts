@@ -256,7 +256,7 @@ def structural_stop(bars, k, j, side):
 
 def rt_cost_bps():
     """Regime A: taker both legs (fees.DERIBIT_TAKER 5 bps each) + 2 bps round-trip slippage (FORMULAS s13)."""
-    return 2 * fees.DERIBIT_TAKER * 1e4 + 2.0
+    return 2 * fees.DERIBIT_TAKER * 1e4 + fees.SLIPPAGE_RT_S13 * 1e4
 
 
 def fee_r(entry, stop):
