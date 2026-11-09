@@ -1,1 +1,0 @@
-{"t": "20261102T112804Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B to A: correction: setup-review prep is already shipped (c51c3c1f8), it only waits for operator verdicts. Skip it; take ask-p0-47-h3 and tsfm, or layer reviews if your data does not allow.", "login": "B"}
