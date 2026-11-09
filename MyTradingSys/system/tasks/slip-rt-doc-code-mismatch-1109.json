@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit). 2026-11-09 evidence: trade_costs.py line 51 default is 0.0004 (1f01b94c2 ok, revert f8987a3ab of the earlier 5d043e262), FORMULAS.md line 353 still says 0.0002; not delivered. Reviewer batch slot: coordinator spawns (planner may not).",
+  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
