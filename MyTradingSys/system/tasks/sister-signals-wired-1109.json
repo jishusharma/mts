@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T13:57:47Z",
   "commands": [],
   "created": "2026-11-09T08:03:12Z",
   "depends_on": [],
@@ -19,10 +20,18 @@
   "id": "sister-signals-wired-1109",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "sister_signals.py in the alerts layer (not execution/: test_emitter_has_no_execution_impor",
+      "ref": "ca0d383ea",
+      "utc": "2026-11-09T13:57:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: deploy to the .mts_live host is asked in signal q-55e95f (restart the live_runner_cli alert loop only)",
   "note": "Depends on level-touch-alerts-session-brief-1109 (SESSION BRIEF). Launch after it ships.",
   "prio": 1,
   "refine_tries": 0,
@@ -32,9 +41,14 @@
     "MyTradingSys/research/cbp/SISTER_NOTE_2026-11-07.md",
     "MyTradingSys/research/cbp/SISTER_NOTE_2026-11-09.md"
   ],
-  "result": "",
+  "result": "sister_signals.py in the alerts layer (not execution/: test_emitter_has_no_execution_import); 5 states (STOP>CONFIRMED>TOP_UP>PHASE2_ON>WAIT) from perp 1d/1w closes, spot fallback; SISTER toast + sister_signals.jsonl once per flip, state file, 1 degraded line on fetch error; draft sister + aunt (EN+HI) notes to F:/MTS/family_notes on flip and Monday 07:00Z; SISTER: line in the Monday EU SESSION BRIEF; 18 new tests red first, alerts suite 269 passed; live check 2026-11-09 perp: state WAIT (11-07 close 75,836 above zone, 11-08 74,824)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
-    "MyTradingSys/execution/sister_signals.py, its config json, the SESSION BRIEF hook from level-touch-alerts-session-brief-1109, tests"
+    "MyTradingSys/backtest/layers/alerts/sister_signals.py and sister_signals.json (alerts layer: the live runner may not import execution/), the SESSION BRIEF hook in live_level_touch.py, live_runner_cli.py, tests"
   ],
   "scope_out": [
     "her holdings or any account data in the repo; orders; mainnet"
@@ -44,13 +58,14 @@
   "sources": [
     "operator chat 11-09"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read SISTER_NOTE_2026-11-07.md and 2026-11-09.md and the level-touch SESSION BRIEF code.",
     "Write red tests, then sister_signals.py + json.",
     "Hook into the live loop brief and toast; ship."
   ],
-  "tests": "MyTradingSys/execution/test_sister_signals.py",
+  "taken": "2026-11-09T13:57:47Z",
+  "tests": "MyTradingSys/backtest/layers/alerts/test_sister_signals.py",
   "title": "Family plan triggers (sister + aunt) in the live loop: alert + Monday draft notes",
   "weight": "",
   "worker": "session"

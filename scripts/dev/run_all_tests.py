@@ -557,6 +557,7 @@ def build_plan(quick):
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
     add("3cxp", "Codex status parser tests", [sys.executable, "scripts/dev/test_codex_status_parse.py"], "Step 3cxp: Codex status parser tests")
     add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
+    add("3suh", "User-level signal hook (signal_user_hook.py)", [sys.executable, "scripts/dev/test_signal_user_hook.py"], "Step 3suh: User signal hook tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
     add("3al", "Analyst levels ladder (CBP pointers next to chart reads)", [sys.executable, "scripts/dev/test_analyst_levels.py"], "Step 3al: Analyst levels tests")

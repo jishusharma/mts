@@ -201,10 +201,22 @@ def git(cwd, *args, check=True, timeout=20):
     return r
 
 
+SLUG_RE = re.compile(r"^[a-z0-9]{1,20}(-[a-z0-9]{1,20}){2,}$")
+
+
+def _is_slug(tok):
+    """A card id or branch slug (tom-swing-trendline-extract-1109) is not a secret: lowercase words joined by hyphens,
+    every part short, at least two parts plain letters. Operator 11-09: ids of 32+ chars arrived as [cut] and asks to the
+    NUC carried no card id. Keys, hashes and UUIDs (long or mixed-case parts, no plain-letter words) are still cut."""
+    if not SLUG_RE.match(tok):
+        return False
+    return sum(1 for x in tok.split("-") if len(x) >= 2 and x.isalpha()) >= 2
+
+
 def clean(text, limit=TEXT_MAX):
     """One short line; long token-like strings are cut out (the repo is public)."""
     t = " ".join(str(text).split())
-    t = re.sub(r"[A-Za-z0-9_\-]{32,}", "[cut]", t)
+    t = re.sub(r"[A-Za-z0-9_\-]{32,}", lambda m: m.group(0) if _is_slug(m.group(0)) else "[cut]", t)
     t = re.sub(r"[^\s@]+@[^\s@]+\.[^\s@]+", "[cut]", t)       # an e-mail address never travels (public repo)
     t = re.sub(r"(?i)(secret|password|passwd|token|api[_-]?key)\s*[=:]\s*\S+", r"\1=[cut]", t)
     return t[:limit]
@@ -523,6 +535,13 @@ def handle(payload):
         return ""
     if ev == "Stop":
         return stop_check(payload)
+    if ev == "SessionStart":     # operator 11-09: sessions outside a clone saw no signals; every machine gets the user hook
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import signal_user_hook
+            signal_user_hook.ensure_installed(payload.get("cwd") or "")
+        except Exception:
+            pass
     auto = auto_send_text(payload)
     note = sender_note(auto[0]) if auto and auto[1] == "broadcast" else ""
     got = _handle(payload, sid, ev, auto)

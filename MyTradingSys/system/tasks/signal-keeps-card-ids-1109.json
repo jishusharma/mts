@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-09T14:11:00Z",
+  "commands": [],
+  "created": "2026-11-09T14:08:35Z",
+  "depends_on": [],
+  "done_when": "clean() keeps lowercase hyphen slugs with 2+ plain-letter words; keys, UUIDs, hex and e-mails still cut; test_mts_signal.py green",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Signals carry full card ids: clean() cut every 32+ char token, so asks to the NUC said 'run [cut]:low' and nobody could act.",
+  "id": "signal-keeps-card-ids-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "clean() keeps card-id slugs (2+ plain-letter words, short parts); keys, UUIDs, hex, e-mail",
+      "ref": "7eaeba11c",
+      "utc": "2026-11-09T14:11:00Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: senders re-send asks that went out as [cut]",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T14:10:48Z",
+  "refs": [],
+  "result": "clean() keeps card-id slugs (2+ plain-letter words, short parts); keys, UUIDs, hex, e-mails still cut; test_mts_signal 62 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/mts_signal.py clean(), scripts/dev/test_mts_signal.py"
+  ],
+  "scope_out": [
+    "signal storage format; hooks"
+  ],
+  "scope_sha": "05d8d613782f",
+  "size": "S",
+  "sources": [
+    "operator chat 11-09 (NUC missed 7 asks; ids arrived as [cut])"
+  ],
+  "state": "done",
+  "steps": [
+    "Slug rule in clean()",
+    "Test ids kept, secrets cut",
+    "Ship"
+  ],
+  "taken": "2026-11-09T14:11:00Z",
+  "tests": "scripts/dev/test_mts_signal.py",
+  "title": "mts_signal clean(): keep card ids and slugs, still cut secrets and e-mails",
+  "weight": "",
+  "worker": "session"
+}

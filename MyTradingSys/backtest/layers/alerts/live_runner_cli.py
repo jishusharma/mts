@@ -654,9 +654,37 @@ def level_touch_after_poll(state_path, alerts_dir, toast_path, now_ms=None) -> l
         from MyTradingSys.backtest.layers.alerts import live_level_touch as lt
         return lt.poll(lt.default_fetch, lt.default_levels, pathlib.Path(state_path).with_name("level_touch_state.json"),
                        alerts_dir, toast_path, now_ms if now_ms is not None else int(time.time() * 1000),
-                       brief_ctx=lt.default_brief_ctx)
+                       brief_ctx=_brief_ctx_with_sister(lt.default_brief_ctx, state_path))
     except Exception as exc:  # noqa: BLE001 - observation must never stop the alert runner
         print(json.dumps({"key": "level_touch", "error": str(exc)}), file=sys.stderr, flush=True)
+        return []
+
+
+def _brief_ctx_with_sister(base, state_path):
+    """The SESSION BRIEF context plus the Monday 07:00Z SISTER: line (card sister-signals-wired-1109)."""
+    def ctx(now_ms):
+        out = dict(base(now_ms) or {})
+        try:
+            from MyTradingSys.backtest.layers.alerts import sister_signals as ss
+            line = ss.brief_line(pathlib.Path(state_path).with_name("sister_state.json"), now_ms)
+            if line:
+                out["sister"] = line
+        except Exception as exc:  # noqa: BLE001
+            print(json.dumps({"key": "sister_brief", "error": str(exc)}), file=sys.stderr, flush=True)
+        return out
+    return ctx
+
+
+def sister_after_poll(state_path, alerts_dir, toast_path, now_ms=None) -> list:
+    """Family plan triggers (card sister-signals-wired-1109): SISTER toast + alert log on a flip, draft notes outside the repo.
+    Fetches at most every 15 min. Never raises, never gates, places no order."""
+    try:
+        from MyTradingSys.backtest.layers.alerts import sister_signals as ss
+        cfg = ss.load_config()
+        return ss.poll(ss.default_fetch, pathlib.Path(state_path).with_name("sister_state.json"), alerts_dir, toast_path,
+                       cfg["notes_dir"], now_ms if now_ms is not None else int(time.time() * 1000), cfg=cfg)
+    except Exception as exc:  # noqa: BLE001 - observation must never stop the alert runner
+        print(json.dumps({"key": "sister_signals", "error": str(exc)}), file=sys.stderr, flush=True)
         return []
 
 
@@ -711,6 +739,7 @@ def main(argv=None) -> int:
             print(json.dumps({"key": "consensus_hook", "error": str(exc)}), file=sys.stderr, flush=True)
 
         level_touch_after_poll(args.state_path, args.alerts_dir, args.toast_path)
+        sister_after_poll(args.state_path, args.alerts_dir, args.toast_path)
 
         save_state(result["state"], args.state_path)
         state = result["state"]
