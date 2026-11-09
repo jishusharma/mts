@@ -4,19 +4,19 @@
   "commands": [],
   "created": "2026-11-09T17:51:50Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/live_aid_pulse_2026-11/PRE_REG.md (Context section with Regime, Phase, Session, Entry lines; verdicts.py check and prereg_gate.py output pasted) frozen before any run; sim_desk/results/live_aid-pulse-backtest.json exports n, mean fee-net result per horizon and session vs null with CI; a parity test shows the python rule equals pulse.js on fixtures; HOLDOUT never read.",
+  "est_turns": 32,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Measure, on DEV only, whether the Live Aid pulse SETUP FORMING state (named level within 0.15 %, 1h-4h lean or Home direction pointing away, low-TF RSI/WaveTrend/CVD divergence) beats a matched random-time null on fee-net next 15/30/60 min, by session; P thresholds stay OURS until measured.",
   "id": "live-aid-pulse-backtest-1109",
-  "kind": "run",
+  "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-A-1110b 2026-11-10: refined from raw; a run card needs a builder and the DSA bridges are closed, so it is a SONNET session card. Thresholds P are OURS (pulse.js l.12); measured values replace them only after the one VALIDATION check. Fold wording 2m/7m/10m: builder confirms its meaning against pulse.js comments and logs a DECISION (OURS) if it differs.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -24,14 +24,29 @@
     "MyTradingSys/tools/live_aid/pulse.js"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/live_aid_pulse_2026-11/ (new)",
+    "MyTradingSys/tools/live_aid/pulse.js (read)",
+    "MyTradingSys/research/sim_desk/results/live_aid-pulse-backtest.json (new)"
+  ],
+  "scope_out": [
+    "no edit to pulse.js thresholds (a measured change is a separate card)",
+    "no HOLDOUT window read",
+    "no trade, no order, no live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/tools/live_aid/pulse.js l.12 (P params, OURS), l.64"
+  ],
+  "state": "refined",
+  "steps": [
+    "PRE_REG from the template (research/gross_effect_screen_2026-10-15/PRE_REG.md): verdicts.py check, prereg_gate.py --n --sd --cost --m auto; freeze",
+    "port the pulse.js SETUP FORMING rule to python with a parity test on fixture_klines.json via node (fail-first)",
+    "Binance public spot 1m 90 days, folds 2/7/10 per the card title, fee-net next 15/30/60 min, by session vs random-time null",
+    "export the json, backfill VERDICTS.csv (verdicts.py backfill)"
+  ],
+  "tests": "MyTradingSys/research/live_aid_pulse_2026-11/test_pulse_parity.py (new, fail-first: no python rule yet)",
   "title": "Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/WaveTrend/CVD divergence) beat random at named levels? Binance spot 1m 90 days, fold 2m/7m/10m, fee-net next 15/30/60 min, by session; tune P thresholds OURS->measured",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

@@ -1,37 +1,58 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_ps1_doh.py",
+    "powershell -File scripts/live/quick.ps1"
+  ],
   "created": "2026-11-09T01:48:00Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "binance-futures-dns-block-fleet-1109"
+  ],
+  "done_when": "On JIS-NB each of the 5 scripts prints live data (fapi 4h kline, no HTTP/DNS error), block IP 49.44.79.236 is refused and DoH-down fails closed with one clear line; scripts/dev/test_ps1_doh.py checks that no listed script calls Invoke-RestMethod/WebRequest on a binance.com host directly.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "PowerShell Binance callers (scripts/live/context.ps1, deltas.ps1, overview.ps1, quick.ps1, scripts/tools/verify_data.ps1) resolve fapi/api.binance.com through the DoH helper of binance-futures-dns-block-fleet-1109 instead of system DNS, so they work behind the ISP DNS block.",
   "id": "binance-doh-ps1-scripts-1109",
   "kind": "build",
   "lane": "JIS-NB",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-A-1110b 2026-11-10: refined; stays refined until the parent helper ships (depends_on). Lane stays JIS-NB for the on-host proof.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "binance-futures-dns-block-fleet-1109: scripts/live/{context,deltas,overview,quick}.ps1 and scripts/tools/verify_data.ps1 call fapi/api.binance.com through system DNS (Invoke-RestMethod) and stay blocked by the ISP DNS block; the Python/Java fix does not cover them"
+  "scope_in": [
+    "scripts/live/context.ps1",
+    "scripts/live/deltas.ps1",
+    "scripts/live/overview.ps1",
+    "scripts/live/quick.ps1",
+    "scripts/tools/verify_data.ps1",
+    "scripts/live/binance_doh.ps1 (new)",
+    "scripts/dev/test_ps1_doh.py (new)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no live-tree deploy, no process restart",
+    "the Python/Java DoH helper (parent card)"
+  ],
+  "size": "M",
+  "sources": [
+    "binance-futures-dns-block-fleet-1109 (card note)"
+  ],
+  "state": "refined",
+  "steps": [
+    "wait for the parent helper; read its DoH order (Cloudflare then Google) and block-IP rule",
+    "write test_ps1_doh.py: fails today (direct binance.com calls in the 5 files)",
+    "binance_doh.ps1: Resolve-Binance (DoH A record, TTL cache, reject block and private IPs) and Invoke-Binance using curl.exe --resolve host:443:ip so the TLS name stays real",
+    "replace the calls in the 5 scripts"
+  ],
+  "tests": "scripts/dev/test_ps1_doh.py (new, fail-first)",
   "title": "Route PowerShell Binance callers through the DoH resolver (scripts/live/*.ps1, verify_data.ps1)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

@@ -4,34 +4,49 @@
   "commands": [],
   "created": "2026-11-09T14:06:13Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_gemini_launch.py (new, fails today: module absent) passes: host order local-AGY then NUC then laptop, a probe that times out is skipped, nothing launches when no host qualifies (exit 1 and one clear line), the launch call returns without waiting on the card.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One command, scripts/dev/gemini_launch.py <card>[:effort[:model]], starts a Gemini (agy) card from any machine: local if gemini_queue.AGY exists, else the NUC via the ssh gate plus a one-shot /IT schtask, else the laptop; prints the log path and returns at once, never waiting on an idle app.",
   "id": "gemini-any-host-launcher-1109",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-A-1110b 2026-11-10: refined from raw; pairs with bug-agy-not-gemini-cli-confusion-1109 and the host_caps probe in bug-false-lane-unavailable-claim-1109 (resolve the runner path the way gemini_queue does, never via where agy). The real review stamp is the reviewer job.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "d-gemini-no-host-dependency-1109"
+  "scope_in": [
+    "scripts/dev/gemini_launch.py (new)",
+    "scripts/dev/test_gemini_launch.py (new)",
+    "scripts/dev/gateway_run.py (read: schtasks /IT at l.176)",
+    "scripts/dev/gemini_queue.py (read: AGY l.21, run_job)",
+    "MyTradingSys/system/DEVICES.md (ssh gate line 111)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no change to gemini_queue.py behaviour",
+    "no key or .secrets read; key path ~/.ssh/nuc_gate only passed as ssh -i",
+    "no live-tree edit, no process restart"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md l.2157 (operator 2026-11-09)"
+  ],
+  "state": "refined",
+  "steps": [
+    "read OPERATOR_DECISIONS.md l.2157 (the rule), gateway_run.py and gemini_queue.main",
+    "write test_gemini_launch.py with injected probe and launch functions (fail-first)",
+    "implement gemini_launch.py: probe_local (AGY exists), probe_nuc (ssh -o BatchMode=yes -o ConnectTimeout=8 status), probe_laptop; launch = gemini_queue.py run <spec> detached via schtasks /IT on the remote",
+    "one-line usage in the ROUTING.md row for gemini_queue"
+  ],
+  "tests": "scripts/dev/test_gemini_launch.py (new, fail-first on host order, timeout skip, no-host exit 1)",
   "title": "One command starts a Gemini (agy) card from any machine: NUC via ssh gate + /IT schtask, else laptop; never waits on an idle app",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

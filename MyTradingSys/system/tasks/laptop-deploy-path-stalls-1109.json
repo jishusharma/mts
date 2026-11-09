@@ -4,34 +4,47 @@
   "commands": [],
   "created": "2026-11-09T09:56:33Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_deploy_live.py (new, fails today: module absent) passes: check refuses a dirty live tree, a sha not in origin/green/fast-track, and a non-fast-forward; for a passing sha it prints git -C <live> merge --ff-only origin/green/fast-track and the restart row for the touched paths (alerts/* -> layers.alerts.live_runner_cli); it never runs merge or kill.",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Standing deploy path for green fixes on the live host (laptop, C:/MTS/mts-live): a read-only scripts/dev/deploy_live.py check <sha> proves the preconditions and prints the exact DEPLOY_RUNBOOK commands and the process to restart, so a coordinator or the operator deploys in minutes, not a broadcast waiting 4.5 h on Supervisor A.",
   "id": "laptop-deploy-path-stalls-1109",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-A-1110b 2026-11-10: DECISION (OURS): the fix is a read-only precondition checker plus a runbook section, not an auto-deploy: CLAUDE.md keeps live-tree changes with a manual/coordinator deploy. A deploy that the check prints is still run by the coordinator or operator.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "jis-nb/C 11-09"
+  "scope_in": [
+    "scripts/dev/deploy_live.py (new)",
+    "scripts/dev/test_deploy_live.py (new)",
+    "MyTradingSys/system/DEPLOY_RUNBOOK.md (new section: standing deploy path)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no apply mode, no merge, no restart, no HALT touch (builders never deploy)",
+    "no change to supervisor.py refusal rules",
+    "no live-tree edit"
+  ],
+  "size": "M",
+  "sources": [
+    "jis-nb/C 11-09; DEPLOY_RUNBOOK.md s1-2"
+  ],
+  "state": "refined",
+  "steps": [
+    "read DEPLOY_RUNBOOK.md s1-2 and the live_host.txt handling in supervisor.py (l.944)",
+    "write test_deploy_live.py with temp git repos for dirty, not-green and non-ff cases (fail-first)",
+    "implement the read-only check and the path-prefix to restart-process map from runbook s2",
+    "add the runbook section: coordinator or operator runs check, then the printed steps; Supervisor A stays out of live-tree deploys"
+  ],
+  "tests": "scripts/dev/test_deploy_live.py (new, fail-first)",
   "title": "Deploy broadcasts to the laptop stall: Supervisor A refuses live-tree deploys, b-f33439 DNS fix waited 4.5h; need a standing laptop deploy path for green fixes",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

@@ -4,33 +4,49 @@
   "commands": [],
   "created": "2026-11-05T02:28:52Z",
   "depends_on": [],
-  "done_when": "manage.py applies costs.funding_r from a funding-history file for the Fabio v3 rerun, golden Fabio numbers re-baselined in one commit, and a Gemini spec review file exists (C2 definition change)",
-  "est_turns": null,
+  "done_when": "manage/runner subtracts funding_r from a funding-history file on the Fabio v3 rerun; golden Fabio numbers re-baselined in one commit; a Gemini spec review file exists beside the card (C2 definition change).",
+  "est_turns": 26,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Wire costs.funding_r (fabio/v3/costs.py:54, FORMULAS s13) into the Fabio v3 runner so net R is reported after funding (net_r - funding_r), 2x stress as a second line, from a funding-history file.",
   "id": "fabio-v3-funding-r-never-called",
+  "kind": "build",
   "lane": "SONNET",
   "layers": [
     "fabio"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; PARKED behind a non-Claude spec review (C2) and a funding-history input; DECISION (OURS): stay fee-only until both exist. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: behind a non-Claude spec review and a funding history input (see its note); fee-only until both exist",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; PARKED behind a non-Claude spec review (C2) and a funding-history input; DECISION (OURS): stay fee-only until both exist. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: behind a non-Claude spec review and a funding history input (see its note); fee-only until both exist | planner-A-1110b 2026-11-10: scoped; stays fee-only (DECISION OURS) until a funding-history input and a non-Claude spec review exist; needs the real C2 stamp.",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/v3/costs.py",
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py",
+    "MyTradingSys/backtest/bt/bt_data.py (funding_rate_at l.172)",
+    "MyTradingSys/backtest/layers/fabio/v3/test_costs.py"
+  ],
+  "scope_out": [
+    "no new funding data source invented: the input file must be named first",
+    "no live tree"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/backtest/layers/fabio/v3/costs.py:54; FORMULAS.md s13"
+  ],
+  "state": "refined",
+  "steps": [
+    "name the funding-history input (public Binance fundingRate history) and fetch it once to a git-ignored file",
+    "test first: a trade held across one funding stamp has net_after_funding == net_r - funding_r (fail-first)",
+    "wire the call at the trade close; report fee-only and after-funding side by side",
+    "re-baseline goldens in one commit"
+  ],
+  "tests": "MyTradingSys/backtest/layers/fabio/v3/test_costs.py::test_net_after_funding_wired (new, fail-first)",
   "title": "fabio v3: costs.funding_r is never called by a runner; FABIO-V3 numbers are fee-only",
   "weight": "CRITICAL",
-  "worker": ""
+  "worker": "session"
 }

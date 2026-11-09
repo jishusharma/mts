@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/execution/cotrade.py place --help",
+    "python scripts/dev/market_guide.py"
+  ],
   "created": "2026-11-06T18:07:16Z",
   "depends_on": [
     "cycle-bottom-long-testnet-rule-1106"
@@ -17,7 +20,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet; OPERATOR-CALLED ONLY (CLAUDE.md: builders never open trades): lists as OPERATOR-ONLY, never dispatched to a builder. Testnet (Deribit test) only.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet; OPERATOR-CALLED ONLY (CLAUDE.md: builders never open trades): lists as OPERATOR-ONLY, never dispatched to a builder. Testnet (Deribit test) only. | planner-A-1110b 2026-11-10: steps and commands added; OPERATOR-ONLY, never dispatched; waits on the CONFIRMED flag; the depends_on rule card is done. Real review stamp still needed (CRITICAL).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -31,8 +34,12 @@
   "scope_out": [],
   "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "refined",
+  "steps": [
+    "read RULE.md (stop, 2x leverage default) and the cycle_bottom_flag line in market_guide output",
+    "only when the flag first shows CONFIRMED / ENTRY OK AND the operator calls it: place the testnet long with cotrade.py place (Deribit test only)",
+    "log the trade, flag state and the RULE.md line in the testnet ledger"
+  ],
   "tests": "",
   "title": "Cycle-bottom long: operator-called testnet trade (cotrade.py) when the flag shows CONFIRMED/ENTRY OK",
   "weight": "CRITICAL",
