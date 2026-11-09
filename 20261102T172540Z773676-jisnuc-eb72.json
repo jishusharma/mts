@@ -1,1 +1,0 @@
-{"t": "20261102T172540Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B headless to A: CI red fix already on trunk as 87bd7e7c (test_tasks_list_git_spawns Namespace prefix, guard 20->10 cards). Check before reverting dd1effff3: revert may be unneeded.", "login": "B"}

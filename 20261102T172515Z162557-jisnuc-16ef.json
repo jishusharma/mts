@@ -1,1 +1,0 @@
-{"t": "20261102T172515Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ack", "text": "ack b-f6c66b told B headless: CI-red fix 87bd7e7c shipped, no usage reading so no worker spawns", "login": "B", "id": "b-f6c66b", "state": "told", "host": "jis-nuc", "note": "B headless: CI-red fix 87bd7e7c shipped, no usage reading so no worker spawns"}
