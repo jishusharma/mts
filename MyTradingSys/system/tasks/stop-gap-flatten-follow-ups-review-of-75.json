@@ -13,7 +13,7 @@
   },
   "created": "2026-11-08T03:11:54Z",
   "depends_on": [],
-  "done_when": "5 new failing-first tests in MyTradingSys/execution/test_stop_gap_offline.py pass after the fix; pytest on that file green",
+  "done_when": "7 new failing-first tests in MyTradingSys/execution/test_stop_gap_offline.py (5 follow-up cases + API-error + restart/reset) pass after the fix; pytest on that file green",
   "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
@@ -24,7 +24,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "IMPORTANT: needs reviewer stamp before ready; live-path: restart/reset, API-error tests required | LABGUY 2026-11-10 NOT STAMPED. Defects: position_manager.py is a live-path file, set live_path true (=C3, needs coordinator + restart/reset/API-error tests); done_when says 5 tests but tests field says 5 + API-error + restart/reset (7); the 5 follow-ups are not itemised from 75767271.",
+  "note": "IMPORTANT: needs reviewer stamp before ready; live-path: restart/reset, API-error tests required | LABGUY 2026-11-10 NOT STAMPED. Defects: position_manager.py is a live-path file, set live_path true (=C3, needs coordinator + restart/reset/API-error tests); done_when says 5 tests but tests field says 5 + API-error + restart/reset (7); the 5 follow-ups are not itemised from 75767271. | Planner 2026-11-10 DECISION (OURS): live_path left false (rule 4: live_path cards are JIS-NB only; this is a repo-only edit, no deploy); weight IMPORTANT. Coordinator Supervisor re-review before ship (commit 75767271 Next line); itemised the 5 follow-ups; done_when now 7 tests.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -41,7 +41,7 @@
   "sources": [],
   "state": "raw",
   "steps": [
-    "Read position_manager.py _flatten_naked_entry (:339), flatten_halt (:541), _retry_call (:146); list the 5 follow-up cases from 75767271 review",
+    "Read position_manager.py _flatten_naked_entry (:339), flatten_halt (:541), _retry_call (:146); the 5 follow-ups are the title list: (1) retry close after failed close (2) cancel resting entry_1 on error paths (3) sweep labels from intent plan (4) _retry_call on get_position (5) honest already-flat message",
     "Per case write a failing-first offline test in test_stop_gap_offline.py incl. restart/reset state and API-error paths (fail closed)",
     "Fix: retry close after failed close; cancel resting entry_1 on error paths; sweep labels from intent plan; _retry_call on get_position (lines 375,398,566,581); honest already-flat message",
     "Run python -m pytest MyTradingSys/execution/test_stop_gap_offline.py"
