@@ -382,6 +382,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="level_registry.js"></script>
 <script src="map.js"></script>
 <script src="home.js"></script>
+<script src="pulse.js"></script>
 <script src="playbook.js"></script>
 <script>
 (function () {
@@ -1010,6 +1011,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     try { renderHome(now, px, L, MOM); } catch (e) { $('p-home').innerHTML = '<p class="err">Home: ' + esc(e.message) + '</p>'; }
   }
   // Home tab (operator 11-09): one graphical screen; ctx copies numbers the other panels already compute.
+  var PAGE_T0 = Date.now(), PULSE = { key: '', g: null };
   var EV_WORDS = { CPI: 'US inflation report (CPI)', FOMC: 'Fed rate decision (FOMC)', NFP: 'US jobs report (NFP)', PPI: 'US producer prices (PPI)', PCE: 'US PCE inflation', GDP: 'US GDP' };
   function renderHome(now, px, L, MOM) {
     if (!window.LAHOME) { $('p-home').innerHTML = '<p class="err">home.js not found next to this page</p>'; return; }
@@ -1019,10 +1021,13 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var mm = mapModel(now, px, L), M = window.LAMAP, pd = window.PLAYBOOK_DATA;
     var votes = mm.votes.slice(); if (M && pd) votes[5] = M.playbookVote(pd, now);
     var ev = M && pd ? M.nextEvent(pd, now) : null;
-    var liq = { m1: A.liqSum(S.liq, now, 60000), m5: A.liqSum(S.liq, now, 300000), m15: A.liqSum(S.liq, now, 900000), last: S.liq.slice(-20) };
+    var liq = { m1: A.liqSum(S.liq, now, 60000), win: {}, since: PAGE_T0, last: S.liq.slice(-20) };
+    [['1m', 1], ['2m', 2], ['3m', 3], ['5m', 5], ['7m', 7], ['10m', 10], ['15m', 15], ['30m', 30], ['1h', 60], ['2h', 120], ['4h', 240]].forEach(function (w) { liq.win[w[0]] = A.liqSum(S.liq, now, w[1] * 60000); });
+    var PU = window.LAPULSE, pkey = (TF.t['1m'] || 0) + '|' + (TF.t['30m'] || 0);   // Binance spot klines (tf strip loader); recompute only on a new fetch
+    if (PU && pkey !== PULSE.key) { PULSE.key = pkey; try { PULSE.g = PU.grid(TF.k); } catch (e) { PULSE.g = null; } }
     var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
-    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
-    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, liq: liq, money: S.moneyHead || null, news: news,
+    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, liq: liq, money: S.moneyHead || null, news: news,
       ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 
@@ -1531,7 +1536,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   function loadTfs(tfs) {
     if (typeof TFSTRIP === 'undefined') { TF.err.all = 'tf_strip.js not found next to this page'; return Promise.resolve(); }
     return Promise.all(tfs.map(function (tf) {
-      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=150').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
+      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=' + (tf === '1m' ? 1000 : 150)).then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
         function (e) { TF.err[tf] = msg(e); });
     }));
   }

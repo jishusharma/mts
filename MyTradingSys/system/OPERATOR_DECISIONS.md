@@ -2171,3 +2171,11 @@ Operator rejected today's Map/Now/US open/Money/News screens: 'nothing is intuit
 7. News: show the headline, its impact on BTC and its weight graphically; no clutter.
 8. Standing: one page, tabs, no scroll (entry above).
 Card live-aid-tabs-no-scroll-1109 widened to carry all of this.
+
+## 2026-11-09 17Z Live Aid Home: timeframes, indicator lean, setup flash (operator, after US open)
+He likes the Home page, momentum and live liquidations. Asks:
+1. Every timeframe everywhere: 1m 2m 3m 5m 7m (his "dark horse") 10m 15m 30m 1h 2h 4h, for liquidations and indicators.
+2. WaveTrend, volume/CVD and divergences (RSI, WaveTrend, CVD, net delta) on all those timeframes, read into ONE coloured, intuitive lean; he does not know how to read the raw indicators.
+3. At today's high with the bias down, the page must flash a short setup (it was silent). Built as a descriptive "SETUP FORMING" flash with reasons, no price/stop/size (brief rule: observation only; conflict logged).
+4. Backtest the read so the coaching is measured: card live-aid-pulse-backtest-1109.
+5. Teach him how to use the liquidation windows.

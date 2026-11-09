@@ -112,6 +112,11 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         tabs = page.eval_on_selector_all("#tabs a", "as => as.map(a => a.innerText)")
         assert tabs[0] == "Home", tabs
         assert page.eval_on_selector_all("#p-home .hm-svg rect.hm-bd", "rs => rs.length") >= 5   # candles drawn
+        # operator 2026-11-09 17Z: liquidations on 1m 2m 3m 5m 7m 10m 15m 30m 1h 2h 4h; indicator grid on the same 11 timeframes
+        wins = page.eval_on_selector_all("#p-home .hm-lc b", "bs => bs.map(b => b.innerText)")
+        assert wins == ["1m", "2m", "3m", "5m", "7m", "10m", "15m", "30m", "1h", "2h", "4h"], wins
+        tfs = page.eval_on_selector_all("#p-home .hm-pr:not(.hm-ph) > b", "bs => bs.map(b => b.innerText)")
+        assert tfs == wins, tfs
         for h in ("#home", "#now", "#usopen", "#news"):
             page.evaluate(f"location.hash = '{h}'"); page.wait_for_timeout(200)
             sc = page.evaluate("[Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), window.innerHeight, getComputedStyle(document.body).overflow]")
