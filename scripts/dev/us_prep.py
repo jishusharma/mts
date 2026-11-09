@@ -16,6 +16,12 @@ import sys
 import urllib.request
 from pathlib import Path
 from urllib.parse import quote as urlquote
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTDIR = ROOT / "MyTradingSys" / "runtime" / "us_prep"
@@ -34,7 +40,7 @@ SYMS = {"NQ": "NQ=F", "ES": "ES=F", "VIX": "^VIX", "DXY": "DX-Y.NYB", "US10Y": "
 
 def http_json(url, timeout=10):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
+    with _doh_urlopen(req, timeout=timeout) as r:
         return json.load(r)
 
 

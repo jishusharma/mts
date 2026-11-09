@@ -80,12 +80,13 @@ Recount on held csv (Oct 2026 low 76,326 here vs Krown 76,195, venue gap):
 | When | Observable | Note |
 |---|---|---|
 | Sun 23:00 | CME reopen | gap not measurable here; schedule not checked |
-| Sun 24:00 | weekly, 2-day, 3-day, daily close | Krown 75,000 weekly line; 75,935 now |
+| Sun 24:00 | weekly, daily close (Binance 3d bar does not close here) | Krown 75,000 weekly line; 75,935 now |
 | Mon 00:00 | new week/day/4h bar, weekly open | read the 00:00 1h bar first |
 | Mon 00-07 | Asia | 65 of 116 all-Monday sweeps (56%) |
 | Mon 07-14:30 | EU (London 08:00) | 29 of 116 (25%) |
 | Mon 14:30-21 | US cash open 14:30 (DST ended 11-01) | 22 of 116 (19%) |
-| Tue 24:00 | 2-day close (epoch anchor) | 5-day: Thu 11-12 (anchor unstated by Krown) |
+| Mon 24:00 | Binance 3d close (3d bar opened 11-07; verified from klines; next Thu 11-12 24:00) |
+| Tue 24:00 | 2-day close (epoch anchor, not verifiable: Binance has no 2d) | 5-day: Thu 11-12 (anchor unstated by Krown) |
 
 ## 6. Early-catch triggers per session
 
@@ -145,3 +146,5 @@ evidence: "I predict that the next rally will take Bitcoin to 100k"
 
 ### Krown | 2026-11-08 | M4mTHyPxMUM | Theta Gang Sells Every Friday. The Desk on the Other Side Doesn't.
 evidence: "Longer periods of calm mean longer periods of explosion"
+
+Fixed 2026-11-08 by A per REVIEW_A_2026-11-09.md (cache bar, 3d close)

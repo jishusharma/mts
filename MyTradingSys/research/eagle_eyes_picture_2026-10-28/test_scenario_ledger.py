@@ -67,6 +67,32 @@ def test_monday_clocks_percentile_and_session():
     assert mc.pct([0.0, 10.0], 0.25) == 2.5
 
 
+def test_monday_clocks_hourly_refreshes_unfinished_bar(tmp_path, monkeypatch):
+    import datetime as dt
+    import json
+    spec = importlib.util.spec_from_file_location("monday_clocks", Path(__file__).resolve().parents[1] / "monday_open_2026-11-09" / "monday_clocks.py")
+    mc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mc)
+    now_ms = int(dt.datetime.now(dt.timezone.utc).timestamp() * 1000)
+    open_ms = now_ms - now_ms % mc.HOUR  # the still-open 1h bar
+    done = [open_ms - mc.HOUR, 1.0, 2.0, 0.5, 1.5]
+    stale = [open_ms, 1.5, 1.6, 1.4, 1.55]
+    cache = tmp_path / "c.json"
+    cache.write_text(json.dumps([done, stale]))
+    monkeypatch.setattr(mc, "CACHE", cache)
+    calls = []
+
+    def fake(iv, t0, t1):
+        calls.append(t0)
+        return [(open_ms, 1.5, 1.9, 1.3, 1.8)]
+
+    monkeypatch.setattr(mc, "klines", fake)
+    bars = mc.hourly()
+    assert calls == [open_ms]  # refetched from the unfinished bar, not from the one after it
+    assert bars[-1][4] == 1.8 and len(bars) == 2
+    assert all(b[0] + mc.HOUR <= now_ms for b in json.loads(cache.read_text()))  # unfinished bar never cached
+
+
 if __name__ == "__main__":
     import sys
     import pytest
