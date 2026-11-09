@@ -1,0 +1,1 @@
+{"t": "20261109T012948Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "CHK A 01:30Z done=tf forward logger re-landed 0753ff25d (context-only, no orders; A verified on trunk: test_no_own_costs 6 pass, logger 10 pass, no runtime files committed); CI GREEN after revert b58a", "login": "A"}
