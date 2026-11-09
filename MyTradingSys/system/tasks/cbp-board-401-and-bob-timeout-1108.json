@@ -1,34 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_cbp_run.py"
+  ],
   "created": "2026-11-08T18:28:38Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_cbp_run.py: new case where the injected run returns returncode 1 for fetch_board_data.py makes rebuild_dashboard return the list [fetch_board_data.py] (build still runs) and print a stale-data line; fails on current code; python scripts/dev/test_cbp_run.py green.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "rebuild_dashboard() runs fetch_board_data.py with check=False and ignores the exit code, so a 401 leaves a board built on stale data with no trace; print and return the failure so the run log says which tool failed.",
   "id": "cbp-board-401-and-bob-timeout-1108",
+  "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS, planner-A-1110b): root cause of the 401 and the Bob SOCKS timeout is in CBP_HOME code not in this repo, so this card only makes the failure visible (repo part). Builder: if the fetch tool is reachable on its machine, a JIS-NB/DSA desk run of fetch_board_data.py for the traceback is a separate task, not this one.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T20:18:23Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "CBP: fetch_board_data.py gets HTTP 401 (board built on stale data) and Bob Loukas channel list times out via SOCKS proxy; cbp_run 2026-11-08 18:13Z",
-  "weight": "",
-  "worker": ""
+  "scope_in": [
+    "scripts/dev/cbp_run.py (rebuild_dashboard l.285)",
+    "scripts/dev/test_cbp_run.py"
+  ],
+  "scope_out": [
+    "fetch_board_data.py itself and the Bob Loukas SOCKS channel-list timeout: both live in CBP_HOME (F:/CryptoScrapper), outside this repo",
+    "live tree, publishing"
+  ],
+  "scope_sha": "05d8d613782f",
+  "size": "S",
+  "sources": [
+    "scripts/dev/cbp_run.py l.285-296"
+  ],
+  "state": "ready",
+  "steps": [
+    "write the failing test next to test_rebuild_dashboard_survives_failed_fetch (l.145): run() returns an object with returncode 1 for the fetch tool",
+    "rebuild_dashboard: read returncode, print \"cbp: <tool> exit N; board built on stale data\", collect failed names, return them; build_board still runs; announce_republish unchanged",
+    "run python scripts/dev/test_cbp_run.py"
+  ],
+  "tests": "scripts/dev/test_cbp_run.py: new case (fail-first)",
+  "title": "CBP: a non-zero fetch_board_data.py exit (HTTP 401 on 2026-11-08) is surfaced, not silently built on stale data",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
