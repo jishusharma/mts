@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gate script sync.py. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. CRITICAL protocol (details file): plan review then diff review by a fresh session before ship. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
+  "note": "Gate script sync.py. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. CRITICAL protocol (details file): plan review then diff review by a fresh session before ship. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency | planner-A-1110b 2026-11-10: scoped and complete; waits only on the real review stamp (Lab_Guy/reviewer writes it, planner never).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -31,7 +31,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read tidy(gateway_only) and the claims read with fetch=False",
     "Write the failing remote-only-claim test",

@@ -41,7 +41,7 @@
   "layers": [],
   "live_path": true,
   "mutation_check": "",
-  "note": "",
+  "note": " | planner-A-1110b 2026-11-10: scoped and complete; waits only on the real review stamp (Lab_Guy/reviewer writes it, planner never).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -62,7 +62,7 @@
   "sources": [
     "Lead C probe 2026-11-09: nslookup fapi.binance.com -> 49.44.79.236; DoH 54.192.142.53 -> klines OK; fstream DoH 43.206.66.18 -> 404 (server up); NUC ping FAIL both"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "grep every Binance live host caller (py + java)",
     "write failing tests",

@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Hook files: process-control path, no live-tree touch. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: owned by login A (PLAN_8H lane A4) | LABGUY 2026-11-10 NOT STAMPED. Defect: card step 'Login A alone -> no role' reverses an operator order (role_loader.py:228, 2026-10-26: 'login C alone starts the Supervisor'); keep only the stop_guard host check (supervisor_reason:100) or log an operator decision first. | Planner 2026-11-10 DECISION (OURS): dropped the 'Login A alone -> no role' step (reverses operator order role_loader.py:228, 2026-10-26); host check only.",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Hook files: process-control path, no live-tree touch. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: owned by login A (PLAN_8H lane A4) | LABGUY 2026-11-10 NOT STAMPED. Defect: card step 'Login A alone -> no role' reverses an operator order (role_loader.py:228, 2026-10-26: 'login C alone starts the Supervisor'); keep only the stop_guard host check (supervisor_reason:100) or log an operator decision first. | Planner 2026-11-10 DECISION (OURS): dropped the 'Login A alone -> no role' step (reverses operator order role_loader.py:228, 2026-10-26); host check only. | planner-A-1110b 2026-11-10: scoped and complete; waits only on the real review stamp (Lab_Guy/reviewer writes it, planner never).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -36,7 +36,7 @@
   "sources": [
     "planner note on card 2026-11-07 18:10Z pilot session on login C"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Write the failing stop_guard host test",
     "In supervisor_reason compare the login's host (mts_signal who) with this host, else return None",

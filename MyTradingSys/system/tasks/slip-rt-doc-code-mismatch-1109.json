@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09. | LABGUY 2026-11-10 NOT STAMPED. Defects: fees.py:62 SLIPPAGE_RT_S13=0.0002 mirrors the doc and edge_hunt studies use it (12 bp regime A), so 'code wins, edit the doc' creates a third inconsistency; scope_in lacks fees.py; test_trade_costs.py:42 already pins 0.0004; decide the single source in fees.py (OURS), then align trade_costs and doc. | Planner 2026-11-10 DECISION (OURS): fixed LABGUY defects: fees.py in scope, no value change, doc names both.",
+  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09. | LABGUY 2026-11-10 NOT STAMPED. Defects: fees.py:62 SLIPPAGE_RT_S13=0.0002 mirrors the doc and edge_hunt studies use it (12 bp regime A), so 'code wins, edit the doc' creates a third inconsistency; scope_in lacks fees.py; test_trade_costs.py:42 already pins 0.0004; decide the single source in fees.py (OURS), then align trade_costs and doc. | Planner 2026-11-10 DECISION (OURS): fixed LABGUY defects: fees.py in scope, no value change, doc names both. | planner-A-1110b 2026-11-10: scoped and complete; waits only on the real review stamp (Lab_Guy/reviewer writes it, planner never).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -34,7 +34,7 @@
   "sources": [
     "B census run 2026-11-08"
   ],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "Read fees.py:62 SLIPPAGE_RT_S13 (0.0002), trade_costs.py:51 default 0.0004, test_trade_costs.py:42 pin",
     "DECISION (OURS): no number changes (studies used both); FORMULAS.md s13 line 353 names both: fees.SLIPPAGE_RT_S13=0.0002 is the census allowance, trade_costs.net_return slip_rt=0.0004 is its own default, labelled OURS",

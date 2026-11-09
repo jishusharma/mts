@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "IMPORTANT: reviewer stamp needed | LABGUY 2026-11-10 NOT STAMPED. Defects: ~37 ready cards carry a 'PARKED 2026-11-08' note, so the fix parks them all at once: done_when must state that and the marker grammar (case-sensitive word match so UNPARKED is not PARKED; conditional 'UNPARKED ... only when' in mts-signal-py-acks-view-misses-ack-prese); free-text depends_on is in the title but out of scope.",
+  "note": "IMPORTANT: reviewer stamp needed | LABGUY 2026-11-10 NOT STAMPED. Defects: ~37 ready cards carry a 'PARKED 2026-11-08' note, so the fix parks them all at once: done_when must state that and the marker grammar (case-sensitive word match so UNPARKED is not PARKED; conditional 'UNPARKED ... only when' in mts-signal-py-acks-view-misses-ack-prese); free-text depends_on is in the title but out of scope. | planner-A-1110b 2026-11-10: scoped and complete; waits only on the real review stamp (Lab_Guy/reviewer writes it, planner never).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "B (JIS-NUC, Opus)",
@@ -30,7 +30,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "refined",
   "steps": [
     "fail-first test",
     "parked(card) + filter in ready_cards",
