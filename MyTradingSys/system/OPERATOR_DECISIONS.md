@@ -2148,3 +2148,4 @@ Answer: note 1 written (AUNT_NOTE_2026-11-09.md, name and amounts kept out of th
 
 ## d-whats-next-credit-1109 (2026-11-09)
 Operator: "So what's next?" after seeing 80.26 of 100 USD credit spent. Lead C: last 19.75 USD goes to research only; Malkan count already done (best arm +0.10 R, 0.9 SE, no edge) so its context-only paper alert starts on the credit now (job malkan-fwd-1109, Sonnet, cap 6 USD); Tom swing extract waits for the NUC Gemini lane (YouTube); login A takes machinery cards (sister-signals fix, background-shell bug, broadcast hygiene). Exchange advice for his own buys: CoinSwitch main, CoinDCX optional second account.
+Housekeeping 2026-11-09 (Lead C): jis-nb-trunk held an 11-07 gemini-queue commit (554a8c9b6, card conflict-marker repair) that never shipped; trunk already had the same fix, merged with trunk's side so the stop guard clears.
