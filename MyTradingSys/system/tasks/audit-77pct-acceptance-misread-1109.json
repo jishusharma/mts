@@ -1,10 +1,11 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T10:02:07Z",
   "commands": [],
   "created": "2026-11-08T18:45:50Z",
   "depends_on": [],
-  "done_when": "AUDIT_AND_COURSE_CORRECTION.md and auction-plan-testnet-forward-1108 contain no '77% continuation' / '77% Continuation' win-rate phrasing; RESULT.md shows the 44% Event R next to the Dalton 80% line; grep -rn '77% continuation' MyTradingSys/research/tom_fabio_course_correction_2026-11-07 MyTradingSys/system/tasks returns nothing",
+  "done_when": "AUDIT_AND_COURSE_CORRECTION.md contains no '77% continuation' phrasing (grep -c returns 0); RESULT.md shows the 44% Event R next to the Dalton 80% line; auction-plan-testnet-forward-1108 title does not call 77% a win rate. Docs scope only: grep covers those two research docs and that one card file, not the tasks dir (this card quotes the phrase)",
   "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
@@ -13,6 +14,12 @@
   "id": "audit-77pct-acceptance-misread-1109",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped on trunk: ea192db09 (AUDIT restated), 5763491d5 (RESULT 44% beside 77% res",
+      "ref": "b77171002",
+      "utc": "2026-11-09T10:02:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -31,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: docs restated, placebo tracked in its own card",
   "note": "MERGED from tf-acceptance-77-label-placebo-1109. Refined 2026-11-09 (planner).",
   "prio": 2,
   "refine_tries": 0,
@@ -40,7 +48,12 @@
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
     "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
   ],
-  "result": "",
+  "result": "Already shipped on trunk: ea192db09 (AUDIT restated), 5763491d5 (RESULT 44% beside 77% restatement), f3288302f (auction card title); grep -c '77% continuation' AUDIT = 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
     "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
@@ -53,13 +66,14 @@
   "sources": [
     "REVIEW_FABLE.md row 48 and line 75"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -n '77' in AUDIT_AND_COURSE_CORRECTION.md (lines 10,104,142 and the mermaid node) and rewrite each as: 'accepted below VAL, then trades a further half VA width lower same day 77% (descriptive drift, no fees, no placebo; census ACCEPTED at 1R = -0.096 R gate-pass, n=2798)'",
     "tasks.py list --state ready then show the 1108 auction-plan testnet-forward card (grep -l 'auction-plan-testnet' in system/tasks): its title must not call 77% a continuation win rate; any scenario_ledger row uses the accept80 wording; add 'kill at 30 trades net R <= 0' only if it has no failure rule; edit via tasks.py fill",
     "RESULT.md: add one line next to the 44% Event R: 'Dalton 80% rule on BTC = 44% [40..49], n=493' and point to the placebo card",
     "tasks.py done audit-77pct-acceptance-misread-1109 --result '<files changed>' --next ...; ship"
   ],
+  "taken": "2026-11-09T10:02:07Z",
   "tests": "grep -c '77% continuation' AUDIT_AND_COURSE_CORRECTION.md returns 0 after, and >=1 before the edit (fail-first by grep, doc-only card)",
   "title": "AUDIT_AND_COURSE_CORRECTION.md and card auction-plan-testnet-forward-1108 quote accept80 77 pct as continuation win rate; RESULT.md: half VA width drift, descriptive, no fees; census ACCEPTED at 1R = -0.096 R; restate both and the scenario_ledger row",
   "weight": "ROUTINE",
