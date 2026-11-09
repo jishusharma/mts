@@ -63,6 +63,16 @@ class Touch(unittest.TestCase):
         self.assertEqual([x["level"] for x in st["since_brief"]], [73_500.0])
 
 
+class OneConstant(unittest.TestCase):
+    def test_tolerance_equals_analyst_levels(self):
+        import importlib.util
+        root = Path(__file__).resolve().parents[4]
+        spec = importlib.util.spec_from_file_location("al_for_tol", root / "scripts" / "dev" / "analyst_levels.py")
+        al = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(al)
+        self.assertEqual(lt.TOUCH_TOL, al.TOUCH_TOL)
+
+
 class Poll(unittest.TestCase):
     def run_poll(self, d, fetch, levels=lambda now: LEVELS, now=None):
         return lt.poll(fetch, levels, Path(d) / "st.json", Path(d) / "alerts", Path(d) / "toasts.jsonl", now or T + 90_000)
