@@ -225,6 +225,4 @@ MyTradingSys/research/volume_2026-10-09/run_v2.py,21,COST,2,other,n/a,both,cost 
 MyTradingSys/research/volume_2026-10-09/run_v3.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v4.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py,39,COST10,2,other,round_trip,taker,cost in wt_extreme_cross_volmatch_2026-11,1,assign,COST10 = 2 * fees.BINANCE_TAKER * 100.0       # SOURCED fees.py: Binance USD-M taker both legs; % round trip
-MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h1-spinning-top-7star/spinning_top.py,33,FEE_PER_SIDE,0.0005,fraction,per_side,taker,fee in edge_hunt,0,assign,FEE_PER_SIDE = 0.0005  # fees.py DERIBIT_TAKER = BINANCE_TAKER (regime A)
-MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h1-spinning-top-7star/spinning_top.py,34,SLIP_RT_BPS,2.0,bp,round_trip,n/a,slip in edge_hunt,0,assign,SLIP_RT_BPS = 2.0      # PLAN s5 / FORMULAS s13
-MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h1-spinning-top-7star/spinning_top.py,35,FEE_RT_BPS,2,bp,round_trip,taker,fee in edge_hunt,0,assign,FEE_RT_BPS = 2 * FEE_PER_SIDE * 1e4 + SLIP_RT_BPS   # 12 bps round trip
+MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h1-spinning-top-7star/spinning_top.py,37,RT_EXTRA_BPS,2.0,bp,round_trip,n/a,slip in edge_hunt,1,assign,"RT_EXTRA_BPS = 2.0     # round-trip slippage allowance in bp, PLAN s5 / FORMULAS s13 (fees.py has no slippage constant)"
