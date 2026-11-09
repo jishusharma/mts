@@ -417,6 +417,9 @@ def cmd_boot(a):
         # NEXT_SESSION Q lines
         qs = open_q_lines(read_at(work, NEXT_SESSION, False), me)
         print(f"open_q: {len(qs)} for {me} or any")
+        pend = ship_pending(work)
+        print("ship_pending:", len(pend), "commit(s) not on origin/" + TRUNK)
+
         for q in qs:
             print("  " + (q if len(q) <= 260 else q[:257] + "..."))
         # news gaps
@@ -565,6 +568,12 @@ def cmd_edit(a):
 
 
 # ------------------------------------------------------------------ commit
+def ship_pending(root):
+    out = git(root, "log", "--oneline", "origin/" + TRUNK + "..HEAD", check=False)[1]
+    return [l.strip() for l in out.splitlines() if l.strip()]
+
+
+
 def porcelain(root):
     """[(xy, path)] of `git status` with every untracked file listed; renames report the new path."""
     rc, out, _ = git(root, "status", "--porcelain=v1", "-z", "--untracked-files=all")
@@ -641,6 +650,10 @@ def cmd_commit(a):
     print(f"commit: {sha} on {branch or '(detached)'}")
     print(f"session: {session}")
     print("NEXT: python scripts/dev/sync.py ship   (this tool never pushes)")
+    pend = ship_pending(root)
+    if pend:
+        print("SHIP OWED:", len(pend), "commit(s) not on origin/" + TRUNK)
+
     return 0
 
 

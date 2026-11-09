@@ -1,39 +1,67 @@
 {
- "approved_by": "",
- "asks": "",
- "commands": [],
- "created": "2026-11-08T18:45:50Z",
- "depends_on": [],
- "done_when": "",
- "est_turns": null,
- "formula_id": "",
- "formula_ids": [],
- "from_inbox": "",
- "goal": "",
- "id": "audit-77pct-acceptance-misread-1109",
- "lane": "HAIKU",
- "layers": [],
- "live_path": false,
- "mutation_check": "",
- "note": "MERGED from tf-acceptance-77-label-placebo-1109: add a placebo for the 77% (random day, same half-VA-width touch) and put the 44% Event R next to Trade 2's 'Dalton 80%' line (RESULT.md:9).",
- "prio": 2,
- "refine_tries": 0,
- "refined_by": "",
- "refs": [
-  "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
-  "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
- ],
- "result": "",
- "scope_in": [],
- "scope_out": [],
- "size": "",
- "sources": [
-  "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
- ],
- "state": "raw",
- "steps": [],
- "tests": "",
- "title": "AUDIT_AND_COURSE_CORRECTION.md and card auction-plan-testnet-forward-1108 quote accept80 77 pct as continuation win rate; RESULT.md: half VA width drift, descriptive, no fees; census ACCEPTED at 1R = -0.096 R; restate both and the scenario_ledger row",
- "weight": "",
- "worker": ""
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T18:45:50Z",
+  "depends_on": [],
+  "done_when": "AUDIT_AND_COURSE_CORRECTION.md and auction-plan-testnet-forward-1108 contain no '77% continuation' / '77% Continuation' win-rate phrasing; RESULT.md shows the 44% Event R next to the Dalton 80% line; grep -rn '77% continuation' MyTradingSys/research/tom_fabio_course_correction_2026-11-07 MyTradingSys/system/tasks returns nothing",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Restate the '77% continuation' claim everywhere it is quoted as a win rate: accept80 Event A is a half-VA-width same-day drift, descriptive, no fees; census ACCEPTED at 1R is -0.096 R net (n=2798).",
+  "id": "audit-77pct-acceptance-misread-1109",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Tom & Fabio Layers: End-to-End Audit, Course Correction, MTF Auction Context Engine, and 4",
+      "ref": "9358461e241c",
+      "utc": "2026-11-07T18:23:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "9358461e241c Tom & Fabio Layers: End-to-End Audit, Course Correction, MTF Auction Context ",
+      "ref": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+      "utc": "2026-11-07T18:23:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "MERGED from tf-acceptance-77-label-placebo-1109. Refined 2026-11-09 (planner).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T04:53:29Z",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
+  ],
+  "scope_out": [
+    "any code; any new backtest (placebo is card placebo-for-the-77-acceptance-claim-rand)"
+  ],
+  "scope_sha": "9358461e241c",
+  "size": "S",
+  "sources": [
+    "REVIEW_FABLE.md row 48 and line 75"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep -n '77' in AUDIT_AND_COURSE_CORRECTION.md (lines 10,104,142 and the mermaid node) and rewrite each as: 'accepted below VAL, then trades a further half VA width lower same day 77% (descriptive drift, no fees, no placebo; census ACCEPTED at 1R = -0.096 R gate-pass, n=2798)'",
+    "tasks.py list --state ready then show the 1108 auction-plan testnet-forward card (grep -l 'auction-plan-testnet' in system/tasks): its title must not call 77% a continuation win rate; any scenario_ledger row uses the accept80 wording; add 'kill at 30 trades net R <= 0' only if it has no failure rule; edit via tasks.py fill",
+    "RESULT.md: add one line next to the 44% Event R: 'Dalton 80% rule on BTC = 44% [40..49], n=493' and point to the placebo card",
+    "tasks.py done audit-77pct-acceptance-misread-1109 --result '<files changed>' --next ...; ship"
+  ],
+  "tests": "grep -c '77% continuation' AUDIT_AND_COURSE_CORRECTION.md returns 0 after, and >=1 before the edit (fail-first by grep, doc-only card)",
+  "title": "AUDIT_AND_COURSE_CORRECTION.md and card auction-plan-testnet-forward-1108 quote accept80 77 pct as continuation win rate; RESULT.md: half VA width drift, descriptive, no fees; census ACCEPTED at 1R = -0.096 R; restate both and the scenario_ledger row",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

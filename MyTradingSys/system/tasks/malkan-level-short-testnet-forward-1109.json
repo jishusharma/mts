@@ -1,36 +1,63 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/rsi/test_malkan_level_short_live.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
   "created": "2026-11-08T20:28:34Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_malkan_level_short_live.py green and shown failing on a stub; run_all_tests.py --quick green; live_runner_cli registers the BTC 4h entry with no auto_trader or order path touched (git diff --stat shows neither file); FORWARD_PREREG.md pins the arm and the 30-trade kill; commit Result: parity batch==incremental + deploy request",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Wire the SOURCED-window Malkan level short (div 3-10 close arm, BTC 4h) into the live runner as a context-only alert plus journaled paper outcome: no order, no auto_trader entry. Forward data is the only clean test left (sealed windows burned).",
   "id": "malkan-level-short-testnet-forward-1109",
   "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/krown-s8-4h-testnet-build",
+      "ref": "31e9c70b85fa",
+      "utc": "2026-11-09T02:20:17Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "B 2026-11-08: the count behind this card (61b035f47) read the sealed 2024-07+ windows (holdout_reads.csv: BURNED), so forward testnet data is the only clean test left. A parallel DEV-only count by C (11defa41f, reverted for CI) gave n=17, +0.245R at 1R, CI includes 0. Context-only run; kill at 30 trades net R <= 0.",
+  "note": "Refined 2026-11-09 (planner). Context-only: alert + paper R only, so no order path and no live-path restart/balance tests beyond the no-repaint test. Kill at 30 trades net R <= 0. Count: n=126 +0.10 R, 0.9 SE (REPORT.md). live_path left false (alert-only, no order path); a live_path flag would need a real review stamp.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T04:54:40Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "malkan-level-short-4h-count-1109 REPORT.md"
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/malkan_level_short_live.py",
+    "MyTradingSys/backtest/layers/rsi/test_malkan_level_short_live.py",
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+    "MyTradingSys/research/malkan_level_shorts_2026-11-09/FORWARD_PREREG.md"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "auto_trader, exits/accounts config, promoted_setups, any order, deploy, restart, .mts_live (builder ships code; deploy is a coordinator request per the runbook)"
+  ],
+  "scope_sha": "31e9c70b85fa",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/malkan_level_shorts_2026-11-09/REPORT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "FORWARD_PREREG.md: pin arm = div_window (3,10), price_mode close, layers per the layer docstring, target 2R, 60-bar stop, fee BINANCE_TAKER; FAIL rule = after 30 closed trades net R <= 0 (note: operator-set, OURS); sample count n=126 +0.10 R per the count",
+    "malkan_level_short_live.events(bars4h, bars1d, bars1w): import signals() from malkan_level_short (copy no logic), return the last CLOSED bar signal in the runner event shape; fail closed (no signal) if HTF history is short",
+    "Register BTCUSDT 4h in live_runner_cli like the krown s8 entry (make_history_layer, HIST_NEED_BARS sized for the 360-bar level lookback + 14d weekly RSI), params_id malkan_level_short_4h_div3_10_2026-11-09, context-only (alert, no order)",
+    "Paper outcome: reuse outcome() on later closed bars and append stop/target/R net to the journal; no exchange call",
+    "Commit Result:/Next:; end the card with a deploy request (DEPLOY_RUNBOOK.md) naming the files"
+  ],
+  "tests": "test_malkan_level_short_live.py: batch signals() on the 4h history == incremental one-bar-at-a-time feed (no repaint); short HTF history gives no signal; the 5-layer C3 bar (10-22) fires once; each new test run failing against a stub events() returning []",
   "title": "Testnet forward, context-only: Malkan level short div 3-10 close arm on BTC 4h (count: n=126, +0.11R net, not significant); kill at 30 trades net R <= 0",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

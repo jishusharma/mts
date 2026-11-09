@@ -4,9 +4,10 @@ Oracle A  = e2_run.signals + e2_run.stop_for on the committed BTCUSDT 4h DEV kli
 Candidate B = krown_live.s8_events(bars in the runner's klines_to_bars shape).  PASS iff A == B (0 mismatches, diff printed).
 
 Contract the build card (krown-s8-4h-testnet-build) must satisfy, in MyTradingSys/backtest/layers/krown/krown_live.py:
-  s8_events(bars) -> [alert dict]   bars = [{"t","o","h","l","c","v","tbv"}], closed bars only; alert =
-      {layer:"krown", sub:"s8_break", event:"S8", tf:"4h", t_close:<signal bar OPEN ms>, side:"long"|"short",
-       entry_price:<signal close>, stop:<far side of bars i-9..i>, bbwp:<float>}
+  s8_events(bars) -> [runner event]   bars = [{"t","o","h","l","c","v","tbv"}], closed bars only; event =
+      {t:<signal bar OPEN ms>, event:"S8", side:"long"|"short", entry_price:<signal close>, stop:<far side of bars i-9..i>,
+       bbwp:<float>}; the test turns each event into the alert the runner writes with alert_emitter.format_alert
+      (layer "krown", sub "s8_break", tf "4h": t -> t_close).
   decide(alert, mark, position_flat) -> "take" | "skipped_busy" | "skipped_floor"
       mark = last price at decision time (the parity test passes the next bar's open); floor = |mark-stop|/mark < 0.0056.
 Import failure = FAIL (never skip). Reads only fixture bars < 2024-07-01; run: python -m unittest test_s8_forward_parity -v
@@ -68,6 +69,11 @@ def diff_rows(a, b):
     return sorted(a - b) + sorted(b - a)
 
 
+def emit(live, bars):
+    from MyTradingSys.backtest.layers.alerts.alert_emitter import format_alert
+    return [format_alert("krown", "s8_break", "4h", ev, "s8_4h_r7") for ev in live.s8_events(bars)]
+
+
 def import_live():
     import krown_live  # ImportError propagates: the test FAILS, never skips
     return krown_live
@@ -124,7 +130,7 @@ class LiveParity(unittest.TestCase):
     def setUpClass(cls):
         cls.rows = load_bars()
         cls.live = import_live()                         # ImportError = FAIL
-        cls.alerts = cls.live.s8_events(to_runner_bars(cls.rows))
+        cls.alerts = emit(cls.live, to_runner_bars(cls.rows))
         cls.A = oracle_set(cls.rows)
         cls.B = candidate_set(cls.alerts)
 
@@ -152,7 +158,7 @@ class LiveParity(unittest.TestCase):
         inc = set()
         for k in range(n - 299, n + 1):                  # newest bar index k-1; only events ON the newest bar count
             newest = bars[k - 1]["t"]
-            inc |= {(a["t_close"], a["side"], a["stop"]) for a in self.live.s8_events(bars[:k]) if a["t_close"] == newest}
+            inc |= {(a["t_close"], a["side"], a["stop"]) for a in emit(self.live, bars[max(0, k - 1500):k]) if a["t_close"] == newest}
         self.assertEqual(diff_rows(batch, inc), [], "incremental run differs from batch (look-ahead or repaint)")
 
     def test_layer_signal_checks_and_skip_counts(self):

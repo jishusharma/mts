@@ -16,6 +16,7 @@ public class BinanceClient implements HistoricalSource {
 
     public BinanceClient() {
         this.client = new OkHttpClient.Builder()
+                .dns(BinanceDoh.instance())
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
