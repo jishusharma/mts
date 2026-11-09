@@ -6,14 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-09T01:09:39Z",
-    "misses": 41,
+    "folded": "2026-11-09T01:03:51Z",
+    "misses": 33,
     "reads": [
       "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
       "scripts/dev/run_all_tests.py",
-      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py",
-      "scripts/dev/run_extra_tests.py",
-      "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T06/test_cost_inventory.py"
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py"
     ],
     "session": "agent-a5e896f16457a1493"
   },
