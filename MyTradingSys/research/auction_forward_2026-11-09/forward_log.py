@@ -36,7 +36,6 @@ KILL_N = 30
 WAIT_BARS = 3
 MIN_TARGET_R = 2.5
 MAX_HOLD_BARS = 48
-SWEEP_PAD = 5.0  # OURS: stop pad beyond the sweep extreme, in 1/10000 of price
 FEE_RT_BPS = (FEES_DERIBIT["entry"] + FEES_DERIBIT["stop"]) * 10000.0  # maker entry + taker stop, worst case
 DEFAULT_PATH = Path(__file__).resolve().parent / "runtime" / "events.jsonl"
 
@@ -93,8 +92,8 @@ def simulate_trade(plan, bars_after, half_price=None, target_price=None, wait_ba
 
 
 def build_event_row(context, interaction, entry_price, targets, bars_after, ts_ms, level_family,
-                    delta=None, sweep_pad=SWEEP_PAD):
-    plan = _ac.build_auction_trade_plan(context, interaction, entry_price, targets, stop_buffer_bps=sweep_pad,
+                    delta=None, stop_buffer_bps=5.0):
+    plan = _ac.build_auction_trade_plan(context, interaction, entry_price, targets, stop_buffer_bps=stop_buffer_bps,
                                         fee_rt_bps=FEE_RT_BPS, min_net_rr=MIN_TARGET_R)
     row = {
         "ts_ms": int(ts_ms), "session": session_block(ts_ms), "level_family": level_family,
