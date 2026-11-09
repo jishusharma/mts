@@ -90,6 +90,33 @@
     return null;
   }
 
-  var api = { GRID: GRID, P: P, foldK: foldK, rowsFor: rowsFor, read: read, grid: grid, setup: setup };
+  // WaveTrend lane (operator 2026-11-10: 4h crosses come too often to use; crosses on 1m/2m/3m time the move, 15m/30m are the frame,
+  // 4h is context). Last nShow bars of wt1/wt2, the cross marks (+1 up, -1 down; strong when wt1 is beyond +-hot at the cross, as in
+  // LazyBear's WT_CROSS: 53 = his overbought/oversold level 2, SOURCED), volume and taker delta per bar, and the last cross in words.
+  var WT_HOT = 53;   // SOURCED: LazyBear WaveTrend obLevel2 / osLevel2
+  function lane(TFK, tfName, nShow) {
+    var tf = GRID.filter(function (g) { return g[0] === tfName; })[0]; if (!tf) return null;
+    var k = rowsFor(TFK, tf); if (!k || k.length < P.minBars) return null;
+    var t = [], h = [], l = [], c = [];
+    k.forEach(function (r) { t.push(+r[0]); h.push(+r[2]); l.push(+r[3]); c.push(+r[4]); });
+    var w = A.wavetrend(t, h, l, c, tf[1], P.wtWarm), n = k.length, from = Math.max(0, n - (nShow || 60)), out = [], lastX = null;
+    for (var i = from; i < n; i++) {
+      var v = +k[i][5], b = +k[i][9], x = w.event[i];
+      out.push({ t: t[i], wt1: w.wt1[i], wt2: w.wt2[i], x: x, strong: x !== 0 && Math.abs(w.wt1[i]) >= WT_HOT && sgn(w.wt1[i]) === -x, vol: v, delta: isFinite(v) && isFinite(b) ? 2 * b - v : NaN });
+    }
+    for (i = n - 1; i >= 0; i--) if (w.event[i]) { lastX = { side: w.event[i], ago: n - 1 - i, wt1: w.wt1[i], strong: Math.abs(w.wt1[i]) >= WT_HOT && sgn(w.wt1[i]) === -w.event[i] }; break; }
+    var a = w.wt1[n - 1], b2 = w.wt2[n - 1];
+    return { tf: tfName, ms: tf[1], bars: out, wt1: a, wt2: b2, side: isFinite(a) && isFinite(b2) ? sgn(a - b2) : null, zone: !isFinite(a) ? null : a >= WT_HOT ? 'hot' : a <= -WT_HOT ? 'cold' : 'mid', last: lastX };
+  }
+  // One line per lane, plain words: "▲ crossed up 2 bars ago from cold (strong)".
+  function laneWords(L) {
+    if (!L) return 'not enough candles yet';
+    var z = L.zone === 'hot' ? ', overbought' : L.zone === 'cold' ? ', oversold' : '';
+    if (!L.last) return (L.side === 1 ? 'rising' : L.side === -1 ? 'falling' : 'flat') + z;
+    var s = L.last.side === 1 ? '▲ crossed up ' : '▼ crossed down ';
+    return s + (L.last.ago === 0 ? 'this bar' : L.last.ago + ' bar' + (L.last.ago === 1 ? '' : 's') + ' ago') + (L.last.strong ? (L.last.side === 1 ? ' from oversold' : ' from overbought') : '') + z;
+  }
+
+  var api = { GRID: GRID, P: P, WT_HOT: WT_HOT, foldK: foldK, rowsFor: rowsFor, read: read, grid: grid, setup: setup, lane: lane, laneWords: laneWords };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAPULSE = api;
 })(typeof window !== 'undefined' ? window : this);

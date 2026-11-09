@@ -129,6 +129,39 @@ def test_positions_subtitle_in_plain_words():
     assert "Binance" in m.group(1)
 
 
+def _vee(n_down=100, n_up=5):
+    """1m bars falling 0.5 a bar, the last 5 falls 1.5 a bar, then rising 0.5 a bar. A steady fall drives wt1 to its floor: esa trails
+    price by slope*(1-a1)/a1 and dev equals that same gap, so ci = -1/0.015 = -66.7, under -53 (LazyBear oversold 2). The sharper last
+    5 bars push the gap faster than dev, so wt1 dips under its 4-bar average (a cross needs a side to flip FROM; equal lines are no
+    side). The first up bar only slows wt1 (-76.3, still under wt2 -75.5); the second lifts it over -> up cross 3 bars before the end, at
+    wt1 -74, from oversold (numbers from the run, the sign and zone from the reasoning above)."""
+    c, rows = 200.0, []
+    for i in range(n_down + n_up):
+        c += (-1.5 if i >= n_down - 5 else -0.5) if i < n_down else 0.5
+        rows.append(kl(T0 + i * 60_000, c, 1 if i >= n_down else -1))
+    return rows
+
+
+def test_wavetrend_lane_cross_from_oversold():
+    # operator 2026-11-10: WaveTrend crosses on 1m/2m/3m time the move; 15m/30m the frame; 4h context
+    L = _node("lane", {"1m": _vee()}, "1m", 60)
+    assert len(L["bars"]) == 60 and L["tf"] == "1m"
+    assert L["last"]["side"] == 1 and L["last"]["ago"] == 3 and L["last"]["strong"] is True
+    assert L["last"]["wt1"] < -53
+    # the sharp leg first flips wt1 under wt2 (a down cross deep in oversold: NOT strong, strong = a turn back out of the zone), then the up cross
+    xs = [(b["x"], b["strong"]) for b in L["bars"] if b["x"]]
+    assert xs == [(-1, False), (1, True)], xs
+    assert L["bars"][-1]["delta"] == 1
+    assert _node("laneWords", L).startswith("▲ crossed up 3 bars ago from oversold")
+
+
+def test_wavetrend_lane_folds_2m_and_no_data():
+    L = _node("lane", {"1m": _vee(200, 10)}, "2m", 60)
+    assert L["ms"] == 120_000 and len(L["bars"]) == 60 and L["bars"][1]["t"] - L["bars"][0]["t"] == 120_000
+    assert _node("lane", {"1m": _vee()[:30]}, "1m", 60) is None
+    assert _node("laneWords", None) == "not enough candles yet"
+
+
 def test_long_setup_at_low():
     g = {"hi": 0.4, "rows": [{"tf": "7m", "r": {"div": {"rsi": 1, "wt": 1, "cvd": 0}}}]}
     s = _node("setup", g, LAD, 73800, "WAIT")

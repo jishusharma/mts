@@ -129,6 +129,20 @@
       s += '<line x1="' + xx + '" x2="' + xx + '" y1="' + y(h) + '" y2="' + y(l) + '" class="hm-wk ' + col + '"/>' +
            '<rect x="' + (xx - cw * 0.36) + '" y="' + Math.min(y(o), y(c)) + '" width="' + (cw * 0.72) + '" height="' + Math.max(1, Math.abs(y(o) - y(c))) + '" class="hm-bd ' + col + '"/>';
     });
+    // volume (operator 11-10): Binance spot 5m bars in the bottom band, green = buyers took more (taker buy > sell), red = sellers;
+    // yellow line = cumulative delta (CVD) over the bars shown. Same time axis as the candles.
+    var kv = (ctx.k5 || []).filter(function (r) { return +r[0] >= t0; });
+    if (kv.length > 3) {
+      var vb = B - 2, vh = (B - T) * 0.16, vmax = 0, cum = 0, cmin = 0, cmax = 0, pts = [];
+      kv.forEach(function (r) { vmax = Math.max(vmax, +r[5]); cum += 2 * +r[9] - +r[5]; cmin = Math.min(cmin, cum); cmax = Math.max(cmax, cum); pts.push([x(+r[0]), cum]); });
+      s += '<text x="' + (L + 2) + '" y="' + (vb - vh - 3) + '" class="hm-vlt">Volume 5m (green buyers, red sellers) · yellow = CVD</text>';
+      kv.forEach(function (r) {
+        var hh = vmax ? +r[5] / vmax * vh : 0, d = 2 * +r[9] - +r[5];
+        s += '<rect x="' + (x(+r[0]) - cw * 0.36) + '" y="' + (vb - hh) + '" width="' + (cw * 0.72) + '" height="' + hh + '" class="hm-vb ' + (d >= 0 ? 'up' : 'down') + '"/>';
+      });
+      var cy2 = function (v) { return vb - (cmax > cmin ? (v - cmin) / (cmax - cmin) : 0.5) * vh; };
+      s += '<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + cy2(p[1]).toFixed(1); }).join(' ') + '" class="hm-cvd"/>';
+    }
     // now line + tag
     var py = y(md.px);
     s += '<line x1="' + L + '" x2="' + R + '" y1="' + py + '" y2="' + py + '" class="hm-now"/>';
@@ -204,6 +218,31 @@
     var ev = ctx.ev ? '<span class="hm-ev">' + esc(ctx.ev.name) + ' in ' + esc(ctx.ev.inTxt) + '</span>' : '';
     return '<div class="hm-card hm-news"><div class="hm-h">News, last hour <span class="hm-sub">▲ good for BTC ▼ bad; bar = weight 0-10</span>' + ev + '</div>' + rows + '</div>';
   }
+  // WaveTrend lanes (operator 11-10): 1m 2m 3m = timing crosses, 15m 30m = the frame, 4h = context only (its crosses are too frequent
+  // to act on, so no dots there). Green line wt1, red line wt2 (TradingView WT_CROSS colours); dot = cross, big dot = cross from
+  // overbought/oversold (beyond +-53). Each lane keeps its own time scale: the last 60 bars of that timeframe.
+  var LANES = [['1m', 'timing'], ['2m', 'timing'], ['3m', 'timing'], ['15m', 'frame'], ['30m', 'frame'], ['4h', 'context']];
+  function wtLanes(ctx, W, H) {
+    var PU = (typeof module !== 'undefined' && module.exports) ? require('./pulse.js') : root.LAPULSE;
+    var lanes = ctx.lanes || {}, lh = H / LANES.length, L = 52, R = W - 300, s = '<svg class="hm-wts" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" style="height:' + H + 'px">';
+    s += '<text x="4" y="11" class="hm-wth">WaveTrend</text>';
+    LANES.forEach(function (ln, i) {
+      var top = i * lh, mid = top + lh / 2, Lz = lanes[ln[0]], sc = (lh / 2 - 2) / 70, yv = function (v) { return mid - Math.max(-70, Math.min(70, v)) * sc; };
+      if (i && LANES[i - 1][1] !== ln[1]) s += '<line x1="0" x2="' + W + '" y1="' + top + '" y2="' + top + '" class="hm-wtsep"/>';
+      s += '<text x="4" y="' + (mid + 4) + '" class="hm-wtl">' + ln[0] + '</text><text x="4" y="' + (mid + 15) + '" class="hm-wtk">' + ln[1] + '</text>';
+      s += '<line x1="' + L + '" x2="' + R + '" y1="' + mid + '" y2="' + mid + '" class="hm-wt0"/>';
+      [WTH(PU), -WTH(PU)].forEach(function (b) { s += '<line x1="' + L + '" x2="' + R + '" y1="' + yv(b) + '" y2="' + yv(b) + '" class="hm-wtb"/>'; });
+      var bars = Lz && Lz.bars || [], nb = bars.length, xw = (R - L) / Math.max(nb, 1), xi = function (j) { return L + (j + 0.5) * xw; };
+      var line = function (key, cls) { var p = []; bars.forEach(function (b, j) { if (isFinite(b[key])) p.push(xi(j).toFixed(1) + ',' + yv(b[key]).toFixed(1)); }); return p.length > 1 ? '<polyline points="' + p.join(' ') + '" class="' + cls + '"/>' : ''; };
+      s += line('wt2', 'hm-w2') + line('wt1', 'hm-w1');
+      if (ln[1] !== 'context') bars.forEach(function (b, j) { if (b.x) s += '<circle cx="' + xi(j) + '" cy="' + yv(b.wt1) + '" r="' + (b.strong ? 4.5 : 2.5) + '" class="hm-wx ' + (b.x > 0 ? 'up' : 'down') + '"/>'; });
+      var words = PU ? PU.laneWords(Lz) : 'pulse.js missing', c = !Lz ? 'dim' : Lz.side === 1 ? 'up' : Lz.side === -1 ? 'down' : 'dim';
+      if (ln[1] === 'context' && Lz) words = (Lz.side === 1 ? 'rising' : Lz.side === -1 ? 'falling' : 'flat') + (Lz.zone === 'hot' ? ', overbought' : Lz.zone === 'cold' ? ', oversold' : '') + ' (context only)';
+      s += '<text x="' + (R + 8) + '" y="' + (mid + 4) + '" class="hm-wtw ' + c + '">' + (Lz && isFinite(Lz.wt1) ? '<tspan class="hm-wtn">' + Math.round(Lz.wt1) + '</tspan> ' : '') + esc(words) + '</text>';
+    });
+    return s + '</svg>';
+  }
+  function WTH(PU) { return PU && PU.WT_HOT || 53; }
   function render(el, ctx) {
     if (!el) return;
     var md = model(ctx), fl = flashes(ctx, md);
@@ -212,7 +251,8 @@
       (md.lad.above[0] ? '<span class="hm-nx down">▲ ' + n0(md.lad.above[0].price) + ' <small>' + esc(md.lad.above[0].name) + ', ' + ((md.lad.above[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (md.lad.below[0] ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 34) + '</div><div class="hm-rail">' + gauge(md) + pulseCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 44 - wh) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + gauge(md) + pulseCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -237,6 +277,11 @@
     '.hm-mon{display:flex;gap:12px;align-items:center}.hm-ar{font-size:22px;text-align:center;line-height:1}.hm-ar small{display:block;font-size:10px;color:var(--dim)}' +
     '.hm-nr{display:grid;grid-template-columns:16px 40px 1fr 30px;gap:6px;align-items:center;font-size:12px;padding:2px 0;border-top:1px solid var(--line)}.hm-ns{height:6px;background:var(--line);border-radius:3px;overflow:hidden}.hm-ns span{display:block;height:100%;background:var(--amber)}.hm-nh{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hm-na{color:var(--dim);text-align:right}.hm-ev{margin-left:auto;font:700 12px system-ui;color:var(--amber);border:1px solid var(--amber);border-radius:10px;padding:0 8px}' +
     '.hm-nid{color:var(--dim);font-size:12px;padding:6px 0}' +
+    '.hm-vb{opacity:.55}.hm-vb.up{fill:var(--up)}.hm-vb.down{fill:var(--down)}.hm-cvd{fill:none;stroke:#facc15;stroke-width:1.5}.hm-vlt{fill:var(--dim);font:11px system-ui}' +
+    '.hm-wts{width:100%;flex:none;border-top:1px solid var(--line)}.hm-wth{fill:var(--dim);font:700 10px system-ui}.hm-wtl{fill:var(--fg);font:700 13px var(--mono,monospace)}.hm-wtk{fill:var(--dim);font:10px system-ui}' +
+    '.hm-wt0{stroke:var(--dim);stroke-width:.5;opacity:.6}.hm-wtb{stroke:var(--down);stroke-width:.5;stroke-dasharray:3 3;opacity:.6}.hm-wtsep{stroke:var(--line);stroke-width:1}' +
+    '.hm-w1{fill:none;stroke:#22c55e;stroke-width:2}.hm-w2{fill:none;stroke:#ef4444;stroke-width:1.5}.hm-wx.up{fill:#22c55e}.hm-wx.down{fill:#ef4444}.hm-wx{stroke:#111;stroke-width:.5}' +
+    '.hm-wtw{font:12px system-ui;fill:var(--fg)}.hm-wtw.up{fill:var(--up)}.hm-wtw.down{fill:var(--down)}.hm-wtn{font:700 12px var(--mono,monospace)}' +
     '#flash{display:none;gap:6px;flex-direction:column}#flash.on{display:flex}#flash .fl{padding:6px 12px;border-radius:6px;font:700 15px system-ui;color:#111;animation:hmfl 1s ease-in-out 6}#flash .fl.up{background:var(--up)}#flash .fl.down{background:var(--down);color:#fff}#flash .fl.amber{background:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }

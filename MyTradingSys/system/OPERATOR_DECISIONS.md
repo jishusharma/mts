@@ -2179,3 +2179,8 @@ He likes the Home page, momentum and live liquidations. Asks:
 3. At today's high with the bias down, the page must flash a short setup (it was silent). Built as a descriptive "SETUP FORMING" flash with reasons, no price/stop/size (brief rule: observation only; conflict logged).
 4. Backtest the read so the coaching is measured: card live-aid-pulse-backtest-1109.
 5. Teach him how to use the liquidation windows.
+
+## 2026-11-10 21Z Live Aid Home: WaveTrend lanes and volume
+- 4h WaveTrend crosses are too frequent to act on. Crosses on 1m/2m/3m time the move, 15m/30m are the frame and 4h is context. Home now draws WT lanes for 1m 2m 3m 15m 30m 4h; the 4h lane has no cross dots.
+- He asked where volume was: Home now draws Binance spot 5m volume bars (green = buyers, red = sellers) plus a CVD line under the candles.
+- Count: MyTradingSys/research/wt_15m_30m_1110/RESULT.md. Plain 15m/30m crosses are a coin flip; the 15m higher low and the zero-line hold tilt price 5-10 bp, at or below fees.

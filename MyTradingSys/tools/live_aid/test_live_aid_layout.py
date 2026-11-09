@@ -121,6 +121,9 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         boxes = page.eval_on_selector_all("#p-home .hm-sest", "ts => ts.map(t => { const b = t.getBoundingClientRect(); return [b.left, b.right]; })")
         boxes.sort()
         assert boxes and all(b[0] >= a[1] - 0.5 for a, b in zip(boxes, boxes[1:])), boxes
+        # operator 2026-11-10: WaveTrend lanes on Home: 1m 2m 3m timing, 15m 30m frame, 4h context
+        lanes = page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.map(t => t.textContent)")
+        assert lanes == ["1m", "2m", "3m", "15m", "30m", "4h"], lanes
         for h in ("#home", "#now", "#usopen", "#news"):
             page.evaluate(f"location.hash = '{h}'"); page.wait_for_timeout(200)
             sc = page.evaluate("[Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), window.innerHeight, getComputedStyle(document.body).overflow]")
