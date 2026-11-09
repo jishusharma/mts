@@ -126,6 +126,16 @@ class BgWatchTest(unittest.TestCase):
                                         "run_in_background": True}, "Command running in background with ID: bok00002.", 5))
         self.assertEqual(self.lines(), [])                          # allowed call, young: nothing
 
+    def test_shell_older_than_30_min_is_listed_young_one_is_not(self):
+        rows = [{"pid": 11, "start": NOW.timestamp() - 12 * 3600, "cmd": "bash -c cat > m.md <<'EOF'"},
+                {"pid": 12, "start": NOW.timestamp() - 5 * 60, "cmd": "bash -c git log"}]
+        got = bg_watch.live_shells(now=NOW.timestamp(), lister=lambda: rows)
+        self.assertEqual([r["pid"] for r in got], [11])
+        out = bg_watch.report_lines(Path(self.tmp.name), root=self.root, now=NOW.timestamp(), lister=lambda: rows)
+        self.assertTrue(any(l.startswith("OLD-SHELL pid 11 720m > 30m") for l in out), out)
+        self.assertFalse(any("pid 12" in l for l in out), out)
+        self.assertEqual(bg_watch.live_shells(60, NOW.timestamp(), lambda: rows), [got[0]])
+
     def test_kind_caps(self):
         k = bg_watch.kind_of
         self.assertEqual(k("Bash", "python scripts/dev/supervisor.py wait --timeout 50m --login C"), ("watcher", 55))
