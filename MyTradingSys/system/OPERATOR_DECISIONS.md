@@ -2179,3 +2179,9 @@ He likes the Home page, momentum and live liquidations. Asks:
 3. At today's high with the bias down, the page must flash a short setup (it was silent). Built as a descriptive "SETUP FORMING" flash with reasons, no price/stop/size (brief rule: observation only; conflict logged).
 4. Backtest the read so the coaching is measured: card live-aid-pulse-backtest-1109.
 5. Teach him how to use the liquidation windows.
+
+## 2026-11-10 21Z Live Aid Positions: all venues, Binance route (operator; health miss)
+Operator: "we already have a workaround [for Binance futures] and it was working ... why just two [venues]? ... list everything" (CoinGlass aggregate).
+Health miss (Lead C): I explained the page label "Binance blocked here" as fact without checking; the DoH fix (runtime/binance_doh.py, d-fix-binance-dns-block-1109) exists but is Python only, and the Live Aid page fetches from the browser, so it never used it. The 11-09 order (item 6 above: aggregate OI+CVD from the big venues, find a route for Binance/OKX) was not delivered; the label was hard-coded.
+Measured 11-10 from JIS-NB (public endpoints, Origin claude.ai): browser-direct OK = Bybit, Deribit, Gate, Hyperliquid; reachable, no CORS = HTX, MEXC; ISP-blocked (000) = Binance fapi, OKX, Bitget, BitMEX, Kraken Futures, BingX.
+Decision: Live Aid session (local_8343982a) makes the label dynamic, adds Gate + Hyperliquid now, and builds a Python poller (binance_doh generalised, public data, fail closed) for the rest, feeding the page. Rule: before explaining a page label to him, check it against the code and the repo's fixes.
