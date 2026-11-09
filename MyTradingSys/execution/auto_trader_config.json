@@ -141,6 +141,10 @@
   "layer:rsi:rsi_events:15m": "BACKTEST_L1_REPORT (backtest/layers/BACKTEST_L1_REPORT.md): PBO 0.79-0.91, overfit; alerts kept for data collection"
  },
  "pre_pipeline_sources": {
+  "layer:krown:": {
+   "reason": "R7 forward test: frozen Krown S8 4h rule on Deribit testnet until a fixed fail rule fires (operator d-krown-4h-testnet-forward-start-1109, FORWARD_PREREG.md); not an edge claim",
+   "review_by": "2026-12-09"
+  },
   "layer:cryptocred:": {
    "reason": "grandfathered pre-pipeline testnet calibration, operator decision pending",
    "review_by": "2026-10-23"

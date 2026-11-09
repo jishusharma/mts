@@ -214,7 +214,7 @@ class TestShippedConfig(unittest.TestCase):
         acc = self.raw["accounts"]
         self.assertFalse([k for k in acc if any(k.startswith(p) for p, _ in NEW_KEYS.values())])
         self.assertFalse([k for k in acc if "failed_msb" in k])
-        self.assertEqual(set(acc.values()) - {"jishu_%d" % i for i in range(1, 22)}, set())
+        self.assertEqual(set(acc.values()) - {"jishu_%d" % i for i in range(1, 22)} - {"krown_s8"}, set())   # krown_s8: R7 forward test own account
 
     def test_new_sources_trade_on_the_shared_catch_all_account(self):
         for prefix, tf in NEW_KEYS.values():

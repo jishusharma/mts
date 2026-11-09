@@ -155,11 +155,14 @@ class PromotionGateTest(unittest.TestCase):
     def test_shipped_list_is_explicit_and_complete(self):
         raw = json.loads(SHIPPED.read_text(encoding="utf-8"))
         gf = raw["pre_pipeline_sources"]
-        # layer:krown: (R7 forward test) is promoted through promoted_setups.json, never grandfathered (FORWARD_PREREG.md s4)
-        want = {k for k in list(raw["size_overrides"]) + list(raw["accounts"]) if k not in ("layer:", "layer:krown:")} | {"tom"}
+        want = {k for k in list(raw["size_overrides"]) + list(raw["accounts"]) if k != "layer:"} | {"tom"}
         self.assertEqual(set(gf), want)
         self.assertNotIn("layer:", gf)                                    # the catch-all would defeat default-deny
         for k, v in gf.items():
+            if k == "layer:krown:":       # R7 forward test: a promoted_setups entry needs a screen-PASS manifest it cannot have (kill test)
+                self.assertTrue(v["reason"].startswith("R7 forward test"), k)
+                self.assertEqual(v["review_by"], "2026-12-09", k)
+                continue
             self.assertTrue(v["reason"].startswith(("grandfathered pre-pipeline testnet calibration",
                                                     "grandfathered testnet calibration, operator 2026-10-16")), k)
             self.assertEqual(v["review_by"], "2026-10-23", k)

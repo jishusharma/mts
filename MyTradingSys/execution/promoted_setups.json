@@ -1,12 +1,4 @@
 {
  "version": 1,
- "entries": [
-  {
-   "setup_id": "layer:krown:s8_break:4h",
-   "mode": "testnet",
-   "manifest": "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
-   "promoted_at": "2026-11-09",
-   "commit": "34417a1f"
-  }
- ]
+ "entries": []
 }

@@ -3,7 +3,7 @@ No exchange, no subprocess, no real secrets, no order. Run: python -m pytest MyT
 
 Rule under test: alert layer:krown:s8_break:4h -> stop = the event's own stop (percent of entry, 4 dp), target = targets_r x that,
 time exit 100 bars of 4h = 24,000 min, size 100 USD, own account krown_s8 (a missing secret rejects, never the main slot),
-default-deny registry entry mode testnet. Live-path rules: restart state, non-trade balance moves, API errors, fail closed.
+grandfathered by its own pre_pipeline_sources prefix (reason R7, review_by 2026-12-09). Live-path rules: restart state, non-trade balance moves, API errors, fail closed.
 """
 import json
 import sys
@@ -99,18 +99,21 @@ class ExitTest(Base):
 
 
 class PromotionTest(Base):
-    def test_shipped_registry_promotes_it_to_testnet(self):
+    """promoted_setups.json needs a screen-PASS manifest (promote.py verify) that a kill-test forward run cannot have, so the R7
+    source is grandfathered on its own prefix with its own reason; every other layer still defaults to deny."""
+
+    def test_shipped_config_lets_the_krown_source_trade(self):
         self.assertIsNone(at.promotion_reject(SRC, self.cfg))
+        self.assertTrue(self.cfg["pre_pipeline_sources"]["layer:krown:"]["reason"].startswith("R7 forward test"))
 
-    def test_default_deny_without_the_registry_entry(self):
-        empty = self.dir / "empty.json"
-        empty.write_text(json.dumps({"version": 1, "entries": []}), encoding="utf-8")
-        with mock.patch.object(at, "PROMOTED_SETUPS", empty):
-            self.assertIn("unregistered", at.layer_signal(alert(), self.cfg, NOW).get("reject", ""))
+    def test_default_deny_without_the_grandfather_entry(self):
+        c = json.loads(json.dumps(self.cfg))
+        del c["pre_pipeline_sources"]["layer:krown:"]
+        self.assertIn("unregistered", at.layer_signal(alert(), c, NOW).get("reject", ""))
 
-    def test_not_grandfathered_and_other_krown_subs_stay_denied(self):
-        self.assertNotIn("layer:krown:", self.cfg["pre_pipeline_sources"])
-        self.assertIn("unregistered", at.promotion_reject("layer:krown:s5_cross:4h", self.cfg) or "")
+    def test_unrelated_layers_stay_denied_and_registry_stays_empty(self):
+        self.assertIn("unregistered", at.promotion_reject("layer:ichimoku:cloud:4h", self.cfg) or "")
+        self.assertEqual(json.loads((Path(at.PROMOTED_SETUPS)).read_text(encoding="utf-8"))["entries"], [])
 
 
 class AccountTest(Base):
