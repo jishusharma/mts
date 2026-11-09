@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T13:34:12Z",
   "commands": [
     "python scripts/dev/tasks.py list --state raw",
     "python scripts/dev/tasks.py check <id>",
@@ -16,10 +17,18 @@
   "goal": "Keep a stock of scoped cards: 12 raw cards wait (tasks.py list --state raw) and no Claude session has budget to refine them; DSA does the scoping step of TASK_REFINEMENT.md.",
   "id": "dsa-refine-raw-cards-1107",
   "lane": "DSA",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "3 cards refined (never ready): fabio-v3-funding-r-never-called, cycle-bottom-long-testnet-",
+      "ref": "043b4d708",
+      "utc": "2026-11-09T13:34:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "dsa-refine-raw-cards-1107",
   "note": "REVIEWED: Lead C 2026-11-07 T0 scoping only, no numbers. Repeatable: ship Next: dsa-refine-raw-cards-1107 keeps it in the queue while raw cards remain.",
   "prio": 2,
   "refine_tries": 0,
@@ -29,7 +38,12 @@
     "MyTradingSys/system/TASK_REFINEMENT.md",
     "MyTradingSys/system/DSA_DELEGATION.md"
   ],
-  "result": "",
+  "result": "3 cards refined (never ready): fabio-v3-funding-r-never-called, cycle-bottom-long-testnet-trade-1106, dsa-multi-chat-driver-1107; each has goal, 4 scope_in, 3-4 scope_out, 5 steps, done_when, sources, tests or commands; tasks.py lint 1851 OK; 99 refinable cards remain",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks/<raw id>.json via tasks.py fill only",
     "reads: the card refs, TASK_REFINEMENT.md, LAYERS.md"
@@ -42,12 +56,13 @@
   "sources": [
     "operator 2026-11-07 ~17:15Z voice: DSA says it has no tasks; load DSA with review and refinement work, several DSA chats per host driven by Haiku; d-dsa-load-queue-multi-chat-1107"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "sync.py start dsa-refine-<n>; tasks.py list --state raw; pick the 3 oldest by prio",
     "per card: read refs; tasks.py fill <id> --goal --scope-in --scope-out --step --done-when (--command for DSA/JIS-NB lanes); tasks.py check <id>, fix the scoping misses, leave the rest in note",
     "sync.py ship --release <slug> with Result and Next"
   ],
+  "taken": "2026-11-09T13:34:12Z",
   "tests": "",
   "title": "DSA refines 3 raw cards per session: goal, scope, steps, done_when, copy-ready commands; never marks ready, never writes code",
   "weight": "",
