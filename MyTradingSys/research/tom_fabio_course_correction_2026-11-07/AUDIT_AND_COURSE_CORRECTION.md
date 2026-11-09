@@ -7,7 +7,7 @@ Over the past six weeks, MTS built and tested twelve iterations of the **Tom (Au
 Yet during the exact same recent weeks (**October–November 2026**), plain auction theory and order flow on BTC produced clean, high-R trades almost every week:
 1. **2026-10-29 Upper Sweep Short (`81,971 -> 77,910`)**: Sweep of the prior day (`10-28`) `81,823` high into the `10-23` `82,060` daily lower high, with visible red absorption bubbles at `81,800` (CoinGlass Legend shot `a06bae0da88b`) and fast rejection back inside the prior day's Value Area.
 2. **2026-11-04 Range Rotation & Short-Covering Rally (`75,690 -> 81,196`)**: Asia flush below `76,000` (`OI +381 BTC`, `delta -3,279` absorbed by top traders adding longs `1.72 -> 1.92`), reclaiming prior-day VAL (`TOM-2` / `FAB-2v`), followed by a `14:40 UTC` impulse through the low-volume zone to `80.8k`.
-3. **2026-11-05 Lower-High Rejection & Acceptance Below VAL (`80,918 -> 75,208`)**: Failed below the Nov-4 high (`81,196`) inside a 4-week red streak and red Monthly (`1M`) candle below the `20M SMA`, then accepted below prior-day VAL for `2x 30m` bars (`value_area_acceptance` Rule A: **77% continuation** `[72%..81%]`, `n=300`).
+3. **2026-11-05 Lower-High Rejection & Acceptance Below VAL (`80,918 -> 75,208`)**: Failed below the Nov-4 high (`81,196`) inside a 4-week red streak and red Monthly (`1M`) candle below the `20M SMA`, then accepted below prior-day VAL for `2x 30m` bars (`value_area_acceptance` Rule A, accept80 Event A: accepted below VAL, then trades a further half VA width lower same day **77%** `[72%..81%]`, `n=300`; descriptive, OURS count, no fees, no placebo; census ACCEPTED at 1R = -0.096 R gate-pass, n=2798).
 4. **2026-11-06 15:00 UTC `74,810` V-Sweep of Sep-15 `74,961` Daily Low (`74,810 -> 76,416`)**: First touch of a 52-day daily low (`74,961`) + analyst `75,000` cluster, `15.7x` relative 5m volume (`2,411 BTC`), **zero time spent below the level** (2-bar 5m V-sweep reclaiming `74,961` at `75,290`), `knife=False`, structural stop at `74,810` (`-64 bps`, so a `10 bps` taker fee is only `0.15 R`, not `1.43 R`!).
 
 ### Why We Failed (The 5 Root Causes)
@@ -48,7 +48,7 @@ A human auction trader never walks up to a 1-minute chart cold. Before looking a
 flowchart TD
     M["1. Monthly (1M) Candle & Macro Cycle\n• Forming colour (green/red), Open, High, Low\n• Elapsed time τ (e.g. 22% on Nov 7) & Close-Colour Prob P_keep\n• Position vs 20M SMA (Macro Bull above / Macro Bear below)\n• Prior Month High / Low / Close / POC"] --> W["2. Weekly (1w) Candle & Streak\n• Multi-week streak (e.g. R4 = 4 red weeks in Oct 2026)\n• Forming 1w Open, High, Low & elapsed τ\n• Prior Week POC, VAH, VAL, High, Low"]
     W --> D["3. Yesterday (Prior 1d) & Multi-Day Value Area\n• Prior Day Value Area: VAL, POC, VAH (70% vol, $50 bins)\n• Prior Day High / Low & Interior LVNs (Low-Volume Vacuums)\n• Multi-day swing lows/highs (e.g. Sep-15 74,961 low)"]
-    D --> I["4. Level Interaction on 5m / 15m (Acceptance vs. Fast Rejection)\n• ACCEPTED (2x 30m / 6x 5m closes beyond VA edge) -> 77% Continuation!\n• FAST REJECTION (1-bar wick or 2-3 bar V-sweep + Vol >= 3x + No Knife) -> Reclaim Trade!\n• LVN VACUUM -> Fast traverse to next HVN/POC"]
+    D --> I["4. Level Interaction on 5m / 15m (Acceptance vs. Fast Rejection)\n• ACCEPTED (2x 30m / 6x 5m closes beyond VA edge) -> 77% same-day half-VA-width drift (descriptive, no fees)!\n• FAST REJECTION (1-bar wick or 2-3 bar V-sweep + Vol >= 3x + No Knife) -> Reclaim Trade!\n• LVN VACUUM -> Fast traverse to next HVN/POC"]
     I --> T["5. Trade Plan & Fee-Safe Stop Geometry\n• Structural stop beyond sweep extreme (stop >= 40 bps -> fee <= 0.25 R)\n• Target = Nearest Volume Magnet (POC -> Far VA Edge) with Net R:R >= 1.2"]
 ```
 
@@ -101,7 +101,7 @@ From `MyTradingSys/research/btc_cycles_2026-11/btc_daily.csv` and `candle_flip_p
   - Price continued down to **`75,208`** that same UTC day.
 - **Plain Auction Read (`TOM-3` / `accept80.py` Event A — Value Acceptance Outside)**:
   - Here, price did **NOT** reject quickly from VAL (`79,500`); it **spent time (`>= 2x 30m` closes) accepting below VAL**, while the forming Monthly (`1M`) candle flipped red below `78,354`.
-  - Per `value_area_acceptance_2026-11-05/RESULT.md` (`n=300` days), once BTC closes `2x 30m` below prior VAL, it extends at least `0.5x VA width` lower **77% of the time** (`[72%..81%]`).
+  - Per `value_area_acceptance_2026-11-05/RESULT.md` (`n=300` days), once BTC closes `2x 30m` below prior VAL, it extends a further `0.5x VA width` lower the same day in **77%** of the `n=300` days (`[72%..81%]`; accept80 Event A, descriptive, OURS, no fees). This is not a 77% win rate: census ACCEPTED continuation at 1R loses, -0.096 R gate-pass (n=2798).
   - **Crucial Lesson**: A blind level-fader (`vp_pivot_probe.py`) goes *long* at `79,500` and gets run over for `-4,300` pts. A plain auction trader sees **Acceptance (`time_at_level >= 6` bars beyond VAL, zero V-reclaim)** and either **flips short (`va_acceptance_continuation`)** or stands aside on longs!
 
 ### Trade 4: `2026-11-06 15:00 UTC` `74,810` V-Sweep of 52-Day Low (`74,810 -> 76,416`)

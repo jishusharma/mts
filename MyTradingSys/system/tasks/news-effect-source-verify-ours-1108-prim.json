@@ -1,7 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T07:21:03Z",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T07:21:01Z",
+    "misses": 5,
+    "reads": [
+      "MyTradingSys/research/news_effects_2026-11/news_events.csv"
+    ],
+    "session": "agent-a1761a68c3722ffcd"
+  },
   "created": "2026-11-08T03:53:13Z",
   "depends_on": [],
   "done_when": "news_events.csv has 0 rows with verified=N and ts_quality APPROX_INTRADAY unless dropped with a stated reason; check_catalogue.py passes; counts quoted in REPORT.md Gaps",
@@ -14,6 +24,12 @@
   "kind": "build",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already delivered in 8ce5a1c28: 19 own rows primary-sourced, 49 verified=N all UNFIT with ",
+      "ref": "bb3a1efb6",
+      "utc": "2026-11-09T07:21:03Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +48,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: delivered",
   "note": "Planner 2026-11-08. OURS labels stay until verified (SOURCED/OURS rule).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-08T18:20:57Z",
   "refs": [],
-  "result": "",
+  "result": "Already delivered in 8ce5a1c28: 19 own rows primary-sourced, 49 verified=N all UNFIT with reason (incl 9 APPROX_INTRADAY), check_catalogue GREEN, counts in REPORT Gaps",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/news_effects_2026-11/news_events.csv",
     "MyTradingSys/research/news_effects_2026-11/build_events.py",
@@ -53,12 +75,13 @@
   "sources": [
     "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "List verified=N rows (python csv count: 68)",
     "For each, read the primary page (exchange, agency, court) and record minute UTC in build_events.py",
     "Rebuild csv, run check_catalogue.py, update REPORT.md Gaps counts"
   ],
+  "taken": "2026-11-09T07:21:03Z",
   "tests": "check_catalogue.py asserts no verified=N row keeps class_label OURS without a Gaps line; fails on the current csv (68 N rows)",
   "title": "news-effect-source-verify-ours-1108: primary-source minute timestamps for the 68 unverified own-grouping rows",
   "weight": "ROUTINE",

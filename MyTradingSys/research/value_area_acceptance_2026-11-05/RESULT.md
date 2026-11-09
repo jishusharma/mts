@@ -12,4 +12,6 @@ Method (`accept80.py`): prior UTC day value area = 70% of 1m volume around the P
 
 Read: the 80% rule is 44% on BTC, not 80%. Acceptance below value tends to extend a little (half-width is small, so part of the 77% is plain volatility; no placebo yet). Descriptive only, no fees, no trade rule.
 
+Dalton 80% rule on BTC = 44% [40..49], n=493 (Event R, the row above). The 77% (Event A) is a same-day half-VA-width drift, not a win rate; placebo pending in card placebo-for-the-77-acceptance-claim-rand. Census ACCEPTED at 1R = -0.096 R gate-pass (n=2798).
+
 Live state: no Tom/Fabio balance layer runs live (tom_core STOP, Tom v2 cards T3-T8 blocked, Fabio v3 OOS FAIL). Card live-aid-balance-acceptance-1105 adds the read to live_aid.
