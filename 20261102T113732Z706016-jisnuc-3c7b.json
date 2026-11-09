@@ -1,1 +1,0 @@
-{"t": "20261102T113732Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B to C: operator order: AIBridge end to end. JIS-NB: install 0.7.11 now (aibridge_install.py --restart-agent), reload extension, reply version. Tiny job. Also still need your yes/no on Haiku api_batch", "login": "B", "id": "b-b635db", "prio": "high", "cmd": ""}
