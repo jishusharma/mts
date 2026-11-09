@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T21:46:14Z",
+  "commands": [],
+  "created": "2026-11-08T21:33:33Z",
+  "depends_on": [],
+  "done_when": "reverted file back on disk is left out and named; new files and hand-staged files still commit; test_sync ShipResultFlagTest passes",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "ship --result commits every untracked file in the tree (954009888 swept 2 files of a reverted census, deleted on trunk but back on disk). Leave out an untracked file whose path was tracked on trunk and later deleted (a reverted file reappearing) unless staged by hand; list it. New files with no history ship as before.",
+  "id": "ship-result-sweeps-untracked-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "ship --result leaves out untracked files that were deleted on trunk and reappeared on disk",
+      "ref": "ce75477d1",
+      "utc": "2026-11-08T21:46:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sync.py: refuse_live accepts a str repo (test_host_health)",
+      "ref": "7ee9e84aa398",
+      "utc": "2026-11-08T20:19:30Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: fix shipped",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "B (JIS-NUC, Opus)",
+  "refreshed": "2026-11-08T21:45:07Z",
+  "refs": [],
+  "result": "ship --result leaves out untracked files that were deleted on trunk and reappeared on disk (revert leftovers) unless staged by hand, and names them; new files ship as before",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "main-checkout refusal (done in ship-refuse-main-checkout-sweep-1109)"
+  ],
+  "scope_sha": "7ee9e84aa398",
+  "size": "S",
+  "sources": [
+    "B 2026-11-08: commit 954009888 swept 2 stray untracked files"
+  ],
+  "state": "done",
+  "steps": [
+    "fail-first test",
+    "filter untracked paths in commit_pending by folders of tracked changes or staged files",
+    "test_sync, ship"
+  ],
+  "taken": "2026-11-08T21:45:08Z",
+  "tests": "scripts/dev/test_sync.py::ShipResultFlagTest::test_commit_pending_leaves_reverted_untracked_file_behind",
+  "title": "sync.py ship --result commits every untracked file in a linked worktree (954009888 swept 2 stray files of a reverted census); stage tracked changes plus new files under the card's scope_in only, list the rest",
+  "weight": "",
+  "worker": "session"
+}

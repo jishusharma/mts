@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-08T23:48:54Z",
   "commands": [
     "python -c \"import pathlib;p=pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/workers');assert len(list(p.glob('*.txt')))==11\""
   ],
@@ -19,10 +20,18 @@
   "id": "edge-hunt-plan-opus-1109",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "delivered by C in bac188e31: edge_hunt_2026-11-09/PLAN.md with OPERATOR_LENS, TRIALS.md, 1",
+      "ref": "5b28ce0ac",
+      "utc": "2026-11-08T23:48:54Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_quote_spanning_timestamp_markers_is_found",
+  "next": "END: plan delivered; edge-hunt worker cards carry the rest",
   "note": "Plan only, no backtests. Workers run on the credit via api_job.py --engine api (one Messages API agent each), so briefs must not need a GUI, browser or YouTube. Data: public Binance archives (data.binance.vision futures/um from 2019-09, spot from 2017); live Binance REST is DNS-blocked on JIS-NB until the DoH fix lands. Running in parallel already: tf-real-frame census (5m/15m in-session Tom/Fabio) and the Tom/Fabio rulebook card; do not duplicate them, use them as inputs. Phase-first: a passing idea goes to testnet forward, not a longer backtest.",
   "prio": 1,
   "refine_tries": 0,
@@ -37,7 +46,12 @@
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/TOM_VERBATIM_INDEX.md"
   ],
-  "result": "",
+  "result": "delivered by C in bac188e31: edge_hunt_2026-11-09/PLAN.md with OPERATOR_LENS, TRIALS.md, 11 worker briefs; workers already running (eh-h2 results on trunk)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/malkan_level_shorts_2026-11-09/"
   ],
@@ -49,13 +63,14 @@
   "sources": [
     "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
   ],
-  "state": "ready",
+  "state": "done",
+  "status": "ready",
   "steps": [
     "fetch captions (yt-dlp subs, hi + en) for the listed videos and the 3X3 series list; grep star grades; write the table; verify quotes; ship"
   ],
+  "taken": "2026-11-08T23:48:54Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "Edge hunt planner (Opus, credit): read every test and failure so far, learn how the operator reads charts, write 11 worker briefs to find an edge the right way",
   "weight": "",
-  "worker": "session",
-  "status": "ready"
+  "worker": "session"
 }

@@ -346,3 +346,40 @@ def test_claude_stage_d_fixes_stale_rejection_spread_range_and_causality():
     with pytest.raises(ValueError, match="Causality violation"):
         ac.evaluate_forming_candle([_bar(75000, 75100, 74900, 75050, t=2000, close_t=3000)], now_ms=1000)
 
+
+
+def test_acceptance_threshold_scales_with_bar_minutes():
+    """census-acceptance-threshold-mislabel-1109: accept80 = 2x30m closes = 60 min (SOURCED); 6 bars is OURS."""
+    pre = [_bar(79800, 79950, 79600, 79650, v=120.0) for _ in range(10)]
+    below = [_bar(79550 - 70 * k, 79560 - 70 * k, 79320 - 70 * k, 79350 - 70 * k, v=200.0) for k in range(6)]
+    bars = pre + below
+    assert ac.classify_level_interaction(bars, 79500.0, "support")["verdict"] == "ACCEPTED"          # default: 6 bars (OURS)
+    on5 = ac.classify_level_interaction(bars, 79500.0, "support", accept_minutes=60, bar_minutes=5)
+    assert on5["verdict"] != "ACCEPTED"                                                              # 60 min = 12 x 5m closes
+    on60 = ac.classify_level_interaction(bars, 79500.0, "support", accept_minutes=60, bar_minutes=60)
+    assert on60["verdict"] == "ACCEPTED"                                                             # 60 min = 1 x 1h close
+
+
+def test_prior_ny_session_profile_dst_and_causal():
+    """tf-ny-session-va-profile-1109: 09:30-16:00 New York = 13:30-20:00 UTC in EDT, 14:30-21:00 UTC in EST; prior session only."""
+    import datetime as _dt
+    u = lambda *a: int(_dt.datetime(*a, tzinfo=_dt.timezone.utc).timestamp() * 1000)
+    assert ac.ny_session_window(_dt.date(2026, 7, 15)) == (u(2026, 7, 15, 13, 30), u(2026, 7, 15, 20, 0))
+    assert ac.ny_session_window(_dt.date(2026, 1, 15)) == (u(2026, 1, 15, 14, 30), u(2026, 1, 15, 21, 0))
+    assert ac.ny_session_window(_dt.date(2026, 3, 8))[0] == u(2026, 3, 8, 13, 30)      # DST starts 2nd Sunday of March
+    assert ac.ny_session_window(_dt.date(2026, 11, 1))[0] == u(2026, 11, 1, 14, 30)    # DST ends 1st Sunday of November
+    # 5m bars over 2026-07-15 and 07-16: inside the 07-15 session price sits at 100, outside it at 500
+    bars = []
+    for k in range(2 * 288):
+        t = u(2026, 7, 15) + k * 300_000
+        s0, s1 = ac.ny_session_window(_dt.datetime.fromtimestamp(t / 1000, _dt.timezone.utc).date())
+        p = 100.0 if (s0 <= t and t + 300_000 <= s1 and t < u(2026, 7, 16)) else 500.0
+        bars.append({"t": t, "o": p, "h": p + 1, "l": p - 1, "c": p, "v": 10.0})
+    now = u(2026, 7, 16, 15, 0)                  # 07-16 session still open: the prior one is 07-15
+    prof = ac.prior_ny_session_profile(bars, now, bin_size=1.0)
+    assert prof["date"] == "2026-07-15" and 98.0 <= prof["val"] <= prof["poc"] <= prof["vah"] <= 102.0
+    early = ac.prior_ny_session_profile(bars, u(2026, 7, 15, 19, 0), bin_size=1.0)
+    assert early is None                         # before 07-15 closes there is no completed session in the bars
+    # weekend: on Sunday 2026-07-19 the prior session is Friday 07-17, not Saturday
+    wk = [{"t": u(2026, 7, 17) + k * 300_000, "o": 200.0, "h": 201.0, "l": 199.0, "c": 200.0, "v": 5.0} for k in range(3 * 288)]
+    assert ac.prior_ny_session_profile(wk, u(2026, 7, 19, 18, 0), bin_size=1.0)["date"] == "2026-07-17"

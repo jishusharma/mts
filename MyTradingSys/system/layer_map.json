@@ -768,23 +768,6 @@
   }
  ],
  "backtests": [
- {
-  "id": "MALKAN-LEVEL-SHORT-4H",
-  "trials": 8,
-  "title": "Malkan level-short 5-layer stack on BTC 4h (level, divergence or sweep, RSI-MA trigger, WaveTrend, HTF fail)",
-  "date": "2026-11-09",
-  "market": "BTCUSDT spot 4h, PRE_DEV 2017-08 + DEV to 2024-06; VALIDATION and HOLDOUT not read",
-  "layers": ["rsi_divergence"],
-  "params": "5/5 pivot zone 0.5 pct (OURS); div window 3-10 (SOURCED) or swing-swing, close or wick; RSI-MA cross; WT 53/60; daily/weekly RSI 60",
-  "split": "PRE_DEV + DEV per backtest/splits.py",
-  "fees": "fee-net 0.04 pct taker per side",
-  "interaction": "layers 1-3 alone -0.145 R; the HTF layer (added after the operator reads) lifts the 17 firings to +0.245 R, CI +-0.47",
-  "effects": "none established",
-  "n": "17 / 16 / 15 / 14 / 10 / 9 firings by arm",
-  "verdict": "UNDERPOWERED (N<30): primary arm +0.245 R fee-net 1R exit, CI includes 0; 2 of 5 operator points reproduce (C1, C3); no testnet card",
-  "report": "MyTradingSys/research/malkan_level_shorts_2026-11-09/REPORT.md",
-  "read": "summary"
- },
   {
     "id": "BIGCANDLE-STORY-1H-20261105",
     "trials": null,
