@@ -18,7 +18,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): ROUTINE, T0-ONLY stamp. REVIEWED:2026-11-09 T0-ONLY (planner-refine-A-1109); twin haiku-refresh-stale-ready-cards-1104 is done",
+  "note": "DECISION (OURS): ROUTINE, T0-ONLY stamp; twin haiku-refresh-stale-ready-cards-1104 is done\nREVIEWED:2026-11-09 T0-ONLY (planner-refine-A-1109)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
