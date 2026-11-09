@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T03:09:09Z",
   "commands": [],
   "created": "2026-11-08T23:56:54Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "parse_next strips the colon after a card id; reject carries a fix hint; 2 tests fail-then-",
+      "ref": "51e7a8dec",
+      "utc": "2026-11-09T03:09:09Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "test_route_audit: init without -b (git 2.24 on JIS-NUC)",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: parser accepts Next: <card-id>: reason",
   "note": "REVIEWED:2026-11-09 T0-ONLY (ROUTINE, check passed, repro run: colon form / 1 failed 27 passed)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T02:48:22Z",
   "refs": [],
-  "result": "",
+  "result": "parse_next strips the colon after a card id; reject carries a fix hint; 2 tests fail-then-pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/route_audit.py",
     "scripts/dev/test_route_audit.py"
@@ -44,11 +57,12 @@
   "sources": [
     "scripts/dev/route_audit.py parse_next line 52 tok split"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In parse_next strip a trailing ':' from tok (strip chars `'\\\".: ) so 'card-id: reason' parses as ('card', card-id)",
     "Add a case to ParseNext.test_grammar: 'gemini-blind-read-x: why' -> ('card','gemini-blind-read-x') and 'backtest: next' -> stage; 'END:' and 'new:' forms unchanged"
   ],
+  "taken": "2026-11-09T03:09:09Z",
   "tests": "scripts/dev/test_route_audit.py ParseNext.test_grammar new colon case fails on current parse_next (tok keeps ':', CARD_ID rejects it)",
   "title": "route_audit rejects 'Next: <card-id>: reason' (token keeps its colon) and one bad commit blocks every later ship; done when the colon form is accepted or rejected at commit time with a fix hint, test included",
   "weight": "ROUTINE",
