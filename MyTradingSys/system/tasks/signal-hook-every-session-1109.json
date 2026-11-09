@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-09T14:16:32Z",
+  "commands": [],
+  "created": "2026-11-09T14:16:24Z",
+  "depends_on": [],
+  "done_when": "signal_user_hook.py installs a ~/.mts runner + user-level SessionStart/UserPromptSubmit/Stop entries (merge, idempotent, .bak); runner silent inside a clone, serves the newest existing clone outside; mts_signal self-installs at repo SessionStart; tests green",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every Claude session on every machine shows MTS asks/broadcasts and is Stop-blocked on unanswered ones, even when opened outside a clone (the NUC super session ran in IdeaProjects and missed 7 asks for up to 18 h).",
+  "id": "signal-hook-every-session-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "user-level runner in ~/.mts + ~/.claude/settings.json entries; silent inside a clone, outs",
+      "ref": "059096d38",
+      "utc": "2026-11-09T14:16:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: other hosts self-install at their next repo session; check with signal_user_hook.py status",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T14:16:25Z",
+  "refs": [],
+  "result": "user-level runner in ~/.mts + ~/.claude/settings.json entries; silent inside a clone, outside it runs the newest clone's mts_signal hook (Stop block passes through); self-installs at every repo SessionStart; installed and checked on JIS-NUC; 76 tests passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/signal_user_hook.py, scripts/dev/test_signal_user_hook.py, scripts/dev/mts_signal.py handle()"
+  ],
+  "scope_out": [
+    "repo .claude/settings.json; role launcher"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "operator chat 11-09: NUC super session outside the repo missed 7 asks"
+  ],
+  "state": "done",
+  "steps": [
+    "User hook module + runner",
+    "Self-install at SessionStart",
+    "Tests, install on NUC, ship"
+  ],
+  "taken": "2026-11-09T14:16:32Z",
+  "tests": "scripts/dev/test_signal_user_hook.py scripts/dev/test_mts_signal.py",
+  "title": "Signal hook for every session on a machine, also outside a clone (user-level, self-installing)",
+  "weight": "",
+  "worker": "session"
+}

@@ -535,6 +535,13 @@ def handle(payload):
         return ""
     if ev == "Stop":
         return stop_check(payload)
+    if ev == "SessionStart":     # operator 11-09: sessions outside a clone saw no signals; every machine gets the user hook
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            import signal_user_hook
+            signal_user_hook.ensure_installed(payload.get("cwd") or "")
+        except Exception:
+            pass
     auto = auto_send_text(payload)
     note = sender_note(auto[0]) if auto and auto[1] == "broadcast" else ""
     got = _handle(payload, sid, ev, auto)
