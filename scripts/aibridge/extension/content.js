@@ -551,7 +551,7 @@
     var lr = L.parseLeaseReply(await sendEvent(L.leaseEvent('beat', acctLabel)));
     if (autoRun && lr.reason === 'account_in_use') stopAuto(lr.text);
   }
-  // pacing: every auto post waits for the guard (60 s + 10-30 s jitter since the last post of this profile, 15 an hour, 80 a day).
+  // pacing: every auto post waits for the guard (L.PACE: 20 s + 5-15 s jitter since the last post of this profile, 30 an hour, 200 a day).
   // A short wait is shown and waited out; an hour or day limit refuses the post (says paced) and hands-free stops.
   async function paceGate(myToken) {
     var jit = L.paceJitter();

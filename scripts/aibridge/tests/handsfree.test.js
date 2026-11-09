@@ -186,28 +186,28 @@ t('pickSendButton: a labelled Send wins; Stop, attach, search and think are neve
 });
 
 // ---- 0.7.33 DeepSeek block guard (DSA_BLOCK_REVIEW ranks 1, 3, 4; card dsa-bridge-avoid-deepseek-block-1108) ----
-// pacing: at least 60 s between auto posts per account (+ 10-30 s jitter), at most 15 an hour and 80 a day; a refused post says paced
-t('pace: a post 30 s after the last one is refused and says paced; after gap + jitter it is allowed', () => {
-  const a = L.paceCheck([1000000], 1030000, 10000);
+// pacing (0.7.34): at least 20 s between auto posts per account (+ 5-15 s jitter), at most 30 an hour and 200 a day; a refused post says paced
+t('pace: a post 15 s after the last one is refused and says paced; after gap + jitter it is allowed', () => {
+  const a = L.paceCheck([1000000], 1015000, 10000);
   assert.strictEqual(a.ok, false); assert.strictEqual(a.reason, 'paced'); assert.strictEqual(a.cap, 'gap');
-  assert.strictEqual(a.waitMs, 40000);   // 60 s gap + 10 s jitter - 30 s elapsed
-  assert.strictEqual(L.paceCheck([1000000], 1070000, 10000).ok, true);
+  assert.strictEqual(a.waitMs, 15000);   // 20 s gap + 10 s jitter - 15 s elapsed
+  assert.strictEqual(L.paceCheck([1000000], 1030000, 10000).ok, true);
 });
-t('pace: first post of a profile is never refused; jitter is 10-30 s', () => {
+t('pace: first post of a profile is never refused; jitter is 5-15 s', () => {
   assert.strictEqual(L.paceCheck([], 5, 10000).ok, true);
-  assert.strictEqual(L.paceJitter(() => 0), 10000);
-  assert.strictEqual(L.paceJitter(() => 0.999999) <= 30000, true);
+  assert.strictEqual(L.paceJitter(() => 0), 5000);
+  assert.strictEqual(L.paceJitter(() => 0.999999) <= 15000, true);
 });
-t('pace: the 16th post inside one hour is refused (cap hour); the 81st inside a day is refused (cap day)', () => {
-  const h = []; for (let i = 0; i < 15; i++) h.push(i * 200000);   // 15 posts, 200 s apart: gap rule is met
-  const r = L.paceCheck(h, 15 * 200000, 10000);
+t('pace: the 31st post inside one hour is refused (cap hour); the 201st inside a day is refused (cap day)', () => {
+  const h = []; for (let i = 0; i < 30; i++) h.push(i * 100000);   // 30 posts, 100 s apart: gap rule is met
+  const r = L.paceCheck(h, 30 * 100000, 10000);
   assert.strictEqual(r.ok, false); assert.strictEqual(r.cap, 'hour'); assert.strictEqual(r.reason, 'paced');
-  const d = []; for (let i = 0; i < 80; i++) d.push(i * 1000000);   // 80 posts, 1000 s apart: the hour rule is met
-  const q = L.paceCheck(d, 80 * 1000000, 10000);
+  const d = []; for (let i = 0; i < 200; i++) d.push(i * 400000);   // 200 posts, 400 s apart: the hour rule is met
+  const q = L.paceCheck(d, 200 * 400000, 10000);
   assert.strictEqual(q.ok, false); assert.strictEqual(q.cap, 'day');
 });
-t('pace: caps are visible constants (60 s, 15/h, 80/day, jitter 10-30 s)', () => {
-  assert.deepStrictEqual([L.PACE.minGapMs, L.PACE.perHour, L.PACE.perDay, L.PACE.jitterMinMs, L.PACE.jitterMaxMs], [60000, 15, 80, 10000, 30000]);
+t('pace: caps are visible constants (20 s, 30/h, 200/day, jitter 5-15 s)', () => {
+  assert.deepStrictEqual([L.PACE.minGapMs, L.PACE.perHour, L.PACE.perDay, L.PACE.jitterMinMs, L.PACE.jitterMaxMs], [20000, 30, 200, 5000, 15000]);
 });
 
 // stop on warning: logout, captcha, busy or suspended text turns hands-free off, no retry, audit row, 24 h cooldown per profile
