@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Needs C2 non-Claude spec review stamp (CRUCIAL). 2026-11-09: not delivered (tom_bt.py run_variant slip default still 0.0; fees.SLIPPAGE_RT_S13 is the 2 bps RT census constant, not the G7 p90). Check blocked only on the stamp; Gemini/GPT spec reviewer needed.",
+  "note": "Needs C2 non-Claude spec review stamp before ready (CRUCIAL). Planner 2026-11-08: filled; check blocked only on stamp.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
