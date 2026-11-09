@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py -q"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T14:57:49Z",
+    "misses": 14,
+    "reads": [
+      "MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py",
+      "MyTradingSys/backtest/layers/alerts/sister_signals.json",
+      "MyTradingSys/backtest/layers/alerts/test_sister_signals.py"
+    ],
+    "session": "agent-acddeb672ef56e0c4"
+  },
+  "created": "2026-11-09T14:55:33Z",
+  "crucial": true,
+  "depends_on": [],
+  "done_when": "test_sister_signals.py has a failing-first test per defect and all pass; ship gate green.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the 6 review defects of 8a4bf6bff so sister_signals fails closed and never blocks or re-fires.",
+  "id": "sister-signals-fix-review-defects-1109",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": true,
+  "mutation_check": "each new test fails on 97d223b00 version of sister_signals.py",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/sister_signals.py",
+    "MyTradingSys/backtest/layers/alerts/test_sister_signals.py",
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py"
+  ],
+  "scope_out": [
+    "ci.yml",
+    "test_sync.py",
+    ".mts_live"
+  ],
+  "size": "S",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py -q",
+  "title": "Fix 6 reviewer defects in sister_signals (commit 8a4bf6bff): save-before-emit, 2-confirm flips, last-2-lows STOP, corrupt state UNKNOWN, pinned source, non-blocking fetch; each with a failing-first test",
+  "weight": "",
+  "worker": ""
+}
