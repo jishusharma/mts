@@ -93,7 +93,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-04_malkan-window-12-18-vs-hindi.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-level-short-testnet-forward-1109` raw p2 JIS-NB: Testnet forward, context-only: Malkan level short div 3-10 close arm on BTC 4h (count: n=126, +0.11R net, not 
+  - `malkan-level-short-testnet-forward-1109` ready p2 JIS-NB: Testnet forward, context-only: Malkan level short div 3-10 close arm on BTC 4h (count: n=126, +0.11R net, not 
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
@@ -217,8 +217,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
-  - `krown-s8-4h-testnet-build` ready p2 JIS-NB: Krown S8 4h forward test: wire the frozen R6 rule to Deribit testnet (BTC-PERPETUAL, own account, targets_r ex
-  - `krown-s8-forward-parity-test` ready p2 SONNET: Krown S8 forward test: replay parity test, live decision code must reproduce R6's 277 BTC events with 0 mismat
   - `gemini-blind-read-fable-r7-forward-prereg` ready p3 CODEX: [GEMINI] blind read of fable R7 FORWARD_PREREG.md: do the FAIL rule, parity spec and months-to-power arithmeti
   - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p

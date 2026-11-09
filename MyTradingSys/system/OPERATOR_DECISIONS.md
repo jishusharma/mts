@@ -2113,3 +2113,11 @@ Answer: card edge-hunt-plan-opus-1109 runs first on the credit (Opus, cap 6 USD)
 ## d-daily-session-playbook-1109 (2026-11-09)
 Operator: "I think I need this daily and on live aid! Plus on my screen ... also covers Asian and European sessions and related key trading information/trades/insights/notes."
 Answer: card daily-session-playbook-live-aid-1109 (Sonnet session): a daily playbook for Asia, Europe and US sessions (levels, base rates, 2-3 scenarios with counts and invalidation, analyst calls, events), each scenario scored in the ledger, as a Live Aid Playbook tab and a phone-width artifact. The Monday playbook had 3 Claude scenarios, US open only.
+
+## d-dns-fix-deploy-standing-1109 (2026-11-09)
+Operator: "of course! do not wait for me - we already decided these!" (asked: deploy the Binance DNS fix 1f20c6255 to the live tree?)
+Answer: yes. Deploy the green DoH fix to the live tree (DESKTOP-F7IU69N, C:\MTS\mts-live) now: selective checkout from origin/green/fast-track, restart only the processes that import it, Java via mvn compile + supervisor relaunch, then binance_doh_smoke.py. Standing rule: a fix already on green that the operator asked for deploys without a second ask; only money, mainnet and going private still wait for him.
+
+## d-own-the-open-files-1109 (2026-11-09)
+Operator: "only u are running since more than 48 hrs! So u have to resolve these if no one else is looking into."
+Answer: the Lead resolves uncommitted files left in the JIS-NB main checkout when no live session owns them: ship real work from a fresh tree, gitignore or drop scratch, never touch HALT, AUTO_PAUSE or runtime order data.

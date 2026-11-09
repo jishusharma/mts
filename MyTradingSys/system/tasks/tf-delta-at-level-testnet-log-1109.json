@@ -1,36 +1,87 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "closed": "2026-11-09T05:00:59Z",
+  "commands": [
+    "python MyTradingSys/research/tom_fabio_course_correction_2026-11-07/level_delta_log.py --once --levels 75400 80900"
+  ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-11-09T05:00:57Z",
+    "misses": 25,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/orderflow_live.py",
+      "MyTradingSys/backtest/layers/fabio/orderflow_bars.py",
+      "MyTradingSys/research/auction_forward_2026-11-09/test_forward_log.py",
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/census_fetch_mirror.py"
+    ],
+    "session": "agent-aafe3cb6977d219a1"
+  },
   "created": "2026-11-08T18:44:58Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_level_delta_log.py passes; one --once run appends >= 0 rows to LEVEL_DELTA_LOG.csv with columns ts,level,kind,side,session,delta_15m,delta_bar,cvd_chg (missing = empty); builder never starts a daemon",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Offline logger that, for each range-edge / PDH / PDL level reclaim in London and NY, records the real 1m delta (orderflow_live schema) around the reclaim, so Fabio's absorption-then-aggression trigger gets tested once forward data accrues (census klines have no delta).",
   "id": "tf-delta-at-level-testnet-log-1109",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "level_delta_log.py + test_level_delta_log.py (5 pass, fail vs stub first); one --once run ",
+      "ref": "9ef1ca671",
+      "utc": "2026-11-09T05:00:59Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Fleet fix: Binance DNS-over-HTTPS resolver (py + java)",
+      "ref": "1f20c6255e74",
+      "utc": "2026-11-08T20:31:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "next": "END: logger built; live wiring is a separate deploy ask",
+  "note": "Refined 2026-11-09 (planner). Writer last wrote 2026-10-03 so the logger backfills by REST (resumable by minute). Operator-side live wiring is a separate deploy ask, not this card.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T04:54:09Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "level_delta_log.py + test_level_delta_log.py (5 pass, fail vs stub first); one --once run ok (0 events, 3h); output gitignored runtime/; no_own_costs 6 pass; lookahead 0 new FAIL. DECISION (OURS): LEVEL_DELTA_LOG.csv lives in gitignored runtime/, not committed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/level_delta_log.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_level_delta_log.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/LEVEL_DELTA_LOG.csv",
+    "MyTradingSys/backtest/layers/fabio/orderflow_live.py"
+  ],
+  "scope_out": [
+    "starting or restarting the live writer, live runner, any order, the .mts_live tree, edits to orderflow_live.py or auction_context.py"
+  ],
+  "scope_sha": "1f20c6255e74",
+  "size": "M",
   "sources": [
     "Opus post-mortem 2026-11-09 POSTMORTEM_OPUS.md (tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "level_delta_log.py pure fn find_reclaims(bars5m, levels, max_bars=3): probe beyond a level, close back inside within 3 bars (rule from the Opus post-mortem section 3, thresholds OURS); returns ts, level, kind, side, session block (UTC 4h), extreme",
+    "delta_at(of_bars_1m, ts, win_min=15): sum delta and cvd change over the 15 min up to the reclaim close, plus delta of the reclaim bar; absent minutes = None (fail closed, never 0)",
+    "CLI: levels from args (default 75400 80900 range edges BIBLE s2) + prior-day high/low from public klines; fetch 1m OF via orderflow_live.run_cycle(fetch_fn=default_fetch) into a scratch dir, public aggTrades only; append rows to LEVEL_DELTA_LOG.csv, dedupe on ts+level",
+    "tests: planted 5m series with one probe-reclaim and one knife (no reclaim) -> exactly 1 event; delta window with a missing minute -> None; duplicate append -> no new row. Run each against a stub find_reclaims returning [] to see it fail first"
+  ],
+  "taken": "2026-11-09T05:00:59Z",
+  "tests": "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_level_delta_log.py (planted reclaim vs knife, missing-minute None, dedupe; fail-first against a stub)",
   "title": "Log real delta (orderflow_live) at each level reclaim during the London/NY sessions in the testnet-forward run: Fabio's absorption-then-aggression trigger was never tested (census klines have no delta, auction_context.py:604)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
