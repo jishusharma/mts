@@ -1,0 +1,1 @@
+{"t": "20261109T181917Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED not a code break: runs 42670645486 (15 jobs ok, no mark-green) and 42671819170 (0 jobs, workflow file issue) fail; ci.yml unchanged since 10-25. No revert. Likely GitHub side; ship via --fix-ci", "login": "A"}
