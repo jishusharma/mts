@@ -115,3 +115,20 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Cycle flag | One line in the timeframe-strip panel: cycle-bottom flag from `research/btc_cycles_2026-11/cycle_bottom_flag.py`, written to `cycle_flag_data.js` by `build_cycle_flag.py` (run daily), stale after 36 h. Test `test_spec_cycle_flag.py` | BUILT 2026-11-07 |
 
 Base rates: every probability table on the page comes from base_rates.js (BASE_RATES[id].table, window shown beside the numbers). Refresh a row after a study re-run: python MyTradingSys/tools/live_aid/base_rates.py build (reads the study output, rewrites base_rates.js and research/prob_dist_layer_brief_2026-10-16/BASE_RATES.md).
+
+## Operator walkthrough 2026-11-09 (US cash open, JIS-NB, login C)
+
+What confused or annoyed him, in the order it came up. The fix built that day is in the second column.
+
+| What confused him | Done 2026-11-09 |
+|---|---|
+| Page looked dead when opened as a file: helper scripts reported "not found" | Served over http://127.0.0.1:8765; file:// root cause still open |
+| No tabs, and the page scrolled ("every app is ONE page, no scroll") | Tab bar on every view, Home first; page height locked, only an opened box may scroll (standing rule in OPERATOR_DECISIONS) |
+| Code words on the map: WO, VAL, PDL, PWL, BE, KR | Home writes names: Week open, Yesterday value low, Yesterday low, 200-day average |
+| White "now" line with no time; session strip with arrows and no hours | Chart has Asia / Europe / US bands with hours, a time axis, a labelled US open line at 14:30Z and a Now price tag |
+| "CPI" with no explanation | Event pill spells it out: "US inflation report (CPI) in 22h59m" |
+| Bricks and "HOLD 3 of 6" | Semicircle gauge SHORT to LONG plus six named vote chips |
+| Long red/green bars that waste space | Short split bars per 1 / 5 / 15 min with one sentence |
+| Text tables where he wanted candles | Home is 70 % candle chart (last 12 h of 5m) with level lines named in the gutter |
+| Money panel only Deribit and Bybit, and no "how do I use it" | One plain sentence on price vs OI; Binance / OKX OI and CVD still open (fapi blocked on JIS-NB): card live-aid-graphical-redesign-1109 |
+| News without impact or weight | Last-hour top 4 with an up/down arrow and a 0-10 weight bar; big news, liquidation bursts and level touches flash on every tab |
