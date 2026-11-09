@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "commands": [],
+  "created": "2026-11-09T05:21:46Z",
+  "depends_on": [],
+  "done_when": "trunk dsa.py has ship_pending; test_dsa.py passes (32)",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "DSA session 11-07 on JIS-NUC committed dsa.py ship_pending (boot prints ship_pending, commit prints SHIP OWED) in worktree mts-dsa-jis-nuc-1107-refine but never shipped; desk-ship commit asked Claude to apply it. Land it on trunk unchanged.",
+  "id": "dsa-ship-owed-land-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert 18c0cf765 (tasks.as_list + DSA seed queue/filed): CI RED Step 3gd, scripts/dev/test",
+      "ref": "cb214227a8d2",
+      "utc": "2026-11-07T16:47:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "391f33e9a602 Log the AIBridge 4-block reply drop (files not written) and file its card",
+      "ref": "MyTradingSys/research/apparatus_fixes.md",
+      "utc": "2026-11-01T05:48:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T05:21:51Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/dsa.py",
+    "scripts/dev/test_dsa.py",
+    "MyTradingSys/research/apparatus_fixes.md"
+  ],
+  "scope_out": [],
+  "scope_sha": "cb214227a8d2",
+  "size": "S",
+  "sources": [
+    "B stuck-task sweep JIS-NUC"
+  ],
+  "state": "active",
+  "steps": [
+    "git apply 140b4e386 patch on trunk",
+    "pytest scripts/dev/test_dsa.py",
+    "sync.py ship"
+  ],
+  "taken": "2026-11-09T05:21:52Z",
+  "tests": "scripts/dev/test_dsa.py",
+  "title": "Land DSA 11-07 SHIP OWED patch (dsa.py ship_pending) stranded in worktree",
+  "weight": "",
+  "worker": "session"
+}
