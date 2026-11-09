@@ -3,6 +3,12 @@ sys.dont_write_bytecode = True
 import json, os, urllib.request
 from pathlib import Path
 from datetime import datetime, timezone
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 ROOT  = Path(__file__).resolve().parents[2]
 STORE = ROOT / "MyTradingSys" / "market_data" / "klines"
@@ -12,7 +18,7 @@ INTERVALS = [("1h", 500), ("15m", 500), ("5m", 500)]
 def fetch(interval, limit=100):
     url = (f"https://fapi.binance.com/fapi/v1/klines"
            f"?symbol={SYMBOL}&interval={interval}&limit={limit}")
-    with urllib.request.urlopen(url, timeout=10) as r:
+    with _doh_urlopen(url, timeout=10) as r:
         return json.loads(r.read().decode())
 def load(path):
     if not path.exists():

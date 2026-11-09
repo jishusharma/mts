@@ -15,11 +15,14 @@ from pathlib import Path
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[5]))
+from MyTradingSys.backtest import fees  # noqa: E402  (single cost module, T06-F2)
+
 DAY = 86400000
 M15 = 900000
 NB = 96              # 15m bars per UTC day
 NW = 7 * NB          # 15m bars per ISO week
-FEE_RT = 0.0012      # regime A: 2 x 5 bps taker + 2 bps RT slippage (fees.py BINANCE_TAKER; FORMULAS s13)
+FEE_RT = round(fees.BINANCE_TAKER * 2 + fees.SLIPPAGE_RT_S13, 12)   # regime A: 2 x 5 bps taker + 2 bps RT slippage (fees.py; FORMULAS s13) = 0.0012 (round: float noise)
 HOLD = 96            # time stop, bars after the reclaim bar
 RECLAIM = 3          # V-sweep: reclaim close within s..s+3
 APPROACH = 12        # close 12 bars before the sweep bar must be inside the level

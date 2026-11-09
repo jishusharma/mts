@@ -52,12 +52,12 @@ def parse_next(value, allow_new=False):
         if not allow_new:
             return None, 'new:"<title>" only works in tasks.py done; name the filed card id here'
         return ("new", title) if title else (None, 'new: needs a title')
-    tok = re.split(r"[\s,;(]+", v, maxsplit=1)[0].strip("`'\".")
+    tok = re.split(r"[\s,;(:]+", v, maxsplit=1)[0].strip("`'\".")
     if tok.lower() in STAGES:
         return "stage", tok.lower()
     if CARD_ID.match(tok):
         return "card", tok
-    return None, f"Next {v[:40]!r} is not a card id, stage or END: <reason>"
+    return None, f"Next {v[:40]!r} is not a card id, stage or END: <reason>; fix: Next: <card-id> (reason after a space or colon is fine) or Next: END: <why>"
 
 
 def next_tags(body):

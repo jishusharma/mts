@@ -15,6 +15,12 @@ import random
 import re
 import sys
 import urllib.request
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 FORMULAS = ROOT / "MyTradingSys" / "backtest" / "layers" / "FORMULAS.md"
@@ -102,7 +108,7 @@ def fetch_pool(path):
     pool = {}
     for sym in SYMBOLS:
         for tf in TFS:
-            with urllib.request.urlopen(f"{FAPI}?symbol={sym}&interval={tf}&limit={POOL_BARS}", timeout=30) as f:
+            with _doh_urlopen(f"{FAPI}?symbol={sym}&interval={tf}&limit={POOL_BARS}", timeout=30) as f:
                 rows = json.load(f)[:-1]
             pool[f"{sym}|{tf}"] = {"symbol": sym, "tf": tf, "open_times": [int(r[0]) for r in rows],
                                    "closes": [float(r[4]) for r in rows]}

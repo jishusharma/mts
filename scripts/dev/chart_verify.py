@@ -14,6 +14,12 @@ sys.path.insert(0, str(ROOT / "MyTradingSys" / "backtest" / "layers" / "rsi"))
 sys.path.insert(0, str(ROOT / "MyTradingSys" / "observation"))
 from rsi_core import rsi_core  # noqa: E402
 import capture  # noqa: E402
+try:
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen  # ISP DNS block fix: Binance hosts via DoH
+except ImportError:  # run as a bare script from outside the repo root
+    import pathlib as _p, sys as _s
+    _s.path.insert(0, str(next(q for q in _p.Path(__file__).resolve().parents if (q / "MyTradingSys").is_dir())))
+    from MyTradingSys.runtime.binance_doh import urlopen as _doh_urlopen
 
 FAPI = "https://fapi.binance.com/fapi/v1/klines"
 # capture.TF_MINUTES is the one map; these capture-only intervals are not served by fapi klines
@@ -85,7 +91,7 @@ def compare(calc, seen, tol_rsi=0.5, tol_stoch=1.0, tol_bb_pct=0.01):
 
 def fetch_closes(symbol, tf, shot_ms, limit=600):
     url = f"{FAPI}?symbol={symbol}&interval={tf}&endTime={shot_ms}&limit={limit}"
-    with urllib.request.urlopen(url, timeout=20) as f:
+    with _doh_urlopen(url, timeout=20) as f:
         rows = json.load(f)
     return [float(r[4]) for r in rows], int(rows[-1][0])
 
