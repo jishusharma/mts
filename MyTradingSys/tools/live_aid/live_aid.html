@@ -120,7 +120,9 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
-<nav id="tabs"><a href="#playbook">Map</a><a href="#now">Now</a><a href="#usopen">US open</a><a href="#money">Money</a><a href="#news">News</a><a href="#levels">Levels</a><a href="#momentum">Momentum</a><a href="#liq">Liquidations</a><a href="#intrade">In trade</a></nav>
+<nav id="tabs"><a href="#home">Home</a><a href="#playbook">Map</a><a href="#now">Now</a><a href="#usopen">US open</a><a href="#money">Money</a><a href="#news">News</a><a href="#levels">Levels</a><a href="#momentum">Momentum</a><a href="#liq">Liquidations</a><a href="#intrade">In trade</a></nav>
+<div id="flash"></div>
+<section id="p-home"></section>
 <style>
 #tabs{position:sticky;top:0;z-index:9;display:flex;gap:4px;padding:6px 0;background:#0d1117;border-bottom:1px solid #30363d;margin-bottom:8px}
 #tabs a{padding:6px 14px;border-radius:6px;color:#c9d1d9;text-decoration:none;font-weight:600;border:1px solid #30363d}
@@ -379,6 +381,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>
 <script src="map.js"></script>
+<script src="home.js"></script>
 <script src="playbook.js"></script>
 <script>
 (function () {
@@ -1004,6 +1007,21 @@ main>#p-pos:not(.off){flex:0 0 auto}
     renderOverview(now, MOM, L, px, a15, coilR);
     try { renderMap(now, px, L); } catch (e) { $('pb-map').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
     try { renderPlaybook(now); } catch (e) { $('pb-body').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
+    try { renderHome(now, px, L, MOM); } catch (e) { $('p-home').innerHTML = '<p class="err">Home: ' + esc(e.message) + '</p>'; }
+  }
+  // Home tab (operator 11-09): one graphical screen; ctx copies numbers the other panels already compute.
+  var EV_WORDS = { CPI: 'US inflation report (CPI)', FOMC: 'Fed rate decision (FOMC)', NFP: 'US jobs report (NFP)', PPI: 'US producer prices (PPI)', PCE: 'US PCE inflation', GDP: 'US GDP' };
+  function renderHome(now, px, L, MOM) {
+    if (!window.LAHOME) { $('p-home').innerHTML = '<p class="err">home.js not found next to this page</p>'; return; }
+    window.LAHOME.injectCss(document);
+    var mm = mapModel(now, px, L), M = window.LAMAP, pd = window.PLAYBOOK_DATA;
+    var votes = mm.votes.slice(); if (M && pd) votes[5] = M.playbookVote(pd, now);
+    var ev = M && pd ? M.nextEvent(pd, now) : null;
+    var liq = { m1: A.liqSum(S.liq, now, 60000), m5: A.liqSum(S.liq, now, 300000), m15: A.liqSum(S.liq, now, 900000), last: S.liq.slice(-20) };
+    var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
+    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, liq: liq, money: S.moneyHead || null, news: news,
+      ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 
   // ---------- Now table and detail pages (operator 10-31: no long scroll, click-through) ----------
@@ -1011,18 +1029,18 @@ main>#p-pos:not(.off){flex:0 0 auto}
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
                 fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'] };
-  VIEWS.now = ['p-ov', 'Now'];
+  VIEWS.now = ['p-ov', 'Now']; VIEWS.home = ['p-home', 'Home'];
   S.view = '';
   function route() {
     // operator 11-09: one page, no scroll, tab bar; landing tab = Map
-    if (!VIEWS[location.hash.replace(/^#/, '')]) { history.replaceState(null, '', '#playbook'); }
+    if (!VIEWS[location.hash.replace(/^#/, '')]) { history.replaceState(null, '', '#home'); }
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
     S.view = vw ? v : '';
     document.body.classList.toggle('detail', !!vw);
     Array.prototype.forEach.call(document.querySelectorAll('#tabs a'), function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + v); });
     Array.prototype.forEach.call(document.querySelector('main').children, function (el) {
       if (el.id === 'back') el.classList.add('off');
-      else if (el.id === 'tabs') el.classList.remove('off');
+      else if (el.id === 'tabs' || el.id === 'flash') el.classList.remove('off');
       else if (el.id === 'p-pos' && v === 'intrade') el.classList.remove('off');
       else el.classList.toggle('off', !!vw && el.id !== id && !el.querySelector('#' + id));
     });
@@ -1096,6 +1114,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     if (head) {
       var m = head.net.state.money;
       $('m-call').innerHTML = '<span class="' + (m === 'in' ? 'up' : m === 'out' ? 'down' : '') + '">' + esc(head.net.state.text) + '</span>';
+      S.moneyHead = { text: head.net.state.text, label: head.label, n: head.net.n, dp: head.net.dp, doi: head.net.doi };
       $('m-sub').textContent = head.label + ', ' + head.net.n + ' of ' + head.net.of + ' venues: price ' + sgn(head.net.dp * 100, 2) + ' %, open interest ' + sgn(head.net.doi * 100, 2) + ' %';
     } else { $('m-call').innerHTML = NID; $('m-sub').textContent = 'no venue has open-interest samples yet'; }
     $('m-rows').innerHTML = rows.map(function (r) {
