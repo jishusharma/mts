@@ -618,11 +618,11 @@ def _brief_ctx_with_sister(base, state_path):
 
 def sister_after_poll(state_path, alerts_dir, toast_path, now_ms=None) -> list:
     """Family plan triggers (card sister-signals-wired-1109): SISTER toast + alert log on a flip, draft notes outside the repo.
-    Fetches at most every 15 min. Never raises, never gates, places no order."""
+    Fetches at most every 15 min in a daemon thread (the loop never waits on the network). Never raises, never gates, places no order."""
     try:
         from MyTradingSys.backtest.layers.alerts import sister_signals as ss
         cfg = ss.load_config()
-        return ss.poll(ss.default_fetch, pathlib.Path(state_path).with_name("sister_state.json"), alerts_dir, toast_path,
+        return ss.poll(ss.BACKGROUND, pathlib.Path(state_path).with_name("sister_state.json"), alerts_dir, toast_path,
                        cfg["notes_dir"], now_ms if now_ms is not None else int(time.time() * 1000), cfg=cfg)
     except Exception as exc:  # noqa: BLE001 - observation must never stop the alert runner
         print(json.dumps({"key": "sister_signals", "error": str(exc)}), file=sys.stderr, flush=True)
