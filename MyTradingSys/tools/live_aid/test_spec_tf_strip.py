@@ -239,4 +239,5 @@ def test_trendline_column_is_wired_into_the_page():
     html = (HERE / "live_aid.html").read_text(encoding="utf-8")
     assert "<th title=" in html and ">Trend lines</th>" in html            # the header cell
     assert "TFSTRIP.trendline(TF.k[tf], sd, tp)" in html and "TFSTRIP.fmtLine(t)" in html   # the row cell calls the pure functions
-    assert "interval=' + tf + '&limit=150" in html                         # enough bars for 6 pivots of 3-bar lookback
+    # enough bars for 6 pivots of 3-bar lookback; 1m takes 1000 so pulse.js can fold 2m/7m/10m (operator 2026-11-09 17Z)
+    assert "interval=' + tf + '&limit=' + (tf === '1m' ? 1000 : 150)" in html
