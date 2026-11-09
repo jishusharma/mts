@@ -5,6 +5,8 @@ score   after the window ends, read Binance spot BTCUSDT 1m bars (public data) a
 summary running hit count and what the count means for the pipeline
 
 Levels, windows and the 'likely' side are OURS. Scoring is mechanical: no pixel reads, no hindsight edits.
+Library use (daily_playbook.py, tools/live_aid): add_row, find_tag, score_rows work on a list of rows, so a caller can log
+a whole day of maps with one load and one save.
 """
 import argparse
 import csv
@@ -70,6 +72,35 @@ def save(rows, path=LEDGER):
         w.writerows(rows)
 
 
+def add_row(rows, given, end, likely, up, down, text, rates=""):
+    """Append one map to rows (datetimes in, ledger row out). Same rules as the add command: down < up and given < end."""
+    if not down < up or not given < end:
+        raise ValueError("need down < up and given < end")
+    rows.append({"id": f"S{len(rows) + 1:03d}", "given_utc": given.strftime("%Y-%m-%dT%H:%MZ"),
+                 "end_utc": end.strftime("%Y-%m-%dT%H:%MZ"), "likely": likely, "up": up,
+                 "down": down, "text": text, "outcome": "", "touched_utc": "", "score": "",
+                 "rates": ",".join(x.strip() for x in rates.split(",") if x.strip())})
+    return rows[-1]
+
+
+def find_tag(rows, tag):
+    """The row whose text starts with tag (daily_playbook.py puts '[PB <day> <session> <n>]' first), or None."""
+    return next((r for r in rows if r["text"].startswith(tag)), None)
+
+
+def score_rows(rows, now, fetch=fetch_bars):
+    """Score every unscored row whose window has ended (first touch of up/down on 1m bars). Returns the rows scored."""
+    done = []
+    for r in rows:
+        if r["outcome"] or parse_utc(r["end_utc"]) > now:
+            continue
+        out, t = first_touch(fetch(parse_utc(r["given_utc"]), parse_utc(r["end_utc"])), float(r["up"]), float(r["down"]))
+        r["outcome"], r["score"] = out, score_of(r["likely"], out)
+        r["touched_utc"] = dt.datetime.fromtimestamp(t / 1000, dt.timezone.utc).strftime("%Y-%m-%dT%H:%MZ") if t else ""
+        done.append(r)
+    return done
+
+
 def summary(rows):
     hits = sum(r["score"] == "HIT" for r in rows)
     miss = sum(r["score"] == "MISS" for r in rows)
@@ -105,24 +136,15 @@ def main(argv=None):
     args = ap.parse_args(argv)
     rows = load(LEDGER)
     if args.cmd == "add":
-        g, e = parse_utc(args.given), parse_utc(args.end)
-        if not args.down < args.up or not g < e:
-            sys.exit("need down < up and given < end")
-        rows.append({"id": f"S{len(rows) + 1:03d}", "given_utc": g.strftime("%Y-%m-%dT%H:%MZ"),
-                     "end_utc": e.strftime("%Y-%m-%dT%H:%MZ"), "likely": args.likely, "up": args.up,
-                     "down": args.down, "text": args.text, "outcome": "", "touched_utc": "", "score": "", "rates": ",".join(x.strip() for x in args.rates.split(",") if x.strip())})
+        try:
+            add_row(rows, parse_utc(args.given), parse_utc(args.end), args.likely, args.up, args.down, args.text, args.rates)
+        except ValueError as ex:
+            sys.exit(str(ex))
         save(rows, LEDGER)
         print("added", rows[-1]["id"])
     elif args.cmd == "score":
-        now = dt.datetime.now(dt.timezone.utc)
-        for r in rows:
-            if r["outcome"] or parse_utc(r["end_utc"]) > now:
-                continue
-            out, t = first_touch(fetch_bars(parse_utc(r["given_utc"]), parse_utc(r["end_utc"])),
-                                 float(r["up"]), float(r["down"]))
-            r["outcome"], r["score"] = out, score_of(r["likely"], out)
-            r["touched_utc"] = dt.datetime.fromtimestamp(t / 1000, dt.timezone.utc).strftime("%Y-%m-%dT%H:%MZ") if t else ""
-            print(r["id"], out, r["score"])
+        for r in score_rows(rows, dt.datetime.now(dt.timezone.utc)):
+            print(r["id"], r["outcome"], r["score"])
         save(rows, LEDGER)
     print(summary(rows))
 

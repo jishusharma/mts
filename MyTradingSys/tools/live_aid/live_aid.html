@@ -113,6 +113,10 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 @keyframes nwflash { 0%, 100% { background: transparent; } 50% { background: rgba(224, 164, 58, .35); } }
 #ov tr.nwflash td { animation: nwflash 1s ease-in-out infinite; } .nwf { color: var(--amber); font-weight: 700; }
 @media (prefers-reduced-motion: reduce) { #ov tr.nwflash td { animation: none; background: rgba(224, 164, 58, .35); } }
+.pbc { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 6px; background: var(--bg); } .pbc.now { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+.pbc h3 { margin: 0; font-size: 15px; } .pbh { font: 12px var(--mono); color: var(--dim); } .pbst { font: 700 11px var(--sans); padding: 1px 6px; border-radius: 3px; border: 1px solid var(--dim); color: var(--dim); } .pbst.NOW { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+.pbs, .pbn, .pba ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; } .pbn { font-size: 13px; color: var(--dim); gap: 3px; } .pbs li { font-size: 14px; } .pbr, .pby { font-size: 14px; } .pbl { font-size: 13px; line-height: 1.7; }
+.pbmsg { margin: 0; padding: 6px 10px; border: 1px solid var(--amber); border-radius: 6px; } .pbmsg.stale { color: var(--amber); } .pby table { font-size: 13px; } .pbg { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr)); align-items: start; }
 </style>
 
 <main>
@@ -167,6 +171,12 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   <section id="p-ov">
     <div class="hd"><h2>Now</h2><span class="big" id="ov-px">--</span><span class="sub" id="ov-px-sub"></span><span class="tag">click a row for its page; Back returns here</span><span class="age" id="age-ov">--</span></div>
     <div class="scroll"><table><thead><tr><th>Panel</th><th>Now</th><th>More</th><th>Age</th></tr></thead><tbody id="ov"></tbody></table></div>
+  </section>
+
+  <!-- 1d. DAILY SESSION PLAYBOOK (card daily-session-playbook-live-aid-1109): Asia / Europe / US cards from daily_playbook.py via playbook_data.js; shown by playbook.js -->
+  <section id="p-playbook">
+    <div class="hd"><h2>Daily playbook</h2><span class="src" title="Asia 00-08Z, Europe 07-13Z, US 13-21Z. Base rates and first-touch counts from 1h history before today (since 2020); levels = prior day and week H/L, day and week open, prior-day value area; scenarios and the lean are OURS, every scenario is a scenario-ledger row scored at the session end. Built by daily_playbook.py, once per UTC day. Context only, never a signal.">OURS</span><span class="tag" id="pb-tag"></span></div>
+    <div id="pb-body"></div>
   </section>
 
   <!-- 2. GLANCE -->
@@ -353,6 +363,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="ma_strip.js"></script>
 <script src="cycle_flag_data.js"></script>
 <script src="cycle_flag.js"></script>
+<script src="playbook_data.js"></script>
+<script src="playbook.js"></script>
 <script>
 (function () {
   var el = document.getElementById('cycle-flag');
@@ -909,6 +921,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     try { renderStrip(now); } catch (e) { $('ev-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderMoney(now);
     renderCal(now);
+    try { renderPlaybook(now); } catch (e) { $('pb-body').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
     var a15 = S.a15;
 
     // 3. strip
@@ -981,7 +994,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   // Each row copies numbers already computed for its panel (same feed fields); a click sets #<view>, which shows that panel alone.
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
-                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'] };
+                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Daily playbook'] };
   S.view = '';
   function route() {
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
@@ -1035,6 +1048,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
         (tw ? 'top W ' + tw.w + ' <span class="nw-chip ' + tw.chip + '">' + tw.chip + '</span> ' + esc(tw.reason) + ' ' + hhmm(tw.time) + ' ' + esc(tw.title.slice(0, 70)) + '; ' : '') + (top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min'), ovAge(S.news.t, now), 0, fl);
     }
     row('verdict', 'Verdict', html('v-call'), esc($('v-count').textContent), '');
+    row('playbook', 'Playbook', window.PLAYBOOK ? window.PLAYBOOK.summary(window.PLAYBOOK_DATA, now) : NID, 'Asia / Europe / US cards, key levels, maps, yesterday HIT / MISS', '');
     row('liq', 'Liquidations 5 min', html('g-liq'), esc($('g-liq-sub').textContent), '');
     row('fund', 'Funding 8h', html('g-fund'), html('g-fund-sub'), '');
     row('macro', 'Macro', html('mc-next'), esc($('mc-sub').textContent), '');
@@ -1242,6 +1256,13 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     if (evPrev && rs.some(function (r) { return EVS.flashDue(r, evPrev, now); })) $('p-news').classList.add('flash');
     if (S.view === 'news') $('p-news').classList.remove('flash');
     evPrev = now;
+  }
+  // Daily playbook (playbook.js + playbook_data.js, built by daily_playbook.py): redrawn only when its text changes, so an open card keeps its scroll.
+  var pbLast = '';
+  function renderPlaybook(now) {
+    var h = window.PLAYBOOK ? window.PLAYBOOK.html(window.PLAYBOOK_DATA, now) : '<p class="pbmsg">PLAYBOOK NOT_IN_DATA (playbook.js missing)</p>';
+    if (h !== pbLast) { $('pb-body').innerHTML = h; pbLast = h; }
+    $('pb-tag').textContent = window.PLAYBOOK_DATA ? 'day ' + window.PLAYBOOK_DATA.day + ', built ' + String(window.PLAYBOOK_DATA.built_utc || '').slice(11, 16) + 'Z' : '';
   }
   function renderNews(now) {
     var live = !!S.news.t && now - S.news.t <= 60000;
