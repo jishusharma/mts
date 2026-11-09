@@ -31,7 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Design memo: dense symbols, colour, vertical bars where he must read, cells of 8 words or fewer, no essay. The current playbook output (S012-S020 scenarios, 11 levels) is the input to shrink, not to add to.",
+  "note": "Design memo: dense symbols, colour, vertical bars where he must read, cells of 8 words or fewer, no essay. The current playbook output (S012-S020 scenarios, 11 levels) is the input to shrink, not to add to. DECISION (OURS) 11-09: (1) dial = six verdicts already on the page (analysts, price vs VWAP, RSI 1h, RSI 4h, pierce, playbook lean), LONG/SHORT by the verdict board's own lean rule (2+ and 2x), else HOLD; HOLD shows up/down counts, under 3 in data shows 'n of 6 in data'. (2) The old text cards stay behind a closed Detail line (test_daily_playbook asserts them); the 11-level line, the analyst list and the extra next-event line are removed. (3) Phone page carries only the playbook's own verdict, so its dial reads HOLD; the live page has all six. (4) MA levels = 4h/1d/1w 200 EMA, 200 SMA, 55 EMA only. (5) Not rewired to the registry: the Now-table Levels row, the verdict watch list and the Levels panel keep their own lists.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",

@@ -1,4 +1,4 @@
-// Daily session playbook for the live aid and the phone artifact page. The numbers are computed by daily_playbook.py and
+// Daily session playbook text cards (behind the Detail line of the Map tab; the one-screen picture is map.js). The numbers are computed by daily_playbook.py and
 // written to playbook_data.js (window.PLAYBOOK_DATA); this file only shows them. Fail closed: no data reads NOT_IN_DATA, a day
 // that has ended or data older than 36 h reads STALE, never a guess. Descriptive only: no orders, no sizing, nothing gates.
 (function (root) {
@@ -48,13 +48,10 @@
     if (!data || !data.sessions) return '<p class="pbmsg">PLAYBOOK NOT_IN_DATA (run MyTradingSys/tools/live_aid/daily_playbook.py)</p>';
     var nn = nowSessions(now), h = '';
     if (stale(data, now)) h += '<p class="pbmsg stale">PLAYBOOK STALE: built for ' + esc(data.day) + ' at ' + esc(data.built_utc) + '; run daily_playbook.py</p>';
-    h += '<div class="pbl">' + (data.price ? 'last ' + n0(data.price) + ' &middot; ' : '') + (data.levels || []).map(function (l) { return '<span title="' + esc(l.name) + '">' + esc(l.name) + ' <b>' + n0(l.price) + '</b></span>'; }).join(' &middot; ') + '</div>';
+    // the one-line level wall (11 levels) and the analyst list moved to the Map ladder (map.js + level_registry.js): a level shows once, there.
     h += '<div class="pbg">' + data.sessions.map(function (c) { return card(c, now, nn); }).join('') + '</div>';
     h += yesterday(data.yesterday);
-    if (data.analysts && data.analysts.length) h += '<div class="pba"><b>Analyst calls near price</b> <span class="dim">(CBP, context only)</span><ul>' + data.analysts.map(function (a) {
-      return '<li>' + n0(a.level) + ' ' + esc(a.analyst) + ' ' + esc(a.bias) + ' <span class="dim">' + esc(a.published) + ': ' + esc(a.said) + '</span></li>'; }).join('') + '</ul></div>';
-    else h += '<div class="pba dim">Analyst calls: ' + esc(data.analysts_note || 'none near price') + '</div>';
-    if (data.next_event) h += '<div class="pbr dim">next event after today: ' + esc(data.next_event.cls) + ' ' + esc(new Date(data.next_event.t0).toISOString().slice(0, 16).replace('T', ' ')) + 'Z</div>';
+    // the next event is the countdown chip on the Map (deduped there)
     h += '<div class="pbr dim">Ledger: ' + esc(String(data.ledger || '').split('\n')[0]) + '</div><ul class="pbn">' + (data.notes || []).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>';
     return h;
   }

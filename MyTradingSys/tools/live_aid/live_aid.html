@@ -173,10 +173,11 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     <div class="scroll"><table><thead><tr><th>Panel</th><th>Now</th><th>More</th><th>Age</th></tr></thead><tbody id="ov"></tbody></table></div>
   </section>
 
-  <!-- 1d. DAILY SESSION PLAYBOOK (card daily-session-playbook-live-aid-1109): Asia / Europe / US cards from daily_playbook.py via playbook_data.js; shown by playbook.js -->
+  <!-- 1d. MAP (cards daily-session-playbook-live-aid-1109, live-aid-bias-map-one-screen-1109): bias dial, price ladder, session strip, 3 scenario cards on ONE screen; map.js + level_registry.js. The old text cards sit behind Detail. -->
   <section id="p-playbook">
-    <div class="hd"><h2>Daily playbook</h2><span class="src" title="Asia 00-08Z, Europe 07-13Z, US 13-21Z. Base rates and first-touch counts from 1h history before today (since 2020); levels = prior day and week H/L, day and week open, prior-day value area; scenarios and the lean are OURS, every scenario is a scenario-ledger row scored at the session end. Built by daily_playbook.py, once per UTC day. Context only, never a signal.">OURS</span><span class="tag" id="pb-tag"></span></div>
-    <div id="pb-body"></div>
+    <div class="hd"><h2>Map</h2><span class="src" title="One screen from what Live Aid already shows. Dial = verdicts of six sections (analysts, price vs VWAP, RSI 1h, RSI 4h, pierce, playbook lean), LONG / SHORT as the verdict board's lean rule, else HOLD. Ladder = 3 nearest zones each side from playbook levels, analyst calls, Levels panel and MA strip; levels within 0.15% are one zone. Sessions Asia 00-08Z, Europe 07-13Z, US 13-21Z. Scenarios are scenario-ledger rows scored at the session end (daily_playbook.py). Context only, never a signal.">OURS</span><span class="tag" id="pb-tag"></span></div>
+    <div id="pb-map"></div>
+    <details id="pb-more"><summary class="dim">Detail</summary><div id="pb-body"></div></details>
   </section>
 
   <!-- 2. GLANCE -->
@@ -364,6 +365,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="cycle_flag_data.js"></script>
 <script src="cycle_flag.js"></script>
 <script src="playbook_data.js"></script>
+<script src="level_registry.js"></script>
+<script src="map.js"></script>
 <script src="playbook.js"></script>
 <script>
 (function () {
@@ -921,7 +924,6 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     try { renderStrip(now); } catch (e) { $('ev-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderMoney(now);
     renderCal(now);
-    try { renderPlaybook(now); } catch (e) { $('pb-body').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
     var a15 = S.a15;
 
     // 3. strip
@@ -988,13 +990,15 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderInTrade(now, L, px, a15, m1);
     renderVerdict(now, px, vw);
     renderOverview(now, MOM, L, px, a15, coilR);
+    try { renderMap(now, px, L); } catch (e) { $('pb-map').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
+    try { renderPlaybook(now); } catch (e) { $('pb-body').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
   }
 
   // ---------- Now table and detail pages (operator 10-31: no long scroll, click-through) ----------
   // Each row copies numbers already computed for its panel (same feed fields); a click sets #<view>, which shows that panel alone.
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
-                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Daily playbook'] };
+                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'] };
   S.view = '';
   function route() {
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
@@ -1026,6 +1030,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       var lv = function (l) { return l ? esc(l.n) + ' ' + fmt(l.p, 1) + ' <span class="' + cls(l.p - px) + '">(' + sgn(l.p - px, 1) + (isFinite(a15) ? ', ' + sgn((l.p - px) / a15, 2) + ' ATR' : '') + ')</span>' : NID; };
       row('levels', 'Levels', 'above ' + lv(up) + ' &middot; below ' + lv(dn), 'price ' + fmt(px, 1) + ' (' + esc(S.venue || '') + ')', kt, 1);
     }
+    S.pv = cr ? (cr.pierce ? (cr.pierce.side === 'up' ? 1 : -1) : 0) : null;   // pierce vote for the map's dial
     // 3-4. coil and pierce (15m)
     if (!cr) {
       var why = S.tf['15m'] && S.tf['15m'].length ? 'not enough 15m bars yet' : '15m bars not loaded';
@@ -1048,7 +1053,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
         (tw ? 'top W ' + tw.w + ' <span class="nw-chip ' + tw.chip + '">' + tw.chip + '</span> ' + esc(tw.reason) + ' ' + hhmm(tw.time) + ' ' + esc(tw.title.slice(0, 70)) + '; ' : '') + (top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min'), ovAge(S.news.t, now), 0, fl);
     }
     row('verdict', 'Verdict', html('v-call'), esc($('v-count').textContent), '');
-    row('playbook', 'Playbook', window.PLAYBOOK ? window.PLAYBOOK.summary(window.PLAYBOOK_DATA, now) : NID, 'Asia / Europe / US cards, key levels, maps, yesterday HIT / MISS', '');
+    row('playbook', 'Map', window.LAMAP ? window.LAMAP.summary(mapModel(now, px, L)) : NID, 'bias dial, price ladder, sessions, scenarios', '');
     row('liq', 'Liquidations 5 min', html('g-liq'), esc($('g-liq-sub').textContent), '');
     row('fund', 'Funding 8h', html('g-fund'), html('g-fund-sub'), '');
     row('macro', 'Macro', html('mc-next'), esc($('mc-sub').textContent), '');
@@ -1258,11 +1263,26 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     evPrev = now;
   }
   // Daily playbook (playbook.js + playbook_data.js, built by daily_playbook.py): redrawn only when its text changes, so an open card keeps its scroll.
-  var pbLast = '';
+  var pbLast = '', mapLast = '';
+  // Map model: the votes are the verdict board's four (S.vv), the pierce (S.pv) and the playbook lean (added in map.js); levels come from
+  // every section through level_registry.js, so a level two sections name within 0.15% shows once.
+  function mapModel(now, px, L) {
+    var vv = S.vv || [null, null, null, null];
+    var ana = AD && AD.levels ? AD.levels.filter(function (x) { return !x.expired; }) : null;
+    var ma = typeof MA !== 'undefined' && MA.r ? Object.keys(MA.r).map(function (k) { return MA.r[k]; }).filter(Boolean) : [];
+    var lv = (L || []).concat(store.levels.map(function (l) { return { n: (l.name || 'custom') + ' (typed)', p: +l.price }; }));
+    return { data: window.PLAYBOOK_DATA, now: now, px: px, votes: [vv[0], vv[1], vv[2], vv[3], S.pv == null ? null : S.pv, null], panel: lv, ma: ma, analysts: ana };
+  }
+  function renderMap(now, px, L) {
+    if (!window.LAMAP) { $('pb-map').innerHTML = '<p class="pbmsg">MAP NOT_IN_DATA (map.js missing)</p>'; return; }
+    window.LAMAP.injectCss(document);
+    var h = window.LAMAP.html(mapModel(now, px, L));
+    if (h !== mapLast) { $('pb-map').innerHTML = h; mapLast = h; }
+  }
   function renderPlaybook(now) {
     var h = window.PLAYBOOK ? window.PLAYBOOK.html(window.PLAYBOOK_DATA, now) : '<p class="pbmsg">PLAYBOOK NOT_IN_DATA (playbook.js missing)</p>';
     if (h !== pbLast) { $('pb-body').innerHTML = h; pbLast = h; }
-    $('pb-tag').textContent = window.PLAYBOOK_DATA ? 'day ' + window.PLAYBOOK_DATA.day + ', built ' + String(window.PLAYBOOK_DATA.built_utc || '').slice(11, 16) + 'Z' : '';
+    $('pb-tag').textContent = window.PLAYBOOK_DATA ? String(window.PLAYBOOK_DATA.built_utc || '').slice(11, 16) + 'Z' : '';
   }
   function renderNews(now) {
     var live = !!S.news.t && now - S.news.t <= 60000;
@@ -1300,7 +1320,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var read = AD ? A.rosterRead(AD.roster, AD.rows, AD.rejected, now) : [];
     var votes = [['Analysts (fresh rows)', AD ? A.analystVote(read) : null], ['Price vs day VWAP', isFinite(px) && isFinite(vw) ? Math.sign(px - vw) : null],
                  ['RSI 1h vs 50', rsiVote('1h')], ['RSI 4h vs 50', rsiVote('4h')]];
-    var ln = A.lean(votes.map(function (v) { return v[1]; }));
+    S.vv = votes.map(function (v) { return v[1]; });   // the map's dial reads these same four votes
+    var ln = A.lean(S.vv);
     $('v-call').innerHTML = '<span class="' + (ln.call === 'BULLISH LEAN' ? 'up' : ln.call === 'BEARISH LEAN' ? 'down' : '') + '">' + ln.call + '</span>';
     $('v-count').textContent = ln.bull + ' bull / ' + ln.bear + ' bear of ' + ln.n + ' votes in data' + (ln.total > ln.n ? ', ' + (ln.total - ln.n) + ' NOT_IN_DATA' : '');
     $('v-votes').innerHTML = votes.map(function (v) { return '<span class="vote">' + esc(v[0]) + ': ' + voteTxt(v[1]) + '</span>'; }).join('');
