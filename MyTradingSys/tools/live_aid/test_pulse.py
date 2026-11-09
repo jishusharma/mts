@@ -64,6 +64,17 @@ def test_bearish_cvd_divergence_and_votes():
     assert r["score"] == (r["v"]["rsi"] or 0) + (r["v"]["wt"] or 0) - 1 + 2 * r["dsum"]
 
 
+def test_rsi_vote_uses_the_gauge_50_line():
+    # operator 2026-11-10: 1h RSI 46 was grey in the grid (old 45-55 band) but red on the Direction gauge (RSI vs 50)
+    # steps alternate +0.20 / -0.25: Wilder averages settle near gain 0.10, loss 0.125 -> RSI about 100 - 100/1.8 = 44.4 (under 50, over 45)
+    c, rows = 100.0, []
+    for i in range(60):
+        c += 0.20 if i % 2 else -0.25
+        rows.append(kl(T0 + i * 60_000, c, 0))
+    r = _node("read", rows, 60_000)
+    assert 45 < r["rsi"] < 50 and r["v"]["rsi"] == -1
+
+
 def test_too_few_bars_is_no_read():
     assert _node("read", bars_bearish_cvd()[:39], 60_000) is None
 

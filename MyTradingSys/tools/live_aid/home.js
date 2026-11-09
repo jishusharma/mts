@@ -85,13 +85,18 @@
     var t0 = +rows[0][0], step = 300000, x = function (t) { return L + ((t - t0) / step + 0.5) * cw; };
     var s = '<svg class="hm-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">';
     // sessions: shaded bands, name + hours at the top
-    var d0 = Math.floor(t0 / 86400000) * 86400000;
-    [d0 - 86400000, d0].forEach(function (day) {
+    var d0 = Math.floor(t0 / 86400000) * 86400000, labEnd = -1e9;
+    [d0 - 86400000, d0, d0 + 86400000].forEach(function (day) {
       SESS.forEach(function (ss, i) {
         var xa = Math.max(L, x(day + ss[1] * 3600000) - cw / 2), xb = Math.min(R, x(day + ss[2] * 3600000) - cw / 2);
         if (xb - xa < 10) return;
-        s += '<rect x="' + xa + '" y="' + T + '" width="' + (xb - xa) + '" height="' + (B - T) + '" class="hm-ses s' + i + '"/>' +
-             '<text x="' + (xa + 6) + '" y="' + (T - 8) + '" class="hm-sest">' + ss[0] + ' ' + String(ss[1]).padStart(2, '0') + ':00-' + ss[2] + ':00Z</text>';
+        s += '<rect x="' + xa + '" y="' + T + '" width="' + (xb - xa) + '" height="' + (B - T) + '" class="hm-ses s' + i + '"/>';
+        // label only where it fits: never on top of the previous one (operator 11-10 screenshot: Asia and Europe overprinted)
+        var txt = ss[0] + ' ' + String(ss[1]).padStart(2, '0') + ':00-' + ss[2] + ':00Z', tx = Math.max(xa + 6, labEnd + 10);
+        if (tx + txt.length * 6.5 > xb && xb - xa < txt.length * 6.5) txt = ss[0];
+        if (tx + txt.length * 6.5 > R) return;
+        s += '<text x="' + tx + '" y="' + (T - 8) + '" class="hm-sest">' + txt + '</text>';
+        labEnd = tx + txt.length * 6.5;
       });
     });
     // grid + price axis
@@ -167,9 +172,9 @@
         '<span class="hm-pd">' + (dv || '<em>-</em>') + '</span><span class="hm-pb ' + cc(r.bias) + '"></span></div>';
     }).join('');
     var pos = isFinite(g.lean) ? Math.round((g.lean + 1) * 50) : 50, dc = g.dir === 'UP' ? 'up' : g.dir === 'DOWN' ? 'down' : 'dim';
-    return '<div class="hm-card"><div class="hm-h">Indicators lean <b class="' + dc + '">' + g.dir + '</b><span class="hm-sub">Binance spot; RSI, WaveTrend (WT), CVD = buyers minus sellers; arrows in Divergence = which way it points</span></div>' +
-      '<div class="hm-lean"><span style="left:' + pos + '%"></span></div>' +
-      '<div class="hm-pr hm-ph"><b></b><span>RSI</span><span>WT</span><span>CVD</span><span>Divergence</span><span>Lean</span></div>' + rows + '</div>';
+    return '<div class="hm-card"><div class="hm-h">Indicators lean <b class="' + dc + '">' + g.dir + '</b><span class="hm-sub">Binance spot. Cells: green = buyers lead, red = sellers. Turn warning: ↑ sellers tiring (bounce risk), ↓ buyers tiring (drop risk)</span></div>' +
+      '<div class="hm-leanw"><span class="down">DOWN</span><div class="hm-lean" title="all 11 timeframes added up, higher timeframes count more; white mark = now"><i style="left:37.5%"></i><i style="left:62.5%"></i><span style="left:' + pos + '%"></span></div><span class="up">UP</span></div>' +
+      '<div class="hm-pr hm-ph"><b></b><span>RSI</span><span>WT</span><span>CVD</span><span>Turn warning</span><span>Lean</span></div>' + rows + '</div>';
   }
   // Liquidations: one column per window; red part = longs forced out, green part = shorts; height = share, total under it.
   var LIQ_WIN = [['1m', 60000], ['2m', 120000], ['3m', 180000], ['5m', 300000], ['7m', 420000], ['10m', 600000], ['15m', 900000], ['30m', 1800000], ['1h', 3600000], ['2h', 7200000], ['4h', 14400000]];
@@ -226,6 +231,7 @@
     '.hm-pr{display:grid;grid-template-columns:30px 34px 52px 30px 1fr 14px;gap:3px;align-items:center;font-size:11px;line-height:15px}.hm-pr>b{font:700 11px var(--mono,monospace)}.hm-ph span{color:var(--dim);font-size:10px}' +
     '.hm-pc{text-align:center;border-radius:3px;font:700 11px var(--mono,monospace);color:#111}.hm-pc.up{background:var(--up)}.hm-pc.down{background:var(--down);color:#fff}.hm-pc.dim{background:var(--line);color:var(--fg)}.hm-pc.nid{background:transparent;color:var(--dim);font-weight:400}' +
     '.hm-pd i{font-style:normal;font-weight:700;margin-right:5px}.hm-pd em{color:var(--dim);font-style:normal}.hm-pb{height:12px;border-radius:3px;background:var(--line)}.hm-pb.up{background:var(--up)}.hm-pb.down{background:var(--down)}' +
+    '.hm-leanw{display:flex;gap:6px;align-items:center;font:700 10px system-ui;margin:3px 0 4px}.hm-leanw .hm-lean{flex:1;margin:0}.hm-lean i{position:absolute;top:0;bottom:0;border-left:1px dashed var(--fg);opacity:.5}' +
     '.hm-lean{position:relative;height:8px;margin:3px 0 4px;border-radius:4px;background:linear-gradient(90deg,var(--down),var(--line) 40%,var(--line) 60%,var(--up))}.hm-lean span{position:absolute;top:-3px;width:4px;height:14px;margin-left:-2px;background:var(--fg);border-radius:2px}' +
     '.hm-lcs{display:flex;gap:3px}.hm-lc{flex:1;text-align:center;font-size:10px;min-width:0}.hm-lc.part{opacity:.45}.hm-lcb{height:44px;display:flex;flex-direction:column;border-radius:3px;overflow:hidden;background:var(--line)}.hm-lcb .up{background:var(--up)}.hm-lcb .down{background:var(--down)}.hm-lc b{display:block;font:700 10px var(--mono,monospace)}.hm-lc small{color:var(--dim);font-size:9px}' +
     '.hm-mon{display:flex;gap:12px;align-items:center}.hm-ar{font-size:22px;text-align:center;line-height:1}.hm-ar small{display:block;font-size:10px;color:var(--dim)}' +
