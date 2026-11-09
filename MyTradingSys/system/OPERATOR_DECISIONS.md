@@ -2145,3 +2145,6 @@ Answer: every Tom test so far was intraday auction/order flow (5m-1h); fees of 1
 ## d-aunt-plan-1109 (2026-11-09)
 Operator: "prepare another buying plan for Bitcoin and altcoins for my auntie ... she has never done this ... ready to take the risk of losing that money ... make a record of this so that we always send her the updated one."
 Answer: note 1 written (AUNT_NOTE_2026-11-09.md, name and amounts kept out of the repo): money in 3 equal parts (now; BTC 65-67k; BTC near 60k), BTC 60 / ETH 25 / SOL 15 only, CoinSwitch Limit 2% below, safety rules. Updates are wired: card sister-signals-wired-1109 now drafts both the sister and the aunt note every Monday and on each trigger flip.
+
+## 2026-11-09 Live Aid: every app is ONE page, no scroll (standing)
+Operator: 'i have always asked for my Apps to be 1 page with no scroll - last model had tabs.' Rule: Live Aid and every operator app = one viewport, tab bar to switch screens, no page scroll anywhere. Card live-aid-tabs-no-scroll-1109 (prio 1) carries it; do not ship another operator page that scrolls.
