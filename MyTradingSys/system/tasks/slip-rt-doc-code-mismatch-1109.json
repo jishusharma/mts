@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-08T22:24:46Z",
   "depends_on": [],
-  "done_when": "FORMULAS.md s13 value equals trade_costs.net_return default; python -m pytest MyTradingSys/backtest/layers/positioning/test_trade_costs.py passes; caller list in the card result",
+  "done_when": "FORMULAS.md s13 states both values with their symbol names and OURS label; a test in test_trade_costs.py reads the doc line and asserts both numbers (fails on current doc); caller list in the card result",
   "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09. | LABGUY 2026-11-10 NOT STAMPED. Defects: fees.py:62 SLIPPAGE_RT_S13=0.0002 mirrors the doc and edge_hunt studies use it (12 bp regime A), so 'code wins, edit the doc' creates a third inconsistency; scope_in lacks fees.py; test_trade_costs.py:42 already pins 0.0004; decide the single source in fees.py (OURS), then align trade_costs and doc.",
+  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09. | LABGUY 2026-11-10 NOT STAMPED. Defects: fees.py:62 SLIPPAGE_RT_S13=0.0002 mirrors the doc and edge_hunt studies use it (12 bp regime A), so 'code wins, edit the doc' creates a third inconsistency; scope_in lacks fees.py; test_trade_costs.py:42 already pins 0.0004; decide the single source in fees.py (OURS), then align trade_costs and doc. | Planner 2026-11-10 DECISION (OURS): fixed LABGUY defects: fees.py in scope, no value change, doc names both.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
@@ -23,6 +23,7 @@
   "result": "",
   "scope_in": [
     "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/backtest/fees.py",
     "MyTradingSys/backtest/layers/positioning/trade_costs.py",
     "MyTradingSys/backtest/layers/positioning/test_trade_costs.py"
   ],
@@ -35,11 +36,11 @@
   ],
   "state": "raw",
   "steps": [
-    "Read trade_costs.py net_return default and git log -S slip_rt to find the current default",
-    "Conservative default (OURS): the code value wins (4 bps if that is current); edit FORMULAS.md line 353 to it and label it OURS, note round-trip total 0.14%",
+    "Read fees.py:62 SLIPPAGE_RT_S13 (0.0002), trade_costs.py:51 default 0.0004, test_trade_costs.py:42 pin",
+    "DECISION (OURS): no number changes (studies used both); FORMULAS.md s13 line 353 names both: fees.SLIPPAGE_RT_S13=0.0002 is the census allowance, trade_costs.net_return slip_rt=0.0004 is its own default, labelled OURS",
     "grep callers of net_return without slip_rt; list the study files in the card result"
   ],
-  "tests": "test_trade_costs.py: a test pins the default slip_rt to the value FORMULAS.md states (reads the doc line); fails on current doc/code mismatch",
+  "tests": "test_trade_costs.py: new case parses FORMULAS.md s13 and asserts it names 0.0002 (fees.SLIPPAGE_RT_S13) and 0.0004 (net_return default); fails on current doc",
   "title": "FORMULAS.md s13 says trade_costs slip_rt default is 0.0002 (2 bps RT) but trade_costs.net_return defaults slip_rt=0.0004 (4 bps); decide which is right, fix the other, list studies that used the default",
   "weight": "IMPORTANT",
   "worker": "agent"
