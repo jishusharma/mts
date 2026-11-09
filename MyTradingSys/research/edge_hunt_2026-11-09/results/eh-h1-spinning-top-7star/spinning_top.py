@@ -19,6 +19,8 @@ import pandas as pd
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO_BACKTEST = HERE.parents[3] / "backtest"   # MyTradingSys/backtest (read-only imports)
+sys.path.insert(0, str(HERE.parents[4]))
+from MyTradingSys.backtest import fees  # noqa: E402  (single cost module, T06-F2)
 
 # ---- rule constants (PRE_REG.md) ----
 BODY_K = 0.25          # OURS
@@ -30,9 +32,9 @@ TRIGGER_BARS = 3       # OURS
 TICK = 0.01            # OURS (Binance spot tick)
 TARGET_R = 3.0         # OURS
 TIME_BARS = 20         # OURS
-FEE_PER_SIDE = 0.0005  # fees.py DERIBIT_TAKER = BINANCE_TAKER (regime A)
-SLIP_RT_BPS = 2.0      # PLAN s5 / FORMULAS s13
-FEE_RT_BPS = 2 * FEE_PER_SIDE * 1e4 + SLIP_RT_BPS   # 12 bps round trip
+FEE_PER_SIDE = fees.DERIBIT_TAKER                    # regime A (imported; no own cost constant)
+SLIP_RT_BPS = fees.SLIPPAGE_RT_S13 * 1e4             # FORMULAS s13: 2 bp round trip (imported)
+FEE_RT_BPS = FEE_PER_SIDE * 2e4 + SLIP_RT_BPS        # 12 bps round trip
 
 # ---- splits (PRE_REG Data and splits) ----
 DEV_END_MS = int(pd.Timestamp("2024-07-01", tz="UTC").timestamp() * 1000)

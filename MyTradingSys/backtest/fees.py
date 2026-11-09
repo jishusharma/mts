@@ -57,3 +57,4 @@ FEES_ALL_TAKER = fees_dict(entry=DERIBIT_TAKER, target=DERIBIT_TAKER, stop=DERIB
 FDAX_PER_SIDE = 0.000005
 FEES_FDAX = fees_dict(entry=FDAX_PER_SIDE, target=FDAX_PER_SIDE, stop=FDAX_PER_SIDE, timeout=FDAX_PER_SIDE)
 FDAX_FEE_PER_SIDE = FDAX_PER_SIDE  # alias mirrored by ExecutionMathConstants.FDAX_FEE_PER_SIDE (test_b070_fee_parity)
+SLIPPAGE_RT_S13 = 0.0002  # FORMULAS.md s13: 2 bp round trip (1 bp per side), SOURCED
