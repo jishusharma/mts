@@ -588,6 +588,19 @@ def format_poll_line(registry: dict, result: dict, now_ms: int = None) -> str:
     return f"poll {now} alerts={len(result['alerts'])} errors={len(result['errors'])} {per}"
 
 
+def level_touch_after_poll(state_path, alerts_dir, toast_path, now_ms=None) -> list:
+    """LEVEL TOUCH + SESSION BRIEF (card level-touch-alerts-session-brief-1109): alert log + Live Aid toast feed only.
+    Never raises, never gates, places no order. Providers are looked up at call time so tests can swap them."""
+    try:
+        from MyTradingSys.backtest.layers.alerts import live_level_touch as lt
+        return lt.poll(lt.default_fetch, lt.default_levels, pathlib.Path(state_path).with_name("level_touch_state.json"),
+                       alerts_dir, toast_path, now_ms if now_ms is not None else int(time.time() * 1000),
+                       brief_ctx=lt.default_brief_ctx)
+    except Exception as exc:  # noqa: BLE001 - observation must never stop the alert runner
+        print(json.dumps({"key": "level_touch", "error": str(exc)}), file=sys.stderr, flush=True)
+        return []
+
+
 def main(argv=None) -> int:
     """
     Main entry point for the CLI.
@@ -601,6 +614,8 @@ def main(argv=None) -> int:
     parser.add_argument("--poll-seconds", type=int, default=60)
     parser.add_argument("--consensus-dir", default=None,
                         help="directory for consensus_<date>.jsonl rows (default Dumps/consensus)")
+    parser.add_argument("--toast-path", default="MyTradingSys/runtime/live_aid_toasts.jsonl",
+                        help="Live Aid toast feed (LEVEL TOUCH / SESSION BRIEF rows, one per toast)")
     parser.add_argument("--once", action="store_true")
 
     args = parser.parse_args(argv)
@@ -635,6 +650,8 @@ def main(argv=None) -> int:
                 base_dir=args.consensus_dir)
         except Exception as exc:  # noqa: BLE001 - observation must never stop the alert runner
             print(json.dumps({"key": "consensus_hook", "error": str(exc)}), file=sys.stderr, flush=True)
+
+        level_touch_after_poll(args.state_path, args.alerts_dir, args.toast_path)
 
         save_state(result["state"], args.state_path)
         state = result["state"]

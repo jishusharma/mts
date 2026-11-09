@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T13:54:36Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/research/tom_check_set_2026-10-18/CHECK_SET.md",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md"
+    ],
+    "session": "agent-a36102ce631aa21fd"
+  },
   "created": "2026-11-09T10:03:30Z",
   "depends_on": [],
   "done_when": [

@@ -139,7 +139,7 @@ class Notice(unittest.TestCase):
             json.dump({"schema": 1, "rows": [row("Michael", ["main support at 75k"])], "rejected": []}, open(store, "w"))
             real = al.recent_rows
             with mock.patch.object(al, "recent_rows", lambda days, now, store_=None: real(days, now, store)), \
-                    mock.patch.object(al, "spot_1h", side_effect=OSError("offline")):
+                    mock.patch.object(al, "perp_1h", side_effect=OSError("offline")), mock.patch.object(al, "spot_1h", side_effect=OSError("offline")):
                 out = shot.notice([{"id": "abc123", "ext": "png", "w": 10, "h": 10, "route": "paste"}], [])
         self.assertIn("ANALYST LEVELS", out)
         self.assertIn("75,000", out)
@@ -173,7 +173,7 @@ class MutationKills(unittest.TestCase):
     def test_hit_touch_on_bar_extreme_counts(self):
         t = int(datetime(2026, 10, 30, tzinfo=timezone.utc).timestamp())
         bars = [(t, 80_000.0, 79_000.0, 79_500.0)]  # next day after publish 10-29
-        lv = [dict(level=lv_, published="2026-10-29", expires_at="") for lv_ in (80_000.0, 79_000.0, 80_001.0, 78_999.0)]
+        lv = [dict(level=lv_, published="2026-10-29", expires_at="") for lv_ in (80_000.0, 79_000.0, 80_100.0, 78_900.0)]
         al.mark(lv, bars, datetime(2026, 10, 31, tzinfo=timezone.utc))
         self.assertEqual([x["hit"] for x in lv], [True, True, False, False])
 
@@ -193,12 +193,83 @@ class MutationKills(unittest.TestCase):
             store = os.path.join(d, "rows.json")
             json.dump({"schema": 1, "rows": [row("Michael", ["support 75k"])], "rejected": []}, open(store, "w"))
             buf = io.StringIO()
-            with mock.patch.object(al, "spot_1h", side_effect=AssertionError("network")), contextlib.redirect_stdout(buf):
+            with mock.patch.object(al, "perp_1h", side_effect=AssertionError("network")), mock.patch.object(al, "spot_1h", side_effect=AssertionError("network")), contextlib.redirect_stdout(buf):
                 al.main(["--offline", "--json", "--store", store])
         out = json.loads(buf.getvalue())
         self.assertIsNone(out["price"])
         self.assertEqual([x["level"] for x in out["levels"]], [75000])
         self.assertNotIn("hit", out["levels"][0])
+
+
+class Tolerance(unittest.TestCase):
+    """Card level-touch-alerts-session-brief-1109: 11-08 21:55Z BTC spot low 73,510 never 'hit' the 73,500 zone."""
+    T0 = int(datetime(2026, 11, 8, tzinfo=timezone.utc).timestamp())
+
+    def bars(self):
+        return [(self.T0 + 3600 * k, 73_900.0, 73_510.0, 73_700.0) for k in range(24)]
+
+    def lv(self, level):
+        return dict(level=level, published="2026-11-07", expires_at="")
+
+    def test_touch_tol_is_one_constant(self):
+        self.assertEqual(al.TOUCH_TOL, 0.0005)
+
+    def test_1108_case_73500_vs_spot_low_73510_is_hit(self):
+        lv = [self.lv(73_500.0)]
+        al.mark(lv, self.bars(), datetime(2026, 11, 9, tzinfo=timezone.utc))
+        self.assertTrue(lv[0]["hit"])
+
+    def test_outside_tolerance_stays_open(self):
+        lv = [self.lv(73_400.0)]  # 110 below the low = 0.15 %
+        al.mark(lv, self.bars(), datetime(2026, 11, 9, tzinfo=timezone.utc))
+        self.assertFalse(lv[0]["hit"])
+
+    def test_touched_helper_both_sides(self):
+        self.assertTrue(al.touched(73_500.0, 73_510.0, 73_900.0))
+        self.assertTrue(al.touched(74_000.0, 73_500.0, 73_970.0))  # high 30 below = 0.04 %
+        self.assertFalse(al.touched(74_000.0, 73_500.0, 73_900.0))
+
+
+class Source(unittest.TestCase):
+    def test_perp_first(self):
+        t0 = datetime(2026, 11, 8, tzinfo=timezone.utc)
+        with mock.patch.object(al, "perp_1h", return_value=[(1, 2.0, 1.0, 1.5)]),                 mock.patch.object(al, "spot_1h", side_effect=AssertionError("spot")):
+            bars, src = al.bars_with_source(t0)
+        self.assertEqual(src, "perp")
+        self.assertEqual(bars, [(1, 2.0, 1.0, 1.5)])
+
+    def test_spot_fallback_named(self):
+        t0 = datetime(2026, 11, 8, tzinfo=timezone.utc)
+        with mock.patch.object(al, "perp_1h", side_effect=OSError("blocked")),                 mock.patch.object(al, "spot_1h", return_value=[(1, 2.0, 1.0, 1.5)]):
+            bars, src = al.bars_with_source(t0)
+        self.assertEqual(src, "spot")
+
+    def test_perp_url_is_usdm_futures_via_doh(self):
+        seen = []
+
+        class R:
+            def __enter__(s): return s
+            def __exit__(s, *a): return False
+            def read(s): return b"[]"
+
+        def fake(url, timeout=None):
+            seen.append(url)
+            return R()
+        with mock.patch.object(al, "_urlopen", fake):
+            al.perp_1h(datetime(2026, 11, 8, tzinfo=timezone.utc))
+        self.assertIn("fapi.binance.com/fapi/v1/klines", seen[0])
+
+    def test_main_prints_source(self):
+        import contextlib
+        import io
+        with tempfile.TemporaryDirectory() as d:
+            store = os.path.join(d, "cbp.json")
+            json.dump({"rows": [row("Michael", ["support 75k"], days_ago=2)]}, open(store, "w"))
+            bars = [(int(datetime.now(timezone.utc).timestamp()) - 3600, 76_000.0, 75_000.0, 75_500.0)]
+            buf = io.StringIO()
+            with mock.patch.object(al, "bars_with_source", return_value=(bars, "spot")), contextlib.redirect_stdout(buf):
+                al.main(["--store", store])
+        self.assertIn("source: spot", buf.getvalue())
 
 
 if __name__ == "__main__":

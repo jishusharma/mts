@@ -135,6 +135,27 @@ class TestMainOnce(unittest.TestCase):
     def setUp(self):
         self.tmpdir = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
+        from MyTradingSys.backtest.layers.alerts import live_level_touch as lt
+        for name in ("default_fetch", "default_levels"):  # no network in tests: the level-touch feed fails closed
+            self.addCleanup(setattr, lt, name, getattr(lt, name))
+            setattr(lt, name, lambda *a, **k: (_ for _ in ()).throw(OSError("no network in tests")))
+
+    def test_loop_runs_level_touch_after_each_poll(self):
+        from MyTradingSys.backtest.layers.alerts import live_level_touch as lt
+        seen = []
+        orig = cli.level_touch_after_poll
+        cli.level_touch_after_poll = lambda *a, **k: seen.append(a)
+        self.addCleanup(setattr, cli, "level_touch_after_poll", orig)
+        cli.default_fetch_klines, keep = (lambda s, i, l: [_row(0, 1, 1, 1, 1, 1, 1), _row(60000, 2, 2, 2, 2, 2, 2)]), cli.default_fetch_klines
+        self.addCleanup(setattr, cli, "default_fetch_klines", keep)
+        cli.main(["--tfs", "1h", "--state-path", str(Path(self.tmpdir) / "s.json"), "--alerts-dir", str(Path(self.tmpdir) / "a"),
+                  "--toast-path", str(Path(self.tmpdir) / "t.jsonl"), "--once"])
+        self.assertEqual(len(seen), 1)
+        self.assertEqual(seen[0][2], str(Path(self.tmpdir) / "t.jsonl"))
+
+    def test_level_touch_error_never_stops_the_runner(self):
+        self.assertEqual(cli.level_touch_after_poll(Path(self.tmpdir) / "s.json", Path(self.tmpdir) / "a", None), [])
+        self.assertTrue((Path(self.tmpdir) / "a" / "level_touch.jsonl").exists())  # one degraded line
 
     def test_once_writes_alerts_and_state_with_injected_fetch(self):
         raw = [_row(0, 1, 1, 1, 1, 1, 1), _row(60000, 2, 2, 2, 2, 2, 2), _row(120000, 3, 3, 3, 3, 3, 3)]

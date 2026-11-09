@@ -17,11 +17,17 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "decision",
+      "line": "re-read vs c1fad2a74: it adds level_touch_after_poll + --toast-path only; registry entry p",
+      "ref": "d-whats-next-credit-1109",
+      "utc": "2026-11-09T13:54:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/krown-s8-4h-testnet-build",
-      "ref": "31e9c70b85fa",
-      "utc": "2026-11-09T02:20:17Z"
+      "line": "level-touch-alerts-session-brief-1109: live_level_touch (LEVEL TOUCH, SESSION BRIEF) wired",
+      "ref": "c1fad2a74a7f",
+      "utc": "2026-11-09T12:20:12Z"
     }
   ],
   "layers": [],
@@ -31,7 +37,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T04:54:40Z",
+  "refreshed": "2026-11-09T13:54:56Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +49,7 @@
   "scope_out": [
     "auto_trader, exits/accounts config, promoted_setups, any order, deploy, restart, .mts_live (builder ships code; deploy is a coordinator request per the runbook)"
   ],
-  "scope_sha": "31e9c70b85fa",
+  "scope_sha": "c1fad2a74a7f",
   "size": "M",
   "sources": [
     "MyTradingSys/research/malkan_level_shorts_2026-11-09/REPORT.md"

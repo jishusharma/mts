@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T12:48:28Z",
   "commands": [],
   "created": "2026-11-09T07:54:59Z",
   "depends_on": [],
@@ -20,6 +21,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "analyst_levels.py TOUCH_TOL 0.05% perp-first; live_level_touch.py LEVEL TOUCH + SESSION BR",
+      "ref": "54d3b5d4f",
+      "utc": "2026-11-09T12:48:28Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
@@ -30,6 +37,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "sister-signals-wired-1109",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
@@ -38,7 +46,12 @@
   "refs": [
     "MyTradingSys/system/DEPLOY_RUNBOOK.md"
   ],
-  "result": "",
+  "result": "analyst_levels.py TOUCH_TOL 0.05% perp-first; live_level_touch.py LEVEL TOUCH + SESSION BRIEF in live_runner_cli; toast.js; tests test_analyst_levels.py + test_live_level_touch.py; deploy: restart the live_runner_cli alert loop (restart map step) under d-dns-fix-deploy-standing-1109",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/analyst_levels.py; MyTradingSys/backtest/layers/alerts/ (live_runner alert for level touch + session brief); MyTradingSys/tools/live_aid/ (toast)"
   ],
@@ -50,12 +63,13 @@
   "sources": [
     "operator chat 2026-11-09 ~07:50Z, d-level-touch-alerts-1109"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "tests first, red (73,500 vs 73,510 touch; perp fallback; one alert per level per day; restart state; API error fails closed)",
     "fix hit marking; add LEVEL TOUCH and SESSION BRIEF alerts in the live loop",
     "tests --quick, ship; deploy per d-dns-fix-deploy-standing-1109 rule once green"
   ],
+  "taken": "2026-11-09T12:48:28Z",
   "tests": "scripts/dev/test_analyst_levels.py",
   "title": "Level touches reach the operator by themselves: perp-wick HIT marking with tolerance, LEVEL TOUCH alerts in the live loop, session-open brief",
   "weight": "",
