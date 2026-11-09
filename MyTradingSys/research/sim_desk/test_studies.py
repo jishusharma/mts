@@ -172,3 +172,75 @@ def test_eth_run_end_to_end(tmp_path):
     trials.write_text('', encoding='utf-8')
     out = desk.run_setting(s, {'symbol': 'ETHUSDT', 'tf': '1h'}, trials_path=trials, cache_dir=tmp_path / 'c')
     assert out['n'] >= 20 and 'ETH' in out['describe'] and 'ETHUSDT' in trials.read_text(encoding='utf-8')
+
+
+# ---- 11-09 census page rows (card sim-desk-edge-hunt-census-1109): numbers hand-read from the RESULT files, never recomputed ----
+import json  # noqa: E402
+import census_1109 as c9  # noqa: E402
+
+RES = HERE / 'results' / '_census_1109.json'
+EXPECT = {  # id: (chip, n, mean net R)
+    'census-5m-15m-session-ladder': ('FAIL', 698, -0.372), 'eh-h1-T01': ('FAIL', 108, -0.217),
+    'eh-h2-T02': ('INCONCLUSIVE', 7, 1.06), 'eh-h2-T03': ('INCONCLUSIVE', 8, 0.07), 'eh-h3-T04': ('FAIL', 1150, -0.221),
+    'eh-h4-T05': ('FAIL', 300, -0.086), 'eh-h5-T06': ('INCONCLUSIVE', 1322, 0.048), 'eh-s2-T09': ('FAIL', 41, -0.581),
+    'eh-s2-T10': ('FAIL', 47, -0.804), 'eh-s3-T11': ('FAIL', 1588, -0.146), 'eh-s3-T12': ('FAIL', 1477, -0.133),
+    'malkan-level-short-best-arm': ('INCONCLUSIVE', 126, 0.10), 'malkan-level-short-full-stack': ('INCONCLUSIVE', 37, 0.13)}
+
+
+def test_census_rows_cover_every_1109_study_with_chip_n_mean():
+    d = c9.build_rows()
+    rows = {r['id']: r for r in d['rows']}
+    assert set(EXPECT) | {'malkan-operator-5-points'} == set(rows)
+    for rid, (chip, n, mean) in EXPECT.items():
+        r = rows[rid]
+        assert (r['chip'], r['n']) == (chip, n) and r['mean_net_r'] == pytest.approx(mean), rid
+        assert r['tone'] == {'FAIL': 'bad', 'INCONCLUSIVE': 'warn', 'PASS': 'good'}[chip]
+    assert len(rows['census-5m-15m-session-ladder']['cells']) == 10
+
+
+def test_census_why_is_a_quote_from_the_result_file():
+    for r in c9.build_rows()['rows']:
+        assert r['why'] and r['why_src'] and r['why_quote'], r['id']
+        assert r['why_quote'] in (c9.RESEARCH / r['why_src']).read_text(encoding='utf-8'), r['id']
+
+
+def test_census_says_when_a_study_saved_no_per_trade_file():
+    rows = {r['id']: r for r in c9.build_rows()['rows']}
+    assert rows['eh-h3-T04']['per_trade']['status'] == 'not_saved' and 'not saved' in rows['eh-h3-T04']['per_trade']['note']
+    h2 = rows['eh-h2-T02']
+    assert h2['per_trade']['status'] == 'file' and len(h2['trades']) == 7 and sum(1 for t in h2['trades'] if t['r'] > 0) == 4
+    assert len(rows['eh-h2-T03']['trades']) == 8 and rows['eh-h2-T03']['trades'][2]['r'] == pytest.approx(1.9478)
+
+
+def test_malkan_operator_five_points_are_own_row_with_five_trades():
+    r = {r['id']: r for r in c9.build_rows()['rows']}['malkan-operator-5-points']
+    assert [t['name'] for t in r['trades']] == ['C1', 'C2', 'V1', 'V2', 'C3']
+    c1 = r['trades'][0]
+    assert c1['side'] == 'short' and c1['stop_pct'] == pytest.approx(2.385, abs=0.001) and c1['best_pct'] == pytest.approx(4.3)
+    assert c1['exit_note'].startswith('stop hit 09-03') and r['chip'] == 'INCONCLUSIVE'
+
+
+def test_check_next_is_at_most_five_ideas_each_quoted_from_its_file():
+    ck = c9.build_rows()['check_next']
+    assert 1 <= len(ck) <= 5
+    for c in ck:
+        assert c['idea'] and c['quote'] in (c9.RESEARCH / c['file']).read_text(encoding='utf-8'), c
+
+
+def test_committed_census_file_has_candles_for_all_five_malkan_trades():
+    d = json.loads(RES.read_text(encoding='utf-8'))
+    tr = {r['id']: r for r in d['rows']}['malkan-operator-5-points']['trades']
+    assert len(tr) == 5
+    for t in tr:
+        assert len(t['c']) >= 20 and 0 <= t['entry_i'] < len(t['c']) and t['stop_pct'] > 0 and t['best_pct'] > 0, t['name']
+        assert all(len(k) == 4 for k in t['c'])
+    assert tr[0]['exit_i'] is not None and tr[0]['exit_t'].startswith('2026-09-03')
+    assert d['rows'] == c9.with_candles(c9.build_rows(), d)['rows']      # the committed file is the builder output, not hand-edited
+
+
+def test_page_gets_the_census_tab_and_data():
+    sys.path.insert(0, str(HERE / 'artifact'))
+    import build_artifact as ba
+    html = ba.render(ba.collect(str(HERE / 'results')), None)
+    assert '"census-5m-15m-session-ladder"' in html and '"malkan-operator-5-points"' in html
+    assert '"c1109"' in html and 'function c1109Tab' in html
