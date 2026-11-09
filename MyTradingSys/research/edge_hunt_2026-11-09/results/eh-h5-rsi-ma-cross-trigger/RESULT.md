@@ -82,3 +82,5 @@ After the code, two of my own test expectations were wrong (armed-window case an
 - backtest/splits.py DEV_START 2022-01-01 disagrees with the wave's DEV (2017..2024-06-30). Not edited (read-only); logged as DECISION 8.
 - The funding archive starts 2020-01 in this cache; 2019-09..12 returned 404. Funding is 0 before 2020-01.
 - Doctor warnings at sync start (CLAUDE.md size headroom 0%, DISK 14.1 GB) are unrelated to this study.
+
+- SHIP BLOCKED: the must-pass gate Step 3xm (dsa_backtest_audit T06 test_cost_inventory) flags the COST_RT_BPS line in rsi_ma_cross.py because costs.csv is in another study's folder (out of this worker's write scope). Not shipped; needs the coordinator to add the row or accept the constant. Quick gate steps 3pc, 3la, 3dl, 3gd, 3qn, 4c, 4d passed; 3cm and 4e-4f not reached.\n
