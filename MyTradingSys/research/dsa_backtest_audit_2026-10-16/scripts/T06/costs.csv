@@ -225,3 +225,5 @@ MyTradingSys/research/volume_2026-10-09/run_v2.py,21,COST,2,other,n/a,both,cost 
 MyTradingSys/research/volume_2026-10-09/run_v3.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/volume_2026-10-09/run_v4.py,19,COST,2,other,n/a,both,cost in volume_2026-10-09,0,assign,COST = 2 * (0.0005 + 0.0002)
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py,39,COST10,2,other,round_trip,taker,cost in wt_extreme_cross_volmatch_2026-11,1,assign,COST10 = 2 * fees.BINANCE_TAKER * 100.0       # SOURCED fees.py: Binance USD-M taker both legs; % round trip
+MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h3-first-touch-sweep/first_touch.py,22,FEE_RT,0.0012,fraction,round_trip,taker,fee in edge_hunt,0,assign,FEE_RT = 0.0012      # regime A: 2 x 5 bps taker + 2 bps RT slippage (fees.py BINANCE_TAKER; FORMULAS s13)
+MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h3-first-touch-sweep/first_touch.py,232,fund_r,0.0,fraction,per_side,n/a,funding in edge_hunt,0,assign,fund_r = 0.0
