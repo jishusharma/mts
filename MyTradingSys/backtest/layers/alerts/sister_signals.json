@@ -1,0 +1,22 @@
+{
+  "source": "MyTradingSys/research/cbp/SISTER_NOTE_2026-11-07.md, MyTradingSys/research/cbp/SISTER_NOTE_2026-11-09.md, AUNT_NOTE_2026-11-09.md",
+  "label": "OURS",
+  "why": "Family plan triggers as written in the sister notes: Phase 2 on, top up, stop, confirmed. Thresholds are ours (from our reading of the analysts), not an exchange or analyst number.",
+  "phase2_lo": 72000,
+  "phase2_hi": 75000,
+  "phase2_days": 2,
+  "topup_close_below": 72000,
+  "topup_lo": 65000,
+  "topup_hi": 67000,
+  "stop_weekly": 60000,
+  "stop_low": 57800,
+  "confirm_weekly": 80500,
+  "fetch_every_min": 15,
+  "notes_dir": "F:/MTS/family_notes",
+  "notes_slot_utc": [7, 0],
+  "notes_window_min": 60,
+  "sister_ladder_pct": {"BTC": [1, 2], "ALT": [2, 5]},
+  "sister_coins": ["BTC", "ETH", "SOL", "LINK", "HBAR"],
+  "aunt_split_pct": {"BTC": 60, "ETH": 25, "SOL": 15},
+  "aunt_limit_pct": 2
+}

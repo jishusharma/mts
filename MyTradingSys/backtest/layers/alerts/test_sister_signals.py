@@ -3,7 +3,7 @@
 import json
 from datetime import datetime, timezone
 
-from MyTradingSys.execution import sister_signals as ss
+from MyTradingSys.backtest.layers.alerts import sister_signals as ss
 
 UTC = timezone.utc
 DAY = 86_400_000
