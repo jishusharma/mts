@@ -51,6 +51,12 @@ class DeskTest(unittest.TestCase):
         with self.assertRaises(SystemExit):
             desk.finish(self.b, rid, "again", ship=False)
 
+    def test_finish_body_has_next_line(self):
+        rid = desk.post(self.a, "Copy", "copy x", "ok", ship=False)
+        desk.finish(self.a, rid, "done it", ship=False)
+        msg = subprocess.run(["git", "log", "-1", "--format=%B"], cwd=self.a, capture_output=True, text=True).stdout
+        self.assertIn("Next: END:", msg)
+
     def test_declined_task_raises_operator_line(self):
         rid = desk.post(self.a, "Restart runner", "restart alert runner", "running", ship=False)
         desk.finish(self.a, rid, "declined: restarts are supervisor-only", failed=True, ship=False)

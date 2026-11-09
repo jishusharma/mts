@@ -1828,7 +1828,7 @@ def main(argv=None):
     d = sp.add_parser("done")
     d.add_argument("id")
     d.add_argument("--result", required=True)
-    d.add_argument("--next", required=True, help='where the work goes next: <card-id> | <stage> | "END: <reason>" | new:"<title>" (files it raw)')
+    d.add_argument("--next", required=True, help='(required by design; card must be ready/active) where the work goes next: <card-id> | <stage> | "END: <reason>" | new:"<title>" (files it raw)')
     d.set_defaults(f=cmd_done)
     dr = sp.add_parser("drop", help="drop a card with a reason")
     dr.add_argument("id")
