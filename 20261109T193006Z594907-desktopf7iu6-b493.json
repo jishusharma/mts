@@ -1,0 +1,1 @@
+{"t": "20261109T193006Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "HOLD LIFTED: sister_signals fix on trunk (ec214b84, CI green, reviewed SAFE). Deploy covers fdbf20a0+fix; coordinator/operator deploys. CI red earlier was GitHub-side.", "login": "A"}
