@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T10:02:36Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+      "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md",
+      "MyTradingSys/execution/position_manager.py",
+      "MyTradingSys/execution/test_stop_gap_offline.py"
+    ],
+    "session": "agent-a9fc82019cc1aa3bc"
+  },
   "created": "2026-11-04T14:28:22Z",
   "depends_on": [],
   "done_when": "tom_bt.py/maker_model.py take a named stop-slip constant citing research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md; goldens re-baselined in one commit; a non-Claude spec review file exists beside the card",

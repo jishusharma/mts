@@ -13,8 +13,8 @@
   },
   "created": "2026-11-08T03:11:54Z",
   "depends_on": [],
-  "done_when": "each of the 5 cases has a failing-first test in test_stop_gap_offline.py",
-  "est_turns": 20,
+  "done_when": "5 new failing-first tests in MyTradingSys/execution/test_stop_gap_offline.py pass after the fix; pytest on that file green",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -31,20 +31,22 @@
   "refs": [],
   "result": "",
   "scope_in": [
-    "stop-gap flatten module and test_stop_gap_offline.py"
+    "MyTradingSys/execution/position_manager.py",
+    "MyTradingSys/execution/test_stop_gap_offline.py"
   ],
   "scope_out": [
-    "live tree deploy"
+    "no live-tree deploy, no mainnet, no change to other execution modules"
   ],
   "size": "M",
   "sources": [],
   "state": "raw",
   "steps": [
-    "locate stop-gap flatten code via where_is.py",
-    "write failing tests per case",
-    "fix"
+    "Read position_manager.py _flatten_naked_entry (:339), flatten_halt (:541), _retry_call (:146); list the 5 follow-up cases from 75767271 review",
+    "Per case write a failing-first offline test in test_stop_gap_offline.py incl. restart/reset state and API-error paths (fail closed)",
+    "Fix: retry close after failed close; cancel resting entry_1 on error paths; sweep labels from intent plan; _retry_call on get_position (lines 375,398,566,581); honest already-flat message",
+    "Run python -m pytest MyTradingSys/execution/test_stop_gap_offline.py"
   ],
-  "tests": "python -m pytest -k stop_gap_offline",
+  "tests": "MyTradingSys/execution/test_stop_gap_offline.py: 5 new cases fail on current position_manager.py (one per follow-up), plus an API-error and a restart/reset case",
   "title": "stop-gap flatten follow-ups (review of 75767271): retry flatten after failed close; cancel resting entry_1 on error paths; sweep labels from intent plan; _retry_call on get_position; honest already-flat message (done when: failing-first test per case in test_stop_gap_offline.py)",
   "weight": "IMPORTANT",
   "worker": "session"

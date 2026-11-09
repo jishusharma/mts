@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-09T10:02:08Z",
   "commands": [],
   "created": "2026-11-09T06:03:45Z",
   "depends_on": [],
@@ -20,6 +21,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Shipped 005e69ff9: 14 study rows with chips, n, net R, check-next panel, 77 sim_desk tests",
+      "ref": "b77171002",
+      "utc": "2026-11-09T10:02:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sim_desk artifact test: load sim_desk desk.py by explicit path (scripts/dev/desk.py shadow",
@@ -30,6 +37,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "sim-desk-11-09-census-regenerate-per-tra",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
@@ -38,7 +46,12 @@
   "refs": [
     "MyTradingSys/research/sim_desk/DESIGN.md"
   ],
-  "result": "",
+  "result": "Shipped 005e69ff9: 14 study rows with chips, n, net R, check-next panel, 77 sim_desk tests pass; per-trade charts for T02, T03 and Malkan 5 points; remainder in follow-up card",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/ (studies, artifact build); reads the RESULT, events and cells files of the studies below"
   ],
@@ -50,12 +63,13 @@
   "sources": [
     "operator chat 2026-11-09 ~06Z, d-sim-verify-1109"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "extend the sim_desk study registry test first, red",
     "add the studies with per-trade replay rows",
     "rebuild and republish the sim page, ship"
   ],
+  "taken": "2026-11-09T10:02:08Z",
   "tests": "MyTradingSys/research/sim_desk/test_studies.py",
   "title": "Simulator: replay every trade of the 11-09 tests (Tom/Fabio census, edge-hunt T01-T12, Malkan level short) so the operator can click and verify",
   "weight": "",
