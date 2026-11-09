@@ -245,6 +245,3 @@ MyTradingSys/research/candle_flip_probability_2026-11/klines_1m_cache.csv.gz
 MyTradingSys/research/candle_flip_probability_2026-11/btcusdt_1m.csv.gz
 MyTradingSys/research/candle_flip_probability_2026-11/flip_table.csv.gz
 MyTradingSys/research/candle_flip_probability_2026-11/fetch.log
-
-# tf-testnet-forward-range logger output (runtime data, never commit)
-MyTradingSys/research/auction_forward_2026-11-09/runtime/
