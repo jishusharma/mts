@@ -121,7 +121,7 @@ def open_replay(browser, fixture=True, wrap=False):
         if fixture:
             page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + ";")
         page.clock.set_fixed_time(datetime.datetime.fromtimestamp(NOW_MS / 1000, tz=datetime.timezone.utc))  # a bare number is read as seconds
-        page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
+        page.goto(PAGE.resolve().as_uri() + "?replay=fixture#momentum", wait_until="load", timeout=30000)
         page.check("#more-tog")     # the SMA, BBw, ATR, vs VWAP columns are hidden until "More detail"
         try:
             page.wait_for_selector("#strip td.x", state="visible", timeout=5000)
@@ -211,7 +211,7 @@ def _cal_text(browser, iso_now, events):
         if events is not None:
             page.add_init_script("window.LIVEAID_CAL = " + json.dumps(events) + ";")
         page.clock.set_fixed_time(datetime.datetime.fromisoformat(iso_now.replace("Z", "+00:00")))
-        page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
+        page.goto(PAGE.resolve().as_uri() + "?replay=fixture#momentum", wait_until="load", timeout=30000)
         page.wait_for_timeout(1300)
         assert not errs, errs
         return (page.inner_text("#mc-next"), page.inner_text("#mc-sub"),
@@ -259,7 +259,7 @@ def test_no_calendar_on_429_then_numbers_on_200(browser):
                 route.fulfill(status=st, body=b, content_type="application/json", headers={"Access-Control-Allow-Origin": "*"})
             page.route(CAL_URL_GLOB, answer)
             page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
-            page.goto(PAGE.resolve().as_uri(), wait_until="load", timeout=30000)
+            page.goto(PAGE.resolve().as_uri() + "#momentum", wait_until="load", timeout=30000)
             page.wait_for_timeout(1500)
             nxt = page.inner_text("#mc-next")
             if want_numbers:
@@ -286,7 +286,7 @@ def _snap_page_text(browser, snap_js, cors_feed=False):
                 route.abort()                                    # incl. nfs.faireconomy.media: blocked like a real CORS failure
         page.route("**/*", local)
         page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
-        page.goto(PAGE.resolve().as_uri(), wait_until="load", timeout=30000)
+        page.goto(PAGE.resolve().as_uri() + "#momentum", wait_until="load", timeout=30000)
         page.wait_for_timeout(1500)
         return page.inner_text("#mc-next"), page.inner_text("#mc-sub")
     finally:
@@ -338,7 +338,7 @@ def _money(browser, inject=True):
         if inject:
             page.add_init_script("window.LIVEAID_OI = " + json.dumps({"klines": OIFX["klines"], "oi": OIFX["oi"]}) + ";")
         page.clock.set_fixed_time(OI_NOW)
-        page.goto(PAGE.resolve().as_uri() + "?replay=fixture", wait_until="load", timeout=30000)
+        page.goto(PAGE.resolve().as_uri() + "?replay=fixture#momentum", wait_until="load", timeout=30000)
         page.wait_for_timeout(1300)
         rows = page.eval_on_selector_all("#m-rows tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")
         return rows, page.inner_text("#m-lines"), page.inner_text("#m-call"), errs
@@ -418,7 +418,7 @@ def _posbar(browser, mutate=None):
         page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(PB_ROWS) + "; window.LIVEAID_MARK = 100060;"
                              "localStorage.setItem('liveaid.v1', " + json.dumps(json.dumps(PB_STORE)) + ");")
         page.clock.set_fixed_time(datetime.datetime.fromtimestamp(PB_NOW / 1000, tz=datetime.timezone.utc))
-        page.goto(uri + "?replay=fixture", wait_until="load", timeout=30000)
+        page.goto(uri + "?replay=fixture#momentum", wait_until="load", timeout=30000)
         page.wait_for_timeout(1300)
         return {i: page.inner_text("#" + i).strip() for i in PB_WANT}, errs
     finally:
@@ -487,7 +487,7 @@ def _liq_page(browser, mutate=False):
                    if route.request.url.split("?")[0] == uri else route.continue_())
         page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + "; window.LIVEAID_LIQ = " + json.dumps(LIQ_FX["events"]) + ";")
         page.clock.set_fixed_time(LIQ_NOW)
-        page.goto(uri + "?replay=fixture", wait_until="load", timeout=30000)
+        page.goto(uri + "?replay=fixture#momentum", wait_until="load", timeout=30000)
         page.wait_for_timeout(1300)
         sum_rows = page.eval_on_selector_all("#liq-sum tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText.trim()))")
         tape_rows = page.eval_on_selector_all("#liq-tape tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText.trim()))")

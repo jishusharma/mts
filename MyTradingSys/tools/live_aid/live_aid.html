@@ -120,6 +120,18 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
+<nav id="tabs"><a href="#home">Home</a><a href="#playbook">Map</a><a href="#now">Now</a><a href="#usopen">US open</a><a href="#money">Money</a><a href="#news">News</a><a href="#levels">Levels</a><a href="#momentum">Momentum</a><a href="#liq">Liquidations</a><a href="#intrade">In trade</a></nav>
+<div id="flash"></div>
+<section id="p-home"></section>
+<style>
+#tabs{position:sticky;top:0;z-index:9;display:flex;gap:4px;padding:6px 0;background:#0d1117;border-bottom:1px solid #30363d;margin-bottom:8px}
+#tabs a{padding:6px 14px;border-radius:6px;color:#c9d1d9;text-decoration:none;font-weight:600;border:1px solid #30363d}
+#tabs a.on{background:#e3a72f;color:#0d1117;border-color:#e3a72f}
+html,body{height:100%;overflow:hidden}
+main{height:100vh;overflow:hidden;display:flex;flex-direction:column}
+main>section:not(.off){flex:1 1 auto;min-height:0;overflow:auto}
+main>#p-pos:not(.off){flex:0 0 auto}
+</style>
   <!-- 0. TIMEFRAME STRIP: one-glance scalp read (spot data); pure functions in tf_strip.js -->
   <section id="p-tfs">
     <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close; the thin bar under the colour cells fills to the chance (random-walk maths on the bar's ATR14 scale) that the forming bar closes with the colour it has now. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
@@ -369,6 +381,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>
 <script src="map.js"></script>
+<script src="home.js"></script>
+<script src="pulse.js"></script>
 <script src="playbook.js"></script>
 <script>
 (function () {
@@ -994,6 +1008,27 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderOverview(now, MOM, L, px, a15, coilR);
     try { renderMap(now, px, L); } catch (e) { $('pb-map').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
     try { renderPlaybook(now); } catch (e) { $('pb-body').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
+    try { renderHome(now, px, L, MOM); } catch (e) { $('p-home').innerHTML = '<p class="err">Home: ' + esc(e.message) + '</p>'; }
+  }
+  // Home tab (operator 11-09): one graphical screen; ctx copies numbers the other panels already compute.
+  var PAGE_T0 = Date.now(), PULSE = { key: '', g: null };
+  var EV_WORDS = { CPI: 'US inflation report (CPI)', FOMC: 'Fed rate decision (FOMC)', NFP: 'US jobs report (NFP)', PPI: 'US producer prices (PPI)', PCE: 'US PCE inflation', GDP: 'US GDP' };
+  function renderHome(now, px, L, MOM) {
+    if (!window.LAHOME) { $('p-home').innerHTML = '<p class="err">home.js not found next to this page</p>'; return; }
+    window.LAHOME.injectCss(document);
+    var r5 = S.tf['5m'];
+    if (!(px > 0) && r5 && r5.length) px = +r5[r5.length - 1][4];   // no live ticker yet: last 5m close (same venue as the candles)
+    var mm = mapModel(now, px, L), M = window.LAMAP, pd = window.PLAYBOOK_DATA;
+    var votes = mm.votes.slice(); if (M && pd) votes[5] = M.playbookVote(pd, now);
+    var ev = M && pd ? M.nextEvent(pd, now) : null;
+    var liq = { m1: A.liqSum(S.liq, now, 60000), win: {}, since: PAGE_T0, last: S.liq.slice(-20) };
+    [['1m', 1], ['2m', 2], ['3m', 3], ['5m', 5], ['7m', 7], ['10m', 10], ['15m', 15], ['30m', 30], ['1h', 60], ['2h', 120], ['4h', 240]].forEach(function (w) { liq.win[w[0]] = A.liqSum(S.liq, now, w[1] * 60000); });
+    var PU = window.LAPULSE, pkey = (TF.t['1m'] || 0) + '|' + (TF.t['30m'] || 0);   // Binance spot klines (tf strip loader); recompute only on a new fetch
+    if (PU && pkey !== PULSE.key) { PULSE.key = pkey; try { PULSE.g = PU.grid(TF.k); } catch (e) { PULSE.g = null; } }
+    var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
+    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, liq: liq, money: S.moneyHead || null, news: news,
+      ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 
   // ---------- Now table and detail pages (operator 10-31: no long scroll, click-through) ----------
@@ -1001,13 +1036,19 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
                 fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'] };
+  VIEWS.now = ['p-ov', 'Now']; VIEWS.home = ['p-home', 'Home'];
   S.view = '';
   function route() {
+    // operator 11-09: one page, no scroll, tab bar; landing tab = Map
+    if (!VIEWS[location.hash.replace(/^#/, '')]) { history.replaceState(null, '', '#home'); }
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
     S.view = vw ? v : '';
     document.body.classList.toggle('detail', !!vw);
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs a'), function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + v); });
     Array.prototype.forEach.call(document.querySelector('main').children, function (el) {
-      if (el.id === 'back') el.classList.toggle('off', !vw);
+      if (el.id === 'back') el.classList.add('off');
+      else if (el.id === 'tabs' || el.id === 'flash') el.classList.remove('off');
+      else if (el.id === 'p-pos' && (v === 'intrade' || v === 'momentum')) el.classList.remove('off');   // position bar holds the More-detail toggle
       else el.classList.toggle('off', !!vw && el.id !== id && !el.querySelector('#' + id));
     });
     Array.prototype.forEach.call(document.querySelectorAll('.cols > section'), function (el) { el.classList.toggle('off', !!vw && el.id !== id); });
@@ -1080,6 +1121,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     if (head) {
       var m = head.net.state.money;
       $('m-call').innerHTML = '<span class="' + (m === 'in' ? 'up' : m === 'out' ? 'down' : '') + '">' + esc(head.net.state.text) + '</span>';
+      S.moneyHead = { text: head.net.state.text, label: head.label, n: head.net.n, dp: head.net.dp, doi: head.net.doi };
       $('m-sub').textContent = head.label + ', ' + head.net.n + ' of ' + head.net.of + ' venues: price ' + sgn(head.net.dp * 100, 2) + ' %, open interest ' + sgn(head.net.doi * 100, 2) + ' %';
     } else { $('m-call').innerHTML = NID; $('m-sub').textContent = 'no venue has open-interest samples yet'; }
     $('m-rows').innerHTML = rows.map(function (r) {
@@ -1494,7 +1536,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function loadTfs(tfs) {
     if (typeof TFSTRIP === 'undefined') { TF.err.all = 'tf_strip.js not found next to this page'; return Promise.resolve(); }
     return Promise.all(tfs.map(function (tf) {
-      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=150').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
+      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=' + (tf === '1m' ? 1000 : 150)).then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
         function (e) { TF.err[tf] = msg(e); });
     }));
   }

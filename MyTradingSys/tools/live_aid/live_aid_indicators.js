@@ -273,7 +273,7 @@
 
   // ---------- liquidations (rules: STEPS.md "Liquidation rules"; venue side codes SOURCED from their API docs, the rest OURS) ----------
   // Event = {t, venue, side: 'long' | 'short' (the position liquidated), usd, px}.
-  var LQ = { bigUsd: 100000, domRatio: 2, keepMs: 900000, tapeN: 8, liveMs: 60000 };
+  var LQ = { bigUsd: 100000, domRatio: 2, keepMs: 14400000, tapeN: 8, liveMs: 60000 };
   function liqDeribit(x, t) { // trade with liquidation T (taker), M (maker) or MT; amount is USD
     var L = x.liquidation || '', takerLong = x.direction === 'sell', out = [];
     if (L.indexOf('T') >= 0) out.push({ t: t, venue: 'DERIBIT', side: takerLong ? 'long' : 'short', usd: +x.amount, px: +x.price });

@@ -259,3 +259,4 @@ MyTradingSys/tools/live_aid/test_news_weight.py
 MyTradingSys/tools/live_aid/test_daily_playbook.py
 MyTradingSys/execution/test_auto_trader_krown_s8.py
 MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_census_session_ladder.py
+MyTradingSys/tools/live_aid/test_pulse.py
