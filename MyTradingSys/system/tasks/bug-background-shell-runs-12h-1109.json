@@ -1,0 +1,70 @@
+{
+  "approved_by": "operator 2026-11-09 (chat to login B): log a bug",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-09T07:57:34Z",
+  "depends_on": [],
+  "done_when": "A test or probe lists background shells older than a limit (default 30 min) and kills or flags them; the rule 'no background shell over 30 min, always set a timeout' is in the shared session rules; root cause of the hang-after-finish is written in the card result.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "On 2026-11-09 a login-B background shell (b4yukclt7, a cat heredoc writing one memory file) was still 'running' after about 12 h. Its work finished in seconds (file and index line exist) but the process never exited and nothing flagged it. Make this impossible to miss or repeat.",
+  "id": "bug-background-shell-runs-12h-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "eh-o2: phase lens (PHASE_LABEL) + T14/T15 DEV screen; halving lookup reviewed (scheduled d",
+      "ref": "67957cb73102",
+      "utc": "2026-11-09T07:43:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "dea81301a70a Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend en",
+      "ref": "CLAUDE.md",
+      "utc": "2026-11-04T16:25:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "coordinator-sits-idle-during-long-backgr"
+  ],
+  "note": "Operator: things must not run this long; many reviews and fixes already done. Not a twin of coordinator-sits-idle-during-long-backgr (that is an idle coordinator; this is an orphan shell nobody noticed).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T07:57:53Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/",
+    "tests/",
+    "CLAUDE.md",
+    "MyTradingSys/system/roles/"
+  ],
+  "scope_out": [
+    "no change to CI or ship logic"
+  ],
+  "scope_sha": "67957cb73102",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-09 via login B (JIS-NUC)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Reproduce: run the same heredoc write as a background shell and see whether it exits",
+    "Write a fail-first test for a stale-background-shell check (age over limit gets flagged)",
+    "Add the check to boot or health output so a shell over 30 min shows up",
+    "Add the rule to the session rules: quick writes run in the foreground; background only for real long jobs, with a timeout",
+    "Write a short root-cause note in the card result"
+  ],
+  "tests": "tests/test_stale_background_shells.py",
+  "title": "Background shell ran 12h+ unnoticed; make long-running background work impossible",
+  "weight": "",
+  "worker": "session"
+}
