@@ -354,9 +354,10 @@ def make_wlow_bounce_layer(fetch_candles=None, fetch_oi=None, log_path=WLOW_LOG_
 # one small request per new bar). Fail closed: any fetch error, gap, or mismatch against the bars the runner supplied
 # -> no events (stderr line), never a partial window.
 HIST_SYMBOL = "BTCUSDT"                      # the runner default; a different --symbol fails the overlap check below
-HIST_TF_MS = {"1m": 60000, "5m": 300000, "15m": 900000, "1h": 3600000}
+HIST_TF_MS = {"1m": 60000, "5m": 300000, "15m": 900000, "1h": 3600000, "4h": 14400000}
 HIST_PAGE = 1000
-HIST_NEED_BARS = {"session_levels": 2900, "candle_close": 10200, "levels_confluence": 24480}  # 2 d / 7.1 d / 17 d of 1m
+HIST_NEED_BARS = {"session_levels": 2900, "candle_close": 10200, "levels_confluence": 24480,  # 2 d / 7.1 d / 17 d of 1m
+                  "krown_s8": 300}  # 300 x 4h = 50 d; BBWP needs ~110 bars, the runner window is 99
 
 
 def _hist_default_page(symbol, interval, start_ms, limit):
@@ -531,6 +532,13 @@ def build_default_registry(fetch_funding=None, history_fetch=None) -> dict:
                         "fn": make_history_layer(fn, tf, need, store) if need else fn,
                         "params_id": sub + "_w3_2026-10-16", "confirm_lag_bars": 0})
     
+    # R7 forward test (research/fable_run7_forward_test/FORWARD_PREREG.md s1): frozen R6 Krown S8 rule on closed BTCUSDT 4h
+    # bars. Needs the 4h timeframe in --tfs (default below) and a 300-bar window from the history store (fail closed).
+    from MyTradingSys.backtest.layers.krown import krown_live
+    entries.append({"layer": "krown", "sub": "s8_break", "tf": "4h",
+                    "fn": make_history_layer(krown_live.s8_events, "4h", HIST_NEED_BARS["krown_s8"], store),
+                    "params_id": "krown_s8_4h_r7_2026-11-09", "confirm_lag_bars": 0})
+
     # Import here to avoid circular dependency
     from MyTradingSys.backtest.layers.alerts.live_runner_core import build_registry
     
@@ -586,7 +594,7 @@ def main(argv=None) -> int:
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--symbol", default="BTCUSDT")
-    parser.add_argument("--tfs", default="1h,15m,5m,1m")
+    parser.add_argument("--tfs", default="1h,15m,5m,1m,4h")
     parser.add_argument("--state-path", default="MyTradingSys/runtime/live_alert_state.json")
     parser.add_argument("--alerts-dir", default="MyTradingSys/runtime/alerts")
     parser.add_argument("--limit", type=int, default=100)

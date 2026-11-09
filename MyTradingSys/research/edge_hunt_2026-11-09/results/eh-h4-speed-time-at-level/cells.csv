@@ -1,0 +1,6 @@
+cell,window,n,reversal_rate_target_before_stop,continuation_rate,mean_net_r,se_net_r,note
+T05 fast & reclaim<=3 & time_trade<=2,DEV,300,0.3367,,-0.0858,0.0815,frozen trial cell; hit = target share; continuation not summarised for the trial cell
+fast/time_desc<=2 (exploratory),DEV,240,0.3667,0.475,+0.0536,,descriptive 2x2 time over t..t+7 (uses bars after entry); exploratory, cannot promote
+fast/time_desc>2 (exploratory),DEV,67,0.2687,0.657,-0.4754,,descriptive 2x2
+slow/time_desc<=2 (exploratory),DEV,323,0.3684,0.474,-0.0543,,descriptive 2x2
+slow/time_desc>2 (exploratory),DEV,237,0.2996,0.578,-0.4741,,descriptive 2x2
