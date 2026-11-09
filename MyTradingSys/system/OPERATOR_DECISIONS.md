@@ -2129,3 +2129,7 @@ Answer: yes. The playbook becomes the Live Aid Map tab: one screen, no scroll, b
 ## d-sim-verify-1109 (2026-11-09)
 Operator: "I need simulator for verifying what you have tested recently with Fabio + what else makes sense for me to check in back-testing? What abt my scenarios/requests that were back-tested? And why the 7 agents did not find any edge?"
 Answer: card sim-desk-edge-hunt-census-1109 adds every 11-09 study (census, T01-T12, Malkan level short incl. his 5 points) to the sim page with per-trade charts, a why-it-failed line per row and a check-next panel from the RESULT Noticed lines. Why no edge: answered in chat from eh-f1 DESIGN.md (1R setups win 42-50 %, 2-3R setups 29-39 %: both sit at zero after fees).
+
+## d-level-touch-alerts-1109 (2026-11-09)
+Operator: "on November 8th ... the price came down to 73,333 ... So the 73,000 target was already hit and you are sleeping ... you are not even aware ... You are not wired for anything."
+Answer: correct. analyst_levels.py marked 73.5k/73.3k 'open' (strict trade-through on spot; spot low 73,510 at 21:55Z) and nothing pushes touches or session prep to him. Card level-touch-alerts-session-brief-1109: tolerance + perp wicks, LEVEL TOUCH alerts and SESSION BRIEF (07:00Z, 13:30Z) from the running live loop, deployed under the standing deploy rule.

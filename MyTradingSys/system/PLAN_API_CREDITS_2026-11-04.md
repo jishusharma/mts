@@ -173,3 +173,6 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-09 | eh-h5-rsi-ma-cross-trigger | Haiku 5.5 | 1.10 | 50 | T06 INCONCLUSIVE +0.048R n=1322; cap was 1.4 |
 | 2026-11-09 | eh-s3-rsi-line-confluence | Sonnet 5.5 | 3.54 | 53 | cap before ship; cap was 3.5 |
 | 2026-11-09 | eh-f1-testnet-design | Fable 5.1 | 6.37 | 39 | hit cap $6.37 in 13 min before writing the design; nothing shipped; cap was 6.0 |
+| 2026-11-09 | eh-o1-confluence-dose-response | Opus 5.5 | 5.46 | 38 | hit cap at count pass, no returns; cap was 5.0 |
+| 2026-11-09 | eh-o2-phase-lens | Opus 5.5 | 5.76 | 52 | hit cap $5.76; cap was 5.0 |
+| 2026-11-09 | sim-desk-edge-hunt-1109 | Sonnet 5.5 | 5.17 | 56 | hit cap $5.17, partial; cap was 5.0 |
