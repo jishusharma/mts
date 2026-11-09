@@ -1,0 +1,1 @@
+Turn/through scores do NOT separate outcomes (fixed levelstory.js, one pass): share in the idea direction is 0.45-0.55 in every bucket vs 0.50 baseline, net of 10 bp is negative in almost every bucket, and the one standout (SHORT turn >=5: 0.67 first 90 days) reverses in the last 90 (0.39).

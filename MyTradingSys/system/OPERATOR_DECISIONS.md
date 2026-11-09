@@ -2184,3 +2184,8 @@ He likes the Home page, momentum and live liquidations. Asks:
 - 4h WaveTrend crosses are too frequent to act on. Crosses on 1m/2m/3m time the move, 15m/30m are the frame and 4h is context. Home now draws WT lanes for 1m 2m 3m 15m 30m 4h; the 4h lane has no cross dots.
 - He asked where volume was: Home now draws Binance spot 5m volume bars (green = buyers, red = sellers) plus a CVD line under the candles.
 - Count: MyTradingSys/research/wt_15m_30m_1110/RESULT.md. Plain 15m/30m crosses are a coin flip; the 15m higher low and the zero-line hold tilt price 5-10 bp, at or below fees.
+
+## 2026-11-10 22Z Live Aid Home: "At the level" card (Tom/Fabio at named levels)
+- He asked where price stands with respect to the level (approaching, touching, rejected, accepted), what validates or voids the read, and that ideas be flashed. He also asked to weight BB, wicks, volume, CVD and OI, and said many analyst calls at a level mean wait for the close.
+- Built levelstory.js. It reads completed 15m closes: Tom acceptance = 2 closes beyond; Fabio absorption = aggressive delta into the level that cannot close through. It adds BB 15m, wick, relative volume, OI and WT 15m. Home shows the state, evidence chips and the valid/void line, and an IDEA flash when the levels agree.
+- Measured 180 d (research/level_story_1110): ideas are right 49 % (n 2,852); the weights do not separate outcomes. The card and the flash say "coin flip so far". Opposite ideas at two levels cancel.

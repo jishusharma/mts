@@ -7,7 +7,7 @@
   'use strict';
   var REG = (typeof module !== 'undefined' && module.exports) ? require('./level_registry.js') : root.LEVELREG;
   var BIG_PRINT = 250000, BURST_1M = 1000000, TOUCH = 0.0005, NEWS_HI = 7, NEWS_FRESH = 180000;   // OURS
-  var FLASH_MS = { news: 90000, liq: 60000, touch: 45000, setup: 180000 };
+  var FLASH_MS = { news: 90000, liq: 60000, touch: 45000, setup: 180000, idea: 300000 };
   var VOTE_NAMES = ['Analysts', 'Price vs day average', 'RSI 1h', 'RSI 4h', 'Breakout', 'Playbook'];
   var WORDS = { PDH: 'Yesterday high', PDL: 'Yesterday low', PDC: 'Yesterday close', PWH: 'Last week high', PWL: 'Last week low', DO: 'Day open',
                 WO: 'Week open', VAL: 'Yesterday value low', POC: 'Yesterday busiest price', VAH: 'Yesterday value high', DH: 'Today high', DL: 'Today low', VWAP: 'Day average price' };
@@ -61,6 +61,9 @@
     if (l.m1 && l.m1.long + l.m1.short >= BURST_1M) add('b' + Math.floor(now / 60000), 'liq', l.m1.long >= l.m1.short ? 'down' : 'up', 'LIQUIDATION BURST: ' + usd(l.m1.long + l.m1.short) + ' in 1 min, mostly ' + (l.m1.long >= l.m1.short ? 'longs' : 'shorts'));
     var PU = (typeof module !== 'undefined' && module.exports) ? require('./pulse.js') : root.LAPULSE;
     var su = ctx.setup !== undefined ? ctx.setup : (PU && ctx.pulse ? PU.setup(ctx.pulse, md.lad, md.px, md.dir) : null);
+    // ideas at two levels pointing opposite ways cancel: no flash (operator 11-10: buy flashes that turned into shorts)
+    var ideas = (stories(ctx, md) || []).filter(function (st) { return st && st.idea; }), mixed = ideas.some(function (st) { return st.idea !== ideas[0].idea; });
+    (mixed ? [] : ideas).forEach(function (st) { if (st && st.idea) add('i' + st.idea + Math.round(st.price) + st.state + Math.floor(now / 900000), 'idea', st.idea === 'SHORT' ? 'down' : 'up', st.idea + ' IDEA (coin flip so far): ' + st.why + ' (' + st.ev.filter(function (e) { return e.cls === (st.state === 'ACCEPTED' ? 'thru' : 'turn'); }).map(function (e) { return e.t; }).slice(0, 3).join(', ') + '). ' + st.valid + ' (your call)'); });
     if (su) add('s' + su.side + Math.round(su.level) + Math.floor(now / 900000), 'setup', su.side === 'SHORT' ? 'down' : 'up', su.side + ' SETUP FORMING: ' + su.why.join('; ') + ' (your call)');
     if (md.px > 0) md.zones.forEach(function (z) {
       if (Math.abs(md.px / z.price - 1) <= TOUCH) add('t' + Math.round(z.price) + Math.floor(now / 900000), 'touch', 'amber', 'TOUCHING ' + z.name + ' ' + n0(z.price));
@@ -243,6 +246,33 @@
     return s + '</svg>';
   }
   function WTH(PU) { return PU && PU.WT_HOT || 53; }
+  // Level story: nearest level above and below (or the one price sits at), read on completed 15m Binance closes (levelstory.js).
+  function stories(ctx, md) {
+    var LS = (typeof module !== 'undefined' && module.exports) ? require('./levelstory.js') : root.LASTORY;
+    if (!LS || !ctx.k15 || !md || !md.lad) return null;
+    if (ctx._st && ctx._st.md === md) return ctx._st.v;
+    var ex = { wt15: ctx.lanes && ctx.lanes['15m'], doi: ctx.money ? ctx.money.doi : NaN }, lv = [];
+    if (md.lad.at) lv.push(md.lad.at);
+    if (md.lad.above[0] && lv.indexOf(md.lad.above[0]) < 0) lv.push(md.lad.above[0]);
+    if (md.lad.below[0] && lv.length < 2) lv.push(md.lad.below[0]);
+    var v = lv.map(function (z) { try { return LS.story(z, ctx.k15, ctx.now, ex); } catch (e) { return null; } });
+    ctx._st = { md: md, v: v }; return v;
+  }
+  var ST_CLS = { 'REJECTED': 'turn', 'FAILED BREAK': 'turn', 'ACCEPTED': 'thru', 'BREAKING': 'thru', 'TESTING': 'amber', 'APPROACHING': 'amber', 'AWAY': 'dim' };
+  function storyCard(ctx, md) {
+    var v = stories(ctx, md);
+    if (!v) return '<div class="hm-card"><div class="hm-h">At the level</div><div class="hm-nid">15m candles NOT_IN_DATA</div></div>';
+    var rows = v.filter(Boolean).map(function (st) {
+      var sc = ST_CLS[st.state] || 'dim', idea = st.idea ? '<b class="hm-idea ' + (st.idea === 'SHORT' ? 'down' : 'up') + '">' + st.idea + ' IDEA</b>' : '';
+      var chips = st.ev.map(function (e) { return '<span class="hm-ec ' + e.cls + '" title="' + esc(e.t) + '">' + esc(e.k) + '</span>'; }).join('');
+      return '<div class="hm-st"><div class="hm-st1"><span class="hm-stp ' + (st.res ? 'down' : 'up') + '">' + n0(st.price) + '</span> <span class="hm-stn">' + esc(st.name) + '</span>' +
+        '<span class="hm-sts ' + sc + '">' + st.state + '</span>' + idea + '</div>' +
+        '<div class="hm-ecs">' + (chips || '<em>no evidence yet</em>') + '<span class="hm-sc2">turn ' + st.turn + ' / through ' + st.thru + '</span></div>' +
+        '<div class="hm-stv">' + esc(st.valid) + (st.crowd ? '<br><span class="amber">' + esc(st.crowd) + '</span>' : '') + '</div></div>';
+    }).join('');
+    var id2 = v.filter(function (st) { return st && st.idea; }), mx = id2.length > 1 && id2.some(function (st) { return st.idea !== id2[0].idea; });
+    return '<div class="hm-card"><div class="hm-h">At the level ' + (mx ? '<b class="amber" style="font-size:13px">MIXED: levels disagree, no idea</b>' : '') + '<span class="hm-sub">15m closes; green chip = for a turn, red = for going through. Measured 180 d: ideas right 49 % (n 2,852), a coin flip, not an edge (research/level_story_1110)</span></div>' + (rows || '<div class="hm-nid">no level near</div>') + '</div>';
+  }
   function render(el, ctx) {
     if (!el) return;
     var md = model(ctx), fl = flashes(ctx, md);
@@ -252,7 +282,7 @@
       (md.lad.below[0] ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
     var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 44 - wh) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + gauge(md) + pulseCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 44 - wh) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + gauge(md) + storyCard(ctx, md) + pulseCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -262,7 +292,7 @@
     '.hm-lv{stroke-width:1;stroke-dasharray:5 4;opacity:.75}.hm-lv.multi{stroke-width:2;stroke-dasharray:none;opacity:.6}.hm-lv.up{stroke:var(--up)}.hm-lv.down{stroke:var(--down)}' +
     '.hm-sc{stroke-width:3;opacity:.9}.hm-sc.up{stroke:var(--up)}.hm-sc.down{stroke:var(--down)}.hm-sct{font:700 12px system-ui}.hm-sct.up{fill:var(--up)}.hm-sct.down{fill:var(--down)}.hm-lead{stroke:var(--dim);stroke-width:.5}.hm-lt{font:12px system-ui;fill:var(--fg)}.hm-lt.up .hm-lp{fill:var(--up)}.hm-lt.down .hm-lp{fill:var(--down)}.hm-lp{font:700 12px var(--mono,monospace)}' +
     '.hm-uo{stroke:#60a5fa;stroke-width:2}.hm-uot{fill:#60a5fa;font:700 12px system-ui}.hm-now{stroke:var(--amber);stroke-width:1;stroke-dasharray:2 3}.hm-tag{fill:var(--amber)}.hm-tagt{fill:#111;font:700 12px var(--mono,monospace)}' +
-    '.hm-rail{display:grid;grid-template-rows:auto auto auto auto 1fr;gap:6px;min-height:0;overflow:hidden}.hm-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:0;overflow:hidden}' +
+    '.hm-rail{display:grid;grid-template-rows:auto auto auto auto auto 1fr;gap:6px;min-height:0;overflow:hidden}.hm-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:0;overflow:hidden}' +
     '.hm-h{display:flex;gap:8px;align-items:baseline;font:600 13px system-ui;flex-wrap:wrap}.hm-h b{font:700 20px var(--mono,monospace)}.hm-sub{font:11px system-ui;color:var(--dim)}.up{color:var(--up)}.down{color:var(--down)}.dim{color:var(--dim)}' +
     '.hm-g{width:100%;max-height:78px}.hm-arc{fill:none;stroke-width:14}.hm-arc.up{stroke:var(--up)}.hm-arc.down{stroke:var(--down)}.hm-arc.dim{stroke:var(--line)}.hm-needle{stroke:var(--fg);stroke-width:3;stroke-linecap:round}.hm-hub{fill:var(--fg)}.hm-gl{font:700 12px system-ui}.hm-gl.up{fill:var(--up)}.hm-gl.down{fill:var(--down)}' +
     '.hm-vcs{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px}.hm-vc i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;background:var(--dim)}.hm-vc.up i{background:var(--up)}.hm-vc.down i{background:var(--down)}.hm-vc.nid i{background:transparent;border:1px dashed var(--dim)}.hm-vc{color:var(--fg)}' +
@@ -277,6 +307,11 @@
     '.hm-mon{display:flex;gap:12px;align-items:center}.hm-ar{font-size:22px;text-align:center;line-height:1}.hm-ar small{display:block;font-size:10px;color:var(--dim)}' +
     '.hm-nr{display:grid;grid-template-columns:16px 40px 1fr 30px;gap:6px;align-items:center;font-size:12px;padding:2px 0;border-top:1px solid var(--line)}.hm-ns{height:6px;background:var(--line);border-radius:3px;overflow:hidden}.hm-ns span{display:block;height:100%;background:var(--amber)}.hm-nh{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hm-na{color:var(--dim);text-align:right}.hm-ev{margin-left:auto;font:700 12px system-ui;color:var(--amber);border:1px solid var(--amber);border-radius:10px;padding:0 8px}' +
     '.hm-nid{color:var(--dim);font-size:12px;padding:6px 0}' +
+    '.hm-st{border-top:1px solid var(--line);padding:3px 0}.hm-st1{display:flex;gap:6px;align-items:baseline;font-size:12px}.hm-stp{font:700 13px var(--mono,monospace)}.hm-stn{color:var(--fg);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:40%}' +
+    '.hm-sts{margin-left:auto;font:700 11px system-ui;padding:0 6px;border-radius:8px;border:1px solid}.hm-sts.turn{color:#22c55e}.hm-sts.thru{color:#ef4444}.hm-sts.amber{color:var(--amber)}.hm-sts.dim{color:var(--dim)}' +
+    '.hm-idea{font:700 12px system-ui!important;padding:0 6px;border-radius:4px;color:#111}.hm-idea.down{background:var(--down);color:#fff}.hm-idea.up{background:var(--up)}' +
+    '.hm-ecs{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;align-items:center}.hm-ec{font:700 10px system-ui;padding:0 5px;border-radius:3px;background:var(--line);color:var(--fg)}.hm-ec.turn{background:#166534;color:#dcfce7}.hm-ec.thru{background:#7f1d1d;color:#fee2e2}.hm-sc2{margin-left:auto;color:var(--dim);font-size:10px}.hm-ecs em{color:var(--dim);font-size:11px}' +
+    '.hm-stv{font-size:11px;color:var(--fg);margin-top:2px}.amber{color:var(--amber)}' +
     '.hm-vb{opacity:.55}.hm-vb.up{fill:var(--up)}.hm-vb.down{fill:var(--down)}.hm-cvd{fill:none;stroke:#facc15;stroke-width:1.5}.hm-vlt{fill:var(--dim);font:11px system-ui}' +
     '.hm-wts{width:100%;flex:none;border-top:1px solid var(--line)}.hm-wth{fill:var(--dim);font:700 10px system-ui}.hm-wtl{fill:var(--fg);font:700 13px var(--mono,monospace)}.hm-wtk{fill:var(--dim);font:10px system-ui}' +
     '.hm-wt0{stroke:var(--dim);stroke-width:.5;opacity:.6}.hm-wtb{stroke:var(--down);stroke-width:.5;stroke-dasharray:3 3;opacity:.6}.hm-wtsep{stroke:var(--line);stroke-width:1}' +
@@ -285,6 +320,6 @@
     '#flash{display:none;gap:6px;flex-direction:column}#flash.on{display:flex}#flash .fl{padding:6px 12px;border-radius:6px;font:700 15px system-ui;color:#111;animation:hmfl 1s ease-in-out 6}#flash .fl.up{background:var(--up)}#flash .fl.down{background:var(--down);color:#fff}#flash .fl.amber{background:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
-  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard };
+  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _stories: stories };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

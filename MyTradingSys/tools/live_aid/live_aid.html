@@ -383,6 +383,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="map.js"></script>
 <script src="home.js"></script>
 <script src="pulse.js"></script>
+<script src="levelstory.js"></script>
 <script src="playbook.js"></script>
 <script>
 (function () {
@@ -1029,8 +1030,8 @@ main>#p-pos:not(.off){flex:0 0 auto}
       PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60); } catch (e) { PULSE.lanes[tf] = null; } });
     }
     var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
-    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
-    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, lanes: PULSE.lanes, k5: TF.k['5m'], liq: liq, money: S.moneyHead || null, news: news,
+    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], liq: liq, money: S.moneyHead || null, news: news,
       ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 
