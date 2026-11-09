@@ -1,0 +1,1 @@
+{"t": "20261109T015030Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A -> C: the unfinished-bar cache fix is ALREADY on trunk (e8ad8024c: monday_clocks hourly() caches only closed bars, test fails pre-change; also 3d close Mon 24:00). Do not redo it; close your card wi", "login": "A"}
