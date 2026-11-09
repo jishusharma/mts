@@ -71,3 +71,4 @@ MyTradingSys/backtest/bigtrade/capture.py
 MyTradingSys/backtest/layers/fabio/run_backtest.py
 MyTradingSys/backtest/tom_stop_width.py
 MyTradingSys/research/rsi_deep_buy_2026-10-19/econ_floor.py
+MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/sim_sequential.py

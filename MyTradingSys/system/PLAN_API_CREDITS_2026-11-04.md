@@ -172,3 +172,4 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-09 | eh-s2-wick-level-context | Sonnet 5.5 | 3.56 | 41 | cap before ship; finish job launched; cap was 3.5 |
 | 2026-11-09 | eh-h5-rsi-ma-cross-trigger | Haiku 5.5 | 1.10 | 50 | T06 INCONCLUSIVE +0.048R n=1322; cap was 1.4 |
 | 2026-11-09 | eh-s3-rsi-line-confluence | Sonnet 5.5 | 3.54 | 53 | cap before ship; cap was 3.5 |
+| 2026-11-09 | eh-f1-testnet-design | Fable 5.1 | 6.37 | 39 | hit cap $6.37 in 13 min before writing the design; nothing shipped; cap was 6.0 |

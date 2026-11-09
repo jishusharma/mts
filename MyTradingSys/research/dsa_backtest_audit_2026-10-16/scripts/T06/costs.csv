@@ -229,3 +229,5 @@ MyTradingSys/backtest/fees.py,62,SLIPPAGE_RT_S13,0.0002,fraction,round_trip,both
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h4-speed-time-at-level/speed_time.py,193,fund_cost_frac,0.0,fraction,per_side,n/a,funding in edge_hunt,1,assign,fund_cost_frac = 0.0
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h3-first-touch-sweep/first_touch.py,235,fund_r,0.0,fraction,per_side,n/a,funding in edge_hunt,1,assign,fund_r = 0.0
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-s2-wick-level-context/wick_context.py,370,fund,0.0,fraction,per_side,n/a,funding in edge_hunt,1,assign,fund = 0.0
+MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/sim_sequential.py,50,COST_R_4H,0.05,other,round_trip,n/a,synthetic sim mean fee_r in R (not a fee rate) in edge_hunt,0,assign,COST_R_4H = 0.05
+MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-response/confluence_score.py,315,fund_r,0.0,fraction,per_side,n/a,funding in edge_hunt,1,assign,fund_r = 0.0

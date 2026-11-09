@@ -3,8 +3,8 @@ import sys; sys.dont_write_bytecode = True
 
 DeepSeek suspended the AWGP profile until 2026-11-11 after the bridge sent 205 auto runs on 2026-11-07 (peak 45 an hour, median
 16 s between auto runs, 43 gaps under 10 s, one account on three machines). This replays that day's shape through the pacing guard
-in scripts/aibridge/extension/loop.js (run by node): no accepted post closer than 60 s, no hour over 15, no day over 80, every
-refused post says paced. It fails on 0.7.32, which has no guard (L.paceReplay does not exist).
+in scripts/aibridge/extension/loop.js (run by node): no accepted post closer than 20 s + the 5 s jitter floor, no hour over 30,
+no day over 200, every refused post says paced (0.7.34 caps; 0.7.33 had 60 s, 15, 80). It fails on 0.7.32, which has no guard (L.paceReplay does not exist).
 
 The replay timestamps are rebuilt from the audit counts in DSA_BLOCK_REVIEW.md section 2 (205 rows in 13 h, hourly counts below,
 peak 45), not copied from audit.jsonl: that file is runtime data and stays out of the public repo.
@@ -52,7 +52,7 @@ def test_fixture_has_the_shape_of_the_block_day():
     per_hour = {}
     for t in ts:
         per_hour[t // 3600000] = per_hour.get(t // 3600000, 0) + 1
-    assert max(per_hour.values()) >= 15 * 2   # far over the guard's 15 an hour
+    assert max(per_hour.values()) > 30   # over the guard's 30 an hour
 
 
 def replay(ts, seed=7):
@@ -74,11 +74,11 @@ def test_replay_of_the_2026_11_07_audit_is_paced():
     assert len(granted) + len(refused) == 205
     assert granted, "the guard must let some posts through"
     gaps = [b - a for a, b in zip(granted, granted[1:])]
-    assert all(g >= 60000 + 10000 for g in gaps), "no accepted post closer than 60 s + the 10 s jitter floor: %r" % min(gaps)
+    assert all(g >= 20000 + 5000 for g in gaps), "no accepted post closer than 20 s + the 5 s jitter floor: %r" % min(gaps)
     for i, g in enumerate(granted):
-        assert sum(1 for x in granted[: i + 1] if g - x < 3600000) <= 15, "hour over 15"
-        assert sum(1 for x in granted[: i + 1] if g - x < 86400000) <= 80, "day over 80"
-    assert len(granted) <= 80
+        assert sum(1 for x in granted[: i + 1] if g - x < 3600000) <= 30, "hour over 30"
+        assert sum(1 for x in granted[: i + 1] if g - x < 86400000) <= 200, "day over 200"
+    assert len(granted) <= 200
     assert refused and all(r["reason"] == "paced" for r in refused)
 
 
@@ -87,5 +87,5 @@ def test_replay_with_other_jitter_seeds_holds_the_same_limits():
     ts = audit_shape_2026_11_07()
     for seed in (1, 99, 4242):
         granted = replay(ts, seed)["granted"]
-        assert all(b - a >= 70000 for a, b in zip(granted, granted[1:]))
-        assert len(granted) <= 80
+        assert all(b - a >= 25000 for a, b in zip(granted, granted[1:]))
+        assert len(granted) <= 200

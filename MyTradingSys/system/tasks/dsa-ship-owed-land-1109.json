@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
+  "closed": "2026-11-09T06:01:42Z",
   "commands": [],
   "created": "2026-11-09T05:21:46Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "id": "dsa-ship-owed-land-1109",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "AIBridge 0.7.34: dsa.py SHIP OWED re-landed with the bump; pace loosened to 20s+5-15s, 30/",
+      "ref": "4f30073c5",
+      "utc": "2026-11-09T06:01:42Z"
+    },
     {
       "kind": "ship",
       "line": "landed as 69378776; test_dsa.py 32 passed",
@@ -38,13 +45,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: shipped",
+  "next": "END: install 0.7.34 on JIS-NUC",
   "note": "Landed 69378776 then reverted d8989df0: CI red test_aibridge_version_bump - dsa.py is a bridge file. Re-land must bump the bridge version (0.7.33 -> 0.7.34 in extension/content.js, loop.js, manifest.json, src/agent.ps1, lease.ps1, tests) and run `python scripts/dev/aibridge_version.py --record 0.7.34`. Low value until DeepSeek returns 11-11; B 2026-11-09.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T05:36:24Z",
   "refs": [],
+  "result": "AIBridge 0.7.34: dsa.py SHIP OWED re-landed with the bump; pace loosened to 20s+5-15s, 30/h, 200/day (operator 11-09)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/dsa.py",
     "scripts/dev/test_dsa.py",
@@ -56,13 +69,14 @@
   "sources": [
     "B stuck-task sweep JIS-NUC"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git apply 140b4e386 patch on trunk",
     "bump bridge version 0.7.34 + aibridge_version.py --record 0.7.34",
     "pytest test_dsa.py test_aibridge_version_bump.py",
     "sync.py ship"
   ],
+  "taken": "2026-11-09T06:01:42Z",
   "tests": "scripts/dev/test_dsa.py",
   "title": "Land DSA 11-07 SHIP OWED patch (dsa.py ship_pending) stranded in worktree",
   "weight": "",
