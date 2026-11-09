@@ -34,7 +34,7 @@
   "not_twin_of": [
     "coordinator-sits-idle-during-long-backgr"
   ],
-  "note": "Operator: things must not run this long; many reviews and fixes already done. Not a twin of coordinator-sits-idle-during-long-backgr (that is an idle coordinator; this is an orphan shell nobody noticed).",
+  "note": "FINDING 2026-11-09: bg_watch.py (stalled-bg report) and host_health.py (reap orphan gates, report strays) exist and work, but run only when a session calls supervisor.py plan or sync.py ship/health. No scheduled task runs them, bg_watch is read-only (cannot stop a shell; only the owning session can), and the 12h shell was never flagged because nobody ran them in that window. Fix: run bg_watch on a timer (Task Scheduler) and write STALLED-BG to the desk/operator card; let the harness-owner session stop it, or add a safe kill for shells past 2x cap. Not a twin of coordinator-sits-idle-during-long-backgr.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
