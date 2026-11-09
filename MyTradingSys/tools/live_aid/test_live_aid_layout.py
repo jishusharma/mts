@@ -117,6 +117,10 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         assert wins == ["1m", "2m", "3m", "5m", "7m", "10m", "15m", "30m", "1h", "2h", "4h"], wins
         tfs = page.eval_on_selector_all("#p-home .hm-pr:not(.hm-ph) > b", "bs => bs.map(b => b.innerText)")
         assert tfs == wins, tfs
+        # operator 2026-11-10: session names overprinted at the chart's left edge; no two session labels may overlap
+        boxes = page.eval_on_selector_all("#p-home .hm-sest", "ts => ts.map(t => { const b = t.getBoundingClientRect(); return [b.left, b.right]; })")
+        boxes.sort()
+        assert boxes and all(b[0] >= a[1] - 0.5 for a, b in zip(boxes, boxes[1:])), boxes
         for h in ("#home", "#now", "#usopen", "#news"):
             page.evaluate(f"location.hash = '{h}'"); page.wait_for_timeout(200)
             sc = page.evaluate("[Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), window.innerHeight, getComputedStyle(document.body).overflow]")

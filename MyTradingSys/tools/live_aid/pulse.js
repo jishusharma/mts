@@ -9,7 +9,8 @@
   var A = (typeof module !== 'undefined' && module.exports) ? require('./live_aid_indicators.js') : root.LiveAid;
   var GRID = [['1m', 60000, '1m'], ['2m', 120000, '1m'], ['3m', 180000, '3m'], ['5m', 300000, '5m'], ['7m', 420000, '1m'], ['10m', 600000, '1m'],
               ['15m', 900000, '15m'], ['30m', 1800000, '30m'], ['1h', 3600000, '1h'], ['2h', 7200000, '2h'], ['4h', 14400000, '4h']];
-  var P = { rsiUp: 55, rsiDn: 45, cvdN: 10, divW: 15, wtWarm: 60, minBars: 40, lean: 0.25, near: 0.0015,   // OURS
+  // RSI vote uses the same 50 line as the Home Direction gauge (operator 11-10: 46 grey here but red on the gauge read as a contradiction)
+  var P = { rsiUp: 50, rsiDn: 50, cvdN: 10, divW: 15, wtWarm: 60, minBars: 40, lean: 0.25, near: 0.0015,   // OURS
             w: { '1m': 1, '2m': 1, '3m': 1, '5m': 1, '7m': 2, '10m': 2, '15m': 2, '30m': 2, '1h': 3, '2h': 3, '4h': 3 },
             lowTfs: ['1m', '2m', '3m', '5m', '7m', '10m', '15m'], highTfs: ['1h', '2h', '4h'] };
 
@@ -29,7 +30,7 @@
   }
   function sgn(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 
-  // One timeframe: votes RSI (>=55 up, <=45 down), WaveTrend (wt1 vs wt2), CVD (net taker flow of the last 10 bars);
+  // One timeframe: votes RSI (above 50 up, below 50 down), WaveTrend (wt1 vs wt2), CVD (net taker flow of the last 10 bars);
   // divergences (last 15 bars vs the 15 before, LiveAid.divergence) of price vs RSI, wt1 and cumulative delta count double.
   function read(k, ms) {
     if (!k || k.length < P.minBars) return null;
@@ -43,7 +44,7 @@
     var n = c.length - 1, rs = A.rsi(c, 14), w = A.wavetrend(t, h, l, c, ms, P.wtWarm);
     var rsi = rs[n], a = w.wt1[n], b2 = w.wt2[n], cv = okCvd ? cum[n] - cum[Math.max(0, n - P.cvdN)] : NaN;
     var div = { rsi: A.divergence(c, rs, P.divW), wt: A.divergence(c, w.wt1, P.divW), cvd: okCvd ? A.divergence(c, cum, P.divW) : null };
-    var v = { rsi: !isFinite(rsi) ? null : rsi >= P.rsiUp ? 1 : rsi <= P.rsiDn ? -1 : 0, wt: isFinite(a) && isFinite(b2) ? sgn(a - b2) : null, cvd: isFinite(cv) ? sgn(cv) : null };
+    var v = { rsi: !isFinite(rsi) ? null : rsi > P.rsiUp ? 1 : rsi < P.rsiDn ? -1 : 0, wt: isFinite(a) && isFinite(b2) ? sgn(a - b2) : null, cvd: isFinite(cv) ? sgn(cv) : null };
     var dsum = (div.rsi || 0) + (div.wt || 0) + (div.cvd || 0), score = (v.rsi || 0) + (v.wt || 0) + (v.cvd || 0) + 2 * dsum;
     return { rsi: rsi, wt1: a, wt2: b2, cvd: cv, v: v, div: div, dsum: dsum, score: score, bias: score >= 2 ? 1 : score <= -2 ? -1 : 0 };
   }
