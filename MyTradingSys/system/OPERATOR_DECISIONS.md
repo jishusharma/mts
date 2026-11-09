@@ -2137,3 +2137,7 @@ Answer: correct. analyst_levels.py marked 73.5k/73.3k 'open' (strict trade-throu
 ## d-sister-signals-wired-1109 (2026-11-09)
 Operator: "prepare a note for my sister ... plan for this week, especially Monday, Tuesday, Wednesday, what to look for and when to buy what and how much ... all these things must be wired."
 Answer: note 4 "Phase 2 on" sent (SISTER_NOTE_2026-11-09.md, no holdings). The 11-07 note's triggers (Phase 2 on at 72-75k, top-up, stop, confirmed) lived only in a doc, so BTC entering the zone on 11-08 reached nobody. Card sister-signals-wired-1109 puts them in the live loop: flip toast, SISTER line in the Monday brief, weekly draft note to F:/MTS/sister/ (outside the repo). Launches after level-touch-alerts-session-brief-1109 ships; deploys under the standing rule.
+
+## d-tom-swing-test-1109 (2026-11-09)
+Operator (Tom Vorwald EN 'Swing Trading for Beginners' notification): "Another example of how Tom says it's done but you cannot find any edge!!!! What's the update?"
+Answer: every Tom test so far was intraday auction/order flow (5m-1h); fees of 10 bps on 5-40 bps stops decide those (course correction 11-07, census 11-09: -0.11 R). His swing method (trend + trendline pullbacks, wide stops) was never tested: the trendline layer stopped at FIX-FIRST (AUDIT_2026-10-18). Card tom-swing-trendline-extract-1109 (Gemini, captions, verified quotes) -> PRE_REG for a BTC 4h/1d fee-net count.

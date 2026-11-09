@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-09T10:03:30Z",
+  "depends_on": [],
+  "done_when": [
+    "Find the Tom Vorwald EN video 'The Easiest Way to Start Trading (Swing Trading for Beginners)' (published 2026-11-09; German original 'Kopiere mich' on channel UCAR0K4mcBgTnWbo_FtTkXlA if EN is missing); record the video id.",
+    "Fetch captions; write extract_<id>.md with a rules table (timeframe, trend definition, how the trendline is drawn, entry trigger at swing 1/2/3, stop, target, trade management), each row a verbatim quote; verify_extract_quotes.py exits 0.",
+    "Map each rule to trendline_core.py / TRENDLINE_CONTRACT.md v1: covered, partial or missing; list the FIX-FIRST gaps from AUDIT_2026-10-18 that block a count.",
+    "Write PRE_REG.md for a fee-net count on BTC 4h and 1d (2017-2026, Binance spot), with Context and Regime mix lines, parameters labelled SOURCED or OURS; no run in this card. Ship."
+  ],
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Every Tom test so far was intraday auction/order-flow on 5m-1h, where 10 bps fees eat tight stops. His swing method (trend + trendline pullback, swings 1-3, higher timeframe, wide stops) was never tested. Get his exact rules and set up the count.",
+  "id": "tom-swing-trendline-extract-1109",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T10:03:43Z",
+  "refs": [
+    "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
+  ],
+  "result": "",
+  "scope_in": "MyTradingSys/research/tom_swing_2026-11-09/ (extract, mapping, PRE_REG)",
+  "scope_out": "running the backtest; orders; live tree",
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "operator chat 11-09 (shot 3c939c155c73)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Find video, fetch captions (gemini YouTube rule: captions, never 'watch video').",
+    "Extract + verify quotes.",
+    "Map to trendline layer, write PRE_REG, ship."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_swing_2026-11-09/extract_<id>.md (exit 0); research/docs only, no code",
+  "title": "Tom swing trading (trendline swings 1-3): extract his rules from the new EN video, map to trendline_core, pre-register a BTC 4h/1d count",
+  "weight": "",
+  "worker": "session"
+}
