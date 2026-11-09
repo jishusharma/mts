@@ -223,5 +223,58 @@ class TrunkLagTest(unittest.TestCase):
         self.assertIn("trunk_lag.py\" session-start", ss[0]["hooks"][0]["command"])
 
 
+class PagesStaleLine(unittest.TestCase):
+    """pages-follow-builds-1107: the prompt hook prints PAGES STALE n: slugs on a publisher login only."""
+
+    def _repo(self, tmp, publishers=("jishusharma1985",), slugs=("mts_home", "sim_desk")):
+        repo = Path(tmp)
+        sh(repo, "init", "-q")
+        reg = repo / "MyTradingSys" / "system" / "artifacts" / "registry.json"
+        reg.parent.mkdir(parents=True)
+        reg.write_text(json.dumps({"publishers": list(publishers)}), encoding="utf-8")
+        gd = subprocess.run(["git", "-C", str(repo), "rev-parse", "--absolute-git-dir"], capture_output=True, text=True).stdout.strip()
+        (Path(gd) / T.PAGES_CACHE).write_text(json.dumps({"at": 1000.0, "key": reg.stat().st_mtime_ns, "slugs": list(slugs)}), encoding="utf-8")
+        return repo
+
+    def test_publisher_login_sees_the_line_and_others_do_not(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = self._repo(d)
+            spawned = []
+            line = T.pages_line(repo, now=1100.0, login="C", spawn=lambda *a: spawned.append(a))
+            self.assertTrue(line.startswith("PAGES STALE 2: mts_home, sim_desk"))
+            self.assertEqual(spawned, [])                      # cache fresh: no rebuild
+            self.assertEqual(T.pages_line(repo, now=1100.0, login="A", spawn=lambda *a: None), "")
+            self.assertEqual(T.pages_line(repo, now=1100.0, login="", spawn=lambda *a: None), "")
+
+    def test_old_cache_is_refreshed_in_the_background_and_empty_is_silent(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = self._repo(d, slugs=())
+            spawned = []
+            self.assertEqual(T.pages_line(repo, now=1000.0 + T.PAGES_TTL_S + 1, login="C", spawn=lambda *a: spawned.append(a)), "")
+            self.assertEqual(len(spawned), 1)
+
+
+class PagesRefreshGuard(unittest.TestCase):
+    """pages-hook-guard-1107: a hung or crashed refresh child is not respawned at every prompt; the login is not re-read each time."""
+
+    def test_hung_child_is_not_respawned_within_the_bound(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = PagesStaleLine()._repo(d, slugs=())
+            spawned = []
+            t0 = 1000.0 + T.PAGES_TTL_S + 1
+            for i in range(5):              # five prompts; the child never writes its result
+                T.pages_line(repo, now=t0 + i * 30, login="C", spawn=lambda *a: spawned.append(a))
+            self.assertEqual(len(spawned), 1)
+            T.pages_line(repo, now=t0 + T.PAGES_REFRESH_BOUND_S + 1, login="C", spawn=lambda *a: spawned.append(a))
+            self.assertEqual(len(spawned), 2)       # after the bound it tries once more
+
+    def test_login_comes_from_env_or_cache_not_claude_json(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = PagesStaleLine()._repo(d)
+            with unittest.mock.patch.dict(os.environ, {"MTS_LOGIN": "C"}), \
+                    unittest.mock.patch("mts_signal.login", side_effect=AssertionError("must not read ~/.claude.json")):
+                self.assertTrue(T.pages_line(repo, now=1100.0, spawn=lambda *a: None).startswith("PAGES STALE"))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -232,6 +232,16 @@ def test_ship_time_median_max_missing_log(tmp_path):
     assert D.ship_time(log, now)[0] == "unavailable"                                                    # the old per-sync row no longer decides
 
 
+def test_ship_time_names_repeat_failing_steps(tmp_path):
+    now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+    log = tmp_path / "t.jsonl"
+    rows = [{"step": "ship_wall", "secs": 130, "utc": "2026-10-25T10:00:00Z", "sha": "a", "ok": False, "failed_steps": f}
+            for f in (["3xm"], ["3xm", "5b"], ["3xm"], [])]
+    log.write_text(chr(10).join(json.dumps(r) for r in rows) + chr(10), encoding="utf-8")
+    st, msg = D.ship_time(log, now)
+    assert st == "WARN" and "failing steps: 3xm x3, 5b x1" in msg
+
+
 def test_hook_reg_missing_hooks_and_behind(tmp_path):
     git = lambda *a: subprocess.run(["git", "-C", str(tmp_path), "-c", "user.name=t", "-c", "user.email=t@t", *a], check=True, capture_output=True)
     git("init", "-q")
@@ -418,3 +428,23 @@ def test_git_hung_detects_old_git_processes_and_reports_pid_age_parent():
     assert st == "OK"
 
 
+
+
+def test_run_overlaps_the_slow_checks(tmp_path, monkeypatch):
+    """doctor-speed-1108: the slow parts (card lint, twins, checklist, cost) wait on subprocesses/network: they run side by
+    side (wall time = the slowest, not the sum). Load-proof: each part waits for the others to start (a barrier); run one
+    after another it never gets them all in and times out."""
+    import threading
+    mem = make_repo(tmp_path, "WARN t1 (ready): STALE latest never refreshed")
+    barrier = threading.Barrier(4)
+
+    def part(ret):
+        def f(*a, **k):
+            barrier.wait(timeout=20)      # BrokenBarrierError (-> failure) when the parts do not overlap
+            return ret
+        return f
+    monkeypatch.setattr(D, "card_warnings", part([]))
+    monkeypatch.setattr(D, "dup_cards", part([]))
+    monkeypatch.setattr(D, "checklist", part([("X", "OK", "d")]))
+    monkeypatch.setattr(D, "cost_checkup", part(["cost"]))
+    D.run(tmp_path, tmp_path / "out", mem, process=False, now=DAY)

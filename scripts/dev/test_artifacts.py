@@ -159,6 +159,21 @@ class Home(unittest.TestCase):
         self.assertIsNone(d["answerAt"])  # decisions are answered in chat (Control Room retired 2026-10-31)
         self.assertIn("waiting for you", mh.render(d))
 
+    def test_waiting_skips_recorded_decisions(self):
+        """Recorded decisions (dated/d- headings, Applied:/Operator bodies) are not open questions; DECISION NEEDED stays."""
+        import tempfile
+        import make_home as mh
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / mh.TASKS).mkdir(parents=True)
+            (root / mh.DECISIONS).write_text(
+                "# D\n\n\n\n## 2026-11-02 - Live aid wanted\nOperator (voice): build it.\n\n\n\n"
+                "## d-api-1104 (2026-11-04, Lead)\nOperator: go.\nApplied: told all.\n\n\n\n"
+                "## q-x | asked 2026-10-13 | P\n\nBody?\nApplied: 2026-10-14 done.\n\n\n\n"
+                "## DECISION NEEDED 2026-10-21 (Lab): review_by\nPick (a) or (b).\n", encoding="utf-8")
+            ids = [w["id"] for w in mh.waiting(root)]
+        self.assertEqual(ids, ["DECISION NEEDED 2026-10-21 (Lab): review_by"])
+
     def test_home_shows_road_to_v1_with_current_stage_and_counts(self):
         """Operator 2026-10-31: the road to profitability left with the Control Room; Home shows D7's one line per stage."""
         import json
@@ -203,6 +218,15 @@ class Home(unittest.TestCase):
         d = mh.build(self.reg)
         off = [p["title"] for p in d["pages"] if p["owner"] != self.reg["home_login"]]
         self.assertEqual(off, [])
+
+    def test_hub_needs_you_lists_only_open_questions_and_leaves_room(self):
+        """Card hub-waiting-list-stale-decisions-1106: recorded decisions (Applied:/Operator bodies, dated headings) are not open
+        questions; the hub carried 16 waiting items and broke its size test. Pinned on the real decisions file."""
+        import make_home as mh
+        waiting = mh.waiting(Path(__file__).resolve().parents[2])
+        self.assertLessEqual(len(waiting), 6, [w["id"] for w in waiting])
+        html = mh.render(mh.build(self.reg))
+        self.assertLess(len(html.encode("utf-8")), 27000)
 
     def test_hub_folds_link_help_and_stays_compact(self):
         """Operator 2026-10-25: MTS Home was too big to navigate. The link-failure help and the old copies are folded, and the
@@ -352,6 +376,59 @@ class Stale(unittest.TestCase):
         import make_status as ms
         n, lines = ms.get_stale_pages()
         self.assertEqual(n, len(lines))
+
+
+class PagesFollowBuilds(unittest.TestCase):
+    """pages-follow-builds-1107: Updated stamp first, publishers list, REPUBLISH lines."""
+
+    def test_put_stamp_goes_first_after_body_and_is_idempotent(self):
+        from datetime import datetime, timezone
+        page = "<!doctype html><html><body class=x><main>hi</main></body></html>"
+        once = af.put_stamp(page, datetime(2026, 11, 7, 15, 4, tzinfo=timezone.utc))
+        self.assertIn("Updated 2026-11-07 15:04 UTC", once)
+        self.assertTrue(once.index("Updated") < once.index("<main>"))
+        twice = af.put_stamp(once, datetime(2026, 11, 7, 16, 0, tzinfo=timezone.utc))
+        self.assertEqual(twice.count("Updated"), 1)
+        self.assertIn("16:00 UTC", twice)
+
+    def test_stamp_alone_never_makes_a_page_stale(self):
+        page = "<html><body><main>x</main></body></html>"
+        self.assertEqual(af.content_hash(af.put_stamp(page)), af.content_hash(af.put_stamp(page, None)))
+        self.assertNotEqual(af.content_hash(page), af.content_hash(page.replace("x", "y")))
+        self.assertEqual(af.content_hash(af.put_stamp(page)), af.content_hash(page))
+
+    def test_generated_pages_carry_the_stamp_first(self):
+        import make_home
+        import make_layers_board
+        for mod in (make_home, make_layers_board):
+            with self.subTest(mod.__name__):
+                import tempfile
+                with tempfile.TemporaryDirectory() as d:
+                    out = Path(d) / "p.html"
+                    mod.main(["--out", str(out)])
+                    t = out.read_text(encoding="utf-8")
+                    self.assertIn("Updated 20", t)
+                    self.assertLess(t.index("mts-updated"), min(i for i in (t.find("<main"), t.find('<div class="wrap"')) if i >= 0))
+
+    def test_publishers_in_registry_and_login_mapping(self):
+        reg = af.load()
+        self.assertIn("jishusharma1985", af.publishers(reg))
+        self.assertTrue(af.is_publisher(reg, "C"))
+        self.assertFalse(af.is_publisher(reg, "A"))
+        self.assertFalse(af.is_publisher(reg, ""))
+        bad = copy.deepcopy(reg)
+        bad["publishers"] = ["nobody"]
+        self.assertIn("not an account", chr(10).join(af.problems(bad)))
+
+    def test_republish_lines_format(self):
+        reg = af.load()
+        pages = af.tracked(reg)
+        lines = af.republish_lines(reg, lambda pg: "<html>" + pg["slug"] + "</html>")
+        self.assertEqual(len(lines), len(pages))
+        for ln in lines:
+            kind, slug, src, url = ln.split()
+            self.assertEqual(kind, "REPUBLISH")
+            self.assertTrue(url.startswith(af.URL_PREFIX))
 
 
 if __name__ == "__main__":

@@ -1783,6 +1783,7 @@ APPLIED (OURS): `scripts/dev/boot_audit.py` (report; `--fix` touches MTS-owned i
 KEEP/ASK list (not ours, your call, `boot_audit.py` marks them `*`): ASK remove from startup: Docker Desktop, Teams, Discord, Medal Highlight, Free Snipping Tool (+ Updater), OpenVPN GUI. KEEP unless you do not use them: TeamViewer, Tailscale (service + shortcut), Intel DSA, Office ClickToRun, Edge/Chrome autolaunch. KEEP (Windows): SecurityHealth, Defender, Realtek audio, SPDriverInstall. Free C: space above 15 GB is also worth keeping.
 NUC (read-only listing through the SSH gate `ps` verb, 2026-11-06): about 90 spent MTS one-shot tasks are still registered (`gq13`..`gq20`, `gqpush*`, `MTS-GateJob-*` x25 as SYSTEM, `MTS-Wake-*` x30, `MTS-GW-opus-*`, `lab-loop`, `codexloop`, `LayerBible*`, `mts-oneshot-*`) against a policy of one allowed task, plus Run values `MTSTempGuard`, `MTSLogonWake` (authorised), `AntigravityCliDaemon`, `Claude`, `Discord`, `OpenVPN-GUI`; C: 71.6 GB free. Broadcast b-5d221d has the NUC and laptop run `boot_audit.py --fix`, which removes the spent ones (never a running task or a pending one-shot); the `MTS-GateJob-*` tasks run as SYSTEM and may need the operator's admin or the gate `ps-bg`; the fix prints which ones it could not remove.
 Applied: 2026-11-06, card slow-boot-fix-1106; boot time to be compared after the next restart (`boot_audit.py` on each machine).
+2026-11-06 16:45Z, operator (JIS-NB, Settings > Startup): turned off Discord, Docker, Free Snipping Tool + updater, Teams, Chrome/Edge autolaunch, Tailscale GUI (service stays on) and "Console Window Host"; turned Claude on. Lead C: "Console Window Host" is MTSTempGuard (`c_drive_guard.py logon`, already delayed 180 s), so it goes back on; Medal Highlight off.
 
 ## d-fable-lead-revalidation-1106 | decided 2026-11-06 | operator (voice, 12:40Z), Lead C
 DECISION: the Lead session runs on Fable 5.1 from 12:40Z and revalidates every decision and analysis of 2026-11-06 against the operator's standing asks: nothing duplicated, everything wired end to end, simplified, accurate, fast and prompt. Found and fixed this turn: the lows-first scenario was never written to the ledger (added as the study-backed version, down 75,208 before up 80,918 by 11-07 end); the CBP Analyst Desk was rebuilt locally by the fixed cbp_run.py (+6 rows, 18 total) but no session republished it (republished now); 4 registry pages were stale (republish delegated).
@@ -1801,3 +1802,349 @@ Answer: yes, start it (operator, 2026-11-06 16:10Z); session flip-study on JIS-N
 Power gate 0.30 % ceiling with repo-wide Holm m = 238 blocks every DEV study (Builder via Supervisor C, 2026-11-06 14:55Z). Card power-gate-holm-m-decision-1106 READY.
 Recommended: Holm m per study family.
 Answer: default (Holm m per family) applies from 2026-11-07 15:00Z unless the operator overrides; recorded by Lead C.
+
+## d-carry-dropped-leverage-direction-1106 | decided 2026-11-06 | operator (voice, 18:40Z), recorded by Lead C
+Funding carry (carry_basis_2026-10-18, 6-15 %/yr, shrinking) is dropped: MTS aims at leveraged directional trades, not carry.
+Direction: (1) low-leverage long-term longs near confirmed cycle bottoms (CBP bottom signal, buy on or after a good retest); (2) scalps, day and swing trades by session using Tom and Fabio levels (where buyers and sellers sit), bias from indicators and volume, continuation vs counter-trade.
+Lead C finding: the order-flow setups are often positive before costs and negative after (fabio_of: about 0.45 R of cost per trade on 0.15 % stops), so costs, not missing layers, kill most results.
+Answer: carry dropped; direction recorded (operator, 2026-11-06).
+
+## d-phase-first-method-1106 | decided 2026-11-06 | operator (voice, 18:55Z), recorded by Lead C
+Method: an edge is judged by market phase and by patterns that hold now, not by long multi-year backtests. A pattern visible in the current phase goes to the testnet at once and keeps trading until it stops working; we record when it works and the conditions in which it fails. Large-history backtests are not a precondition for testnet trades.
+Example: the BTC four-year cycle (3 up, 1 down) held for 4 cycles; it needs no backtest. Research table: research/btc_cycles_2026-11/cycles.md (16 years of daily prices, blockchain.info before 2017-08, Binance after).
+Bound (Hard rules, unchanged): testnet only; mainnet still needs the fee-net out-of-sample record, which the testnet run now supplies.
+Answer: phase-first, testnet-forward method adopted (operator, 2026-11-06).
+
+## d-stops-follow-trade-1106 | decided 2026-11-06 | operator (voice, 18:04Z), recorded by Lead C
+The 0.15 % minimum stop in fabio_of (09-30) was OURS (a worker's floor), never Fabio's; the Habib candle-extreme stop (10-16) was OURS too. Both are dropped as rules. A stop follows the trade: direction, leverage and the plan's invalidation point (below the level or range traded), never a fixed percentage. Re-score of the two studies with plan stops and maker fees: card fee-stop-rescore-fabio-habib-1106.
+Answer: stops are per trade and per plan; the 0.15 % floor is retired (operator, 2026-11-06).
+
+## d-three-studies-1106 | decided 2026-11-06 | operator ("Yes, start all three", 19:05Z), recorded by Lead C
+Three Sonnet sessions, concepts before code, phase-first: pattern book (chart patterns, candle patterns, trendlines per timeframe, drawn for the operator's eye; takes the trendline half of card live-aid-trendlines-liquidations-1106), Habib concept book (imbalance method wired to his calls; takes card habib-plan-scoring-not-trades-1104), moving-average layer (one MA state per timeframe on the live aid, Krown and the common practice sourced first). Each ships to research/<name>_2026-11/ and appends dated readings to research/mts_bible/BIBLE.md.
+Answer: yes, all three (operator, 2026-11-06 19:05Z); sessions pattern-book, habib-book, ma-layer on JIS-NB.
+
+## d-habib-calls-unsealed-1106 | decided 2026-11-06 | operator (voice, 18:04Z: "see what is happening with Habib's calls, how he is able to do it"), recorded by Lead C
+The 9 priced Habib plans (habib_plan_imbalance_2026-10-20/PLAN_LEDGER.csv, dated inside the 2026-06-26..09-26 holdout) may be scored against klines now: scoring his plans tunes nothing of ours, and d-phase-first-method-1106 removes the backtest-holdout gate for analyst calls. Our own rules still keep their holdout.
+Answer: released for scoring by the Habib session (operator's order, 2026-11-06); reversible by the operator.
+
+## d-ladder-discuss-first-1106 | decided 2026-11-06 | operator (voice, 18:04Z: "first discuss with me and reflect on my ideas"), recorded by Lead C
+Range laddering (the operator's martingale idea) is a written proposal first, no code: fixed total risk split across 3-4 levels in the range, one invalidation below the range, stop width from the range; Fabio's add-in-profit is the trend-phase counterpart. The Habib session writes LADDER_PROPOSAL.md for the operator.
+Answer: proposal only until the operator decides (2026-11-06).
+
+## d-mts-bible-1106 | decided 2026-11-06 | operator (voice, 18:14Z: "keep this in your Bible"), recorded by Lead C
+research/mts_bible/BIBLE.md holds the big-picture truths (cycle clock, turn shapes, two-clock reading, exact lows) with confirm/break conditions; sessions append dated readings, never edit past ones. Each Bible reading with a testable outcome also goes to the scenario ledger so it is scored (S008: July bottom stands).
+Answer: Bible kept and wired to the ledger (operator, 2026-11-06).
+
+## d-prob-registry-1106 | decided 2026-11-06 | operator ("Yes, build it", 19:55Z), recorded by Lead C
+The probability layer is context, never a signal: one base-rate registry (base_rates.py -> base_rates.js) replaces the five *_rates.js globals on the live aid, built from the existing study outputs, no new study, no backtest; every number shows its window and n. Card prob-base-rates-registry-1106 goes to a Sonnet Builder now (defaults from UNIFY_2026-11-06.md s6: unify now; rows below the unit minimum shown greyed, never hidden; the leverage cap (D3) waits for a realised testnet log).
+Answer: build it now (operator, 2026-11-06 19:55Z).
+
+## d-login-c-cap-60-1107 | decided 2026-11-07 | operator (chat, ~09:00Z), recorded by Lead C
+Login C weekly cap is 60 % (was 85 %; at 56 % when said). The last 4 % finish the open tasks end to end; no new task starts on login C this week. Login A (the Lenovo laptop) and the NUC are switched off. Order: DSA fix verified on trunk, then tested by the Haiku watcher; the Builder's base-rate registry; archive done sessions.
+Answer: critical tasks first, no rework, no new tasks (operator, 2026-11-07).
+
+## d-aibridge-ctl-one-line-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+The hands-free control box on the DeepSeek page covered most of the screen. It becomes one line (tick, blocks run / cap, link dot, version), draggable; the status, version and agent lines open only on a problem or a click on the version. Shipped as AIBridge 0.7.28.
+Answer: one line, floatable, only the blocks and the version (operator, 2026-11-07).
+
+## d-dsa-seed-then-wait-1107 | decided 2026-11-07 | operator (voice, ~09:15Z), recorded by Lead C
+The DSA fix is end to end: DSA must know how to use the 0.7.28 bridge (its failure patterns are now prompt 0.9), a new chat
+starts with ONE command (`python scripts/dev/dsa.py start --open`: seed on the clipboard, chat tab opened; paste, Enter), DSA
+loads itself through one bridge block (worktree, prompt, `dsa.py boot`), prints a one-line BOOT banner and WAITS; it starts
+work only on his order ("go", a card id, a desk row; the watcher's check-desk line counts as go). Reason: DSA had begun doing
+many things on its own. All of it tested end to end by a Haiku worker in Chrome. The 86-250 KB session paste stays as the
+paste-mode fallback. DECISION (OURS): a zero-paste start (the extension posts the seed itself) is bridge work, raw card filed.
+Answer: one command, quick init, wait for my instruction; test with Haiku (operator, 2026-11-07).
+
+## d-aibridge-0729-installed-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+"Install now": AIBridge 0.7.29 installed to F:/AIBridge on JIS-NB (agent restarted, health UP). The stale backup folders
+extension.pre_0.7.11 and src.pre_0.7.11 are to be removed (deletes are blocked for sessions; the operator removes them).
+NUC: broadcast b-aa62c7 carries the install command; the NUC has no session reading broadcasts (11 unacked), so the
+operator prompts one there. 4 DSA chats on the NUC (2 profiles x 2 tabs): the bridge supports it (one agent, up to 8
+commands at once, per-page state); two Chrome instances of one profile are not possible, two tabs per profile are.
+Answer: install now; remove the duplicate stale folder; NUC gets it too (operator, 2026-11-07).
+
+## d-cbp-adx-volume-plan-first-1107 | decided 2026-11-07 | operator (voice, ~12:00Z), recorded by Lead C
+CBP update: read the new CCU (Steve, ADX/DI cross on the 2-day), Michael and Krown videos; understand the crosses, the
+ADX strength on the DI, the fake-out read, the smaller-timeframe confirmations; what the Sep-15 low break means; volume
+around Tom/Fabio levels as a layer; design for the current phase; plan first, discuss, then implement, in line with the
+roadmap. Plan: MyTradingSys/research/cbp/PLAN_ADX_DI_VOLUME_2026-11-07.md (M1-M8, 4 open questions).
+Answer: come up with a plan first, discuss, only then implement (operator, 2026-11-07).
+
+## d-cbp-adx-m1-m4-api-credit-1107 | decided 2026-11-07 | operator (chat), recorded by Lead C
+M1-M4 of PLAN_ADX_DI_VOLUME_2026-11-07.md (ADX/DI engine, 2d cross census, ADX state at the cross, timeframe cascade)
+run now on the API credit as one Sonnet api_job (card adx-di-2d-cross-census-1107, spec research/adx_di_2026-11/SPEC.md,
+cap 8 USD; credit left about 13 USD). The other plan questions take their defaults: M5 on both Tom levels and FAB real-FVG,
+CCU to actionable=partial, cascade on 1h/4h/1d. Splits DECISION (OURS): DEV/VALIDATION fit and check, 2025-07..2026-11
+reported descriptively only. Weight ROUTINE (OURS): a T0-ONLY coordinator stamp cannot promote an IMPORTANT card.
+Answer: API credit now (operator, 2026-11-07).
+
+## d-wicks-research-plan-first-1107 | decided 2026-11-07 | operator (voice, ~13:30Z), recorded by Lead C
+"VIX" = wicks. MTS research plus public research on how wicks form on 5m/15m, the recent 5-week pattern, price-and-time
+(Steve, Jason), the Friday 74,900 sweep (first try, bought back), what support is really there (confluence, first try,
+volume, CVD, order flow), and the context gap: a falling knife (news sell-off, no retracement) is never a wick to buy.
+Done this turn: 5-week census (research/wicks_2026-11, R = 1 hit rates 38-51 %, blind wicks no edge), repo survey, note
+WICKS_NOTE_2026-11-07.md with the context gate and plan W1-W6; nothing built. Defaults (OURS): with-trend side first,
+knife rule 2 % in 12 bars with < 25 % retrace, W1-W3 after the Monday reset.
+Answer: MTS has to find a way to buy and sell into wicks with the whole context; plan it (operator, 2026-11-07).
+
+## d-verify-indicators-on-tradingview-1107 | decided 2026-11-07 | operator (voice), recorded by Lead C
+Computed indicators are cross-checked on his TradingView / Binance charts through Claude in Chrome before they count as
+verified; a formula already verified needs no re-check. First: card adx-di-tradingview-crosscheck-1107 (Haiku, after the
+ADX engine lands); FORMULAS.md gets a VERIFIED-TV line per indicator.
+Answer: verify through Claude in Chrome on my TradingView and Binance charts; be sure (operator, 2026-11-07).
+
+## d-api-credit-raw-api-engine-1107 (2026-11-07, operator, voice)
+"We are highly underutilizing our cloud platform ... everything we can that we can get done there should be done there ... find a way
+that's good, cheap, best." Finding: the $100 console credit was never spent ($94.34 left); `claude -p` jobs billed login C's
+subscription (claude-code beta refused by the credit, key never approved). Decision (OURS, standing): api_job.py default engine = raw
+Messages API (`api_agent.py`); routing table in PLAN_API_CREDITS_2026-11-04.md (about $9 a day to 11-17: Sonnet builders, Haiku
+reviews/batches, Opus one-shot reads); `claude -p`/Agent SDK/cloud sessions are not credit paths. Managed Agents = $2 probe, later.
+Answer: operator 2026-11-07: use the platform for everything possible; engine shipped (api_agent.py), routing table in PLAN_API_CREDITS.
+
+## d-tv-favorites-context-columns-1107 (2026-11-07, operator, screenshot + text)
+"I need to also see what other indicators are and how to use them for MTS" (his TradingView favourites: ADX and DI, WaveTrend, WaveTrend with Crosses, Squeeze Momentum, Volume Flow Indicator). Note shipped: research/tv_favorites_2026-11/FAVORITES_2026-11-07.md (what each is, what MTS has, proposed context use, plan P1-P4). Default (OURS): context columns only, TradingView-verified first; P2/P3 engines wait for his go.
+Answer: survey delivered 2026-11-07; P1 (ADX TradingView read) running; P2-P4 await his answer.
+
+
+## d-build-squeeze-vfi-use-a-c-gemini-1107 (2026-11-07, operator, chat)
+"Yes, build both" (Squeeze Momentum + VFI engines) then "use login A and C and other gemini models to get things done". Routing (OURS): squeeze-momentum-engine-1107 -> login A (Supervisor A asked for work, q-e5e808); vfi-engine-1107 -> API credit (api_job --engine api, Sonnet, when the slot frees); Gemini laptop -> malkan-hindi-extract + 3 gemini-blind-read-* (:low, q-820c7b); B/NUC -> main-folder-staged-blocks-ff + b-aa62c7 ack + gemini-habib-caption-check-1107; C verifies both engines on his TradingView.
+Answer: assigned 2026-11-07 14:40Z; cards shipped b2f00512.
+
+## d-start-dsa-bridge-typed-trigger-1107 (2026-11-07, operator order via B, q-9d225e)
+"Build it so typing just 'Start DSA bridge' as the first line in a new DeepSeek chat boots DSA (no terminal, no clipboard paste); e.g. the AIBridge extension injects the seed." Card aibridge-start-dsa-trigger-1107 (spec scripts/aibridge/docs/SPEC_START_DSA_TRIGGER.md); the terminal-based card aibridge-posts-the-dsa-seed-itself-zero- dropped as superseded. DECISION OURS: the seed is fetched from the agent (dsa.py start --print), never hard-coded in the extension; exact phrase only.
+Answer: ordered; Sonnet builder started 2026-11-07 ~14:55Z on C.
+
+## d-login-c-cap-75-24h-1107 (2026-11-07 ~15:00Z, operator, chat)
+Login C stands at 68 % weekly; the bar for the next 24 h is 75 %. Lead C (Fable) spends the 7 % only on coordination: wake on a
+result, ledger, launch the next job, sleep (bounded waiters, warm cache). All building, reviewing and reading goes to the API
+credit, login A (fresh week), login B (reset 11-08 17:00Z) and the Gemini Argon/Flash queues. Plan: PLAN_24H_2026-11-07.md.
+Answer: yes, recorded; cap 75 % until 2026-11-08 15:00Z, then the 11-10 reset rule (d-login-c-cap-60-1107) applies again.
+
+## d-pages-updated-stamp-follow-builds-1107 (2026-11-07 ~15:20Z, operator, chat + 2 screenshots)
+Operator: pages are not updated when their sources change (CBP Analyst Desk showed 11-06 12:38 after a CBP run; MTS Home built 11-06
+19:17); every page must show its last-updated time at the top, and every super session must republish what moved. Why it was not
+wired: the build side is scripted (artifacts.py build, cbp_run rebuilds cbp_board.html), but publishing needs the Artifact tool, which
+only a Claude Code session on the owner login jishusharma1985 has; CBP runs on other machines, API jobs and Gemini cannot publish; the
+ship gate only prints a WARNING. Fix: card pages-follow-builds-1107 (stamp + hook line + wake step + share pages with logins A/B for
+edit so their sessions can publish too). Republished now: CBP Analyst Desk (15:02Z build), MTS Home (15:03Z build).
+Answer: yes; the operator shares the canonical pages with jishu.sharma and jishu.awgp (edit) so that A and B sessions can republish.
+
+## d-vertical-bars-for-confirmations-1107 (2026-11-07 ~15:30Z, operator, chat)
+Operator, after Lead C asked him to hover six dated daily bars for the squeeze dots: "make it a rule - place vertical bars where you
+need my confirmations so that it is easier for me." Rule: every Chrome check on his TradingView that ends with a question for him
+draws a vertical line (TradingView "Vertical Line" tool, Alt+V) at each bar he must read, with the date as the line text, leaves the
+layout unsaved, and the reply says how many lines are on the chart. The Haiku check brief carries this step from now on.
+Answer: yes (his order); applies to every indicator check and to Eagle_Eyes chart questions.
+
+## d-favourites-usage-then-map-1107 (2026-11-07 ~15:30Z, operator, voice)
+Operator: before using the TradingView favourites (WaveTrend oscillator and crosses, Squeeze Momentum / TTM Squeeze, Volume Flow
+Indicator, ADX/DI), research how their authors and practitioners say they are used (LazyBear, John Carter, Katsanos, articles), apply
+the crypto/Bitcoin filter, then group indicators AND analysts by what they measure (price action, volume, levels, time, momentum,
+volatility, trend strength) and by role (context, setup, confirmation) so sessions read connected sets, not indicators alone; price,
+volume and time count as layers even though LAYERS.md does not list them. Cards: tvfav-usage-{wavetrend,squeeze,vfi,adx}-1107
+(Gemini, low) -> indicator-map-1107 (Sonnet, login B after reset or A). Spec: SPEC_INDICATOR_MAP.md. Also: card
+dsa-seed-full-task-list-1107 (the Start DSA bridge seed must list every DSA task and DSA's last 5 filings).
+Answer: yes (his order); nothing in the map becomes a signal; phase-first rule stays.
+
+## d-dsa-load-queue-multi-chat-1107 (2026-11-07 ~17:15Z, operator, voice)
+Operator: DSA (JIS-NUC and the desktop) reports no tasks; "load DSA with work" (review, refinement, anything else); run 2-3 DSA chats
+per host in separate tabs under Haiku control, DSA told that sessions run in parallel. Lead C: the standard flow already exists
+(DSA_DELEGATION.md line 108: one Haiku Agent seeds the tab and sends "Check the desk tasks"; each DSA chat writes in its own
+mts-dsa-<chat> worktree, tasks.py take claims a card), so the gap was an empty queue, not the driver. Loaded: 3 refined DSA cards
+promoted READY (fabervaale-cvd-sweep, oi-usage-sweep, lab-verify-footprint-vs-indicator-delta), new dsa-refine-raw-cards-1107 (DSA,
+repeatable), dsa-tests-quick-trunk-1107 (DSA-NUC), desk row depth-band rerun (DSA-NUC). Fan-out driver = card
+dsa-multi-chat-driver-1107 (raw, SONNET): cap chats per host by the ship gate (4+ concurrent ships flake, desk 20261029-170405).
+Answer: yes, load via the queue; 2 chats per host until the driver card lands; Haiku only kicks a chat, never babysits it.
+
+## d-broadcast-wait-for-reply-1107 (2026-11-07 ~17:40Z, operator, voice)
+Operator: the broadcast feature is not used properly: a session broadcasts and moves on without waiting for the reply, and
+receivers do not check what broadcasts are open while they work; login C (the Max console, most often running) must be in
+the habit of checking open broadcasts and asks on every wake and answering them by priority. Lead C: delivery rides on
+prompts (mts_signal.py help), so a sender that never prompts again never sees the ack; 16 open status lines sat on one prompt.
+Answer: rule from now: (1) after every broadcast or ask the sender runs ONE bounded waiter on `mts_signal.py acks <id>` (≤ the
+ask's --wait) before its next step; (2) every wake starts with `mts_signal.py pending --host <me>` and `asks`, answered in the
+order ask > HIGH broadcast > normal, before the task; (3) tooling = card signal-broadcast-wait-and-prio-1107 (SONNET p1).
+Applied this turn: q-2617a9 (NUC DSA refinements) answered yes with limits.
+
+## d-dsa-watcher-sonnet-parallel-1107 (2026-11-07 ~17:45Z, operator, voice)
+Operator: 3 DSA chats run (2 on JIS-NUC in one Chrome profile, 1 on the desktop); assign one Sonnet worker that permanently
+watches DSA work; refine the DSA prompt so DSA knows it runs several sessions in parallel and works without getting stuck; the
+Chrome tab stays in the foreground. Lead C: started session dsa-watcher (Sonnet, login C, worktree JIS-NB/dsa-watcher-1107):
+job 1 = DSA_SESSION_PROMPT.md "Parallel sessions" section + dsa.py seed shows other chats' claims + UTF-8 stdout; job 2 =
+signal-driven watch loop (stuck = active DSA card > 60 min without ship), re-kick desktop chat via one Haiku Chrome Agent, NUC
+chats via HIGH broadcast with a bounded ack wait. Conflict: d-login-c-cap-75-24h-1107 said no Sonnet from login C; the newer
+order wins, the watcher stops itself at 74 % weekly.
+Answer: Sonnet DSA Watcher runs on login C, frugal (one bounded waiter per wake), stops at 74 %.
+
+## d-super-sessions-use-logins-a-b-1107 (2026-11-07 ~17:42Z, operator, voice)
+Operator: the super sessions should run on the other logins; nothing visible runs beyond background cards; does login A (14 %
+weekly used, Supervisor A re-arming its watcher) share the load? Lead C: 20 READY SONNET cards wait while login A sits at 14 %;
+broadcast b-e787e5 HIGH to jis-laptop: dispatch background Sonnet Agents 3 at a time; one bounded ack waiter (30 min).
+Answer: load goes to login A by broadcast + ack wait; login B (71 %, reset 11-08 17:00Z) keeps DSA x2 and the Gemini queue.
+
+## d-signal-reply-within-1-minute-1107 (2026-11-07 18:12Z, operator, chat)
+Operator: a 60-minute wait for a broadcast reply is too much; it should be 1 minute. Lead C: the sender waiter now polls every
+60 s (cap 30 min); the receiving session only sees a signal on its next prompt, so the fix is receiver-side: the host watcher
+(supervisor.py wait) must wake on a new ask/HIGH broadcast within 60 s. Added to card signal-broadcast-wait-and-prio-1107.
+Answer: target = ack within 1 minute whenever a session is awake on the target host; watchers wake on signals.
+
+## d-one-minute-means-solution-arrives-1107 (2026-11-07 18:20Z, operator, voice)
+Operator: "if any login needs something, within a minute the solution arrives" is the goal; asked whether Lead C knew the Lenovo
+had already replied. Lead C: no; the reply came 5 min after the ask (17:43Z), Lead C read it 9 min later on the operator's prompt,
+because its waiter watched one id with two conditions. Fix: every waiter fires on the first new inbound signal for this host
+(mts_signal.py wait, card signal-broadcast-wait-and-prio-1107); receivers wake on asks within 60 s.
+Answer: 1 minute = ask to solution; waiters watch the inbox, not one id.
+
+## d-pilot-sonnet-signals-health-1107 (2026-11-07 18:25Z, operator, voice)
+Operator: all signal improvements must be done now (1-minute goal: "we do not have all day to wait"); also audit how we ship
+and the overall health (failures, optimisation); offered an ultra-mode pilot session, Sonnet or Opus, Lead C to choose.
+Lead C: Sonnet, not Opus (mechanical tooling + measurement; Opus only when he names it for design); started session
+pilot-signals-health (login C, worktree JIS-NB/pilot-signals-health-1107): job 1 builds signal-broadcast-wait-and-prio-1107
+(mts_signal.py wait, --wait on broadcast/ask, sorted status lines, watcher wakes on asks), job 2 writes
+research/health_2026-11-07/SHIP_HEALTH.md with gate p50/p90, failures, orphan gate trees, CI reds, stale pages, top-5 time
+sinks as cards. Ultra mode if he switches it: get_usage first, waves <= 4, <= 8 agents, results to files; stops at 74 % login C.
+Answer: Sonnet ultra pilot, two jobs, numbers from git/logs only.
+
+ship-health-1107 (Builder, zero operator input): DECISION (OURS) the ORPHAN gate "kill failed" text lives in host_health.py (not sync.py); filed as a card, not fixed. Gate timings cover this machine's 10 trees only. No sub-agents used. The existing twin card broadcast-hygiene-stale-and-b4c2dfe covers the stale-broadcast sink, so only 4 new cards were filed.
+Answer: research and raw cards only, no product code.
+## d-argon-tom-fabio-review-1108 (2026-11-08 ~00:35Z, Lead C review for the operator)
+Operator asked how Lead C sees Argon's Tom/Fabio failure analysis (1a79739e) and what really needs doing. Lead C: root causes
+1 (fee-to-stop geometry on 10 bps perps), 3 (no 1M/1w/1d ladder) and 4 (Java above_vah/below_val asymmetry, Fabio v3 unmanaged
+Model A) are concrete and checkable; the v3 fix and the Live Aid 1M strip shipped; the Java bug is described, not fixed. Part 3
+is four hand-picked recent winners, so no edge is shown yet; auction_context.py lives in research/, has no census run and its
+thresholds carry no SOURCED/OURS labels. Cards: java-va-state-asymmetry-fix-1108 (p1), auction-context-event-census-1108 (p1),
+auction-plan-testnet-forward-1108 (p2).
+Answer: keep the direction (top-down context, structural stops, acceptance vs fast rejection); prove it by a count over the
+window, fix the Java bug now, then testnet-forward the two setups; no fixed core, no long backtest gate.
+
+## d-news-headlines-third-ask-1108 (2026-11-08 ~01:15Z, operator, TradingView News panel screenshot)
+Operator showed TradingView's BTCUSDT News panel ("Hyperliquid whales stack Bitcoin shorts to highest level since October 2025", ETF outflows, etc.) and asked whether MTS sees such news. Lead C: no; MTS has no news ingestion. This is the third ask (T054 2026-09-28, news_feeds_2026-10-30 report, now); the 10-30 report already tested a free timestamped feed (Tree News REST, importance score, ~15 s delay) and wrote plan N1 (headline panel in live_aid), never built. The sim News tab (sim-news-concept-tabs-1104) is a UI tab without a feed.
+Answer: card news-headline-panel-tree-rest-1108 (SONNET p2): Tree REST poll while a page is open, headlines log, importance >= 7 marked; context only, no trade gate; no scheduler. Runs on login A/B or credit, not login C (74 %).
+
+## d-news-is-live-aid-critical-1108 (2026-11-08 ~01:45Z, operator)
+Operator: "News is a live Aid and it is critical!!!" Lead C: card news-headline-panel-tree-rest-1108 raised to p1 and filled build-ready (N1+N6 of the 10-30 report; Tree News REST; context only); launched on the API credit (Sonnet) at once since login C is at the 74 % cap.
+Answer: build it now on credit; N2 pulse tile and N3 macro strip follow as separate cards after N1 lands.
+
+## d-lead-c-8h-monitor-all-llms-1108 (2026-11-08 ~01:50Z, operator)
+Operator: keep login A alive; use the Claude Platform (API credit) for the next tasks; keep working for the next 8 hours (to ~10:00Z); use ALL LLMs (credit, login A, Gemini on the NUC) and the Claude Platform; login C's cap raised from 75 % to 78 % weekly; login C may only MONITOR tasks on the Claude Platform, login A and Gemini (no building from login C). Supersedes the cap line of d-login-c-cap-75-24h-1107.
+Answer: credit job news-headline-panel-1108 running (Sonnet, cap $8); next credit jobs in order: java-va-state-asymmetry-fix-1108, auction-context-event-census-1108, auction-plan-testnet-forward-1108, signal-broadcast-wait-and-prio-1107 (if A has not built it), artifacts stale-hash fix; login A asked by HIGH broadcast to stay alive 8 h and refine the Argon cards; NUC Gemini queue loaded with the 6 READY [GEMINI] cards; Lead C wakes on job end / signal only.
+
+## d-news-weight-bias-events-1108 (2026-11-08 ~19:50Z, operator, chat)
+Operator: news must carry weight (how real and applicable it is, whether it will have the anticipated effect), the news tab must flash, and he must be able to act long, short or hold on it; analysts name reports and announcements to watch, wire those from CBP.
+Lead C: the News panel (credit job running) lists headlines only. Two cards: news-weight-bias-flash-1108 (weight 0-100 from 5 parts, LONG/SHORT/HOLD chip, tab pulse; priors labelled OURS until the event study scores them) and cbp-events-to-watch-wire-1108 (CBP extraction gets events_to_watch, Live Aid Upcoming strip, flash at T-60/T-15/T0 and on a matching headline). Context for his hand decision, never a gate or an order.
+Answer: yes, both p1 on the credit after the News panel ships; weight and bias are shown as priors until counted.
+
+## d-credit-all-review-refine-fable-opus-no-stale-1108 (2026-11-08 ~20:10Z, operator, chat)
+Operator: ship all reviews and refinements, plus whatever is planned, to the Claude Platform API usage now; send pending Fable and Opus runs there too and make sure the Platform is really used (it was not once); make sure no stale work is done because much was re-architected and rethought.
+Lead C: one headless job per machine, the news panel job holds the slot, so a bounded launcher (60 s retry, 180 min) starts refine-batch-1108 (Sonnet, cap 12 USD, --engine api) when it frees; its JOB 0 tests every card against newer decisions and commits since 11-01 and drops or rewrites superseded ones. api_job has no Fable model (haiku/sonnet/opus only), so Fable-named work runs on Opus 5.5. Opus cards run only if they survive JOB 0. Proof of Platform use per job: meta.json engine=api, out.jsonl carries cost_so_far, ledger line with the console delta.
+Answer: yes; order on the credit: news panel, refine-batch (with stale guard), news weight + CBP events, Opus cards that survive, ci-red parity; the lead tree is 538 commits behind so no card is trusted from it.
+
+## d-news-research-first-reviews-synthesis-1108 (2026-11-08 ~20:20Z, operator, chat)
+Operator: compare past news events first, from analyst transcripts and online sources, before and after Trump took office; the same news sometimes does not work twice; research before fixing how to flash and weight; the question goes to several reviews by different models (Fable, Opus), a higher model combines them, then the fix is built in his style and order.
+Lead C: the weight/flash and CBP events build cards now wait. Chain on the Platform credit: catalogue (Sonnet, 150+ events, measured on public 1m klines, before/after 2025-01-20, repeat decay) -> Opus review (statistics lens) and a second review (market-structure lens, Fable if the runner supports it) in parallel-free sequence, each blind to the other -> synthesis by the highest model, NEWS_DESIGN.md plus rewrite of both build cards in his preferences -> build. Tooling card adds the Fable model id to the credit runner.
+Answer: yes; research chain first, builds after; no weight, flash or bias rule is final until NEWS_DESIGN.md.
+
+## d-credit-use-all-before-1117-no-hurry-1108 (2026-11-08 ~10:40Z, operator, chat)
+Operator (console screenshot): $24.82 spent so far, $75.18 left, the credit expires 2026-11-17. Run everything that can run on the Platform credit today, to use the full capacity before it expires, but not in a hurry.
+Lead C: about 9 days left, so a pace of about 8 USD a day; one headless job at a time on this machine, each job needs fail-first tests and a cap; no padding work: only cards that survive the stale guard and sit on the critical path, in its order. Fable and Opus jobs go first because those lanes have no other budget.
+Answer: yes; today's queue on the Platform: news design synthesis (running, Fable), news panel finish, news weight, CBP events, stop-gap early return, ci-red gate parity, then day-end Fable review of what shipped.
+
+## d-dsa-deepseek-block-find-cause-1108 (2026-11-08 ~10:40Z, operator, chat)
+Operator: DeepSeek blocked the AWGP Chrome profile until 2026-11-11, probably because the AIBridge did too much automatically. Find why, and make the DSA bridge work without getting blocked.
+Lead C evidence so far: the bridge audit log shows 205 commands on 11-07 (22 to 96 on earlier days), peak 45 an hour (one about every 80 s) between 16:00 and 18:00Z; every command is one auto-sent reply plus one model message, and up to 8 run at once across parallel chats on three machines. Cause not proven: the block text itself has not been read by us. Fix path: pacing and daily cap in the extension, one machine per account at a time, and a sanctioned channel (DeepSeek API, a money decision) for unattended work.
+Answer: yes; card dsa-bridge-avoid-deepseek-block-1108 filed; operator pastes the exact block text.
+
+## d-dsa-opus-review-all-fixes-on-credit-1108 (2026-11-08 ~10:50Z, operator, chat)
+Operator: look at all bugs raised on the DSA bridge; Opus reviews all past fixes, the DSA prompt and DeepSeek's latest rules on what automated requests get blocked; run it on the cloud platform; plan it if it makes sense.
+Lead C: it makes sense: one Opus job (cap about 8 USD) on the Platform, public pages only for the DeepSeek rules, no bridge code edited. The build card now waits on its ranked fix list so the pacing guard is built from the review, not from a guess.
+Answer: yes; card dsa-bridge-fix-review-opus-1108 (Opus, ready) runs next after the news synthesis; dsa-bridge-avoid-deepseek-block-1108 is blocked on it.
+
+## d-dsa-block-text-read-1108 (2026-11-08 ~11:00Z, operator, chat screenshot)
+Operator pasted the block page of the DSA chat profile (jishu, AWGP Google account): "Due to violation of user policies, your account has been suspended until November 11, 2026 10:22."
+Lead C: it is an account suspension for policy violation (not a rate-limit notice), about 3 days, and the profile was still running the bridge (Hands-free 0/200, v0.7.30). The chat list shows DSA task chats from NUC and boot sessions today, so more than one machine used this account. Cause still unproved; the Opus review ranks it. Rule until it ends: no bridge use, no workaround, no new account on this profile.
+Answer: yes; the DSA lane pauses on this account until 2026-11-11 10:22; the Opus review (credit) goes ahead.
+
+## d-dsa-block-cause-from-user-reports-1108 (2026-11-08 ~11:15Z, operator, chat)
+Operator: find the cause from other DeepSeek users; maybe too many requests sent continuously.
+Lead C: found the same suspension text in user reports of third-party web tools (OmniRoute, better-deepseek, ZeroScript); the best-supported pattern is fast repeated or agent-like use of the web chat, many new chats, regenerate, bridges and MCP, plus a wider wave of false positives; DeepSeek's terms ban automatic setups on the web service and account sharing, and no source names the exact trigger. Our bridge matches several of those patterns (205 auto-run commands on 11-07, peak 45 an hour, one account on three machines). Unproved. The official API is the sanctioned automation channel.
+Answer: yes; evidence handed to the Opus review card; price the DeepSeek API as an operator money decision after that review.
+
+## d-super-5h-monday-cbp-1108 (2026-11-08 ~18:15Z, operator, chat)
+Operator: start a super session for the next 5 h on the new approach (phase-first, testnet-forward, proper testing and reviews,
+nothing defective built upon); run the CBP module before the Monday open (small bounce before the drop, straight drop, or a
+bigger bounce; Krown sees lows broken and ~10 % more down); logins A and B do the work, Lead C spends little; C cap 85 % weekly
+until the 11-10 20:00Z reset; use the Platform credit; C instructs A and B with confirmation points so they keep working.
+Answer: PLAN_5H_2026-11-08.md (credit J1 monday-open-playbook-1109, Opus refute-review J2; B Gemini analyst extracts + card
+refresh + monday_watch.py; A reviews every ship + CBP events strip); hourly CHK signals; C cap 85 %.
+
+## d-gemini-both-models-cap-raised-1108 (2026-11-08 ~18:25Z)
+Operator: "make sure we use both Gemini models well! And use Claude Platform. U also have your cap raised - so do the critical tasks."
+Answer: Gemini 4 Argon takes the heavy Monday research (gemini-argon-krown-lows-break-check-1109: Krown's lows-break claim tested on BTC history); Gemini 3.8 Flash takes the 4 fresh [GEMINI] blind reads of shipped work; both run on JIS-NUC via gemini_queue.py, B reviews and ships. Platform credit runs J1 Monday playbook (Sonnet $5) then J2 Opus refute-review ($3). Lead C cap raised (operator gave no number): Lead C spends on critical coordination only, default ceiling 90% weekly until he names one.
+
+## d-backtest-map-1109 (2026-11-09, operator: "so many backtesting failures, I don't know where to start")
+Lead C wrote research/BACKTEST_MAP_2026-11-09.md (147 rows = 48 ideas; 0 proven; 3 eras; where to start) and added a line to D7_ROADMAP S3 recording that d-phase-first-method-1106 replaced the VALIDATION-backtest exit with testnet-forward.
+Answer: start from the map, then the Fable/Opus reviews, then the testnet-forward list; backtests are now a sanity check and failure map, not the gate.
+
+## d-krown-4h-testnet-forward-start-1109 (2026-11-09)
+Operator: asked how the roadmap moves on with no edge; Lead C proposed reviews cross-check, one trader-exits backtest, and testnet-forward of the setups we understand; operator pressed "Yes, start it" for the Krown 4h testnet forward test now, alongside the reviews.
+Answer: fable-run7-forward-test started now as a Fable 5.1 session (the operator's yes is the operator-run start the card requires). The old HOLD (72 months to power) is replaced by d-phase-first-method-1106: frozen R6 Krown S8 4h rule trades on testnet until it fails; the pre-reg fixes the fail rule and parity test, not a power gate. Testnet only; builders never trade, the build card wires the signal.
+
+## d-malkan-level-shorts-read-1109 (2026-11-09)
+Operator: asked where the Malkan RSI 40/60 layer is, whether 5-star and 7-star can be identified, and what confluence makes his marked 4h shorts (C1 08-28, C2 09-04, V1 09-23, V2 10-06, C3 10-21) tradable, including the no-divergence C3.
+Answer: research/malkan_level_shorts_2026-11-09/READING.md: all 5 reached >= 1R, only V1 fits the repo divergence rule (3-10 bars close to close); 5-star never fired (monthly/weekly never below 40); 7-star is a label only. Proposed 5-layer stack (OURS) goes to card malkan-level-short-4h-count-1109 for a 7y count, then testnet forward.
+
+## d-futures-data-every-station-1109 (2026-11-09)
+Operator: "it is a limitation that I do not accept. All stations must have this data" (Binance futures data blocked on JIS-NB).
+Answer: measured: the block is DNS-only (ISP DNS answers 49.44.79.236 for fapi/fstream/api.binance.com on JIS-NB and JIS-NUC; real IP via Cloudflare DoH serves futures klines). Backtests already use futures history from data.binance.vision futures/um (from 2019-09) plus spot for 2017-2019; only live/REST futures is cut, including the Java feed's wss://fstream.binance.com. Card binance-futures-dns-block-fleet-1109; fix route awaits his pick (machine DNS setting is his to change; a repo-level resolver is the fleet-wide code option).
+
+## d-fix-binance-dns-block-1109 (2026-11-09)
+Operator: "whatever is the correct fix, you should apply it ... people are paying TDS on Binance, so don't worry about it. Fix whatever is the best fix for us."
+Answer: repo-level fix (reaches every station through sync, no machine setting changed): Binance hosts are resolved through DNS-over-HTTPS (Cloudflare, then Google), cached with TTL, TLS still checks the real hostname; Python fetchers + live layers and the Java feed (Java 17, BinanceLiquidationAccumulator / StateCodeEmitter on wss://fstream.binance.com). Sonnet session builds card binance-futures-dns-block-fleet-1109; live path, so the coordinator deploys after tests.
+
+## d-tom-fabio-rebuild-from-source-1109 (2026-11-09)
+Operator: "Tom is launching videos about how a beginner can trade ... so simple ... we need to think right this time. From the beginning ... build carefully."
+Answer: rebuild in steps from their own words. Step 1 card tom-fabio-rebuild-from-beginner-videos-1109 (Gemini, captions verified): a rulebook where every rule has a quote, plus what candles cannot see (order flow). Then code one rule at a time and measure what each adds, with testnet forward from the first version. The running real-frame census (tf-real-frame) stays as the baseline.
+
+## d-edge-hunt-credit-wave-1109 (2026-11-09)
+Operator: run our own edge hunt on the cloud credit: 5 Haiku, 2-3 Sonnet, 2 Opus, 1 Fable ("table", voice), all on the credit; an Opus session first reads everything done, redone and failed plus the latest decisions, and how he thinks (RSI, wicks, levels), then decides what each worker does.
+Answer: card edge-hunt-plan-opus-1109 runs first on the credit (Opus, cap 6 USD) and writes PLAN.md, OPERATOR_LENS, 11 worker briefs and a fixed TRIALS list; the wave (5 Haiku, 3 Sonnet, 2 Opus, 1 Fable, total cap 36 USD) then launches on api_job.py --engine api only, in waves of at most 4. Reserve about 25 USD of the credit (expires 2026-11-17).
+
+## d-daily-session-playbook-1109 (2026-11-09)
+Operator: "I think I need this daily and on live aid! Plus on my screen ... also covers Asian and European sessions and related key trading information/trades/insights/notes."
+Answer: card daily-session-playbook-live-aid-1109 (Sonnet session): a daily playbook for Asia, Europe and US sessions (levels, base rates, 2-3 scenarios with counts and invalidation, analyst calls, events), each scenario scored in the ledger, as a Live Aid Playbook tab and a phone-width artifact. The Monday playbook had 3 Claude scenarios, US open only.
+
+## d-dns-fix-deploy-standing-1109 (2026-11-09)
+Operator: "of course! do not wait for me - we already decided these!" (asked: deploy the Binance DNS fix 1f20c6255 to the live tree?)
+Answer: yes. Deploy the green DoH fix to the live tree (DESKTOP-F7IU69N, C:\MTS\mts-live) now: selective checkout from origin/green/fast-track, restart only the processes that import it, Java via mvn compile + supervisor relaunch, then binance_doh_smoke.py. Standing rule: a fix already on green that the operator asked for deploys without a second ask; only money, mainnet and going private still wait for him.
+
+## d-own-the-open-files-1109 (2026-11-09)
+Operator: "only u are running since more than 48 hrs! So u have to resolve these if no one else is looking into."
+Answer: the Lead resolves uncommitted files left in the JIS-NB main checkout when no live session owns them: ship real work from a fresh tree, gitignore or drop scratch, never touch HALT, AUTO_PAUSE or runtime order data.
+
+## d-live-aid-bias-map-1109 (2026-11-09)
+Operator: "Use less - i will never read all these things ... no visuals/graphs/symbols that i prefer ... I page Stuff without scrolls - actionable stuff with no clutter! And I need it on live Aid Tab ... All Live Aid must be deduped! ... playbook it more like all sections combined from the live aid? It is more like a bias and understanding Map of live Aid?"
+Answer: yes. The playbook becomes the Live Aid Map tab: one screen, no scroll, bias dial from the agreement of existing Live Aid sections, a price ladder of the 3 nearest zones each side, a session timeline, at most 3 scenario cards; one level registry dedupes every Live Aid tab. Card live-aid-bias-map-one-screen-1109.
+
+## d-sim-verify-1109 (2026-11-09)
+Operator: "I need simulator for verifying what you have tested recently with Fabio + what else makes sense for me to check in back-testing? What abt my scenarios/requests that were back-tested? And why the 7 agents did not find any edge?"
+Answer: card sim-desk-edge-hunt-census-1109 adds every 11-09 study (census, T01-T12, Malkan level short incl. his 5 points) to the sim page with per-trade charts, a why-it-failed line per row and a check-next panel from the RESULT Noticed lines. Why no edge: answered in chat from eh-f1 DESIGN.md (1R setups win 42-50 %, 2-3R setups 29-39 %: both sit at zero after fees).
+
+## d-level-touch-alerts-1109 (2026-11-09)
+Operator: "on November 8th ... the price came down to 73,333 ... So the 73,000 target was already hit and you are sleeping ... you are not even aware ... You are not wired for anything."
+Answer: correct. analyst_levels.py marked 73.5k/73.3k 'open' (strict trade-through on spot; spot low 73,510 at 21:55Z) and nothing pushes touches or session prep to him. Card level-touch-alerts-session-brief-1109: tolerance + perp wicks, LEVEL TOUCH alerts and SESSION BRIEF (07:00Z, 13:30Z) from the running live loop, deployed under the standing deploy rule.
+
+## d-sister-signals-wired-1109 (2026-11-09)
+Operator: "prepare a note for my sister ... plan for this week, especially Monday, Tuesday, Wednesday, what to look for and when to buy what and how much ... all these things must be wired."
+Answer: note 4 "Phase 2 on" sent (SISTER_NOTE_2026-11-09.md, no holdings). The 11-07 note's triggers (Phase 2 on at 72-75k, top-up, stop, confirmed) lived only in a doc, so BTC entering the zone on 11-08 reached nobody. Card sister-signals-wired-1109 puts them in the live loop: flip toast, SISTER line in the Monday brief, weekly draft note to F:/MTS/sister/ (outside the repo). Launches after level-touch-alerts-session-brief-1109 ships; deploys under the standing rule.
+
+## d-tom-swing-test-1109 (2026-11-09)
+Operator (Tom Vorwald EN 'Swing Trading for Beginners' notification): "Another example of how Tom says it's done but you cannot find any edge!!!! What's the update?"
+Answer: every Tom test so far was intraday auction/order flow (5m-1h); fees of 10 bps on 5-40 bps stops decide those (course correction 11-07, census 11-09: -0.11 R). His swing method (trend + trendline pullbacks, wide stops) was never tested: the trendline layer stopped at FIX-FIRST (AUDIT_2026-10-18). Card tom-swing-trendline-extract-1109 (Gemini, captions, verified quotes) -> PRE_REG for a BTC 4h/1d fee-net count.
+
+## d-aunt-plan-1109 (2026-11-09)
+Operator: "prepare another buying plan for Bitcoin and altcoins for my auntie ... she has never done this ... ready to take the risk of losing that money ... make a record of this so that we always send her the updated one."
+Answer: note 1 written (AUNT_NOTE_2026-11-09.md, name and amounts kept out of the repo): money in 3 equal parts (now; BTC 65-67k; BTC near 60k), BTC 60 / ETH 25 / SOL 15 only, CoinSwitch Limit 2% below, safety rules. Updates are wired: card sister-signals-wired-1109 now drafts both the sister and the aunt note every Monday and on each trigger flip.
+
+## d-whats-next-credit-1109 (2026-11-09)
+Operator: "So what's next?" after seeing 80.26 of 100 USD credit spent. Lead C: last 19.75 USD goes to research only; Malkan count already done (best arm +0.10 R, 0.9 SE, no edge) so its context-only paper alert starts on the credit now (job malkan-fwd-1109, Sonnet, cap 6 USD); Tom swing extract waits for the NUC Gemini lane (YouTube); login A takes machinery cards (sister-signals fix, background-shell bug, broadcast hygiene). Exchange advice for his own buys: CoinSwitch main, CoinDCX optional second account.

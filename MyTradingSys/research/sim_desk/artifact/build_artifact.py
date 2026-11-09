@@ -453,6 +453,8 @@ ul{margin:4px 0;padding-left:20px}li{margin:3px 0}
 .tl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:8px 0}@media(min-width:900px){.tl{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:start}}
 #tlist tr[data-i]{cursor:pointer}#tlist tr.sel{background:var(--bg);outline:2px solid var(--acc)}#tpane svg{background:#fff;border:1px solid var(--line);border-radius:6px}
 [hidden]{display:none!important}
+.chip{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:600;font-size:12px;color:#fff;background:var(--mute)}.chip.bad{background:var(--bad)}.chip.warn{background:var(--warn)}.chip.good{background:var(--good)}
+#c9t tr.sel,#c9tl tr.sel{background:var(--bg);outline:2px solid var(--acc)}#c9pane svg{background:#fff;border:1px solid var(--line);border-radius:6px}
 html,body{height:100%;overflow:hidden}
 #app{height:100vh;display:flex;flex-direction:column}
 .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 12px;flex:none}
@@ -486,6 +488,7 @@ details.dt{margin:8px 0}details>summary{cursor:pointer;color:var(--mute);font-si
 <script>
 const TESTS=/*__DATA__*/null;
 const CAT=/*__CAT__*/[];
+const C1109=/*__C1109__*/null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const f2=x=>(x>=0?"+":"")+x.toFixed(3);
@@ -675,12 +678,36 @@ $("pane").innerHTML='<main><nav id="cnav" aria-label="Charts">'+L.map(t=>'<butto
 $("cnav").onclick=e=>{const b=e.target.closest("button");if(b){halt();chartsTab(b.dataset.id)}};if(cur){halt();mountTest(cur,true)}}
 function commentsTab(){const n=readComments().length;const rows=readComments().slice().reverse().map(c=>{const t=TESTS.find(x=>x.id===c.test_id);return '<div class="cmi"><span>'+esc(stamp(c.ts))+" &middot; "+esc(t?t.title:c.test_id)+" &middot; "+esc(c.chart_id)+"</span> "+esc(c.text)+"</div>"}).join("");
 $("pane").innerHTML='<div class="gridw"><div class="leg"><span>&#9998; '+n+'</span><button type="button" data-copy="1">copy all</button></div>'+rows+"</div>";}
+/*c1109*/
+function c9chip(r){return '<span class="chip '+esc(r.tone)+'">'+esc(r.chip)+"</span>"}
+function c9candle(t){const c=t.c,n=c.length,W=640,H=300,L=44,R=92,w=(W-L-R)/n;
+const lo=Math.min(0,-t.best_pct,...c.map(q=>q[2])),hi=Math.max(t.stop_pct,...c.map(q=>q[1])),sp=(hi-lo)||1,Y=v=>(10+(hi-v)/sp*(H-34)).toFixed(1),X=i=>(L+i*w+w/2).toFixed(1);
+let s='<svg viewBox="0 0 '+W+" "+H+'" role="img" aria-label="'+esc(t.name)+' 4h candles with entry, stop, best move and exit">';
+const ln=(v,col,lab)=>'<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+col+'" stroke-dasharray="5 3"/><text x="'+(W-R+4)+'" y="'+(+Y(v)+4)+'" font-size="11" fill="'+col+'">'+lab+"</text>";
+s+=ln(0,"var(--acc)","entry 0 %")+ln(t.stop_pct,"var(--bad)","stop +"+t.stop_pct.toFixed(2)+" %")+ln(-t.best_pct,"var(--good)","best move -"+t.best_pct.toFixed(1)+" %");
+c.forEach((q,i)=>{const col=q[3]>=q[0]?"var(--good)":"var(--bad)";s+='<line x1="'+X(i)+'" x2="'+X(i)+'" y1="'+Y(q[1])+'" y2="'+Y(q[2])+'" stroke="'+col+'"/><rect x="'+(L+i*w+w*.15).toFixed(1)+'" y="'+Y(Math.max(q[0],q[3]))+'" width="'+(w*.7).toFixed(1)+'" height="'+Math.max(1,Math.abs(Y(q[0])-Y(q[3]))).toFixed(1)+'" fill="'+col+'"/>'});
+s+='<path d="M'+X(t.entry_i)+" "+(+Y(0)+3)+'l-6 11h12z" fill="var(--acc)"/><text x="'+X(t.entry_i)+'" y="'+(+Y(0)+27)+'" font-size="11" text-anchor="middle" fill="var(--acc)">entry (short)</text>';
+if(t.exit_i!=null)s+='<path d="M'+X(t.exit_i)+" "+(+Y(t.stop_pct)-3)+'l-6 -11h12z" fill="var(--bad)"/><text x="'+X(t.exit_i)+'" y="'+(+Y(t.stop_pct)-17)+'" font-size="11" text-anchor="middle" fill="var(--bad)">exit: stop hit</text>';
+return s+'<text x="'+L+'" y="'+(H-4)+'" font-size="10" fill="var(--mute)">from '+esc(t.t0.slice(0,16).replace("T"," "))+" UTC, 4h candles, % from the entry (up = against the short)</text></svg>"}
+function c9detail(r){const p=r.per_trade;
+let h="<h3>"+esc(r.title)+"</h3>"+c9chip(r)+' <span class="note">n '+r.n+" &middot; mean net R "+(r.mean_net_r==null?"n/a":f2(r.mean_net_r))+(r.headline?" &middot; "+esc(r.headline):"")+"</span><p>"+esc(r.why)+' <span class="src">'+esc(r.why_src)+'</span></p><p class="note">Per-trade: <b>'+(p.status==="file"?"from the study's own file":"not saved by the study")+"</b>. "+esc(p.note)+'</p><p class="src">'+r.source_files.map(esc).join("<br>")+"</p>";
+if(r.cells)h+='<div class="tw"><table><tr><th>TF</th><th>exit</th><th>n</th><th>mean net R</th><th>SE</th></tr>'+r.cells.map(c=>"<tr><td>"+esc(c.tf)+"</td><td>"+esc(c.exit)+"</td><td>"+c.n+'</td><td class="'+(c.mean_net_r<0?"bad":"good")+'">'+f2(c.mean_net_r)+"</td><td>"+c.se.toFixed(3)+"</td></tr>").join("")+"</table></div>";
+if(r.trades&&r.trades.length&&r.trades[0].c)h+='<div class="tl"><div class="tw"><table id="c9tl"><tr><th>#</th><th>trade</th><th>stop</th><th>best move</th><th>exit</th></tr>'+r.trades.map((t,i)=>'<tr data-i="'+i+'" tabindex="0"><td>'+(i+1)+"</td><td>"+esc(t.name+" "+t.bar)+"</td><td>+"+t.stop_pct.toFixed(2)+" %</td><td>-"+t.best_pct.toFixed(1)+" % ("+t.best_r+"R)</td><td>"+esc(t.exit_note)+"</td></tr>").join("")+'</table></div><div id="c9pane"></div></div>';
+else if(r.trades&&r.trades.length)h+='<div class="tw"><table><tr><th>#</th><th>date</th><th>coin</th><th>net R</th></tr>'+r.trades.map((t,i)=>"<tr><td>"+(i+1)+"</td><td>"+esc(t.date)+"</td><td>"+esc(t.symbol)+'</td><td class="'+(t.r<0?"bad":"good")+'">'+f2(t.r)+"</td></tr>").join("")+"</table></div>";
+return h}
+function c1109Tab(id){const D=C1109;if(!D||!D.rows){$("pane").innerHTML='<div class="gridw"><p class="note">no census file</p></div>';return}
+const rows=D.rows.map(r=>'<tr data-id="'+esc(r.id)+'" tabindex="0" style="cursor:pointer"><td>'+c9chip(r)+"</td><td>"+esc(r.title)+"</td><td>"+r.n+"</td><td>"+(r.mean_net_r==null?"n/a":f2(r.mean_net_r))+'</td><td style="text-align:left">'+esc(r.why)+"</td></tr>").join("");
+$("pane").innerHTML='<div class="gridw"><h2 class="s">11-09 tests, one row each (click a row)</h2><div class="tw"><table id="c9t"><tr><th>Verdict</th><th>Study</th><th>n</th><th>Mean net R</th><th>Why it failed</th></tr>'+rows+'</table></div><div id="c9d"></div><h2 class="s">Check next (at most 5, each from a RESULT Noticed line)</h2><ul>'+D.check_next.map(c=>"<li>"+esc(c.idea)+' <span class="src">'+esc(c.file)+"</span></li>").join("")+"</ul>"+D.notes.map(n=>'<p class="note">'+esc(n)+"</p>").join("")+"</div>";
+const open=i=>{const r=D.rows.find(x=>x.id===i);if(!r)return;$("c9d").innerHTML=c9detail(r);document.querySelectorAll("#c9t tr[data-id]").forEach(x=>x.classList.toggle("sel",x.dataset.id===i));
+const tl=$("c9tl");if(tl){const sel=k=>{document.querySelectorAll("#c9tl tr[data-i]").forEach(x=>x.classList.toggle("sel",+x.dataset.i===k));$("c9pane").innerHTML=c9candle(r.trades[k])};tl.onclick=e=>{const q=e.target.closest("tr[data-i]");if(q)sel(+q.dataset.i)};sel(0)}};
+$("c9t").onclick=e=>{const q=e.target.closest("tr[data-id]");if(q)open(q.dataset.id)};open(id||"malkan-operator-5-points")}
+/*end-c1109*/
 let TAB="fam";
-const TABS=[["fam","Families","&#9776;"],["news","News","&#9993;"]].concat(CONCEPTS.map(c=>["c:"+c[0],c[0],"&#9679;"]),[["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]]);
+const TABS=[["fam","Families","&#9776;"],["news","News","&#9993;"]].concat(CONCEPTS.map(c=>["c:"+c[0],c[0],"&#9679;"]),[["c1109","11-09 census","&#9873;"],["grid","Verdict grid","&#9638;"],["charts","Charts","&#9650;"],["cm","Comments","&#9998;"]]);
 const isList=t=>t==="fam"||t==="news"||t.startsWith("c:");
 function showTab(t,id){halt();TAB=t;document.querySelectorAll("#tabs [role=tab]").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));$("pane").onclick=null;
 if(isList(t)){CONC=t==="fam"?null:t==="news"?"News":t.slice(2);$("pane").innerHTML='<main><nav id="nav" aria-label="Tests"></nav><article id="view" aria-live="polite"></article></main>';buildNav();render(id||location.hash.slice(1));}
-else if(t==="grid")gridTab();else if(t==="charts")chartsTab(id);else commentsTab();}
+else if(t==="c1109")c1109Tab(id);else if(t==="grid")gridTab();else if(t==="charts")chartsTab(id);else commentsTab();}
 $("tabs").innerHTML=TABS.map(([k,l,g])=>'<button role="tab" data-tab="'+k+'" aria-selected="false">'+g+" "+l+"</button>").join("");
 $("tabs").onclick=e=>{const b=e.target.closest("[role=tab]");if(b)showTab(b.dataset.tab)};
 window.onhashchange=()=>{const id=location.hash.slice(1);if(TAB==="charts")chartsTab(id);else showTab(isList(TAB)?TAB:"fam",id)};showTab("fam");
@@ -696,7 +723,15 @@ def load_catalogue(results_dir):
         return json.load(f)
 
 
-def render(tests, catalogue=None):
+def load_census(results_dir):
+    p = os.path.join(results_dir, "_census_1109.json")
+    if not os.path.isfile(p):
+        return None
+    with open(p, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def render(tests, catalogue=None, census=None):
     def blob(o):
         return json.dumps(o, separators=(",", ":"), ensure_ascii=False).replace("</", "<" + chr(92) + "/")
     cat = (catalogue or {}).get("rows", [])
@@ -709,7 +744,7 @@ def render(tests, catalogue=None):
             cat.append({"id": t["id"], "family": t["family"], "title": t["title"], "kind": t.get("kind", "backtest"),
                         "verdict": t["verdict"]["label"], "source": t["source_files"][0], "exported": True, "result_id": t["id"],
                         "status": "FAILED" if t["verdict"].get("tone") == "bad" else "SEE_VERDICT"})
-    return TEMPLATE.replace("/*__DATA__*/null", blob(tests)).replace("/*__CAT__*/[]", blob(cat))
+    return TEMPLATE.replace("/*__DATA__*/null", blob(tests)).replace("/*__CAT__*/[]", blob(cat)).replace("/*__C1109__*/null", blob(census if census is not None else load_census(RESULTS_DIR)))
 
 
 def main(argv=None):
@@ -720,8 +755,11 @@ def main(argv=None):
     tests = collect(a.results)
     if not tests:
         raise ValueError("no result files in %s" % a.results)
-    with open(a.out, "w", encoding="utf-8", newline="\n") as f:
-        f.write(render(tests, load_catalogue(a.results)))
+    import importlib.util        # by path: scripts/dev on sys.path would shadow sim_desk's own desk module
+    spec = importlib.util.spec_from_file_location("mts_artifacts", os.path.join(HERE, "..", "..", "..", "..", "scripts", "dev", "artifacts.py"))
+    af = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(af)  # the Updated stamp (pages follow builds); unchanged content keeps the old stamp
+    af.write_stamped(a.out, render(tests, load_catalogue(a.results), load_census(a.results)))
     return a.out
 
 

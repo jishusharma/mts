@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-06T19:53:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tools/live_aid/test_live_aid.py has a case that the card renders from a sample habib_watch output and carries the UNVERIFIED label; fails on current code.",
+  "est_turns": 22,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "live_aid shows a Habib daily-watch card (candidate imbalance candles at known levels from habib_watch.py output), labelled UNVERIFIED while the caption check is open.",
+  "id": "live-aid-card-show-the-habib-daily-watch",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track (news_weight) into events strip: keep both script tags, renderers,",
+      "ref": "3db35c5f403d",
+      "utc": "2026-11-08T12:36:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-09 ACCEPT (batch review, 1 FIX applied by session-planner-a-1108; was T0-ONLY 11-08) (planner-a-1107b; twin check run, none). Card ref pointed to a worktree path outside the repo; replaced. Touches live_aid files also named by live-aid-balance-acceptance-1105 and live-aid-trendlines-liquidations-1106: one worker takes the cluster. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:56:01Z",
+  "refs": [
+    "MyTradingSys/system/tasks/habib-plan-scoring-not-trades-1104.json"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/build_artifact.py",
+    "MyTradingSys/tools/live_aid/test_build_artifact.py",
+    "MyTradingSys/research/habib_concept_book_2026-11/habib_watch.py (read)"
+  ],
+  "scope_out": [
+    "no trading rule from Habib; display only",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "3db35c5f403d",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "Run habib_watch.py to see output shape",
+    "Write failing render test",
+    "Add the card; label UNVERIFIED (gemini-habib-caption-check-1107 is done: re-check the label against its report)",
+    "Run test_live_aid.py"
+  ],
+  "tests": "new case in test_live_aid.py fails on current code",
+  "title": "Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

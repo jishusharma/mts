@@ -286,7 +286,7 @@ def main(argv=None):
     data = build()
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(render(data), encoding="utf-8", newline="\n")
+    af.write_stamped(out, render(data))
     t = data["totals"]
     print(f"wrote {out} ({len(data['families'])} layers, {t['stuck']} stuck, {t['missing']} missing, {t['waiting']} decisions open)")
     return 0

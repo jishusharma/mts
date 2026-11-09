@@ -1,11 +1,12 @@
 $ErrorActionPreference = 'Stop'
-$AgentVersion = '0.7.26'
+$AgentVersion = '0.7.34'
 $AgentStart = Get-Date
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $config = Get-Content -Raw -LiteralPath (Join-Path $root 'config.json') | ConvertFrom-Json
 . (Join-Path $root 'checks.ps1')
 . (Join-Path $root 'audit.ps1')
 . (Join-Path $root 'concurrency.ps1')
+. (Join-Path $root 'lease.ps1')
 
 foreach ($o in $config.allowed_origins) {
     $ol = ([string]$o).ToLower()
@@ -25,15 +26,15 @@ $script:PwshPath = ''
 try { $pc = Get-Command pwsh.exe -ErrorAction SilentlyContinue; if ($pc) { $script:PwshPath = $pc.Source } } catch {}
 
 function Send-Resp {
-    param($stream, [int]$code, [string]$reason, [string]$body, [string]$corsOrigin)
+    param($stream, [int]$code, [string]$reason, [string]$body, [string]$corsOrigin, [string]$ctype = 'application/json')
     $bytes = [Text.Encoding]::UTF8.GetBytes($body)
     $extra = ''
     if ($corsOrigin) {
-        $extra = "Access-Control-Allow-Origin: $corsOrigin`r`nAccess-Control-Allow-Methods: GET, POST, OPTIONS`r`nAccess-Control-Allow-Headers: Content-Type`r`nVary: Origin`r`n"
+        $extra = "Access-Control-Allow-Origin: $corsOrigin`r`nAccess-Control-Allow-Methods: GET, POST, OPTIONS`r`nAccess-Control-Allow-Headers: Content-Type, X-AIBridge-Token`r`nVary: Origin`r`n"
     } else {
         $extra = "Vary: Origin`r`n"
     }
-    $hdr = "HTTP/1.1 $code $reason`r`nContent-Type: application/json`r`nCache-Control: no-store`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n$extra`r`n"
+    $hdr = "HTTP/1.1 $code $reason`r`nContent-Type: $ctype`r`nCache-Control: no-store`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n$extra`r`n"
     $hb = [Text.Encoding]::ASCII.GetBytes($hdr)
     $stream.Write($hb, 0, $hb.Length)
     if ($bytes.Length -gt 0) { $stream.Write($bytes, 0, $bytes.Length) }
@@ -193,6 +194,22 @@ function Complete-Job {
         $hash = ''
         if ($result.out) { $hash = Get-Sha12 $result.out }
         $audit = $j.audit
+        if ($j.seed) {
+            # GET /seed: the dsa.py output as text/plain, or a plain failure; the token never reaches the audit row
+            $j.sw.Stop()
+            $audit.exit = $result.exit; $audit.out_bytes = $result.out_bytes; $audit.timed_out = $result.timed_out; $audit.ms = $j.sw.ElapsedMilliseconds
+            if ($result.exit -eq 0 -and $result.out) {
+                $audit.result = 'ok'; $audit.reason = 'ok'; $audit.out_hash = (Get-Sha12 $result.out)
+                Write-Audit $audit
+                Send-Resp $j.stream 200 'OK' $result.out $j.cors 'text/plain; charset=utf-8'
+            } else {
+                $audit.result = 'error'; $audit.reason = $(if ($result.timed_out) { 'seed_timeout' } else { 'seed_failed' })
+                Write-Audit $audit
+                $why = $(if ($result.timed_out) { 'timeout after 10 s' } else { ('dsa.py exit ' + $result.exit + ': ' + ($result.err -replace '[\r\n]+', ' ')) })
+                Send-Resp $j.stream 500 'Error' (@{ error = 'seed_failed'; reason = $why } | ConvertTo-Json -Compress) $j.cors
+            }
+            return
+        }
         $audit.result = 'ok'; $audit.reason = 'ok'
         $audit.exit = $result.exit; $audit.out_bytes = $result.out_bytes; $audit.out_truncated = $result.out_truncated; $audit.timed_out = $result.timed_out; $audit.out_hash = $hash; $audit.ms = $j.sw.ElapsedMilliseconds
         Write-Audit $audit
@@ -261,7 +278,7 @@ function Handle-Client {
         $method = if ($parts.Count -ge 1) { $parts[0] } else { '' }
         $path   = if ($parts.Count -ge 2) { $parts[1] } else { '' }
 
-        if ($method -eq 'OPTIONS' -and ($path -eq '/run' -or $path -eq '/ping')) {
+        if ($method -eq 'OPTIONS' -and ($path -eq '/run' -or $path -eq '/ping' -or $path -eq '/seed')) {
             $audit.result = 'refused'; $audit.reason = 'preflight'
             Write-Audit $audit
             Send-Resp $stream 204 'No Content' '' $corsOrigin
@@ -279,6 +296,49 @@ function Handle-Client {
             }
             Send-Resp $stream 200 'OK' ($info | ConvertTo-Json -Compress) $corsOrigin
             $client.Close(); return
+        }
+
+        # 0.7.30: /seed (0.7.31: POST, so the browser sends an Origin header like /run; GET carried none and was refused bad_origin). The extension swaps the typed phrase "Start DSA bridge" for this text (spec SPEC_START_DSA_TRIGGER.md).
+        # Same origin and token checks as /run (token in the X-AIBridge-Token header); one fixed command, nothing from the request is run.
+        if ($method -eq 'POST' -and $path -eq '/seed') {
+            if ($config.allowed_origins -notcontains $reqOrigin) {
+                $audit.cmd = 'SEED'; $audit.result = 'refused'; $audit.reason = 'bad_origin'
+                Write-Audit $audit
+                Send-Resp $stream 403 'Forbidden' '{"error":"bad_origin"}' $corsOrigin
+                $client.Close(); return
+            }
+            if (-not $headers['x-aibridge-token'] -or $headers['x-aibridge-token'] -ne $config.token) {
+                $audit.cmd = 'SEED'; $audit.result = 'refused'; $audit.reason = 'bad_token'
+                Write-Audit $audit
+                Send-Resp $stream 403 'Forbidden' '{"error":"bad_token"}' $corsOrigin
+                $client.Close(); return
+            }
+            $seedRoot = if ($config.repo_root) { [string]$config.repo_root } else { 'C:\Users\E-ngineers\IdeaProjects\BinanceDataFeed' }
+            # 0.7.32: the checkout at repo_root may be stale (no `start` subcommand in dsa.py). seed_root in config.json wins; else when
+            # dsa.py there lacks --print, run from the newest sibling worktree of that repo whose dsa.py has it. Read-only: git worktree list.
+            if ($config.seed_root) { $seedRoot = [string]$config.seed_root }
+            else {
+                $dsaHas = { param($r) $p = Join-Path $r 'scripts\dev\dsa.py'; (Test-Path -LiteralPath $p) -and (Select-String -LiteralPath $p -SimpleMatch -Pattern '--print' -Quiet) }
+                if (-not (& $dsaHas $seedRoot)) {
+                    try {
+                        $wts = @(& git -C $seedRoot worktree list --porcelain 2>$null | Where-Object { $_ -like 'worktree *' } | ForEach-Object { $_.Substring(9) })
+                        $best = $wts | Where-Object { & $dsaHas $_ } | Sort-Object { (Get-Item -LiteralPath (Join-Path $_ 'scripts\dev\dsa.py')).LastWriteTime } -Descending | Select-Object -First 1
+                        if ($best) { $seedRoot = [string]$best }
+                    } catch { }
+                }
+            }
+            $seedPy = if ($config.seed_python) { [string]$config.seed_python } else { 'python' }
+            $seedCmd = "& '" + ($seedPy -replace "'", "''") + "' scripts/dev/dsa.py start --print"
+            $audit.cmd = 'SEED dsa.py start --print'; $audit.cwd = $seedRoot; $audit.timeout_s = 10
+            $polS = Get-Content -Raw -LiteralPath (Join-Path $root 'policy.json') | ConvertFrom-Json
+            $sw = [Diagnostics.Stopwatch]::StartNew()
+            $h = Start-Cmd -Cmd $seedCmd -Cwd $seedRoot -MaxBytes ([int]$polS.max_output_bytes) -pol $polS -Shell 'powershell'
+            [void]$script:Jobs.Add(@{
+                client = $client; stream = $stream; cors = $corsOrigin; h = $h; audit = $audit; meta = @{}
+                tmo = 10; deadline = (Get-Date).AddSeconds(10); sw = $sw; timedOut = $false; shell = 'powershell'; taskfile = ''; seed = $true
+            })
+            $started = $true
+            return
         }
 
         $len = 0
@@ -332,6 +392,23 @@ function Handle-Client {
         # already checked; this only writes one audit row and never runs anything.
         if ($req.event) {
             $ev = ([string]$req.event) -replace '[\r\n]+', ' '
+            # 0.7.33: account lease over the same event path (token and origin already checked). LEASE <label> = arm, LEASE_BEAT = renew
+            # (not audited), LEASE_RELEASE = hands-free went off. The lease folder is config lease_dir, else run\leases beside src.
+            if ($ev -match '^(LEASE|LEASE_BEAT|LEASE_RELEASE) (\S+)') {
+                $lkind = $Matches[1]; $lacct = $Matches[2]
+                $ldir = if ($config.lease_dir) { [string]$config.lease_dir } else { Join-Path (Split-Path -Parent $root) 'run\leases' }
+                $lact = if ($lkind -eq 'LEASE_RELEASE') { 'release' } elseif ($lkind -eq 'LEASE_BEAT') { 'beat' } else { 'acquire' }
+                $lr = Invoke-AccountLease -Account $lacct -Dir $ldir -Me $env:COMPUTERNAME -Action $lact
+                $lreply = if ($lr.ok) { 'ok' } elseif ($lr.reason -eq 'account_in_use') { 'account_in_use' } else { 'refused' }
+                if ($lact -ne 'beat' -or -not $lr.ok) {
+                    $audit.cmd = 'EXT-EVENT lease ' + $lact + ' ' + $lacct + ' -> ' + $lr.reason + $(if ($lr.holder) { ' holder=' + $lr.holder } else { '' })
+                    $audit.result = $(if ($lr.ok) { 'event' } else { 'refused' }); $audit.reason = $(if ($lr.ok) { 'ext_event' } else { [string]$lr.reason })
+                    Write-Audit $audit
+                }
+                $lbody = [ordered]@{ ok = $true; event = $true; lease = $lreply; holder = [string]$lr.holder; host = $env:COMPUTERNAME } | ConvertTo-Json -Compress
+                Send-Resp $stream 200 'OK' $lbody $corsOrigin
+                $client.Close(); return
+            }
             if ($ev.Length -gt 400) { $ev = $ev.Substring(0, 400) }
             $audit.cmd = 'EXT-EVENT ' + $ev; $audit.result = 'event'; $audit.reason = 'ext_event'
             Write-Audit $audit

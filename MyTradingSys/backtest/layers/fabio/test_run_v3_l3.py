@@ -112,6 +112,26 @@ def test_model_b_in_trade_fill_is_managed_not_scored_zero(monkeypatch):
     assert abs(t["net_r"] - 19 / 7) < 1e-9
 
 
+def test_model_a_confirm_in_trade_fill_is_managed_not_scored_zero(monkeypatch):
+    # Model A confirm mode IN_TRADE must pass touch_lvn (the LVN* limit level) to model_a_trade rather than returning None ("unmanaged").
+    from MyTradingSys.backtest.layers.fabio.v3 import engine, models
+    rows = [(100.0, 105.0, 100.0, 104.5), (104.5, 104.6, 101.8, 103.0), (103.0, 108.0, 102.9, 107.5)]
+    bars = [{"t": k * 60000, "o": o, "h": h, "l": lo, "c": c, "buy_vol": 0.0, "sell_vol": 0.0, "delta": 0.0,
+             "b99_buy_vol": 0.0, "b99_sell_vol": 0.0, "b999_buy_vol": 0.0, "b999_sell_vol": 0.0, "thr_days": 30, "fp": ""}
+            for k, (o, h, lo, c) in enumerate(rows)]
+    monkeypatch.setattr(models, "breakout", lambda b, idx, N, kb, p, m, t, bs: 1 if idx == 0 else 0)
+    monkeypatch.setattr(models, "balance", lambda b, idx, N, kb, bs: {"H": 102.5, "L": 98.0, "R": 4.5, "poc": 100.0})
+    monkeypatch.setattr(models, "select_lvn", lambda lvns, s, X, O, c: 102.8)
+    cfg = dict(N=1, p=0.10, f=0.003, entry_mode="confirm", mgmt="dist", be_k=1.0, slip_bps=0.0)
+    ctrl = [0, 1, 0]
+    absb = [0, 0, 0]
+    st = engine._scan("A", bars, 0, 2, cfg, {"k_bal": 0.8, "bin_size": 50.0, "tier": "99", "gate": None, "absb": absb, "ctrl": ctrl})
+    assert st["state"] == "IN_TRADE" and st["touch_lvn"] == 102.8
+    ctx = {"s8_kw": {}, "ctrl": ctrl, "absb": absb}
+    t = engine._manage("A", st, bars, 0, 2, cfg, ctx)
+    assert t is not None and t["entry"] == 103.0 and t["D"] == 0.6
+
+
 def test_is_only_never_touches_oos_windows(monkeypatch, tmp_path):
     # Hand numbers: 2 IS windows; every cell returns per-window R [1.0, 0.5] -> mean 0.75 per model; ties pick the first cell of each model.
     d_is, d_oos = r.IS_RANGE[0], r.OOS_RANGE[0]

@@ -61,3 +61,12 @@ Every refusal and every result names its kind (`read|write|program|task`). The R
 - `ERROR extension_link` : the extension did not answer (disabled / reloaded; F5 the page).
 - `ERROR agent_unreachable` : the extension is alive, nothing listens on the port (start: `scripts\start-agent.ps1`, watchdog: add `-Watch`).
 - `GET /ping` (and the control box line on load) shows agent version, host, PowerShell version, running commands.
+
+0.7.27 (2026-11-06): a block runs only when its reply is complete (DeepSeek's action bar under the message); a block in a user message runs as before. Cause: a stream stall past the 2 s quiet window ran a half-written inline plan (73 chars) and the element lock then never ran the finished block; the result post timed out for the same reason.
+
+0.7.28 (2026-11-07): the control box is one line (tick, runs/cap, link dot, version) and can be dragged; the status, version and agent lines open only on a problem (ctlDetail) or a click on the version; the status text is the line's tooltip. Operator ask 2026-11-07 (the box covered most of the screen).
+0.7.30 (2026-11-07): typing exactly `Start DSA bridge` (case-insensitive, one trailing . or !) as a whole message boots DSA with no terminal and no paste. The extension catches that send, asks the agent for POST /seed (same origin and token check as /run, token in the X-AIBridge-Token header, runs `python scripts/dev/dsa.py start --print` in the repo root, text/plain, 10 s timeout, one audit row), swaps the composer text for the seed and sends it. Agent down: nothing is sent and the panel shows `agent down: run aibridge_install.py --restart-agent`. Operator order 2026-11-07 (card aibridge-start-dsa-trigger-1107).
+
+0.7.31 (2026-11-07): the seed request is POST /seed, not GET. A service-worker GET carries no Origin header, so the agent refused every press with bad_origin (audit.jsonl, 5 refusals); a POST carries it, like /run. The agent now answers POST /seed (same origin and token checks); GET /seed is refused. Card aibridge-seed-bad-origin-1107.
+
+0.7.32 (2026-11-07): /seed no longer depends on repo_root being current. config.json `seed_root` (optional) names the tree to run `dsa.py start --print` in; without it, if dsa.py at repo_root lacks `--print` (stale checkout), the agent runs from the newest sibling git worktree whose dsa.py has it (`git worktree list`, read-only). Found: NB main checkout 420 commits behind. Card aibridge-seed-bad-origin-1107.

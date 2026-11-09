@@ -34,9 +34,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "cbp_run: every run refreshes prices and rebuilds the v5 CBP Analyst Desk board",
-      "ref": "891a04e9a6af",
-      "utc": "2026-11-04T13:52:10Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     },
     {
       "auto": true,
@@ -49,11 +49,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "dash-designer 10-30: only 1 of 10 enabled analysts fresh; Rekt + Qriptal no row in 5-day store; Benjamin, Bob, Jala, CCU never fetched (cbp_run.py ingests profile=='actionable' only); last ingestion 2026-10-28 10:53Z. PLANNER 2026-11-02: 2bb01c500 fixed the windows to 05:00/20:00 and first-week triggers in code; the host install/verify and the 2-windows-on-one-date proof remain.\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts)",
+  "note": "dash-designer 10-30: only 1 of 10 enabled analysts fresh; Rekt + Qriptal no row in 5-day store; Benjamin, Bob, Jala, CCU never fetched (cbp_run.py ingests profile=='actionable' only); last ingestion 2026-10-28 10:53Z. PLANNER 2026-11-02: 2bb01c500 fixed the windows to 05:00/20:00 and first-week triggers in code; the host install/verify and the 2-windows-on-one-date proof remain.\nREVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts) | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: CBP ingestion hygiene; S4 exit (one real row end to end) already met; only the news events wire needs CBP",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:46:03Z",
+  "refreshed": "2026-11-08T18:20:35Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -66,7 +66,7 @@
     "the CBP gates and quote rules",
     "any order or account access"
   ],
-  "scope_sha": "891a04e9a6af",
+  "scope_sha": "05d8d613782f",
   "size": "S",
   "sources": [
     "CBP_AUDIT_2026-10-28.md:18-23"

@@ -15,16 +15,24 @@
   "goal": "List every Fabervaale ENG upload (and guest videos with Fabio/Cimi), fetch captions for ones not in raw_transcripts_canonical, and extract every CVD, delta, absorption and exhaustion passage verbatim with video id + timestamp; flag BTC/crypto mentions.",
   "id": "fabervaale-cvd-sweep",
   "lane": "DSA-NUC",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cvd U7/U8: Fabio CVD coil and absorption measured on BTC DEV",
+      "ref": "98223ee41a84",
+      "utc": "2026-11-05T18:11:38Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-10-29T21:48:38Z",
+  "refreshed": "2026-11-07T17:18:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -32,10 +40,10 @@
     "raw_transcripts_canonical/"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "98223ee41a84",
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "ready",
   "steps": [
     "Queue: python scripts/dev/gemini_queue.py run fabervaale-cvd-sweep:low (NUC)",
     "yt-dlp --flat-playlist https://www.youtube.com/@FabervaaleENG/videos for the list",

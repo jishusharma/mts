@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-06T19:15:46Z",
+  "commands": [],
+  "created": "2026-11-06T18:18:48Z",
+  "depends_on": [],
+  "done_when": "spec test covers inside-window, after-window-no-new-low and new-low cases (fails on 589c392a code); the flag line shows in the live-aid view",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "RULE.md row 6 confirms only INSIDE 2026-10-04..11-16. The Bible's other reading (July 57,800 was the bottom) confirms AFTER the window with no new low, so the flag would never fire for it. Add: after the window, no low under 57,800 plus rows 2-3 also confirms. Then show the flag line in the live aid, not only market_guide.",
+  "id": "cycle-bottom-rule-window-gap-and-live-line",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "RULE.md row 6 confirms after the window with no low under 57,800; flag line on the live ai",
+      "ref": "c1dc044b0",
+      "utc": "2026-11-06T19:15:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "cycle-bottom-long-testnet-trade-1106",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/btc_cycles_2026-11/RULE.md",
+    "MyTradingSys/research/mts_bible/BIBLE.md"
+  ],
+  "result": "RULE.md row 6 confirms after the window with no low under 57,800; flag line on the live aid; trunk 5b90b2eed CI green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/btc_cycles_2026-11/",
+    "MyTradingSys/tools/live_aid/"
+  ],
+  "scope_out": [],
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "RULE.md row 6: after-window confirmation with no completed daily low under 57,800",
+    "cycle_flag.js + build_cycle_flag.py: flag line on the live aid",
+    "spec test covers inside-window, after-window-no-new-low, new-low"
+  ],
+  "taken": "2026-11-06T19:15:46Z",
+  "tests": "MyTradingSys/tools/live_aid/test_spec_cycle_flag.py",
+  "title": "cycle_bottom_flag: confirm also after the clock window (July-bottom case) and show the line in the live aid",
+  "weight": "",
+  "worker": "agent"
+}

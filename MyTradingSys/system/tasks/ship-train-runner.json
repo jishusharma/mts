@@ -16,19 +16,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "wiring audit builder: restore full tree after an index slip; lint-clean quote parsing",
-      "ref": "89619dbe5f66",
-      "utc": "2026-10-28T22:03:30Z"
+      "line": "Revert \"Reapply \"ci: shard rerun once + docs-integrity lane (ship train 1/5, reland)\"\"",
+      "ref": "6340c62a1459",
+      "utc": "2026-11-06T11:33:45Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "after ship-train-flake-floor",
+  "note": "after ship-train-flake-floor | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: ship-train machinery: frozen (D7 frozen list, week-plan move 5); the CI-red parity card is the ship-gate lever on the path REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:47:50Z",
+  "refreshed": "2026-11-08T18:21:04Z",
   "refs": [
     "MyTradingSys/system/SHIP_TRAIN.md"
   ],
@@ -40,7 +40,7 @@
   "scope_out": [
     "live tree; auto_deploy"
   ],
-  "scope_sha": "89619dbe5f66",
+  "scope_sha": "6340c62a1459",
   "size": "M",
   "sources": [],
   "state": "ready",

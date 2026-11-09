@@ -49,3 +49,12 @@ Stop rule for R6 (FABLE_RUN.md): weekly Fable +4 pts, or 5-hour >= 85 %, or 45 t
 | R6 start | 2026-10-28 ~09:15Z | 15 % (reset 10:40Z) | 6 % (reset 2026-11-03 20:00Z) | 3 % | 77,233 of 1,000,000 (8 %) | before any read |
 | R6 mid | 2026-10-28 ~09:28Z | 22 % | 7 % | 4 % | 221,392 (22 %) | counts, gates, PRE_REG.md and cards written; reviewer Agent running |
 | R6 end | 2026-10-28 ~09:32Z | 25 % | 8 % | 5 % | 241,320 (24 %) | shipped; delta: Fable +2, all-models +2, 5-hour +10; guard not hit |
+
+## R7 (forward test design; login C jishusharma1985, JIS-DESKTOP, Fable 5.1, started by Lead C d-krown-4h-testnet-forward-start-1109)
+
+Stop rule for R7 (FABLE_RUN_R7.md): weekly Fable +4 pts, or 5-hour >= 85 %, or 45 tool turns, or context >= 60 %.
+
+| Row | When (UTC) | 5-hour | Weekly all models | Weekly Fable | Context tokens | Note |
+|---|---|---|---|---|---|---|
+| R7 start | 2026-11-08 ~18:57Z | 18 % (reset 20:39Z) | 79 % (reset 2026-11-10 20:00Z) | 80 % | 127,045 of 1,000,000 (13 %) | after boot reads, before writing |
+| R7 end | 2026-11-08 ~19:08Z | 26 % | 80 % | 82 % | 199,686 of 1,000,000 (20 %) | FORWARD_PREREG.md + 4 cards ready (Lab_Guy Haiku review, must-fixes applied); delta: Fable +2, all-models +1, 5-hour +8; guard not hit |

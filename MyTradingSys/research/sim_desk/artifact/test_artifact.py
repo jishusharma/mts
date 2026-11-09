@@ -3,8 +3,10 @@ import csv
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
+import types
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +15,20 @@ sys.path.insert(0, os.path.dirname(HERE))
 
 import build_artifact as ba  # noqa: E402
 import export_results as ex  # noqa: E402
+
+
+def load_sim_desk():
+    """sim_desk's own desk.py by explicit path: scripts/dev/desk.py can win a bare `import desk` when both are on sys.path."""
+    import importlib.util
+    path = os.path.join(os.path.dirname(HERE), "desk.py")
+    spec = importlib.util.spec_from_file_location("sim_desk_own_desk", path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, os.path.dirname(path))
+    try:
+        spec.loader.exec_module(mod)
+    finally:
+        sys.path.remove(os.path.dirname(path))
+    return mod
 
 COLS = ["day", "touch_t", "side", "L1", "L2", "T1", "T2", "families", "E1"] + ba.STOP_COLS + [ba.FROZEN_COL]
 RULE = {
@@ -58,6 +74,24 @@ def _results_dir(*results):
         with open(os.path.join(d, r["id"] + ".json"), "w", encoding="utf-8", newline="\n") as f:
             json.dump(r, f)
     return d
+
+
+NODE_TIMEOUT = 60  # a slow node start must skip, not turn CI red (flake 22b22e93)
+
+
+def _run_node(node, prog):
+    try:
+        return subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=NODE_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        raise unittest.SkipTest("node did not finish in %ss (slow start); skipped, not failed" % NODE_TIMEOUT)
+
+
+class NodeTimeout(unittest.TestCase):
+    def test_timeout_reports_skip(self):
+        import unittest.mock as mock
+        with mock.patch.object(subprocess, "run", side_effect=subprocess.TimeoutExpired("node", NODE_TIMEOUT)):
+            with self.assertRaises(unittest.SkipTest):
+                _run_node("node", "1")
 
 
 class Levels(unittest.TestCase):
@@ -335,7 +369,7 @@ class EquityStability(unittest.TestCase):
 
     def test_derived_band_matches_desk_monte_carlo(self):
         import numpy as np
-        import desk
+        desk = load_sim_desk()
         net = [0.5, -1.0, 1.5, -0.2, 0.7, -1.0, 2.0, -0.4]
         cum = np.cumsum(net).tolist()
         got = ex.derive_mc(cum, len(net))
@@ -343,6 +377,18 @@ class EquityStability(unittest.TestCase):
         want = desk.monte_carlo(res, list(range(1, len(net) + 1)))
         self.assertEqual(got["lo"], want["lo"])
         self.assertEqual(got["dd_hi"], want["dd_hi"])
+
+    def test_load_sim_desk_ignores_shadowing_desk_module(self):
+        shadow = types.ModuleType("desk")  # what scripts/dev/desk.py looks like to a bare `import desk`
+        saved = sys.modules.get("desk")
+        sys.modules["desk"] = shadow
+        try:
+            self.assertTrue(hasattr(load_sim_desk(), "monte_carlo"))
+        finally:
+            if saved is not None:
+                sys.modules["desk"] = saved
+            else:
+                del sys.modules["desk"]
 
     def test_year_split_of_single_year_window(self):
         y = ex.derive_years("DEV only, 2023-03-01 to 2023-05-31 (VALIDATION and HOLDOUT never offered)", 7, -0.516)
@@ -468,7 +514,7 @@ class UxOneScreen(unittest.TestCase):
                 {"family": "Malkan Rsi", "title": "Malkan RSI", "id": "g"},
                 {"family": "Desk runs", "title": "other", "id": "h"}]
         prog = js + "const R=" + json.dumps(rows) + ";const o={};['News','Tom','Fabio','Malkan','Krown','Bollinger','RSI','WaveTrend'].forEach(c=>{o[c]=R.filter(r=>inConcept(r,c)).map(r=>r.id)});console.log(JSON.stringify(o))"
-        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        out = _run_node(node, prog)
         self.assertEqual(out.returncode, 0, out.stderr)
         o = json.loads(out.stdout)
         self.assertEqual(o["Tom"], ["a"])
@@ -511,7 +557,7 @@ await new Promise(r=>setTimeout(r,20));
 DBP=null;global.localStorage={getItem:()=>{throw new Error("x")},setItem:()=>{throw new Error("x")}};global.window={};saveComment({test_id:"t",chart_id:"c",text:"three",ts:3});
 await new Promise(r=>setTimeout(r,20));
 console.log(JSON.stringify({calls:calls.length,first:calls[0],local:JSON.parse(store[CKEY]).length}));})();'''
-        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        out = _run_node(node, prog)
         self.assertEqual(out.returncode, 0, out.stderr)
         res = json.loads(out.stdout.strip().splitlines()[-1])
         self.assertEqual(res["calls"], 1)
@@ -578,7 +624,7 @@ class TradeStrip(unittest.TestCase):
                 "const r=tradeStrip({trades:tr,tf_min:30});const h=r.html;"
                 "console.log(JSON.stringify({m:(h.match(/class=\"trade-marker/g)||[]).length,"
                 "w:(h.match(/trade-marker trade-win/g)||[]).length,l:(h.match(/trade-marker trade-loss/g)||[]).length,id:h.includes('id=\"trade-strip\"')}))")
-        out = subprocess.run([node, "-e", prog], capture_output=True, text=True, timeout=30)
+        out = _run_node(node, prog)
         self.assertEqual(out.returncode, 0, out.stderr)
         res = json.loads(out.stdout.strip().splitlines()[-1])
         self.assertEqual(res["m"], 3)

@@ -1770,7 +1770,7 @@ class FastShipTest(unittest.TestCase):
         self.assertNotIn("--fast", self.run_gate_cmd(["scripts/dev/example_tool.py"], {"SYNC_NO_FAST": "1"}))
 
     def test_fix_ci_flag_keeps_the_fast_gate(self):
-        with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
+        with mock.patch.object(sync, "ship"), mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "stage_layers"), \
                 mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "check_route_tags"), \
                 mock.patch.dict(os.environ, {}, clear=False):   # the real host scan took 38-70 s here
             os.environ.pop("SYNC_FULL_GATE", None)
@@ -1992,7 +1992,7 @@ class OwnCiWaitTest(unittest.TestCase):
 
     def test_cli_ship_waits_for_its_own_sha_and_exits_3_on_red(self):
         for state, rc in (("red", sync.CI_RED_EXIT), ("green", 0), ("none", 0), ("unknown", 0), ("timeout", 0)):
-            with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+            with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "stage_layers"), mock.patch.object(sync, "run_host_health"), \
                     mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
                     mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
                     mock.patch.object(sync, "wait_own_ci", return_value=state) as mock_wait:
@@ -2027,7 +2027,7 @@ class OwnCiWaitTest(unittest.TestCase):
             self.assertEqual(sync.read_last_pushed(td), self.pushed)
 
     def test_no_ci_wait_flag_env_and_a_ship_that_pushed_nothing_skip_the_wait(self):
-        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "stage_layers"), mock.patch.object(sync, "run_host_health"), \
                 mock.patch.object(sync, "ship", return_value=self.pushed) as mock_ship, \
                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
             self.assertEqual(sync.main(["ship", "--no-ci-wait"]), 0)
@@ -2035,7 +2035,7 @@ class OwnCiWaitTest(unittest.TestCase):
             with mock.patch.dict(os.environ, {"SYNC_NO_CI_WAIT": "1"}):
                 self.assertEqual(sync.main(["ship"]), 0)
             mock_wait.assert_not_called()
-        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"), \
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "stage_layers"), mock.patch.object(sync, "run_host_health"), \
                 mock.patch.object(sync, "ship", return_value=None), \
                 mock.patch.object(sync, "wait_own_ci", return_value="red") as mock_wait:
             self.assertEqual(sync.main(["ship"]), 0)       # nothing shipped: nobody's sha to wait for
@@ -2046,7 +2046,7 @@ class OwnCiWaitTest(unittest.TestCase):
         code = sync.Pushed("abcdef1234", ["scripts/dev/sync.py"])
         cases = ((docs, "--fix-ci", 1), (docs, None, 0), (code, "--fix-ci", 0))
         for pushed, flag, calls in cases:
-            with mock.patch.dict(os.environ, {}, clear=False), mock.patch.object(sync, "toplevel", return_value=Path(".")), \
+            with mock.patch.dict(os.environ, {}, clear=False), mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "stage_layers"), \
                     mock.patch.object(sync, "run_host_health"), mock.patch.object(sync, "ship", return_value=pushed), \
                     mock.patch.object(sync, "write_last_pushed"), mock.patch.object(sync, "tidy_after_ship"), \
                     mock.patch.object(sync, "ci_path_filter", return_value=["scripts/**"]), \
@@ -2114,6 +2114,63 @@ class ShipResultFlagTest(unittest.TestCase):
             self.assertEqual(sync.commit_pending(td, "x"), 0)       # clean tree: nothing to commit
             with self.assertRaises(sync.SyncError):
                 sync.commit_pending(td, "  ")
+
+    def test_commit_pending_never_stages_halt_or_runtime_data(self):
+        """ship-refuse-main-checkout-sweep-1109: ebdf4dc6b swept another session's HALT, AUTO_PAUSE and runtime CSVs into a ship."""
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            rt = Path(td) / "MyTradingSys" / "runtime"
+            rt.mkdir(parents=True)
+            (rt / "fills.csv").write_text("x", encoding="utf-8")
+            (rt / "NOTES.md").write_text("doc", encoding="utf-8")
+            ex = Path(td) / "execution"
+            ex.mkdir()
+            (ex / "HALT").write_text("", encoding="utf-8")
+            (ex / "AUTO_PAUSE").write_text("", encoding="utf-8")
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(sync.commit_pending(td, "mine only"), 2)
+            shipped = set(g("show", "--name-only", "--format=", "HEAD").split())
+            self.assertEqual(shipped, {"a.txt", "MyTradingSys/runtime/NOTES.md"})
+            self.assertIn("HALT", out.getvalue())
+
+    def test_commit_pending_leaves_reverted_untracked_file_behind(self):
+        """ship-result-sweeps-untracked-1109: 954009888 swept 2 files of a reverted census (deleted on trunk, back on disk) into a ship."""
+        with tempfile.TemporaryDirectory() as td:
+            g = self.make_repo(td)
+            (Path(td) / "a.txt").write_text("two", encoding="utf-8")          # tracked change at the root
+            (Path(td) / "b.txt").write_text("new", encoding="utf-8")          # new file next to it: ships
+            stray = Path(td) / "other" / "stray.py"
+            stray.parent.mkdir()
+            stray.write_text("x", encoding="utf-8")
+            g("add", "other/stray.py"); g("commit", "-q", "-m", "land")
+            g("rm", "-q", "other/stray.py"); g("commit", "-q", "-m", "revert")
+            g("update-ref", f"refs/remotes/origin/{sync.TRUNK}", "HEAD")
+            stray.parent.mkdir(exist_ok=True)
+            stray.write_text("x", encoding="utf-8")                           # a reverted file reappears: left behind
+            staged = Path(td) / "lab" / "keep.md"
+            staged.parent.mkdir()
+            staged.write_text("k", encoding="utf-8")
+            g("add", "lab/keep.md")                                           # staged by hand: ships
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                sync.commit_pending(td, "mine only")
+            shipped = set(g("show", "--name-only", "--format=", "HEAD").split())
+            self.assertEqual(shipped, {"a.txt", "b.txt", "lab/keep.md"})
+            self.assertIn("other/stray.py", out.getvalue())
+
+    def test_refuse_shared_main_checkout(self):
+        """A main checkout with other worktrees is a shared hub: ship refuses before any commit; a lone clone (cloud) ships."""
+        with tempfile.TemporaryDirectory() as td:
+            main = Path(td) / "main"
+            main.mkdir()
+            g = self.make_repo(str(main))
+            sync.refuse_shared_main(main)          # lone clone: allowed
+            g("worktree", "add", "-q", "--detach", str(Path(td) / "wt"))
+            with self.assertRaises(sync.SyncError):
+                sync.refuse_shared_main(main)
+            sync.refuse_shared_main(Path(td) / "wt")   # a linked worktree is yours: allowed
 
     def test_stage_layers_commits_a_modified_layers_md_only(self):
         with tempfile.TemporaryDirectory() as td:
@@ -2237,12 +2294,31 @@ class ShipResultFlagTest(unittest.TestCase):
                 self.assertIn("staged.txt", err.getvalue())
 
     def test_cli_result_commits_before_ship_and_m_without_result_is_refused(self):
-        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
+        with mock.patch.object(sync, "toplevel", return_value=Path(".")), mock.patch.object(sync, "stage_layers"), mock.patch.object(sync, "run_host_health"),                 mock.patch.object(sync, "ship", return_value=None) as mock_ship,                 mock.patch.object(sync, "commit_pending", return_value=1) as mock_commit:
             self.assertEqual(sync.main(["ship", "--result", "it works", "-m", "subj"]), 0)
             mock_commit.assert_called_once_with(Path("."), "it works", "subj")
             mock_ship.assert_called_once_with(Path("."), release_slug=None, after_slug=None)
             with contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(sync.main(["ship", "-m", "subj"]), 1)
+
+
+class RealTreeGuardTest(unittest.TestCase):
+    """CI run 41703965492 step 3k.4: a test ran sync.main(["ship"]) with toplevel mocked to Path(".") (the real checkout) and
+    stage_layers unmocked; its `git update-index --refresh` / `git add LAYERS.md` took the real .git/index.lock while another
+    shard's git held it ("index.lock: File exists"), so test_fix_ci_flag_keeps_the_fast_gate failed once. Every such test
+    must also mock stage_layers, which writes (and can amend) the tree it is given."""
+    def test_every_ship_cli_test_on_the_real_checkout_mocks_stage_layers(self):
+        lines = Path(__file__).read_text(encoding="utf-8").splitlines()
+        bad = [i + 1 for i, line in enumerate(lines)
+               if 'toplevel", return_value=Path(".")' in line and '"stage_layers"' not in line and "lines[" not in line]
+        self.assertEqual(bad, [], "mock sync.stage_layers next to toplevel=Path('.') on these lines")
+
+    def test_stage_layers_touches_only_the_repo_it_is_given(self):
+        seen = []
+        with mock.patch.object(sync, "git", side_effect=lambda repo, *a, **k: seen.append(Path(repo)) or mock.Mock(returncode=1, stdout="")):
+            sync.stage_layers(Path("some-temp-repo"))
+        self.assertTrue(seen)
+        self.assertEqual(set(seen), {Path("some-temp-repo")})
 
 
 class PARALLEL_MainCheckoutRuleTest(unittest.TestCase):

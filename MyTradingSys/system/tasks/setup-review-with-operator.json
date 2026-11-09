@@ -23,16 +23,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Malkan window: relabel 12/18 as OURS, file the fee-net comparison",
-      "ref": "2cb2c9718440",
-      "utc": "2026-11-04T21:48:45Z"
+      "line": "decision: d-krown-4h-testnet-forward-start-1109 (Fable R7 started, phase-first replaces po",
+      "ref": "27d1eb64afad",
+      "utc": "2026-11-08T18:54:37Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "2cb2c9718440 Malkan window: relabel 12/18 as OURS, file the fee-net comparison",
+      "line": "27d1eb64afad decision: d-krown-4h-testnet-forward-start-1109 (Fable R7 started, phase-firs",
       "ref": "MyTradingSys/system/OPERATOR_DECISIONS.md",
-      "utc": "2026-11-04T21:48:45Z"
+      "utc": "2026-11-08T18:54:37Z"
     },
     {
       "kind": "report",
@@ -44,11 +44,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts)",
+  "note": "REVIEWED:2026-11-04 ACCEPT (Haiku read on API credit, job haiku-review-1: done_when testable, scope exists, no newer decision contradicts) | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: operator review of the 10-15 setup catalogue; phase-first and the 11-07 Tom/Fabio course correction changed the method; UNSURE if still wanted",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:37Z",
+  "refreshed": "2026-11-08T19:12:47Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -58,7 +58,7 @@
     "MyTradingSys/system/OPERATOR_DECISIONS.md"
   ],
   "scope_out": [],
-  "scope_sha": "2cb2c9718440",
+  "scope_sha": "27d1eb64afad",
   "size": "M",
   "sources": [
     "MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md",

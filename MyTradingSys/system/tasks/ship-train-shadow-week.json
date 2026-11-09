@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-06T17:43:50Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/system/SHIP_TRAIN.md"
+    ],
+    "session": "agent-a8863611e6b1ae2cf"
+  },
   "created": "2026-11-03T20:35:41Z",
   "depends_on": [],
   "done_when": "One table in SHIP_TRAIN.md with the four numbers and a go/no-go line for the operator",
@@ -16,26 +25,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "ship-train: SHIP_TRAIN.md (56 reds classed, options, 5-card plan) + 5 cards",
-      "ref": "180f6aeaa6f3",
-      "utc": "2026-11-03T20:36:31Z"
+      "line": "SHIP_TRAIN: section 6 shadow-week measurement (not runnable yet), trunk baseline, NO-GO",
+      "ref": "d541f010adec",
+      "utc": "2026-11-06T17:43:51Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "180f6aeaa6f3 ship-train: SHIP_TRAIN.md (56 reds classed, options, 5-card plan) + 5 cards",
+      "line": "d541f010adec SHIP_TRAIN: section 6 shadow-week measurement (not runnable yet), trunk basel",
       "ref": "MyTradingSys/system/SHIP_TRAIN.md",
-      "utc": "2026-11-03T20:36:31Z"
+      "utc": "2026-11-06T17:43:51Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "after ship-train-bisect-eject-signal",
+  "note": "after ship-train-bisect-eject-signal | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: ship-train machinery: frozen (D7 frozen list, week-plan move 5); the CI-red parity card is the ship-gate lever on the path REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:46:31Z",
+  "refreshed": "2026-11-08T18:21:05Z",
   "refs": [
     "MyTradingSys/system/SHIP_TRAIN.md"
   ],
@@ -46,7 +55,7 @@
   "scope_out": [
     "live tree; auto_deploy"
   ],
-  "scope_sha": "180f6aeaa6f3",
+  "scope_sha": "d541f010adec",
   "size": "M",
   "sources": [],
   "state": "ready",

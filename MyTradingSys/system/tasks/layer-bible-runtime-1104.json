@@ -5,38 +5,53 @@
   "commands": [],
   "created": "2026-11-04T13:39:50Z",
   "depends_on": [],
-  "done_when": "Phase 2: layer_state.py wavetrend prints zone, last valid cycle dot, cycle completed, 1m-4h stack from public klines; tests written red first pass incl. 11-04 (3m 03:12-11:39 completed cycle; 12:21 at -49 not a valid bottom dot); expected numbers from FORMULAS s20 independently; Haiku re-derivation matches.",
-  "est_turns": null,
+  "done_when": "scripts/dev/layer_state.py loads the WaveTrend Bible pilot and MyTradingSys/backtest/layers/test_layer_state.py passes; the DESIGN.md review and its recheck are quoted in the note (both done on disk).",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Operator d-layer-bible-runtime-1104: one Bible per layer family (system/layer_bible/<family>.md) and one runtime scripts/dev/layer_state.py that applies only the Bible's definitions to public klines; AI answers quote its output, never memory. Design: MyTradingSys/research/layer_bible/DESIGN.md. Phases: 1 design + non-Claude review; 2 WaveTrend Bible + layer_state.py wavetrend with fail-first tests (11-04 case) + Haiku blind re-derivation; 3 archive plan (move + pointer, never delete); 4 roll out per LAYERS.md order.",
+  "goal": "Build the WaveTrend pilot of the layer-Bible runtime: MyTradingSys/system/layer_bible/wavetrend.md plus scripts/dev/layer_state.py, which applies only the Bible definitions to public klines so AI answers quote its output instead of memory. Design and the C2 review are done (see note); this card is phase 2 only.",
   "id": "layer-bible-runtime-1104",
   "lane": "SONNET",
-  "layers": [
-    "wavetrend"
-  ],
+  "layers": ["wavetrend"],
   "live_path": false,
   "mutation_check": "",
-  "note": "class=C2 (a definition base). NOT stamped: DESIGN.md needs a non-Claude review before build. Do not add to red CI (health_audit.py). Testnet/public data only.",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). REFINED 2026-11-07 by DSA JIS-NB chat mts-dsa-jis-nb-1107-1658. C2 gate evidence is on disk: REVIEW_GEMINI_1104.md is the independent non-Claude review (Gemini 3.8 Flash, target DESIGN.md commit 1712eb6b75aa); RECHECK_GEMINI_1104.md re-checks DESIGN.md v2 (commit deff345f2714) and item 1 (fetch depth vs 200-bar warm-up) is RESOLVED at DESIGN.md:28. OPEN GATE: CRITICAL + C2 still needs the real reviewer stamp, which only the reviewer writes, so this card rests at refined.",
   "prio": 1,
-  "refine_tries": 2,
-  "refined_by": "",
+  "refine_tries": 3,
+  "refined_by": "DSA JIS-NB chat mts-dsa-jis-nb-1107-1658",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/layer_bible/DESIGN.md",
-    "MyTradingSys/system/layer_bible",
+    "MyTradingSys/system/layer_bible/wavetrend.md",
     "scripts/dev/layer_state.py",
-    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py"
+    "MyTradingSys/backtest/layers/test_layer_state.py",
+    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py",
+    "MyTradingSys/research/layer_bible/DESIGN.md"
   ],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no change to wavetrend.py or FORMULAS.md",
+    "no other layer family yet: phases 3 and 4 are follow-up cards",
+    "no live path, no engine parameter change"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/layer_bible/DESIGN.md v2 (commit deff345f2714; :28 fetch depth and warm-up rule)",
+    "MyTradingSys/research/layer_bible/REVIEW_GEMINI_1104.md (Gemini 3.8 Flash, non-Claude C2 review, 2026-11-04)",
+    "MyTradingSys/research/layer_bible/RECHECK_GEMINI_1104.md (item-by-item recheck, 2026-11-04)",
+    "MyTradingSys/backtest/layers/FORMULAS.md s20 (WaveTrend definitions)",
+    "MyTradingSys/backtest/layers/wavetrend/wavetrend.py (the shipped engine the Bible must match)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read DESIGN.md and both review files; list the RESOLVED and OPEN items from RECHECK_GEMINI_1104.md",
+    "Write MyTradingSys/system/layer_bible/wavetrend.md from FORMULAS.md s20 and wavetrend.py, definitions only, no new parameter",
+    "Write scripts/dev/layer_state.py with the wavetrend pilot: klines in, Bible-defined state out, short history prints NOT_IN_DATA",
+    "Write MyTradingSys/backtest/layers/test_layer_state.py and run it fail-first before layer_state.py exists",
+    "Re-derive the 11-04 case by hand and compare it against the script output"
+  ],
+  "tests": "MyTradingSys/backtest/layers/test_layer_state.py fails before layer_state.py exists and passes after; the 11-04 case is its worked example",
   "title": "Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C2, then build, archive, roll out",
-  "weight": "",
-  "worker": ""
+  "weight": "CRITICAL",
+  "worker": "session"
 }

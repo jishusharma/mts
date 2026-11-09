@@ -108,7 +108,7 @@ bg = re.sub(r"const AGENT_CWD = '.*';", lambda m: 'const AGENT_CWD = ' + cm.grou
 bg = re.sub(r"const AGENT_URL = '.*';", lambda m: 'const AGENT_URL = ' + um.group(1) + ';', bg, count=1)
 
 files = [
-    ('src/agent.ps1', None), ('src/checks.ps1', None), ('src/concurrency.ps1', None), ('src/audit.ps1', None),
+    ('src/agent.ps1', None), ('src/checks.ps1', None), ('src/concurrency.ps1', None), ('src/lease.ps1', None), ('src/audit.ps1', None),
     ('extension/panel.css', None),
     ('extension/content.js', None), ('extension/loop.js', None), ('extension/manifest.json', None),
     ('extension/background.js', bg),
@@ -119,6 +119,7 @@ files = [
     ('RELEASES.json', None),
     ('tests/loop.test.js', None),
     ('tests/handsfree.test.js', None),
+    ('tests/start_trigger.test.js', None),
     ('tests/agent_live_selftest.py', None),
 ]
 for rel, content in files:

@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_fabio_rebuild_2026-11-09/RULEBOOK.md"
+  ],
+  "created": "2026-11-09T20:10:00Z",
+  "depends_on": [],
+  "done_when": [
+    "MyTradingSys/research/tom_fabio_rebuild_2026-11-09/RULEBOOK.md lists the last 6 months of Tom and Fabio beginner/how-to videos (id, date); every entry, filter, stop, target, management and no-trade rule numbered with a verbatim caption quote; verify_extract_quotes.py exits 0",
+    "CANNOT_SEE table: each rule that needs data we lack (footprint, live order flow, discretion) with the nearest data we do have",
+    "GAP table: each rule vs what the 11-08 census and the tf-real-frame census coded (coded, coded differently, missing); shipped, Result names the rule count"
+  ],
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 11-09: Tom posts simple beginner videos, yet our tests find nothing, so start again from the source and build carefully. Our past tests coded proxies (1h bars, any hour, fixed 1R, no order flow). Step 1 is the rulebook in their own words, before any code.",
+  "id": "tom-fabio-rebuild-from-beginner-videos-1109",
+  "kind": "build",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_quote_spanning_timestamp_markers_is_found",
+  "note": "Gemini on the NUC via gemini_queue :low:flash, captions only. Next steps after it ships (separate cards): code rule 1 alone, then add one rule at a time and measure each (does it help?), testnet forward in parallel from the first version.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T19:46:12Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/malkan_level_shorts_2026-11-09/"
+  ],
+  "scope_out": [
+    "no repo code change|no invented conditions"
+  ],
+  "scope_sha": "17fbce4b1fb7",
+  "size": "S",
+  "sources": [
+    "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
+  ],
+  "state": "ready",
+  "steps": [
+    "fetch captions (yt-dlp subs, hi + en) for the listed videos and the 3X3 series list; grep star grades; write the table; verify quotes; ship"
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what candles cannot see",
+  "weight": "",
+  "worker": "agent",
+  "status": "ready"
+}

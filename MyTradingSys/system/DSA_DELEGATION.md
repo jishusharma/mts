@@ -50,7 +50,7 @@ spec; DSA may run them.
 
 | Situation | Where | What you do |
 |---|---|---|
-| Starting a DSA session | DeepSeek chat | Run `scripts\start-session.ps1`, paste `Dumps\SESSION_PASTE.txt`, say: "Check the desk tasks for DSA and do them." |
+| Starting a DSA session | your shell, then the DeepSeek chat | `python scripts\dev\dsa.py start --open` (seed on the clipboard, chat tab opened in Profile 4): Ctrl+V, Enter. DSA boots in one block, prints `BOOT: ...`, waits. Then say "go" (queue) or name a card or desk row. Several chats at once: `python scripts\dev\dsa_seed.py` instead (adds the chat slug, the cards other chats hold, UTF-8 env; prompt section 0b). Paste mode only: `scripts\start-session.ps1` + `Dumps\SESSION_PASTE.txt`. |
 | You have a question or idea | MTS Control Room Inbox | Paste it word for word. A Claude or the cloud poller files it; if it is a run-and-report job it becomes a DSA desk task. |
 | You want a backtest or inventory now | DeepSeek chat | Say what, in one line ("rerun T089 for 2024 only"). DSA runs it. No Claude needed. |
 | You want a decision asked of you | Control Room decisions | Answer there. Claude never asks in chat. |
@@ -105,7 +105,7 @@ Cheapest shape: DSA does the work (no Claude budget); the supervisor only watche
 - Where: Chrome profile jishu.awgp@gmail.com ("Profile 4"), tab chat.deepseek.com, AIBridge extension from F:\AIBridge\extension. One chat per host; leave it open.
 - Work in: testing runs are desk rows (`desk.py post ... --target DSA-NB|DSA-NUC`; `desk.py assign` posts every ready DSA-lane card). Standing rows: a `run_all_tests.py --quick` sweep per host.
 - Watch (zero tokens): `python scripts/dev/dsa_watch.py` in the supervisor stop-guard. Exit 0 = nothing stalled (`--stale-hours`, default 3); exit 1 = a bridge has a pending row older than that. Only exit 1 needs a Claude look.
-- On exit 1 the supervisor spawns ONE Haiku Agent (never Sonnet) to: open the DeepSeek tab in Profile 4, paste `Dumps\SESSION_PASTE.txt` (`scripts\start-session.ps1`), send "Check the desk tasks for DSA-<host> and do them." It never types credentials and stops at a login wall (report to the operator).
+- On exit 1 the supervisor spawns ONE Haiku Agent (never Sonnet) to: open the DeepSeek tab in Profile 4, paste the seed (`python scripts/dev/dsa_seed.py --print`) into a new chat, wait for the `BOOT:` line, then send "Check the desk tasks for DSA-<host> and do them." (that line is the order; prompt FIRST, G). It never types credentials and stops at a login wall (report to the operator).
 - Operator-only steps: reload the extension in chrome://extensions after an AIBridge install; tick Hands-free in the panel.
 - Watch means drive (operator 2026-11-04, d-dsa-watch-browser-1104): when the operator or a desk row says "watch the DSA bridge", the coordinator takes the Chrome browser itself through the claude-in-chrome tools (load with ToolSearch, `tabs_context_mcp`, then act on the chat.deepseek.com tab): it reads the AIBridge panel, presses Run on an unexecuted block, re-sends a dropped block once (LESSONS 2026-11-01), and reports the panel state in its reply. It never asks the operator to look at the screen on another device and never types credentials; a login wall ends the watch with one line to him.
 - Watch cadence without a scheduler: the watcher shell (`supervisor.py wait`) carries `dsa_watch.py`; on wake with exit 1 the coordinator does the browser step above before any other work; the NUC coordinator does it for DSA-NUC, the desktop one for DSA-NB.

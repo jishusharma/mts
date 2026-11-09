@@ -441,5 +441,49 @@ not a q line
         self.assertEqual(dsa.lane_for_host("jis-nuc"), "DSA-NUC")
 
 
+class StartSeed(unittest.TestCase):
+    """Operator 2026-11-07: one command starts a DSA chat; DSA loads itself through one block, prints BOOT, waits for the order."""
+
+    def test_seed_is_one_block_that_loads_prompt_and_boot_then_waits(self):
+        t = dsa.seed_text("JIS-NB")
+        self.assertLess(len(t), 4000)
+        t.encode("ascii")
+        self.assertEqual(t.count("# AIRUN cwd="), 1)
+        for needle in ("git worktree add", "Get-Content DSA_SESSION_PROMPT.md", "python scripts/dev/dsa.py boot",
+                       "STOP and wait", '"go"', "Check the desk tasks for DSA-<host> and do them."):
+            self.assertIn(needle, t, needle)
+        for ln in t.splitlines():
+            self.assertLess(len(ln), 200, ln)
+            self.assertFalse(ln.startswith("#") and not ln.startswith("# AIRUN"), ln)   # AIBridge parser: no source line begins with #
+
+    def test_start_print_writes_the_seed_and_exits_0(self):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = dsa.main(["start", "--print"])
+        self.assertEqual(rc, 0)
+        self.assertIn("DSA seed ", out.getvalue())
+        self.assertIn("# AIRUN cwd=", out.getvalue())
+
+
+class ShipPendingTest(Base):
+    def test_ship_pending_names_unshipped_commits(self):
+        (self.work / "notes.txt").write_text("x\n")
+        sh(self.work, "add", "notes.txt")
+        sh(self.work, "commit", "-q", "-m", "wip")
+        rows = dsa.ship_pending(self.work)
+        self.assertEqual(len(rows), 1, rows)
+        self.assertIn("wip", rows[0])
+
+    def test_ship_pending_empty_when_all_shipped(self):
+        self.assertEqual(dsa.ship_pending(self.work), [])
+
+    def test_commit_says_ship_owed_until_pushed(self):
+        (self.work / "notes.txt").write_text("x\n")
+        code, out = call(["commit", "wip", "--result", "r", "--files", "notes.txt"])
+        self.assertEqual(code, 0, out)
+        self.assertIn("SHIP OWED:", out)
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

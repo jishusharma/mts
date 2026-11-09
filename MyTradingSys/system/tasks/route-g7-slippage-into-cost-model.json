@@ -2,20 +2,32 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-09T10:02:36Z",
+    "misses": 11,
+    "reads": [
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md",
+      "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md",
+      "MyTradingSys/execution/position_manager.py",
+      "MyTradingSys/execution/test_stop_gap_offline.py"
+    ],
+    "session": "agent-a9fc82019cc1aa3bc"
+  },
   "created": "2026-11-04T14:28:22Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "tom_bt.py/maker_model.py take a named stop-slip constant citing research/gap_g7_stop_slippage_2026-10-18/SLIPPAGE.md; goldens re-baselined in one commit; a non-Claude spec review file exists beside the card",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Backtests charge stop-fill slippage from the G7 measured p90 (SOURCED by data, SLIPPAGE.md), as a stress case beside the delta-250ms mean default, instead of slip=0.0.",
   "id": "route-g7-slippage-into-cost-model",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-04 parked: SLIPPAGE.md says adoption is its own C2 card (Binance proxy, UNCHECKED, tom_bt/maker_model not to be edited without review); needs non-Claude spec review first",
+  "note": "Needs C2 non-Claude spec review stamp before ready (CRUCIAL). Planner 2026-11-08: filled; check blocked only on stamp.",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
@@ -24,14 +36,26 @@
     "MyTradingSys/research/route_tag_2026-11-04/AUDIT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/backtest/tom_bt.py",
+    "MyTradingSys/backtest/maker_model.py",
+    "MyTradingSys/backtest/test_tom_bt.py",
+    "MyTradingSys/backtest/test_maker_model.py"
+  ],
+  "scope_out": [
+    "no live-tree edit; no change to the G7 study itself; no layer re-run"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Read SLIPPAGE.md table and the proposal at line 31 (mean default, p90 stress)",
+    "Write the spec and get the non-Claude (C2) review file",
+    "Add failing test, then the labelled constant (SOURCED, cite line)",
+    "Re-baseline goldens in one commit; run test_tom_bt.py and test_maker_model.py"
+  ],
+  "tests": "new case in MyTradingSys/backtest/test_tom_bt.py: stop fill with the G7 slip constant is worse than slip=0.0 by the constant and fails on current code; default-slip golden test unchanged",
   "title": "G7 stop-slippage p90 (2877e1fed) into the backtest cost model as a SOURCED-by-data stop cost",
-  "weight": "",
-  "worker": ""
+  "weight": "CRUCIAL",
+  "worker": "session"
 }

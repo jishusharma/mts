@@ -2,33 +2,79 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-08T18:56:31Z",
+    "misses": 24,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/mts_signal.py",
+      "MyTradingSys/system/LAYERS.md",
+      "MyTradingSys/system/LAB_RECIPES.md",
+      "scripts/dev/artifacts.py",
+      "MyTradingSys/system/roles/session_planner.md",
+      "MyTradingSys/system/role_details/session_planner_details.md",
+      "MyTradingSys/system/TASK_REFINEMENT.md"
+    ],
+    "session": "agent-a1b2082446a57f180"
+  },
   "created": "2026-11-04T13:18:04Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/codex_run.py writes 'MODEL: <id> VENDOR: <vendor>' on line 2 of every report it saves, and a result without it gets trust UNCHECKED; test_codex_run.py covers both; fails on current code.",
+  "est_turns": 16,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Lab_Guy defect: gpt-* lab reports carry no model identity; gemini-queue authored GPT-labelled audits while Codex was 401, so cross-vendor trust cannot be proven Evidence: reports/2026-11-04_gpt-audit-context-filter-review-1104.md and ..._gpt-rederive-wavetrend-c30-retest-1104.md were committed by author gemini-queue (git-identity-gemini-queue-leak) while codex_run status shows no run since 10-30 and 401 today; neither report states model, effort or tokens, result_receipt.trust = UNCHECKED. Fix: reports/receipts must carry model id + vendor; git author cannot prove vendor; until then a gpt-* result is UNCHECKED and cannot satisfy a different-vendor review.",
+  "goal": "A gpt-* lab report carries its model id and vendor in the first header line, so a cross-vendor reviewer can tell a Codex run from a Gemini-authored one.",
   "id": "labguy-gpt-card-no-model-identity-1104",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "codex_run: status prints STALLED with the 401 cause when the host has no Codex login",
+      "ref": "c8aefddd030b",
+      "utc": "2026-11-08T02:04:30Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0c06863594a9 lab lab-crossvendor-stage: DONE (build)",
+      "ref": "MyTradingSys/system/LAB_RECIPES.md",
+      "utc": "2026-10-17T20:29:44Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-04: needs a design choice (where a report carries producer model: card field vs report header) before a fail-first test can be named; held at try 1/2.",
+  "note": "REVIEWED:2026-11-09 ACCEPT (batch review, 1 FIX applied by session-planner-a-1108; was T0-ONLY 11-08) (reviewer still required, IMPORTANT) (planner-a-1107b; twin check run, none). DECISION (OURS): identity in the report header line, not a card field. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: GPT/Codex lane: d-no-gpt-codex-credit-1106 and 401 stall; re-derive of a finished study, no roadmap exit",
   "prio": 2,
   "refine_tries": 3,
   "refined_by": "",
+  "refreshed": "2026-11-08T18:56:00Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py",
+    "MyTradingSys/system/LAB_RECIPES.md (read)"
+  ],
+  "scope_out": [
+    "no change to which lane runs a card",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "c8aefddd030b",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Find where codex_run builds result_receipt and trust",
+    "Add the failing test",
+    "Write the identity line from the run's actual model/vendor, UNCHECKED when absent",
+    "Run test_codex_run.py"
+  ],
+  "tests": "new case in scripts/dev/test_codex_run.py: report without identity line -> trust UNCHECKED; with line -> unchanged; fails on current code",
   "title": "Lab_Guy defect: gpt-* lab reports carry no model identity; gemini-queue authored GPT-labelled audits while Codex was 401, so cross-vendor trust cannot be proven",
-  "weight": "",
-  "worker": ""
+  "weight": "IMPORTANT",
+  "worker": "session"
 }

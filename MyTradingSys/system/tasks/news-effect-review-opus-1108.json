@@ -1,0 +1,80 @@
+{
+  "approved_by": "operator 2026-11-08 chat ~20:20Z: reviews by Fable and Opus, combined by a higher model (d-news-research-first-reviews-synthesis-1108)",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T19:58:26Z",
+  "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/check_review.py REVIEW_OPUS.md"
+  ],
+  "created": "2026-11-07T20:07:27Z",
+  "crucial": "independent high-model review of evidence that fixes how news is weighted for his trade decisions; a design call with no undo once builds follow it",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md: verdict per class (safe / weak / unknown), the 5 biggest ways the catalogue could mislead, 10 events re-checked against primary sources, and the method changes required before any weight rule; written without reading the other reviewer",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A reviewer who did not build the catalogue checks it for selection bias, look-ahead, overlapping windows, thin classes and over-reading, and says which findings are safe to build on.",
+  "id": "news-effect-review-opus-1108",
+  "lane": "OPUS",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped 90119ad0e (2026-11-08): REVIEW_OPUS.md, check_review.py passes; card was l",
+      "ref": "324ff28ff",
+      "utc": "2026-11-08T19:58:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect-review-opus-1108: independent Opus review of the news-effect catalogue",
+      "ref": "90119ad0e4f9",
+      "utc": "2026-11-08T02:21:14Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "90119ad0e4f9 news-effect-review-opus-1108: independent Opus review of the news-effect cata",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md",
+      "utc": "2026-11-08T02:21:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: review shipped; weight rules wait on method changes in REVIEW_OPUS.md",
+  "note": "Independent lens 1: statistics and data validity. Runs on the credit (api engine), Opus.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:20:56Z",
+  "refs": [
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md"
+  ],
+  "result": "Already shipped 90119ad0e (2026-11-08): REVIEW_OPUS.md, check_review.py passes; card was left open. check_review now RED only because the 2 phantom PPI rows it flagged WRONG (ppi-2025-10-16, ppi-2025-11-14) were removed by catalogue v2 'PPI fix' c686699d2: the review's own finding acted on, not a defect",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/REVIEW_OPUS.md and check_review.py (new)"
+  ],
+  "scope_out": [
+    "no edits to the catalogue or its report|no weight or flash proposal|do not read any other review file"
+  ],
+  "scope_sha": "90119ad0e4f9",
+  "size": "S",
+  "sources": [
+    "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
+  ],
+  "state": "done",
+  "steps": [
+    "read the catalogue report and csv; re-derive 10 events from primary sources; write the review"
+  ],
+  "taken": "2026-11-08T19:58:13Z",
+  "tests": "MyTradingSys/research/news_effects_2026-11/check_review.py",
+  "title": "Independent Opus review of the news-effect catalogue and method: statistical validity, selection bias, what the numbers can and cannot support",
+  "weight": "",
+  "worker": "agent"
+}

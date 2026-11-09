@@ -1,0 +1,65 @@
+# Edge-hunt worker brief: eh-f1-testnet-design
+Model: claude-fable-5-1 (Fable 5.1) | max_usd: 6.00 | max_turns: 90 | wave: 4 | trials: none (design question) | operator lens: L7, L8 (phase-first, stops follow the trade)
+Launch (coordinator only): python scripts/dev/api_job.py launch eh-f1-testnet-design --prompt-file MyTradingSys/research/edge_hunt_2026-11-09/workers/eh-f1-testnet-design.txt --model claude-fable-5-1 --max-usd 6.00 --max-turns 90 --engine api
+Plan: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md | Trials: TRIALS.md | Card: edge-hunt-plan-opus-1109 (planner); slug = branch name.
+
+## Hypothesis
+The hardest open question: under phase-first (d-phase-first-method-1106) a pattern goes to testnet and runs until it fails, but BTC-only setups produce 10-60 trades a month at best, the past 147 verdict rows show most effects are under 0.1 R, and the wave just spent m = 15. Design the rule that tells a real edge from noise on TESTNET within weeks, not years, and say which wave survivors (or near-misses) go first. You run last: read PLAN.md, TRIALS.md, every results/*/RESULT.md that has shipped, census-5m-15m-7y-session-ladder-1109 output if it has landed (git log origin/fast-track), the Krown R7 FORWARD_PREREG.md fail rules (research/fable_run7_forward_test/), POSTMORTEM_OPUS.md s3 and REVIEW_FABLE.md d.
+
+## Data
+No market data required. Optional: simulate the proposed sequential rule on synthetic R streams (numpy) to show its error rates; never on HOLDOUT bars.
+
+## Exact rules (frozen; SOURCED or OURS per row)
+| Question | What DESIGN.md must decide (label every number OURS or SOURCED) |
+|---|---|
+| Q1 Promote/kill | One sequential rule for testnet forward on fee-net R per trade (e.g. SPRT or a mixture martingale / e-value on R vs a null of 0 R, with the census null -0.087 R as the reference loser): the boundaries, the minimum n, the false-promote and false-kill rates, simulated on synthetic R streams with the hit rate / payoff shapes the wave measured (30-40 % at 2.5-3R vs 45-50 % at 1R) |
+| Q2 Multiple testnet runs | How to run several setups at once (Krown S8 already live, plus any wave survivor) without the testnet becoming a new multiple-testing problem: alpha spending across concurrent runs |
+| Q3 Pooling | Whether and how to pool ETH (and other USD-M symbols) with BTC on testnet to reach n faster, and the leakage/correlation correction (same-hour trades across symbols) |
+| Q4 Payoff | Given the measured MFE/MAE in the wave results, the exit/management rule each survivor should carry on testnet (fixed R, next level, BE at +1R, partials), chosen BEFORE the run; no re-fitting on testnet |
+| Q5 Order | A ranked list: which trials (PASS first, then the strongest INCONCLUSIVE with a positive DEV mean, each with its reason) go to testnet, at what risk per trade, and the one-line kill rule for each |
+| Q6 What not to do | Which families stay dead and must not be retried (cite the result) |
+Do not change any code outside your folder and do not wire anything live; the output is a design plus raw cards: one `python scripts/dev/tasks.py new --lane SONNET --prio 2 "testnet-forward <trial>: <rule>"` per ranked setup you recommend (at most 3).
+
+## Output
+results/eh-f1-testnet-design/{DESIGN.md, sim_sequential.py and test_sim_sequential.py if you simulate}
+
+Your RESULT file is DESIGN.md. Its first line is `Result: <the promote/kill rule in one line>; testnet order: <slugs>`. Your done check below replaces the RESULT.md check.
+
+## Done check (must pass before ship)
+python -c "import pathlib;t=pathlib.Path('MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/DESIGN.md').read_text(encoding='utf-8');assert t.startswith('Result:') and 'Q1' in t and 'Q5' in t"
+
+You are a headless Builder on the Claude API credit (edge-hunt wave 2026-11-09). Hooks are off; these rules replace them.
+Never ask questions: take the conservative default, write it as `DECISION (OURS): ...` in your RESULT.md, continue.
+
+## Boot and hard rules
+- Boot: `python scripts/dev/sync.py start eh-f1-testnet-design --worker`; work only in the printed WORKTREE (use `git -C <tree>` for git; never `cd x && git`).
+- Read first: MyTradingSys/research/edge_hunt_2026-11-09/PLAN.md (s5 shared rules) and TRIALS.md (your trial ids). Your trial rules below are frozen; do not add, split or re-cut trials.
+- Testnet/research only. Never read secret, environment or key files; never deploy, restart processes, touch HALT or orders, open trades; never commit to master; never rebase, reset or force-push. Write files with LF newlines (newline='\n').
+- Never commit market data, runtime, order or account data (public repo). Cache downloads OUTSIDE the repo (F:/MTS/Dumps/backtest/... if F: exists, else %TEMP%/mts_eh_cache). Commit only code, PRE_REG.md, RESULT.md and small summary tables (counts, per-cell stats; no raw bars).
+- Scope: write only under MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/. Import repo code read-only (MyTradingSys/backtest/bt/bt_data.py, MyTradingSys/backtest/fees.py, MyTradingSys/backtest/splits.py, MyTradingSys/backtest/research_kit.py, MyTradingSys/backtest/layers/rsi/*.py, MyTradingSys/backtest/layers/wavetrend/wavetrend.py); never edit them. If a repo function is wrong for your rule, copy the needed lines into your own file and say so.
+
+## Data (public, no keys)
+- Fetch: `python MyTradingSys/backtest/fetch_binance_archive.py --start <YYYY-MM-DD> --end 2025-06-30 --symbols BTCUSDT[,ETHUSDT] --interval <tf> --datasets klines,fundingRate --out <cache>` (USD-M futures from 2019-09), or `--spot-history --tfs <tfs> --out-spot <cache>` for spot 2017-08+ (4h/1d history). Host data.binance.vision only; api.binance.com and fapi are DNS-blocked on some stations (d-futures-data-every-station-1109). Never fetch past 2025-06-30.
+- Build higher timeframes (12h, 1d, 1w, 1M) by resampling closed lower-TF bars in UTC (weeks Monday 00:00 UTC); a higher-TF value is usable only after its bar has closed (no lookahead; test it).
+
+## Splits, fees, statistics (fixed for the wave)
+- DEV = data start .. 2024-06-30. VALIDATION = 2024-07-01 .. 2025-06-30: read ONCE, only for a trial that passed the DEV screen. HOLDOUT = 2025-07-01 onward: never loaded (it is the current phase; testnet forward is its out-of-sample record, d-phase-first-method-1106). Your loader must refuse bars past the split end, and a test must show it.
+- Fees: market or stop-order entries use regime A (fees.py taker 0.0005 per side) plus 2 bps round-trip slippage (FORMULAS.md s13) plus funding records over the hold (fundingRate archive; side_sign convention of FORMULAS s13). Limit entries at a level use regime B (fees.py FEES_DERIBIT: maker entry and target 0, taker stop and timeout 0.0005) plus 1 bp slippage on taker legs; a limit fills only when a later bar trades strictly through it; unfilled = no trade (count them). Spot-history trials: perp funding exists only from 2019-09; apply the fundingRate archive where it exists, 0 before 2019-09, and say so in RESULT.
+- COST RULE (CI step 4e, test_no_own_costs.py): never assign a numeric literal to a name containing fee, slip, taker or maker; import MyTradingSys/backtest/fees.py (slippage: fees.SLIPPAGE_RT_S13, or add exactly that line to fees.py, value 0.0002, FORMULAS s13). costs.csv registration is not enough.
+- R: fee_r = round-trip cost in bps / stop distance in bps; net R = gross R - fee_r - funding R. Stop wins a same-bar tie. A trade open at the time stop is closed at that bar's close (taker).
+- Statistics: SE clustered by UTC day (by ISO week for 4h/1d trades). DEV screen: n >= 30 AND mean net R > 0 AND 95 % CI lower bound > 0. VALIDATION (once): one-sided p for mean net R > 0, Holm at m = 15 across the wave (TRIALS.md). Report n, hit rate, mean gross R, mean fee_r, mean net R, SE, CI, the MDE at 80 % power, and the per-year table on DEV.
+- Verdict per trial: PASS = DEV screen passed and the VALIDATION Holm test passed with mean > 0; FAIL = DEV mean net R <= 0 with the CI upper bound below the MDE; INCONCLUSIVE otherwise. A PASS files one raw card: `python scripts/dev/tasks.py new --lane SONNET --prio 2 "testnet-forward <trial id>: <one line>"`, and RESULT says the next step is testnet forward, never a longer backtest.
+- Labels: every parameter is SOURCED (quote file:line) or OURS. Do not invent trader conditions; when a source leaves a value open, pick it once, label it OURS, and never tune it on the outcome.
+- Context: PRE_REG.md and RESULT.md each carry a `## Context` block (regime, phase, session, entry; MyTradingSys/backtest/PRE_REG_TEMPLATE.md:80-89) and a `Regime mix:` line (research_kit regime tag, DEV weeks).
+
+## Order of work
+1. PRE_REG.md: copy your rules table below, your OURS fills and your trial ids; commit it on your branch BEFORE any return is computed.
+2. Tests first: `test_<name>.py` in your folder (hand-built bars for every rule, the split refusal, no-lookahead on higher TFs, the fee/R arithmetic). Run it once FAILING before the code exists; paste that run's last line in RESULT.md.
+3. Count pass (events per year and side, regime mix, no returns). 4. DEV. 5. VALIDATION once if screened in. 6. RESULT.md: first line `Verdict: <T..>=<PASS|FAIL|INCONCLUSIVE> ...`, then the plain-words answer, the tables, the DECISION (OURS) list and `## Noticed`.
+7. `python scripts/dev/run_all_tests.py --quick` green.
+
+## Ship
+- `python scripts/dev/sync.py ship --release eh-f1-testnet-design`. Commit body: a `Result: <trial ids, verdicts, mean net R +-SE, n>` line, a `Next: <card-id | testnet-forward | END: why>` line, last line `Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>`.
+- Then the feeder rule (ANNOUNCEMENTS A-20261104-1): `python scripts/dev/tasks.py new --lane CODEX --prio 3 --kind audit "[GEMINI] blind read of <your main .py path>"`.
+- Report it shipped only when `git -C <tree> cherry origin/fast-track <sha>` is empty.
+- Stop at the turn cap or budget and report what you have. Final reply at most 6 lines: `Result:` first, the content sha, then `Noticed:` (or `Noticed: none`).

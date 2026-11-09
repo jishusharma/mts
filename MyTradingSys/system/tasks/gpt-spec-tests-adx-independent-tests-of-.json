@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T14:57:37Z",
+  "commands": [],
+  "created": "2026-11-07T12:46:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-07_gpt-spec-tests-adx.md lists each spec test (formula clause, hand number, PASS/FAIL against adx.py) and line 1 holds pass/fail counts",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT spec tests of backtest/layers/adx/adx.py written from FORMULAS.md section 30 only, not from adx.py or its test_adx.py.",
+  "id": "gpt-spec-tests-adx-independent-tests-of-",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-07_gpt-spec-tests-adx.md",
+      "ref": "7d07a11dc",
+      "utc": "2026-11-07T14:57:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.01); last csv ",
+      "ref": "25e12c01a904",
+      "utc": "2026-11-07T14:14:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "25e12c01a904 adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.0",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-07T14:14:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: gpt-spec-tests-adx card done",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model GPT (Codex); twin check run: cross-vendor pair with gpt-rederive-adx-di-census-1107, different target.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T14:22:13Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-07_gpt-spec-tests-adx.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/FORMULAS.md (read, section 30)",
+    "MyTradingSys/backtest/layers/adx/adx.py (run only)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-07_gpt-spec-tests-adx.md (new)"
+  ],
+  "scope_out": [
+    "no edit to adx.py or test_adx.py",
+    "no live-tree edit, no .secrets or .env read"
+  ],
+  "scope_sha": "25e12c01a904",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/FORMULAS.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read FORMULAS.md section 30 only",
+    "Hand-compute Wilder DI/ADX on a 20-bar fixture",
+    "Run adx.py on it and write the pass/fail table"
+  ],
+  "taken": "2026-11-07T14:57:37Z",
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "gpt-spec-tests-adx: independent tests of MyTradingSys/backtest/layers/adx/adx.py from FORMULAS.md section 30",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

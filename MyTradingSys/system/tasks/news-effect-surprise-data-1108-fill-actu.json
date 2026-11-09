@@ -1,0 +1,89 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T20:18:08Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-08T20:18:07Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/tasks.py"
+    ],
+    "session": "agent-a561590424b9e8ec0"
+  },
+  "created": "2026-11-08T03:53:12Z",
+  "depends_on": [],
+  "done_when": "news_events.csv: actual/consensus/prior/surprise_sign/surprise_url filled for the MACRO_CPI, PPI, NFP and FOMC rows or listed in REPORT.md Gaps with a reason; REPORT.md section 5 populated; check_catalogue.py passes",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The 123 CPI, PPI, NFP and FOMC rows in news_events.csv get actual, consensus, prior and surprise_sign from dated public sources, so direction is no longer UNKNOWN.",
+  "id": "news-effect-surprise-data-1108-fill-actu",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Already on trunk (8ce5a1c28): 120 of 123 CPI/PPI/NFP/FOMC rows filled with ForexFactory UR",
+      "ref": "0f0dd73d2",
+      "utc": "2026-11-08T20:18:08Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
+      "ref": "8ce5a1c28081",
+      "utc": "2026-11-08T09:13:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8ce5a1c28081 news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 12",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+      "utc": "2026-11-08T09:13:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: done_when met",
+  "note": "Planner 2026-11-08. Consensus often unavailable: gap rows are acceptable if listed.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:20:58Z",
+  "refs": [],
+  "result": "Already on trunk (8ce5a1c28): 120 of 123 CPI/PPI/NFP/FOMC rows filled with ForexFactory URL; 3 none rows in REPORT Gaps; section 5 populated; check_catalogue GREEN re-run this session",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/news_events.csv",
+    "MyTradingSys/research/news_effects_2026-11/build_events.py",
+    "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md"
+  ],
+  "scope_out": [
+    "no paid data; no trading code; consensus only from a dated public page, else leave blank"
+  ],
+  "scope_sha": "8ce5a1c28081",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/news_effects_2026-11/NEWS_DESIGN.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Fetch BLS/Fed actuals and priors per event date",
+    "Find dated consensus per event; blank if not public",
+    "Compute surprise_sign, rebuild csv, run check_catalogue.py, fill REPORT.md section 5"
+  ],
+  "taken": "2026-11-08T20:18:08Z",
+  "tests": "check_catalogue.py asserts every filled surprise row has a surprise_url and a sign consistent with actual vs consensus; fails on current csv (0 filled)",
+  "title": "news-effect-surprise-data-1108: fill actual, consensus, prior from dated public sources for CPI, PPI, NFP and FOMC rows (none-filled in v2)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

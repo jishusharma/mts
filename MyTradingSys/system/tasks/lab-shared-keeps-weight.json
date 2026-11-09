@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T17:56:16Z",
   "commands": [
     "python scripts/dev/test_tasks.py"
   ],
@@ -28,6 +29,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already fixed on trunk by a9f710df8/06a8dedd2 (promote_shared + mark_shared_bases keep CRU",
+      "ref": "6336fa4c9",
+      "utc": "2026-11-07T17:56:16Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "codex lab: gate-red ship writes lab.hold; lint/check flag done_when outside lab",
@@ -38,13 +45,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already shipped",
   "note": "REVIEWED:2026-11-06 ACCEPT reviewer=sonnet-review-agent-ae068d00 planner=Session_Planner\nplanner 1106: lane moved CODEX to SONNET; the CODEX build rule needs an existing mutation probe file and this is a small tasks.py change with a plain fail-first test",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-06T07:53:14Z",
   "refs": [],
-  "result": "",
+  "result": "Already fixed on trunk by a9f710df8/06a8dedd2 (promote_shared + mark_shared_bases keep CRUCIAL/CRITICAL, shared:true); test_promote_shared_keeps_crucial_and_critical exists in test_tasks.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "scripts/dev/test_tasks.py"
@@ -53,12 +66,13 @@
   "scope_sha": "7c12edc44529",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write test_promote_shared_keeps_crucial_and_critical: a CRITICAL card cited in another scope_in stays CRITICAL and gets shared:true; run it on the unchanged code, it must fail",
     "Change promote_shared: set shared:true always; set weight B-SHARED only when the current weight is not CRUCIAL/CRITICAL",
     "Update test_promote_shared_still_marks_when_called_explicitly to also assert shared:true; run test_tasks.py; ship. verify: content commit sha, cherry against origin/fast-track empty, delivered files in ls-tree of origin/fast-track"
   ],
+  "taken": "2026-11-07T17:56:16Z",
   "tests": "python scripts/dev/test_tasks.py",
   "title": "Fix tasks.promote_shared: keep max weight (CRITICAL/CRUCIAL stay), store shared flag separately; fail-first fixtures per MISSING_2026-10-18",
   "weight": "IMPORTANT",

@@ -16,19 +16,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "mts_doctor: add GIT-HUNG check and guard scope_in network git calls with timeout and no-pr",
-      "ref": "d6d63cf459d6",
-      "utc": "2026-11-02T06:42:18Z"
+      "line": "Pages hook guard: refresh marker stops respawn, login from env/cache, build time cap",
+      "ref": "779eb295f037",
+      "utc": "2026-11-07T15:42:11Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-03 T0-ONLY PLANNER planner-a-1103. Twin main-checkout-stale-hooks-2026-10-24 checked: different symptom (hooks stale), kept.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: trunk_lag.py has no CRLF or trunk-equal handling yet; temp-repo test possible.)",
+  "note": "REVIEWED:2026-11-03 T0-ONLY PLANNER planner-a-1103. Twin main-checkout-stale-hooks-2026-10-24 checked: different symptom (hooks stale), kept.\nREVIEWED:2026-11-04 ACCEPT (Haiku on API credit, job haiku-review-ready-sonnet-1104: trunk_lag.py has no CRLF or trunk-equal handling yet; temp-repo test possible.) | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; the trunk_lag fix was reverted 080a5c36c",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-03T16:01:28Z",
+  "refreshed": "2026-11-08T18:20:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,7 +38,7 @@
   "scope_out": [
     "no touch of the JIS-NUC main folder itself (a per-machine step goes out as mts_signal broadcast); no sync.py change; no live tree"
   ],
-  "scope_sha": "d6d63cf459d6",
+  "scope_sha": "779eb295f037",
   "size": "S",
   "sources": [],
   "state": "ready",

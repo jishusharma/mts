@@ -109,7 +109,7 @@ public class SetupCandidatesBuilderRulesTest {
     @Test
     public void directionsFollowPriceVersusValueAreaAndPoc() throws Exception {
         assertEquals(Arrays.asList("short", "long"), directions(cond("flat", "flat", "above_vah", "above")));
-        assertEquals(Arrays.asList("long"), directions(cond("flat", "flat", "below_val", "below")));
+        assertEquals(Arrays.asList("long", "short"), directions(cond("flat", "flat", "below_val", "below")));
         assertEquals(Arrays.asList("short"), directions(cond("flat", "flat", "in_va", "above")));
         assertEquals(Arrays.asList("long"), directions(cond("flat", "flat", "in_va", "below")));
         assertEquals(Arrays.asList("short", "long"), directions(cond("flat", "flat", "in_va", "at")));
@@ -136,10 +136,11 @@ public class SetupCandidatesBuilderRulesTest {
     // ---------- determineSetupType (TOM-030/140) ----------
 
     @Test
-    public void vahAndSwingHighAreCounterTrendShortsUnlessTrendIsHealthy() throws Exception {
+    public void vahAndSwingHighAreCounterTrendShortsInEveryState() throws Exception {
         assertEquals("ct_short", setupType("daily_vah", "short", "balance"));
         assertEquals("ct_short", setupType("1h_swing_high", "short", "trend_unhealthy"));
-        assertNull(setupType("daily_vah", "short", "trend_healthy"));
+        assertEquals("ct_short", setupType("daily_vah", "short", "trend_healthy"));
+        assertNull(setupType("daily_vah", "long", "trend_healthy"));
         assertNull(setupType("daily_vah", "long", "balance"));
     }
 

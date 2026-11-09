@@ -82,6 +82,55 @@ def lag(repo, now=None, fetch=True):
     return len(out), max(0, now - min(int(x) for x in out))
 
 
+PAGES_CACHE = "mts_pages_stale.json"      # in the git dir: {at, key (registry mtime), slugs}; written by `artifacts.py stale-cache`
+PAGES_REFRESH_BOUND_S = 600                # a refresh marker younger than this blocks a new child (a hung or crashed child never piles up)
+PAGES_TTL_S = 900                         # OURS: building the generated pages takes seconds, so the hook only reads the cache
+
+
+def _spawn_pages_refresh(repo, cache):
+    """Detached `artifacts.py stale-cache`: the hook must stay fast, the page builds run on their own."""
+    flags = getattr(subprocess, "CREATE_NO_WINDOW", 0) | getattr(subprocess, "DETACHED_PROCESS", 0)
+    subprocess.Popen([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale-cache", "--file", str(cache)],
+                     cwd=str(repo), stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=flags)
+
+
+def pages_line(repo, now=None, login=None, spawn=None):
+    """`PAGES STALE n: slugs` for a session on a publisher login (registry publishers) when a page's repo build differs from its last
+    publish; '' for any other login, when nothing is stale, or while the cache is still being built (operator 2026-11-07)."""
+    repo, now = Path(repo), now or time.time()
+    reg_path = repo / "MyTradingSys" / "system" / "artifacts" / "registry.json"
+    try:
+        reg = json.loads(reg_path.read_text(encoding="utf-8"))
+        gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
+        cache = Path(gd) / PAGES_CACHE
+        try:
+            c = json.loads(cache.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            c = {}
+        if login is None:       # env first, then the letter kept in the cache: ~/.claude.json can be many MB
+            login = os.environ.get("MTS_LOGIN", "").strip() or c.get("login")
+            if not login:
+                import mts_signal
+                login = mts_signal.login()
+        if str(login or "").upper()[:1] not in [k for k, v in PUBLISHER_ACCOUNTS.items() if v in (reg.get("publishers") or [])]:
+            return ""
+        if now - float(c.get("at") or 0) >= PAGES_TTL_S or c.get("key") != reg_path.stat().st_mtime_ns:
+            if now - float(c.get("refreshing") or 0) >= PAGES_REFRESH_BOUND_S:
+                c.update({"refreshing": now, "login": str(login).upper()[:1]})      # marker first: a hung child is not respawned each prompt
+                cache.write_text(json.dumps(c), encoding="utf-8", newline=chr(10))
+                (spawn or _spawn_pages_refresh)(repo, cache)
+        slugs = c.get("slugs") or []
+    except Exception:
+        return ""
+    if not slugs:
+        return ""
+    return (f"PAGES STALE {len(slugs)}: {', '.join(slugs)}. A page's repo build differs from what is published: build and publish over its url "
+            f"(`python scripts/dev/artifacts.py republish`, then `publish-record --slug <slug>`; SUPER_SESSION.md Every wake step 3b).")
+
+
+PUBLISHER_ACCOUNTS = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}   # login letter -> registry account (artifacts.LOGIN_ACCOUNT)
+
+
 def check(repo=None, fetch=True):
     repo = Path(repo or os.getcwd())
     if ".mts_live" in repo.resolve().parts:
@@ -279,7 +328,10 @@ def main(argv):
         return 0
     if argv[:1] in (["hook"], ["check"]):
         try:
-            text = check(payload_cwd(sys.stdin.read()) if argv[:1] == ["hook"] else None)
+            cwd = payload_cwd(sys.stdin.read()) if argv[:1] == ["hook"] else None
+            text = check(cwd)
+            if ".mts_live" not in Path(cwd or os.getcwd()).resolve().parts:
+                text = chr(10).join(x for x in (text, pages_line(cwd or os.getcwd())) if x)
         except Exception:
             return 0
         if text:

@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T20:08:15Z",
+  "commands": [],
+  "created": "2026-11-08T19:03:46Z",
+  "depends_on": [],
+  "done_when": "ship in a shared main checkout exits with SyncError and makes no commit; commit_pending skips HALT, AUTO_PAUSE and runtime/*.csv|jsonl|log and names them; test_sync passes",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "sync.py ship --result in JIS-NB's main checkout committed 18 files of other sessions (HALT, AUTO_PAUSE, runtime CSV deletions) as ebdf4dc6b, because commit_pending runs before ship() checks the live marker. Refuse ship in a main checkout that has other worktrees, before any commit; never stage HALT/AUTO_PAUSE or runtime data files.",
+  "id": "ship-refuse-main-checkout-sweep-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "sync.py ship refuses in a main checkout shared with other worktrees before any commit; shi",
+      "ref": "fe14e3977",
+      "utc": "2026-11-08T20:08:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_sync: mock stage_layers in ship CLI tests that point toplevel at the real checkout (3",
+      "ref": "f546a3db001b",
+      "utc": "2026-11-08T16:08:42Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: fix shipped; C to confirm no more sweeps on JIS-NB",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "B (JIS-NUC, Opus)",
+  "refreshed": "2026-11-08T20:03:06Z",
+  "refs": [],
+  "result": "sync.py ship refuses in a main checkout shared with other worktrees before any commit; ship --result never stages HALT, AUTO_PAUSE or runtime/*.csv|jsonl|log|parquet",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/test_sync.py"
+  ],
+  "scope_out": [
+    "cloud single-clone ships (one worktree) keep working"
+  ],
+  "scope_sha": "f546a3db001b",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "fail-first tests",
+    "refuse_shared_main(repo) called in main() before commit_pending",
+    "NEVER_STAGE filter in commit_pending",
+    "run test_sync, ship"
+  ],
+  "taken": "2026-11-08T20:03:07Z",
+  "tests": "scripts/dev/test_sync.py::ShipResultFlagTest::test_commit_pending_never_stages_halt_or_runtime_data, test_refuse_shared_main_checkout",
+  "title": "sync.py ship run from the MAIN checkout swept 18 dirty files of other sessions (HALT, AUTO_PAUSE, runtime CSV deletions, _t02 scripts) into local commit ebdf4dc6b on jis-nb-trunk; ship must refuse when cwd is the main checkout and must never stage runtime/ or execution/HALT|AUTO_PAUSE",
+  "weight": "",
+  "worker": "session"
+}

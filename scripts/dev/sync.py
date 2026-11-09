@@ -3,7 +3,7 @@
   python scripts/dev/sync.py start [slug] [--quiet]  # up to date with origin/fast-track; in a shared/dirty tree makes your own worktree;
                                            # in a lane tree (mts-app, mts-relay, mts-dsa) `start <slug>` switches to branch <host>/<slug>
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
-  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>]  # a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
+  python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>] [--train]  # --train (off by default): push queue/<host>/<slug>, wait on the train status file (ship_train.py; exit 4 = ejected); a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
                                            # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
                                            # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
@@ -150,11 +150,43 @@ def toplevel(path):
 
 
 def refuse_live(repo):
-    if (repo / LIVE_MARKER).exists():
+    if (Path(repo) / LIVE_MARKER).exists():
         raise SyncError(
             f"{repo} is the live tree ({LIVE_MARKER} present). Sessions do not work here.\n"
             f"Make a worktree:  python scripts/dev/sync.py start <slug>  (never `git worktree add -b` by hand: on Windows the ref "
             f"lands under an existing {branch_prefix(repo, socket.gethostname())}/ dir in another case and HEAD never resolves)")
+
+
+def refuse_shared_main(repo):
+    """ship-refuse-main-checkout-sweep-1109: the main checkout of a repo that has other worktrees is a shared hub (JIS-NB's
+    BinanceDataFeed); `ship --result` there committed 18 files of other sessions (ebdf4dc6b). Refuse before any commit.
+    A lone clone (cloud sessions, one worktree) and every linked worktree ship as before."""
+    if not (Path(repo) / ".git").is_dir():      # a linked worktree has a .git FILE: yours
+        return
+    others = len(worktrees(repo)) - 1
+    if others > 0:
+        raise SyncError(
+            f"ship refused: {repo} is the main checkout shared by {others} other worktree(s); its dirty files are "
+            f"other sessions' (HALT, AUTO_PAUSE, runtime data). Make your own:  python scripts/dev/sync.py start <slug>")
+
+
+# Never committed by `ship --result`: live switches and runtime data other processes own (ebdf4dc6b swept them in).
+NEVER_STAGE_NAMES = {"HALT", "AUTO_PAUSE"}
+NEVER_STAGE_RUNTIME_SUFFIXES = (".csv", ".jsonl", ".log", ".parquet")
+
+
+def never_stage(path):
+    p = path.replace(chr(92), "/")
+    name = p.rsplit("/", 1)[-1]
+    return name in NEVER_STAGE_NAMES or ("runtime/" in p and name.lower().endswith(NEVER_STAGE_RUNTIME_SUFFIXES))
+
+
+def was_deleted_on_trunk(repo, path):
+    """ship-result-sweeps-untracked-1109: True when `path` was once tracked on origin/<trunk> and is not there now
+    (a reverted or removed file reappearing on disk). Brand-new files have no history and ship as before."""
+    if git(repo, "cat-file", "-e", f"origin/{TRUNK}:{path}", check=False).returncode == 0:
+        return False
+    return bool(git(repo, "log", "-1", "--format=%h", f"origin/{TRUNK}", "--", path, check=False).stdout.strip())
 
 
 FETCH_TRIES = 3
@@ -784,6 +816,8 @@ def commit_pending(repo, result, subject=None, nxt=None):
     commit whose body ends `Result: <text>` (and `Next: <tag>`). Clean tree: nothing to commit (commits already made keep their own
     messages), except that --next alone adds an empty `route tag` commit carrying it. Returns the file count."""
     tail = (chr(10) + "Next: " + nxt.strip().removeprefix("Next:").strip()) if nxt else ""
+    if (result is not None or nxt) and git(repo, "rev-parse", "--verify", "--quiet", "HEAD", check=False).returncode != 0:
+        raise SyncError("ship refused: HEAD does not resolve (unborn or unreadable ref, e.g. during git auto-gc); a commit now would be an orphan initial commit")
     if result is None:
         if nxt:
             git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
@@ -792,6 +826,20 @@ def commit_pending(repo, result, subject=None, nxt=None):
         raise SyncError("ship --result needs the text of the Result line")
     _, work, _ = tree_state(repo)
     paths = [r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work]
+    if any(x.endswith("/") for x in paths):     # `?? dir/` rows: look inside, a HALT can hide in an untracked folder
+        inner = git(repo, "ls-files", "--others", "--exclude-standard", "--", *[x for x in paths if x.endswith("/")]).stdout.split(chr(10))
+        paths = [x for x in paths if not x.endswith("/")] + [x for x in inner if x.strip()]
+    untracked = {r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work if r.startswith("??")}
+    untracked |= {x for x in paths if x not in {r[3:].split(" -> ")[-1].strip().strip(chr(34)) for r in work}}  # expanded `?? dir/`
+    revived = [x for x in paths if x in untracked and was_deleted_on_trunk(repo, x)]
+    if revived:
+        print(f"--result: left uncommitted (deleted on origin/{TRUNK}, back on disk: a revert's leftovers; `git add` to ship on purpose): "
+              f"{', '.join(revived)}")
+        paths = [x for x in paths if x not in revived]
+    held = [x for x in paths if never_stage(x)]
+    if held:
+        print(f"--result: left uncommitted (live switches / runtime data, never shipped): {', '.join(held)}")
+        paths = [x for x in paths if not never_stage(x)]
     if not paths:
         print("--result: no uncommitted files; existing commits keep their own messages")
         return commit_pending(repo, None, nxt=nxt)
@@ -905,6 +953,7 @@ Pushed = namedtuple("Pushed", "sha files")   # what ship() returns after a push:
 CI_START_S = 90      # OURS: a pushed sha that shows no CI run by now will not get one (ci.yml path filter, offline) - say so and go on
 CI_WAIT_S = 600      # OURS: cap on the whole wait; a run took ~4-6 min on 2026-10-22 (15 jobs). Past it: "still running", never a verdict
 CI_POLL_S = 20       # OURS: 30 calls at most per ship; logged in (ci_watch.token) the API allows 5000 an hour
+TRAIN_EJECT_EXIT = 4   # `sync.py ship --train` exit code when the train ejected this ref (see MyTradingSys/system/SHIP_TRAIN.md)
 CI_RED_EXIT = 3      # `sync.py ship` exit code when the pushed sha's own CI run failed (the push itself succeeded)
 CI_RED_STATES = ("failure", "timed_out", "startup_failure")
 CI_MISSES = 3        # consecutive API failures before the wait gives up as "unknown"
@@ -1177,9 +1226,9 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
-def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None):
+def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
-    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship. Never raises."""
+    (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
     try:
         p = Path(path or os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -1198,6 +1247,7 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
             "retry": round(float(retry_s), 2),
             "secs": round(float(wait_s + run_s + retry_s), 2),
             "ok": bool(ok),
+            "failed_steps": [str(x) for x in (failed_steps or [])],
             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "sha": short_sha,
         }
@@ -1214,9 +1264,30 @@ def _timing_path(repo):
     return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
 
 
-def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True):
+def failed_step_ids(repo, offset=0, path=None):
+    """Ids of gate step rows with ok:false written after byte `offset` of gate_timing.jsonl (ship/ship_wall rows skipped),
+    first-seen order, de-duplicated. Never raises: [] when the log cannot be read."""
+    try:
+        p = Path(path) if path else _timing_path(repo)
+        out = []
+        with open(p, "rb") as fh:
+            fh.seek(offset)
+            for ln in fh.read().decode("utf-8", "ignore").splitlines():
+                try:
+                    r = json.loads(ln)
+                    sid = str(r["step"])
+                    if r.get("ok") is False and sid not in ("ship", "ship_wall") and sid not in out:
+                        out.append(sid)
+                except (ValueError, KeyError, TypeError, AttributeError):
+                    continue
+        return out
+    except Exception:
+        return []
+
+
+def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True, failed_steps=None):
     """Append one `ship_wall` row (the whole ship, start to end) to gate_timing.jsonl; over SHIP_SLOW_S print one
-    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. Never raises."""
+    `SHIP SLOW <n>s: top 3 steps <name secs>` line from the step rows this ship wrote after byte `offset`. The row also carries failed_steps (ids of failed gate steps). Never raises."""
     try:
         p = Path(path) if path else _timing_path(repo)
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -1232,7 +1303,7 @@ def record_ship_wall(repo, wall_s, offset=0, path=None, ok=True):
                         continue
         r = git(repo, "rev-parse", "--short=8", "HEAD", check=False)
         row = {"step": "ship_wall", "name": "sync.ship_wall", "secs": round(float(wall_s), 2), "ok": bool(ok),
-               "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
+               "failed_steps": [str(x) for x in (failed_steps or [])], "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": r.stdout.strip() if r.returncode == 0 else ""}
         with open(p, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(row) + "\n")
         if wall_s > SHIP_SLOW_S:
@@ -1273,12 +1344,13 @@ def stage_layers(repo, fold=False):
     return True
 
 
-def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep):
+def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep, push_ref=None):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
     after_slug (SV3): wait for predecessor order ticket to finish or lapse before running the gate; never holds a gate slot while waiting.
     A lost push race (GATE_SPEED D4) re-merges and pushes again after a 1-5 s jitter, up to SHIP_PUSH_TRIES; it re-runs the gate
     only when the incoming commits overlap what we ship (race_overlap), at most REGATES times.
+    push_ref (`ship --train`, SHIP_TRAIN.md): push to this ref (queue/<host>/<slug>) instead of the trunk; None = the trunk, unchanged.
     Returns Pushed(sha, files) after a push, None when there was nothing to ship (ship-waits-own-ci: main() waits for that sha's CI run)."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
     t_ship_0 = time.monotonic()
@@ -1342,13 +1414,14 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 git(repo, "commit", "--quiet", "-m", f"release {release_slug}" + chr(10) * 2 + f"Result: claim {release_slug} closed with the ship")
                 released = True
             pages = StalePages(repo)       # overlaps the push
-            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{TRUNK}", check=False)
+            dest = push_ref or TRUNK
+            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{dest}", check=False)
             if r.returncode == 0:
                 ok = True
                 write_ship_stamp(repo)
                 if release_slug and not released:
                     released = release_side(repo, release_slug)
-                print(f"shipped {len(files)} file(s) to origin/{TRUNK}" + (f"; released {release_slug}" if released else ""))
+                print(f"shipped {len(files)} file(s) to origin/{dest}" + (f"; released {release_slug}" if released else ""))
                 if released:
                     drop_gateway_hold(repo, release_slug)
                 pages.report()
@@ -1363,8 +1436,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
         raise SyncError(f"push still rejected after {SHIP_PUSH_TRIES} tries:\n{r.stderr}")
     finally:
         if files:
-            record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok)
-            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok)
+            failed = [] if ok else failed_step_ids(repo, log_off)
+            record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok, failed_steps=failed)
+            record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok, failed_steps=failed)
 
 
 def news(repo, hours=24):
@@ -2263,6 +2337,8 @@ def main(argv):
             # B8 (2026-10-28): ship returns as soon as origin has the commit; the CI wait is `sync.py ci` or opt-in `--wait-ci` / SYNC_WAIT_CI=1
             wait_ci = ("--wait-ci" in argv or bool(os.environ.get("SYNC_WAIT_CI"))) and "--no-ci-wait" not in argv and not os.environ.get("SYNC_NO_CI_WAIT")
             argv = [a for a in argv if a not in ("--no-ci-wait", "--wait-ci")]
+            train = "--train" in argv    # flag off by default: the push goes to the trunk exactly as before
+            argv = [a for a in argv if a != "--train"]
             release_slug = None
             if "--release" in argv:
                 i = argv.index("--release")
@@ -2295,6 +2371,8 @@ def main(argv):
             if len(argv) != 1:
                 raise SyncError(f"unknown arguments to ship: {' '.join(argv[1:])}")
             repo = toplevel(Path.cwd())
+            refuse_live(repo)          # before commit_pending: a commit made here is already the damage
+            refuse_shared_main(repo)
             if next_text:
                 commit_pending(repo, result_text, commit_subject, next_text)
             elif result_text is not None:
@@ -2305,7 +2383,24 @@ def main(argv):
                 raise SyncError(f"staged but not committed: {files}; git commit them or use --result")
             check_route_tags(repo)
             stage_layers(repo, fold=True)
-            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug)
+            train_ref = train_since = None
+            if train:
+                import ship_train
+                train_ref = ship_train.queue_ref(git(repo, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip())
+                train_since = ship_train.S.stamp()
+            extra_kw = {"push_ref": train_ref} if train else {}   # default call stays byte-identical (test_sync asserts it)
+            pushed = ship(repo, release_slug=release_slug, after_slug=after_slug, **extra_kw)
+            if train and isinstance(pushed, Pushed):
+                write_last_pushed(repo, pushed)
+                print(f"queued {pushed.sha[:8]} on {train_ref}; waiting for the train's verdict on mts-signals")
+                try:
+                    verdict = ship_train.wait_status(train_ref, since=train_since)
+                except KeyboardInterrupt:
+                    print("stopped waiting for the train; the push is done")
+                    return 0
+                if verdict == "landed":
+                    tidy_after_ship(repo)
+                return TRAIN_EJECT_EXIT if verdict == "ejected" else 0
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 tidy_after_ship(repo)

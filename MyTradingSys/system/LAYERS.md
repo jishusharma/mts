@@ -30,10 +30,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-10-22_tom-btc-other-setups.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
-  - `live-aid-balance-acceptance-1105` ready p2 SONNET: live_aid: draw current balance value area (VAL/POC/VAH) + flag 2x30m acceptance in/out (Tom A-P3/A3, Fabio); b
+  - `tom-fabio-rebuild-from-beginner-videos-1109` ready p1 CODEX: Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what c
+  - `tom-swing-trendline-extract-1109` ready p1 SONNET: Tom swing trading (trendline swings 1-3): extract his rules from the new EN video, map to trendline_core, pre-
   - `tom-btc-dev-backtest` blocked p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
+  - `tom-fabio-auction-context-oos-bt-1107` refined p2 CODEX: Run pre-registered multi-month OOS backtest of auction_context.py on BTC 5m/15m data vs random-entry null
   - `lab-verify-trend-healthy-in-balance` refined p3 SONNET: LAB-VERIFY 10-18: how often trend_healthy is set inside a multi-day balance (DEV)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `tom-btc-other-setups` blocked p3 SONNET: Tom on BTC T8: chart lab + event study for his other trade types (trend continuation pullback to value/VWAP, b
@@ -59,7 +61,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/tom_transfer_2026-10-11/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `fabio-v3-funding-r-never-called` raw p2 SONNET: fabio v3: costs.funding_r is never called by a runner; FABIO-V3 numbers are fee-only
-  - `fabio-v3-model-b-managed-is-rerun` ready p2 JIS-NB: Rerun fabio v3 L3 IS only with managed Model B fills (fix 483a6b035) on JIS-NB; report net R per model
   - `t09-f4-live-window-99-bars-swing-layers` refined p2 JIS-NB: T09-F4 S2: 99-bar live window misses 68 of 96 escalation signals; fetch more bars for swing layers
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `fabio-layer-v2-markets` blocked p5 OPUS: Fabio layer v2 spec, part B: data plan per market, cost, stop width, build + recall cards (Opus research)
@@ -93,7 +94,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Codex lab reports (newest 1 of 1): `MyTradingSys/research/layer_lab/reports/2026-11-04_malkan-window-12-18-vs-hindi.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-window-comparison-needs-a-wider-p` ready p3 SONNET: Malkan window comparison needs a wider-pivot or non-adjacent-swing detector (3 OURS bands held 4 events)
+  - `malkan-level-short-testnet-forward-1109` ready p2 JIS-NB: Testnet forward, context-only: Malkan level short div 3-10 close arm on BTC 4h (count: n=126, +0.11R net, not 
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)
@@ -124,7 +125,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/positioning`
 - Other results: `MyTradingSys/research/_archive/loose_2026-10/OI_DIVERGENCE_V2_2026-10-10.md`; `MyTradingSys/research/_archive/loose_2026-10/OI_EVENT_STUDY_2026-10-10.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `bigcandle-rates-runtime-consumer` raw p3 SONNET: bigcandle-rates consumed by live runner/engine: coordinator deploy decision (rates only descriptive; needs a p
   - `positioning-c1-prereg-no-source` refined p4 SONNET: Positioning C1: pre-registration labelled NO-SOURCE (items 1/6/8/9/11/12, gates 0a/0f)
 
 ## Session / timing (session levels, turn of candle, session momentum) (`session_timing`)
@@ -187,10 +187,11 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-mirror-follow-live-host-move` refined p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
+  - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `live-orderflow-state-line-1m-5m-15m-pric` refined p3 SONNET: Live read: one order-flow state line per TF (1m/5m/15m price swing vs Binance CVD swing vs OI change), descrip
   - `score-context-reads-automatically-carrie` refined p3 SONNET: Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the 
-  - `venue-gap-tight-stop-rerun-on-deribit` raw p3 SONNET: Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)
+  - `venue-gap-tight-stop-rerun-on-deribit` ready p3 DSA-NB: Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)
 
 ## Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) (`callers`)
 - Status: Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.
@@ -217,6 +218,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
+  - `gemini-blind-read-fable-r7-forward-prereg` ready p3 CODEX: [GEMINI] blind read of fable R7 FORWARD_PREREG.md: do the FAIL rule, parity spec and months-to-power arithmeti
+  - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` refined p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
 
@@ -229,9 +232,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/wavetrend_2026-10-17/RESULT.md`; `MyTradingSys/research/wavetrend_2026-10-17/AUDIT_2026-10-18.md`; `MyTradingSys/research/wavetrend_2026-10-17/DISPOSITION_2026-10-19.md`; `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Roadmap: `MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `layer-bible-runtime-1104` raw p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
+  - `layer-bible-runtime-1104` refined p1 SONNET: Layer Bible per family + layer_state.py runtime (d-layer-bible-runtime-1104), WaveTrend pilot; design review C
   - `wavetrend-c1-v2` refined p1 SONNET: WaveTrend C1 detector correction and new count-only prereg
-  - `wt30-div-blind-recount-haiku-1104` ready p2 HAIKU: Haiku blind recount of the coordinator WT 30m divergence and cycle-frequency numbers from the written rule onl
 
 ## Pitchfork (Andrews / Schiff / Morge median line) (`pitchfork`)
 - Status: Pivot amplitude gate is OURS (2 pct reversal, no ATR); doc Rule P-01 2.5 x ATR14 not implemented. Detector, simulator desk plugin (studies/pitchfork.py), and live Java engine (PitchforkSignalLayer.java with Tine Bounce + Hagopian Failure + Volume Profile confluence) built and wired; no edge: the 4H PASS was withdrawn 2026-11-03 after an exact causal rerun (research/mts_audit_2026-11-03/AUDIT.md).
@@ -247,7 +249,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `pitchfork-engine-implement-hagopian-fail` refined p2 OPUS: Pitchfork engine: implement Hagopian failure breakout candidates (PF-HAG-L / PF-HAG-S) in Java
   - `pitchfork-fixes-live-java` refined p2 JIS-NB: Pitchfork live Java review fixes: F3 stale-bounce gate parity, F6 inverted-fork tine, F7/F9 labels
   - `pitchfork-live-4h-bars-too-few` refined p2 JIS-NB: pitchfork live: snapshot fetches 3 x 4h bars, PitchforkSignalLayer needs 15, so mts.pitchfork=true never fires
-  - `pitchfork-operator-charts-prep` ready p2 SONNET: pitchfork: classify operator's pitchfork charts, measure copy-paste (parallel) forks vs random parallels (spec
   - `sim-desk-plug-in-pitchfork-4h-tine-bounc` refined p2 OPUS: Sim desk: plug in Pitchfork 4H tine-bounce study adapter (Modified Schiff + Volume Profile)
 
 ## Pizzino (Jason bar count + Michael nested swing states) (`pizzino`)

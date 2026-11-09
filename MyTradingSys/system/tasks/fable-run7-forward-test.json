@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-28 (asked this session directly: design the next Opus runs / the next Fable run); the operator starting the run by hand is the approval",
   "asks": "",
+  "closed": "2026-11-08T19:07:17Z",
   "commands": [],
   "created": "2026-10-28T09:31:57Z",
   "crucial": "freezes the forward test of the only powered family before its DEV outcome is known",
@@ -15,32 +16,44 @@
   "lane": "OPUS",
   "latest": [
     {
+      "kind": "ship",
+      "line": "FORWARD_PREREG.md on trunk: frozen R6 Krown S8 4h trades Deribit testnet BTC-PERPETUAL unt",
+      "ref": "4eb9d0f46",
+      "utc": "2026-11-08T19:07:17Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "gpt-spec-tests-live-aid: spec tests for flow-feeds and analyst-verdict",
-      "ref": "e5846046ca67",
-      "utc": "2026-11-03T17:40:39Z"
+      "line": "fable R6: re-land counts-only power screen + Krown S8 pre-reg, add COST_BP to costs.csv",
+      "ref": "622a5599aaa3",
+      "utc": "2026-10-28T09:42:43Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "89619dbe5f66 wiring audit builder: restore full tree after an index slip; lint-clean quote",
+      "line": "622a5599aaa3 fable R6: re-land counts-only power screen + Krown S8 pre-reg, add COST_BP to",
       "ref": "MyTradingSys/research/fable_runs_2026-10-28/USAGE.md",
-      "utc": "2026-10-28T22:03:30Z"
+      "utc": "2026-10-28T09:42:43Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "krown-s8-4h-testnet-build",
   "note": "Operator-run only; no session may start or message it.\nHOLD 2026-10-28: E2 was INCONCLUSIVE (332 entry days); at 0.20 entry days/day a forward read needs about 72 months. Run only if REVIEW_O2.md says R7 = run.\nLane OPUS as for fable-run6-powered-prereg (operator-run Fable 5.1 cards use lane OPUS; no FABLE lane exists in tasks.py).\nREVIEWED: Lab_Guy 2026-10-28 ACCEPT (independent Sonnet reviewer; second pass after must-fixes)\nREVIEWED: Opus_O2 2026-10-28 a REFRESHED 2026-11-02: operator decision d-fable-r5-r7-run (commit 9902f31b5) approved R5+R7 on 2026-10-30; approved_by is satisfied. FORWARD_PREREG.md still not on trunk. REVIEWED:2026-11-04 HOLD (scope folder fable_run7_forward_test missing; operator-run only)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-04T15:47:49Z",
+  "refreshed": "2026-11-08T18:20:38Z",
   "refs": [
     "MyTradingSys/system/handover/FABLE_RUN_R7.md"
   ],
-  "result": "",
+  "result": "FORWARD_PREREG.md on trunk: frozen R6 Krown S8 4h trades Deribit testnet BTC-PERPETUAL until FAIL-A 12 R drawdown / FAIL-B 12 losers / FAIL-C n>=30 mean+1.28SE<0 (OURS); parity = 0 mismatches vs R6's 277 BTC events; months to power 86 (BTC) / 44 (3 symbols), information only; 4 cards ready",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_run7_forward_test/",
     "MyTradingSys/research/fable_runs_2026-10-28/USAGE.md",
@@ -49,18 +62,19 @@
   "scope_out": [
     "live tree, deploy, mainnet, .secrets, .env, outcome columns and bars >= 2024-07-01"
   ],
-  "scope_sha": "e5846046ca67",
+  "scope_sha": "622a5599aaa3",
   "size": "M",
   "sources": [
     "MyTradingSys/research/fable_run_design_2026-10-28/DESIGN_R7.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Parity spec + replay test spec reproducing R6 event list",
     "Forward sample rule and months to power from COUNTS.csv",
     "Pass/fail rule and isolation from other testnet sources",
     "Build/parity/readout cards; USAGE.md R7; ship"
   ],
+  "taken": "2026-11-08T19:07:17Z",
   "tests": "replay parity test spec: live decision code on cached 4h klines must reproduce R6 events with 0 mismatches (fails until the build card ships)",
   "title": "Fable run 7: forward test design, testnet trades the frozen R6 Krown S8 4h rule as fresh OOS data",
   "weight": "IMPORTANT",

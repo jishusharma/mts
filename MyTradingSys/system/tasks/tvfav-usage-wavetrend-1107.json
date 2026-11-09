@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T16:07:01Z",
+  "commands": [],
+  "created": "2026-11-07T15:37:20Z",
+  "depends_on": [],
+  "done_when": "research/tv_favorites_2026-11/USAGE_wavetrend.md per MyTradingSys/system/SPEC_INDICATOR_MAP.md step 1: author intent, 3-5 sources each with a quote verified by scripts/dev/verify_extract_quotes.py (exit 0; YouTube via captions only), crypto/BTC filter, pitfalls + SOURCED/OURS parameters, one-line what-it-measures. Under 6000 bytes, no verdict, no code.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Know how the author and practitioners say this indicator is used, and which of those uses hold for Bitcoin/crypto, before MTS groups it with the other layers.",
+  "id": "tvfav-usage-wavetrend-1107",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "USAGE_wavetrend.md: 4 sources verified by verify_extract_quotes (LazyBear, lonestar108, MC",
+      "ref": "47d68f923",
+      "utc": "2026-11-07T16:07:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "indicator-map-1107",
+  "note": "Gemini queue on the NUC, load as <card>:low (gemini-always-low-effort). Reading only; Gemini never writes to the chart or the engines. Companion cards: the other three tvfav-usage-* cards; consumer: indicator-map-1107.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T15:37:20Z",
+  "refs": [
+    "MyTradingSys/system/SPEC_INDICATOR_MAP.md",
+    "MyTradingSys/research/tv_favorites_2026-11/FAVORITES_2026-11-07.md"
+  ],
+  "result": "USAGE_wavetrend.md: 4 sources verified by verify_extract_quotes (LazyBear, lonestar108, MC-B community, MTS census); measures swing position and momentum oscillation",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tv_favorites_2026-11/USAGE_wavetrend.md (new)|WaveTrend Oscillator + WaveTrend with Crosses (LazyBear notes, original WT idea, how traders use the zones and crosses)|the public script page and the sources named in the spec"
+  ],
+  "scope_out": [
+    "no backtest|no engine change|no new threshold|no trading rule|no YouTube quotes without captions"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "operator 2026-11-07 voice (chat, Lead C turn 15:30Z): understand how people use the favourites, LazyBear/Carter/Katsanos, crypto filter, then group indicators and analysts by what they measure; d-favourites-usage-then-map-1107"
+  ],
+  "state": "done",
+  "steps": [
+    "read FAVORITES_2026-11-07.md row + SPEC step 1|collect sources (script page, author text, 3-5 articles)|extract quotes to the md, run verify_extract_quotes until exit 0|write the five sections|ship with Result: <n sources, what it measures> Next: indicator-map-1107"
+  ],
+  "taken": "2026-11-07T16:07:01Z",
+  "tests": "scripts/dev/verify_extract_quotes.py MyTradingSys/research/tv_favorites_2026-11/USAGE_wavetrend.md exit 0",
+  "title": "TV favourite usage research: WaveTrend Oscillator + WaveTrend with Crosses",
+  "weight": "",
+  "worker": "agent"
+}

@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T11:12:25Z",
+  "commands": [
+    "python scripts/aibridge/test_aibridge_account_lease.py"
+  ],
+  "created": "2026-11-08T09:50:27Z",
+  "depends_on": [],
+  "done_when": "run_all_tests --quick green locally; shipped; CI green is read with sync.py ci; Result names the commit and says nothing is installed on any machine",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A reverted AIBridge 0.7.33 (revert 4c0bf2cc7) because CI on ubuntu failed in test_aibridge_account_lease: subprocess creationflags exists only on Windows. The guard (pacing, account lease, stop on warning, one armed chat) is wanted back; only the test needs a platform skip.",
+  "id": "aibridge-0733-reland-skip-win-test-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Re-landed AIBridge 0.7.33 (09b4afae8, CI green run 42473373422). Lease live-agent test ski",
+      "ref": "cbaa75451",
+      "utc": "2026-11-08T11:12:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease uses crea",
+      "ref": "4c0bf2cc7e80",
+      "utc": "2026-11-08T09:14:24Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: operator installs 0.7.33 (aibridge_install.py --restart-agent) after the DeepSeek suspension lifts 2026-11-11",
+  "note": "Linux CI runs this test; a skip must name the reason. If the test file path differs, find it with git ls-files | grep account_lease.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T10:34:44Z",
+  "refs": [
+    "MyTradingSys/system/DSA_BLOCK_REVIEW.md"
+  ],
+  "result": "Re-landed AIBridge 0.7.33 (09b4afae8, CI green run 42473373422). Lease live-agent test skipped off Windows and uses a foreign host name. Nothing installed on any machine.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/aibridge/ (test file only, plus the revert of 4c0bf2cc7)"
+  ],
+  "scope_out": [
+    "no install on any machine|no change to pacing numbers|no live tree touch"
+  ],
+  "scope_sha": "4c0bf2cc7e80",
+  "size": "S",
+  "sources": [
+    "login A signal 0914Z: CI RED on 0.7.33, creationflags Windows-only"
+  ],
+  "state": "done",
+  "steps": [
+    "git revert 4c0bf2cc7; add the platform skip to the creationflags case; run the lease test and the quick suite; ship; read CI"
+  ],
+  "taken": "2026-11-08T10:34:45Z",
+  "tests": "scripts/aibridge/test_aibridge_account_lease.py",
+  "title": "Re-land AIBridge 0.7.33 (DeepSeek block guard): CI was red because test_aibridge_account_lease uses Windows-only creationflags on ubuntu; skip that case off Windows",
+  "weight": "",
+  "worker": "agent"
+}

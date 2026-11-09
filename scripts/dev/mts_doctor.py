@@ -21,6 +21,7 @@ import subprocess
 import sys
 import time
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -487,6 +488,7 @@ def ship_time(log, now=None, hours=24):
     if not log.is_file():
         return "unavailable", f"{log.as_posix()} missing (written by sync.py record_ship_timing / run_all_tests.py record_timing on this machine)"
     now = now or datetime.now(timezone.utc)
+    fails = {}
     ships, gates, cur = [], [], {}      # cur: sha -> [steps seen, first start, last end]; a repeated step number is a new gate run
     for ln in log.read_text(encoding="utf-8", errors="ignore").splitlines():
         try:
@@ -499,6 +501,8 @@ def ship_time(log, now=None, hours=24):
             continue
         if r.get("step") == "ship_wall":
             ships.append(secs)
+            for sid in r.get("failed_steps") or []:
+                fails[str(sid)] = fails.get(str(sid), 0) + 1
             continue
         if r.get("step") == "ship":
             continue
@@ -513,6 +517,8 @@ def ship_time(log, now=None, hours=24):
         return "unavailable", f"no rows in the last {hours} h of {log.as_posix()}"
     parts = [f"ship_wall n={len(ships)} median {_median(ships):.0f}s p90 {_p90(ships):.0f}s" if ships else "ship_wall no rows"]
     parts.append(f"gate n={len(g)} median {_median(g) / 60:.1f} max {max(g) / 60:.1f} min" if g else "gate no rows")
+    if fails:
+        parts.append("failing steps: " + ", ".join(f"{k} x{v}" for k, v in sorted(fails.items(), key=lambda kv: (-kv[1], kv[0]))[:3]))
     if ships and max(_median(ships), _p90(ships)) > SHIP_MAX_S:
         return "WARN", f"{'; '.join(parts)}; ship over {SHIP_MAX_S}s: profile the slowest gate steps in {log.as_posix()}"
     return "OK", "; ".join(parts)
@@ -999,11 +1005,24 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     repo = Path(repo)
     files = tracked(repo)
     docs = ai_files(repo, files)
-    findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + card_warnings(repo)
-                + dup_cards(repo) + skills(repo, docs) + hook_drift(repo))
     day = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     out = Path(out_dir) if out_dir else repo / OUT_REL
-    checks = checklist(repo, process, now)
+    # The slow parts are subprocess / network waits (tasks.py lint ~12 s, tasks.py twins ~2 s, the GitHub audit ~10 s, the
+    # checklist ~12 s): run them side by side so a run costs the slowest one, not the sum. Result order is unchanged.
+    if process:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import health_audit
+    with ThreadPoolExecutor(max_workers=5) as ex:
+        f_cards = ex.submit(card_warnings, repo)
+        f_dups = ex.submit(dup_cards, repo)
+        f_checks = ex.submit(checklist, repo, process, now)
+        f_audit = ex.submit(health_audit.build, hours) if process else None
+        f_cost = ex.submit(cost_checkup, repo, now)
+        findings = (dead_refs(repo, files, docs) + duplicates(repo, docs) + memory_drift(memory_dir) + f_cards.result()
+                    + f_dups.result() + skills(repo, docs) + hook_drift(repo))
+        checks = f_checks.result()
+        audit_text = f_audit.result() if f_audit else None
+        cost_lines = f_cost.result()
     lines = [health_line(checks), "", f"# MTS doctor report {day}", "", "Checklist (OK / WARN / unavailable)", ""]
     lines += [f"- [{s}] {n}: {d}" for n, s, d in checks]
     lines += ["", f"Part 1: AI health ({len(docs)} guidance files checked). Reports only; nothing was edited.", "",
@@ -1012,16 +1031,14 @@ def run(repo=REPO, out_dir=None, memory_dir=None, process=True, hours=72, now=No
     lines += ["Findings: " + ", ".join(f"{k} {v}" for k, v in counts.items()), ""]
     lines += [f"- [{k}] {where}: {msg} | fix: {fix}" for k, where, msg, fix in findings] or ["- none"]
     if process:
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import health_audit
-        text = health_audit.build(hours)
+        text = audit_text
         prev = previous_metrics(out, day)
         now_m = dict(kv.split("=", 1) for kv in re.search(r"^METRICS (.*)$", text, re.M).group(1).split()) if "METRICS " in text else {}
         delta = [f"{k} {prev[k]} -> {v}" for k, v in now_m.items() if k in prev and prev[k] != v]
         lines += ["", "Part 2: process health (trunk and CI at run time)", "",
                   "Since the previous report: " + (", ".join(delta) if delta else ("no change" if prev else "no earlier report")), "",
                   text.replace("# health audit", "## Process detail", 1)]
-    lines += ["", *cost_checkup(repo, now)]
+    lines += ["", *cost_lines]
     out.mkdir(parents=True, exist_ok=True)
     path = out / f"REPORT_{day}.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")

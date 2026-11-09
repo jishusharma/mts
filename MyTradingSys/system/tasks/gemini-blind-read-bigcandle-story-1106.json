@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-06T17:33:01Z",
+  "commands": [
+    "python scripts/dev/gemini_queue.py run gemini-blind-read-bigcandle-story-1106:low"
+  ],
+  "created": "2026-11-06T16:48:54Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_BIGCANDLE_1106.md exists with a per-claim table (claim, recomputed value or file:line, MATCH|MISMATCH) and ends with VERDICT: MATCH or MISMATCH; each defect names file:line.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent blind read (gemini_queue.py, effort low) of bigcandle_story_2026-11-05: recompute each quoted number from RESULT.md, tables.md, PRE_REG.md and flag contradictions with PRE_REG.md.",
+  "id": "gemini-blind-read-bigcandle-story-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_BIGCANDLE_1106.md",
+      "ref": "81f4c3181",
+      "utc": "2026-11-06T17:33:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "bigcandle: unique test name (gate discovery) + decided header (Home size)",
+      "ref": "0ae2b72c06f7",
+      "utc": "2026-11-05T14:51:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0ae2b72c06f7 bigcandle: unique test name (gate discovery) + decided header (Home size)",
+      "ref": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
+      "utc": "2026-11-05T14:51:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "gpt-spec-tests-bigcandle-story-study-1106",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T16:48:55Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_BIGCANDLE_1106.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_BIGCANDLE_1106.md (new)",
+    "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md (read)",
+    "MyTradingSys/research/bigcandle_story_2026-11-05/tables.md (read)",
+    "MyTradingSys/research/bigcandle_story_2026-11-05/PRE_REG.md (read)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "0ae2b72c06f7",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the source files before any prose summary",
+    "Recompute independently of the code under read",
+    "Write the table and VERDICT"
+  ],
+  "taken": "2026-11-06T17:33:01Z",
+  "tests": "python -c \"import pathlib; p=pathlib.Path('MyTradingSys/research/layer_lab/reports/2026-11-06_BLIND_READ_BIGCANDLE_1106.md'); assert p.exists() and 'VERDICT' in p.read_text()\"",
+  "title": "[GEMINI] blind read of bigcandle_story RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

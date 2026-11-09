@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T06:17:25Z",
+  "commands": [
+    "python scripts/dev/tasks.py show worker-briefs-name-tasks-py-show-id-but-"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-08T06:17:23Z",
+    "misses": 12,
+    "reads": [
+      "scripts/dev/test_tasks.py",
+      "scripts/dev/test_tasks_conflict.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a560e48adc7eeec42"
+  },
+  "created": "2026-11-07T14:24:08Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/tasks.py show <id> prints the card JSON; test added in scripts/dev/test_tasks.py",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Add a 'show <id>' verb to tasks.py that prints one card, since worker briefs already name it",
+  "id": "worker-briefs-name-tasks-py-show-id-but-",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py show <id> verb added + test",
+      "ref": "ee20cc241",
+      "utc": "2026-11-08T06:17:25Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/dsa-seed-reland-1107",
+      "ref": "1bdd06734509",
+      "utc": "2026-11-07T23:01:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: shipped",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T03:55:53Z",
+  "refs": [],
+  "result": "tasks.py show <id> verb added + test",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/tasks.py"
+  ],
+  "scope_out": [
+    "brief template wording"
+  ],
+  "scope_sha": "1bdd06734509",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "add show subparser",
+    "add test failing before"
+  ],
+  "taken": "2026-11-08T06:17:25Z",
+  "tests": "python -m pytest scripts/dev/test_tasks.py -k show",
+  "title": "worker briefs name 'tasks.py show <id>' but tasks.py has no show verb; add it or fix the brief template | done-when: tasks.py show <id> prints the card",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

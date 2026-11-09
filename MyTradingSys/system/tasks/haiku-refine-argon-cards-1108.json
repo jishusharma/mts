@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T21:32:14Z",
+  "commands": [
+    "python scripts/dev/tasks.py check java-va-state-asymmetry-fix-1108"
+  ],
+  "created": "2026-11-07T18:58:54Z",
+  "depends_on": [],
+  "done_when": "Ship with Result: 3 cards READY, Next: java-va-state-asymmetry-fix-1108",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "java-va-state-asymmetry-fix-1108, auction-context-event-census-1108 and auction-plan-testnet-forward-1108 are raw; the credit runner refuses raw cards. Scope them from their notes and refs, never write product code.",
+  "id": "haiku-refine-argon-cards-1108",
+  "lane": "HAIKU",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "superseded by refine-batch-1108",
+  "pinned": false,
+  "prio": 1,
+  "reason": "superseded by refine-batch-1108",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/PLAN_8H_2026-11-08.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/java-va-state-asymmetry-fix-1108.json",
+    "MyTradingSys/system/tasks/auction-context-event-census-1108.json",
+    "MyTradingSys/system/tasks/auction-plan-testnet-forward-1108.json"
+  ],
+  "scope_out": [
+    "no product code|no test code|only tasks.py fill and tasks.py check|never change a card's source or note text, only add fields|no card other than these three"
+  ],
+  "size": "S",
+  "sources": [
+    "Lead C 2026-11-08 plan: credit slot J2"
+  ],
+  "state": "dropped",
+  "steps": [
+    "for each id: python scripts/dev/tasks.py show-free read of the json (open the file), read its refs and the audit AUDIT_AND_COURSE_CORRECTION.md Part 4",
+    "tasks.py fill <id> with --goal --scope-in --scope-out --step --tests --done-when --size --est-turns --worker (worker session when size M or est_turns > 15)",
+    "tasks.py check <id> until READY; sync.py ship with Result and Next"
+  ],
+  "tests": "",
+  "title": "Refine the 3 Argon review cards so they pass tasks.py check: goal, scope, steps, tests named, done_when, size, est_turns",
+  "weight": "",
+  "worker": "agent"
+}

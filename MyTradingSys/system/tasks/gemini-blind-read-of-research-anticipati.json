@@ -14,21 +14,7 @@
   "id": "gemini-blind-read-of-research-anticipati",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [
-    {
-      "kind": "ship",
-      "line": "MyTradingSys/research/gemini_audits_2026-11-05/BLIND_READ_ANTICIPATION_MAP_1105.md: 21856 ",
-      "ref": "9ab8cb7fa",
-      "utc": "2026-11-06T12:56:59Z"
-    },
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "anticipation map: price x OI x taker delta readings with DEV base rates in live_aid, score",
-      "ref": "93841e3eace7",
-      "utc": "2026-11-05T01:06:27Z"
-    }
-  ],
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -43,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "anticipation-map-1105",
-  "refreshed": "2026-11-06T12:50:18Z",
+  "refreshed": "2026-11-05T01:06:00Z",
   "refs": [
     "MyTradingSys/research/anticipation_map_2026-11-05/RESULT.md"
   ],

@@ -1,0 +1,80 @@
+{
+  "approved_by": "operator 2026-11-08 chat ~20:20Z: reviews by Fable and Opus, combined by a higher model (d-news-research-first-reviews-synthesis-1108)",
+  "asks": "",
+  "closed": "2026-11-08T19:58:27Z",
+  "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/check_review.py REVIEW_MARKET.md"
+  ],
+  "created": "2026-11-07T20:07:29Z",
+  "crucial": "second independent high-model review with a different lens, required by the operator before the design is fixed",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/news_effects_2026-11/REVIEW_MARKET.md: for each repeat pattern in the catalogue a stated mechanism and how to test it, the list of context variables a weight must read (surprise, prior move, funding or positioning, session, regime), news classes that are only noise, and what Trump-era news changed; written without reading the other reviewer",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A second reviewer, different model and different lens, asks why the same news sometimes does not work twice: positioning, surprise vs expectation, who was already in the trade, regime, liquidity, time of day, and what reflexive effects the catalogue misses.",
+  "id": "news-effect-review-market-lens-1108",
+  "lane": "OPUS",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped 9c66361a0 (2026-11-08): REVIEW_MARKET.md; card was left open",
+      "ref": "324ff28ff",
+      "utc": "2026-11-08T19:58:27Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect-review-market-lens-1108: market-structure review of the news-effect catalogue",
+      "ref": "9c66361a0c20",
+      "utc": "2026-11-08T04:57:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "9c66361a0c20 news-effect-review-market-lens-1108: market-structure review of the news-effe",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REVIEW_MARKET.md",
+      "utc": "2026-11-08T04:57:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: review shipped",
+  "note": "Independent lens 2. Model: Fable when api_job supports it (see the runner model card), otherwise Opus 5.5; record which in the ledger line.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:20:55Z",
+  "refs": [
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+    "MyTradingSys/research/mts_bible/BIBLE.md"
+  ],
+  "result": "Already shipped 9c66361a0 (2026-11-08): REVIEW_MARKET.md; card was left open",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/REVIEW_MARKET.md (new)"
+  ],
+  "scope_out": [
+    "no edits to the catalogue|no weight or flash rule|do not read any other review file"
+  ],
+  "scope_sha": "9c66361a0c20",
+  "size": "S",
+  "sources": [
+    "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
+  ],
+  "state": "done",
+  "steps": [
+    "read the catalogue report and csv; write the review from the market-structure lens"
+  ],
+  "taken": "2026-11-08T19:58:27Z",
+  "tests": "MyTradingSys/research/news_effects_2026-11/check_review.py",
+  "title": "Independent second review (Fable if the credit runner supports it, else Opus) of the news-effect catalogue from the market-structure and surprise lens",
+  "weight": "",
+  "worker": "agent"
+}

@@ -20,31 +20,54 @@
   },
   "created": "2026-11-06T12:19:21Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_supervisor.py has a case where boot output contains the exhaust.py plan line for the login (stubbed) and a missing plan prints WEEKLY PLAN MISSING; fails on current code.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Supervisor boot prints the weekly pace plan for its login (exhaust.py plan), so a missed weekly 16 pct (A, 11-06) is visible at boot.",
   "id": "weekly-plan-per-login-wired-into-supervi",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_supervisor: pin MTS_LOGIN in test_verify_cli_writes_stale (host-independent)",
+      "ref": "5d2844c0f5a5",
+      "utc": "2026-11-08T12:05:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Supervisor boot only; no change to its loop. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-08T19:12:49Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/exhaust.py (read)",
+    "scripts/dev/test_supervisor.py"
+  ],
+  "scope_out": [
+    "no change to exhaust.py maths",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "5d2844c0f5a5",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Find the supervisor boot print path",
+    "Write failing test with exhaust.plan stubbed",
+    "Call it and print one line; on error print WEEKLY PLAN MISSING",
+    "Run test_supervisor.py"
+  ],
+  "tests": "new case in scripts/dev/test_supervisor.py fails on current code",
   "title": "weekly plan per login wired into supervisor boot: A missed 16pct weekly 11-06",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

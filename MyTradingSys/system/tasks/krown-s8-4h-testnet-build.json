@@ -1,0 +1,98 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T19:48:03Z",
+  "commands": [
+    "python -m pytest MyTradingSys/execution/test_auto_trader_krown_s8.py MyTradingSys/backtest/layers/krown/test_krown_live.py -q",
+    "python -m pytest MyTradingSys/research/fable_run7_forward_test/test_s8_forward_parity.py -q",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-08T19:02:01Z",
+  "crucial": "first testnet-forward source under d-phase-first-method-1106; the only new OOS data the edge program gets",
+  "depends_on": [
+    "fable-r3-stop-gap-early-return"
+  ],
+  "done_when": "Tests green, each new test shown failing on the pre-change tree; run_all_tests.py --quick green; test_s8_forward_parity.py (card krown-s8-forward-parity-test) passes with 0 mismatches on 277 BTC events against this tree; commit Result: parity 0 mismatches / 277 events + deploy request; Next: krown-s8-forward-parity-test",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Wire the frozen R6 Krown S8 4h rule to Deribit TESTNET exactly as FORWARD_PREREG.md section 1 pins it: krown_live.s8_events (imports setup_s8 + e2_run stop semantics) registered for BTCUSDT 4h in live_runner_cli; alert fields per section 1; auto_trader targets_r exit key (fail closed), exits/accounts entries, promoted_setups entry mode testnet; 0.56 percent floor skip counted.",
+  "id": "krown-s8-4h-testnet-build",
+  "kind": "build",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "parity 0 mismatches / 277 BTC events; deploy request in NEXT_SESSION.md",
+      "ref": "5e79b5503",
+      "utc": "2026-11-08T19:48:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "fable R7: forward pre-reg, frozen Krown S8 4h trades Deribit testnet until it fails",
+      "ref": "f1597a359857",
+      "utc": "2026-11-08T19:07:40Z"
+    }
+  ],
+  "layers": [
+    "krown"
+  ],
+  "live_path": true,
+  "mutation_check": "",
+  "next": "krown-s8-forward-weekly-readout",
+  "not_twin_of": [
+    "fable-run7-forward-test"
+  ],
+  "note": "Lane JIS-NB because live_path=true (tasks.py check gate: builders never touch the live tree); Lead C asked SONNET, conflict logged 2026-11-09. Builder wires the signal, never places a trade or deploys: card ends with a deploy request (DEPLOY_RUNBOOK.md) + the operator's one subaccount step (FABIO_TESTNET_SLOT.md pattern, account krown_s8).\nREVIEWED: Lab_Guy 2026-11-09 ACCEPT (independent Haiku Agent; must-fixes applied the same turn)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T19:12:43Z",
+  "refs": [
+    "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/PRE_REG.md",
+    "MyTradingSys/research/fable_run6_powered_prereg/e2_run.py"
+  ],
+  "result": "parity 0 mismatches / 277 BTC events; deploy request in NEXT_SESSION.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/krown/krown_live.py",
+    "MyTradingSys/backtest/layers/krown/test_krown_live.py",
+    "MyTradingSys/backtest/layers/alerts/live_runner_cli.py",
+    "MyTradingSys/execution/auto_trader.py",
+    "MyTradingSys/execution/auto_trader_config.json",
+    "MyTradingSys/execution/promoted_setups.json",
+    "MyTradingSys/execution/test_auto_trader_krown_s8.py",
+    "MyTradingSys/research/fable_run7_forward_test/"
+  ],
+  "scope_out": [
+    "krown_events.py, krown_core.py, krown_params.json, e2_run.py, PRE_REG.md (frozen: any edit = R7 re-run)",
+    "live tree .mts_live, deploy, HALT, process restart, any order by hand, mainnet, .secrets, .env",
+    "no real bar >= 2024-07-01 in any fixture (a synthetic timestamp planted only to assert the guard refuses is allowed); no E2 RESULT.md read"
+  ],
+  "scope_sha": "f1597a359857",
+  "size": "M",
+  "sources": [
+    "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read FORWARD_PREREG.md sections 0, 1, 4 and the pinned e2_run.py lines 48-89; copy no logic, import it",
+    "krown_live.s8_events(bars) in the runner bar shape; register BTCUSDT 4h in live_runner_cli; alert fields per section 1",
+    "auto_trader: targets_r exit key with fail-closed validation; config exits/accounts entries; promoted_setups entry mode testnet",
+    "Tests (tests field) written first, each shown failing on the pre-change tree, then green",
+    "Run the parity test from krown-s8-forward-parity-test against this tree; 0 mismatches or stop and report the diff",
+    "Ship; Result line; deploy request + operator subaccount step in the commit body and NEXT_SESSION.md"
+  ],
+  "taken": "2026-11-08T19:48:03Z",
+  "tests": "execution/test_auto_trader_krown_s8.py: targets_r = 2 x event stop pct; malformed targets_r rejects; floor skip counted; restart with open krown_s8 position + no journaled stop re-places it; non-trade balance move leaves size unchanged; API error on entry = no naked position; missing secret falls to main slot + log. krown/test_krown_live.py: one-bar incremental feed == batch events (no repaint).",
+  "title": "Krown S8 4h forward test: wire the frozen R6 rule to Deribit testnet (BTC-PERPETUAL, own account, targets_r exit)",
+  "weight": "CRUCIAL",
+  "worker": "session"
+}

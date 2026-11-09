@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T20:34:26Z",
+  "commands": [],
+  "created": "2026-11-06T19:54:03Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_boot_audit.py has a case where the removal command returns nonzero and --fix output contains FAIL plus the stderr reason; exit code nonzero.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "boot_audit.py --fix prints FAIL with the reason when a task removal fails (MTS-Wrapper, admin needed) instead of 'nothing to fix'.",
+  "id": "boot-audit-fix-reports-nothing-to-fix-wh",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "redo after CI-red revert: --fix prints FIX FAIL could not remove task and exits 1; test no",
+      "ref": "1929b5ede",
+      "utc": "2026-11-07T20:34:26Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "boot audit: tasks running MTS files are ours; skip in-flight one-shots",
+      "ref": "82a65b59fcf7",
+      "utc": "2026-11-06T12:54:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: fixed",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Host boot audit only, not the live runner.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:34:05Z",
+  "refs": [],
+  "result": "redo after CI-red revert: --fix prints FIX FAIL could not remove task and exits 1; test now patches sys.platform so it passes on ubuntu CI too",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/boot_audit.py",
+    "scripts/dev/test_boot_audit.py"
+  ],
+  "scope_out": [
+    "no change to which tasks count as MTS-owned",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "82a65b59fcf7",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read apply_fix in boot_audit.py",
+    "Add failing test with a stub removal that returns rc=1",
+    "Make apply_fix return a FAIL line with the reason and main exit nonzero",
+    "Run test_boot_audit.py"
+  ],
+  "taken": "2026-11-07T20:34:26Z",
+  "tests": "new case in scripts/dev/test_boot_audit.py fails on current code (line 236 prints 'nothing to fix'), passes after",
+  "title": "boot_audit --fix reports 'nothing to fix' while MTS-Wrapper still exists (removal needs admin, error swallowed); done when --fix prints FAIL with the reason for a task it could not remove",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

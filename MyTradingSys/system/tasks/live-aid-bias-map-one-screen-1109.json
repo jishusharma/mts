@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-09T09:52:45Z",
+  "commands": [],
+  "created": "2026-11-09T05:41:35Z",
+  "depends_on": [],
+  "done_when": [
+    "Live Aid has a Map tab (the Playbook tab becomes it) that fits one screen with no scroll at 1920x1040 and at 400x860 (phone): top = bias dial LONG / SHORT / HOLD in green / red / grey with the count of Live Aid sections agreeing (e.g. 4 of 6), built only from verdicts other Live Aid sections already show",
+    "Price ladder graphic, not a list: price marker plus at most the 3 nearest zones above and 3 below; levels within 0.15 % merge into one zone; each zone a colour band with a 1-2 word label and small source badges (PDH, VAH, analyst initials); the 11-level text line is gone",
+    "Session strip Asia 00-08Z / Europe 07-13Z / US 13-21Z as a timeline with the current session lit, one arrow or icon per session for the expected move, and the next event as a countdown chip; at most 3 scenario cards as icon + trigger + target in 8 words or fewer, each linked to its scenario-ledger id",
+    "Dedupe: one level registry feeds every Live Aid tab (analyst levels, playbook levels, MA/BB strips, events); a level that appears in two sections shows once with merged badges; the same headline or event never shows twice",
+    "test_live_aid_map.py fails on the pre-change code, then passes: visible-word budget at most 60 on the Map tab, rendered height at most the viewport at both sizes (headless browser or layout model), dedupe cases (two sources, same level within 0.15 % gives one zone), bias count from fixture verdicts; test_live_aid.py and test_daily_playbook.py still pass",
+    "Screenshots at both sizes saved under MyTradingSys/research/live_aid_map_2026-11-09/ with a 5-line RESULT.md; run_all_tests --quick passes; shipped; phone page rebuilt (build_artifact.py --playbook) and its path named in the Result"
+  ],
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator 11-09: the playbook page is a wall of words (11 levels in one line). He trades from one screen: no scroll, symbols, colour, graphs, only what he acts on. The playbook should be the bias and understanding map of Live Aid: every section combined into one picture, and Live Aid deduped (one level shown once).",
+  "id": "live-aid-bias-map-one-screen-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Map tab shipped in 4ac3eddee (gemini-queue): 51 visible words, no scroll at 1920x1040 and ",
+      "ref": "88c1920c0",
+      "utc": "2026-11-09T09:52:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/daily-session-playbook-live-a",
+      "ref": "07ae2e0e5d58",
+      "utc": "2026-11-09T02:32:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: card complete",
+  "note": "Design memo: dense symbols, colour, vertical bars where he must read, cells of 8 words or fewer, no essay. The current playbook output (S012-S020 scenarios, 11 levels) is the input to shrink, not to add to. DECISION (OURS) 11-09: (1) dial = six verdicts already on the page (analysts, price vs VWAP, RSI 1h, RSI 4h, pierce, playbook lean), LONG/SHORT by the verdict board's own lean rule (2+ and 2x), else HOLD; HOLD shows up/down counts, under 3 in data shows 'n of 6 in data'. (2) The old text cards stay behind a closed Detail line (test_daily_playbook asserts them); the 11-level line, the analyst list and the extra next-event line are removed. (3) Phone page carries only the playbook's own verdict, so its dial reads HOLD; the live page has all six. (4) MA levels = 4h/1d/1w 200 EMA, 200 SMA, 55 EMA only. (5) Not rewired to the registry: the Now-table Levels row, the verdict watch list and the Levels panel keep their own lists.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T05:41:44Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_PREFS.md"
+  ],
+  "result": "Map tab shipped in 4ac3eddee (gemini-queue): 51 visible words, no scroll at 1920x1040 and 400x860; closed by Supervisor A, duplicate build dropped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/ (playbook.js, daily_playbook.py, live_aid.html, build_artifact.py, new map.js, level registry)"
+  ],
+  "scope_out": [
+    "no new statistics or numbers not already computed by a Live Aid section|no trade gate, no orders|no live tree deploy|CBP analyst text stays out of git"
+  ],
+  "scope_sha": "07ae2e0e5d58",
+  "size": "M",
+  "sources": [
+    "operator chat 2026-11-09 ~06Z, d-live-aid-bias-map-1109"
+  ],
+  "state": "done",
+  "steps": [
+    "write test_live_aid_map.py first (word budget, no-scroll height at 1920x1040 and 400x860, dedupe), run it red",
+    "build the level registry and the Map tab; replace the playbook wall of text",
+    "screenshot both sizes, run tests --quick, ship, republish the phone page"
+  ],
+  "taken": "2026-11-09T09:52:45Z",
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid_map.py",
+  "title": "Live Aid Map tab: today's playbook as a one-screen colour-coded bias map built from all Live Aid sections, levels deduped across Live Aid",
+  "weight": "",
+  "worker": "session"
+}

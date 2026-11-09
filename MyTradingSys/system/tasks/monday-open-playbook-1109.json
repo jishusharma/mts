@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-09T01:31:22Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/monday_open_2026-11-09/PLAYBOOK.md",
+    "python MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_scenario_ledger.py"
+  ],
+  "created": "2026-11-08T18:16:14Z",
+  "depends_on": [],
+  "done_when": "Each scenario added to MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.csv via its scenario_ledger.py with a score date; test_scenario_ledger.py passes; one dated reading appended to MyTradingSys/research/mts_bible/BIBLE.md; shipped with sync.py ship; Result names the scenario the evidence leans to and the first trigger to watch",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Before the Monday open the operator wants the next move and how early to catch it: small bounce then drop, straight drop, or bigger bounce. BTC ranges 75.6k-76.2k above the 11-06 low 74,888; Krown sees the lows break and ~10% more down (about 68k, near the 200-week SMA). Analyst calls are Context, never signals.",
+  "id": "monday-open-playbook-1109",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "PLAYBOOK.md + monday_clocks.py 4ed71910b (C); A review PASS-WITH-FIXES 9b8b55ec3; fixes e8",
+      "ref": "0753ff25d",
+      "utc": "2026-11-09T01:31:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Monday 11-09 open passed; playbook delivered and reviewed",
+  "note": "Phase-first (d-phase-first-method-1106): analyst calls are Context (cbp-is-the-context-source). Layout: dense symbols, tables, cells under 8 words. Krown's newest video is 2026-11-08 M4mTHyPxMUM in the store. DECISION (OURS) 2026-11-08: (1) the operator's 'Krown 10% lower low on a correlation' is Krown's 11-05 month-breach statistic (e2-KjJdWbgM, median -10.5%) plus Benjamin's 10-11% (szWg0zCAbF0); recorded as such, Krown's newest videos (11-07, 11-08) hold no BTC call. (2) Ledger: three rows S009-S011 on shared levels, only B (S009) carries a side (DOWN), A and C are NONE so nested rows do not double count; decode table in PLAYBOOK s.6. (3) Transcripts copied into the git-ignored raw_transcripts_canonical so verify_extract_quotes can run; none committed. (4) Full run_all_tests --quick shards died at the ~10 min cap under machine load (shard 1 and 2 FAIL with no failing test shown); ran --quick --smoke --changed-file: 8 of 9 steps PASS, step 4f (holds test_scenario_ledger.py) timed out at 240 s from load; test_scenario_ledger.py alone: 6 passed.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:16:23Z",
+  "refs": [
+    "MyTradingSys/research/mts_bible/BIBLE.md"
+  ],
+  "result": "PLAYBOOK.md + monday_clocks.py 4ed71910b (C); A review PASS-WITH-FIXES 9b8b55ec3; fixes e8ad8024c (cache bar, 3d close Mon 24:00)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/monday_open_2026-11-09/|MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.csv|MyTradingSys/research/mts_bible/BIBLE.md",
+    "reads: F:/CryptoScrapper/cbp_store/rows.json, F:/CryptoScrapper/transcripts, research/btc_cycles_2026-11, research/ma_layer_2026-11, public klines from data-api.binance.vision (api.binance.com times out on this machine)"
+  ],
+  "scope_out": [
+    "no trade, no order, no testnet action|no live tree touch|no new indicator code|no forecast stated as fact|no unsourced probability"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "operator chat 2026-11-08 ~18:15Z: run the CBP module before the Monday open; small bounce before the drop, straight drop, or bigger bounce; Krown sees lows broken and 10% more down on a correlation"
+  ],
+  "state": "done",
+  "steps": [
+    "read the CBP rows and transcripts; verify quotes; tabulate views",
+    "check Krown's correlation claim against held data; compute levels and the Monday clock observables from public data",
+    "write PLAYBOOK.md dense (tables, short cells); add scenarios to the ledger; Bible reading; run the test and tests --quick; ship"
+  ],
+  "taken": "2026-11-09T01:31:22Z",
+  "tests": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_scenario_ledger.py",
+  "title": "Monday 2026-11-09 open playbook: CBP analyst views (Krown 10% lower-low call and others) vs the market's own clocks; three scenarios with early-catch triggers per session",
+  "weight": "",
+  "worker": "session"
+}

@@ -557,8 +557,12 @@ def test_us_open_ladder_hand_case():
     for i in range(3):
         rows5.append([open_ms + i * 300_000, 100, 101.5 if i == 1 else 100.2, 99.5 if i == 2 else 99.8, 100, 1])
     daily = [[day0 - k * 86_400_000, 100, 100 + k, 100 - k, 100, 1] for k in range(8, 0, -1)]  # prior 8 days: highs 101..108, lows 99..92
-    rates = {"pdh": {"0-0.25": {"n": 40, "touch": 80, "nt": 32, "held": 50}}, "d3h": {"0.5-1": {"n": 90, "touch": 40, "nt": 36, "held": 70}},
-             "dayH": {"2+": {"n": 100, "touch": 5, "nt": 5, "held": 30}}, "orH": {}, "orL": {}, "dayL": {}, "pdl": {}, "d3l": {}, "d7h": {}, "d7l": {}}
+    # rates come from the registry file (base_rates.js), not a hand-written dict; orH/orL are not measured by the study
+    reg_src = (HERE / "base_rates.js").read_text(encoding="utf-8")
+    rates = dict(json.loads(reg_src[reg_src.index("= ") + 2:reg_src.rindex(";")])["us_open_levels"]["table"]["rates"])
+    rates["orH"], rates["orL"] = {}, {}
+    pdh, d3h, dayH = rates["pdh"]["0-0.25"], rates["d3h"]["0.5-1"], rates["dayH"]["2+"]
+    assert pdh["nt"] >= 30 and dayH["nt"] < 30       # registry cells the assertions below rely on
     now = open_ms + 16 * 60_000
     px = 100.8
     runner = ("const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);"
@@ -576,9 +580,9 @@ def test_us_open_ladder_hand_case():
     assert up[2] == ("day high so far = 3-day high", 103, "2+")  # 2.18 %, merged
     assert up[3] == ("7-day high", 107, "2+")
     assert [x["name"] for x in r["down"]][:3] == ["opening range low", "prev day low", "day low so far = 3-day low"]   # 99.5, 99, 97 (merged)
-    assert r["up"][0]["touch"] == 80 and r["up"][0]["held"] == 50 and r["up"][0]["n"] == 40
+    assert r["up"][0]["touch"] == pdh["touch"] and r["up"][0]["held"] == pdh["held"] and r["up"][0]["n"] == pdh["n"]
     assert r["up"][1]["touch"] is None and r["up"][1]["n"] == 0            # orH has no rates row
-    assert r["up"][2]["touch"] == 5 and r["up"][2]["held"] is None        # dayH 2+: nt=5 under 30 -> held hidden
+    assert r["up"][2]["touch"] == dayH["touch"] and r["up"][2]["held"] is None        # dayH 2+: nt under 30 -> held hidden
     assert all(x["dist"] > 0 for x in r["up"]) and all(x["dist"] < 0 for x in r["down"])
 
 

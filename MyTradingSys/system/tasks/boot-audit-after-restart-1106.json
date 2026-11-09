@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T15:11:09Z",
+  "commands": [],
+  "created": "2026-11-06T16:55:52Z",
+  "depends_on": [],
+  "done_when": "boot_audit.py output after the restart is compared with the 11-06 baseline and one line reached the operator",
+  "est_turns": 5,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Operator restarts JIS-NB after turning off Discord, Docker, Teams, Snipping Tool, Chrome/Edge autolaunch, Tailscale GUI and Medal Highlight (11-06). Trigger: first Lead or Supervisor session whose machine uptime is under 2 h. Run boot_audit.py, compare boot time and startup items with the 11-06 run, report one line to the operator; he must not be asked to run it.",
+  "id": "boot-audit-after-restart-1106",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "2026-11-07 DESKTOP-F7IU69N post-restart boot_audit.py rerun: no MTS-Supervisor/MTS-Wrapper",
+      "ref": "d8a8a897b",
+      "utc": "2026-11-07T15:11:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "boot audit: tasks running MTS files are ours; skip in-flight one-shots",
+      "ref": "82a65b59fcf7",
+      "utc": "2026-11-06T12:54:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: audit done",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T17:31:23Z",
+  "refs": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "2026-11-07 DESKTOP-F7IU69N post-restart boot_audit.py rerun: no MTS-Supervisor/MTS-Wrapper; only MTS-SuccWake-A (authorised); boot times UNREADABLE without admin; third-party KEEP* items (OneDrive, Teams, Tailscale) are operator's call.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/boot_audit.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "82a65b59fcf7",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "check machine uptime under 2 h via boot_audit.py; if not, stop and leave card ready",
+    "run python scripts/dev/boot_audit.py, compare boot time and startup items with the 11-06 baseline in its output dir",
+    "send one line via desk/signal to the operator"
+  ],
+  "taken": "2026-11-07T15:11:09Z",
+  "tests": "none: run-and-report; no code changed (boot_audit.py read-only)",
+  "title": "Run boot_audit.py on JIS-NB at the first session after its next restart; compare with the 11-06 baseline",
+  "weight": "",
+  "worker": "agent"
+}

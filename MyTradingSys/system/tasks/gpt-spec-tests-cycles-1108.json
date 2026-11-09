@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:31:59Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/btc_cycles_2026-11/test_spec_cycles.py exists, passes on a hand-built price series, and fails under one mutation.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "GPT spec tests for btc_cycles_2026-11/cycles.py from RULE.md (cycle definition); the module has no test file today.",
+  "id": "gpt-spec-tests-cycles-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "cycle flag: drop literal cotrade name, declare build_cycle_flag in wiring registry",
+      "ref": "a5c97e3e950a",
+      "utc": "2026-11-06T18:37:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "a5c97e3e950a cycle flag: drop literal cotrade name, declare build_cycle_flag in wiring reg",
+      "ref": "MyTradingSys/research/btc_cycles_2026-11/RULE.md",
+      "utc": "2026-11-06T18:37:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Expected values by hand from RULE.md. | PARKED 2026-11-08: GPT/Codex lane has no credit and returns 401 (d-no-gpt-codex-credit-1106).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:32:01Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_cycles_2026-11/RULE.md (read)",
+    "MyTradingSys/research/btc_cycles_2026-11/cycles.py (read)",
+    "MyTradingSys/research/btc_cycles_2026-11/test_spec_cycles.py (new)",
+    "scripts/dev/run_extra_tests.py (EXTRA list entry)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "a5c97e3e950a",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/btc_cycles_2026-11/RULE.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read RULE.md",
+    "Hand-build a 30-bar series with known cycle highs and lows",
+    "Write tests, green, then one mutation red"
+  ],
+  "tests": "python -m pytest MyTradingSys/research/btc_cycles_2026-11/test_spec_cycles.py green; red under one mutation",
+  "title": "gpt-spec-tests-cycles: spec tests for btc_cycles cycles.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

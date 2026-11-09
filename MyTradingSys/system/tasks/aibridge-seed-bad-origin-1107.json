@@ -1,0 +1,84 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T00:20:04Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T18:48:29Z",
+    "misses": 4,
+    "reads": [
+      "scripts/dev/bg_watch.py"
+    ],
+    "session": "agent-af457c7a2edc6bd07"
+  },
+  "created": "2026-11-07T16:37:36Z",
+  "depends_on": [],
+  "done_when": "Typing 'Start DSA bridge' in a DeepSeek chat with the bridge box posts the seed on NB, NUC and the laptop; audit.jsonl shows SEED ok, no bad_origin; RELEASES bumped; node tests green.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The 0.7.30 trigger never posts: the agent refuses GET /seed with bad_origin on every press because the worker's GET carries no Origin header (POST /run does: 53 ok rows today). Make the seed call pass the same check /run passes.",
+  "id": "aibridge-seed-bad-origin-1107",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "DSA seed re-land + AIBridge /seed POST fix landed 0228eed6, CI green",
+      "ref": "5dcc519ff",
+      "utc": "2026-11-08T00:20:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: bridge 0.7.31/0.7.32 shipped",
+  "note": "Found by Lead C 2026-11-07 16:40Z from F:/AIBridge/src/audit.jsonl: SEED refused bad_origin at 15:47:51 (x2) and 16:32:37-38 (x3), each an operator press; agent 0.7.30 up on 7181. Login A (bridge free, 0 workers) per ask q-55f5d4. Per-host step after ship: aibridge_install.py --restart-agent via broadcast --cmd; extension reload per Chrome profile is the operator's. | PARKED 2026-11-08: DSA bridge tooling, no card on the critical path reads it; machinery growth frozen. REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T16:37:36Z",
+  "refs": [
+    "scripts/aibridge/extension/background.js",
+    "scripts/aibridge/src/agent.ps1",
+    "scripts/aibridge/docs/V07_CONTRACT.md",
+    "MyTradingSys/system/SPEC_START_DSA_TRIGGER.md"
+  ],
+  "result": "DSA seed re-land + AIBridge /seed POST fix landed 0228eed6, CI green",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/aibridge/extension/background.js: send the seed request as POST (Origin header present, like /run)",
+    "scripts/aibridge/src/agent.ps1: accept POST /seed with the same origin+token checks; keep GET refused",
+    "scripts/aibridge/RELEASES.json + V07_CONTRACT.md: 0.7.31 line",
+    "scripts/aibridge/tests/start_trigger.test.js or a new test: fails pre-change"
+  ],
+  "scope_out": [
+    "no token files (F:/AIBridge/src/config.json never read)",
+    "no change to the seed text (dsa.py)",
+    "no live tree"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "Lead C audit read 2026-11-07 16:40Z; operator report 16:30Z: send button and Enter dead on 'Start DSA bridge' after extension + tab reload"
+  ],
+  "state": "done",
+  "steps": [
+    "read background.js seed branch + agent.ps1 /seed branch",
+    "switch to POST, accept POST on the agent, refuse GET",
+    "test fails pre-change, passes after",
+    "bump 0.7.31, ship, broadcast --cmd 'python scripts/dev/aibridge_install.py --restart-agent' to jis-nb, jis-nuc, desktop-f7iu69n",
+    "verify audit shows SEED ok on one host"
+  ],
+  "taken": "2026-11-08T00:20:04Z",
+  "tests": "node scripts/aibridge/tests/start_trigger.test.js green; new assertion that the worker seed request is a POST fails pre-change",
+  "title": "AIBridge 0.7.31: Start DSA bridge seed call refused bad_origin (worker GET has no Origin header); send it as POST like /run",
+  "weight": "",
+  "worker": "session"
+}

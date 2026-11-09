@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T21:31:59Z",
+  "commands": [],
+  "created": "2026-11-07T14:26:32Z",
+  "depends_on": [],
+  "done_when": "FORMULAS section with hand-computed toy values; layers/<name>/<name>.py + test that fails pre-change, registered in run_all_tests.py and wiring_registry; one-screen STATE.md (descriptive, n printed) in research/tv_favorites_2026-11/; shipped with Result/Next lines (SPEC_ENGINES.md)",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Context engine for the operator's TradingView favourite; formula SOURCED (LazyBear), verified by hand values and then on his TradingView by Lead C",
+  "id": "vfi-engine-1107",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk 6d39f63f4 (vfi.py, FORMULAS s32, test_vfi.py, VFI_STATE.md, wiring_regist",
+      "ref": "f4e938467",
+      "utc": "2026-11-07T21:31:59Z"
+    }
+  ],
+  "layers": [
+    "volume_candles_ma"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: already done",
+  "note": "REVIEWED:2026-11-07 T0-ONLY | operator 2026-11-07: 'Yes, build both'; 'use login A and C and other gemini models' | DECISION OURS: squeeze -> login A (subscription room), VFI -> API credit via api_job --engine api when the slot frees; layer family placeholder until LAYERS.md gets a 'tv_favorites' family",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T14:26:50Z",
+  "refs": [
+    "MyTradingSys/research/tv_favorites_2026-11/SPEC_ENGINES.md"
+  ],
+  "result": "already on trunk 6d39f63f4 (vfi.py, FORMULAS s32, test_vfi.py, VFI_STATE.md, wiring_registry entry)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/vfi/, MyTradingSys/backtest/layers/FORMULAS.md (new section), scripts/dev/run_all_tests.py (one line), MyTradingSys/system/wiring_registry.json (one entry), MyTradingSys/research/tv_favorites_2026-11/*_STATE.md"
+  ],
+  "scope_out": [
+    "signals, orders, promoted setups, tuning, HOLDOUT files"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "LazyBear public Pine scripts (SOURCED defaults)"
+  ],
+  "state": "done",
+  "steps": [
+    "read SPEC_ENGINES.md and FORMULAS s22 (Bollinger)|write the FORMULAS section with hand-computed toy values first|write the engine and the test; test must fail on the pre-change tree once|register the test; add the wiring entry|fetch Bybit public klines, write the STATE.md (descriptive, n printed)|run_all_tests --quick; sync.py ship with Result/Next"
+  ],
+  "taken": "2026-11-07T21:31:59Z",
+  "tests": "test_<name>.py asserts the hand values from the FORMULAS section; fails on the pre-change tree",
+  "title": "Volume Flow Indicator (LazyBear/Katsanos) engine + FORMULAS section + hand test + 90-day VFI state incl. the 11-06 sweep bar (spec SPEC_ENGINES.md B); assign: API credit",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

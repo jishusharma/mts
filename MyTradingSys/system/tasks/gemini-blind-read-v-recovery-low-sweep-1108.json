@@ -1,0 +1,82 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T20:31:50Z",
+  "commands": [],
+  "created": "2026-11-07T18:31:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-v-recovery.md has line 1 with counts (MATCH/DIFF/NOT_IN_DATA or COVERED/NOT_COVERED) and one row per item checked.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of v_recovery_low_sweep RESULT.md: each headline number traces to counts.json, verdict wording matches the PRE_REG rule.",
+  "id": "gemini-blind-read-v-recovery-low-sweep-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-v-recovery.md",
+      "ref": "06f5ad5c4",
+      "utc": "2026-11-08T20:31:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "v-recovery low-sweep: count pass, power gate BLOCK, INCONCLUSIVE",
+      "ref": "f008f9a1155e",
+      "utc": "2026-11-06T12:54:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f008f9a1155e v-recovery low-sweep: count pass, power gate BLOCK, INCONCLUSIVE",
+      "ref": "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/RESULT.md",
+      "utc": "2026-11-06T12:54:38Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Gemini queue, load as <card>:low. Blind read: use only the files named. ",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:31:43Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-v-recovery.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/RESULT.md (read)",
+    "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/PRE_REG.md (read)",
+    "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/counts.json (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-v-recovery.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "f008f9a1155e",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/v_recovery_low_sweep_2026-11-04/RESULT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read PRE_REG.md",
+    "Check each RESULT.md number against counts.json",
+    "Compare verdict wording to the PRE_REG rule",
+    "Write table, counts on line 1"
+  ],
+  "taken": "2026-11-08T20:31:50Z",
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of v_recovery_low_sweep RESULT.md (1108)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

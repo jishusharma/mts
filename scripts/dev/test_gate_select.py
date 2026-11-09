@@ -10,8 +10,8 @@ import gate_select as gs
 
 STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
          ("3ds", "python -m unittest (scripts/dev/test_dsa.py, 2 shards)"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
-         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3la", "python scripts/dev/lookahead_lint.py --new"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
-         ("4d", "pytest MyTradingSys/tests/docs"), ("5b", "unittest"), ("5c", "pytest options")]
+         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3cm", "x"), ("3la", "python scripts/dev/lookahead_lint.py --new"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
+         ("4d", "pytest MyTradingSys/tests/docs"), ("4e", "pytest MyTradingSys/backtest/test_no_own_costs.py"), ("5b", "unittest"), ("5c", "pytest options")]
 MENTIONED = {("dsa", "4b")}   # the pytest shard whose tests mention the module `dsa`
 BS = chr(92)
 
@@ -34,6 +34,31 @@ class Select(unittest.TestCase):
         self.assertEqual(steps, [])
 
     # gate_gap_2026-11-03: docs/data-only ships that ran no local step and went red on trunk, each a revert
+    def test_gap_prereg_md_selects_the_prereg_context_lint(self):
+        # two PRE_REGs without Phase/Session/Entry lines reached trunk 11-06 and turned CI red at step 3pc
+        self.assertEqual(self.sel("MyTradingSys/research/x/PRE_REG.md"), ("docs", ["3pc"]))
+        self.assertEqual(self.sel("MyTradingSys/research/x/RESULT_a.md"), ("docs", ["3pc"]))
+        self.assertEqual(self.sel("MyTradingSys/research/x/notes.md"), ("docs", []))
+
+    def test_ci_red_census_dev_check_doc_runs_the_prereg_lint(self):
+        # CI_RED_CENSUS.md class 2: prereg_context_lint also reads DEV_CHECK*.md; a docs ship of one ran no 3pc
+        self.assertEqual(self.sel("MyTradingSys/research/x/DEV_CHECK_a.md"), ("docs", ["3pc"]))
+        self.assertEqual(self.sel("MyTradingSys/research/x/PRE_REG_b.md"), ("docs", ["3pc"]))
+
+    def test_ci_red_census_bridge_change_selects_the_aibridge_shards(self):
+        # class 1: any bridge file reaches the pytest shard that holds test_aibridge_version_bump (already so; pinned)
+        steps = [("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3cm", "x"),
+                 ("4", "pytest MyTradingSys/tests/test_aibridge_version_bump.py MyTradingSys/tests/test_aibridge_install_fresh.py"), ("4b", "pytest MyTradingSys/tests/other")]
+        for f in ("scripts/aibridge/RELEASES.json", "scripts/dev/aibridge_install.py"):
+            self.assertIn("4", gs.select([f], steps)[1], f)
+
+    def test_ci_red_census_extra_test_file_change_selects_3xt(self):
+        # class 3: a changed registered extra test runs step 3xt (the ubuntu-only failures there are platform parity, not selection)
+        steps = STEPS
+        files = ["scripts/dev/test_boot_audit.py"]
+        mode, nums, _ = gs.explain(files, steps, mentioned=mentioned, step_files={"3xt": ["scripts/dev/test_boot_audit.py"]})
+        self.assertIn("3xt", nums)
+
     def test_gap_card_only_ship_runs_the_task_card_lint(self):
         # 4a26cac5f dsabr-c1..c8 promoted to ready: CI red at Step 3tl, reverted twice (b0e6553af, 850f7187c)
         self.assertEqual(self.sel("MyTradingSys/system/tasks/x.json"), ("docs", ["3tl"]))
@@ -346,6 +371,17 @@ class DataOnlyMustExtras(unittest.TestCase):
 
     def test_other_research_data_stays_docs(self):
         self.assertEqual(self.sel("MyTradingSys/research/other/results/x.json"), ("docs", []))
+
+    # ship-gate-misses-test-no-own-costs-for-r: a research .py with FEE = 0.0004 went red at step 4e (test_no_own_costs) only in CI
+    def test_research_or_backtest_code_brings_the_cost_shard_4e(self):
+        for f in ("MyTradingSys/research/x/study.py", "MyTradingSys/backtest/foo.py", "MyTradingSys/backtest/layers/L/mod.py"):
+            mode, nums = self.sel(f)
+            self.assertIn("4e", nums, f)
+            self.assertTrue({"3w", "3x", "3gd", "3dl", "3cm"} <= set(nums), nums)   # only adds: ALWAYS steps stay
+
+    def test_cost_shard_4e_not_added_for_test_files_or_other_code(self):
+        self.assertNotIn("4e", self.sel("MyTradingSys/research/x/test_study.py")[1])
+        self.assertNotIn("4e", self.sel("scripts/dev/foo.py")[1])
 
 
 if __name__ == "__main__":

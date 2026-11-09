@@ -148,3 +148,95 @@ def test_row_and_time_left_fail_closed():
 def test_format_time_left_and_ago():
     assert _run("[P.fmtLeft(j[0]),P.fmtLeft(j[1]),P.fmtLeft(j[2]),P.fmtLeft(null),P.fmtAgo(j[3]),P.fmtAgo(j[4])]",
                 [125_000, 3_900_000, 90_000_000, 300_000, 7_500_000]) == ["2m 05s", "1h 5m", "1d 1h", "—", "5m", "2h"]
+
+
+def test_close_colour_gauge():
+    # P(keeps colour) = Phi(|d_sd| / sqrt(t_left)), d_sd = d_atr * 1.5958 (sigma_bar = ATR / (2 sqrt(2/pi))). Standard normal table, not the code.
+    K = 1.5957691
+    out = _run("[P.pCloseColour('1h',0,0.5,null),P.pCloseColour('4h',1/j[0],1,null),P.pCloseColour('15m',-0.5/j[0],0.25,null),"
+               "P.pCloseColour('1h',0,0.5,{delta:0.02}),P.pCloseColour('1h',5,0.01,{delta:0.5}),P.pCloseColour('1h',0.3,0,null)]", [K])
+    assert out[0] == pytest.approx(0.5, abs=1e-9)            # d = 0: 0.5 whatever the time left
+    assert out[1] == pytest.approx(0.841345, abs=1e-5)       # d = 1 sd, t = 1: Phi(1)
+    assert out[2] == pytest.approx(0.841345, abs=1e-5)       # d = -0.5 sd, t = 0.25: |d|/sqrt(t) = 1, the sign is the colour not the odds
+    assert out[3] == pytest.approx(0.52, abs=1e-9)           # cell shift added
+    assert out[4] == pytest.approx(0.999, abs=1e-9)          # clipped
+    assert out[5] == 1.0                                     # bar over: colour final
+    bad = _run("[P.pCloseColour('1h',NaN,0.5,null),P.pCloseColour('1h',0.3,1.5,null),P.pCloseColour('7x',0.3,0.5,null),P.pCloseColour('1h',0.3,-0.1,null)]".replace("NaN", "j[0]"), [None])
+    assert bad == [None, None, None, None]                   # unreadable input fails closed
+
+    # strip row: 24 closed 5m bars, every TR = 2 (H 101, L 99, C 100) -> ATR14 = 2; forming bar opens 100
+    def bars(price):
+        b = [k(i * 5 * MIN, 100, 101, 99, 100, 10, 5, 5 * MIN) for i in range(24)]
+        b.append(k(24 * 5 * MIN, 100, 102, 98, price, 10, 5, 5 * MIN))
+        return b
+    t0 = 24 * 5 * MIN
+    # price 101.25 after 2.5 of 5 minutes: d_atr = 1.25/2 = 0.625, t_left = 0.5 -> Phi(0.625*1.5958/sqrt(0.5)) = Phi(1.4105) = 0.92080
+    g = _run("P.row(j.b,j.now).keep", {"b": bars(101.25), "now": t0 + 150_000})
+    assert g["p"] == pytest.approx(0.92080, abs=1e-4) and g["colour"] == "green"
+    assert g["dAtr"] == pytest.approx(0.625) and g["tLeft"] == pytest.approx(0.5, abs=1e-4)
+    # price 98.75: same distance below the open -> same probability, red; 0.5 min of 5 left, d_atr 0.125 -> Phi(0.125*1.5958/sqrt(0.1)) = Phi(0.6308) = 0.73591
+    assert _run("P.row(j.b,j.now).keep", {"b": bars(98.75), "now": t0 + 150_000})["colour"] == "red"
+    g2 = _run("P.row(j.b,j.now).keep", {"b": bars(100.25), "now": t0 + 270_000})
+    assert g2["p"] == pytest.approx(0.73591, abs=1e-4) and g2["colour"] == "green"
+    # 15 bars (needs 16: ATR14 plus the forming bar): no gauge, the row itself still reads
+    short = bars(101.25)[10:]
+    r = _run("P.row(j.b,j.now)", {"b": short, "now": t0 + 150_000})
+    assert r is not None and r["keep"] is None
+
+
+# ---- R22 trendline per row (python twin: research/pattern_book_2026-11 test_strip_trendline_*) ----
+def _fractal_bars(pivots, n, side="resistance", close=95.0):
+    """n bars of high 91 / low 89 (close clipped into the range) with a spike high (or low) at each pivot index; the last bar is the forming one."""
+    out = []
+    for i in range(n):
+        h, lo = 91.0, 89.0
+        if i in pivots:
+            if side == "resistance":
+                h = pivots[i]
+            else:
+                lo = pivots[i]
+        out.append(k(i * MIN, close, max(h, close), min(lo, close), close))
+    return out
+
+
+def test_trendline_from_three_pivots():
+    # highs at bars 10, 20, 30 = 100, 110, 121: log-line +10% per 10 bars, so the middle one is exactly on it (0% off, inside 0.2%).
+    # 45 closed bars + 1 forming bar; the line at the forming bar (index 45) = 100 * 1.1^3.5 = 139.5965; slope = ln(1.1)/10 = 0.95310%/bar;
+    # price 95 -> distance (95 - 139.5965) / 95 = -46.944%.
+    r = _run("P.trendline(j.b,'resistance',95)", {"b": _fractal_bars({10: 100.0, 20: 110.0, 30: 121.0}, 46)})
+    assert r["touches"] == 3 and (r["i1"], r["i2"]) == (10, 30)
+    assert abs(r["value"] - 100 * 1.1 ** 3.5) < 1e-6
+    assert abs(r["slopePct"] - 0.9531017980432478) < 1e-9
+    assert abs(r["distPct"] - (95 - 100 * 1.1 ** 3.5) / 95 * 100) < 1e-6
+
+
+def test_trendline_support_rising_and_text():
+    # lows 80, 84, 88.2 at bars 10, 20, 30: +5% per 10 bars; value at index 45 = 80 * 1.05^3.5; price 95 above it
+    r = _run("[P.trendline(j.b,'support',95),P.fmtLine(P.trendline(j.b,'support',95))]", {"b": _fractal_bars({10: 80.0, 20: 84.0, 30: 88.2}, 46, "support")})
+    v = 80 * 1.05 ** 3.5
+    assert r[0]["touches"] == 3 and abs(r[0]["value"] - v) < 1e-6 and r[0]["distPct"] > 0
+    assert r[1] == "S 3t ↗ +%.1f%%" % ((95 - v) / 95 * 100)
+
+
+def test_trendline_two_touch_fallback_dead_line_and_fail_closed():
+    two = _run("P.trendline(j.b,'resistance',95)", {"b": _fractal_bars({10: 100.0, 20: 108.0, 30: 140.0}, 46)})   # middle 3% off the line
+    assert two["touches"] == 2 and (two["i1"], two["i2"]) == (20, 30)
+    dead = _fractal_bars({10: 100.0, 20: 110.0, 30: 121.0}, 46)
+    dead[40] = k(40 * MIN, 95, 300, 89, 300)          # a closed bar closes through the line
+    assert _run("P.trendline(j.b,'resistance',95)", {"b": dead}) is None
+    assert _run("[P.trendline(j.b,'resistance',95),P.trendline(j.s,'resistance',95),P.trendline(j.b,'resistance',null),P.fmtLine(null)]",
+                {"b": _fractal_bars({10: 100.0}, 46), "s": _fractal_bars({}, 5)}) == [None, None, None, "—"]
+
+
+def test_trendline_ignores_the_forming_bar():
+    bars = _fractal_bars({10: 100.0, 20: 110.0, 30: 121.0}, 46)
+    bars[-1] = k(45 * MIN, 95, 5000, 1, 95)           # a wild forming bar changes nothing: closed bars only
+    r = _run("P.trendline(j.b,'resistance',95)", {"b": bars})
+    assert r["touches"] == 3 and abs(r["value"] - 100 * 1.1 ** 3.5) < 1e-6
+
+
+def test_trendline_column_is_wired_into_the_page():
+    html = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    assert "<th title=" in html and ">Trend lines</th>" in html            # the header cell
+    assert "TFSTRIP.trendline(TF.k[tf], sd, tp)" in html and "TFSTRIP.fmtLine(t)" in html   # the row cell calls the pure functions
+    assert "interval=' + tf + '&limit=150" in html                         # enough bars for 6 pivots of 3-bar lookback

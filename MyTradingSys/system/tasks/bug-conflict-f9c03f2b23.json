@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "Which holds: Lead C brief: build card lane SONNET with live_path or tasks.py check gate: live_path card must be lane JIS-NB; followed the gate (krown-s8-4h-testnet-build lane JIS-NB)?",
+  "closed": "2026-11-08T20:23:23Z",
+  "commands": [],
+  "created": "2026-11-08T19:02:47Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Two instructions contradict: A = Lead C brief: build card lane SONNET with live_path | B = tasks.py check gate: live_path card must be lane JIS-NB; followed the gate (krown-s8-4h-testnet-build lane JIS-NB). The operator decides which holds; then fix the loser's text.",
+  "id": "bug-conflict-f9c03f2b23",
+  "lane": "SONNET",
+  "last_seen": "2026-11-08T19:02:47Z",
+  "last_session": "662d7caf-bdc1-40b1-a9e6-f776e5ce15b0",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Decided (B, per operator 'decide yourself'): the tasks.py gate holds; a live_path card bel",
+      "ref": "6aab6c87c",
+      "utc": "2026-11-08T20:23:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: gate holds, no file to fix",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "Decided (B, per operator 'decide yourself'): the tasks.py gate holds; a live_path card belongs to lane JIS-NB (the live host). C followed the gate on krown-s8-4h-testnet-build. The losing text was a one-off Lead C brief, not a file, so nothing to edit.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [],
+  "scope_out": [],
+  "seen": 1,
+  "size": "",
+  "sources": [],
+  "state": "done",
+  "steps": [],
+  "taken": "2026-11-08T20:23:23Z",
+  "tests": "",
+  "title": "Instruction conflict: Lead C brief: build card lane SONNET with live_pat vs tasks.py check gate: live_path card must be lane J",
+  "weight": "",
+  "worker": ""
+}

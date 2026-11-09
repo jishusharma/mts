@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T16:16:30Z",
   "commands": [
     "python MyTradingSys/research/malkan_window_wide_2026-11/wide.py"
   ],
@@ -30,23 +32,42 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already done on trunk (997f08391..8f0ebdd75, gemini-queue 11-06): malkan_window_wide_2026-",
+      "ref": "4f0cfb68d",
+      "utc": "2026-11-08T16:16:30Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "Malkan window arms fee-net on DEV: INCONCLUSIVE",
-      "ref": "8fa8ac9e2713",
-      "utc": "2026-11-06T10:27:44Z"
+      "line": "wide: lint-clean causal pivot (same counts)",
+      "ref": "8f0ebdd75c4d",
+      "utc": "2026-11-06T14:44:51Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "997f08391498 malkan wide pivot: PRE_REG, tests, wide.py",
+      "ref": "MyTradingSys/research/malkan_window_wide_2026-11/PRE_REG.md",
+      "utc": "2026-11-06T14:30:59Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. Candidate for credit job 3 of PLAN_24H_2026-11-06 if c34 is unavailable. RESULT needs Regime mix:; Next: must be an existing card, stage or END: why; a new tool script needs a wiring_registry.json entry; fees from backtest/fees.py.",
+  "next": "END: done_when met by 934d47597",
+  "note": "REVIEWED:2026-11-06 ACCEPT | Refined 11-06 planner-c-1106c. Candidate for credit job 3 of PLAN_24H_2026-11-06 if c34 is unavailable. RESULT needs Regime mix:; Next: must be an existing card, stage or END: why; a new tool script needs a wiring_registry.json entry; fees from backtest/fees.py. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: long-history DEV study; phase-first testnet-forward replaced backtest gates (d-phase-first-method-1106)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T12:19:07Z",
+  "refreshed": "2026-11-08T16:16:09Z",
   "refs": [],
-  "result": "",
+  "result": "Already done on trunk (997f08391..8f0ebdd75, gemini-queue 11-06): malkan_window_wide_2026-11 RESULT.md verdict BLOCKED first, per-band n/days on 10 symbols pooled 1h/4h, prereg_gate line per band (all BLOCK, m 238), PRE_REG.md with ## Context; test_wide.py 3 passed on JIS-NUC. Card was left open.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/malkan_window_wide_2026-11/PRE_REG.md",
     "MyTradingSys/research/malkan_window_wide_2026-11/wide.py",
@@ -56,17 +77,18 @@
   "scope_out": [
     "editing malkan_window_dev_2026-11 (read only); VALIDATION/HOLDOUT; changing the default window 3-10; writes into data folders"
   ],
-  "scope_sha": "8fa8ac9e2713",
+  "scope_sha": "8f0ebdd75c4d",
   "size": "M",
   "sources": [
     "MyTradingSys/research/malkan_window_dev_2026-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git ls-tree origin/fast-track MyTradingSys/research/ must not list malkan_window_wide_2026-11; read malkan_window_dev_2026-11/RESULT.md (4 events in OURS bands) and study.py",
     "write PRE_REG.md (pivot strength 3 OURS, bands unchanged, cost 0.14 pct, Holm m via verdicts.py check and prereg_gate.py), then failing test_wide.py, then wide.py loading 10 symbols via load_klines (SOL, XRP, LTC short: no-signal)",
     "count n per band first and run the gate; run outcomes only for bands passing it; RESULT.md with Regime mix:, ship, tasks.py done --next"
   ],
+  "taken": "2026-11-08T16:16:11Z",
   "tests": "malkan_window_wide_2026-11/test_wide.py: pivot strength 3 on a fixture finds a swing pair 14 bars apart that strength 1 misses, and the loader raises on a bar dated 2024-07-01; both fail before wide.py exists",
   "title": "Malkan window comparison needs a wider-pivot or non-adjacent-swing detector (3 OURS bands held 4 events)",
   "weight": "IMPORTANT",

@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:32:13Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-08_gpt-rederive-fabio_cvd.md lists each RESULT.md number with recomputed value and MATCH / DIFF / NOT_IN_DATA; line 1 holds the three counts.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent GPT re-derivation of every headline number in fabio_cvd_2026-10-30/RESULT.md from cvd_u7_u8.py and FORMULAS.md, not from the study code.",
+  "id": "gpt-rederive-fabio-cvd-1108",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FORMULAS s31: squeeze dots VERIFIED-TV 4/4 (operator read 09-20 ON, 09-21 OFF on TradingVi",
+      "ref": "358e8e20f323",
+      "utc": "2026-11-07T18:36:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "358e8e20f323 FORMULAS s31: squeeze dots VERIFIED-TV 4/4 (operator read 09-20 ON, 09-21 OFF",
+      "ref": "MyTradingSys/backtest/layers/FORMULAS.md",
+      "utc": "2026-11-07T18:36:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Never use model output as the source. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: GPT/Codex lane: d-no-gpt-codex-credit-1106 and 401 stall; re-derive of a finished study, no roadmap exit",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:20:44Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/fabio_cvd_2026-10-30/RESULT.md (read)",
+    "MyTradingSys/research/fabio_cvd_2026-10-30/ (read)",
+    "MyTradingSys/backtest/layers/FORMULAS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-08_gpt-rederive-fabio_cvd.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "358e8e20f323",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/fabio_cvd_2026-10-30/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every number in RESULT.md",
+    "Recompute each from the data in the folder with FORMULAS.md",
+    "Write the table and the three counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "gpt-rederive-fabio-cvd: independent recount of fabio_cvd RESULT.md headline numbers",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,87 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T20:31:40Z",
+  "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/build_events.py",
+    "python MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
+  ],
+  "context": {
+    "calls_to_edit": 16,
+    "folded": "2026-11-08T01:29:52Z",
+    "misses": 35,
+    "reads": [
+      "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "agent-a53ad2bfa9ea0faf2"
+  },
+  "created": "2026-11-07T20:07:24Z",
+  "depends_on": [],
+  "done_when": "Gaps listed honestly: classes with fewer than 8 events, events with no reliable timestamp, anything inferred; no weight, flash or bias rule is proposed in this card",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Before any weight or flash rule is fixed: know which kinds of news moved BTC and ETH, by how much, how fast, and whether the same kind of news worked a second time. Evidence from analyst transcripts plus public online sources, reaction measured on public Binance 1m klines.",
+  "id": "news-effect-event-catalogue-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "delivered in 8ce5a1c28: 191 events, check_catalogue GREEN",
+      "ref": "271654217",
+      "utc": "2026-11-08T20:31:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
+      "ref": "8ce5a1c28081",
+      "utc": "2026-11-08T09:13:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: remaining UNFIT rows have no free primary minute source",
+  "note": "Public market data and public pages are pre-approved. Label each class SOURCED (public calendar) or OURS (our grouping). Counts first; a class with too few events is reported as unknown, not guessed.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:20:55Z",
+  "refs": [
+    "MyTradingSys/research/news_feeds_2026-10-30/REPORT.md",
+    "MyTradingSys/items/T054_us_session_news_correlation.md",
+    "MyTradingSys/research/mts_bible/BIBLE.md"
+  ],
+  "result": "delivered in 8ce5a1c28: 191 events, check_catalogue GREEN",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/ (new folder: news_events.csv, build_events.py, check_catalogue.py, REPORT.md)",
+    "reads: F:/CryptoScrapper/cbp_v2/extractions.md and transcripts, public web sources, Binance public klines"
+  ],
+  "scope_out": [
+    "no trade gate, no Live Aid change, no weight or bias rule|no cookies or private data|no headline text beyond a short title and URL|no live tree touch"
+  ],
+  "scope_sha": "8ce5a1c28081",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-08 ~20:20Z chat: compare past news events (analyst transcripts and online, before and after Trump took office), same news sometimes does not work twice; research first, several model reviews (Fable, Opus), one combined analysis by a higher model, then fix flash and weight in his style"
+  ],
+  "state": "done",
+  "steps": [
+    "list analyst-named news events from the CBP extractions and transcripts since 2024; add public calendars (BLS and Fed release dates, SEC ETF dates, known hack and court dates) from online sources",
+    "write check_catalogue.py first (schema, minimum counts, timestamp sanity, 20-row re-derivation) and run it red; write build_events.py to pull 1m klines and fill the reaction columns",
+    "write REPORT.md with the tables; ship with a Result naming event count and classes"
+  ],
+  "taken": "2026-11-08T20:31:40Z",
+  "tests": "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
+  "title": "Catalogue 150+ past news events (2024-2026, before and after 2025-01-20) with measured BTC/ETH reaction and repeat decay",
+  "weight": "",
+  "worker": "session"
+}

@@ -56,6 +56,8 @@ tr.nowline td { color: var(--accent); font-weight: 600; border-top: 1px dashed v
 .st { font: 600 11px var(--sans); letter-spacing: .05em; }
 .st.fresh { color: var(--up); } .st.stale, .st.norow { color: var(--amber); } .st.nofetch { color: var(--down); }
 tr.hi td { font-weight: 600; }
+#p-news.flash .hd h2 { animation: evflash 1s steps(2) infinite; }
+@keyframes evflash { 50% { color: var(--amber); } }
 .chip { font: 600 11px var(--sans); padding: 0 4px; border-radius: 3px; border: 1px solid var(--amber); color: var(--amber); margin-left: 4px; }
 input, select { background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; font: 15px var(--mono); padding: 5px 7px; width: 100%; min-width: 0; box-sizing: border-box; }
 input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -91,25 +93,48 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 .blk { display: inline-block; width: 14px; height: 14px; border-radius: 2px; vertical-align: middle; margin-right: 2px; background: var(--line); border: 1px solid var(--dim); box-sizing: border-box; }
 .blk.green { background: var(--up); border-color: var(--up); } .blk.red { background: var(--down); border-color: var(--down); }
 .blk.big { width: 22px; height: 22px; margin-right: 6px; } .blk.sm { width: 9px; height: 14px; }
+.kg { display: block; height: 3px; margin-top: 3px; background: var(--line); border-radius: 2px; overflow: hidden; } .kg b { display: block; height: 100%; background: var(--dim); } .kg b.green { background: var(--up); } .kg b.red { background: var(--down); }
 .flip { background: var(--amber); color: var(--bg); font: 700 11px var(--sans); padding: 1px 5px; border-radius: 3px; }
 .bbt { display: inline-block; position: relative; width: 70px; height: 8px; background: var(--line); border-radius: 4px; vertical-align: middle; margin-right: 6px; }
 .bbt i { position: absolute; top: -3px; width: 4px; height: 14px; background: var(--fg); border-radius: 2px; margin-left: -2px; }
 .tfal { font: 600 15px var(--sans); }
+.mas { margin-top: 14px; } .mas table { font-size: 14px; } .mas td { padding: 4px 6px; white-space: nowrap; } .mas td.tfn { font-weight: 600; }
+.mas .sl { color: var(--dim); font-size: 12px; margin-left: 3px; }
+.mab { display: inline-block; position: relative; width: 110px; height: 8px; background: var(--line); border-radius: 2px; vertical-align: middle; } .mab i { position: absolute; top: 0; height: 100%; } .mab i.up { background: var(--up); } .mab i.down { background: var(--down); } .mab u { position: absolute; left: 50%; top: -2px; width: 1px; height: 12px; background: var(--dim); }
+.mk { font: 700 11px var(--sans); padding: 1px 5px; border-radius: 3px; margin-right: 4px; border: 1px solid var(--dim); color: var(--dim); } .mk.up { border-color: var(--up); color: var(--up); } .mk.down { border-color: var(--down); color: var(--down); } .mk.fresh { background: var(--amber); border-color: var(--amber); color: var(--bg); }
 .lvl td.nm { text-align: left; font-family: var(--sans); }
 @media (max-width: 560px) {
   .huge { font-size: 34px; } .big { font-size: 24px; }
   .bar .inputs { grid-template-columns: 90px 1fr 1fr; width: 100%; }
 }
+.nw-chip { font: 700 11px var(--sans); letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--dim); color: var(--dim); }
+.nw-chip.LONG { border-color: var(--up); color: var(--up); } .nw-chip.SHORT { border-color: var(--down); color: var(--down); }
+.nw-w { font-weight: 700; cursor: help; border-bottom: 1px dotted var(--dim); } .nw-w.hot { color: var(--amber); } #news td.nh .dim { font-size: 12px; }
+@keyframes nwflash { 0%, 100% { background: transparent; } 50% { background: rgba(224, 164, 58, .35); } }
+#ov tr.nwflash td { animation: nwflash 1s ease-in-out infinite; } .nwf { color: var(--amber); font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { #ov tr.nwflash td { animation: none; background: rgba(224, 164, 58, .35); } }
+.pbc { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 6px; background: var(--bg); } .pbc.now { border-color: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+.pbc h3 { margin: 0; font-size: 15px; } .pbh { font: 12px var(--mono); color: var(--dim); } .pbst { font: 700 11px var(--sans); padding: 1px 6px; border-radius: 3px; border: 1px solid var(--dim); color: var(--dim); } .pbst.NOW { background: var(--amber); border-color: var(--amber); color: var(--bg); }
+.pbs, .pbn, .pba ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; } .pbn { font-size: 13px; color: var(--dim); gap: 3px; } .pbs li { font-size: 14px; } .pbr, .pby { font-size: 14px; } .pbl { font-size: 13px; line-height: 1.7; }
+.pbmsg { margin: 0; padding: 6px 10px; border: 1px solid var(--amber); border-radius: 6px; } .pbmsg.stale { color: var(--amber); } .pby table { font-size: 13px; } .pbg { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr)); align-items: start; }
 </style>
 
 <main>
   <!-- 0. TIMEFRAME STRIP: one-glance scalp read (spot data); pure functions in tf_strip.js -->
   <section id="p-tfs">
-    <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
+    <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close; the thin bar under the colour cells fills to the chance (random-walk maths on the bar's ATR14 scale) that the forming bar closes with the colour it has now. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
     <div class="tfal" id="tfs-al">--</div>
+  <!-- cycle-bottom flag: one line, computed by research/btc_cycles_2026-11/cycle_bottom_flag.py via build_cycle_flag.py -->
+    <p class="tag" id="cycle-flag" title="Cycle-bottom long flag (RULE.md in research/btc_cycles_2026-11): context for the operator-called testnet long, not a signal. SOURCED/OURS labels there.">--</p>
     <div class="tfs">
-      <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
+      <div class="scroll"><table><thead><tr><th>TF</th><th>Forming + last 3</th><th>Flip</th><th>CVD</th><th>Bollinger</th><th title="Active trend line of the row: S = support (lows), R = resistance (highs); touches (3t = 3 swing pivots within 0.2% of one line, 2t = the last two pivots); arrow = line direction; % = price above (+) or below (-) the line. Closed bars only; a line closed through is dropped. OURS, pattern book 2026-11.">Trend lines</th><th>Left</th></tr></thead><tbody id="tfs-rows"></tbody></table></div>
       <div class="scroll"><table class="lvl"><thead><tr><th>Level</th><th>Price</th><th>From price</th></tr></thead><tbody id="tfs-lv"></tbody></table><span class="err" id="tfs-err"></span></div>
+    </div>
+    <!-- MA strip: price vs the 21/55 EMA, 200 SMA and 200 EMA per timeframe; pure functions in ma_strip.js, definition in research/ma_layer_2026-11/MA_CONCEPTS.md -->
+    <div class="mas" id="p-mas">
+      <div class="hd"><h2>Moving averages</h2><span class="src" title="Per timeframe: price above (green triangle up) or below (red triangle down) each average with the percent distance and the slope arrow (flat = moved less than 0.5 ATR14 in 5 bars: OURS). Bar = how far price sits from the 21 EMA in ATR14, centre = on the line, full = 6 ATR or more (OURS). Marks: PULLBACK / RALLY = uptrend (21 above 55, 55 rising) and the bar touched the 21 within 0.25 ATR while closing above the 55, or the mirror (touch tolerance OURS; structure from Krown KR-M05 and the 20 EMA pullback of the web canon); 21>55 or 21<55 with bars since the cross (amber = within 3 bars); golden or death = 50 SMA over or under the 200 SMA; IN BAND = price between the 20 SMA and the 21 EMA (the weekly bull-market support band). Lengths 21, 55, 200 are SOURCED (Krown); a dash = fewer bars than the average needs. Display only: gates nothing. Refresh 15 s for 5m and 15m, 60 s for 1h and 4h, 5 min for the rest.">DISPLAY ONLY</span><span class="age" id="age-mas">--</span></div>
+      <div class="scroll"><table><thead><tr><th>TF</th><th>21 EMA</th><th>55 EMA</th><th>200 SMA</th><th>200 EMA</th><th>From 21 (ATR)</th><th>Marks</th></tr></thead><tbody id="mas-rows"></tbody></table></div>
+      <span class="err" id="mas-err"></span>
     </div>
   </section>
 
@@ -146,6 +171,13 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   <section id="p-ov">
     <div class="hd"><h2>Now</h2><span class="big" id="ov-px">--</span><span class="sub" id="ov-px-sub"></span><span class="tag">click a row for its page; Back returns here</span><span class="age" id="age-ov">--</span></div>
     <div class="scroll"><table><thead><tr><th>Panel</th><th>Now</th><th>More</th><th>Age</th></tr></thead><tbody id="ov"></tbody></table></div>
+  </section>
+
+  <!-- 1d. MAP (cards daily-session-playbook-live-aid-1109, live-aid-bias-map-one-screen-1109): bias dial, price ladder, session strip, 3 scenario cards on ONE screen; map.js + level_registry.js. The old text cards sit behind Detail. -->
+  <section id="p-playbook">
+    <div class="hd"><h2>Map</h2><span class="src" title="One screen from what Live Aid already shows. Dial = verdicts of six sections (analysts, price vs VWAP, RSI 1h, RSI 4h, pierce, playbook lean), LONG / SHORT as the verdict board's lean rule, else HOLD. Ladder = 3 nearest zones each side from playbook levels, analyst calls, Levels panel and MA strip; levels within 0.15% are one zone. Sessions Asia 00-08Z, Europe 07-13Z, US 13-21Z. Scenarios are scenario-ledger rows scored at the session end (daily_playbook.py). Context only, never a signal.">OURS</span><span class="tag" id="pb-tag"></span></div>
+    <div id="pb-map"></div>
+    <details id="pb-more"><summary class="dim">Detail</summary><div id="pb-body"></div></details>
   </section>
 
   <!-- 2. GLANCE -->
@@ -258,7 +290,10 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       <div class="hd"><h2>News</h2><span class="tag" id="news-feed"></span><span class="age" id="age-news">--</span></div>
       <div class="scroll"><table><thead><tr><th>Time</th><th>Score</th><th>Source</th><th>Headline</th><th>Reading for BTC</th><th>How it usually reacts</th></tr></thead><tbody id="news"></tbody></table></div>
       <span class="tag">Reading = word rules (OURS), a label on the headline, never a forecast; UNKNOWN when the headline gives no basis. "How it usually reacts" quotes a study only where one exists (research/news_feeds_2026-10-30/REPORT.md section 3), else says not measured.</span>
+      <span class="tag" id="news-w-note">W 0-100 = F x (P + K + I): P class prior from the event catalogue (SOURCED), K the BTC 1m move since the headline in z on the prior 24 h (SOURCED thresholds), I 2 x Tree importance (OURS), F freshness 1 for 15 min then to 0 at 60 (OURS shape). Hover W for the parts. Bias chip is HOLD unless the market's own move says LONG or SHORT; a prior tag never sets it. Context for your decision, nothing is automatic (research/news_effects_2026-11/NEWS_DESIGN.md sections 3-6).</span>
       <span class="tag" id="news-gaps"></span>
+      <div class="scroll"><table id="ev-strip"><thead><tr><th>Upcoming</th><th>In</th><th>P</th><th>Last same-class move (BTC)</th><th>Analysts</th><th>Chip</th></tr></thead><tbody id="ev-rows"></tbody></table></div>
+      <span class="tag" id="ev-note">Upcoming strip: BLS and Fed schedule plus analyst-named events (CBP), events_strip.js. P = class table of NEWS_DESIGN.md section 3 (SOURCED, catalogue rows); analyst split is a count, never the chip. Flash at T-15 and T0 (CPI, NFP, FOMC statement) and T+30 (presser), none for PPI. Context only.</span>
     </section>
 
     <section id="p-an">
@@ -318,13 +353,29 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </main>
 
 <script src="live_aid_indicators.js"></script>
+<script src="news_feed.js"></script>
+<script src="news_weight.js"></script>
+<script src="events_strip.js"></script>
+<script src="events_strip_data.js"></script>
 <script src="analyst_data.js"></script>
-<script src="us_open_rates.js"></script>
-<script src="anticipation_rates.js"></script>
-<script src="level_approach_rates.js"></script>
-<script src="bigcandle_rates.js"></script>
+<script src="base_rates.js"></script>
 <script src="premarket_risk.js"></script>
 <script src="tf_strip.js"></script>
+<script src="ma_strip.js"></script>
+<script src="cycle_flag_data.js"></script>
+<script src="cycle_flag.js"></script>
+<script src="playbook_data.js"></script>
+<script src="../../runtime/live_aid_toasts.js"></script>
+<script src="toast.js"></script>
+<script src="level_registry.js"></script>
+<script src="map.js"></script>
+<script src="playbook.js"></script>
+<script>
+(function () {
+  var el = document.getElementById('cycle-flag');
+  if (el) el.textContent = (typeof CYCLEFLAG === 'undefined') ? 'CYCLE FLAG: NOT_IN_DATA (cycle_flag.js missing)' : CYCLEFLAG.text(window.CYCLE_FLAG_DATA, Date.now());
+})();
+</script>
 <script>
 (function () {
   'use strict';
@@ -736,13 +787,16 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     }).join('; ') : 'none yet';
   }
 
+  function brRow(id) { return typeof BASE_RATES !== 'undefined' && BASE_RATES[id] ? BASE_RATES[id] : null; }
+  function brWin(id) { var b = brRow(id); return b ? ' | base rates: ' + b.window + ', n=' + b.n + ' ' + b.units + ' (' + b.fee_status + ')' : ''; }
+
   function renderUsOpen(now) {
-    var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = typeof US_OPEN_RATES !== 'undefined' ? US_OPEN_RATES.rates : null;
+    var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = brRow('us_open_levels') ? brRow('us_open_levels').table.rates : null;
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
     var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
     $('uo-when').textContent = when;
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
-      (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded';
+      (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded' + brWin('us_open_levels');
     if (!isFinite(px)) { tb.innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
     function row(dir, x) {
       var pct = function (v, n) { return v === null ? '<span class="dim">n too small (' + n + ')</span>' : '<b>' + v + '%</b> (n=' + n + ')'; };
@@ -751,30 +805,30 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     }
     var H = r.up.slice(0, 4).map(function (x) { return row('UP', x); }).concat(r.down.slice(0, 4).map(function (x) { return row('DOWN', x); }));
     tb.innerHTML = H.join('') || '<tr><td colspan="6">no levels yet (5m bars and daily levels still loading)</td></tr>';
-    if (!rates) tb.innerHTML += '<tr><td colspan="6" class="err">us_open_rates.js not found next to this page: run python MyTradingSys/research/us_open_levels_2026-10-30/study.py</td></tr>';
+    if (!rates) tb.innerHTML += '<tr><td colspan="6" class="err">base_rates.js not found next to this page: run python MyTradingSys/tools/live_aid/base_rates.py build</td></tr>';
     $('age-uo').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
   function renderAntic(now) {
-    var rates = typeof ANTICIPATION_RATES !== 'undefined' ? ANTICIPATION_RATES.rates : null, tb = $('am-rows'), w = null, delta = null;
+    var rates = brRow('anticipation_oi_delta') ? brRow('anticipation_oi_delta').table.rates : null, tb = $('am-rows'), w = null, delta = null;
     try { w = A.oiWindow(omHist('BINANCE'), now, 3600000); } catch (e) { w = { err: 'Binance OI history not loaded' }; }
     var k5 = S.tf['5m'] || [], last = k5.slice(-12);
     if (S.venue === 'BINANCE' && last.length === 12 && last.every(function (k) { return k.length > 9 && isFinite(+k[9]); }))
       delta = last.reduce(function (s, k) { return s + 2 * +k[9] - +k[5]; }, 0);
     var r = A.anticipation(w && !w.err ? w.dp : null, w && !w.err ? w.doi : null, delta, rates);
     $('am-state').textContent = r.state ? 'Price ' + r.state.split('|')[0].toLowerCase() + ', OI ' + r.state.split('|')[1].toLowerCase() + ', delta ' + r.now.toLowerCase() : 'no state';
-    $('am-sub').textContent = w && !w.err ? '60 min: price ' + sgn(100 * w.dp, 2) + '%, Binance OI ' + sgn(100 * w.doi, 2) + '%' + (delta === null ? ', taker delta n/a (needs Binance 5m bars)' : ', taker delta ' + fmt(delta, 0) + ' BTC') : (w ? w.err : NID);
+    $('am-sub').textContent = w && !w.err ? '60 min: price ' + sgn(100 * w.dp, 2) + '%, Binance OI ' + sgn(100 * w.doi, 2) + '%' + (delta === null ? ', taker delta n/a (needs Binance 5m bars)' : ', taker delta ' + fmt(delta, 0) + ' BTC') + brWin('anticipation_oi_delta') : (w ? w.err : NID);
     if (!r.readings.length) { tb.innerHTML = '<tr><td colspan="6" class="dim">flat (under 0.1 %) or inputs missing: no readings</td></tr>'; return; }
     tb.innerHTML = r.readings.map(function (x) {
       var odds = x.p === null ? '<span class="dim">UNMEASURED</span>' : '<b>' + x.p + '%</b> (n=' + x.n + ') <span class="dim">MEASURED</span>';
       var fw = x.cont === null ? '<span class="dim">UNMEASURED</span>' : x.cont + '% / ' + x.kill + '%';
       return '<tr' + (x.live ? ' class="up"' : '') + '><td>' + (x.live ? '<b>now: </b>' : '') + esc(x.label) + '</td><td>' + odds + '</td><td>' + fw + '</td><td>' + esc(x.decider) + '</td><td>' + esc(x.confirm) + '</td><td>' + esc(x.kill_line) + '</td></tr>';
-    }).join('') + (rates ? '' : '<tr><td colspan="6" class="err">anticipation_rates.js not found next to this page: run python MyTradingSys/research/anticipation_map_2026-11-05/study.py</td></tr>');
+    }).join('') + (rates ? '' : '<tr><td colspan="6" class="err">base_rates.js not found next to this page: run python MyTradingSys/tools/live_aid/base_rates.py build</td></tr>');
     $('age-am').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
   }
 
   function renderBigCandle(now) {
-    var rates = typeof BIGCANDLE_RATES !== 'undefined' ? BIGCANDLE_RATES.cells : null, meta = typeof BIGCANDLE_RATES !== 'undefined' ? BIGCANDLE_RATES.meta : null;
+    var rates = brRow('bigcandle_story') ? brRow('bigcandle_story').table.cells : null, meta = brRow('bigcandle_story') ? brRow('bigcandle_story').table.meta : null;
     var tb = $('bc-rows'), w = null, delta = null;
     try { w = A.oiWindow(omHist('BINANCE'), now, 3600000); } catch (e) { w = { err: 'Binance OI history not loaded' }; }
     var k5 = S.tf['5m'] || [], last = k5.slice(-12);
@@ -787,7 +841,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var big = ok && meta ? A.bcBig(w.dp, delta, meta.sd1h) : null;
     var TTN = { BU: 'size and accounts both longer', BD: 'size and accounts both shorter', SL: 'size long / accounts short', SS: 'size short / accounts long', FLAT: 'top traders flat', NA: 'top-trader feed not loaded' };
     $('bc-state').textContent = r.story ? 'Story ' + r.story + ', ' + (TTN[r.tt] || r.tt) : 'no story';
-    $('bc-sub').textContent = ok ? 'phase: 30-day ' + (band || 'n/a') + ', weekly streak ' + (streak || 'n/a') + (big === null ? '' : big.length ? '; this hour is BIG in ' + big.join(' + ') + ' (vs a ' + meta.sdAsOf.slice(0, 10) + ' snapshot of 30-day sd)' : '; this hour is not big (under 3 sd): the table below describes big hours only') : (w ? w.err : NID);
+    $('bc-sub').textContent = ok ? 'phase: 30-day ' + (band || 'n/a') + ', weekly streak ' + (streak || 'n/a') + (big === null ? '' : big.length ? '; this hour is BIG in ' + big.join(' + ') + ' (vs a ' + meta.sdAsOf.slice(0, 10) + ' snapshot of 30-day sd)' : '; this hour is not big (under 3 sd): the table below describes big hours only') + brWin('bigcandle_story') : (w ? w.err : NID);
     if (!r.story) { tb.innerHTML = '<tr><td colspan="7" class="dim">inputs missing or a zero change: no story</td></tr>'; return; }
     function pc(h) { return '<b>' + h.cont + '%</b> <span class="dim">[' + h.lo + '-' + h.hi + ']</span>'; }
     function line(label, c, status) {
@@ -797,7 +851,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var rows = [];
     if (r.cell) rows.push(line(r.level, r.cell, 'MEASURED'));
     else if (r.thin) rows.push(line(r.thin.level + ' (n under 30)', r.thin.cell, 'THIN: not used'));
-    else rows.push('<tr><td colspan="7"><span class="dim">UNMEASURED</span> (no cell for this story' + (rates ? '' : ': bigcandle_rates.js not found next to this page, run python MyTradingSys/research/bigcandle_story_2026-11-05/study.py') + ')</td></tr>');
+    else rows.push('<tr><td colspan="7"><span class="dim">UNMEASURED</span> (no cell for this story' + (rates ? '' : ': base_rates.js not found next to this page, run python MyTradingSys/tools/live_aid/base_rates.py build') + ')</td></tr>');
     if (r.base) rows.push(line('baseline: every ' + (r.story.split('|')[0]) + ' hour' + (band ? ', band ' + band : ''), r.base, 'MEASURED'));
     tb.innerHTML = rows.join('');
     $('age-bc').textContent = S.klT ? Math.round((now - S.klT) / 1000) + 's' : '--';
@@ -828,7 +882,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   }
 
   function renderLevelApproach(now, coilR) {
-    var R = typeof LEVEL_APPROACH_RATES !== 'undefined' ? LEVEL_APPROACH_RATES : null, tb = $('lap-rows'), m1 = (S.tf['1m'] || []).filter(function (r) { return +r[0] + 60000 <= now; });
+    var R = brRow('level_approach_prior_day') ? brRow('level_approach_prior_day').table : null, tb = $('lap-rows'), m1 = (S.tf['1m'] || []).filter(function (r) { return +r[0] + 60000 <= now; });
     var w = null, rs = null, k5 = (S.tf['5m'] || []).filter(function (r) { return +r[0] + 300000 <= now; });
     try { w = A.oiWindow(omHist('BINANCE'), now, 900000); } catch (e) { w = null; }
     if (k5.length > 30) { var rr = A.rsi(k5.map(function (r) { return +r[4]; }), 14); rs = rr[rr.length - 1]; }
@@ -841,8 +895,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
         '<td>' + (x.oi.tell || NID) + (a.flag ? ' <br>reverses ' + odds(x.oi.n, x.oi.rate, x.oi.src) : '') + '</td>' +
         '<td>' + (x.wicks.tfs.join(' ') || 'none') + '<br>hold ' + odds(x.wicks.n, x.wicks.hold, x.wicks.src) + '</td><td>' + esc(x.confirm) + '</td></tr>';
     }).join('') : '<tr><td colspan="6" class="dim">no marked level within 0.5 %</td></tr>';
-    if (!R) tb.innerHTML += '<tr><td colspan="6" class="err">level_approach_rates.js not found next to this page: run python MyTradingSys/research/level_approach_prep_2026-11-05/study.py</td></tr>';
-    $('lap-check').innerHTML = list.length ? 'Hold needs: ' + esc(list[0].checklist.hold.join('; ')) + '. Break shows: ' + esc(list[0].checklist['break'].join('; ')) + '.' : '';
+    if (!R) tb.innerHTML += '<tr><td colspan="6" class="err">base_rates.js not found next to this page: run python MyTradingSys/tools/live_aid/base_rates.py build</td></tr>';
+    $('lap-check').innerHTML = list.length ? 'Hold needs: ' + esc(list[0].checklist.hold.join('; ')) + '. Break shows: ' + esc(list[0].checklist['break'].join('; ')) + '. Base rates: ' + esc(brRow('level_approach_prior_day') ? brRow('level_approach_prior_day').window : 'not loaded') + '.' : '';
     var al = A.approachAlerts(list, S.lapSeen || {}, now);
     S.lapSeen = al.seen;
     al.alerts.forEach(function (x) {
@@ -859,6 +913,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderTop();
     try { renderPremarket(now); } catch (e) { $('pm-sub').textContent = e.message; }
     try { renderTfs(now); } catch (e) { $("tfs-err").textContent = e.message; }
+    try { renderMa(now); } catch (e) { $('mas-err').textContent = e.message; }
     renderUsOpen(now);
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
@@ -868,6 +923,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderLiq(now);
     renderFund(now);
     renderNews(now);
+    try { renderStrip(now); } catch (e) { $('ev-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderMoney(now);
     renderCal(now);
     var a15 = S.a15;
@@ -936,13 +992,15 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     renderInTrade(now, L, px, a15, m1);
     renderVerdict(now, px, vw);
     renderOverview(now, MOM, L, px, a15, coilR);
+    try { renderMap(now, px, L); } catch (e) { $('pb-map').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
+    try { renderPlaybook(now); } catch (e) { $('pb-body').innerHTML = '<p class="pbmsg">' + esc(e.message) + '</p>'; }
   }
 
   // ---------- Now table and detail pages (operator 10-31: no long scroll, click-through) ----------
   // Each row copies numbers already computed for its panel (same feed fields); a click sets #<view>, which shows that panel alone.
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
-                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'] };
+                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'] };
   S.view = '';
   function route() {
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
@@ -961,7 +1019,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function html(id) { return $(id).innerHTML; }
   function renderOverview(now, MOM, L, px, a15, cr) {
     var R = [], kt = ovAge(S.klT, now);
-    function row(go, name, nowH, moreH, ageT, key) { R.push('<tr data-go="' + go + '" tabindex="0"' + (key ? ' class="key"' : '') + '><td>' + name + '</td><td class="nw">' + nowH + '</td><td class="mo">' + (moreH || '') + '</td><td>' + ageT + '</td></tr>'); }
+    function row(go, name, nowH, moreH, ageT, key, fl) { var rc = ((key ? 'key' : '') + (fl ? ' nwflash' : '')).trim(); R.push('<tr data-go="' + go + '" tabindex="0"' + (rc ? ' class="' + rc + '"' : '') + '><td>' + name + '</td><td class="nw">' + nowH + '</td><td class="mo">' + (moreH || '') + '</td><td>' + ageT + '</td></tr>'); }
     // 1. momentum: RSI per timeframe; 15m WaveTrend
     var mom = STRIP.map(function (tf) { var m = MOM[tf.k]; return tf.k + ' ' + (m ? '<b class="' + (m.rsi > 70 ? 'down' : m.rsi < 30 ? 'up' : '') + '">' + fmt(m.rsi, 1) + '</b>' : NID); }).join(' &middot; ');
     var m15 = MOM['15m'];
@@ -974,6 +1032,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       var lv = function (l) { return l ? esc(l.n) + ' ' + fmt(l.p, 1) + ' <span class="' + cls(l.p - px) + '">(' + sgn(l.p - px, 1) + (isFinite(a15) ? ', ' + sgn((l.p - px) / a15, 2) + ' ATR' : '') + ')</span>' : NID; };
       row('levels', 'Levels', 'above ' + lv(up) + ' &middot; below ' + lv(dn), 'price ' + fmt(px, 1) + ' (' + esc(S.venue || '') + ')', kt, 1);
     }
+    S.pv = cr ? (cr.pierce ? (cr.pierce.side === 'up' ? 1 : -1) : 0) : null;   // pierce vote for the map's dial
     // 3-4. coil and pierce (15m)
     if (!cr) {
       var why = S.tf['15m'] && S.tf['15m'].length ? 'not enough 15m bars yet' : '15m bars not loaded';
@@ -991,10 +1050,12 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     if (!nLive) row('news', 'News', NID + ' <span class="err">' + esc(S.news.err || 'connecting') + '</span>', '', ovAge(S.news.t, now));
     else {
       var top = highNews(now).sort(function (a, b) { return b.time - a.time; })[0], pl = A.newsPulse(S.news.items, now), rd = top ? A.newsRead(top) : null;
-      row('news', 'News', '<b>' + pl.level + '</b> ' + pl.n + ' high in 60 min' + (top ? ': ' + hhmm(top.time) + ' ' + esc(headline(top).slice(0, 90)) + ' <span class="rd ' + rd.tag + '">' + rd.tag + '</span>' : ''),
-        top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min', ovAge(S.news.t, now));
+      var fl = !!(S.nwFlash && S.nwFlash.on), tw = nwTop(now);
+      row('news', 'News', (fl ? '<b class="nwf">FLASH</b> ' : '') + '<b>' + pl.level + '</b> ' + pl.n + ' high in 60 min' + (top ? ': ' + hhmm(top.time) + ' ' + esc(headline(top).slice(0, 90)) + ' <span class="rd ' + rd.tag + '">' + rd.tag + '</span>' : ''),
+        (tw ? 'top W ' + tw.w + ' <span class="nw-chip ' + tw.chip + '">' + tw.chip + '</span> ' + esc(tw.reason) + ' ' + hhmm(tw.time) + ' ' + esc(tw.title.slice(0, 70)) + '; ' : '') + (top ? esc(top.source || '') + '; ' + esc(rd.react.slice(0, 100)) : 'no headline scored 7+ in 60 min'), ovAge(S.news.t, now), 0, fl);
     }
     row('verdict', 'Verdict', html('v-call'), esc($('v-count').textContent), '');
+    row('playbook', 'Map', window.LAMAP ? window.LAMAP.summary(mapModel(now, px, L)) : NID, 'bias dial, price ladder, sessions, scenarios', '');
     row('liq', 'Liquidations 5 min', html('g-liq'), esc($('g-liq-sub').textContent), '');
     row('fund', 'Funding 8h', html('g-fund'), html('g-fund-sub'), '');
     row('macro', 'Macro', html('mc-next'), esc($('mc-sub').textContent), '');
@@ -1154,15 +1215,80 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function highNews(now) {
     return (S.news.items || []).filter(function (x) { return +x.importance >= A.NW.mark && x.time <= now && x.time > now - A.NW.winMs; });
   }
+  // news_feed.js decides when (15 s, only while the tab is visible) and how many (20 per poll, 300 first or after a pause)
+  var NF = window.NEWSFEED;
   function loadNews() {
-    return fetch(NEWS_URL + (S.news.t ? 40 : 300)).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    if (!NF) { S.news.err = 'news_feed.js not found next to this page'; return Promise.resolve(); }
+    return fetch(NEWS_URL + NF.fetchLimit(S.news.t, Date.now())).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (a) { if (!Array.isArray(a)) throw new Error('not a list'); S.news.items = A.newsMerge(S.news.items, a, 400); S.news.t = Date.now(); S.news.err = ''; })
       .catch(function (e) { S.news.err = 'Tree News: ' + e.message; });
   }
   function ago(ms) { var m = Math.floor(ms / 60000); return m < 1 ? 'now' : m < 60 ? m + 'm' : Math.floor(m / 60) + 'h' + String(m % 60).padStart(2, '0'); }
   function headline(x) { return String(x.title || '').split('\n')[0].slice(0, 220); }
+  // W, chip and tab flash (news_weight.js, NEWS_DESIGN.md sections 3-6): context only, nothing is gated or sent. K reads this page's own BTC 1m feed S.tf['1m'].
+  var NW = window.NEWSWEIGHT;
+  function nwCompute(now) {
+    S.nw = null;
+    if (!NW) return;
+    var items = (S.news.items || []).filter(function (x) { return x && x._id && isFinite(+x.time) && x.time <= now; }), pool = [], list = [], by = {};
+    items.forEach(function (x) { var c = NW.classify(headline(x)); if (NW.isEvent(c, x.importance)) pool.push({ id: x._id, cls: c, time: x.time }); });
+    items.forEach(function (x, i) {
+      if (i >= 60 && now - x.time >= 3600000) return;
+      var a = NW.assess({ id: x._id, time: x.time, title: headline(x), importance: x.importance }, { now: now, rows: S.tf['1m'] || [], pool: pool });
+      a.title = headline(x); by[x._id] = a; list.push(a);
+    });
+    S.nwFlash = NW.flashStep(S.nwFlash || NW.flashInit(), list, now, S.view === 'news');
+    S.nw = { by: by, list: list };
+  }
+  function nwTop(now) {
+    var l = S.nw ? S.nw.list.filter(function (a) { return a.ageMin >= 0 && a.ageMin < 60 && a.w > 0; }).sort(function (a, b) { return b.w - a.w || b.time - a.time; }) : [];
+    return l[0] || null;
+  }
+  function nwLast(id) {
+    var a = S.nw && S.nw.by[id];
+    return a && a.last ? '<br><span title="last verified ' + esc(a.name) + ' row of the event catalogue (SOURCED); shown, never used in W or the chip">last ' + esc(a.name) + ' ' + esc(a.last.text) + '</span>' : '';
+  }
+  function nwCells(id) {
+    var a = S.nw && S.nw.by[id];
+    if (!a) return '';
+    return ' <span class="nw-w' + (a.w >= 60 ? ' hot' : '') + '" title="' + esc(a.hover) + '">W ' + a.w + '</span> <span class="nw-chip ' + a.chip + '" title="' + esc(a.reason + ' (OURS wording; rules NEWS_DESIGN.md section 5)') + '">' + a.chip + '</span> <span class="dim">' + esc(a.reason) +
+      (a.prior ? '; prior ' + a.prior : '') + '</span>';
+  }
+  // Upcoming strip (events_strip.js + events_strip_data.js). The hd of the News panel pulses on a flash time until the tab is opened.
+  var EVS = window.EVSTRIP, EVD = window.EVENTS_STRIP_DATA, evPrev = 0, evRows = [];
+  function renderStrip(now) {
+    if (!EVS || !EVD) { $('ev-rows').innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
+    var rs = EVS.rows(now, EVD, 5); evRows = rs;
+    $('ev-rows').innerHTML = EVS.html(rs);
+    if (evPrev && rs.some(function (r) { return EVS.flashDue(r, evPrev, now); })) $('p-news').classList.add('flash');
+    if (S.view === 'news') $('p-news').classList.remove('flash');
+    evPrev = now;
+  }
+  // Daily playbook (playbook.js + playbook_data.js, built by daily_playbook.py): redrawn only when its text changes, so an open card keeps its scroll.
+  var pbLast = '', mapLast = '';
+  // Map model: the votes are the verdict board's four (S.vv), the pierce (S.pv) and the playbook lean (added in map.js); levels come from
+  // every section through level_registry.js, so a level two sections name within 0.15% shows once.
+  function mapModel(now, px, L) {
+    var vv = S.vv || [null, null, null, null];
+    var ana = AD && AD.levels ? AD.levels.filter(function (x) { return !x.expired; }) : null;
+    var ma = typeof MA !== 'undefined' && MA.r ? Object.keys(MA.r).map(function (k) { return MA.r[k]; }).filter(Boolean) : [];
+    var lv = (L || []).concat(store.levels.map(function (l) { return { n: (l.name || 'custom') + ' (typed)', p: +l.price }; }));
+    return { data: window.PLAYBOOK_DATA, now: now, px: px, votes: [vv[0], vv[1], vv[2], vv[3], S.pv == null ? null : S.pv, null], panel: lv, ma: ma, analysts: ana };
+  }
+  function renderMap(now, px, L) {
+    if (!window.LAMAP) { $('pb-map').innerHTML = '<p class="pbmsg">MAP NOT_IN_DATA (map.js missing)</p>'; return; }
+    window.LAMAP.injectCss(document);
+    var h = window.LAMAP.html(mapModel(now, px, L));
+    if (h !== mapLast) { $('pb-map').innerHTML = h; mapLast = h; }
+  }
+  function renderPlaybook(now) {
+    var h = window.PLAYBOOK ? window.PLAYBOOK.html(window.PLAYBOOK_DATA, now) : '<p class="pbmsg">PLAYBOOK NOT_IN_DATA (playbook.js missing)</p>';
+    if (h !== pbLast) { $('pb-body').innerHTML = h; pbLast = h; }
+    $('pb-tag').textContent = window.PLAYBOOK_DATA ? String(window.PLAYBOOK_DATA.built_utc || '').slice(11, 16) + 'Z' : '';
+  }
   function renderNews(now) {
     var live = !!S.news.t && now - S.news.t <= 60000;
+    if (live) nwCompute(now); else S.nw = null;
     $('age-news').textContent = S.news.t ? Math.round((now - S.news.t) / 1000) + 's' : '--';
     $('news-feed').textContent = 'Tree News ' + (live ? 'live' : 'down');
     $('news-gaps').textContent = NEWS_GAPS;
@@ -1171,11 +1297,13 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
       $('g-news').innerHTML = NID; $('g-news-sub').textContent = S.news.err || 'connecting'; return;
     }
     $('news').innerHTML = S.news.items.slice(0, S.view === 'news' ? 60 : 12).map(function (x) {
-      var hi = +x.importance >= A.NW.mark, t = esc(headline(x)), u = String(x.url || ''), rd = A.newsRead(x);
-      var tags = A.newsTags(headline(x)).filter(function (g) { return g !== 'btc'; }).map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
-      return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + new Date(x.time).toISOString().slice(11, 19) + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
-        (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags +
-        '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + '</td></tr>';
+      var r = NF.row(x), hi = r.hi, t = esc(r.headline), u = r.url, rd = A.newsRead(x);
+      var tags = r.tags.map(function (g) { return '<span class="chip">' + g + '</span>'; }).join('');
+      var lk = EVS && evRows.length ? EVS.linkHeadline(r.headline, evRows) : null;
+      if (lk) tags += '<a class="chip" href="#ev-' + esc(lk.id) + '" title="names a strip event: inherits its class P (NEWS_DESIGN section 7)">strip ' + esc(lk.id) + (lk.p == null ? '' : ' P' + lk.p) + '</a>';
+      return '<tr' + (hi ? ' class="hi"' : '') + '><td>' + r.utc + ' <span class="dim">' + ago(now - x.time) + '</span></td><td>' + (isFinite(+x.importance) ? fmt(+x.importance, 1) : '--') +
+        (hi ? '<span class="chip">high</span>' : '') + '</td><td>' + esc(x.source || '') + '</td><td class="nh">' + (/^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + t + '</a>' : t) + tags + nwCells(x._id) +
+        '</td><td><span class="rd ' + rd.tag + '" title="' + esc(rd.why + ' (OURS)') + '">' + rd.tag + '</span></td><td class="re">' + esc(rd.react) + (rd.src === 'SOURCED' ? '<span class="src">SOURCED</span>' : '') + nwLast(x._id) + '</td></tr>';
     }).join('');
     var p = A.newsPulse(S.news.items, now);
     $('g-news').innerHTML = p.level + ' <span class="tag" style="font-size:16px">' + p.n + ' high</span>';
@@ -1194,7 +1322,8 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var read = AD ? A.rosterRead(AD.roster, AD.rows, AD.rejected, now) : [];
     var votes = [['Analysts (fresh rows)', AD ? A.analystVote(read) : null], ['Price vs day VWAP', isFinite(px) && isFinite(vw) ? Math.sign(px - vw) : null],
                  ['RSI 1h vs 50', rsiVote('1h')], ['RSI 4h vs 50', rsiVote('4h')]];
-    var ln = A.lean(votes.map(function (v) { return v[1]; }));
+    S.vv = votes.map(function (v) { return v[1]; });   // the map's dial reads these same four votes
+    var ln = A.lean(S.vv);
     $('v-call').innerHTML = '<span class="' + (ln.call === 'BULLISH LEAN' ? 'up' : ln.call === 'BEARISH LEAN' ? 'down' : '') + '">' + ln.call + '</span>';
     $('v-count').textContent = ln.bull + ' bull / ' + ln.bear + ' bear of ' + ln.n + ' votes in data' + (ln.total > ln.n ? ', ' + (ln.total - ln.n) + ' NOT_IN_DATA' : '');
     $('v-votes').innerHTML = votes.map(function (v) { return '<span class="vote">' + esc(v[0]) + ': ' + voteTxt(v[1]) + '</span>'; }).join('');
@@ -1365,7 +1494,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   function loadTfs(tfs) {
     if (typeof TFSTRIP === 'undefined') { TF.err.all = 'tf_strip.js not found next to this page'; return Promise.resolve(); }
     return Promise.all(tfs.map(function (tf) {
-      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=60').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
+      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=150').then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
         function (e) { TF.err[tf] = msg(e); });
     }));
   }
@@ -1389,11 +1518,17 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var rows = {}, H = [], D = '—';
     TFSTRIP.TFS.forEach(function (tf) {
       var r = TF.k[tf] ? TFSTRIP.row(TF.k[tf], now) : null; rows[tf] = r;
-      if (!r) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="5" class="dim">' + D + (TF.err[tf] ? ' <span class="err">' + esc(TF.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
+      if (!r) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="6" class="dim">' + D + (TF.err[tf] ? ' <span class="err">' + esc(TF.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
       var cv = r.cvd && r.cvd.dir ? '<b class="' + (r.cvd.dir === 'up' ? 'up' : 'down') + '">' + (r.cvd.dir === 'up' ? '&#9650; buy' : '&#9660; sell') + '</b>' : D;
       var fl = r.flip ? (r.flip.flipped ? '<span class="flip">FLIP</span> <span class="dim">flipped ' + TFSTRIP.fmtAgo(r.flip.ageMs) + ' ago</span>' : '<span class="dim">same</span>') : D;
       var bb = r.bb ? '<span class="bbt"><i style="left:' + r.bb.pos.toFixed(0) + '%"></i></span><span class="' + (r.bb.label.indexOf('upper') >= 0 ? 'down' : r.bb.label.indexOf('lower') >= 0 ? 'up' : 'dim') + '">' + r.bb.label + '</span>' : D;
-      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
+      var kg = r.keep ? '<span class="kg"><b class="' + (r.keep.colour || '') + '" style="width:' + (r.keep.p * 100).toFixed(0) + '%"></b></span>' : '';
+      var tp = TF.k[tf] && TF.k[tf].length ? parseFloat(TF.k[tf][TF.k[tf].length - 1][4]) : NaN;
+      var tls = ['support', 'resistance'].map(function (sd) {
+        var t = isFinite(tp) ? TFSTRIP.trendline(TF.k[tf], sd, tp) : null;
+        return t ? '<span class="' + (sd === 'support' ? 'up' : 'down') + '" title="' + sd + ' line ' + fmt(t.value, 0) + ', slope ' + t.slopePct.toFixed(3) + '%/bar, ' + t.touches + ' touches">' + TFSTRIP.fmtLine(t) + '</span>' : '<span class="dim" title="no live ' + sd + ' line">' + (sd === 'support' ? 'S' : 'R') + ' —</span>';
+      }).join(' &middot; ');
+      H.push('<tr><td class="tfn">' + tf + '</td><td>' + blk(r.colour, 'big') + r.last3.map(function (c) { return blk(c, 'sm'); }).join('') + kg + '</td><td>' + fl + '</td><td>' + cv + '</td><td>' + bb + '</td><td>' + tls + '</td><td class="num">' + TFSTRIP.fmtLeft(r.leftMs) + '</td></tr>');
     });
     $('tfs-rows').innerHTML = H.join('');
     $('tfs-al').textContent = TFSTRIP.alignment(rows);
@@ -1408,6 +1543,40 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
     var errs = Object.keys(TF.err).map(function (k) { return k + ': ' + TF.err[k]; });
     $('tfs-err').textContent = errs.length ? 'Feed problems: ' + errs.join('; ') : '';
     var t = TF.t['1m']; $('age-tfs').textContent = t ? Math.round((now - t) / 1000) + 's' : '--';
+  }
+
+  // ---------- MA strip (ma_strip.js; same spot feed as the timeframe strip, 1000 bars per timeframe so the 200s exist) ----------
+  var MA = { r: {}, t: {}, err: {} };
+  function loadMa(tfs) {
+    if (typeof MASTRIP === 'undefined') { MA.err.all = 'ma_strip.js not found next to this page'; return Promise.resolve(); }
+    return Promise.all(tfs.map(function (tf) {
+      return getJson(MASTRIP.BASE + '&interval=' + tf + '&limit=' + MASTRIP.LIMIT).then(function (r) { MA.r[tf] = MASTRIP.row(tf, r); MA.t[tf] = Date.now(); delete MA.err[tf]; },
+        function (e) { MA.err[tf] = msg(e); });
+    }));
+  }
+  function loadMaFast() { return loadMa(['5m', '15m']); }
+  function loadMaMid() { return loadMa(['1h', '4h']); }
+  function loadMaSlow() { return loadMa(['1d', '1w', '1M']); }
+  function renderMa(now) {
+    if (typeof MASTRIP === 'undefined') { $('mas-rows').innerHTML = '<tr><td colspan="7" class="dim">—</td></tr>'; $('mas-err').textContent = MA.err.all || 'ma_strip.js not found next to this page'; return; }
+    var SL = { up: '&#8599;', down: '&#8600;', flat: '&rarr;' }, H = [];
+    MASTRIP.TFS.forEach(function (tf) {
+      var v = MASTRIP.view(MA.r[tf]);
+      if (!v) { H.push('<tr><td class="tfn">' + tf + '</td><td colspan="6" class="dim">—' + (MA.err[tf] ? ' <span class="err">' + esc(MA.err[tf]) + '</span>' : '') + '</td></tr>'); return; }
+      var cells = v.cells.map(function (c) {
+        return '<td class="num">' + (c.side ? '<b class="' + (c.side === 'above' ? 'up' : 'down') + '">' + c.sym + '</b> ' + c.pct + (c.slope ? '<span class="sl" title="slope ' + c.slope + '">' + SL[c.slope] + '</span>' : '') : '<span class="dim">—</span>') + '</td>';
+      }).join('');
+      var bar = v.bar ? '<span class="mab" title="' + (v.bar.atr > 0 ? '+' : '') + v.bar.atr.toFixed(1) + ' ATR from the 21 EMA"><u></u><i class="' + (v.bar.side === 'above' ? 'up' : 'down') + '" style="left:' + Math.min(50, v.bar.pos).toFixed(0) + '%;width:' + Math.abs(v.bar.pos - 50).toFixed(0) + '%"></i></span> <span class="dim">' + (v.bar.atr > 0 ? '+' : '') + v.bar.atr.toFixed(1) + '</span>' : '<span class="dim">—</span>';
+      var mk = (v.pullback ? '<span class="mk ' + (v.pullback.dir === 'up' ? 'up' : 'down') + '">' + (v.pullback.dir === 'up' ? 'PULLBACK' : 'RALLY') + '</span>' : '') +
+        (v.cross ? '<span class="mk ' + (v.cross.fresh ? 'fresh' : v.cross.dir === 'up' ? 'up' : 'down') + '" title="21 vs 55 EMA' + (v.cross.barsSince === null ? ', no cross in the window' : ', ' + v.cross.barsSince + ' bars since the cross') + '">' + v.cross.text + '</span>' : '') +
+        (v.gd ? '<span class="mk ' + (v.gd.dir === 'up' ? 'up' : 'down') + '" title="50 SMA vs 200 SMA">' + v.gd.text + '</span>' : '') +
+        (v.inBand ? '<span class="mk" title="price between the 20 SMA and the 21 EMA">IN BAND</span>' : '');
+      H.push('<tr><td class="tfn">' + tf + '</td>' + cells + '<td>' + bar + '</td><td>' + (mk || '<span class="dim">—</span>') + '</td></tr>');
+    });
+    $('mas-rows').innerHTML = H.join('');
+    var errs = Object.keys(MA.err).map(function (k) { return k + ': ' + MA.err[k]; });
+    $('mas-err').textContent = errs.length ? 'Feed problems: ' + errs.join('; ') : '';
+    var t = MA.t['5m']; $('age-mas').textContent = t ? Math.round((now - t) / 1000) + 's' : '--';
   }
 
   // ---------- start ----------
@@ -1444,9 +1613,11 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
   setInterval(render, 1000);
-  loadNews(); setInterval(loadNews, 15000);
+  function newsTick() { if (NF ? NF.shouldPoll(document.hidden, S.news.tried || 0, Date.now()) : !S.news.err) { S.news.tried = Date.now(); loadNews(); } }
+  newsTick(); setInterval(newsTick, 1000); document.addEventListener('visibilitychange', newsTick);
   loadPremarket(); setInterval(loadPremarket, 120000);
   loadTfsFast(); setInterval(loadTfsFast, 15000); loadTfsSlow(); setInterval(loadTfsSlow, 60000);
+  loadMaFast(); setInterval(loadMaFast, 15000); loadMaMid(); setInterval(loadMaMid, 60000); loadMaSlow(); setInterval(loadMaSlow, 300000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);

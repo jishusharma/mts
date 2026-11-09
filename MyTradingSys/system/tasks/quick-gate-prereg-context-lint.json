@@ -1,37 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-07T18:20:01Z",
   "commands": [],
   "created": "2026-11-06T13:09:10Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test shows gate_select picks step 3pc for a changed PRE_REG.md and not for an unrelated .py; ship --quick on a PRE_REG without Phase/Session/Entry exits nonzero",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "sync.py ship quick gate runs prereg_context_lint.py (step 3pc) whenever a PRE_REG.md or RESULT.md is in the diff, so a bad PRE_REG fails locally, not in CI (two reached trunk 11-06)",
   "id": "quick-gate-prereg-context-lint",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "gate_select DOC_MUST maps PRE_REG.md/RESULT*.md to step 3pc; test_gate_select 47 pass (new",
+      "ref": "f251aae12",
+      "utc": "2026-11-07T18:20:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "test_gate_select: fixture plan carries step 3cm",
+      "ref": "b7c74134ceb7",
+      "utc": "2026-11-06T18:27:43Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-07T18:20:00Z",
   "refs": [
     "scripts/dev/prereg_context_lint.py"
   ],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "gate_select DOC_MUST maps PRE_REG.md/RESULT*.md to step 3pc; test_gate_select 47 pass (new test fails on old code)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_gate_select.py"
+  ],
+  "scope_out": [
+    "MyTradingSys/tools/live_aid"
+  ],
+  "scope_sha": "b7c74134ceb7",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "read gate_select.py and how 3pc is mapped",
+    "add fail-first test then the path rule for PRE_REG.md / RESULT*.md",
+    "run the gate_select tests"
+  ],
+  "taken": "2026-11-07T18:20:01Z",
+  "tests": "scripts/dev/test_gate_select.py: PRE_REG.md path must select 3pc (fails on current gate_select)",
   "title": "quick ship gate misses PRE_REG context lint (3pc): two PRE_REGs without Phase/Session/Entry lines reached trunk and turned CI red 11-06; run it in --quick when a PRE_REG.md is in the diff",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

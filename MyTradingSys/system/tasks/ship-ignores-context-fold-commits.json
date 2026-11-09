@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-06T17:22:43Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -18,25 +19,37 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sync.py: check fetched run before trusting path filter in wait_own_ci",
-      "ref": "a70c5d3362bf",
-      "utc": "2026-11-06T15:42:08Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/ship-train-bisect-ej",
+      "ref": "72ad1d707835",
+      "utc": "2026-11-06T17:41:11Z"
+    },
+    {
+      "kind": "ship",
+      "line": "fold amended into real commit; test fails on old code",
+      "ref": "670de068c",
+      "utc": "2026-11-06T17:22:43Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: gap closed",
   "not_twin_of": [
     "context-gap-fold-on-ship"
   ],
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | 2026-11-06 B review: Flash branch rejected, its squash_fold_commits runs git reset/--amend inside sync.py ship (hard rule: never reset). Build it without history rewrite: fold stages into the card and rides the next real commit, or ahead_commits/route checks skip fold-only commits.",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T15:48:03Z",
+  "refreshed": "2026-11-06T17:48:16Z",
   "refs": [],
-  "result": "",
+  "result": "fold amended into real commit; test fails on old code",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/context_gap.py",
     "scripts/dev/sync.py"
@@ -44,17 +57,18 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "a70c5d3362bf",
+  "scope_sha": "72ad1d707835",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 3"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",
     "Run the test on old and new code; record output"
   ],
+  "taken": "2026-11-06T17:22:43Z",
   "tests": "scripts/dev/test_context_gap.py::test_fold_commit_not_shipped (new, fails on old code)",
   "title": "Ship ignores or squashes context-fold commits; hook must not commit on ship worktrees",
   "weight": "",

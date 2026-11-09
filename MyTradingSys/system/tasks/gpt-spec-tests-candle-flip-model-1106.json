@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-06T18:03:57Z",
+  "commands": [],
+  "created": "2026-11-06T16:48:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py exists, passes on trunk, and the report MyTradingSys/research/layer_lab/reports/2026-11-06_candle-flip-model.md names the mutation that made it fail.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write a spec test for MyTradingSys/research/candle_flip_probability_2026-11/flip_model.py from its docstring/PRE_REG (recent .py ship); the test must fail on a planted one-line mutation of the code.",
+  "id": "gpt-spec-tests-candle-flip-model-1106",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py",
+      "ref": "2ba1444c6",
+      "utc": "2026-11-06T18:03:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "flip study step 5: Haiku review (REVIEW.md, 12 findings), amended analysis rerun, card don",
+      "ref": "9c7aa1bc41d7",
+      "utc": "2026-11-06T17:01:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: spec test done",
+  "note": "REVIEWED:2026-11-06 T0-ONLY (D11 feeder, A-20261104-1; twin check run, none). Never use model output as the source.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-06T18:02:37Z",
+  "refs": [],
+  "result": "MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/candle_flip_probability_2026-11/flip_model.py (read)",
+    "MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py (new)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-06_candle-flip-model.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "9c7aa1bc41d7",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "Read the module contract, not the code body",
+    "Write 3+ spec tests from the contract",
+    "Mutate one line, show the test fails, revert, report"
+  ],
+  "taken": "2026-11-06T18:03:57Z",
+  "tests": "python -m pytest MyTradingSys/research/candle_flip_probability_2026-11/test_flip_model_spec.py -q passes; same test fails on the mutated copy (named in the report)",
+  "title": "GPT spec tests: candle_flip flip_model.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

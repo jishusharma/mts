@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_mts_signal.py --durations=20 -q"
+  ],
+  "created": "2026-11-07T18:20:51Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/health_2026-11-07/GATE_SLOW_STEPS.md lists per-file seconds for 3sig/3xt/4f and the change; run_all_tests.py step medians in a fresh gate_timing.jsonl sample are each under 240 s, number quoted in Result",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "cut the median of gate steps 3sig (357 s, test_mts_signal.py), 3xt (695 s) and 4f (404 s) by profiling first, then moving import-graph-covered 3xt tests to CI only and splitting 4f",
+  "id": "gate-slow-steps-3xt-3sig-4f-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): CRITICAL (gate); twin gate-flakes-under-load-test-lease-py-tes is blocked: read it first. Parked 2026-11-08 off CRITICAL_PATH, kept refined, not ready. Needs CRITICAL review. | LAB_GUY 2026-11-08 NOT READY (no stamp). Defects: (1) three goals in one M card; split into profiling card (GATE_SLOW_STEPS.md only, no code) then one card per step. (2) 4f = PYTEST_LAYER_PATHS live-path layer tests; test_run_all_tests.py asserts {5b,4f} stay in the local ship gate (test_a_ship_leaves_the_slow_coordination_steps_to_ci); splitting/moving 4f contradicts that invariant, needs an explicit live-path decision and fail-closed test, else drop 4f. (3) fail-first test names only 3xt, none for 3sig or 4f. (4) 695 s to <240 s median for 3xt is unproven and moving tests to CI-only lowers local coverage; the 'import-graph covered' criterion is undefined, name the check. (5) overlaps gate-flakes-under-load (blocked, scope has test_mts_signal.py) and gate-soak-six-slots-hang-cap-1108 (run_all_tests.py map): sequence them, one run_all_tests.py editor at a time. (6) done_when quotes medians from a 'fresh sample' with no sample size or load condition.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "scripts/dev/run_all_tests.py"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/test_run_all_tests.py",
+    "scripts/dev/test_mts_signal.py",
+    "MyTradingSys/research/health_2026-11-07/GATE_SLOW_STEPS.md"
+  ],
+  "scope_out": [
+    ".github/workflows, live tree, deleting tests, CI coverage reduction"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "pytest --durations=20 on test_mts_signal.py: name the slow tests and why (6 min)",
+    "list 3xt and 4f files by seconds from gate_timing.jsonl; mark the import-graph-covered ones",
+    "move/split with test first; CI still runs everything (every file in CI set)"
+  ],
+  "tests": "scripts/dev/test_run_all_tests.py: new case asserting the moved files are not in the local 3xt set but stay in the CI set (fail-first)",
+  "title": "gate: three steps cost 357-695 s each (3xt extra tests, 3sig signals tests, 4f layer+live-writer); trim or shard",
+  "weight": "CRITICAL",
+  "worker": "session"
+}

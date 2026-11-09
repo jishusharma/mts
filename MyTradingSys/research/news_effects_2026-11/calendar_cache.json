@@ -1,0 +1,765 @@
+{
+ "bls": {
+  "CPI": {
+   "April 2024": [
+    "2024-05-15",
+    "08:30 AM"
+   ],
+   "April 2025": [
+    "2025-05-13",
+    "08:30 AM"
+   ],
+   "April 2026": [
+    "2026-05-12",
+    "08:30 AM"
+   ],
+   "April 2027": [
+    "2027-05-12",
+    "08:30 AM"
+   ],
+   "August 2024": [
+    "2024-09-11",
+    "08:30 AM"
+   ],
+   "August 2025": [
+    "2025-09-11",
+    "08:30 AM"
+   ],
+   "August 2026": [
+    "2026-09-11",
+    "08:30 AM"
+   ],
+   "August 2027": [
+    "2027-09-14",
+    "08:30 AM"
+   ],
+   "December 2023": [
+    "2024-01-11",
+    "08:30 AM"
+   ],
+   "December 2024": [
+    "2025-01-15",
+    "08:30 AM"
+   ],
+   "December 2025": [
+    "2026-01-13",
+    "08:30 AM"
+   ],
+   "December 2026": [
+    "2027-01-13",
+    "08:30 AM"
+   ],
+   "February 2024": [
+    "2024-03-12",
+    "08:30 AM"
+   ],
+   "February 2025": [
+    "2025-03-12",
+    "08:30 AM"
+   ],
+   "February 2026": [
+    "2026-03-11",
+    "08:30 AM"
+   ],
+   "February 2027": [
+    "2027-03-10",
+    "08:30 AM"
+   ],
+   "January 2024": [
+    "2024-02-13",
+    "08:30 AM"
+   ],
+   "January 2025": [
+    "2025-02-12",
+    "08:30 AM"
+   ],
+   "January 2026": [
+    "2026-02-13",
+    "08:30 AM"
+   ],
+   "January 2027": [
+    "2027-02-11",
+    "08:30 AM"
+   ],
+   "July 2024": [
+    "2024-08-14",
+    "08:30 AM"
+   ],
+   "July 2025": [
+    "2025-08-12",
+    "08:30 AM"
+   ],
+   "July 2026": [
+    "2026-08-12",
+    "08:30 AM"
+   ],
+   "July 2027": [
+    "2027-08-11",
+    "08:30 AM"
+   ],
+   "June 2024": [
+    "2024-07-11",
+    "08:30 AM"
+   ],
+   "June 2025": [
+    "2025-07-15",
+    "08:30 AM"
+   ],
+   "June 2026": [
+    "2026-07-14",
+    "08:30 AM"
+   ],
+   "June 2027": [
+    "2027-07-14",
+    "08:30 AM"
+   ],
+   "March 2024": [
+    "2024-04-10",
+    "08:30 AM"
+   ],
+   "March 2025": [
+    "2025-04-10",
+    "08:30 AM"
+   ],
+   "March 2026": [
+    "2026-04-10",
+    "08:30 AM"
+   ],
+   "March 2027": [
+    "2027-04-13",
+    "08:30 AM"
+   ],
+   "May 2024": [
+    "2024-06-12",
+    "08:30 AM"
+   ],
+   "May 2025": [
+    "2025-06-11",
+    "08:30 AM"
+   ],
+   "May 2026": [
+    "2026-06-10",
+    "08:30 AM"
+   ],
+   "May 2027": [
+    "2027-06-10",
+    "08:30 AM"
+   ],
+   "November 2023": [
+    "2023-12-12",
+    "08:30 AM"
+   ],
+   "November 2024": [
+    "2024-12-11",
+    "08:30 AM"
+   ],
+   "November 2025": [
+    "2025-12-18",
+    "08:30 AM"
+   ],
+   "November 2026": [
+    "2026-12-10",
+    "08:30 AM"
+   ],
+   "November 2027": [
+    "2027-12-10",
+    "08:30 AM"
+   ],
+   "October 2023": [
+    "2023-11-14",
+    "08:30 AM"
+   ],
+   "October 2024": [
+    "2024-11-13",
+    "08:30 AM"
+   ],
+   "October 2026": [
+    "2026-11-10",
+    "08:30 AM"
+   ],
+   "October 2027": [
+    "2027-11-10",
+    "08:30 AM"
+   ],
+   "September 2024": [
+    "2024-10-10",
+    "08:30 AM"
+   ],
+   "September 2025": [
+    "2025-10-24",
+    "08:30 AM"
+   ],
+   "September 2026": [
+    "2026-10-14",
+    "08:30 AM"
+   ],
+   "September 2027": [
+    "2027-10-14",
+    "08:30 AM"
+   ]
+  },
+  "NFP": {
+   "April 2024": [
+    "2024-05-03",
+    "08:30 AM"
+   ],
+   "April 2025": [
+    "2025-05-02",
+    "08:30 AM"
+   ],
+   "April 2026": [
+    "2026-05-08",
+    "08:30 AM"
+   ],
+   "April 2027": [
+    "2027-05-07",
+    "08:30 AM"
+   ],
+   "August 2024": [
+    "2024-09-06",
+    "08:30 AM"
+   ],
+   "August 2025": [
+    "2025-09-05",
+    "08:30 AM"
+   ],
+   "August 2026": [
+    "2026-09-04",
+    "08:30 AM"
+   ],
+   "August 2027": [
+    "2027-09-03",
+    "08:30 AM"
+   ],
+   "December 2023": [
+    "2024-01-05",
+    "08:30 AM"
+   ],
+   "December 2024": [
+    "2025-01-10",
+    "08:30 AM"
+   ],
+   "December 2025": [
+    "2026-01-09",
+    "08:30 AM"
+   ],
+   "December 2026": [
+    "2027-01-08",
+    "08:30 AM"
+   ],
+   "February 2024": [
+    "2024-03-08",
+    "08:30 AM"
+   ],
+   "February 2025": [
+    "2025-03-07",
+    "08:30 AM"
+   ],
+   "February 2026": [
+    "2026-03-06",
+    "08:30 AM"
+   ],
+   "February 2027": [
+    "2027-03-05",
+    "08:30 AM"
+   ],
+   "January 2024": [
+    "2024-02-02",
+    "08:30 AM"
+   ],
+   "January 2025": [
+    "2025-02-07",
+    "08:30 AM"
+   ],
+   "January 2026": [
+    "2026-02-11",
+    "08:30 AM"
+   ],
+   "January 2027": [
+    "2027-02-05",
+    "08:30 AM"
+   ],
+   "July 2024": [
+    "2024-08-02",
+    "08:30 AM"
+   ],
+   "July 2025": [
+    "2025-08-01",
+    "08:30 AM"
+   ],
+   "July 2026": [
+    "2026-08-07",
+    "08:30 AM"
+   ],
+   "July 2027": [
+    "2027-08-06",
+    "08:30 AM"
+   ],
+   "June 2024": [
+    "2024-07-05",
+    "08:30 AM"
+   ],
+   "June 2025": [
+    "2025-07-03",
+    "08:30 AM"
+   ],
+   "June 2026": [
+    "2026-07-02",
+    "08:30 AM"
+   ],
+   "June 2027": [
+    "2027-07-02",
+    "08:30 AM"
+   ],
+   "March 2024": [
+    "2024-04-05",
+    "08:30 AM"
+   ],
+   "March 2025": [
+    "2025-04-04",
+    "08:30 AM"
+   ],
+   "March 2026": [
+    "2026-04-03",
+    "08:30 AM"
+   ],
+   "March 2027": [
+    "2027-04-02",
+    "08:30 AM"
+   ],
+   "May 2024": [
+    "2024-06-07",
+    "08:30 AM"
+   ],
+   "May 2025": [
+    "2025-06-06",
+    "08:30 AM"
+   ],
+   "May 2026": [
+    "2026-06-05",
+    "08:30 AM"
+   ],
+   "May 2027": [
+    "2027-06-04",
+    "08:30 AM"
+   ],
+   "November 2023": [
+    "2023-12-08",
+    "08:30 AM"
+   ],
+   "November 2024": [
+    "2024-12-06",
+    "08:30 AM"
+   ],
+   "November 2025": [
+    "2025-12-16",
+    "08:30 AM"
+   ],
+   "November 2026": [
+    "2026-12-04",
+    "08:30 AM"
+   ],
+   "November 2027": [
+    "2027-12-03",
+    "08:30 AM"
+   ],
+   "October 2023": [
+    "2023-11-03",
+    "08:30 AM"
+   ],
+   "October 2024": [
+    "2024-11-01",
+    "08:30 AM"
+   ],
+   "October 2026": [
+    "2026-11-06",
+    "08:30 AM"
+   ],
+   "October 2027": [
+    "2027-11-05",
+    "08:30 AM"
+   ],
+   "September 2024": [
+    "2024-10-04",
+    "08:30 AM"
+   ],
+   "September 2025": [
+    "2025-11-20",
+    "08:30 AM"
+   ],
+   "September 2026": [
+    "2026-10-02",
+    "08:30 AM"
+   ],
+   "September 2027": [
+    "2027-10-08",
+    "08:30 AM"
+   ]
+  },
+  "PPI": {
+   "April 2024": [
+    "2024-05-14",
+    "08:30 AM"
+   ],
+   "April 2025": [
+    "2025-05-15",
+    "08:30 AM"
+   ],
+   "April 2026": [
+    "2026-05-13",
+    "08:30 AM"
+   ],
+   "April 2027": [
+    "2027-05-13",
+    "08:30 AM"
+   ],
+   "August 2024": [
+    "2024-09-12",
+    "08:30 AM"
+   ],
+   "August 2025": [
+    "2025-09-10",
+    "08:30 AM"
+   ],
+   "August 2026": [
+    "2026-09-10",
+    "08:30 AM"
+   ],
+   "August 2027": [
+    "2027-09-10",
+    "08:30 AM"
+   ],
+   "December 2023": [
+    "2024-01-12",
+    "08:30 AM"
+   ],
+   "December 2024": [
+    "2025-01-14",
+    "08:30 AM"
+   ],
+   "December 2025": [
+    "2026-01-30",
+    "08:30 AM"
+   ],
+   "December 2026": [
+    "2027-01-14",
+    "08:30 AM"
+   ],
+   "February 2024": [
+    "2024-03-14",
+    "08:30 AM"
+   ],
+   "February 2025": [
+    "2025-03-13",
+    "08:30 AM"
+   ],
+   "February 2026": [
+    "2026-03-18",
+    "08:30 AM"
+   ],
+   "February 2027": [
+    "2027-03-12",
+    "08:30 AM"
+   ],
+   "January 2024": [
+    "2024-02-16",
+    "08:30 AM"
+   ],
+   "January 2025": [
+    "2025-02-13",
+    "08:30 AM"
+   ],
+   "January 2026": [
+    "2026-02-27",
+    "08:30 AM"
+   ],
+   "January 2027": [
+    "2027-02-12",
+    "08:30 AM"
+   ],
+   "July 2024": [
+    "2024-08-13",
+    "08:30 AM"
+   ],
+   "July 2025": [
+    "2025-08-14",
+    "08:30 AM"
+   ],
+   "July 2026": [
+    "2026-08-13",
+    "08:30 AM"
+   ],
+   "July 2027": [
+    "2027-08-10",
+    "08:30 AM"
+   ],
+   "June 2024": [
+    "2024-07-12",
+    "08:30 AM"
+   ],
+   "June 2025": [
+    "2025-07-16",
+    "08:30 AM"
+   ],
+   "June 2026": [
+    "2026-07-15",
+    "08:30 AM"
+   ],
+   "June 2027": [
+    "2027-07-15",
+    "08:30 AM"
+   ],
+   "March 2024": [
+    "2024-04-11",
+    "08:30 AM"
+   ],
+   "March 2025": [
+    "2025-04-11",
+    "08:30 AM"
+   ],
+   "March 2026": [
+    "2026-04-14",
+    "08:30 AM"
+   ],
+   "March 2027": [
+    "2027-04-14",
+    "08:30 AM"
+   ],
+   "May 2024": [
+    "2024-06-13",
+    "08:30 AM"
+   ],
+   "May 2025": [
+    "2025-06-12",
+    "08:30 AM"
+   ],
+   "May 2026": [
+    "2026-06-11",
+    "08:30 AM"
+   ],
+   "May 2027": [
+    "2027-06-11",
+    "08:30 AM"
+   ],
+   "November 2023": [
+    "2023-12-13",
+    "08:30 AM"
+   ],
+   "November 2024": [
+    "2024-12-12",
+    "08:30 AM"
+   ],
+   "November 2025": [
+    "2026-01-14",
+    "08:30 AM"
+   ],
+   "November 2026": [
+    "2026-12-15",
+    "08:30 AM"
+   ],
+   "November 2027": [
+    "2027-12-15",
+    "08:30 AM"
+   ],
+   "October 2023": [
+    "2023-11-15",
+    "08:30 AM"
+   ],
+   "October 2024": [
+    "2024-11-14",
+    "08:30 AM"
+   ],
+   "October 2026": [
+    "2026-11-13",
+    "08:30 AM"
+   ],
+   "October 2027": [
+    "2027-11-12",
+    "08:30 AM"
+   ],
+   "September 2024": [
+    "2024-10-11",
+    "08:30 AM"
+   ],
+   "September 2025": [
+    "2025-11-25",
+    "08:30 AM"
+   ],
+   "September 2026": [
+    "2026-10-15",
+    "08:30 AM"
+   ],
+   "September 2027": [
+    "2027-10-15",
+    "08:30 AM"
+   ]
+  }
+ },
+ "corrections": {
+  "drop": [
+   "October 2025"
+  ],
+  "set": {
+   "September 2025": [
+    "2025-11-25",
+    "08:30 AM"
+   ]
+  },
+  "sources": [
+   "https://web.archive.org/web/20251120id_/https://www.bls.gov/schedule/news_release/ppi.htm",
+   "https://web.archive.org/web/20260201id_/https://www.bls.gov/schedule/news_release/ppi.htm"
+  ]
+ },
+ "fomc": [
+  "2021-01-27",
+  "2021-03-17",
+  "2021-04-28",
+  "2021-06-16",
+  "2021-07-28",
+  "2021-09-22",
+  "2021-11-03",
+  "2021-12-15",
+  "2022-01-26",
+  "2022-03-16",
+  "2022-05-04",
+  "2022-06-15",
+  "2022-07-27",
+  "2022-09-21",
+  "2022-11-02",
+  "2022-12-14",
+  "2023-03-22",
+  "2023-05-03",
+  "2023-06-14",
+  "2023-07-26",
+  "2023-09-20",
+  "2023-12-13",
+  "2024-01-31",
+  "2024-03-20",
+  "2024-05-01",
+  "2024-06-12",
+  "2024-07-31",
+  "2024-09-18",
+  "2024-11-07",
+  "2024-12-18",
+  "2025-01-29",
+  "2025-03-19",
+  "2025-05-07",
+  "2025-06-18",
+  "2025-07-30",
+  "2025-09-17",
+  "2025-10-29",
+  "2025-12-10",
+  "2026-01-28",
+  "2026-03-18",
+  "2026-04-29",
+  "2026-06-17",
+  "2026-07-29",
+  "2026-09-16",
+  "2026-10-28",
+  "2026-12-09",
+  "2027-01-27",
+  "2027-03-17",
+  "2027-04-28",
+  "2027-06-09",
+  "2027-07-28",
+  "2027-09-15",
+  "2027-10-27",
+  "2027-12-08"
+ ],
+ "fomc_press_release": {
+  "2024-01-31": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240131a.htm"
+  },
+  "2024-03-20": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240320a.htm"
+  },
+  "2024-05-01": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240501a.htm"
+  },
+  "2024-06-12": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240612a.htm"
+  },
+  "2024-07-31": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240731a.htm"
+  },
+  "2024-09-18": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20240918a.htm"
+  },
+  "2024-11-07": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241107a.htm"
+  },
+  "2024-12-18": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20241218a.htm"
+  },
+  "2025-01-29": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250129a.htm"
+  },
+  "2025-03-19": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250319a.htm"
+  },
+  "2025-05-07": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250507a.htm"
+  },
+  "2025-06-18": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250618a.htm"
+  },
+  "2025-07-30": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250730a.htm"
+  },
+  "2025-09-17": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20250917a.htm"
+  },
+  "2025-10-29": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20251029a.htm"
+  },
+  "2025-12-10": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20251210a.htm"
+  },
+  "2026-01-28": {
+   "release": "2:00 p.m. EST",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260128a.htm"
+  },
+  "2026-03-18": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260318a.htm"
+  },
+  "2026-04-29": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260429a.htm"
+  },
+  "2026-06-17": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260617a.htm"
+  },
+  "2026-07-29": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm"
+  },
+  "2026-09-16": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm"
+  },
+  "2026-10-28": {
+   "release": "2:00 p.m. EDT",
+   "url": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm"
+  }
+ },
+ "note": "Public release dates. BLS: web.archive.org snapshots of bls.gov/schedule/news_release/<rel>.htm; FOMC: federalreserve.gov fomccalendars.htm",
+ "skipped_snapshots": []
+}

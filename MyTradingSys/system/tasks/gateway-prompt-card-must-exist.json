@@ -6,13 +6,14 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T15:30:57Z",
-    "misses": 18,
+    "folded": "2026-11-09T12:51:56Z",
+    "misses": 5,
     "reads": [
+      "scripts/dev/supervisor.py",
       "scripts/dev/test_supervisor.py",
-      "scripts/dev/supervisor.py"
+      "MyTradingSys/research/gemini_lane_fix_2026-10-28T081956Z.md"
     ],
-    "session": "agent-afb951b26ac57baa3"
+    "session": "agent-a274fa354a6f6c60a"
   },
   "created": "2026-10-28T06:49:00Z",
   "depends_on": [],
@@ -28,20 +29,20 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Weekly plan per login wired into Supervisor (re-land, supervisor.md trimmed to budget)",
-      "ref": "39446115d946",
-      "utc": "2026-11-06T13:10:30Z"
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; supervisor.py changed in 5b2506ea2 REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T14:42:32Z",
+  "refreshed": "2026-11-08T18:20:41Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +52,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "39446115d946",
+  "scope_sha": "05d8d613782f",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 7"

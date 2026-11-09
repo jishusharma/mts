@@ -6,6 +6,16 @@
     "python scripts/dev/artifacts.py publish-record --slug mts_home",
     "python scripts/dev/artifacts.py publish-record --slug mts_layer_map"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-07T18:08:02Z",
+    "misses": 3,
+    "reads": [
+      "scripts/dev/make_layers_board.py",
+      "MyTradingSys/system/artifacts/registry.json"
+    ],
+    "session": "agent-abc838c65bca2c596"
+  },
   "created": "2026-11-04T07:33:20Z",
   "depends_on": [],
   "done_when": "artifacts.py stale prints no STALE line for mts_home or mts_layer_map, and registry.json pub date for both slugs is today",
@@ -21,19 +31,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "republish stale artifact pages (night hygiene)",
-      "ref": "f6746acf7b7f",
-      "utc": "2026-11-05T00:36:53Z"
+      "line": "republish MTS Layers page (mts_layer_map); card republish-mts-home-and-mts-layers-stale- s",
+      "ref": "347c034ff55b",
+      "utc": "2026-11-07T18:08:11Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS): distinct from republish-6-stale-artifact-pages-flagged (login C pages); these two slugs only. Needs the login that owns them, else park with the reason. Refined by planner-refine-1104.",
+  "note": "DECISION (OURS): distinct from republish-6-stale-artifact-pages-flagged (login C pages); these two slugs only. Needs the login that owns them, else park with the reason. Refined by planner-refine-1104. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: page republish housekeeping; artifacts.py stale still lists both pages REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-05T10:27:37Z",
+  "refreshed": "2026-11-08T18:21:00Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +53,7 @@
   "scope_out": [
     "page design changes; pages owned by another login (skip and list the reason)"
   ],
-  "scope_sha": "f6746acf7b7f",
+  "scope_sha": "347c034ff55b",
   "size": "S",
   "sources": [],
   "state": "ready",

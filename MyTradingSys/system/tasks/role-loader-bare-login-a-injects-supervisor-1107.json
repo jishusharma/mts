@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T18:07:05Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_stop_guard.py and MyTradingSys/tests/test_role_loader.py each have a case: prompt 'Login A' alone -> no role injected; Supervisor on another host (mts_signal who) -> stop_guard does not demand plan/watcher; both fail on current code.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "A bare operator reply 'Login A' injects no role, and stop_guard only blocks a Supervisor turn end when the supervisor's login is hosted on this machine.",
+  "id": "role-loader-bare-login-a-injects-supervisor-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). Hook files: process-control path, no live-tree touch. NOT STAMPED: weight needs a reviewer Agent (details step 3); planner may not spawn. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: owned by login A (PLAN_8H lane A4)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py",
+    "scripts/dev/stop_guard.py",
+    "scripts/dev/test_stop_guard.py",
+    "MyTradingSys/tests/test_role_loader.py"
+  ],
+  "scope_out": [
+    "no new roles",
+    "no change to other role triggers",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "size": "M",
+  "sources": [
+    "planner note on card 2026-11-07 18:10Z pilot session on login C"
+  ],
+  "state": "raw",
+  "steps": [
+    "Reproduce: pick_role('Login A') returns supervisor",
+    "Write both failing tests",
+    "Restrict supervisor injection to an explicit 'You are Supervisor' line or the start line",
+    "In supervisor_reason compare the login's host (mts_signal who) with this host, else return None",
+    "Run both test files"
+  ],
+  "tests": "two new cases fail on current code (role_loader.py match on 'Login A'; stop_guard.supervisor_reason host check)",
+  "title": "role_loader injects Supervisor on a bare operator reply 'Login A', stop_guard then forces plan/watcher on the wrong host",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

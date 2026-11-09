@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-08T08:30:28Z",
+  "depends_on": [],
+  "done_when": "A report lists each way (or none) the guard in scripts/aibridge/src/lease.ps1, extension/loop.js (pace, warnState, armGate, lease) and content.js (paceGate, tryArm, guardTick) can be bypassed or false-trigger, each with file:line and a replay idea; no code changed.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind read of the AIBridge 0.7.33 DeepSeek block guard: look for a way the pace, warning, lease or one-armed-chat rule can be skipped or can lock the operator out wrongly.",
+  "id": "gemini-blind-read-of-scripts-aibridge-sr",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease u",
+      "ref": "5b6548bb8521",
+      "utc": "2026-11-08T10:34:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-08T18:20:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/aibridge/src/lease.ps1 scripts/aibridge/extension/loop.js scripts/aibridge/extension/content.js MyTradingSys/tests/test_aibridge_pacing.py MyTradingSys/tests/test_aibridge_account_lease.py"
+  ],
+  "scope_out": [
+    "no edits; no login attempts; no bypass of any bot check"
+  ],
+  "scope_sha": "5b6548bb8521",
+  "size": "S",
+  "sources": [
+    "card dsa-bridge-avoid-deepseek-block-1108 (feeder rule A-20261104-1)"
+  ],
+  "state": "ready",
+  "steps": [
+    "read the guard blind, without the review text; write down what each rule lets through"
+  ],
+  "tests": "node scripts/aibridge/tests/handsfree.test.js",
+  "title": "[GEMINI] blind read of scripts/aibridge/src/lease.ps1 + extension/loop.js pace/warn/arm guard (0.7.33)",
+  "weight": "",
+  "worker": "agent"
+}

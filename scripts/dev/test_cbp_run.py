@@ -159,6 +159,26 @@ def test_rebuild_dashboard_survives_failed_fetch(tmp_path, monkeypatch):
     assert calls == ["fetch_board_data.py", "build_board.py"]  # build still runs on the last data
 
 
+def test_announce_republish_prints_line_and_asks_when_not_a_publisher(tmp_path, monkeypatch):
+    (tmp_path / "cbp_v2").mkdir()
+    (tmp_path / "cbp_v2" / "cbp_board.html").write_text("<html></html>", encoding="utf-8")
+    monkeypatch.setattr(cbp_run, "CBP_HOME", tmp_path)
+    out, asks = [], []
+    cbp_run.announce_republish(out=out.append, ask=asks.append, login="A")
+    assert len(out) == 1 and out[0].startswith("REPUBLISH cbp_analyst_desk ") and "https://claude.ai/artifact/" in out[0]
+    assert len(asks) == 1 and "jishusharma1985" in asks[0]
+    out2, asks2 = [], []
+    cbp_run.announce_republish(out=out2.append, ask=asks2.append, login="C")      # the publisher login asks nobody
+    assert len(out2) == 1 and asks2 == []
+
+
+def test_announce_republish_silent_without_a_board(tmp_path, monkeypatch):
+    monkeypatch.setattr(cbp_run, "CBP_HOME", tmp_path)
+    out = []
+    cbp_run.announce_republish(out=out.append, ask=out.append, login="A")
+    assert out == []
+
+
 def _fake_fetch_env(tmp_path, monkeypatch, codes):
     import json
     (tmp_path / "cbp_v2").mkdir()

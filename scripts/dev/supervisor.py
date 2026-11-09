@@ -693,6 +693,7 @@ def wait_for_transition(
     login: str | None = None,
     home=None,
     clock=None,
+    signals=None,
 ) -> tuple[int, str]:
     """Record baseline at start and poll every `interval` seconds after fetching.
     Exits (0, reason) on the FIRST transition from baseline; never exits on a state that already held at baseline;
@@ -700,12 +701,16 @@ def wait_for_transition(
     unused (_actionable), at most once per plan (`<login>-woke.txt`); exits (3, reason) when `timeout` seconds elapse with no transition.
     stall-fix-1104: with `login`, also exits (0, RESET ...) AT that login's next 5 h reset when it falls inside the timeout (never past it: soak 50 min cap), and
     any time a running api_job.py job finishes; the marker records stdout so watchcheck can refuse a detached (`&`) watcher.
+    1-minute signals (operator 2026-11-07): in production (no injected probe/fetcher/sleeper) it also fetches the mts-signals branch every
+    SIGNAL_STEP s and exits 0 (SIGNAL ...) on a new ask or HIGH broadcast for this host; `signals` injects that check (a callable returning a reason or None).
     """
     clock = clock or _now_utc
     timeout_s = parse_duration(timeout)
     reset_at = _next_reset(login, home, clock())
     if reset_at and reset_at > clock() + timedelta(seconds=timeout_s):
         reset_at = None     # the timeout wakes the session first; its next watcher catches the reset
+    if signals is None and probe is None and fetcher is None and sleeper is None:
+        signals = _signals_check()
     marker = _watcher_file(login, home)
     token = uuid.uuid4().hex
     try:
@@ -716,7 +721,7 @@ def wait_for_transition(
     except OSError:
         pass
     try:
-        return _wait_loop(repo, shas, timeout_s, interval, probe, fetcher, sleeper, login, home, reset_at, clock)
+        return _wait_loop(repo, shas, timeout_s, interval, probe, fetcher, sleeper, login, home, reset_at, clock, signals)
     finally:
         try:     # unlink only our own marker: a newer watcher (other pid/token) may have rewritten it
             d = json.loads(marker.read_text(encoding="utf-8"))
@@ -743,7 +748,29 @@ def _next_reset(login: str | None, home, now: datetime) -> datetime | None:
     return None
 
 
-def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home, reset_at=None, clock=None) -> tuple[int, str]:
+SIGNAL_STEP = 60    # OURS: seconds between signal checks of a watcher (the 1-minute reply target)
+
+
+def _signals_check():
+    """A callable: the one-line reason of the first ask / HIGH broadcast for this host that arrived since now, else None. A failure is None."""
+    try:
+        import mts_signal
+        since = mts_signal.stamp()
+    except Exception:
+        return None
+
+    def check():
+        try:
+            rc, rec, _ = mts_signal.wait_signal(0, since=since, sleeper=lambda s: None)
+        except Exception:
+            return None
+        if rc == 0 and rec.get("kind") in ("ask", "broadcast", "esc"):
+            return "SIGNAL %s %s from %s: %s" % (rec.get("kind"), rec.get("id", ""), rec.get("from", "?"), str(rec.get("text", ""))[:120])
+        return None
+    return check
+
+
+def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, home, reset_at=None, clock=None, signals=None) -> tuple[int, str]:
     sha_list = parse_shas_arg(shas)
     timeout_s = parse_duration(timeout)
     interval_s = max(1, parse_duration(interval))
@@ -756,17 +783,27 @@ def _wait_loop(repo, shas, timeout, interval, probe, fetcher, sleeper, login, ho
     except Exception:
         pass
     baseline = probe_fn(repo, sha_list)
-    elapsed = 0
+    elapsed = last_full = 0
 
     clock = clock or _now_utc
     while elapsed < timeout_s:
-        step = min(interval_s, timeout_s - elapsed)
+        step = min(min(interval_s, SIGNAL_STEP) if signals else interval_s, timeout_s - elapsed)
         if reset_at:
             step = max(1, min(step, int((reset_at - clock()).total_seconds()) + 5))
         sleep_fn(step)
         elapsed += step
         if reset_at and clock() >= reset_at:
             return 0, f"TRANSITION RESET 5 h window of {login} reset at {reset_at.strftime('%H:%MZ')}: get_usage, plan, spend it"
+        if signals:
+            try:
+                sig = signals()
+            except Exception:
+                sig = None
+            if sig:
+                return 0, sig
+            if elapsed - last_full < interval_s and elapsed < timeout_s:
+                continue
+        last_full = elapsed
         try:
             fetch_fn(repo)
         except Exception:
@@ -844,11 +881,43 @@ def brief(card_id: str, role: str | None = None, repo: Path = REPO, card: dict |
     if done_when:
         lines.append(f"Done when: {done_when}")
 
+    # Report path inside the worktree for Verifiers or report-bearing cards (gap 5: subagents ship their own report)
+    report_path = None
+    if card.get("report"):
+        report_path = str(card["report"]).strip()
+    elif card.get("report_path"):
+        report_path = str(card["report_path"]).strip()
+    else:
+        for field in ("refs", "scope_in"):
+            for item in card.get(field) or []:
+                s = str(item).strip()
+                if s.endswith("REPORT.md") or s.endswith("report.md"):
+                    report_path = s
+                    break
+            if report_path:
+                break
+        if not report_path:
+            text = f"{done_when} {goal}"
+            m = re.search(r"((?:MyTradingSys/)?research/[\w.-]+/REPORT\.md)", text, re.IGNORECASE)
+            if m:
+                report_path = m.group(1)
+            elif str(worker_role).lower() == "verifier":
+                report_path = f"MyTradingSys/research/{slug}/REPORT.md"
+
+    if report_path:
+        r_str = str(repo).replace("\\", "/")
+        report_path = report_path.replace("\\", "/")
+        if report_path.startswith(r_str):
+            report_path = os.path.relpath(report_path, r_str).replace("\\", "/")
+        report_path = report_path.lstrip("/\\")
+        lines.append(f"Report: {report_path} (write inside your WORKTREE with the Write tool)")
+
     # Defaults for open questions
     lines.append("Defaults for open questions: on any ambiguity take the most conservative default, never ask the operator.")
 
     # Standard stop line
     lines.append("Run with zero operator input: never ask; take the conservative default, log DECISION (OURS), continue")
+    lines.append(f"Ship once with python scripts/dev/sync.py ship --release {slug}")
     lines.append("Your final report starts with your ROLE LOADED banner line, then Result: and the content sha, at most 6 lines.")
 
     return "\n".join(lines)
@@ -1403,6 +1472,30 @@ def _who_rows() -> list:
         return []
 
 
+REPUBLISH_TIMEOUT_S = 60       # OURS: the page builds run inside every publisher-login plan, so they are time-capped
+
+
+def republish_notes(login: str) -> list:
+    """`REPUBLISH <slug> <html> <url>` for each page whose repo build differs from its last publish, on a publisher login only
+    (operator 2026-11-07: pages follow builds; SUPER_SESSION.md Every wake step 3b). Fails soft into one NOTE line."""
+    try:
+        import artifacts
+        from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutTimeout
+        reg = artifacts.load()
+        if not artifacts.is_publisher(reg, login):
+            return []
+        ex = ThreadPoolExecutor(max_workers=1)
+        fut = ex.submit(artifacts.republish_lines, reg)
+        try:
+            return fut.result(timeout=REPUBLISH_TIMEOUT_S)
+        except FutTimeout:
+            return [f"NOTE REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s: run `python scripts/dev/artifacts.py republish` by hand"]
+        finally:
+            ex.shutdown(wait=False)
+    except Exception as e:
+        return [f"NOTE REPUBLISH check failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/artifacts.py stale` by hand"]
+
+
 def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, no_fetch: bool = False, host: str | None = None,
          home=None, now: datetime | None = None, shas: list | None = None, who_rows=None,
          context_tokens: int | None = None, wave_start: datetime | None = None, work_hours: float | None = None,
@@ -1538,6 +1631,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         notes += bg_watch.report_lines(repo, root=(Path(home) / "projects") if home else None, now=now.timestamp())
     except Exception as e:
         notes.append(f"NOTE bg_watch failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/bg_watch.py report` by hand")
+    notes += republish_notes(login)
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line

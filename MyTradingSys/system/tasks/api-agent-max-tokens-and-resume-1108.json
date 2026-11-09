@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T23:45:28Z",
+  "commands": [
+    "python scripts/dev/test_api_agent_models.py"
+  ],
+  "created": "2026-11-07T21:57:26Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_api_agent_models.py gains three cases: default token cap per model, passthrough in the launch command (dry-run), retry on a faked max_tokens stop; written first, the new cases fail on pre-change code; no live job launched",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The news event catalogue job ended after 16 min and 26 turns with error_max_tokens because api_agent.py caps one reply at 8192 tokens, and thinking plus a long file write exceed it. Raise the cap and make it a launch option so research jobs finish.",
+  "id": "api-agent-max-tokens-and-resume-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "api_agent reply cap 8192->32000 (retry to 64000), api_job --max-tokens passthrough; test_a",
+      "ref": "478efba51",
+      "utc": "2026-11-07T23:45:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "api_agent, api_job: add claude-fable-5-1 (10/50 per MTok) with model test",
+      "ref": "1f739ab6c8ac",
+      "utc": "2026-11-07T20:21:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: runner fix shipped; relaunch of news-effect-event-catalogue-1108 is the queue's call",
+  "note": "Unblocks the research chain: catalogue, both reviews and the synthesis all write long files. Check the 32000 value against the model's documented max output before setting it; use the lower of the two.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T21:58:22Z",
+  "refs": [
+    "scripts/dev/api_agent.py"
+  ],
+  "result": "api_agent reply cap 8192->32000 (retry to 64000), api_job --max-tokens passthrough; test_api_agent_models 8/8; commit 478efba5",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/api_agent.py, scripts/dev/api_job.py, scripts/dev/test_api_agent_models.py"
+  ],
+  "scope_out": [
+    "no key handling change|no job launch|no change to the claude engine|no price table change"
+  ],
+  "scope_sha": "1f739ab6c8ac",
+  "size": "S",
+  "sources": [
+    "credit job news-effect-event-catalogue-1108 ended error_max_tokens 2026-11-08 21:56Z (F:/MTS/api_runs/news-effect-event-catalogue-1108/out.jsonl)"
+  ],
+  "state": "done",
+  "steps": [
+    "add the three test cases and run them red; change the default, add the passthrough, add the retry on max_tokens; run the test and a dry-run launch; ship"
+  ],
+  "taken": "2026-11-07T23:45:28Z",
+  "tests": "scripts/dev/test_api_agent_models.py",
+  "title": "Credit runner: max_tokens 8192 kills big research jobs (event catalogue died at turn 26, error_max_tokens); raise default, pass it through api_job, say so in the status line",
+  "weight": "",
+  "worker": "agent"
+}

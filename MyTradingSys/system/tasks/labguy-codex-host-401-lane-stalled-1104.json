@@ -1,34 +1,72 @@
 {
   "approved_by": "",
-  "asks": "Re-login Codex on JIS-NUC (machine step via broadcast) or move the GPT lane?",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-08T02:04:09Z",
   "commands": [],
   "created": "2026-11-04T13:18:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "scripts/dev/test_codex_run.py has a case (401 IDLE host-auth, last run 100 h ago, 27 ready) whose status output contains 'STALLED' and '27'; fails on current code.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Lab_Guy defect: Codex returns 401 on the lab host (JIS-NUC); 27 CODEX cards stalled 115.7 h, status says lane up Evidence: codex_run.py status 2026-11-04 13:14Z: last tick 13:07Z IDLE host-auth, Codex 401 'Missing bearer or basic authentication' on this host; STALLED 27 ready, nothing ran for 115.7 h; last recorded runs 10-27..10-30 (INCOMPLETE/LIMIT). Fix: re-login Codex on the lab host (operator step) or move the GPT lane to the host that has it; until then GPT-only/crucial cards wait, C0 cards may route to Gemini (producer Claude -> either vendor).",
+  "goal": "codex_run.py status stops saying the lane is up when the host returns 401 and ready CODEX cards have not run for over 24 h: it prints a STALLED line with hours and card count.",
   "id": "labguy-codex-host-401-lane-stalled-1104",
   "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "codex_run status: when last_tick says IDLE host-auth (401) and nothing ran for over 3 h wi",
+      "ref": "e7acb73e9",
+      "utc": "2026-11-08T02:04:09Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "codex lab: gate-red ship writes lab.hold; lint/check flag done_when outside lab",
+      "ref": "7c12edc44529",
+      "utc": "2026-11-05T03:55:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-04: code side decided in 0b1bf4e20 (401 = IDLE host-auth, no lane_state write); fix needs the NUC Codex re-login (machine step, broadcast) and a stall line in status; scope not fixed, held at try 1/2.",
+  "next": "END: done",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (planner-a-1107b; twin check run, none). DECISION (OURS): ship the stall line only; the re-login goes out by mts_signal broadcast and GPT cards wait (0b1bf4e20 keeps 401 = IDLE). | PARKED 2026-11-08: Codex lane has no credit (d-no-gpt-codex-credit-1106); fixing the 401 is not on the path.",
   "prio": 1,
   "refine_tries": 3,
   "refined_by": "",
+  "refreshed": "2026-11-08T02:03:27Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "codex_run status: when last_tick says IDLE host-auth (401) and nothing ran for over 3 h with cards ready, NEEDS A LOOK prints STALLED with card count, hours and the 401 login cause instead of the generic 'lane up' text; new test (27 ready, 76.8 h) fails on old text, test_codex_run 87/87",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py"
+  ],
+  "scope_out": [
+    "no Codex login attempt",
+    "no rerouting of cards",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "7c12edc44529",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Read status()/IDLE host-auth path in codex_run.py",
+    "Add the failing test",
+    "Print STALLED <n> ready, <h> h since last run next to the IDLE line",
+    "Run test_codex_run.py"
+  ],
+  "taken": "2026-11-08T02:03:28Z",
+  "tests": "new case in scripts/dev/test_codex_run.py fails on current code",
   "title": "Lab_Guy defect: Codex returns 401 on the lab host (JIS-NUC); 27 CODEX cards stalled 115.7 h, status says lane up",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

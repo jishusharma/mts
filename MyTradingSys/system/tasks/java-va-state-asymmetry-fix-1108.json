@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T01:29:33Z",
+  "commands": [
+    "mvn -q test -Dtest=SetupCandidatesBuilderRulesTest"
+  ],
+  "created": "2026-11-07T18:31:32Z",
+  "depends_on": [],
+  "done_when": "Maven test: determineDirections(below_val) contains short; setupType(daily_vah,short,trend_healthy)==ct_short; both fail on pre-change code",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Make the value-area direction/setup rules symmetric: price above VAH keeps ct_short, price below VAL adds short",
+  "id": "java-va-state-asymmetry-fix-1108",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "fix landed 73427079",
+      "ref": "0aef4c5d5",
+      "utc": "2026-11-08T01:29:33Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "SpikeFade A-C3 volume gate on price arm, A-S2 stop scaled per symbol (OURS 0.40 pct), clas",
+      "ref": "2bffd375c4d2",
+      "utc": "2026-11-05T03:07:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: shipped",
+  "note": "Argon root cause 4: a pure bug, no edge claim needed. Audit describes it but ships no Java fix. Maven test on classifyState/determineDirections with price above VAH -> ct_short candidate survives; below VAL -> dirs contains short. Live-path adjacent: smoke gate --full.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T19:48:18Z",
+  "refs": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java"
+  ],
+  "result": "fix landed 73427079",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "src/main/java/datafeed/SetupCandidatesBuilder.java",
+    "src/test/java/datafeed/SetupCandidatesBuilderRulesTest.java"
+  ],
+  "scope_out": [
+    "live tree, thresholds, other layers"
+  ],
+  "scope_sha": "2bffd375c4d2",
+  "size": "S",
+  "sources": [
+    "AUDIT_AND_COURSE_CORRECTION.md root cause 4"
+  ],
+  "state": "done",
+  "steps": [
+    "edit determineSetupType vah branch",
+    "edit determineDirections below_val",
+    "update + add tests, mvn"
+  ],
+  "taken": "2026-11-08T01:29:33Z",
+  "tests": "SetupCandidatesBuilderRulesTest",
+  "title": "Java SetupCandidatesBuilder: above_vah kills ct_short (trend_healthy, line ~307/477) and below_val never adds short (line ~320); fix both, test fails pre-change",
+  "weight": "",
+  "worker": "agent"
+}

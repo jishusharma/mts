@@ -12,8 +12,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import api_job  # noqa: E402
 
 
+def test_build_cmd_api_engine_is_default_and_carries_caps(tmp_path):
+    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200, cwd="C:/x", out_dir="F:/MTS/api_runs/s")
+    flat = " ".join(cmd)
+    assert "sk-ant" not in flat and "key.txt" not in flat
+    assert cmd[1].endswith("api_agent.py") and "claude" not in Path(cmd[0]).name
+    for flag in ("--max-usd", "8.0", "--max-turns", "200", "--model", "claude-opus-5-5", "--cwd", "C:/x", "--out", "F:/MTS/api_runs/s"):
+        assert flag in cmd, flag
+
+
 def test_build_cmd_never_carries_the_key_and_sets_every_guard(tmp_path):
-    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200)
+    cmd = api_job.build_cmd(model="claude-opus-5-5", max_usd=8.0, max_turns=200, engine="claude")
     flat = " ".join(cmd)
     assert "sk-ant" not in flat and "key.txt" not in flat
     for flag in ("--max-budget-usd", "8.0", "--max-turns", "200", "--permission-mode", "bypassPermissions",
@@ -69,3 +78,13 @@ def test_launch_wait_line_names_the_harness_tracked_watcher():
     """stall-fix-1104: the printed bg_watch line was run with `&` and woke nobody (L1 idle 09:35Z-12:40Z)."""
     w = api_job.wait_line()
     assert "supervisor.py wait" in w and "run_in_background" in w and "bg_watch" not in w
+
+
+def test_max_parallel_default_one_and_capped_at_four():
+    """edge-hunt wave 11-09: default keeps one job per machine; --max-parallel allows more, never above 4."""
+    assert api_job.parallel_refused([], 1) is False
+    assert api_job.parallel_refused(["a"], 1) is True
+    assert api_job.parallel_refused(["a", "b", "c"], 4) is False
+    assert api_job.parallel_refused(["a", "b", "c", "d"], 4) is True
+    assert api_job.parallel_refused(["a", "b", "c", "d"], 10) is True  # cap
+    assert api_job.parallel_refused(["a"], 0) is True  # 0 or bad input falls back to 1

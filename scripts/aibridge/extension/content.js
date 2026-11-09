@@ -106,7 +106,7 @@
       for (var i = 0; i < sleepers.length; i++) { if (sleepers[i].due <= now) sleepers[i].fin(); else keep.push(sleepers[i]); }
       sleepers = keep;
     }
-    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick(); versionTick();
+    sampleText(); growCheck(); pump(); watchdog(); labelTick(); replyTick(); versionTick(); guardTick();
   }
   // a page holding a Web Lock is not frozen by Chrome's tab lifecycle while it sits in the background
   try { if (navigator.locks && navigator.locks.request) navigator.locks.request('aibridge-keepalive-' + tabId, function () { return new Promise(function () {}); }); } catch (e) {}
@@ -134,6 +134,15 @@
     return '';
   }
   function btext(el) { return L.blockText(el); }
+  // 0.7.27: is the reply that holds this block complete? DeepSeek: .ds-message, then the action bar as its next sibling (loop.js replyDone)
+  function replyFinished(block) {
+    var m = block && block.closest ? block.closest('.ds-message') : null;
+    if (!m) return L.replyDone({ hasMsg: false });
+    var bar = m.nextElementSibling;
+    return L.replyDone({ hasMsg: true, assistant: !!m.querySelector('.ds-assistant-message-main-content'),
+      barIcons: bar ? bar.querySelectorAll('svg').length : 0 });
+  }
+  var warnedNoBar = false;
   function isMarkerFirst(text) { return firstNonEmptyLine(text).indexOf('# AIRUN') === 0; }
   function stripMarker(s) { return L.stripMarker(s); }
   function markerCount(text) { var m = String(text).match(/# AIRUN/g); return m ? m.length : 0; }
@@ -248,6 +257,8 @@
           vstate = L.versionState(v.loaded || VER, v.disk, agent, VER);
           if (ui.verEl) ui.verEl.textContent = 'AIBridge: extension ' + (v.loaded || '?') + ' | this page ' + VER + ' | disk ' + (v.disk || '?') + ' | agent ' + (agent || '?') + (vstate.level === 'ok' ? ' - all match' : ' - MISMATCH, see below');
           if (ui.box) ui.box.dataset.ver = vstate.level;
+          if (ui.ver) ui.ver.textContent = 'v' + VER + (vstate.level === 'ok' ? '' : ' !');
+          refreshDetail();
           if (vstate.level !== 'ok' && ui.info) ui.info.textContent = vstate.text;
           if (vstate.level === 'page_stale' && canSelfUpdate()) {   // the extension is newer than this page's script: an F5 fixes it, so do it (idle, once per 10 min)
             try { var lp = parseInt(sessionStorage.getItem('aibridge_page_reload') || '0', 10); if (Date.now() - lp > 600000) { auditEvent('page ' + VER + ' older than extension ' + (v.loaded || '?') + ': reloading the page'); sessionStorage.setItem('aibridge_page_reload', String(Date.now())); location.reload(); } } catch (e) {}
@@ -418,6 +429,7 @@
     return false;
   }
   async function postToChat(text, myToken, maxMs) {
+    if (!(await paceGate(myToken))) return false;
     var t0 = Date.now(), lim = maxMs || CFG.aibridge_wait_ms;
     while (true) {
       if (myToken !== token) return false;
@@ -455,24 +467,117 @@
   }
 
   // ---- auto loop ----
-  function setStatus(s) { if (ui.status) ui.status.textContent = s; }
+  function setStatus(s) { if (ui.status) ui.status.textContent = s; if (ui.line) { ui.line.title = s; } if (ui.glyph) ui.glyph.textContent = L.ctlGlyph(s); refreshDetail(); }
+  function refreshDetail(force) {   // 0.7.28: detail lines only on a problem (loop.js ctlDetail) or a click on the version
+    if (!ui.box) return;
+    ui.box.dataset.show = (force || L.ctlDetail(ui.status && ui.status.textContent, ui.info && ui.info.textContent, vstate.level)) ? '1' : '';
+  }
   function refreshUi() {
     if (!ui.box) return;
     ui.cb.checked = autoRun;
     ui.count.textContent = runs + '/' + CFG.aibridge_cap;
     ui.box.className = 'aibridge-ctl' + (autoRun ? ' on' : '');
   }
+  // ---- 0.7.33: DeepSeek block guard (card dsa-bridge-avoid-deepseek-block-1108; pure rules in loop.js) ----
+  // State lives in chrome.storage.local, so every chat tab of one browser profile (= one DeepSeek account) shares it.
+  var PACE_KEY = 'aibridge_pace', ARMED_KEY = 'aibridge_armed', COOL_KEY = 'aibridge_cooldown_until', ACCT_KEY = 'aibridge_account';
+  var armedHere = false, acctLabel = L.leaseAccount(''), lastBeat = 0, lastWarnChk = 0, paceAudited = 0;
+  function sget(keys) { return new Promise(function (res) { try { chrome.storage.local.get(keys, function (r) { res(r || {}); }); } catch (e) { res({}); } }); }
+  function sset(o) { return new Promise(function (res) { try { chrome.storage.local.set(o, function () { res(); }); } catch (e) { res(); } }); }
+  // one event to the agent (audit row, or the account lease); resolves with the worker's response or null
+  function sendEvent(text) {
+    return new Promise(function (res) {
+      if (!alive()) { res(null); return; }
+      try { chrome.runtime.sendMessage({ type: 'airun', event: String(text).slice(0, 400), auto: true, rid: newRid() }, function (r) { void chrome.runtime.lastError; res(r || null); }); } catch (e) { res(null); }
+    });
+  }
+  // what the page shows outside the chat messages: dialogs, alerts, toasts (DSA may write "captcha" in a message; that is not a warning)
+  function pageSnapshot() {
+    var o = [];
+    try {
+      var l = document.querySelectorAll('[role="dialog"], [role="alertdialog"], [role="alert"], [aria-modal="true"], [class*="modal" i], [class*="toast" i], [class*="dialog" i]');
+      for (var i = 0; i < l.length && o.length < 12; i++) { if (!isOurs(l[i])) o.push(String(l[i].innerText || l[i].textContent || '').slice(0, 400)); }
+    } catch (e) {}
+    var cf = false, pw = false;
+    try { cf = !!document.querySelector('iframe[src*="captcha" i], iframe[src*="turnstile" i], iframe[src*="recaptcha" i], iframe[src*="geetest" i], #captcha, [class*="captcha" i]'); } catch (e) {}
+    try { pw = !!document.querySelector('input[type="password"]'); } catch (e) {}
+    return { href: location.href, overlays: o, captchaFrame: cf, hasPassword: pw };
+  }
+  function refuseArm(reason, text) {
+    autoRun = false; stopHold = true; token++; pending = []; watch = null;
+    auditEvent('arm refused (' + reason + '): ' + text);
+    setStatus(text); showStopBanner(text); refreshUi();
+  }
+  // hands-free arms only when: no warning cooldown on this profile, no warning on the page, no other armed tab, the agent grants the account lease
+  async function tryArm() {
+    var now = Date.now(), r = await sget([COOL_KEY, ARMED_KEY, ACCT_KEY]);
+    acctLabel = L.leaseAccount(r[ACCT_KEY]);
+    if (L.cooldownLeft(r[COOL_KEY], now)) { refuseArm('cooldown', 'AIBridge hands-free refused: ' + L.cooldownText(r[COOL_KEY], now) + '. Use the chat by hand.'); return; }
+    var w = L.warnState(pageSnapshot());
+    if (w.warn) { await sset((function () { var o = {}; o[COOL_KEY] = L.cooldownUntil(now); return o; })()); refuseArm('warning', L.warnStopText(w)); return; }
+    var g = L.armGate(r[ARMED_KEY] || {}, tabId, now);
+    if (!g.ok) { refuseArm('second_tab_refused', 'second_tab_refused: chat ' + g.holder + ' in this browser profile is already armed. One armed chat per DeepSeek account: untick it there first.'); return; }
+    var lr = L.parseLeaseReply(await sendEvent(L.leaseEvent('acquire', acctLabel)));
+    if (!lr.ok) { refuseArm(lr.reason, lr.text); return; }
+    var o2 = {}; o2[ARMED_KEY] = g.reg; await sset(o2);
+    armedHere = true; autoRun = true; runs = 0; stopHold = false; lastBeat = now; lastWarnChk = now;
+    refreshUi(); preflight('on:');
+  }
+  async function releaseArm() {
+    var r = await sget([ARMED_KEY]), o = {}; o[ARMED_KEY] = L.armRelease(r[ARMED_KEY] || {}, tabId); await sset(o);
+    await sendEvent(L.leaseEvent('release', acctLabel));
+  }
+  // every second while armed: warning page -> off + cooldown; every 30 s: keep the tab slot and the lease alive
+  function guardTick() {
+    if (!autoRun || !armedHere) return;
+    var now = Date.now();
+    if (now - lastWarnChk >= 1000) {
+      lastWarnChk = now;
+      var w = L.warnState(pageSnapshot());
+      if (w.warn) { onWarning(w); return; }
+    }
+    if (now - lastBeat >= 30000) { lastBeat = now; beatArm(); }
+  }
+  async function onWarning(w) {
+    var o = {}; o[COOL_KEY] = L.cooldownUntil(Date.now()); await sset(o);
+    auditEvent('WARNING ' + w.warn + ' | hands-free off, no retry, 24 h cooldown on this profile');
+    stopAuto(L.warnStopText(w), true);
+  }
+  async function beatArm() {
+    var now = Date.now(), r = await sget([ARMED_KEY]), g = L.armGate(r[ARMED_KEY] || {}, tabId, now);
+    if (!autoRun) return;
+    if (!g.ok) { stopAuto('second_tab_refused: chat ' + g.holder + ' in this profile is armed too. One armed chat per DeepSeek account.'); return; }
+    var o = {}; o[ARMED_KEY] = g.reg; await sset(o);
+    var lr = L.parseLeaseReply(await sendEvent(L.leaseEvent('beat', acctLabel)));
+    if (autoRun && lr.reason === 'account_in_use') stopAuto(lr.text);
+  }
+  // pacing: every auto post waits for the guard (L.PACE: 20 s + 5-15 s jitter since the last post of this profile, 30 an hour, 200 a day).
+  // A short wait is shown and waited out; an hour or day limit refuses the post (says paced) and hands-free stops.
+  async function paceGate(myToken) {
+    var jit = L.paceJitter();
+    while (true) {
+      if (myToken !== token) return false;
+      var now = Date.now(), r = await sget([PACE_KEY]), hist = (r[PACE_KEY] || []).filter(function (x) { return typeof x === 'number' && now - x < 86400000; });
+      var c = L.paceCheck(hist, now, jit);
+      if (c.ok) { hist.push(now); var o = {}; o[PACE_KEY] = hist.slice(-200); await sset(o); return true; }
+      if (c.cap !== 'gap' || c.waitMs > 120000) { lastPostErr = L.paceText(c); auditEvent('post refused: ' + lastPostErr); return false; }
+      setStatus(L.paceText(c));
+      if (now - paceAudited > 60000) { paceAudited = now; auditEvent('post waits: ' + L.paceText(c)); }
+      await sleep(Math.min(c.waitMs, 1000));
+    }
+  }
   // 0.7.18: every stop and retry reason goes to the agent's audit log (the banner is invisible there)
   function auditEvent(text) {
     try { if (alive()) chrome.runtime.sendMessage({ type: 'airun', event: String(text).slice(0, 400), auto: true, rid: newRid() }, function () { void chrome.runtime.lastError; }); } catch (e) {}
   }
   var emptyFirst = 0;
-  function stopAuto(why) {
+  function stopAuto(why, final) {
     auditEvent('auto OFF: ' + (why || 'stopped'));
     emptyFirst = 0;
     autoRun = false; stopHold = true; token++; pending = []; watch = null;
+    if (armedHere) { armedHere = false; releaseArm(); }
     setStatus(why || 'stopped');
-    showStopBanner(L.stopNotice(why));
+    showStopBanner(final ? why : L.stopNotice(why));
     refreshUi();
   }
   // visible banner (extension DOM element, not a sent message) so a silent auto-off is impossible
@@ -497,7 +602,7 @@
     else if (r.status !== 200 || !r.body || !r.body.ok) line = 'PREFLIGHT FAIL agent answered http ' + r.status;
     else line = 'agent ' + r.body.agent + ' on ' + r.body.host + ', PowerShell ' + r.body.shell_version + (r.body.pwsh ? ' (+pwsh)' : '') + ', running ' + r.body.running;
     if (ui.info) ui.info.textContent = line;
-    if (prefix) setStatus(prefix + ' ' + line);
+    if (prefix) setStatus(prefix + ' ' + line); else refreshDetail();
     return line;
   }
 
@@ -588,6 +693,13 @@
           setStatus(L.quietWaitStatus(Date.now() - quietSince, CFG.aibridge_wait_ms));   // never a silent loop
           await sleep(500); continue;
         }
+        var rf = replyFinished(item.block);
+        if (rf.known && !rf.done) {   // 0.7.27: never run a block DSA is still writing
+          if (!quietSince) quietSince = Date.now();
+          setStatus('waiting: DSA is still writing this reply (' + Math.round((Date.now() - quietSince) / 1000) + ' s)');
+          await sleep(500); continue;
+        }
+        if (!rf.known && !warnedNoBar) { warnedNoBar = true; auditEvent('no reply-finished marker on this page (DeepSeek DOM changed?); blocks run on the quiet rule'); }
         quietSince = 0;
         pending.shift();
         await runBatch(item.block);
@@ -661,6 +773,7 @@
   setInterval(replyTick, 1000);
   setInterval(watchdog, 2000);
   setInterval(linkCheck, 1000);
+  setInterval(guardTick, 1000);
   setInterval(versionTick, 5000);   // gated to once a minute inside; onTick also calls it
   setInterval(function () { if (location.href !== lastHref) { lastHref = location.href; if (!lastSend || Date.now() - lastSend > 15000) histUntil = Date.now() + 6000; } }, 500);
   document.addEventListener('click', function (e) { var t = e.target; if (!t || !t.closest || isOurs(t) || !t.closest('button, [role="button"]')) return; var inp = findInput(); if (!inp) return; var box = inp; for (var u = 0; u < 4 && box.parentElement; u++) box = box.parentElement; if (box.contains(t)) lastSend = Date.now(); }, true);
@@ -695,33 +808,116 @@
   // ---- control box ----
   function buildUi() {
     var st = document.createElement('style');
+    // 0.7.28: one line (tick, runs/cap, link dot, version), draggable; the detail lines open only on a problem or a click on the version
     st.textContent = '.aibridge-ctl{position:fixed;right:12px;bottom:12px;z-index:2147483647;background:#1b1b1b;color:#ddd;' +
-      'font:12px/1.4 sans-serif;padding:8px 10px;border-radius:8px;border:1px solid #444;max-width:320px}' +
+      'font:12px/1.3 sans-serif;padding:3px 8px;border-radius:8px;border:1px solid #444;max-width:360px;cursor:move;user-select:none}' +
+      '.aibridge-ctl .ln{display:flex;align-items:center;gap:6px;white-space:nowrap}.aibridge-ctl .ln label{cursor:pointer}' +
+      '.aibridge-ctl .vr{color:#798;cursor:pointer}.aibridge-ctl .gl{color:#9ab;min-width:1em}' +
       '.aibridge-ctl.on{border-color:#2e9e4f}.aibridge-ctl button{margin-left:6px;font-size:12px;cursor:pointer}' +
+      '.aibridge-ctl .dt{display:none}.aibridge-ctl[data-show="1"] .dt{display:block;white-space:normal;max-width:340px}' +
       '.aibridge-ctl .st{margin-top:4px;color:#9ab;word-break:break-word}.aibridge-ctl .in{margin-top:2px;color:#798;font-size:11px;word-break:break-word}';
     document.head.appendChild(st);
     var box = document.createElement('div');
     box.className = 'aibridge-ctl';
+    var line = document.createElement('div'); line.className = 'ln';
     var lab = document.createElement('label');
     var cb = document.createElement('input');
     cb.type = 'checkbox';
     lab.appendChild(cb);
-    lab.appendChild(document.createTextNode(' Hands-free: DSA runs every AIRUN block on its own '));
-    var count = document.createElement('span');
+    lab.appendChild(document.createTextNode(' Hands-free'));
+    lab.title = 'DSA runs every AIRUN block on its own (this chat only)';
+    var count = document.createElement('span'); count.title = 'blocks run / cap';
+    var glyph = document.createElement('span'); glyph.className = 'gl';
+    var ver = document.createElement('span'); ver.className = 'vr'; ver.textContent = 'v' + VER; ver.title = 'click: show or hide the detail lines';
     var status = document.createElement('div'); status.className = 'st'; status.textContent = 'off: click Run on each block';
     var info = document.createElement('div'); info.className = 'in'; info.textContent = 'AIBridge ' + VER + ' (this chat only)';
     var verEl = document.createElement('div'); verEl.className = 'aibridge-ver'; verEl.textContent = 'AIBridge page ' + VER + ' (checking extension and agent...)';
-    var link = document.createElement('span'); link.textContent = '\u25CB'; link.title = 'link: starting'; link.style.marginLeft = '6px'; link.style.cursor = 'help';
-    box.appendChild(lab); box.appendChild(count); box.appendChild(link); box.appendChild(status); box.appendChild(verEl); box.appendChild(info);
+    var link = document.createElement('span'); link.textContent = '\u25CB'; link.title = 'link: starting'; link.style.cursor = 'help';
+    var detail = document.createElement('div'); detail.className = 'dt';
+    line.appendChild(lab); line.appendChild(count); line.appendChild(link); line.appendChild(glyph); line.appendChild(ver);
+    detail.appendChild(status); detail.appendChild(verEl); detail.appendChild(info);
+    box.appendChild(line); box.appendChild(detail);
     document.body.appendChild(box);
-    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link, verEl: verEl };
+    ui = { box: box, cb: cb, count: count, status: status, info: info, link: link, verEl: verEl, line: line, glyph: glyph, ver: ver };
+    line.title = status.textContent;
+    var forced = false;
+    ver.addEventListener('click', function (e) { e.stopPropagation(); forced = !forced; refreshDetail(forced); });
+    // drag anywhere on the box except the tick and the version; the place is kept for this tab (sessionStorage)
+    var drag = null;
+    function place(x, y) {
+      x = Math.max(0, Math.min(x, window.innerWidth - box.offsetWidth)); y = Math.max(0, Math.min(y, window.innerHeight - box.offsetHeight));
+      box.style.left = x + 'px'; box.style.top = y + 'px'; box.style.right = 'auto'; box.style.bottom = 'auto';
+    }
+    box.addEventListener('mousedown', function (e) {
+      if (e.button !== 0 || e.target === cb || e.target === ver || e.target.tagName === 'BUTTON' || e.target.tagName === 'LABEL') return;
+      var r = box.getBoundingClientRect(); drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false }; e.preventDefault();
+    });
+    document.addEventListener('mousemove', function (e) { if (!drag) return; drag.moved = true; place(e.clientX - drag.dx, e.clientY - drag.dy); });
+    document.addEventListener('mouseup', function () {
+      if (!drag) return;
+      if (drag.moved) { try { sessionStorage.setItem('aibridge_ctl_pos', box.style.left + ',' + box.style.top); } catch (e) {} }
+      drag = null;
+    });
+    try { var pos = (sessionStorage.getItem('aibridge_ctl_pos') || '').split(','); if (pos.length === 2 && pos[0]) { box.style.left = pos[0]; box.style.top = pos[1]; box.style.right = 'auto'; box.style.bottom = 'auto'; } } catch (e) {}
     cb.addEventListener('change', function () {
-      autoRun = cb.checked;
-      if (autoRun) { runs = 0; stopHold = false; preflight('on:'); } else stopAuto('off: click Run on each block');
+      if (cb.checked) { autoRun = false; tryArm(); } else stopAuto('off: click Run on each block');
       refreshUi();
     });
     refreshUi();
   }
+
+  // 0.7.30: "Start DSA bridge" typed as the whole message is swapped for the seed (agent POST /seed through the worker) and sent.
+  // Enter or the send button with exactly that text is caught before DeepSeek sees it. Agent down: nothing is sent, the phrase stays.
+  var seeding = false;
+  function fetchSeed() {
+    return new Promise(function (resolve) {
+      if (!alive()) { orphan(); resolve(null); return; }
+      try {
+        chrome.runtime.sendMessage({ type: 'seed' }, function (r) {
+          if (chrome.runtime.lastError || !r || !r.ok || !r.text) { resolve(null); return; }
+          resolve(r.text);
+        });
+      } catch (e) { resolve(null); }
+    });
+  }
+  async function startDsaBridge(el) {
+    if (seeding) return;
+    seeding = true;
+    try {
+      setStatus('fetching the DSA seed...');
+      var seed = await fetchSeed();
+      if (!seed) { stopHold = true; setStatus(L.SEED_DOWN_TEXT); return; }
+      setInput(el, seed);
+      await sleep(400);
+      lastSend = Date.now();
+      pressEnter(el);
+      var landed = false;
+      for (var i = 0; i < 8 && !landed; i++) { await sleep(250); landed = L.postLanded(liveInput(el), nowInput()); }
+      if (!landed) {
+        clickSend(el);
+        for (var j = 0; j < 12 && !landed; j++) { await sleep(250); landed = L.postLanded(liveInput(el), nowInput()); }
+      }
+      setStatus(landed ? 'DSA seed sent' : 'DSA seed not posted: the chat input did not clear (press Enter once)');
+    } finally { seeding = false; }
+  }
+  function triggerTarget(e) {
+    var t = e.target;
+    if (!t || !t.matches || isOurs(t)) return null;
+    var inp = findInput();
+    if (!inp || !L.isStartTrigger(inputText(inp))) return null;
+    if (e.type === 'keydown') return (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.isTrusted && t === inp) ? inp : null;
+    var box = inp; for (var u = 0; u < 4 && box.parentElement; u++) box = box.parentElement;
+    return (e.isTrusted && t.closest && t.closest('button, [role="button"]') && box.contains(t)) ? inp : null;
+  }
+  function onTriggerEvent(e) {
+    var inp = triggerTarget(e);
+    if (!inp) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type === 'keydown') startDsaBridge(inp);
+    else if (e.type === 'click') startDsaBridge(inp);
+  }
+  document.addEventListener('keydown', onTriggerEvent, true);
+  document.addEventListener('click', onTriggerEvent, true);
 
   document.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey && e.target && e.target.matches && e.target.matches('textarea, [contenteditable], [role="textbox"]') && !isOurs(e.target)) lastSend = Date.now(); }, true);
 

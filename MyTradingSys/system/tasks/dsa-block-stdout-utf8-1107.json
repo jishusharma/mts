@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T17:23:30Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "dsa-block-stdout-utf8-1107",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Noticed by the Haiku Chrome worker 2026-11-07 17:25Z in chat 'DSA bootstrap step 1' (JIS-NB). MITIGATED (not closed) 2026-11-07 by dsa-watcher-1107: DSA prompt 0b rule 6 and the dsa_seed.py seed block set PYTHONUTF8=1 + PYTHONIOENCODING=utf-8 per AIRUN block. Why open: the root fix is the bridge agent setting the child env for every block (agent.ps1 under F:/AIBridge, operator-owned, closed to DSA; also a bridge version bump) so no block needs the line. Verify on a desktop DSA chat that ship output now prints. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: DSA bridge tooling; mitigated by seed env lines, root fix needs the operator-owned bridge agent",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/system/DSA_DELEGATION.md"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Haiku worker Noticed line, Lead C 2026-11-07"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "DSA bridge blocks: sync.py ship and tasks.py stdout fails with cp1251 UnicodeDecodeError on the desktop DSA chat, hiding ship results; set PYTHONIOENCODING=utf-8 in the AIRUN block header or dsa.py seed",
+  "weight": "",
+  "worker": ""
+}

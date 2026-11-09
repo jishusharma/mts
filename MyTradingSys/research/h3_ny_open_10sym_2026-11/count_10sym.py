@@ -2,7 +2,6 @@
 Rule of research/h3_ny_open_low_2026-10/BLOCKED.md. Only lows and bar times are read; no return or outcome column exists here.
 A symbol with no 1m DEV klines on disk is NOT_IN_DATA (never padded). Days with a missing minute in the window are dropped."""
 import datetime as dt
-import glob
 import sys
 from pathlib import Path
 
@@ -11,7 +10,7 @@ sys.path.insert(0, str(REPO))
 from MyTradingSys.backtest.layers.fabio.v3.day_gates import ny_open_utc  # noqa: E402
 
 SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT", "LTCUSDT", "BNBUSDT", "ADAUSDT", "DOGEUSDT", "AVAXUSDT", "LINKUSDT")
-ROOTS = ("F:/MTS/data/tom_raw/klines", "F:/MTS/data/bigtrade/spot_raw", "F:/MTS/data/dev_ext_2019_2021/klines")
+DATA_DIR = Path("F:/MTS/data/tom_raw")
 MIN = 60000
 
 
@@ -32,9 +31,17 @@ def day_event(date, lows):
 
 def load_lows(sym, lo_ms, hi_ms):
     lows = {}
-    for r in ROOTS:
-        for f in sorted(glob.glob(f"{r}/{sym}-1m-20*.csv")):
-            for line in open(f, encoding="utf-8"):
+    short = sym.replace("USDT", "").lower()
+    candidate_dirs = [DATA_DIR / f"klines_{short}", DATA_DIR / "klines"]
+    files = []
+    for d in candidate_dirs:
+        found = sorted(d.glob(f"{sym}-1m-20*.csv"))
+        if found:
+            files = found
+            break
+    for f in files:
+        with open(f, encoding="utf-8") as fp:
+            for line in fp:
                 p = line.split(",")
                 if p[0].isdigit() and lo_ms <= int(p[0]) < hi_ms:
                     lows[int(p[0])] = float(p[3])

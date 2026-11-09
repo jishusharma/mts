@@ -65,6 +65,14 @@ class DefinitionOfReadyTest(unittest.TestCase):
             with self.subTest(k=k):
                 self.assertTrue(T.problems(good(**{k: empty})), k)
 
+    def test_prereg_done_when_must_name_the_context_section(self):
+        """A review ACCEPT missed the PRE_REG Context section (Kurisko): a card whose done_when names PRE_REG must say Context."""
+        bad = T.problems(good(done_when="PRE_REG.md frozen before any run, 28 cells"))
+        self.assertTrue(any("## Context" in m and "Regime" in m and "Entry" in m for m in bad), bad)
+        ok = T.problems(good(done_when="PRE_REG.md with a ## Context section (Regime/Phase/Session/Entry), 28 cells"))
+        self.assertEqual(ok, [])
+        self.assertEqual(T.problems(good(done_when="no pre-registration named here")), [])
+
     def test_worker_type_is_set_up_front_and_consistent(self):
         """WORKERS.md: agent = size S and est_turns <= 15, session otherwise; code lanes only."""
         has = lambda c, w: any(w in m for m in T.problems(c))
@@ -147,6 +155,16 @@ class DefinitionOfReadyTest(unittest.TestCase):
         self.assertTrue(T.problems(good(depends_on=["B050"]), [], {"B050": "OPEN"}))
         self.assertTrue(T.problems(good(depends_on=["B404"]), [], {}))
 
+
+
+class PathsCommaStringTest(unittest.TestCase):
+    """a17dac0d2: a card whose refs/scope_in is a comma string crashed _paths (list + str TypeError) and every ship's wiring check."""
+    def test_comma_string_and_list_give_the_same_paths(self):
+        as_str = T._paths({"refs": "MyTradingSys/a/x.py, MyTradingSys/b/", "scope_in": "scripts/dev/y.py"})
+        as_list = T._paths({"refs": ["MyTradingSys/a/x.py", "MyTradingSys/b/"], "scope_in": ["scripts/dev/y.py"]})
+        self.assertEqual(as_str, as_list)
+        self.assertEqual(as_str, {"x.py", "MyTradingSys/b", "y.py"})
+        self.assertEqual(T._paths({"refs": ["MyTradingSys/a/x.py"], "scope_in": "scripts/dev/y.py"}), {"x.py", "y.py"})
 
 
 class LayerFieldTest(unittest.TestCase):
@@ -1376,6 +1394,18 @@ class TwinCardTest(unittest.TestCase):
             cs[0].update(change)
             self.assertNotIn(("a", "b"), self.ids(cs), change)
 
+    def test_twin_pairs_tolerate_string_and_scalar_list_fields(self):
+        for field, val in (("scope_in", "x/y.py, z/w.py"), ("scope_in", 5), ("refs", 5), ("depends_on", 5), ("not_twin_of", 5), ("title", None)):
+            cs = self.cards()
+            cs[0][field] = val
+            self.ids(cs)                                      # must not raise
+        cs = self.cards()
+        cs[0]["not_twin_of"] = "abc"                         # a string is a one-item list, not a substring haystack
+        self.assertIn(("a", "b"), self.ids(cs))
+        cs[0]["not_twin_of"] = "b"
+        self.assertNotIn(("a", "b"), self.ids(cs))
+        self.assertEqual(T.as_list("x/y.py, z/w.py"), ["x/y.py", "z/w.py"])
+
     def test_new_warns_on_a_likely_twin(self):
         with tempfile.TemporaryDirectory() as d:
             repo, old = Path(d), T.REPO
@@ -1518,3 +1548,20 @@ class TestCorruptCard(unittest.TestCase):
                 T.save(self.repo, good("B901", title="changed"))
         self.assertEqual((self.bad_dir / "B901.json").read_bytes(), before)
         self.assertEqual([p.name for p in self.bad_dir.glob("*.tmp")], [])
+
+
+class ShowVerbTest(unittest.TestCase):
+    def test_show_prints_card_json_via_cli(self):
+        import json
+        with tempfile.TemporaryDirectory() as d:
+            repo = Path(d)
+            T.save(repo, good("B902", title="show me"))
+            old, T.REPO = T.REPO, repo
+            try:
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    rc = T.main(["show", "B902"])
+            finally:
+                T.REPO = old
+            self.assertEqual(rc, 0)
+            self.assertEqual(json.loads(buf.getvalue())["title"], "show me")

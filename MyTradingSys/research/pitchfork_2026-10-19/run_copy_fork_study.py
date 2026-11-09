@@ -37,7 +37,31 @@ SEED = 20261105         # OURS
 DAY = 86400000
 
 
-def load_bars():
+ETH_ROOT = "F:/MTS/data/tom_raw/klines_eth"   # ETH 1m files (moved from klines 2026-11-05)
+
+
+def bars_from_1m(paths, symbol):
+    """4H bars (UTC-aligned, complete 240-minute groups only) from 1m kline CSVs; rows at/after DEV_END dropped first."""
+    end_ms = int(splits.DEV_END.value // 1_000_000)
+    df = pd.concat([pd.read_csv(p, usecols=["open_time", "open", "high", "low", "close", "volume"]) for p in paths], ignore_index=True)
+    df = df[df.open_time < end_ms].sort_values("open_time").drop_duplicates("open_time")
+    g = df.groupby(df.open_time // (240 * 60_000))
+    r = g.agg(t=("open_time", "first"), o=("open", "first"), h=("high", "max"), l=("low", "min"), c=("close", "last"),
+              v=("volume", "sum"), n=("open_time", "size"))
+    r = r[r.n == 240]
+    rows = [{"t": int(x.t), "dt": str(pd.Timestamp(int(x.t), unit="ms")), "o": x.o, "h": x.h, "l": x.l, "c": x.c, "v": x.v}
+            for x in r.itertuples()]
+    assert pd.Timestamp(rows[-1]["dt"]) < splits.DEV_END
+    return rows
+
+
+def load_bars(symbol="BTCUSDT", root=None):
+    """DEV-side bars only. BTCUSDT: the in-repo 4H csv. Other symbols: 4H built from <root>/<symbol>-1m-*.csv."""
+    if symbol != "BTCUSDT":
+        files = sorted(Path(root or ETH_ROOT).glob(symbol + "-1m-*.csv"))
+        if not files:
+            raise SystemExit("no %s 1m files under %s" % (symbol, root or ETH_ROOT))
+        return bars_from_1m(files, symbol)
     rows = []
     with open(HERE / "btc_4h_2020_2026.csv", newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f):
@@ -152,8 +176,8 @@ def regime_mix(bars):
     return rk.regime_mix_line([regime_at(t) for t in weeks])
 
 
-def main():
-    bars = load_bars()
+def main(symbol="BTCUSDT", root=None):
+    bars = load_bars(symbol, root)
     pivots = find_pivots_zigzag([b["h"] for b in bars], [b["l"] for b in bars], lookback=LOOKBACK, min_change_pct=MIN_CHANGE)
     out = []
     for name, log_scale in (("log (primary)", True), ("linear (secondary)", False)):
@@ -164,7 +188,7 @@ def main():
         out.append((name, sources, pasted, c, k, s, pa, pb, diff, z, verdict))
     mix = regime_mix(bars)
     lines = [
-        "# RESULT: copy-paste pitchforks vs random parallels, BTC 4H (DEV side only)",
+        "# RESULT: copy-paste pitchforks vs random parallels, %s 4H (DEV side only)" % symbol + "",
         "",
         f"Pre-reg: PRE_REG_COPY_FORK.md. Bars {bars[0]['dt']} .. {bars[-1]['dt']} (n={len(bars)}), pivots {len(pivots)}. "
         "VALIDATION/HOLDOUT (2024-07-01+) not read.",
@@ -180,9 +204,14 @@ def main():
                      f"{s[1]}/{s[0]} touched, {s[2]} react ({s[2] / max(1, s[1]):.1%}) | {verdict} |")
     lines += ["", "Read rule (pre-registered): copies attract iff diff >= +5 points and z >= 2. Descriptive, no fee-net, "
               "no trade claim; lines from the same source fork are not independent (z is optimistic)."]
-    (HERE / "RESULT_COPY_FORK.md").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    (HERE / ("RESULT_COPY_FORK.md" if symbol == "BTCUSDT" else "RESULT_COPY_FORK_%s.md" % symbol[:3])).write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     print("\n".join(lines))
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--symbol", default="BTCUSDT")
+    ap.add_argument("--root", default=None, help="1m kline folder for non-BTC symbols")
+    a = ap.parse_args()
+    main(a.symbol, a.root)

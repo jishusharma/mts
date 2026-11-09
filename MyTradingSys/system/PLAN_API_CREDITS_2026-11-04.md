@@ -4,6 +4,27 @@ Credit: $100 promotional on platform.claude.com ("jis's Individual Org"), grante
 2026-11-02: about $1 (api_batch runs, COST_FIGURES.md). Balance left: about $99 over 13 days = about $7.50 a day. No payment method
 is on file, so a run that answers was paid by the credit; the console billing page is the only balance read (operator-only).
 
+## CORRECTION 2026-11-07 (Lead C, measured): the Spent rows below never touched the credit
+Console 2026-11-07: $94.34 of the $100 left, $5.67 spent this month, purchased balance $0.00, no payment method. Our ledger said
+$87 spent. Cause, isolated with the raw API on the same key: a plain `/v1/messages` call is paid by the promotional credit; the same
+call with the `claude-code-20250219` beta header (every `claude -p` run) is refused with "Your credit balance is too low". And with
+the login's OAuth present `claude -p` does not even use the key (customApiKeyResponses never approved): every api_job run since
+11-04 billed the LOGIN'S SUBSCRIPTION (that is where login C's 61 % went). The console is the bill; the Spent column is Claude
+Code's estimate of subscription usage, not credit.
+Fix shipped: `scripts/dev/api_agent.py` (raw Messages API, four tools, USD cap, same result record) is api_job's default engine
+(`--engine api`); `--engine claude` stays behind a warning. Smoke 11-07: Haiku wrote a file and ran a command, $0.003, on the credit.
+
+### Routing until the credit expires 2026-11-17 UTC ($94.34 over 10 days = about $9 a day; no payment method = no overrun)
+| Work | Engine | Model | Cap/job |
+|---|---|---|---|
+| Builder cards with a done_when (SONNET lane, 85 ready) | api_job --engine api | Sonnet | $3-8 |
+| reviews, recounts, caption passes, card refreshes, judge passes | api_batch (half price) or api_job api | Haiku | $0.5-2 |
+| one-shot design reads, SPEC audits (no tools) | api_batch single job | Opus | $1-3 |
+| super-session coordinator turns (read queue, pick, launch) | api_job api on Sonnet, one turn cap 40 | Sonnet | $2 |
+| anything live-path, deploy, operator-facing chat | logins (subscription), never the credit | - | - |
+Not usable on the credit: `claude -p`, the Agent SDK (same beta), cloud sessions (login A). Untested: Managed Agents (server-hosted
+loop; the repo is public so a clone works; a $2 probe decides).
+
 ## What the credit can run (measured 2026-11-04 on JIS-NB)
 | Lane | How | Measured | Use for |
 |---|---|---|---|
@@ -139,3 +160,19 @@ Run it from the worktree, in the background; the last line of out.jsonl is the r
 | 2026-11-06 | h3-ny-open-m3-1106 | Sonnet 5.5 | 0.41 | 14 | END: blocked by power gate, pooled BTC+ETH n<=70; no PRE_REG; cap was 5.0 |
 | 2026-11-06 | cc-s3-10sym-m3-1106 | Sonnet 5.5 | 0.99 | 39 | FAIL (not shipped, trunk CI red): pooled n 1981, fee-net -0.047R CI -0.110..+0.016, 2/10 symbols positive; branch JIS-NB/cc-s3-10sym-m3-1106 5392a26aa; cap was 6.0 |
 | 2026-11-06 | pre-us-10sym-n1-1106 | Sonnet 5.5 | 2.72 | 108 | FAIL powered: pooled n 1393 on 10 symbols, fee-net -2.47 bps of K (t -0.56); ship pending (gate stopped on test_gemini_claim_skip trunk flake); cap was 3.0 |
+| 2026-11-06 | flip-review-1106 | Haiku 5.5 | 0.03 | 1 | REVIEW.md of candle_flip_probability_2026-11: 12 findings, 1 blocker (clustering) fixed, rerun in RESULT.md; cap was 3.0 |
+| 2026-11-08 | monday-open-playbook-1109 | Sonnet 5.5 | 5.01 | 78 | hit 5 USD cap before ship; Lead C shipped its PLAYBOOK + ledger rows; cap was 5.0 |
+| 2026-11-08 | edge-hunt-plan-opus-1109b | Opus 5.5 | 6.04 | 52 | PLAN.md + TRIALS.md (m=15) + 11 briefs; hit 6 USD cap before ship, Lead C shipped; cap was 6.0 |
+| 2026-11-08 | edge-hunt-plan-opus-1109 | Opus 5.5 | 0.09 | 4 | refused stale card, nothing built; cap was 6.0 |
+| 2026-11-09 | eh-h1-spinning-top-7star | Haiku 5.5 | 1.30 | 42 | T01 FAIL n=108 -0.217R; cap was 1.4 |
+| 2026-11-09 | eh-h2-malkan-star-grades | Haiku 5.5 | 1.18 | 46 | T02/T03 INCONCLUSIVE (7-star n=7); cap was 1.4 |
+| 2026-11-09 | eh-h3-first-touch-sweep | Haiku 5.5 | 1.26 | 47 | T04 FAIL n=1150 -0.221R; cap was 1.4 |
+| 2026-11-09 | eh-h4-speed-time-at-level | Haiku 5.5 | 1.40 | 62 | budget cap before code; T05 not run; cap was 1.4 |
+| 2026-11-09 | daily-session-playbook-live-aid-1109 | Sonnet 5.5 | 4.03 | 53 | cap before commit; finish job launched; cap was 4.0 |
+| 2026-11-09 | eh-s2-wick-level-context | Sonnet 5.5 | 3.56 | 41 | cap before ship; finish job launched; cap was 3.5 |
+| 2026-11-09 | eh-h5-rsi-ma-cross-trigger | Haiku 5.5 | 1.10 | 50 | T06 INCONCLUSIVE +0.048R n=1322; cap was 1.4 |
+| 2026-11-09 | eh-s3-rsi-line-confluence | Sonnet 5.5 | 3.54 | 53 | cap before ship; cap was 3.5 |
+| 2026-11-09 | eh-f1-testnet-design | Fable 5.1 | 6.37 | 39 | hit cap $6.37 in 13 min before writing the design; nothing shipped; cap was 6.0 |
+| 2026-11-09 | eh-o1-confluence-dose-response | Opus 5.5 | 5.46 | 38 | hit cap at count pass, no returns; cap was 5.0 |
+| 2026-11-09 | eh-o2-phase-lens | Opus 5.5 | 5.76 | 52 | hit cap $5.76; cap was 5.0 |
+| 2026-11-09 | sim-desk-edge-hunt-1109 | Sonnet 5.5 | 5.17 | 56 | hit cap $5.17, partial; cap was 5.0 |

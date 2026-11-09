@@ -2,9 +2,22 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-11-06T19:26:39Z",
+    "misses": 5,
+    "reads": [
+      "MyTradingSys/research/STATUS.md",
+      "MyTradingSys/research/candle_patterns_2026-10-04/CANDLE_PATTERNS_RESEARCH_2026-10-04.md",
+      "MyTradingSys/tools/live_aid/tf_strip.js",
+      "MyTradingSys/research/btc_cycles_2026-11/test_cycle_bottom_flag.py",
+      "scripts/dev/run_extra_tests.py"
+    ],
+    "session": "0dde8aa3-7569-4097-9717-f58bb1b94ac9"
+  },
   "created": "2026-11-06T14:16:56Z",
   "depends_on": [],
-  "done_when": "live_aid.html shows a trendline cell per timeframe row and liquidation rungs on the ladder; tf_strip.js has pure functions for both with spec tests on hand-computed numbers that fail with the functions absent; REQUIREMENTS.md gains R20; ships with --wait-ci.",
+  "done_when": "Trendline half BUILT (7f5a8a6be, R22). Left: live_aid.html shows liquidation rungs on the ladder (cluster levels, beyond the Liquidations panel and 5-min tile); a pure function for them with a spec test on hand-computed numbers that fails with it absent; REQUIREMENTS.md gains the next free R row (R20-R23 taken); ships with --wait-ci.",
   "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
@@ -16,26 +29,26 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "live_aid: timeframe strip panel (R19)",
-      "ref": "d6db87075633",
-      "utc": "2026-11-06T12:51:59Z"
+      "line": "Merge origin/fast-track (news_weight) into events strip: keep both script tags, renderers,",
+      "ref": "3db35c5f403d",
+      "utc": "2026-11-08T12:36:04Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "d6db87075633 live_aid: timeframe strip panel (R19)",
+      "line": "06baadc50339 live_aid: News weight W 0-100, LONG/SHORT/HOLD chip and News row flash (news_",
       "ref": "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
-      "utc": "2026-11-06T12:51:59Z"
+      "utc": "2026-11-08T10:51:00Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Lead C filed 2026-11-06 14:17Z; tasks.py new crashed with TypeError after writing the raw file, fields filled by hand.",
+  "note": "Lead C filed 2026-11-06 14:17Z; tasks.py new crashed with TypeError after writing the raw file, fields filled by hand. 2026-11-07 pattern-book session: the TRENDLINE half is built (tf_strip.js trendline/fmtLine, live_aid.html column 'Trend lines', test_trendline_from_three_pivots, REQUIREMENTS R22 because R20 (close-colour gauge) and R21 (moving-average strip) were already taken; 2-touch fallback added to the card's 3-touch rule). The LIQUIDATION-CLUSTER half (ladder rungs, test_liq_ladder_from_day_extremes) is still open on this card. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: Live Aid display card; shares build_artifact.py/live_aid.html with the news builds, so it follows them REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-06T14:18:43Z",
+  "refreshed": "2026-11-08T18:20:51Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -49,7 +62,7 @@
     "the live tree",
     "build_artifact.py beyond inlining"
   ],
-  "scope_sha": "d6db87075633",
+  "scope_sha": "3db35c5f403d",
   "size": "M",
   "sources": [],
   "state": "ready",

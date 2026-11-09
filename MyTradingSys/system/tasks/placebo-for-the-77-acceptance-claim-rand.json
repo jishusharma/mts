@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/value_area_acceptance_2026-11-05/placebo80.py"
+  ],
+  "created": "2026-11-08T18:53:38Z",
+  "depends_on": [],
+  "done_when": "PLACEBO.md exists with real 77% [72..81] n=300 next to the placebo mean and 95% range over 2000 draws, plus a one-line verdict; test_placebo80.py passes; needs F:/MTS/data/orderflow_1m (desktop only)",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure how often a random day/time touches the same distance below its own close as accept80 Event A (77%, n=300): if the placebo is near 77%, the 'acceptance' label adds nothing.",
+  "id": "placebo-for-the-77-acceptance-claim-rand",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "eagle: accept80 value-area walk named as price bins (lint)",
+      "ref": "b0acc39a1d0a",
+      "utc": "2026-11-05T13:24:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Split from the 77-label card. Data is local to DESKTOP-F7IU69N (F:/MTS). Refined 2026-11-09 (planner).",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T04:53:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/accept80.py",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/placebo80.py",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/test_placebo80.py",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/PLACEBO.md"
+  ],
+  "scope_out": [
+    "accept80.py edits (import its va/days_local/m30 only); any fees or trade rule; live tree"
+  ],
+  "scope_sha": "b0acc39a1d0a",
+  "size": "S",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "placebo80.py imports accept80 (days_local, va, m30). For each real Event A (2 consecutive 30m closes below VAL), record segment index k, and d = close_k - (VAL - w/2) i.e. the distance the real test needs",
+    "Placebo draw: same n=300 events; per event pick a random UTC day (not an Event A day) and the same segment index k, and test rest-of-day low <= close_k - d. Repeat 2000 draws, seed 7; report mean hit rate and 2.5/97.5 percentiles vs real 77% [72..81]",
+    "Also run the exact-width variant (d = w/2 from the close) as a sensitivity row. Write PLACEBO.md: both tables, one verdict line (label adds >= 10 points over placebo or not)",
+    "test_placebo80.py: synthetic 3-day series where every day drifts down by more than d, assert placebo hit rate == 1.0, and flat series == 0.0; run it against a stub returning 0.5 to see it fail first"
+  ],
+  "tests": "MyTradingSys/research/value_area_acceptance_2026-11-05/test_placebo80.py (synthetic drift/flat series; fails against a stub)",
+  "title": "Placebo for the 77% acceptance claim: random-day half-width touch, same n=300 days (split from tf-acceptance-77-label-placebo-1109)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

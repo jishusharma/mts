@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-07T14:14:40Z",
+  "commands": [],
+  "created": "2026-11-07T12:46:48Z",
+  "depends_on": [],
+  "done_when": "research/adx_di_2026-11/TV_CROSSCHECK.md holds a table ours vs TradingView for 3 bars x 3 values with abs diff and PASS/FAIL per cell; on PASS FORMULAS.md section ADX/DI gets the line VERIFIED-TV 2026-11-xx; on FAIL the diff is reported, nothing changed.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Verify backtest/layers/adx/adx.py (card adx-di-2d-cross-census-1107) against TradingView's ADX/DI indicator on the operator's logged-in Chrome (Profile 4 or the profile with TradingView open): BTCUSDT 2D, ADX 14 / DI 14, read DI+, DI-, ADX on 3 dated bars (the last closed bar, 2026-05-15, 2026-01-15) and compare with our values; tolerance 0.5 points.",
+  "id": "adx-di-tradingview-crosscheck-1107",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "VERIFIED-TV: 6/6 historical cells match to 0.01; last bar differs only because the csv row",
+      "ref": "a9603a6db",
+      "utc": "2026-11-07T14:14:40Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: formula verified; 2d bucket alignment unverifiable (2D paywalled)",
+  "note": "REVIEWED:2026-11-07 T0-ONLY\noperator 2026-11-07: verify indicators on his TradingView/Binance charts via Claude in Chrome. depends on adx-di-2d-cross-census-1107 landing on trunk.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T12:46:49Z",
+  "refs": [
+    "MyTradingSys/research/adx_di_2026-11/SPEC.md"
+  ],
+  "result": "VERIFIED-TV: 6/6 historical cells match to 0.01; last bar differs only because the csv row was partial (TV_CROSSCHECK.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/adx_di_2026-11/TV_CROSSCHECK.md, one VERIFIED-TV line in FORMULAS.md"
+  ],
+  "scope_out": [
+    "no change to adx.py; never type credentials, stop at any login wall; no orders"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "1 run python -c on adx.py over research/btc_cycles_2026-11/btc_daily.csv resampled to 2d, print DI+/DI-/ADX for the 3 dates",
+    "2 Chrome: list_connected_browsers, open tradingview.com chart BTCUSDT (Binance) in the operator's profile, timeframe 2D, add indicator 'Average Directional Index' (ADX smoothing 14, DI length 14); read the 3 bars with the data window / hover",
+    "3 write the table; PASS when every abs diff <= 0.5; note the venue (TradingView Binance spot vs our Binance daily csv)"
+  ],
+  "taken": "2026-11-07T14:14:40Z",
+  "tests": "none (read-only verification); the table is the evidence",
+  "title": "ADX/DI engine cross-check on the operator's TradingView chart via Claude in Chrome (3 dated 2D bars)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

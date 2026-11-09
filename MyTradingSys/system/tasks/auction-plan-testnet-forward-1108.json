@@ -1,0 +1,42 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-08T20:07:44Z",
+  "commands": [],
+  "created": "2026-11-07T18:31:33Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "auction-plan-testnet-forward-1108",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "MERGED into tf-testnet-forward-range-phase-amend-1109 (READY): same forward run, Fable kill rule, session logged, context-only",
+  "pinned": false,
+  "prio": 2,
+  "reason": "MERGED into tf-testnet-forward-range-phase-amend-1109 (READY): same forward run, Fable kill rule, session logged, context-only",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "scripts/dev/scenario_ledger.py"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Lead C review 2026-11-08 of Argon's Tom/Fabio audit (1a79739e, research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md); operator asked what really needs to be done"
+  ],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "Testnet-forward: build_auction_trade_plan as CONTEXT in the signal path for 2 setups (failed-auction reclaim at HTF level; VA acceptance continuation), scenario_ledger rows for accept80 Event A (77% = same-day half-VA-width drift, descriptive, no fees; not a win rate), run until it fails",
+  "weight": "",
+  "worker": ""
+}

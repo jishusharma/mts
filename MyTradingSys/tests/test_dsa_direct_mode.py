@@ -321,3 +321,14 @@ def test_5a_closes_the_source_before_the_one_ship():
     s = " ".join(text(PROMPT).split())
     a, b = s.index("8. Close the source BEFORE the ship"), s.index("9. The inline ship block")
     assert a < b and "A second ship within 10 minutes is allowed" in s and "ships itself" in s
+
+
+def test_prompt_boots_then_waits_for_the_order():
+    # operator 2026-11-07: one-command start (dsa.py start seed), quick init, then wait; DSA did too much on its own
+    s = PROMPT.read_text(encoding="utf-8")
+    first = s[: s.index("## 00.")]
+    assert "G. BOOT, THEN WAIT FOR THE ORDER" in first
+    assert "python scripts/dev/dsa.py start" in first
+    assert "Pick the first task by section 5 and start" not in s
+    assert "0.9 BRIDGE KNOW-HOW" in s and s.index("0.9 BRIDGE KNOW-HOW") < s.index("## 1. ROLE")
+    assert "dsa.py start, paste the seed" in s                 # section 12 names the new start

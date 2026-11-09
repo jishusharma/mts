@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-07T15:12:54Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-role-loader-duty0.md has line 1 with counts (MATCH/DIFF/NOT_IN_DATA or COVERED/NOT_COVERED) and one row per item checked.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of the test_role_loader.py case for session_planner Duty 0: does the test pin what the Duty 0 text asks for.",
+  "id": "gemini-blind-read-of-mytradingsys-tests-",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "session_planner.md: re-add Duty 0 Code Red lane floors under the 9500 hook cap",
+      "ref": "1c2a874eca8d",
+      "utc": "2026-11-07T15:13:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1c2a874eca8d session_planner.md: re-add Duty 0 Code Red lane floors under the 9500 hook ca",
+      "ref": "MyTradingSys/system/roles/session_planner.md",
+      "utc": "2026-11-07T15:13:01Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-08 T0-ONLY (D11 feeder s6, planner-a-1107b; twin check run, none). Gemini queue, load as <card>:low. Blind read: use only the files named. ",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T18:31:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tests/test_role_loader.py (read)",
+    "MyTradingSys/system/roles/session_planner.md (Duty 0) (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-role-loader-duty0.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "1c2a874eca8d",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/roles/session_planner.md Duty 0"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read Duty 0 in session_planner.md",
+    "Read the Duty 0 case in test_role_loader.py",
+    "Mark each Duty 0 sentence COVERED/NOT_COVERED, counts on line 1"
+  ],
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of MyTradingSys/tests/test_role_loader.py session_planner Duty 0 case",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

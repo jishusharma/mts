@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-11-05T02:28:52Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "manage.py applies costs.funding_r from a funding-history file for the Fabio v3 rerun, golden Fabio numbers re-baselined in one commit, and a Gemini spec review file exists (C2 definition change)",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
@@ -17,7 +17,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner 11-05 parked: funding_r (costs.py:54) needs a funding-history input that costs.py says is unknown for the 1m order-flow data; wiring it into manage.py changes golden fabio numbers (C2 definition change, needs non-Claude spec review).",
+  "note": "REVIEWED:2026-11-07 T0-ONLY (planner-a-20261107). model Sonnet medium; PARKED behind a non-Claude spec review (C2) and a funding-history input; DECISION (OURS): stay fee-only until both exist. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: behind a non-Claude spec review and a funding history input (see its note); fee-only until both exist",
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
@@ -31,6 +31,6 @@
   "steps": [],
   "tests": "",
   "title": "fabio v3: costs.funding_r is never called by a runner; FABIO-V3 numbers are fee-only",
-  "weight": "",
+  "weight": "CRITICAL",
   "worker": ""
 }
