@@ -83,4 +83,4 @@ After the code, two of my own test expectations were wrong (armed-window case an
 - The funding archive starts 2020-01 in this cache; 2019-09..12 returned 404. Funding is 0 before 2020-01.
 - Doctor warnings at sync start (CLAUDE.md size headroom 0%, DISK 14.1 GB) are unrelated to this study.
 
-- SHIP BLOCKED: the must-pass gate Step 3xm (dsa_backtest_audit T06 test_cost_inventory) flags the COST_RT_BPS line in rsi_ma_cross.py because costs.csv is in another study's folder (out of this worker's write scope). Not shipped; needs the coordinator to add the row or accept the constant. Quick gate steps 3pc, 3la, 3dl, 3gd, 3qn, 4c, 4d passed; 3cm and 4e-4f not reached.\n
+- Ship blocker resolved (Builder, 2026-11-09): the T06 cost-inventory gate (Step 3xm) and CI step 4e flagged the cost constant. COST_RT_BPS is now computed only from fees.py (BINANCE_TAKER and SLIPPAGE_RT_S13, no own numeric literal); it is exactly 12.0 bps as before, so no number or verdict in this file changed.

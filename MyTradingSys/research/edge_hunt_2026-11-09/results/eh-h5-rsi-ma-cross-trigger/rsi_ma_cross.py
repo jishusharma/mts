@@ -62,7 +62,7 @@ HOLD_BARS = 30            # OURS (counting the entry bar)
 _FEES_SPEC = importlib.util.spec_from_file_location("fees_ro", Path(__file__).resolve().parents[4] / "backtest" / "fees.py")
 _fees = importlib.util.module_from_spec(_FEES_SPEC)
 _FEES_SPEC.loader.exec_module(_fees)
-COST_RT_BPS = 2 * _fees.BINANCE_TAKER * 1e4 + 2.0   # regime A round trip = 10 bps taker + 2 bps slippage = 12 bps
+COST_RT_BPS = _fees.BINANCE_TAKER * 2e4 + _fees.SLIPPAGE_RT_S13 * 1e4   # regime A round trip = 10 bps taker + 2 bps slippage = 12 bps, both from fees.py (exactly 12.0)
 M_HOLM = 15               # TRIALS.md
 Z_MDE = 2.8               # 80 % power, two-sided 5 %: 2.8 x SE
 
