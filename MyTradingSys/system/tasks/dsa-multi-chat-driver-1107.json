@@ -15,36 +15,72 @@
   },
   "created": "2026-11-07T17:21:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "dsa_drive.py --n 2 prints two seeds with distinct chat slugs plus the order line and refuses N=3; test_dsa_drive.py fails pre-change and passes after, listed in extra_tests.tsv; DSA_DELEGATION.md names the cap of 2 per host and the driver command; Result says folding dsa_seed into dsa.py waits for the next bridge bump",
+  "est_turns": 15,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One Haiku driver opens N DSA chats per host, each with its own worktree and seed and the order line, capped so concurrent ships stay under the gate flake point; dsa_seed.py already gives each chat a slug and the UTF-8 line.",
   "id": "dsa-multi-chat-driver-1107",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
+      "ref": "05d8d613782f",
+      "utc": "2026-11-08T12:33:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8670a7f3ed83 DSA parallel sessions: prompt section 0b, dsa_seed.py shows claims, utf-8 std",
+      "ref": "MyTradingSys/system/DSA_DELEGATION.md",
+      "utc": "2026-11-07T17:59:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design: each chat has its own mts-dsa-<chat> worktree; tasks.py take claims a card so two chats cannot take one; limit = concurrent sync.py ship (gate flakes at 4+, desk 20261029-170405). DONE 2026-11-07 (dsa-watcher-1107): DSA_SESSION_PROMPT section 0b Parallel sessions; scripts/dev/dsa_seed.py (chat slug, cards held by other DSA chats, UTF-8 env line; test_dsa_seed.py). It wraps dsa.seed_text and does NOT edit dsa.py: dsa.py is a bridge file, a first attempt (6336fa4c, reverted) failed test_aibridge_version_bump; a bump would put every running chat in a version mismatch. REMAINING: (1) fold dsa_seed.py into dsa.py at the next planned bridge bump; (2) the Haiku N-tab driver (DSA_DELEGATION Standing setup: open N=2 DeepSeek tabs per host in Profile 4, one dsa_seed.py seed per tab, send go); cap N=2 per host until it lands. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: DSA bridge tooling; no roadmap exit | DECISION (OURS, planner-A-1110b): kept refined, not buildable now: remaining parts are the dsa.py fold (needs a planned bridge version bump) and the Haiku N-tab Chrome driver; cap N=2 per host until then. Re-scope when a bridge bump is scheduled.",
+  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design: each chat has its own mts-dsa-<chat> worktree; tasks.py take claims a card so two chats cannot take one; limit = concurrent sync.py ship (gate flakes at 4+, desk 20261029-170405). DONE 2026-11-07 (dsa-watcher-1107): DSA_SESSION_PROMPT section 0b Parallel sessions; scripts/dev/dsa_seed.py (chat slug, cards held by other DSA chats, UTF-8 env line; test_dsa_seed.py). It wraps dsa.seed_text and does NOT edit dsa.py: dsa.py is a bridge file, a first attempt (6336fa4c, reverted) failed test_aibridge_version_bump; a bump would put every running chat in a version mismatch. REMAINING: (1) fold dsa_seed.py into dsa.py at the next planned bridge bump; (2) the Haiku N-tab driver (DSA_DELEGATION Standing setup: open N=2 DeepSeek tabs per host in Profile 4, one dsa_seed.py seed per tab, send go); cap N=2 per host until it lands. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: DSA bridge tooling; no roadmap exit | DSA refined 2026-11-09: fields filled from the refs and check passes, but dsa-refine-raw-cards-1107 says a refiner never marks ready; a builder or Lab_Guy promotes it.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-09T13:26:38Z",
   "refs": [
     "MyTradingSys/system/DSA_DELEGATION.md",
     "DSA_SESSION_PROMPT.md"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/dsa_seed.py",
+    "scripts/dev/supervisor.py",
+    "new scripts/dev/dsa_drive.py and scripts/dev/test_dsa_drive.py",
+    "MyTradingSys/system/DSA_DELEGATION.md (Standing setup)"
+  ],
+  "scope_out": [
+    "no edit to scripts/dev/dsa.py: bridge file, an edit needs a version bump",
+    "no N above 2 per host until the ship gate stops flaking at 4 or more concurrent ships",
+    "no credentials typed, no login wall bypass",
+    "no live-path file"
+  ],
+  "scope_sha": "05d8d613782f",
+  "size": "M",
   "sources": [
-    "operator 2026-11-07 ~17:15Z voice: DSA says it has no tasks; load DSA with review and refinement work, several DSA chats per host driven by Haiku; d-dsa-load-queue-multi-chat-1107"
+    "MyTradingSys/system/tasks/dsa-multi-chat-driver-1107.json note: REMAINING (1) fold dsa_seed.py into dsa.py at the next bridge bump (2) the Haiku N-tab driver, cap N=2",
+    "scripts/dev/dsa_seed.py:1-3 chat slug, cards held by other chats, UTF-8 stdout",
+    "MyTradingSys/system/DSA_DELEGATION.md Standing setup: on stall the supervisor spawns ONE Haiku Agent that seeds a chat and sends the order line"
   ],
   "state": "refined",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "1. git grep for an existing tab driver (Profile 4, chat.deepseek.com): extend it, do not duplicate",
+    "2. Fail-first test: two seeds with distinct chat slugs, and a refusal at N=3",
+    "3. Implement scripts/dev/dsa_drive.py with --n (cap 2), printing per-tab seed and order line; --print opens nothing",
+    "4. Add the Standing setup row (cap 2 per host, the driver command) to DSA_DELEGATION.md",
+    "5. Run the test; commit with a Result naming the cap and what the driver prints"
+  ],
+  "tests": "scripts/dev/test_dsa_drive.py: fails pre-change (module absent) on two seeds with distinct slugs and a refusal for N=3; registered in extra_tests.tsv",
   "title": "DSA fan-out: Haiku driver opens N DSA chats per host (own worktree each), seeds, assigns lane cards; cap N by ship-gate load (gate flakes at 4+ concurrent ships)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
