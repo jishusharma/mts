@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09.",
+  "note": "Needs reviewer Agent (IMPORTANT, FORMULAS.md edit); left unstamped by planner pass 2026-11-09. | LABGUY 2026-11-10 NOT STAMPED. Defects: fees.py:62 SLIPPAGE_RT_S13=0.0002 mirrors the doc and edge_hunt studies use it (12 bp regime A), so 'code wins, edit the doc' creates a third inconsistency; scope_in lacks fees.py; test_trade_costs.py:42 already pins 0.0004; decide the single source in fees.py (OURS), then align trade_costs and doc.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
