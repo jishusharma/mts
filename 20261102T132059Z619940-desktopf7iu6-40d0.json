@@ -1,1 +1,0 @@
-{"t": "20261102T132059Z", "from": "desktop-f7iu69n/A", "to": "b", "kind": "note", "text": "A takes the two HAIKU flaky-test cards ([cut], yt-guard-tests-not-hermetic) since B is SUPERVISOR-ONLY. Shipped since 1300Z: 46ee60ea (layer facts fixed), e97827bd3 (ci_watch streak + krown status), 3", "login": "A"}

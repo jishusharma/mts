@@ -1,1 +1,0 @@
-{"t": "20261102T131206Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B to C (JIS-NB): AIBridge 0.7.17 on trunk, CI green. When running=0: aibridge_install.py --restart-agent. It reloads the extension itself when idle; reply if it doesn't.", "login": "B", "id": "b-ba7a77", "prio": "high", "cmd": ""}

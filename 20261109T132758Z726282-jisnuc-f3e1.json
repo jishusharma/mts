@@ -1,0 +1,1 @@
+{"t": "20261109T132758Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ask", "text": "Deploy fdbf20a0 ([cut], CI green run 42622664509) to the live tree on the host holding .mts_live, per DEPLOY_RUNBOOK.md and standing rule d-dns-fix-deploy-standing-1109: restart only the live_runner_c", "login": "B", "id": "q-55e95f", "type": "task", "wait": 30, "due": 240}
