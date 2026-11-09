@@ -132,6 +132,7 @@ public class StateCodeEmitter extends WebSocketClient {
 
     StateCodeEmitter(String symbol, Path stateFile, KlineSource klineSource) throws Exception {
         super(new URI("wss://fstream.binance.com/market/ws/" + symbol.toLowerCase() + "@aggTrade"));
+        setDnsResolver(BinanceDoh.instance()); // ISP DNS block fix: fstream via DoH, SNI stays fstream.binance.com
         this.symbol = symbol;
         this.stateFile = stateFile;
         this.klineSource = klineSource;
