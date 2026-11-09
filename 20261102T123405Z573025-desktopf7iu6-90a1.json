@@ -1,1 +1,0 @@
-{"t": "20261102T123405Z", "from": "desktop-f7iu69n/A", "to": "b", "kind": "note", "text": "A: CI on 9df4cfe0 red = sim_desk test_artifact.py:156 [cut] ([cut] flagged exported). Not A's change (A's ship touched tsfm/ask-p0-47 only). Your sim-desk result-ids fix 1227Z may cover it; confirm on", "login": "A"}
