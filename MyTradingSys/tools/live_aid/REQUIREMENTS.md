@@ -47,6 +47,20 @@ Operator 2026-11-08 ~19:50Z (chat, reading ours): a headline must carry weight (
 | Repeat | No decay factor. The last same-class catalogue move (date, r15, z15d, vr5) is shown; the words "flushed last time" appear when its vr5 was above 15. The previous sign never sets the chip. | SOURCED (rho -0.22 / 0.03 / -0.34 / 0.14) |
 | Dropped | source tier, two-source bonus, repeat-decay factor, Trump-era term, percent thresholds | NEWS_DESIGN.md section 3 |
 
+## Daily session playbook (card daily-session-playbook-live-aid-1109, R25)
+
+Operator 2026-11-09: the Monday playbook was one-off; he wants it every day, on Live Aid and on his screen, for the Asia, Europe and US sessions with key levels, scenarios, trade ideas, insights and notes (reading ours). Context only: no gate, no order, no size.
+
+| Part | Rule | Label |
+|---|---|---|
+| Sessions | Asia 00-08Z, Europe 07-13Z, US 13-21Z (07-08Z is in both). Built once per UTC day by `python MyTradingSys/tools/live_aid/daily_playbook.py` (after 21Z it builds tomorrow); writes `playbook_data.js` (gitignored: it carries CBP analyst text). | windows OURS |
+| Base rates | Per session, 1h bars since 2020 before the day: range p25 / p50 / p75, median high and low from the open, share of up closes, same-weekday median range; only complete sessions count. Reuses `monday_clocks.py` (`hourly`, `pct`). | MEASURED on history |
+| Key levels | Prior day H / L / C, prior Mon-Sun week H / L, day open, week open, prior-day value area (50 USD bins, time at price from 1h bars, no volume, 70%). | VA method OURS |
+| Scenarios | Up to 3 per session that has not ended: nearest levels, typical swing (median excursions), prior-day range; levels closer than 0.2% to the reference are skipped. Each carries history first-touch counts from the session open (a 1h bar touching both counts BOTH), the mirror counts (same distances, sides swapped), an invalidation line and a watch idea. Lean UP / DOWN only when the excess over the mirror is 10% of n or more and n >= 20, else NONE; without the mirror the ledger would score "the nearer level first" as a hit rate. | thresholds OURS |
+| Ledger | Every scenario is a `scenario_ledger.csv` row tagged `[PB day session n]`, scored by 1m first touch at the session end; a rebuild keeps existing rows. Yesterday's rows show HIT / MISS / NA / UNSCORED on the page. | OURS |
+| Page | Live Aid: Now-table row Playbook and detail view `#playbook` (session cards, the session running now outlined, STALE after the day ends or 36 h). Phone page: `python build_artifact.py --playbook out.html` (inlines `playbook.js` and `playbook_data.js`, no feed needed). | OURS |
+| Not built | No auto-run (a scheduler is a separate decision); the artifact is written to a file, publishing it to the claude.ai viewer is a manual step. | - |
+
 ## Open questions for the operator
 
 1. Which WaveTrend settings does his chart use (channel length and average length)? Pick one or type them.

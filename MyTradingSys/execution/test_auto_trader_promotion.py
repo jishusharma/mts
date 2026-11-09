@@ -159,6 +159,10 @@ class PromotionGateTest(unittest.TestCase):
         self.assertEqual(set(gf), want)
         self.assertNotIn("layer:", gf)                                    # the catch-all would defeat default-deny
         for k, v in gf.items():
+            if k == "layer:krown:":       # R7 forward test: a promoted_setups entry needs a screen-PASS manifest it cannot have (kill test)
+                self.assertTrue(v["reason"].startswith("R7 forward test"), k)
+                self.assertEqual(v["review_by"], "2026-12-09", k)
+                continue
             self.assertTrue(v["reason"].startswith(("grandfathered pre-pipeline testnet calibration",
                                                     "grandfathered testnet calibration, operator 2026-10-16")), k)
             self.assertEqual(v["review_by"], "2026-10-23", k)

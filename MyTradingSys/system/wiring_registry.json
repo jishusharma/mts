@@ -79,10 +79,6 @@
    "disp": "TOOL",
    "why": "Krown point-in-time context rows (trend 1d/1w, naive trend baselines, BBWP 1d/4h, zones, range) and the D1/D2/D3 context dimensions, all OURS impl. of KR-x; covered by test_krown_context.py (shifted-join leak test, truncation test); research only, no live imports; confluence S1 (FABLE_CARD_CONFLUENCE.md)."
   },
-  "MyTradingSys/backtest/layers/krown/krown_events.py": {
-   "disp": "TOOL",
-   "why": "Krown v0 setup events S1-S9 ({i, side, setup, tags}) built on krown_core.py; covered by test_krown_events.py, no live imports; observation only."
-  },
   "MyTradingSys/backtest/layers/krown/run_counts.py": {
    "disp": "REPRO",
    "why": "Regenerates research/krown_audit_2026-10-22/run/ (context_dev.csv, joined_events.csv, COUNTS.md, ACCESS_LOG.md, bands.json) from DEV daily/1h/15m bars and the regenerated DEV event tables in run/sealed/; counts only, reads no outcome column, no bar at or after 2024-07-01; run by hand (python run_counts.py), named in COUNTS.md."
@@ -98,10 +94,6 @@
   "MyTradingSys/backtest/layers/kurisko/make_golden.py": {
    "disp": "REPRO",
    "why": "Regenerates kurisko/golden_stoch_k5d3.csv, the 20-bar example of FORMULAS s24.2, independently of stoch_core.py; run by hand (python make_golden.py)."
-  },
-  "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py": {
-   "disp": "TOOL",
-   "why": "Geometric Pitchfork channel and median line detection engine for Andrews, Schiff, and Modified Schiff variants; covered by test_pitchfork_detector.py; registered in layer_index.json and layer_map.json."
   },
   "MyTradingSys/backtest/layers/pizzino/pizzino_indicators.py": {
    "disp": "TOOL",
@@ -968,10 +960,6 @@
   "MyTradingSys/system/artifacts/_gen_live_onepage_mock.py": {
    "disp": "TOOL",
    "why": "Builds the one-page live feed mock LIVE_ONEPAGE_MOCK_2026-11-04.html from the orderflow CSV; run by hand (d-sim-ux-1104), mock only."
-  },
-  "MyTradingSys/tools/live_aid/build_artifact.py": {
-   "disp": "TOOL",
-   "why": "Builds the one-file claude.ai Artifact preview of live_aid.html (indicators inlined); run by hand when the live aid page changes, named in tools/live_aid/STEPS.md."
   },
   "MyTradingSys/tools/live_aid/events_wire.py": {
    "disp": "TOOL",

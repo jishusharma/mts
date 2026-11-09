@@ -236,6 +236,8 @@ runtime_data/
 MyTradingSys/research/setup_review_2026-10/review_page.html
 # live_aid analyst data: built from CBP rows, which stay out of the public repo
 MyTradingSys/tools/live_aid/analyst_data.js
+# daily playbook data: carries CBP analyst text (daily_playbook.py rebuilds it each UTC day)
+MyTradingSys/tools/live_aid/playbook_data.js
 MyTradingSys/tools/live_aid/ff_calendar_snapshot.js
 MyTradingSys/observation/uptime_heartbeat.jsonl
 MyTradingSys/runtime/us_prep/
@@ -248,3 +250,4 @@ MyTradingSys/research/candle_flip_probability_2026-11/fetch.log
 
 # tf-testnet-forward-range logger output (runtime data, never commit)
 MyTradingSys/research/auction_forward_2026-11-09/runtime/
+MyTradingSys/research/tom_fabio_course_correction_2026-11-07/runtime/

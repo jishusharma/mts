@@ -94,6 +94,10 @@ DEFAULT_CONFIG = {
                    "layer:cryptocred:sr_flip:1h": {"stop": "event", "max_hold_minutes": 1440, "source": CC_TESTED},
                    "layer:cryptocred:fib_pullback:1h": {"stop": "event", "max_hold_minutes": 1440, "source": CC_TESTED},
                    "layer:cryptocred:failed_msb:1h": {"stop": "event", "max_hold_minutes": 1440, "source": CC_TESTED},
+                   # R7 forward test (FORWARD_PREREG.md s1): frozen R6 Krown S8 4h rule. Stop = far side of the 10-bar
+                   # compression zone (event), target 2 x risk, time stop 100 bars of 4h = 24,000 minutes.
+                   "layer:krown:s8_break:4h": {"stop": "event", "targets_r": 2, "max_hold_bars": 100,
+                                               "source": "TESTED:research/fable_run6_powered_prereg/e2_run.py:61-89"},
                }},
     # (layer, event) -> side. "direction" means: up -> long, down -> short; "level" means the side comes from the level
     # crossed (CROSS_SIDE_BY_LEVEL), everything else unmapped. A "side" field on the alert wins.
@@ -105,7 +109,7 @@ DEFAULT_CONFIG = {
     "disabled_layers": [],
     # source prefix -> named testnet account (credentials .secrets/testnet_<label>.secret.json).
     # Missing file -> shared default slot, exactly as before.
-    "accounts": {"layer:fabio:": "fabio"},
+    "accounts": {"layer:krown:": "krown_s8", "layer:fabio:": "fabio"},
     # Layer source prefixes that keep emitting alerts (data collection) but never place a trade, with the reason per
     # prefix. Tom ("tom") is never matched. Missing key = nothing blocked; a PRESENT but malformed key, or an unreadable /
     # missing config file, blocks ALL layer trades (fail closed) - see trade_block_reason / load_config.
@@ -114,7 +118,7 @@ DEFAULT_CONFIG = {
     # Layer source prefix -> {"size_usd", "max_loss_usd"}; the longest matching prefix replaces the layers size and max
     # loss. Testnet calibration spread (operator 2026-10-07: "Use amounts ranging from 20 to 1000 $"). A malformed
     # entry rejects the signal (no order at a guessed size).
-    "size_overrides": {},
+    "size_overrides": {"layer:krown:s8_break:4h": {"size_usd": 100, "max_loss_usd": 25}},   # R7: wide event stops (<= 25 %) must not be refused by the 10 USD default cap
     # Promotion pipeline default-deny (fable H1): a source with no promoted_setups.json entry trades only when it starts
     # with a prefix here ({prefix: {"reason", "review_by": "YYYY-MM-DD"}}). Empty = every unregistered source is rejected.
     "pre_pipeline_sources": {},
@@ -469,7 +473,7 @@ def size_override(source: str, cfg: dict):
         raise ValueError(f"{e} for {max(hits, key=len)}")
 
 
-LAYER_EXIT_KEYS = {"stop_pct", "stop", "targets", "max_hold_bars", "max_hold_minutes", "source"}
+LAYER_EXIT_KEYS = {"stop_pct", "stop", "targets", "targets_r", "max_hold_bars", "max_hold_minutes", "source"}
 _NUM_RE = re.compile(r"\d+(\.\d+)?")
 
 
@@ -515,7 +519,13 @@ def layer_exit(source: str, alert: dict, side: str, cfg: dict, bar: int):
             raise ValueError(f"event stop {stop} is on the wrong side of entry {entry} for a {side}")
         out["stop"] = _pos_num(round(abs(entry - stop) / entry * 100, 4), "event stop distance", below=100)
     sampling = []
-    if "targets" in e:
+    if "targets_r" in e:
+        # R7: target distance = r x the event's own stop distance (percent of entry); only meaningful with stop "event"
+        if "targets" in e or e.get("stop") != "event":
+            raise ValueError(f"entry {prefix} targets_r needs stop 'event' and excludes targets")
+        r = _pos_num(e["targets_r"], f"{prefix} targets_r")
+        out["targets"] = f"{_pos_num(round(r * out['stop'], 4), 'targets_r distance', below=1000):g}"
+    elif "targets" in e:
         t = e["targets"]
         if (not isinstance(t, str) or not all(_NUM_RE.fullmatch(x) and float(x) > 0 for x in t.split(","))):
             raise ValueError(f"entry {prefix} targets must be a comma list of positive numbers")
