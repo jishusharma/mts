@@ -162,7 +162,7 @@ def finish(repo, rid, result, failed=False, ship=True):
             raise SystemExit(f"desk: {rid} already {req['status']}")
         req.update(status="failed" if failed else "done", result=result, host=socket.gethostname(), finished=now())
         save(wt, req)
-        body = f"desk: {req['status']} {rid}\n\nResult: {result}\n"
+        body = f"desk: {req['status']} {rid}\n\nResult: {result}\nNext: END: desk task {rid} {req['status']}\n"
         if failed:
             body += f"Operator: desk task {rid} not completed: {result}\n"
         commit_ship(wt, req, body, ship)
