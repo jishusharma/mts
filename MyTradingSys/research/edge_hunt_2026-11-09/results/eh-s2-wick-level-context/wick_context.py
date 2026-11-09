@@ -41,8 +41,8 @@ ORDER_LIVE = 4         # OURS
 MIN_R = 2.5            # OURS (POSTMORTEM s3 plan)
 BE_R = 1.0             # SOURCED in kind (Fabio fast break-even, fZlNGWvd2Ko:43-61)
 TIME_STOP = 96         # OURS
-SLIP_TAKER_BPS = 1.0   # PLAN s5: 1 bp slippage on taker legs (regime B)
-SLIP_RT_A_BPS = 2.0    # FORMULAS s13: 2 bps round-trip slippage (regime A)
+SLIP_TAKER_BPS = fees.SLIPPAGE_RT_S13 * 1e4 / 2   # PLAN s5: 1 bp slippage on taker legs (regime B); half of the s13 round trip, from fees.py
+SLIP_RT_A_BPS = fees.SLIPPAGE_RT_S13 * 1e4       # FORMULAS s13: 2 bps round-trip slippage (regime A), from fees.py
 PRIORITY = {"month": 0, "week": 1, "pivot": 2}
 
 SPLIT_END = {"DEV": splits.DEV_END, "VALIDATION": splits.VALIDATION_END}
