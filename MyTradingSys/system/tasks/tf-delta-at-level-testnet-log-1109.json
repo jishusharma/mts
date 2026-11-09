@@ -4,6 +4,18 @@
   "commands": [
     "python MyTradingSys/research/tom_fabio_course_correction_2026-11-07/level_delta_log.py --once --levels 75400 80900"
   ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-11-09T05:00:57Z",
+    "misses": 25,
+    "reads": [
+      "MyTradingSys/backtest/layers/fabio/orderflow_live.py",
+      "MyTradingSys/backtest/layers/fabio/orderflow_bars.py",
+      "MyTradingSys/research/auction_forward_2026-11-09/test_forward_log.py",
+      "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/census_fetch_mirror.py"
+    ],
+    "session": "agent-aafe3cb6977d219a1"
+  },
   "created": "2026-11-08T18:44:58Z",
   "depends_on": [],
   "done_when": "test_level_delta_log.py passes; one --once run appends >= 0 rows to LEVEL_DELTA_LOG.csv with columns ts,level,kind,side,session,delta_15m,delta_bar,cvd_chg (missing = empty); builder never starts a daemon",
