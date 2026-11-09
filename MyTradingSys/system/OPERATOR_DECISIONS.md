@@ -2159,3 +2159,15 @@ Answer (Lead C): the Gemini lane is the Antigravity CLI `agy` (C:\Users\E-nginee
 ## d-own-exchange-coinswitch-1109 (2026-11-09)
 Operator asked which Indian exchange for his own investment (sister already on CoinSwitch) and asked to read reviewers and agencies. Lead C read review sites, CoinGecko/CER ratings, PoR reports and FIU news: CoinSwitch main (PoR Mar 2026 surplus Rs 613 cr, no hack, 0 % maker / 0.1 % taker, same app as his sister); CoinDCX optional second account (more liquidity and futures; Jul 2025 USD 44M hack paid by the firm, withdrawal-restriction complaints); ZebPay and Mudrex publish no PoR. Long holds to his own wallet. Not personal financial advice.
 Follow-up 14:10Z: the laptop's Gemini had already run tom-swing-trendline-extract-1109 (74a61e353): video M7ompiwv5co found, YouTube captions 429, 6 h lockout on the shared home IP; a fetch from JIS-NB returned DEFERRED (same IP guard). So the blocker is the YouTube rate guard, not Gemini or the NUC. Retry after about 20:00Z with fetch_captions_timed.py --analyst Tom; the NUC queue skipped the card because the laptop holds its claim.
+
+## 2026-11-09 14:18Z Live Aid redesign demands (operator, before US open)
+Operator rejected today's Map/Now/US open/Money/News screens: 'nothing is intuitive', 'I do not like text, everything has to be graphical', 'classy, good quality'. Requirements:
+1. Map: no unexplained long red/green bars or abbreviations (WO, VAL, PDL, PWL, BE, KR, +2); every mark labelled in words or icon with hover; space used well.
+2. Session strip: show NOW marker labelled with time, US open marked and labelled, clock times on the axis; no bare arrows.
+3. Dial: say what 'SHORT 4 of 6' counts (which 6 signals) in pictures, not a row of grey/red bricks.
+4. Events: spell names (CPI = US inflation report) with time and expected impact.
+5. US open: draw candles (real colours) with the levels on them, not a text table.
+6. Money: OI + CVD aggregated from the BIG venues (Binance, OKX, CME, Bybit...), not Deribit/Bybit alone; one combined picture plus 'what this means for you'. Binance/OKX blocked from JIS-NB: find a reachable aggregate source.
+7. News: show the headline, its impact on BTC and its weight graphically; no clutter.
+8. Standing: one page, tabs, no scroll (entry above).
+Card live-aid-tabs-no-scroll-1109 widened to carry all of this.

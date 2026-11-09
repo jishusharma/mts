@@ -120,6 +120,16 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
+<nav id="tabs"><a href="#playbook">Map</a><a href="#now">Now</a><a href="#usopen">US open</a><a href="#money">Money</a><a href="#news">News</a><a href="#levels">Levels</a><a href="#momentum">Momentum</a><a href="#liq">Liquidations</a><a href="#intrade">In trade</a></nav>
+<style>
+#tabs{position:sticky;top:0;z-index:9;display:flex;gap:4px;padding:6px 0;background:#0d1117;border-bottom:1px solid #30363d;margin-bottom:8px}
+#tabs a{padding:6px 14px;border-radius:6px;color:#c9d1d9;text-decoration:none;font-weight:600;border:1px solid #30363d}
+#tabs a.on{background:#e3a72f;color:#0d1117;border-color:#e3a72f}
+html,body{height:100%;overflow:hidden}
+main{height:100vh;overflow:hidden;display:flex;flex-direction:column}
+main>section:not(.off){flex:1 1 auto;min-height:0;overflow:auto}
+main>#p-pos:not(.off){flex:0 0 auto}
+</style>
   <!-- 0. TIMEFRAME STRIP: one-glance scalp read (spot data); pure functions in tf_strip.js -->
   <section id="p-tfs">
     <div class="hd"><h2>Timeframe strip</h2><span class="src" title="Forming bar colour (green = close above open) with the last 3 closed bars; FLIP when the forming bar differs from the last closed bar (time since the bar opened); CVD = taker buy minus sell volume of the forming bar (kline field 9); Bollinger(20,2) position on closes including the forming bar (near = outer 20% of the band: OURS); time to close; the thin bar under the colour cells fills to the chance (random-walk maths on the bar's ATR14 scale) that the forming bar closes with the colour it has now. Levels: prior-day H/L/C and value area (50 USD bins, 70%, hlc3 volume: OURS), Asia 00-08Z and London 08-13Z H/L, day VWAP hlc3 from 00:00Z. A missing value reads a dash, never a guess. Refresh 15 s for 1m-15m, 60 s for the rest.">SPOT DATA</span><span class="tag" id="tfs-feed">spot data: data-api.binance.vision</span><span class="age" id="age-tfs">--</span></div>
@@ -1001,13 +1011,19 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
                 fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'] };
+  VIEWS.now = ['p-ov', 'Now'];
   S.view = '';
   function route() {
+    // operator 11-09: one page, no scroll, tab bar; landing tab = Map
+    if (!VIEWS[location.hash.replace(/^#/, '')]) { history.replaceState(null, '', '#playbook'); }
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
     S.view = vw ? v : '';
     document.body.classList.toggle('detail', !!vw);
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs a'), function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + v); });
     Array.prototype.forEach.call(document.querySelector('main').children, function (el) {
-      if (el.id === 'back') el.classList.toggle('off', !vw);
+      if (el.id === 'back') el.classList.add('off');
+      else if (el.id === 'tabs') el.classList.remove('off');
+      else if (el.id === 'p-pos' && v === 'intrade') el.classList.remove('off');
       else el.classList.toggle('off', !!vw && el.id !== id && !el.querySelector('#' + id));
     });
     Array.prototype.forEach.call(document.querySelectorAll('.cols > section'), function (el) { el.classList.toggle('off', !!vw && el.id !== id); });
