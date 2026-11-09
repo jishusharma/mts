@@ -58,7 +58,11 @@ MA_N = 14                 # RSI MA = SMA14 of RSI14 (READING.md header)
 STOP_BARS = 6             # OURS: swing incl. signal bar
 TARGET_R = 2.5            # TRIALS.md T06
 HOLD_BARS = 30            # OURS (counting the entry bar)
-COST_RT_BPS = 12.0        # regime A: 2 x 5 bps taker (fees.py) + 2 bps RT slippage (FORMULAS s13)
+# fees.py is the single source (B081): taker per side x2 in bps, plus 2 bps RT slippage (FORMULAS s13, OURS value)
+_FEES_SPEC = importlib.util.spec_from_file_location("fees_ro", Path(__file__).resolve().parents[4] / "backtest" / "fees.py")
+_fees = importlib.util.module_from_spec(_FEES_SPEC)
+_FEES_SPEC.loader.exec_module(_fees)
+COST_RT_BPS = 2 * _fees.BINANCE_TAKER * 1e4 + 2.0   # regime A round trip = 10 bps taker + 2 bps slippage = 12 bps
 M_HOLM = 15               # TRIALS.md
 Z_MDE = 2.8               # 80 % power, two-sided 5 %: 2.8 x SE
 
