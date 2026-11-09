@@ -12,7 +12,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 LS = HERE.parent.parent / "tools" / "live_aid" / "levelstory.js"
 CACHE = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "bars.json"
-DAYS, FEE = 180, 10.0
+sys.path.insert(0, str(HERE.parent.parent / "backtest"))
+from fees import BINANCE_TAKER  # noqa: E402  shared cost source (T06): 2 x taker = 0.10 % round trip
+DAYS = 180
+FEE_BP = 2 * BINANCE_TAKER * 1e4
 M15 = 900_000
 DAYMS = 86_400_000
 
@@ -80,7 +83,7 @@ def stats(evs):
             o[f"share{h}"] = round(p, 3)
             o[f"mean{h}"] = round(statistics.mean(v), 2)
             o[f"median{h}"] = round(statistics.median(v), 2)
-            o[f"net{h}"] = round(statistics.mean(v) - FEE, 2)
+            o[f"net{h}"] = round(statistics.mean(v) - FEE_BP, 2)
             o[f"n{h}"] = len(v)
     vs = [e["void"] for e in evs if e.get("void") is not None]
     if vs:
@@ -121,7 +124,7 @@ out = {"label": "DESCRIPTIVE, OURS thresholds as coded, no holdout, no trade cla
        "bars": len(bars), "window_days": DAYS,
        "first_bar_utc": time.strftime("%Y-%m-%d %H:%M", time.gmtime(bars[0][0] / 1000)),
        "last_bar_utc": time.strftime("%Y-%m-%d %H:%M", time.gmtime(bars[-1][0] / 1000)),
-       "level_bar_pairs_near": len(base), "signals": len(sig), "fee_bp": FEE}
+       "level_bar_pairs_near": len(base), "signals": len(sig), "fee_bp": FEE_BP}
 bl = {}
 for nm, flt in (("near_resistance_bars_dir_down", True), ("near_support_bars_dir_up", False)):
     for half, lab in ((None, "all"), (0, "h1_first90"), (1, "h2_last90")):

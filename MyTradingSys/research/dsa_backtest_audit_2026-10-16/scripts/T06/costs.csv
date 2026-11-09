@@ -232,3 +232,4 @@ MyTradingSys/research/edge_hunt_2026-11-09/results/eh-s2-wick-level-context/wick
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/sim_sequential.py,50,COST_R_4H,0.05,other,round_trip,n/a,synthetic sim mean fee_r in R (not a fee rate) in edge_hunt,0,assign,COST_R_4H = 0.05
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-response/confluence_score.py,315,fund_r,0.0,fraction,per_side,n/a,funding in edge_hunt,1,assign,fund_r = 0.0
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o2-phase-lens/phase_trials.py,42,COST_RT_A,2,fraction,round_trip,taker,fee in edge_hunt,1,assign,COST_RT_A = 2 * fees.DERIBIT_TAKER + fees.SLIPPAGE_RT_S13
+MyTradingSys/research/level_story_1110/study.py,18,FEE_BP,2,other,round_trip,taker,fee in level_story,1,assign,FEE_BP = 2 * BINANCE_TAKER * 1e4
