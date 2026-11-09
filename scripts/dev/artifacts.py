@@ -102,6 +102,21 @@ def put_stamp(text, now=None):
     return text[:m.start()] + b + text[m.start():] if m else b + text
 
 
+def write_stamped(path, text, now=None):
+    """Write a built page with its Updated stamp; when the content (stamp, DATA generated time, publish dates blanked) equals the file already
+    there, keep the file's stamp so a rebuild with no change leaves the tree clean (the minute alone dirtied it on every build)."""
+    path = Path(path)
+    new = put_stamp(text, now)
+    try:
+        old = path.read_text(encoding="utf-8")
+    except OSError:
+        old = None
+    if old is not None and content_hash(old) == content_hash(new):
+        return False
+    path.write_text(new, encoding="utf-8", newline=chr(10))
+    return True
+
+
 def publishers(reg):
     return list(reg.get("publishers") or [])
 
@@ -206,7 +221,7 @@ def cmd_list(reg):
 
 
 # build timestamp / head sha, clock-derived ages, and the registry publish dates the Control Room embeds: they change on every build or record, not content
-VOLATILE = re.compile(r'"(?:generated|commit|pub)":\s*"[^"]*"|"(?:[a-z_]*age_h|minutes)":\s*-?[0-9.]+')
+VOLATILE = re.compile(r'"(?:generated|commit|pub)":\s*"[^"]*"|"(?:[a-z_]*age_h|minutes)":\s*-?[0-9.]+|"behind":\s*(?:true|false)')
 
 
 def content_hash(text):
@@ -291,7 +306,7 @@ def cmd_build(reg):
             print("build", pg["slug"])
             subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True)
             f = REPO / pg["html"]
-            f.write_text(put_stamp(f.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
+            write_stamped(f, f.read_text(encoding="utf-8"))   # the generator already stamped; no-op unless it did not
 
 
 class AuditRow(namedtuple("AuditRow", ["page", "link", "target", "status"])):

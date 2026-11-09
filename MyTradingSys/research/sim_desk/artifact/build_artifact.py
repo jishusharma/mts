@@ -720,8 +720,11 @@ def main(argv=None):
     tests = collect(a.results)
     if not tests:
         raise ValueError("no result files in %s" % a.results)
-    with open(a.out, "w", encoding="utf-8", newline="\n") as f:
-        f.write(render(tests, load_catalogue(a.results)))
+    import importlib.util        # by path: scripts/dev on sys.path would shadow sim_desk's own desk module
+    spec = importlib.util.spec_from_file_location("mts_artifacts", os.path.join(HERE, "..", "..", "..", "..", "scripts", "dev", "artifacts.py"))
+    af = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(af)  # the Updated stamp (pages follow builds); unchanged content keeps the old stamp
+    af.write_stamped(a.out, render(tests, load_catalogue(a.results)))
     return a.out
 
 
