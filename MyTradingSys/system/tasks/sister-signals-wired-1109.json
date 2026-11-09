@@ -8,7 +8,7 @@
     "sister_signals.py computes 4 states from Binance spot daily/weekly closes (perp first via binance_doh, spot fallback): PHASE2_ON (2 daily closes in 72,000-75,000), TOP_UP (daily close < 72,000 or price 65,000-67,000), STOP (weekly close < 60,000 or low < 57,800), CONFIRMED (weekly close > 80,500).",
     "Thresholds live in sister_signals.json with source SISTER_NOTE_2026-11-07/09, labelled OURS; fixture tests: 11-07..11-09 closes give PHASE2_ON; a 71,900 daily close gives TOP_UP.",
     "A state flip raises one SISTER toast + live log line once per flip (restart-safe state file, fails closed on data errors); the 07:00Z Monday SESSION BRIEF shows a SISTER: line with the current state.",
-    "Every Monday 07:00Z (and on each flip) it writes a draft WhatsApp note to F:/MTS/sister/ outside the repo: live prices, limit ladder (alts A -2%/B -5%, BTC A -1%/B -2%), the if/then block; never reads or writes her holdings.",
+    "Every Monday 07:00Z and on each flip it writes two draft WhatsApp notes to F:/MTS/family_notes/ (outside the repo): sister (template SISTER_NOTE_2026-11-09: A/B ladder) and aunt (template AUNT_NOTE_2026-11-09: 3 parts, BTC 60/ETH 25/SOL 15, one -2% limit). Live prices filled in; the aunt's Part 2/3 triggers = TOP_UP/STOP states.",
     "Tests fail first on pre-change code, then pass; sync.py ship; deploy to the laptop live tree under d-dns-fix-deploy-standing-1109."
   ],
   "est_turns": 30,
@@ -51,7 +51,7 @@
     "Hook into the live loop brief and toast; ship."
   ],
   "tests": "MyTradingSys/execution/test_sister_signals.py",
-  "title": "Sister plan triggers evaluated by the live loop, alert + Monday draft note",
+  "title": "Family plan triggers (sister + aunt) in the live loop: alert + Monday draft notes",
   "weight": "",
   "worker": "session"
 }

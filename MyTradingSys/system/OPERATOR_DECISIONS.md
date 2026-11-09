@@ -2141,3 +2141,7 @@ Answer: note 4 "Phase 2 on" sent (SISTER_NOTE_2026-11-09.md, no holdings). The 1
 ## d-tom-swing-test-1109 (2026-11-09)
 Operator (Tom Vorwald EN 'Swing Trading for Beginners' notification): "Another example of how Tom says it's done but you cannot find any edge!!!! What's the update?"
 Answer: every Tom test so far was intraday auction/order flow (5m-1h); fees of 10 bps on 5-40 bps stops decide those (course correction 11-07, census 11-09: -0.11 R). His swing method (trend + trendline pullbacks, wide stops) was never tested: the trendline layer stopped at FIX-FIRST (AUDIT_2026-10-18). Card tom-swing-trendline-extract-1109 (Gemini, captions, verified quotes) -> PRE_REG for a BTC 4h/1d fee-net count.
+
+## d-aunt-plan-1109 (2026-11-09)
+Operator: "prepare another buying plan for Bitcoin and altcoins for my auntie ... she has never done this ... ready to take the risk of losing that money ... make a record of this so that we always send her the updated one."
+Answer: note 1 written (AUNT_NOTE_2026-11-09.md, name and amounts kept out of the repo): money in 3 equal parts (now; BTC 65-67k; BTC near 60k), BTC 60 / ETH 25 / SOL 15 only, CoinSwitch Limit 2% below, safety rules. Updates are wired: card sister-signals-wired-1109 now drafts both the sister and the aunt note every Monday and on each trigger flip.
