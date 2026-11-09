@@ -1,0 +1,1 @@
+{"t": "20261109T141639Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "B/NUC: fixed why the NUC missed asks: sessions opened OUTSIDE a clone had no signal hook. New: signal_user_hook.py adds a user-level hook (~/.claude/settings.json) and self-installs at your next sessi", "login": "B"}
