@@ -2133,3 +2133,7 @@ Answer: card sim-desk-edge-hunt-census-1109 adds every 11-09 study (census, T01-
 ## d-level-touch-alerts-1109 (2026-11-09)
 Operator: "on November 8th ... the price came down to 73,333 ... So the 73,000 target was already hit and you are sleeping ... you are not even aware ... You are not wired for anything."
 Answer: correct. analyst_levels.py marked 73.5k/73.3k 'open' (strict trade-through on spot; spot low 73,510 at 21:55Z) and nothing pushes touches or session prep to him. Card level-touch-alerts-session-brief-1109: tolerance + perp wicks, LEVEL TOUCH alerts and SESSION BRIEF (07:00Z, 13:30Z) from the running live loop, deployed under the standing deploy rule.
+
+## d-sister-signals-wired-1109 (2026-11-09)
+Operator: "prepare a note for my sister ... plan for this week, especially Monday, Tuesday, Wednesday, what to look for and when to buy what and how much ... all these things must be wired."
+Answer: note 4 "Phase 2 on" sent (SISTER_NOTE_2026-11-09.md, no holdings). The 11-07 note's triggers (Phase 2 on at 72-75k, top-up, stop, confirmed) lived only in a doc, so BTC entering the zone on 11-08 reached nobody. Card sister-signals-wired-1109 puts them in the live loop: flip toast, SISTER line in the Monday brief, weekly draft note to F:/MTS/sister/ (outside the repo). Launches after level-touch-alerts-session-brief-1109 ships; deploys under the standing rule.

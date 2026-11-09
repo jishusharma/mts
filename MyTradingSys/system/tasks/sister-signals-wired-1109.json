@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-09T08:03:12Z",
+  "depends_on": [],
+  "done_when": [
+    "sister_signals.py computes 4 states from Binance spot daily/weekly closes (perp first via binance_doh, spot fallback): PHASE2_ON (2 daily closes in 72,000-75,000), TOP_UP (daily close < 72,000 or price 65,000-67,000), STOP (weekly close < 60,000 or low < 57,800), CONFIRMED (weekly close > 80,500).",
+    "Thresholds live in sister_signals.json with source SISTER_NOTE_2026-11-07/09, labelled OURS; fixture tests: 11-07..11-09 closes give PHASE2_ON; a 71,900 daily close gives TOP_UP.",
+    "A state flip raises one SISTER toast + live log line once per flip (restart-safe state file, fails closed on data errors); the 07:00Z Monday SESSION BRIEF shows a SISTER: line with the current state.",
+    "Every Monday 07:00Z (and on each flip) it writes a draft WhatsApp note to F:/MTS/sister/ outside the repo: live prices, limit ladder (alts A -2%/B -5%, BTC A -1%/B -2%), the if/then block; never reads or writes her holdings.",
+    "Tests fail first on pre-change code, then pass; sync.py ship; deploy to the laptop live tree under d-dns-fix-deploy-standing-1109."
+  ],
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The sister plan triggers written in SISTER_NOTE_2026-11-07/09 (Phase 2 on, top-up, stop, confirmed) become code the live loop runs, so a trigger flip reaches the operator the same hour instead of waiting for his prompt.",
+  "id": "sister-signals-wired-1109",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Depends on level-touch-alerts-session-brief-1109 (SESSION BRIEF). Launch after it ships.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-09T08:03:35Z",
+  "refs": [
+    "MyTradingSys/research/cbp/SISTER_NOTE_2026-11-07.md",
+    "MyTradingSys/research/cbp/SISTER_NOTE_2026-11-09.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/execution/sister_signals.py, its config json, the SESSION BRIEF hook from level-touch-alerts-session-brief-1109, tests"
+  ],
+  "scope_out": [
+    "her holdings or any account data in the repo; orders; mainnet"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "operator chat 11-09"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read SISTER_NOTE_2026-11-07.md and 2026-11-09.md and the level-touch SESSION BRIEF code.",
+    "Write red tests, then sister_signals.py + json.",
+    "Hook into the live loop brief and toast; ship."
+  ],
+  "tests": "MyTradingSys/execution/test_sister_signals.py",
+  "title": "Sister plan triggers evaluated by the live loop, alert + Monday draft note",
+  "weight": "",
+  "worker": "session"
+}
