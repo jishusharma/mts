@@ -194,3 +194,8 @@ def test_stats_screen_and_verdict():
     assert pt.dev_screen({"n": 30, "mean": 0.1, "ci_lo": 0.01}) is True
     assert pt.verdict({"n": 100, "mean": -0.1, "ci_hi": 0.05, "mde": 0.2}, None) == "FAIL"
     assert pt.verdict({"n": 100, "mean": -0.1, "ci_hi": 0.25, "mde": 0.2}, None) == "INCONCLUSIVE"
+
+
+def test_daily_hlc_maps_loader_rows_for_phase_label():
+    rows = [(T0, 10.0, 12.0, 9.0, 11.0)]
+    assert pt.daily_hlc(rows) == [(T0, 12.0, 9.0, 11.0)]

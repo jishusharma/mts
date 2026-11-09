@@ -94,10 +94,19 @@ def _bottom_known(after_peak):
 
 
 def cycle_phase(t, daily, halvings=HALVINGS):
-    """Reference (from-scratch) cycle phase at time t, using only daily bars closed before the day of t."""
+    """Reference (from-scratch, O(n^2)) cycle phase at time t, using only daily bars closed before the day of t.
+    ACCUMULATION is sticky until the next halving (PRE_REG rule 3: "known bottom -> ACCUMULATION until Hn"), so a new
+    high after a confirmed bottom (2024-03) does not reopen BEAR."""
     D = _day_floor(t)
     H, _ = _halving_ctx(D, halvings)
-    days = _closed_since(daily, H, D)
+    since = _closed_since(daily, H, D)
+    for Dp in range(H, D + 1, DAY_MS):
+        if _raw_phase(Dp, H, [b for b in since if b[0] < Dp]) == "ACCUMULATION":
+            return "ACCUMULATION"
+    return _raw_phase(D, H, since)
+
+
+def _raw_phase(D, H, days):
     dH = (D - H) // DAY_MS
     pk = _peak_of(days)
     known = pk is not None and (D - pk[0]) >= PEAK_KNOWN_D * DAY_MS
@@ -125,13 +134,14 @@ def daily_phase_series(daily, halvings=HALVINGS, start=None, end=None):
     out_t, out_p = [], []
     j = 0  # next daily bar index not yet absorbed
     H = None
+    acc = False        # sticky ACCUMULATION until the next halving
     pk = None          # (t_open, high)
     m = None           # running min low after the peak
     bknown = False
     for D in range(d0, d1 + 1, DAY_MS):
         h, _ = _halving_ctx(D, halvings)
         if h != H:
-            H, pk, m, bknown = h, None, None, False
+            H, pk, m, bknown, acc = h, None, None, False, False
             while j < len(daily) and daily[j][0] < H:
                 j += 1
         while j < len(daily) and daily[j][0] < D:
@@ -157,6 +167,10 @@ def daily_phase_series(daily, halvings=HALVINGS, start=None, end=None):
         else:
             d = (D - pk[0]) // DAY_MS
             ph = "BEAR" if d < BOTTOM_WIN_LO else ("BOTTOM_WINDOW" if d <= BOTTOM_WIN_HI else "TRANSITION")
+        if ph == "ACCUMULATION":
+            acc = True
+        if acc:
+            ph = "ACCUMULATION"
         out_t.append(D)
         out_p.append(ph)
     return out_t, out_p

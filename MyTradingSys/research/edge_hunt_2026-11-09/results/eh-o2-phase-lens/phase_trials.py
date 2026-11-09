@@ -258,13 +258,20 @@ def load_all(end):
     d["btc_1h_fut"] = load_klines(os.path.join(CACHE, "fut", "klines"), "BTCUSDT", "1h", end)
     d["fund_btc"] = load_funding(os.path.join(CACHE, "fut", "fundingRate"), "BTCUSDT", end)
     d["fund_eth"] = load_funding(os.path.join(CACHE, "fut", "fundingRate"), "ETHUSDT", end)
+    d["btc_hlc"] = daily_hlc(d["btc_1d"])
+    d["eth_hlc"] = daily_hlc(d["eth_1d"])
     return d
+
+
+def daily_hlc(bars):
+    """Loader rows (t, o, h, l, c) -> phase_label rows (t, h, l, c)."""
+    return [(b[0], b[2], b[3], b[4]) for b in bars]
 
 
 def build_trades(d, lo, hi, with_returns=True):
     """All T14 and T15 events with entry time in [lo, hi), labelled with PHASE_LABEL at the entry time."""
-    btc_lab = pl.PhaseLabeler(d["btc_1d"])
-    eth_lab = pl.PhaseLabeler(d["btc_1d"], weekly_daily=d["eth_1d"])
+    btc_lab = pl.PhaseLabeler(d["btc_hlc"])
+    eth_lab = pl.PhaseLabeler(d["btc_hlc"], weekly_daily=d["eth_hlc"])
     trades, dropped = [], defaultdict(int)
     # T14
     bars = d["btc_1h_fut"]
@@ -323,8 +330,8 @@ def full_stats(rows):
 
 
 def regime_mix(d, lo, hi):
-    daily = d["btc_1d"]
-    dt = ([b[0] + DAY for b in daily], [b[4] for b in daily])
+    daily = d["btc_hlc"]
+    dt = ([b[0] + DAY for b in daily], [b[3] for b in daily])
     w = pl.weekly_rsi(daily)
     m = pl.monthly_rsi(daily)
     weeks = []
@@ -336,7 +343,7 @@ def regime_mix(d, lo, hi):
 
 
 def phase_calendar(d, lo, hi):
-    lab = pl.PhaseLabeler(d["btc_1d"])
+    lab = pl.PhaseLabeler(d["btc_hlc"])
     rows = []
     t = pl._week_start(lo) + pl.WEEK_MS
     while t < hi:

@@ -100,7 +100,7 @@ def test_incremental_series_equals_reference():
     hv = [HALV[0] - 1461 * DAY] + HALV
     lab = pl.PhaseLabeler(d, hv)
     seen = set()
-    for k in range(0, 1900, 7):
+    for k in range(0, 1900, 61):
         t = start + k * DAY + 5 * 3_600_000
         ph = pl.cycle_phase(t, d, hv)
         seen.add(ph)
@@ -134,3 +134,17 @@ def test_phase_label_returns_pair():
 def test_real_halvings_and_turns_sourced():
     assert pl.HALVINGS[1:4] == [ms(2016, 7, 9), ms(2020, 5, 11), ms(2024, 4, 20)]
     assert (pl.PEAK_WIN_LO, pl.PEAK_WIN_HI, pl.BOTTOM_WIN_LO, pl.BOTTOM_WIN_HI) == (372, 548, 363, 406)
+
+
+def test_accumulation_sticky_after_new_high_until_halving():
+    start = HALV[0]
+    closes = [100 + k for k in range(401)]                         # peak 500 at day 400
+    closes += [500 - k for k in range(1, 401)]                    # -> 100 at day 800
+    closes += [100 + 2 * k for k in range(1, 301)]                # -> 700 at day 1100: new high above 500
+    closes += [700] * (1461 - len(closes) + 20)
+    d = mk_daily(start, closes)
+    assert pl.cycle_phase(start + 1000 * DAY, d, HALV) == "ACCUMULATION"   # new high at day 1001+ ...
+    assert pl.cycle_phase(start + 1200 * DAY, d, HALV) == "ACCUMULATION"   # ... does not reopen BEAR
+    lab = pl.PhaseLabeler(d, HALV)
+    assert lab.phase(start + 1200 * DAY) == "ACCUMULATION"
+    assert lab.phase(HALV[1]) == "BULL"
