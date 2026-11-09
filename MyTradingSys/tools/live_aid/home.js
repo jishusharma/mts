@@ -71,7 +71,7 @@
   // ---------- drawing ----------
   function chart(ctx, md, W, H) {
     var rows = (ctx.rows5 || []).slice(-144);
-    if (rows.length < 5 || !(md.px > 0)) return '<div class="hm-nid">Candles loading...</div>';
+    if (rows.length < 5 || !(md.px > 0)) return '<div class="hm-nid">Candles NOT_IN_DATA (no feed yet)</div>';
     var hi = -Infinity, lo = Infinity;
     rows.forEach(function (r) { hi = Math.max(hi, +r[2]); lo = Math.min(lo, +r[3]); });
     var a = md.lad.above[0], b = md.lad.below[0];
@@ -185,7 +185,7 @@
     if (!el) return;
     var md = model(ctx), fl = flashes(ctx, md);
     var box = el.getBoundingClientRect(), W = Math.max(600, Math.round(box.width * 0.70)), H = Math.max(360, Math.round(box.height - 8));
-    var head = '<div class="hm-top"><b class="hm-px">' + n0(md.px) + '</b>' +
+    var head = '<div class="hm-top"><b class="hm-px">' + (md.px > 0 ? n0(md.px) : 'Price NOT_IN_DATA') + '</b>' +
       (md.lad.above[0] ? '<span class="hm-nx down">▲ ' + n0(md.lad.above[0].price) + ' <small>' + esc(md.lad.above[0].name) + ', ' + ((md.lad.above[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (md.lad.below[0] ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
