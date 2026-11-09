@@ -36,7 +36,7 @@
   "state": "dropped",
   "steps": [],
   "tests": "",
-  "title": "Testnet-forward: build_auction_trade_plan as CONTEXT in the signal path for 2 setups (failed-auction reclaim at HTF level; VA acceptance continuation), scenario_ledger rows for the 77% acceptance claim, run until it fails",
+  "title": "Testnet-forward: build_auction_trade_plan as CONTEXT in the signal path for 2 setups (failed-auction reclaim at HTF level; VA acceptance continuation), scenario_ledger rows for accept80 Event A (77% = same-day half-VA-width drift, descriptive, no fees; not a win rate), run until it fails",
   "weight": "",
   "worker": ""
 }
