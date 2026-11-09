@@ -43,3 +43,10 @@ Expected (hindsight check, not used by the label): peak 2017-12-17 known 2018-12
 - DECISION (OURS): costs regime A = 2 x fees.DERIBIT_TAKER + fees.SLIPPAGE_RT_S13 (12 bps RT) on entry notional; fee_r = cost / stop fraction; funding R = side_sign x sum(rate over records in (t_in, t_out]) / stop fraction (FORMULAS.md:354-358). The futures fundingRate archive exists from 2020-01 (2019-09..12 files 404), so funding is 0 before 2020-01; T14 futures 1h data also starts 2020-01 (2019 monthly files 404).
 - Splits: DEV = data start .. 2024-06-30; VALIDATION 2024-07-01 .. 2025-06-30 read once only if the DEV screen passes; HOLDOUT never loaded (loader refuses end > 2025-07-01, test shows it).
 - Statistics: DEV screen n >= 30, mean net R > 0, 95 % CI lower > 0; SE = research_kit.cluster_mean_se; MDE = 2.8 x SE; verdict rules PLAN.md s5 / brief.
+
+## Amendment 1 (written while coding the tests, still before any return or count)
+- DECISION (OURS): T14 breach bar = the first bar of an excursion: close[i-1] inside the prior-day range (L <= close <= H) as well as close[i-12]; without it every bar of one excursion would be a new breach and the 3-bar reclaim window would slide.
+- DECISION (OURS): the prior UTC day must have >= 20 hourly bars to define its high/low.
+- DECISION (OURS): phase_calendar.csv covers DEV weeks only (2017-08-21 .. 2024-06-24); VALIDATION prices are read only if a trial passes the DEV screen.
+- DECISION (OURS): the VALIDATION Holm test at m = 15 uses the conservative first-step bound min(1, 15 p) because the other trials p-values are not available to this worker; a pass under this bound is a pass under Holm.
+- DECISION (OURS): an event whose exit needs bars past the split end is dropped and counted; T15 events with stop >= entry are dropped and counted.
