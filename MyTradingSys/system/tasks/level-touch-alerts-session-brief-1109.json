@@ -6,7 +6,8 @@
   "depends_on": [],
   "done_when": [
     "analyst_levels.py marks a level HIT when a wick comes within a touch tolerance of 0.05 % (OURS, one constant) since publication; uses Binance USDT-M perp 1m/1h via binance_doh with spot fallback and prints which source; the 11-08 case (level 73,500, spot low 73,510) is HIT in a fixture test",
-    "The live alert loop emits LEVEL TOUCH (symbol, level, who named it, side, price, UTC) once per level per UTC day when a perp 1m wick enters the tolerance of any open analyst level, prior-day high/low, VAH/VAL or week open; it reaches Live Aid as a toast and the existing alert log; restart does not re-fire the same touch (state file test); an API error writes one degraded line and fires nothing (fail closed)",
+    "The live alert loop emits LEVEL TOUCH (symbol, level, who named it, side, price, UTC) once per level per UTC day when a perp 1m wick enters the tolerance of an open analyst level, prior-day high/low, VAH/VAL or week open",
+    "LEVEL TOUCH reaches Live Aid as a toast and the alert log; a restart does not re-fire the same touch (state-file test); an API error writes one degraded line and fires nothing (fail closed)",
     "The live loop emits a SESSION BRIEF at 07:00Z (Europe) and 13:30Z (US open), once per day each: price vs the nearest 2 zones above and below (deduped), which levels were touched since the last brief, the next event, and today's playbook scenario ids; it lands in Live Aid and the alert log",
     "Tests fail on pre-change code, then pass; run_all_tests --quick green; shipped; deploy to the live tree under the standing deploy rule once CI is green, with the restart map step named in the Result"
   ],
