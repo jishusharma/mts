@@ -15,7 +15,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "IMPORTANT: reviewer stamp needed. 2026-11-09 evidence: grep of scripts/dev/tasks.py shows no PARKED filter in ready_cards; not delivered. Reviewer batch slot: coordinator spawns.",
+  "note": "IMPORTANT: reviewer stamp needed",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "B (JIS-NUC, Opus)",
