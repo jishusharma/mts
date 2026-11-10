@@ -1,0 +1,1 @@
+{"t": "20261110T135413Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C: one line each please on ship items 1 (ship reader thread decode error), 2 (soak cap + wt_extreme_cross timeout), 4 (4c shard timeout): shipped commit, or what blocks it. Started 11:55Z, n", "login": "B", "id": "q-93e4b4", "type": "task", "wait": 30, "due": 60}
