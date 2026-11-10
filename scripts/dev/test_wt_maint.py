@@ -20,22 +20,46 @@ def g(cwd, *a):
     return r.stdout.strip()
 
 
+_TEMPLATE = {}
+
+
+def _template():
+    """Build the bare origin + primary clone once per run; each test copies it (a fresh repo per test, ~0.1 s instead of ~0.6 s)."""
+    if "dir" not in _TEMPLATE:
+        t = Path(tempfile.mkdtemp())
+        origin = t / "origin.git"
+        subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True)
+        g(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
+        prim = t / "primary"
+        subprocess.run(["git", "clone", "-q", str(origin), str(prim)], check=True, capture_output=True)
+        for k, v in (("user.email", "t@t"), ("user.name", "t")):
+            g(prim, "config", k, v)
+        g(prim, "checkout", "-q", "-b", "fast-track")
+        (prim / "a.txt").write_text("a")
+        g(prim, "add", ".")
+        g(prim, "commit", "-qm", "init")
+        g(prim, "push", "-q", "origin", "fast-track")
+        _TEMPLATE["dir"] = t
+    return _TEMPLATE["dir"]
+
+
+def tearDownModule():
+    import shutil
+    if "dir" in _TEMPLATE:
+        shutil.rmtree(_TEMPLATE.pop("dir"), ignore_errors=True)
+
+
 class Env(unittest.TestCase):
     def setUp(self):
+        import shutil
         self.tmp = tempfile.mkdtemp()
         t = Path(self.tmp)
+        src = _template()
         self.origin = t / "origin.git"
-        subprocess.run(["git", "init", "-q", "--bare", str(self.origin)], check=True)
-        g(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
         self.prim = t / "primary"
-        subprocess.run(["git", "clone", "-q", str(self.origin), str(self.prim)], check=True, capture_output=True)
-        for k, v in (("user.email", "t@t"), ("user.name", "t")):
-            g(self.prim, "config", k, v)
-        g(self.prim, "checkout", "-q", "-b", "fast-track")
-        (self.prim / "a.txt").write_text("a")
-        g(self.prim, "add", ".")
-        g(self.prim, "commit", "-qm", "init")
-        g(self.prim, "push", "-q", "origin", "fast-track")
+        shutil.copytree(src / "origin.git", self.origin)
+        shutil.copytree(src / "primary", self.prim)
+        g(self.prim, "remote", "set-url", "origin", str(self.origin))   # the copy must push to its own origin, not the template's
         self.t = t
 
     def tearDown(self):
