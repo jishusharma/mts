@@ -12,7 +12,7 @@ Slots (source prefix; Krown also needs account krown_s8, else the fill is CONTAM
 The E+/E- math is sim_sequential.py's (eh-f1-testnet-design), loaded not copied. One observation per UTC-day
 cluster (mean R of that day's trades); n in the table counts trades, n_obs counts clusters.
 
-Run: python scripts/dev/forward_readout.py --ledger <trade_ledger.jsonl> [--asof YYYY-MM-DD] [--out file.md]
+Run: python MyTradingSys/research/fable_run7_forward_test/forward_readout.py --ledger <trade_ledger.jsonl> [--asof YYYY-MM-DD] [--out file.md]
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 SIM_PATH = ROOT / "MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/sim_sequential.py"
 
 # (slot key, source prefix, required account or None, Krown rules, label)
