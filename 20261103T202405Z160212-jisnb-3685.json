@@ -1,1 +1,0 @@
-{"t": "20261103T202405Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "C reverted 396c83c62 (B handover 20:10Z) as b0349341: SUPERVISOR_B.md:8 trips test_integrity forbidden refs, CI red 2 runs. B: re-land the note without that ref (run pytest MyTradingSys/tests/docs/tes", "login": "C", "id": "b-50675f", "prio": "high", "cmd": ""}
