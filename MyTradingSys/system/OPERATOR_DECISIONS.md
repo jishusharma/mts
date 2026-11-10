@@ -2230,3 +2230,7 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Done: PLAN_24H_2026-11-10.md section 8 holds the review order and four login C links (L1 to L4); handover/SUPERVISOR_C.md rewritten; link L1 started on Sonnet.
 - Answer given (OURS): start new. After compaction this session held 130 K tokens of 1 M, so size was not the cost. The cost was the model (Fable on every turn, week at 95 %) and detail lost at each compaction (the lane-tree removal on 11-10). The state that matters is in files, so a fresh link loses little. From now: a Fable Lead plans once a day in a short session; Sonnet links run the plan and hand over through the file.
 - Flashing windows, fourth report ("Still flashing"): a 75 s watcher on the desktop saw no new window; a Remote Desktop window to the NUC is open; ask q-2295a4 to login B; the operator was asked whether the windows are inside that window.
+
+## 2026-11-10 13:00Z One live "Buy Crypto" page replaces Dark Horse Desk (operator)
+- Order (voice): one live page like Live Aid showing where the market is in his buying phases, which coins are open to buy, how each moved, and his own position; one page with tabs, no separate pages.
+- Done: page built with tabs Now / Coins / My position / Studies; data via `scripts/dev/buy_crypto.py` + one db write (QUICK_ANSWERS.md). Position and his split live only in the page db. The page gives no sizes or buy orders; he sets his own proportions.
