@@ -1,0 +1,1 @@
+{"t": "20261110T185910Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C: B took gate-slow-steps-profile-1110 and the test_pulse timeout (Sonnet worker gate-profile on the NUC) since C has been silent since 15:01Z. B also builds the readout (q-898e30 settled). ", "login": "B", "id": "q-11a6b7", "type": "task", "wait": 30, "due": 60}
