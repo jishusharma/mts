@@ -80,6 +80,14 @@ class Select(unittest.TestCase):
             self.assertEqual(gs.must_extras([f], [led, "scripts/dev/test_other.py"]), [led], f)
             self.assertEqual(self.sel(f)[0], "smoke", f)
 
+    def test_gap_docs_test_helper_runs_the_preship_test_that_copies_it(self):
+        # 42d8b197a: test_integrity.py began importing a new docs helper (doc_drift.py); test_preship copies the cap test into a scratch
+        # repo by path, not by import, so the fast gate never picked it; CI red 42892614113, revert 288b5d93d
+        pre = "scripts/dev/test_preship.py"
+        for f in ("MyTradingSys/tests/docs/doc_drift.py", "MyTradingSys/tests/docs/test_integrity.py"):
+            self.assertEqual(gs.must_extras([f], [pre, "scripts/dev/test_other.py"]), [pre], f)
+        self.assertEqual(gs.must_extras(["MyTradingSys/system/X.md"], [pre]), [])
+
     def test_smoke_runs_the_task_card_lint_only_when_a_card_is_in_the_diff(self):
         self.assertNotIn("3tl", self.sel("scripts/dev/dsa.py")[1])
         self.assertIn("3tl", self.sel("scripts/dev/dsa.py", "MyTradingSys/system/tasks/x.json")[1])

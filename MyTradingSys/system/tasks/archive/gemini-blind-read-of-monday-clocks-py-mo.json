@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-10T20:39:01Z",
   "commands": [],
   "created": "2026-11-08T19:40:04Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-of-monday-clocks-py-m",
+      "ref": "663e6cca1",
+      "utc": "2026-11-10T20:39:01Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: monday_clocks no longer caches the open 1h bar (test fails before, passes after); ",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed, report committed",
   "note": "Feeder card from monday-open-playbook-1109 (ANNOUNCEMENTS A-20261104-1). Known limit: a 1h bar touching both levels is not split.",
   "prio": 3,
   "refine_tries": 0,
@@ -34,7 +42,12 @@
     "monday-open-playbook-1109",
     "A-20261104-1 feeder rule"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-of-monday-clocks-py-mo.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/monday_open_2026-11-09/monday_clocks.py",
     "reads: MyTradingSys/research/btc_cycles_2026-11/btc_daily.csv"
@@ -47,12 +60,13 @@
   "scope_sha": "e8ad8024ce0f",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read monday_clocks.py cold",
     "check part1 month windows, part3 Monday and ref windows, class thresholds, lead() W/F logic",
     "write findings into the card result"
   ],
+  "taken": "2026-11-10T20:39:01Z",
   "tests": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_scenario_ledger.py",
   "title": "[GEMINI] blind read of monday_clocks.py (Monday open 11-09)",
   "weight": "",
