@@ -115,8 +115,11 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         # operator 2026-11-09 17Z: liquidations on 1m 2m 3m 5m 7m 10m 15m 30m 1h 2h 4h; indicator grid on the same 11 timeframes
         wins = page.eval_on_selector_all("#p-home .hm-lc b", "bs => bs.map(b => b.innerText)")
         assert wins == ["1m", "2m", "3m", "5m", "7m", "10m", "15m", "30m", "1h", "2h", "4h"], wins
-        tfs = page.eval_on_selector_all("#p-home .hm-pr:not(.hm-ph) > b", "bs => bs.map(b => b.innerText)")
-        assert tfs == wins, tfs
+        # operator 2026-11-10: the 11-row indicator grid is replaced by "What the indicators say": 6 indicators x 15m 1h 4h
+        assert page.eval_on_selector_all("#p-home .hm-pr", "rs => rs.length") == 0
+        assert page.eval_on_selector_all("#p-home .hm-ih span b", "bs => bs.map(b => b.innerText)") == ["15m", "1h", "4h"]
+        names = page.eval_on_selector_all("#p-home .hm-ir:not(.hm-ih):not(.hm-it) > b", "bs => bs.map(b => b.innerText)")
+        assert names == ["Volume flow", "Squeeze", "Trend ADX", "WaveTrend", "RSI", "Buy vs sell"], names
         # operator 2026-11-10: session names overprinted at the chart's left edge; no two session labels may overlap
         boxes = page.eval_on_selector_all("#p-home .hm-sest", "ts => ts.map(t => { const b = t.getBoundingClientRect(); return [b.left, b.right]; })")
         boxes.sort()

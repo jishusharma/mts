@@ -34,12 +34,11 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
 - Repo is PUBLIC: never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private at mainnet or the first fee-net OOS pass, whichever first (q-go-private-on-edge).
 - Live tree (`.mts_live`) changes only by a manual/coordinator deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT or open trades, bar operator-called testnet (cotrade.py).
-- Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed (more: MOVED_RULES.md).
+- Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed (more, Windows file rules: MOVED_RULES.md).
 - Layers and numbers: no fixed core, fee-net out-of-sample results decide what trades; label each parameter SOURCED or OURS, never call OURS the trader's (MOVED_RULES.md).
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse, then count.
 - Noticed gaps: non-Agent sessions file a raw card the same turn; Agents end with `Noticed:`; chat decisions go to OPERATOR_DECISIONS.md (WORKERS.md rule 11).
-- Windows: files with `newline='\n'`; long patches in a .py script; the Bash tool strips backslashes, use Write/Edit; Write decodes backslash-u: use `chr()`.
-- Never use `.git/info/exclude`: ignores go in `.gitignore`.
+- Chrome: only profile "Browser 2" (`select_browser` first), never the operator's main "Browser 1".
 
 ## Where to look (`MyTradingSys/system/`)
 | Need | Read |

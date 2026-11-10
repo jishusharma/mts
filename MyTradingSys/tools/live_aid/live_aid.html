@@ -120,7 +120,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
-<nav id="tabs"><a href="#home">Home</a><a href="#playbook">Map</a><a href="#now">Now</a><a href="#usopen">US open</a><a href="#money">Money</a><a href="#news">News</a><a href="#levels">Levels</a><a href="#momentum">Momentum</a><a href="#liq">Liquidations</a><a href="#intrade">In trade</a></nav>
+<nav id="tabs"><a href="#home">Home</a><a href="#money">Money</a><a href="#news">News</a><a href="#usopen">US open</a><a href="#intrade">In trade</a><a href="#now" title="Every reading in one table; click a row for its page (Map, Levels, Momentum, Liquidations, Funding, Macro, Coil)">All readings</a></nav>
 <div id="flash"></div>
 <section id="p-home"></section>
 <style>
@@ -383,6 +383,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="map.js"></script>
 <script src="home.js"></script>
 <script src="pulse.js"></script>
+<script src="indread.js"></script>
 <script src="levelstory.js"></script>
 <script src="playbook.js"></script>
 <script>
@@ -1044,11 +1045,12 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var PU = window.LAPULSE, pkey = (TF.t['1m'] || 0) + '|' + (TF.t['30m'] || 0);   // Binance spot klines (tf strip loader); recompute only on a new fetch
     if (PU && pkey !== PULSE.key) {
       PULSE.key = pkey; try { PULSE.g = PU.grid(TF.k); } catch (e) { PULSE.g = null; }
-      PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60); } catch (e) { PULSE.lanes[tf] = null; } });
+      try { PULSE.ind = window.LAIND ? window.LAIND.table(TF.k, now) : null; } catch (e) { PULSE.ind = null; }
+      PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60, now); } catch (e) { PULSE.lanes[tf] = null; } });
     }
     var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
     if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
-    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], liq: liq, money: S.moneyHead || null, news: news,
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], liq: liq, money: S.moneyHead || null, news: news,
       ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 
@@ -1564,7 +1566,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   function loadTfs(tfs) {
     if (typeof TFSTRIP === 'undefined') { TF.err.all = 'tf_strip.js not found next to this page'; return Promise.resolve(); }
     return Promise.all(tfs.map(function (tf) {
-      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=' + (tf === '1m' ? 1000 : 150)).then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
+      return getJson(TFSTRIP.BASE + '&interval=' + tf + '&limit=' + (tf === '1m' ? 1000 : 300)).then(function (r) { TF.k[tf] = r; TF.t[tf] = Date.now(); delete TF.err[tf]; },
         function (e) { TF.err[tf] = msg(e); });
     }));
   }

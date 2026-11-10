@@ -1,5 +1,5 @@
 # GPT guide for CBP work (Lead, 2026-10-27)
-Sources read this turn: research/cbp/CBP_STATUS_2026-10-25.md, v1_plan_2026-10-20/D5_CBP_MODULE.md, system/ROUTING.md:41-43, system/CODEX_START.md.
+Sources read this turn: research/cbp/archive/CBP_STATUS_2026-10-25.md, v1_plan_2026-10-20/D5_CBP_MODULE.md, system/ROUTING.md:41-43, system/CODEX_START.md.
 
 ## What CBP is now
 CBP (Crypto Bike Plan) fetches analyst videos, extracts claims with one quote each, stores rows in `cbp_store/rows.json` (CBP repo `F:/CryptoScrapper`, JIS-NB disk). MTS runs it (`scripts/dev/cbp_run.py --due|--force`) and layers read it with `cbp.query(analyst, symbol, since_days=5)`. The queue, consumer and adapter are deleted. Rows are claims, not signals; nothing trades before gate 5 (B139 backtest promotion).

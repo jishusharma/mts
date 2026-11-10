@@ -19,3 +19,11 @@ then continue with done_when steps 2-4 (extract + verify_extract_quotes.py, map 
 - Next retry: at or after 2026-11-10T13:54:09Z on this host, or now on a machine whose `--status` shows clear. Same command as above; then done_when steps 2-4.
 
 DECISION (OURS): stop at the guard, record the new retry time, ship NOT_IN_DATA only.
+
+## Retry 2026-11-10 (tom-swing-A-20261110): HTTP 429 again, stopped
+
+- `--status` said NOT BLOCKED (level 2, budget 0/40). One request for `M7ompiwv5co` via the guard wrapper returned HTTP 429 (BLOCKED). Stopped at once: no second request, no proxy, VPN or other path.
+- The guard lockout is now re-armed (see `--status`; level should rise to 3 = 72 h, OURS). No extract, mapping or PRE_REG written (nothing SOURCED).
+- Next retry: only after `--status` clears, preferably from a machine/IP that is not YouTube-throttled; same command as above.
+
+DECISION (OURS): honour the 429, record it, ship NOT_IN_DATA only.

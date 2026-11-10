@@ -2202,6 +2202,10 @@ Done: ROUTING.md section "Gemini access: one rule" is now the single source; HOW
 Measured gaps: desktop -> NUC works (SSH gate status ok 22Z); laptop has no sshd, so no other machine can start laptop Gemini; agy CLI on the laptop UNVERIFIED (broadcast asks login A to check); second Gemini account not signed in on either host.
 Operator-only steps (system setting / sign-in, never a session): enable sshd on the laptop (LENOVO_SETUP.md line 29 command); sign the other Gemini account into agy on each host.
 
+## 2026-11-10 07Z Live Aid: Home is the one screen; indicator insight, fewer tabs (operator)
+Operator: while trading he reads only Home and cannot click tabs; he wants value, not clutter; volume he sees on his own chart, he wants what the Volume Flow indicator and his other TradingView favourites say; he does not know how to use the Map now that Home exists.
+Done (defaults taken, no question asked): Home card "What the indicators say" (Volume Flow, Squeeze Momentum, ADX/DI, WaveTrend, RSI, buy vs sell on 15m / 1h / 4h closed bars, up to 3 plain sentences) replaces the 11-row grid (tools/live_aid/indread.js; formulas FORMULAS 30-32, sentence rules OURS, not backtested). Tab bar cut from 10 to 6: Home, Money, News, US open, In trade, All readings; Map, Levels, Momentum and Liquidations repeat Home and open from the rows of All readings. One idea banner at a time, for the nearest level.
+
 ## 2026-11-10 06Z Login C: spend the rest of the week before the reset (operator)
 Operator: "You will reset tonight - so we need to use you completely just before the reset so that we do not get stuck! So plan for it!"
 Measured 06:41Z (get_usage): weekly all models 87%, weekly Fable 83%, 5h window 6% (resets 10:10Z); weekly reset 2026-11-10T20:00Z (01:30 IST 11-11).
@@ -2240,3 +2244,16 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 ## 2026-11-10 13:00Z One live "Buy Crypto" page replaces Dark Horse Desk (operator)
 - Order (voice): one live page like Live Aid showing where the market is in his buying phases, which coins are open to buy, how each moved, and his own position; one page with tabs, no separate pages.
 - Done: page built with tabs Now / Coins / My position / Studies; data via `scripts/dev/buy_crypto.py` + one db write (QUICK_ANSWERS.md). Position and his split live only in the page db. The page gives no sizes or buy orders; he sets his own proportions.
+
+## 2026-11-10 14Z Clean up CBP (operator: "remove/archive/cleanup/update CBP")
+- Done: 11 superseded files in research/cbp moved to research/cbp/archive/ (status 10-25/10-27, audit 10-28, ingestion wiring, alt buy plan 10-31, alt update 11-07, sister notes 11-03/11-04, GPT gate trial and quote review); full-path references rewritten; research/cbp/README.md lists what is current, with the 11-10 altcoin session's 50/30/20 bucket split as a template (OURS, not advice).
+- Kept in place: files read by tests or live cards (SCORECARD_GPT, GPT_CBP_GUIDE, SISTER_NOTE 11-07 for sister_signals.json).
+- Stale tree mts-jis-nb-lead-c-reval-1106-2 removed: its 3 commits' content is on trunk; its two dirty files saved in the scratchpad first.
+
+## 2026-11-10 14Z BTC 74,527 and 71,795 are lines, not orders (operator)
+- Words: "these are just lines - not orders - i do not trade on Binance."
+- Meaning: replies and the Buy Crypto page call 74,527.40 and 71,795.36 his price lines, never an order or a Binance position; the BTC price shown is a USD reference only. Page relabel asked of its session (local_2ae61a41).
+
+## 2026-11-10 14:05Z Every session: Chrome "Browser 2" only, never his main profile (operator, angry)
+- Words: "tell every session to use the other chrome profile not this one!!!!!!!" with a screenshot of "Claude started debugging this browser" on his CoinGlass trading tabs (Browser 1).
+- Done: told the 5 open sessions on JIS-NB (buy-crypto-page, live-aid-coach, sup-c-l1, sim-guide, tf-real-frame); Eagle_Eyes did not take the message. CLAUDE.md hard rule added; fleet broadcast sent.

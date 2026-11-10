@@ -4,7 +4,7 @@
   "closed": "2026-10-30T21:25:34Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Rekt --channel @RektCapital --latest 5 --out MyTradingSys/research/cbp/transcripts_2026-10-31",
-    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md"
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/archive/ALT_BUY_PLAN_2026-10-31.md"
   ],
   "created": "2026-10-30T18:52:40Z",
   "depends_on": [],
@@ -43,7 +43,7 @@
     }
   },
   "scope_in": [
-    "MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md (new), transcripts under research/cbp/transcripts_2026-10-31/"
+    "MyTradingSys/research/cbp/archive/ALT_BUY_PLAN_2026-10-31.md (new), transcripts under research/cbp/transcripts_2026-10-31/"
   ],
   "scope_out": [
     "live tree; engine and layer code; any backtest; any trading verdict; .secrets and .env"

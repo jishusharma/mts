@@ -12,7 +12,7 @@
 1. **Gate 4 Threshold**: A minimum of **56 scored calls** per analyst is required before any analyst weighting or trade allocation is permitted (`MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md:51`; `MyTradingSys/research/analysts/SCORECARD.md:22`; `MyTradingSys/research/qriptal_2026-10-10/SCORECARD.md:51`). This sample size provides 81.0% statistical power to detect edge over a 50% coin flip at $\alpha = 0.05$.
 2. **No Weights Proposed**: In strict adherence to D5 Gate 4 policy, no analyst weights or ranking multipliers are proposed. Any analyst under 56 scored calls is classified `NOT ENOUGH CALLS` (`MyTradingSys/research/cbp/GPT_CBP_GUIDE.md:17`).
 3. **Fee Hurdle**: Net scoring requires accounting for execution frictions: Deribit taker fee 0.05% per side = 0.10% round trip (10 bps RT; `MyTradingSys/backtest/fees.py:5`; `MyTradingSys/backtest/layers/FORMULAS.md:403`).
-4. **Data Availability**: The production store `F:/CryptoScrapper/cbp_store/rows.json` resides on host JIS-NB (`MyTradingSys/cbp/__init__.py:19`; `MyTradingSys/research/cbp/GPT_CBP_GUIDE.md:5`). On hosts lacking this local path, production rows are `NOT_IN_DATA` per task instruction 4. Producer status logs report 13 total stored rows across the Actionable-6 profile (`MyTradingSys/research/cbp/CBP_STATUS_2026-10-27.md:5,7`).
+4. **Data Availability**: The production store `F:/CryptoScrapper/cbp_store/rows.json` resides on host JIS-NB (`MyTradingSys/cbp/__init__.py:19`; `MyTradingSys/research/cbp/GPT_CBP_GUIDE.md:5`). On hosts lacking this local path, production rows are `NOT_IN_DATA` per task instruction 4. Producer status logs report 13 total stored rows across the Actionable-6 profile (`MyTradingSys/research/cbp/archive/CBP_STATUS_2026-10-27.md:5,7`).
 
 ---
 
