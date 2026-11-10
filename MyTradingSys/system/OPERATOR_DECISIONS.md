@@ -2205,3 +2205,10 @@ Operator-only steps (system setting / sign-in, never a session): enable sshd on 
 ## 2026-11-10 07Z Live Aid: Home is the one screen; indicator insight, fewer tabs (operator)
 Operator: while trading he reads only Home and cannot click tabs; he wants value, not clutter; volume he sees on his own chart, he wants what the Volume Flow indicator and his other TradingView favourites say; he does not know how to use the Map now that Home exists.
 Done (defaults taken, no question asked): Home card "What the indicators say" (Volume Flow, Squeeze Momentum, ADX/DI, WaveTrend, RSI, buy vs sell on 15m / 1h / 4h closed bars, up to 3 plain sentences) replaces the 11-row grid (tools/live_aid/indread.js; formulas FORMULAS 30-32, sentence rules OURS, not backtested). Tab bar cut from 10 to 6: Home, Money, News, US open, In trade, All readings; Map, Levels, Momentum and Liquidations repeat Home and open from the rows of All readings. One idea banner at a time, for the nearest level.
+
+## 2026-11-10 06Z Login C: spend the rest of the week before the reset (operator)
+Operator: "You will reset tonight - so we need to use you completely just before the reset so that we do not get stuck! So plan for it!"
+Measured 06:41Z (get_usage): weekly all models 87%, weekly Fable 83%, 5h window 6% (resets 10:10Z); weekly reset 2026-11-10T20:00Z (01:30 IST 11-11).
+Decision: the 78% monitor-only cap on login C is lifted for this last day. Spend to about 97% by 18Z on Sonnet workers (never Fable for building), keep 3% so the Lead can still answer him until 20Z; in the last 2 h spend what is left on short jobs that ship in one turn. Lead C (this session, now Fable 5.2) only coordinates.
+Order of work: live-aid-oi-poller-all-venues-1110, tom-swing-trendline-extract-1109, java-below-val-short-no-setup-type-1109, then stale pages and broadcast hygiene.
+
