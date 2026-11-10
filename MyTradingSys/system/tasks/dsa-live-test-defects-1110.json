@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T07:54:25Z",
+  "depends_on": [],
+  "done_when": "bridge bumped to the next version with a test per fix (pagehide release test, take commit has Next:, result cap test); run_all_tests green; operator installs the bridge",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fix the 3 defects from the 2026-11-10 live DSA test (see MyTradingSys/system/DSA_LIVE_TEST_2026-11-10.md): ghost arm after reload, desk take commit lacks Next:, result bloat in the chat.",
+  "id": "dsa-live-test-defects-1110",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.34: pace 20 s + 5-15 s jitter, 30/h, 200/day (operator: 0.7.33 too slow); dsa",
+      "ref": "ce98e4192385",
+      "utc": "2026-11-09T06:02:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T07:54:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/aibridge/extension/content.js, scripts/aibridge/RELEASES.json, scripts/dev/desk.py or dsa.py take path, their tests"
+  ],
+  "scope_out": [
+    "live trading system; DeepSeek account settings; F:/AIBridge installed copy"
+  ],
+  "scope_sha": "ce98e4192385",
+  "size": "M",
+  "sources": [
+    "B/NUC live DSA test 2026-11-10"
+  ],
+  "state": "ready",
+  "steps": [
+    "read the report",
+    "fix 1 with a test",
+    "fix 2 with a test",
+    "fix 3 with a test, bump version, ship"
+  ],
+  "tests": "tests/test_aibridge_version_bump.py plus a new test per fix",
+  "title": "Fix 3 DSA/bridge defects from the live test: ghost arm after reload, desk take lacks Next: line, result bloat",
+  "weight": "",
+  "worker": "session"
+}
