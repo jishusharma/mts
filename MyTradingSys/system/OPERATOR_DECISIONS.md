@@ -2249,3 +2249,7 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Done: 11 superseded files in research/cbp moved to research/cbp/archive/ (status 10-25/10-27, audit 10-28, ingestion wiring, alt buy plan 10-31, alt update 11-07, sister notes 11-03/11-04, GPT gate trial and quote review); full-path references rewritten; research/cbp/README.md lists what is current, with the 11-10 altcoin session's 50/30/20 bucket split as a template (OURS, not advice).
 - Kept in place: files read by tests or live cards (SCORECARD_GPT, GPT_CBP_GUIDE, SISTER_NOTE 11-07 for sister_signals.json).
 - Stale tree mts-jis-nb-lead-c-reval-1106-2 removed: its 3 commits' content is on trunk; its two dirty files saved in the scratchpad first.
+
+## 2026-11-10 14Z BTC 74,527 and 71,795 are lines, not orders (operator)
+- Words: "these are just lines - not orders - i do not trade on Binance."
+- Meaning: replies and the Buy Crypto page call 74,527.40 and 71,795.36 his price lines, never an order or a Binance position; the BTC price shown is a USD reference only. Page relabel asked of its session (local_2ae61a41).
