@@ -41,7 +41,52 @@ def _slow_reason(path):
     return sync.unshipped_reason(t)
 
 
-def reason(path):
+def _transcript_rows(transcript):
+    try:
+        with open(transcript, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                try:
+                    yield json.loads(line)
+                except ValueError:
+                    continue
+    except OSError:
+        return
+
+
+def session_start(transcript):
+    """ISO time of the session's first transcript row, or None."""
+    for row in _transcript_rows(transcript):
+        if isinstance(row, dict) and row.get("timestamp"):
+            return str(row["timestamp"])
+    return None
+
+
+def own_files(transcript):
+    """Normalised absolute paths this session wrote (Write/Edit/NotebookEdit tool calls in its transcript); None without a transcript."""
+    if not transcript or not os.path.isfile(transcript):
+        return None
+    out = set()
+    for row in _transcript_rows(transcript):
+        content = ((row.get("message") or {}).get("content")) if isinstance(row, dict) else None
+        for part in content if isinstance(content, list) else ():
+            if isinstance(part, dict) and part.get("type") == "tool_use" and part.get("name") in ("Write", "Edit", "NotebookEdit", "MultiEdit"):
+                f = (part.get("input") or {}).get("file_path") or (part.get("input") or {}).get("notebook_path")
+                if f:
+                    out.add(os.path.normcase(os.path.realpath(f)))
+    return out
+
+
+def _row_path(top, row):
+    f = row[3:].split(" -> ")[-1].strip().strip('"')
+    return os.path.normcase(os.path.realpath(os.path.join(str(top), f)))
+
+
+def _is_own(top, row, own):
+    p = _row_path(top, row)
+    return p in own or any(o.startswith(p.rstrip(chr(92) + "/") + os.sep) for o in own)   # an untracked directory row owns its files
+
+
+def reason(path, transcript=None):
     """Why `path` may not stop yet, or None. Fast path (a clean tree with nothing ahead, the common stop): the tree root is found
     without git, the three git calls run at once, and sync.py (a large import) is loaded only when there is something to judge.
     Same answer as _slow_reason, which is the reference and the fallback."""
@@ -50,7 +95,14 @@ def reason(path):
         return _slow_reason(path)
     if (top / ".mts_live").exists():
         return None
-    cmds = (("branch", "--show-current"), ("rev-list", "--count", "origin/fast-track..HEAD"), ("--no-optional-locks", "status", "--short"))
+    # SHARED main checkout (.git is a directory; many sessions work in it): judge only this session's own work (operator 2026-11-11):
+    # the files its transcript wrote and the non-merge commits made since it started. A merge of origin/fast-track is never work.
+    # A session's own worktree (.git is a file) is all its own, so there every file and commit counts as before.
+    shared = (top / ".git").is_dir() and bool(transcript)
+    own = own_files(transcript) if shared else None
+    since = session_start(transcript) if shared else None
+    ahead_cmd = ("rev-list", "--count", "--no-merges", *(("--since=" + since,) if since else ()), "origin/fast-track..HEAD") if shared         else ("rev-list", "--count", "origin/fast-track..HEAD")
+    cmds = (("branch", "--show-current"), ahead_cmd, ("--no-optional-locks", "status", "--short"))
     procs = [subprocess.Popen(["git", "-C", str(top), *c], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for c in cmds]
     (branch, _), (ahead, _), (status, _) = [pr.communicate() for pr in procs]
     branch = branch.strip()
@@ -59,6 +111,8 @@ def reason(path):
     if procs[1].returncode != 0:
         return None         # HEAD does not resolve: tree_state reports ahead=None, which never blocks
     rows = [l for l in status.splitlines() if l]
+    if own is not None:
+        rows = [l for l in rows if _is_own(top, l, own)]
     if not rows and int(ahead.strip() or 0) == 0:
         return None
     import sync
@@ -181,7 +235,7 @@ def hook(stdin_text):
         cwd = data.get("cwd") or (ws[0] if ws else None) or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
         sid = data.get("session_id") or data.get("conversationId")
         sup = supervisor_reason(sid)
-        why = sup or reason(cwd)
+        why = sup or reason(cwd, data.get("transcript_path"))
         # a Supervisor inside its work period is blocked on every idle turn end, not once per state (2026-10-30: blocked once, then
         # idle 16 h); stop_hook_active above still lets the blocked turn's own retry end, so it never loops
         if not why or (not sup and seen_before(sid, why)):
