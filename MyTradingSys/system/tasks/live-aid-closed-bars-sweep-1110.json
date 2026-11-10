@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T14:07:06Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "live-aid-closed-bars-sweep-1110",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/tools/live_aid/live_aid.html"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Live Aid session C Haiku audit 2026-11-10"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP calc ~977, atr15 ~710, ma_strip ~68, dflags ~1509): filter to closed bars like pulse/indread/lane, test each",
+  "weight": "",
+  "worker": ""
+}

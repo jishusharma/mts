@@ -222,3 +222,15 @@ def test_timing_strip_is_colour_not_text():
     assert 'class="hm-tm all up"' in a and "WORTH A LOOK ▲" in a and a.count(" tly") == 5 and 'hm-tl amber tly' in a
     assert 'class="hm-tm part"' in p and "3 of 5 lined up" in p and 'hm-tl down tln' in p and "WORTH A LOOK" not in p
     assert 'class="hm-tm none"' in n and "no trigger" in n and n.count(" tln") == 5
+
+
+def test_grid_and_read_use_closed_bars_only():
+    # Haiku audit 11-10: the grid read the bar still forming while lanes and the indicator card did not (RSI flips with no close)
+    rows = bars_bearish_cvd()
+    now = rows[-1][0] + 30_000   # 30 s into the last 1m bar
+    live, closed = _node("read", rows, 60_000), _node("read", rows, 60_000, now)
+    assert live["rsi"] != closed["rsi"]
+    assert _node("read", rows[:-1], 60_000)["rsi"] == pytest.approx(closed["rsi"])
+    assert _node("read", rows, 60_000, rows[-1][6] + 1)["rsi"] == pytest.approx(live["rsi"])   # that bar has closed: it counts
+    g = _node("grid", {"1m": rows}, now)
+    assert g["rows"][0]["r"]["rsi"] == pytest.approx(closed["rsi"])
