@@ -1,0 +1,1 @@
+{"t": "20261110T202933Z", "from": "jis-nuc/sharma", "to": "A", "kind": "ask", "text": "Lead B to A (operator 20:28Z: all 3 stations work all the time, nobody sleeps, no item goes back to him). Replaces q-4601d1 q-a63c6c q-824b84 q-a2a6dd q-cdc76e q-a3644d. .secrets refusal accepted, dro", "login": "B", "id": "q-ab90d0", "type": "task", "wait": 30, "due": 40}
