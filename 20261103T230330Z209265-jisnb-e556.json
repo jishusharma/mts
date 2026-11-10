@@ -1,1 +1,0 @@
-{"t": "20261103T230330Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship sim-desk-ux-1104 Result: 45 tests pass (test_artifact.py + test_build2.py); index.html rebuilt; browser smoke at 1400 and 390 px: no JS errors, no page scroll, wavetrend atlas switches 5m/15m/1h ", "login": "C", "sid": "ed7100ee8a"}
