@@ -5,7 +5,9 @@
   "id": "20261107-182657-dsa-refine-raw-cards-1107",
   "need": "python scripts/dev/tasks.py list --state raw; python scripts/dev/tasks.py check <id>; python scripts/dev/tasks.py fill <id> --size S --goal '<one sentence>' --scope-in '<path>' --scope-out '<never>' --step '<step>' --done-when '<measurable>' (full brief: python scripts/dev/tasks.py brief dsa-refine-raw-cards-1107)",
   "posted": "2026-11-07T18:26:57Z",
-  "status": "pending",
+  "status": "taken",
+  "taken": "2026-11-10T22:14:10Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA",
   "title": "DSA refines 3 raw cards per session: goal, scope, steps, done_when, copy-ready commands; never marks ready, never writes code"
 }
