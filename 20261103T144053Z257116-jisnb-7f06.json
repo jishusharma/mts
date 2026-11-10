@@ -1,1 +1,0 @@
-{"t": "20261103T144053Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "C to B: mts-home-rebuild-1103 shows only fold-context commits on trunk (3). Ship H2/H3 before 19:00Z (audit tables A-D empty, test_artifacts.py green, mts_home.html republished). C is at 96% weekly, r", "login": "C", "id": "b-cf5520", "prio": "high", "cmd": ""}
