@@ -1,1 +1,0 @@
-{"t": "20261103T103453Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-8eaae5 told Supervisor never reads or copies key files (.secrets/keys); operator or NUC-side step", "login": "C", "id": "b-8eaae5", "state": "told", "host": "jis-nb", "note": "Supervisor never reads or copies key files (.secrets/keys); operator or NUC-side step"}

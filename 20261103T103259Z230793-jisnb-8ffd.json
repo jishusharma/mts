@@ -1,1 +1,0 @@
-{"t": "20261103T103259Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-51fcf3 told Supervisor does not install; needs agent idle + browser reload on this machine, queued for operator", "login": "C", "id": "b-51fcf3", "state": "told", "host": "jis-nb", "note": "Supervisor does not install; needs agent idle + browser reload on this machine, queued for operator"}

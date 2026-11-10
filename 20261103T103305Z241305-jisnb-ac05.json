@@ -1,1 +1,0 @@
-{"t": "20261103T103305Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-7928f7 told Supervisor does not restart processes; install needs idle agent, operator step", "login": "C", "id": "b-7928f7", "state": "told", "host": "jis-nb", "note": "Supervisor does not restart processes; install needs idle agent, operator step"}
