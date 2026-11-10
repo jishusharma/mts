@@ -1,12 +1,12 @@
 # Development Status
 
-Generated: 2026-11-04 01:10:58
+Generated: 2026-11-11 02:30:02
 
 ## Git Status
-CI green: 3f39b0f7f (2026-11-04 00:49:49 +0530, 0.4 h old), 8 trunk landing(s) / 8 commit(s) behind origin/fast-track: CI running
-Layer pass: 0 of 37 fee-net row(s) carry a surviving PASS
+CI green: ad67fc061 (2026-11-11 02:21:51 +0530) = origin/fast-track: OK
+Layer pass: 0 of 40 fee-net row(s) carry a surviving PASS
 GO-PRIVATE: A=0 B=1 TRIGGER B:carry_basis_2026-10-18 (2026-10-18)
-LESSONS: digest STALE (synced c5767610, now e42f1a54): read the new LESSONS_LEARNED.md entries (git diff), add their rule lines to LESSONS_DIGEST.md, update the blob
+LESSONS: digest in sync
 Pages stale: 3
 STALE mts_layer_map https://claude.ai/artifact/7eeXJJ9Sb44LaJeCu8jxfJ
 STALE sim_desk https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF
@@ -14,66 +14,69 @@ STALE mts_home https://claude.ai/artifact/8hKA1rhNRo6RAEdt5mtLg3
 
 ## Hand-over freshness (hand-overs are history: read disk and git, never quote them as current)
 ```
-(no dated hand-over blocks)
+FRESH 2026-11-04 Unblock MTS coordinator, login C, 2026-11-04 (wave d-context-retest-11
 ```
 
 ## Gate Board
 ```
-tom     G2  proof changed 88h ago | next: Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-fabio   G2  proof changed 88h ago | next: G1 coverage check, then live validation (d-live-validation) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
-malkan  G2  proof changed 212h ago | next: Live validation + 1d/1w RSI divergence flags (d-live-validation; G3 blind marks dropped) | proof: MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md
+tom     G2  proof changed 257h ago | next: Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+fabio   G2  proof changed 257h ago | next: G1 coverage check, then live validation (d-live-validation) | proof: MyTradingSys/research/setup_catalog_2026-10-15/SETUP_CATALOG.md
+malkan  G2  proof changed 264h ago | next: Live validation (d-live-validation; G3 blind marks dropped); 1d/1w RSI divergence flags done (malkan_div_flags_2026-10-28) | proof: MyTradingSys/research/malkan_div_flags_2026-10-28/BTCUSDT_divergences.md, MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md
 krown   G2  proof not on trunk | next: Live validation with drawn chart flags (d-live-validation; G3 blind marks dropped) | proof: MyTradingSys/research/krown_ta101_2026-10-13/KROWN_SETUP_CATALOG.md (commit f4a5182a)
 NO GATE MOVED IN 24h: the next spawn targets a gate (LAYER_REBUILD_PLAN s5)
-commits 24h: 186 = research 33% | claim/release 0% | other 67%  OVER 30% CAP
+commits 24h: 194 = research 26% | claim/release 0% | other 74%  OVER 30% CAP
 ```
 
 **Last 3 commits on origin/fast-track:**
 ```
-87964ab59 ship: regenerated LAYERS.md
-4afd88410 cards: full-path smoke test gap for run_v3_l3
-b1e15c564 task: card fabio-v3-is-only-loads-oos-bars closed with its result
+ad67fc061 Merge remote-tracking branch 'origin/fast-track' into JIS-NB/arch-row2-1110
+866ccbedd 4 Gemini blind reads landed (monday_clocks, news_study, news_weight, api_agent); plan log 20:58Z
+ee0739c6e tasks: done gemini-blind-read-of-scripts-dev-api-age
 ```
 
 ## In-Flight .new Files
-- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (581.3h)
-- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (581.3h)
+- MyTradingSys/backtest/layers/fabio/htf_context_live.py.new (750.7h)
+- MyTradingSys/backtest/layers/fabio/test_htf_context_live.py.new (750.7h)
 
 ## Recent Reports (newest 5, last 3 days)
-- MyTradingSys/research/mts_doctor/REPORT_2026-11-01.md (2026-11-02 01:35) # MTS doctor report 2026-11-01
+- MyTradingSys/research/sim_desk/GUIDED_SESSION_PLAN_2026-11-10.md (2026-11-10 18:31) # Guided simulator session: how to read failures and look for an edge (plan by Lead C on F
+- MyTradingSys/research/mts_doctor/REPORT_2026-11-09.md (2026-11-10 12:13) # MTS doctor report 2026-11-09
+- MyTradingSys/research/mtf_lead_lag_2026-11-09/REPORT.md (2026-11-09 03:02) # Timeframe flip lead-lag, BTC 2019-2026 (mtf-timeframe-lead-lag-research)
+- MyTradingSys/research/malkan_level_shorts_2026-11-09/REPORT.md (2026-11-09 02:45) # Malkan level short, BTC 4h, counted 2017-08 .. 2026-11
+- MyTradingSys/research/news_effects_2026-11/REPORT.md (2026-11-08 14:43) # News effects on BTC and ETH: event catalogue v2 and measured reaction (2026-11-08)
 
 ## Screenshots
 ```
-SHOTS landed 90: new 41, classified 41, read 0, done 8 | overdue(>24h) 82 | claims MATCH 31 MISMATCH 5 NOT_IN_DATA 10 | filed 3
-  OVERDUE fdaf61046aae classified app                                  | DeepSeek DSA chat with AIBridge panel 'waiting for DSA after #2', auto-run 1/50, Run block not executed; operator reports bridge stuck
-  OVERDUE ca93edd5a668 new        -                                    | 
-  OVERDUE 7d9e56172f38 new        -                                    | i restarted - now i see this. Wjat needs to be done?
-  OVERDUE f35e98c02d0c new        -                                    | We needed sreen-shots and chart related work - things were pending on me like tr
-  OVERDUE 25050b52c03d new        -                                    | i need to know what is going on right now?
-  OVERDUE c0b4ba1b62f9 new        -                                    | i need to know what is going on right now?
-  OVERDUE bf07502e25bf new        -                                    | keeping in mind what we are doing on NUC - what to do with this? I need actions.
-  OVERDUE 0a687a5cdc7e new        -                                    | <pasted_content id="cdc4"> it installed - computed restarted but it failed. i ah
-  OVERDUE 616ec264d2e2 new        -                                    | 
-  OVERDUE be93c2b8ab49 new        -                                    |
+SHOTS landed 34: new 1, classified 33, read 0, done 0 | overdue(>24h) 34 | claims MATCH 0 MISMATCH 0 NOT_IN_DATA 0 | filed 0
+  OVERDUE a05ef4efee82 classified app                                  | Antigravity Settings > mts-gemini project page: folder mts-gemini/, Security Preset Inherit Global, Local Permissions. Operator asked where the approval settings are.
+  OVERDUE fa4f80543b00 classified app                                  | Antigravity mts-gemini project page scrolled: Local Permissions (File, Network, Terminal, Commands Outside Sandbox, MCP) and Customizations.
+  OVERDUE e8a5a0751b51 classified app                                  | Antigravity Settings > General: Global Permissions Security Preset = Turbo Mode, Tool Permissions 8, Plan Review Policy Always Proceed. Operator asked where the approval settings are.
+  OVERDUE 3a8568059f4f classified app                                  | Antigravity Settings > General lower part: Network Access Rules, Commands Outside Sandbox, Browser JS Execution Request Review; account jis jishusharma1985@gm.
+  OVERDUE 7b4e1582397b classified app                                  | Claude desktop Settings > Claude Code > Remote Control folders; operator asks which Worktree toggle to pick for MTS folders
+  OVERDUE 66562984c20d classified app                                  | Windows search 'control panel' shows only web results (no local app best match); operator reports Windows search broken
+  OVERDUE f48076d6278d classified app                                  | Settings > System > Power & battery: Energy saver On, Power mode greyed Best Power Efficiency, two batteries; operator context for lid/keyboard and search problems
+  OVERDUE b68e7af47e2c classified app                                  | Duplicate of earlier Windows search screenshot, control panel web-only results
+  OVERDUE f0d63ededaae classified app                                  | Windows search after SearchHost restart: control panel still shows only web search results; operator says fix tried before did not work
+  OVERDUE 833cc2d2678a classified app                                  | Duplicate of earlier search screenshot, web-only results after SearchHost restart
 ```
 
 ## Layer Lab (Codex)
 ```
-Layer lab (Codex) at 2026-11-03 19:41Z: on
-  Codex allowance (plus): 5-hour window 0% used; week 30% used (resets 11-09 06:11Z)
-  Lab spend guard: window 0/65 pts, 0/14 runs (astra 0/1); week 6/90 pts; resets 00:35Z
-  Last check by the scheduler: 2026-11-03T13:08Z IDLE the last run started 3 minutes ago (minimum gap 20); one card per tick
-  Queue: 2 ready
-    gpt-spec-tests-live-aid-us-open-1103 [build, gpt-6-luna / medium]
-    gemini-blind-read-eagle-c36-wt-confluence-1103 [audit, gpt-6-luna / medium]
-  Last runs:
-    2026-11-02 18:36Z aibridge-sandbox-chat-run-acl-proof BLOCKED (gpt-6-luna / medium, 139k tokens, window +0 pts, 38s)
-    2026-11-02 19:15Z aibridge-sandbox-chat-run-acl-proof BLOCKED (gpt-6-luna / medium, 127k tokens, window +0 pts, 27s)
-    2026-11-02 20:02Z mts-audit-1103-independent-recheck BLOCKED (gpt-6-luna / medium, 1.2M tokens, window +1 pts, 99s)
-    2026-11-03 13:05Z mts-audit-1103-independent-recheck BLOCKED (gpt-6-luna / medium, 376k tokens, window +1 pts, 63s)
-    2026-11-03 15:57Z kurisko-quad-15m-1h-maker-prereg DONE (gpt-6-luna / low, 4.3M tokens, window +38 pts, 782s)
-  NEEDS A LOOK: 
-    - STALLED: 2 card(s) ready, lane up, no allowance hold, but nothing ran for 3.7 h: read last_tick.txt and last_lane.txt on the lab host
-    - only 2 card(s) left in the queue: add scoped cards (LAYER_LAB.md, Allowance)
+Layer lab (Codex) at 2026-11-10 21:00Z: on
+  This machine does not run the lab (it runs on JIS-NUC): the queue below is from the repo; allowance, runs and what needs a look are only known there.
+  Queue: 12 ready
+    tom-fabio-rebuild-from-beginner-videos-1109 [build, gpt-6-luna / medium]
+    gemini-blind-read-of-vfi-py-vfi-engine-f [audit, gpt-6-luna / medium]
+    tvfav-usage-adx-1107 [audit, gpt-6-luna / medium]
+    gemini-blind-read-of-squeeze-py-bb-dev-q [audit, gpt-6-luna / medium]
+    gpt-spec-tests-vfi-1108 [audit, gpt-6-luna / medium]
+    gpt-spec-tests-squeeze-1108 [audit, gpt-6-luna / medium]
+    gpt-spec-tests-cycles-1108 [audit, gpt-6-luna / medium]
+    gpt-spec-tests-cycle-ma-clock-1108 [audit, gpt-6-luna / medium]
+    gpt-rederive-v-recovery-low-sweep-1108 [audit, gpt-6-luna / medium]
+    gpt-rederive-pre-us-failed-break-10sym-1108 [audit, gpt-6-luna / medium]
+    gpt-rederive-fabio-cvd-1108 [audit, gpt-6-luna / medium]
+    gpt-rederive-wt-extreme-cross-1108 [audit, gpt-6-luna / medium]
 ```
 
 ## Project Groups
