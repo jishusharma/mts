@@ -76,6 +76,8 @@ public class SetupCandidatesBuilder {
         // Step 1: State classification
         String state = classifyState(root);
 
+        String priceVsVa = root.get("conditions").get("price_vs_va").asText();
+
         // Step 2: Directional filter
         List<String> evaluatedDirections = determineDirections(root);
 
@@ -98,7 +100,7 @@ public class SetupCandidatesBuilder {
         for (Zone z : filteredZones) {
             List<String> possibleDirections = evaluatedDirections;
             for (String dir : possibleDirections) {
-                String setupType = determineSetupType(z, dir, state);
+                String setupType = determineSetupType(z, dir, state, priceVsVa);
                 if (setupType != null) {
                     Candidate c = new Candidate();
                     c.zone = z;
@@ -470,6 +472,11 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
 
     // RULE TOM-140 (POC counter-trend only in unhealthy trend), TOM-030 (balance -> scalp at VWAP)
     private static String determineSetupType(Zone zone, String direction, String state) {
+        return determineSetupType(zone, direction, state, null);
+    }
+
+    // priceVsVa (conditions.price_vs_va) gates the breakdown-continuation short at VAL: tc_short only below_val + trend_healthy.
+    private static String determineSetupType(Zone zone, String direction, String state, String priceVsVa) {
         String zoneType = zone.type;
         boolean isShort = "short".equals(direction);
         if ("transition".equals(state)) return null;
@@ -479,7 +486,11 @@ mathNode.put("substate", distFromZone <= 0.001 ? "at_zone" : (currentPrice > c.z
             return isShort ? "ct_short" : null;
         }
         if (zoneType.contains("val") || zoneType.contains("swing_low") || zoneType.equals("prior_day_val")) {
-            return isShort ? null : "ct_long";
+            if (!isShort) return "ct_long";
+            // Breakdown continuation (TOM-3 / Event A, mirror of tc_long): price accepted below VAL in a healthy trend.
+            // VAL zones only (swing_low stays null); every other state or location fails closed.
+            if ("trend_healthy".equals(state) && "below_val".equals(priceVsVa) && zoneType.contains("val")) return "tc_short";
+            return null;
         }
         if (zoneType.contains("poc")) {
             // POC: CT only in unhealthy trend
