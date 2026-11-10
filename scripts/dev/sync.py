@@ -1953,8 +1953,9 @@ def holds_files(root, rel):
 def ignored_data(p):
     """Ignored paths in worktree `p` that are not trivially regenerable (`git worktree remove` deletes them)."""
     out = git(p, "status", "--porcelain", "--ignored=matching", check=False).stdout.splitlines()
+    # GATEWAY_MARKER is gitignored: without the name check it was "data" and no remover could retire a released gateway tree (19 on JIS-NB 11-11)
     return [l[3:] for l in out if l.startswith("!! ") and not (any(m in l for m in REGENERABLE) and not holds_answers(p, l[3:]))
-            and holds_files(p, l[3:])]
+            and l[3:].strip('"') != GATEWAY_MARKER and holds_files(p, l[3:])]
 
 
 def holds_answers(root, rel):
