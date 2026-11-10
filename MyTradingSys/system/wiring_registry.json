@@ -1039,6 +1039,34 @@
    "disp": "TOOL",
    "ref": "binance-futures-dns-block-fleet-1109",
    "why": "Hand-run smoke for the Binance DoH path: java -cp target/classes;<deps> datafeed.DohSmoke 30 prints one live fapi 4h kline and counts 30 s of fstream aggTrade messages; exits non-zero if none."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/inventory_klines.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the kline/funding inventory counts (result #33) and out/data_inventory.csv cited in T01_data_forensics.md section 2; run by hand from the worktree root; no live imports."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/inventory_extra.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the orderflow/snapshot/metrics/dax/candles inventory counts (result #35) cited in T01_data_forensics.md section 2; run by hand from the worktree root; no live imports."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/invariants_dev.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the DEV 1m bar-invariant counts (results #37, #44) in T01_data_forensics.md findings T01-F2..T01-F7; DEV only; no live imports."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/loader_torture.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the bt_data load_klines torture table (result #39) for lead L4 in T01_data_forensics.md; reads only crafted files under %TEMP%; no live imports."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/loader_torture_more.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the fires_kline / bigmoves / tom_bt / tf / vp loader torture table (result #41) for lead L4; crafted files under %TEMP%; no live imports."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/cross_and_delta.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the delta-sign convention check and the DEV jump/frozen-bar lists (result #44) cited in T01_data_forensics.md sections 1 and 3; DEV only; no live imports."
+  },
+  "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/resample_cross.py": {
+   "disp": "REPRO",
+   "why": "Reproduces the 1m->1d resample vs raw_1d mismatch count (result #48) for finding T01-F5; DEV only; no live imports."
   }
  }
 }
