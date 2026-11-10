@@ -1,0 +1,1 @@
+{"t": "20261110T201612Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A: CI RED 4 runs = REAL: 42d8b197a (arch-row1 doc_drift) -> ModuleNotFoundError doc_drift in preship copy. A Builder is reverting it now; C do not forward-fix, re-add after test_preship passes.", "login": "A", "id": "b-6f4291", "prio": "high", "cmd": ""}
