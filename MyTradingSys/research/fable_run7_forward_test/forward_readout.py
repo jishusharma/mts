@@ -12,7 +12,7 @@ Slots (source prefix; Krown also needs account krown_s8, else the fill is CONTAM
 The E+/E- math is sim_sequential.py's (eh-f1-testnet-design), loaded not copied. One observation per UTC-day
 cluster (mean R of that day's trades); n in the table counts trades, n_obs counts clusters.
 
-Run: python MyTradingSys/research/fable_run7_forward_test/forward_readout.py --ledger <trade_ledger.jsonl> [--asof YYYY-MM-DD] [--out file.md]
+Run: python MyTradingSys/research/fable_run7_forward_test/forward_readout.py --ledger <trade_ledger.jsonl> [--paper [SLOT=]<journal.jsonl> ...] [--asof YYYY-MM-DD] [--out file.md]
 """
 from __future__ import annotations
 
@@ -153,12 +153,48 @@ def slot_stats(key, rs, days, krown, asof, sim):
     return res
 
 
-def readout(ledger_path, asof=None):
+def _paper_ts(row):
+    """UTC datetime of a paper-journal row: t_fill / t_trigger (open ms) or a ts string; None if absent."""
+    for k in ("t_fill", "t_trigger"):
+        v = row.get(k)
+        if isinstance(v, (int, float)):
+            return datetime.fromtimestamp(v / 1000.0, tz=timezone.utc)
+    ts = row.get("ts")
+    return _ts(ts) if isinstance(ts, str) else None
+
+
+def _paper_slot(row, default_slot):
+    src = row.get("source") or ""
+    return next((s[0] for s in SLOTS if src.startswith(s[1])), default_slot)
+
+
+def readout(ledger_path=None, asof=None, paper=()):
+    """paper: iterable of (path, default_slot_key). Journal rows (malkan_level_short_live.py): kind outcome with
+    status closed and net_r is scored; signal / no_fill / unresolved / open outcomes are counted, never scored;
+    kill rows are listed. DECISION (OURS): a row without a source goes to the file's default slot."""
     sim = load_sim()
     asof_d = datetime.strptime(asof, "%Y-%m-%d").date() if asof else datetime.now(timezone.utc).date()
     buckets = {k: [] for k, *_ in SLOTS}
     contaminated = unresolved = unscored = other = 0
-    for row in read_jsonl(ledger_path):
+    pcount = {"signal": 0, "no_fill": 0, "unresolved": 0, "open": 0, "scored": 0}
+    kills = []
+    for path, dslot in paper:
+        for row in read_jsonl(path):
+            kind, key = row.get("kind"), _paper_slot(row, dslot)
+            if kind == "kill":
+                kills.append({"slot": key, **{k: v for k, v in row.items() if k != "kind"}})
+            elif kind in ("signal", "no_fill", "unresolved"):
+                pcount[kind] += 1
+            elif kind == "outcome":
+                t = _paper_ts(row)
+                if row.get("status") != "closed":
+                    pcount["open"] += 1
+                elif row.get("net_r") is None or t is None:
+                    unscored += 1
+                else:
+                    pcount["scored"] += 1
+                    buckets[key].append((t, float(row["net_r"])))
+    for row in (read_jsonl(ledger_path) if ledger_path else []):
         src = row.get("source") or ""
         slot = next((s for s in SLOTS if src.startswith(s[1])), None)
         if slot is None:
@@ -183,7 +219,8 @@ def readout(ledger_path, asof=None):
         slots.append({**slot_stats(key, [r for _, r in items], [t.date() for t, _ in items], krown, asof_d, sim),
                       "label": label})
     return {"slots": slots, "contaminated": contaminated, "unresolved": unresolved, "unscored": unscored,
-            "other_sources": other, "asof": str(asof_d)}
+            "other_sources": other, "asof": str(asof_d),
+            "paper": pcount if paper else None, "kills": kills}
 
 
 def _f(x, nd=2):
@@ -206,11 +243,19 @@ def to_markdown(res):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--ledger", required=True)
+    ap.add_argument("--ledger")
+    ap.add_argument("--paper", action="append", default=[],
+                    help="paper journal jsonl, repeatable; optional SLOT=path (default slot malkan_level_short)")
     ap.add_argument("--asof")
     ap.add_argument("--out")
     a = ap.parse_args(argv)
-    md = to_markdown(readout(a.ledger, a.asof))
+    paper = []
+    for spec in a.paper:
+        slot, _, path = spec.partition("=")
+        paper.append((path, slot) if path and slot in {x[0] for x in SLOTS} else (spec, "malkan_level_short"))
+    if not a.ledger and not paper:
+        ap.error("need --ledger and/or --paper")
+    md = to_markdown(readout(a.ledger, a.asof, paper))
     if a.out:
         Path(a.out).write_text(md, encoding="utf-8", newline="\n")
     sys.stdout.write(md)
