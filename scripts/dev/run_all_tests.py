@@ -107,6 +107,10 @@ TEST_FILE_SECONDS = {
     "test_dsa_direct_mode.py": 6,
     "test_soak_six_slots.py": 806,                   # pure CPU: 806 s idle on JIS-NUC 2026-11-08 (was 135-164 s on 10-22); card gate-soak-six-slots-hang-cap-1108
 }
+# Files the --quick (smoke) plan leaves out of every pytest shard; CI and --full call build_plan(quick=False) and still run them.
+# test_aibridge_exploratory.py: 139 s alone on JIS-NB 2026-11-10 (headless Edge/Chrome + run-task.ps1 subprocesses, up to 180 s each),
+# the cause of the step-4c shard timeout; card gate-4c-edge-shard-timeout-aibridge-exploratory-1108.
+SMOKE_SKIP_FILES = frozenset({"test_aibridge_exploratory.py"})
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
@@ -150,7 +154,7 @@ def _short_sha():
     if _SHA:   # one `git rev-parse` per gate, not one per step (GATE_SPEED X2: 0.1 s each on Windows)
         return _SHA[0]
     try:
-        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, timeout=10)
+        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10)
         _SHA.append(r.stdout.strip() or "?")
         return _SHA[0]
     except Exception:
@@ -392,7 +396,7 @@ def exec_layer_chunks(modules, jobs):
     the output is the last lines of each failing chunk."""
     chunks = split_modules(modules, jobs)
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT, text=True, errors="replace") for c in chunks]
+                              stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace") for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
     def passed(p, o):
@@ -425,7 +429,7 @@ def exec_unittest_shards(script, jobs, part=None):
     chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                              text=True, errors="replace", env=env) for c in chunks]
+                              text=True, encoding="utf-8", errors="replace", env=env) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     ok = all(p.returncode == 0 for p in procs)
     def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
@@ -488,7 +492,7 @@ def run_mvn():
     """Maven, or (None, reason) when mvn is not installed."""
     mvn = shutil.which("mvn") or shutil.which("mvn.cmd") or "mvn"  # Windows: mvn.cmd
     try:
-        if subprocess.run([mvn, "--version"], capture_output=True, text=True).returncode != 0:
+        if subprocess.run([mvn, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace").returncode != 0:
             return None, "mvn not found"
     except FileNotFoundError:
         return None, "mvn not found"
@@ -613,6 +617,8 @@ def build_plan(quick):
     doc_shard = ["MyTradingSys/tests/docs", "MyTradingSys/tests/test_relay_prompts.py"]
     top = sorted(f"MyTradingSys/tests/{f.name}" for f in tests_dir.glob("test_*.py")) if tests_dir.exists() else []
     top = [f for f in top if f not in doc_shard]
+    if quick:
+        top = [f for f in top if Path(f).name not in SMOKE_SKIP_FILES]
     # a new test subfolder under MyTradingSys/tests is collected wholesale, as before the split
     top += sorted(f"MyTradingSys/tests/{d.name}" for d in tests_dir.iterdir()
                   if d.is_dir() and d.name not in ("docs", "fixtures", "__pycache__") and any(d.rglob("test_*.py"))) if tests_dir.exists() else []
@@ -1152,7 +1158,7 @@ def apply_selection(plan, args):
 
 
 def _git_out(root, *args):
-    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, timeout=60)
+    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip())
     return r.stdout
