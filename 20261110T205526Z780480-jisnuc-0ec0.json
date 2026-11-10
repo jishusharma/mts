@@ -1,0 +1,1 @@
+{"t": "20261110T205526Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "DSA stalls when the DeepSeek tab is unfocused: audit gaps 353s and 582s tonight with a Run (auto) block waiting; extension heartbeat (content.js tick port + Worker) exists in repo. Find why it still s", "login": "B", "id": "q-3297ce", "type": "task", "wait": 30, "due": 60}
