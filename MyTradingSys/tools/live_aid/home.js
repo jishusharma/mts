@@ -71,8 +71,20 @@
       if (Math.abs(md.px / z.price - 1) <= TOUCH) add('t' + Math.round(z.price) + Math.floor(now / 900000), 'touch', 'amber', 'TOUCHING ' + z.name + ' ' + n0(z.price));
     });
     FL.list = FL.list.filter(function (f) { return now - f.t <= FLASH_MS[f.kind]; });
-    var out = FL.list.slice(-3).reverse(), fb = root.document && root.document.getElementById('flash');
-    if (fb) { fb.innerHTML = out.map(function (f) { return '<div class="fl ' + f.cls + '">' + esc(f.text) + '</div>'; }).join(''); fb.classList.toggle('on', out.length > 0); }
+    // one call or none (operator 11-11, screenshot: LONG SETUP + LONG IDEA + SHORT SETUP at the same level at once): when the direction
+    // flashes still on screen point both ways, show one amber NO CALL line instead of them. Review 2026-11-11: 58 % of these flags were
+    // followed by an opposite one within 30 min and they were right 47-51 % of the time (research/live_aid_review_2026-11-11).
+    var isDir = function (f) { return f.kind === 'idea' || f.kind === 'setup'; }, dirs = FL.list.filter(isDir);
+    var both = dirs.some(function (f) { return f.cls === 'up'; }) && dirs.some(function (f) { return f.cls === 'down'; });
+    var nz = md.lad && (md.lad.at || [md.lad.above[0], md.lad.below[0]].filter(Boolean).sort(function (a, b) { return Math.abs(md.px - a.price) - Math.abs(md.px - b.price); })[0]);
+    // nothing is dropped (operator 11-11: "make sure I do not miss any long setup"): the one line carries the LONG case and the SHORT case, newest of each
+    var caseOf = function (cls) { var f = dirs.filter(function (x) { return x.cls === cls; }).pop(); return f ? f.text.replace(/^[A-Z ]+(\(coin flip so far\))?: /, '').replace(/ \(your call\)$/, '') : ''; };
+    var lc = caseOf('up'), sc = caseOf('down'), at = nz ? ' at ' + nz.name + ' ' + n0(nz.price) : '';
+    var shown = !both ? FL.list : FL.list.filter(function (f) { return !isDir(f); }).concat([{ k: 'mixed', kind: 'mixed', cls: 'amber', t: now,
+      text: 'BOTH SIDES' + at + ', no call yet. LONG case: ' + lc + ' | SHORT case: ' + sc + ' | a 15m close away from the level decides',
+      html: '<b>BOTH SIDES' + esc(at) + ', no call yet</b> <span class="fl-c up">▲ LONG case: ' + esc(lc) + '</span> <span class="fl-c down">▼ SHORT case: ' + esc(sc) + '</span> <i>a 15m close away from the level decides</i>' }]);
+    var out = shown.slice(-3).reverse(), fb = root.document && root.document.getElementById('flash');
+    if (fb) { fb.innerHTML = out.map(function (f) { return '<div class="fl ' + f.cls + '">' + (f.html || esc(f.text)) + '</div>'; }).join(''); fb.classList.toggle('on', out.length > 0); }
     return out;
   }
 
@@ -346,6 +358,7 @@
     '.hm-nid{color:var(--dim);font-size:12px;padding:6px 0}' +
     '.hm-st{border-top:1px solid var(--line);padding:3px 0}.hm-st1{display:flex;gap:6px;align-items:baseline;font-size:12px}.hm-stp{font:700 13px var(--mono,monospace)}.hm-stn{color:var(--fg);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:40%}' +
     '.hm-sts{margin-left:auto;font:700 11px system-ui;padding:0 6px;border-radius:8px;border:1px solid}.hm-sts.turn{color:#22c55e}.hm-sts.thru{color:#ef4444}.hm-sts.amber{color:var(--amber)}.hm-sts.dim{color:var(--dim)}' +
+    '.fl-c{display:inline-block;margin:0 6px;padding:0 6px;border-radius:4px;color:#111}.fl-c.up{background:var(--up)}.fl-c.down{background:var(--down);color:#fff}' +
     '.hm-idea{font:700 12px system-ui!important;padding:0 6px;border-radius:4px;color:#111}.hm-idea.down{background:var(--down);color:#fff}.hm-idea.up{background:var(--up)}' +
     '.hm-ecs{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;align-items:center}.hm-ec{font:700 10px system-ui;padding:0 5px;border-radius:3px;background:var(--line);color:var(--fg)}.hm-ec.turn{background:#166534;color:#dcfce7}.hm-ec.thru{background:#7f1d1d;color:#fee2e2}.hm-sc2{margin-left:auto;color:var(--dim);font-size:10px}.hm-ecs em{color:var(--dim);font-size:11px}' +
     '.hm-stv{font-size:11px;color:var(--fg);margin-top:2px}.amber{color:var(--amber)}' +
