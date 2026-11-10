@@ -73,3 +73,30 @@ Gaps the guide does not cover (for the next guide update):
 - So the audit does NOT show this chat (rupjnp) as the current armed holder; the last armed lease belongs to kyypys. The checkbox in this chat may be ticked, but the lease holder is another chat. This chat is NOT confirmed armed.
 - Not started: the 60-minute watch (it would test the wrong chat). Pacing, hourly cap, stop-on-warning, SHIP OWED: NOT TESTED.
 - Bridge defect to log: the toast text (second_tab_refused naming rupjnp) stays on screen after the arm moved to another chat, so the panel alone cannot show who holds the arm.
+
+## Live run, 07:34Z to 07:54Z (what happened after go)
+
+Context: arming confirmed by the audit lease line for rid kyypys (this tab), not by the toast. Operator order `go` posted at 07:36:36Z (first attempt at 07:34 did not post).
+
+### Fix checks (PASS / FAIL / NOT TESTED)
+- pacing (20 s + 5-15 s jitter): PASS (partial). Audit `post waits: paced: at least 20 s between posts; next post allowed in 20-24 s` at 07:42:36, 07:43:37, 07:44:37. Real bridge calls 07:36:54 (#1), 07:39:43 (#4), 07:42:27 and 07:42:35 (#5), then #6 (417 KB result, 5 parts, 07:45). Spacing between calls 1-3 min, consistent with the pacing guard. Only 4 calls in 10 min, so the 5-15 s jitter band was not measured.
+- hourly cap (30/h): NOT TESTED (about 7 calls in 20 min, far under 30).
+- stop-on-warning: NOT TESTED (no DeepSeek warning, logout or captcha seen).
+- one armed chat: PARTIAL. Refusal fires for a second armed tab (2tlfo1 at 07:00-07:27, then rupjnp/26vlxf/kyypys refusals 07:29). Arming of this chat confirmed by audit lease 07:32:12Z holder rid kyypys.
+- SHIP OWED message (dsa.py): FAIL (not shipped). See bugs below. Desk take commit b7b3d618d (authored gemini-queue, amended with Next:) is NOT on origin/fast-track as of 07:54 (origin head 41ba6e55d). The first auto-ship refused: "none of your 1 commit(s) carries a Next: line".
+- seed boot: design note. The seed block only ran after an operator Run click (`note: run manually by the operator`). Not FAIL, per B.
+
+### Bugs and evidence
+1. Desk take auto-ship refused: `sync: ship refused: none of your 1 commit(s) carries a Next: line` (audit #1 07:36:54, result stderr). desk.py write path does not add Next:. DSA amended by hand (#5, 07:42). Still not shipped at 07:54.
+2. `desk.py show` does not exist (choices: post, take, done, wait, list, next, assign, sweep). DSA guessed a command; result #4 exit=2.
+3. "Run (click needed: empty_command)" twice (07:37:44 and 07:38:24 "block body not rendered yet, waiting"): replies with prose before the fence did not carry the command body through. Resent without change, then ran (#4). Possible cause: prose before the block.
+4. Context bloat: a 4 MB `git grep -i depth.band` over scripts and MyTradingSys matched JSONL artifacts and swamped one result (about 417 KB and 293 KB result text in the page). Result #6 came in 5 parts. The page text re-posts old results #1-#5 inside later replies.
+5. fapi.binance.com timed out from JIS-NUC (urlopen timeout 20 s, result #7, 07:45:32). The desk row's first step (reachability) is FAIL on this host. The probe of the other hosts (result after 07:46) was not seen in the audit at 07:54.
+6. STALL: after 07:45:32 no bridge call (audit), and DSA's last reply ended in prose with no `# AIRUN` block (`So next: ... Block:`). The run stopped without an error line. Per the guide's "reply without a block ends the run" this is a stall. Not nudged.
+7. Reload ghost arm and rid change (peer finding, observed): the armed rid changed kyypys-mwadgyh4 (07:32) -> kyypys-mwadn03n (07:36) -> ... within the same tab; the toast kept naming rupjnp after the arm moved. Logged as a bridge defect, not a blocker.
+8. DSA_HAIKU_GUIDE gap: the seed boot needs an operator Run click; desk.py take's ship needs a Next: line; a stalled reply ends the run with no error.
+
+### Watch status at 07:54Z
+- dsa_watch: DSA pending=1 taken=2 oldest 61.4 h STALLED; DSA-NUC pending=4 taken=2 oldest 62.5 h STALLED. Lane counts unchanged, because the desk row is the DSA-NUC row claimed locally only.
+- origin/fast-track head 41ba6e55d (no DSA commit).
+- Run window to about 08:36Z not complete. The chat stalled at 07:45:32Z; the watch continues only if the operator sends a new order.
