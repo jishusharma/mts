@@ -19,6 +19,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+try:  # no console flashes from child processes (nowin.py; operator 2026-11-10: python windows popping during ships)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import nowin  # noqa: E402
+    nowin.install()
+except Exception:
+    pass
 ND = "NOT_IN_DATA"
 STUCK_H = 24
 STALE_MIN = 30   # a reading older than this prints as STALE, never as a plain % (operator 2026-10-30: GPT "36%" was 2.3 h old and spent)

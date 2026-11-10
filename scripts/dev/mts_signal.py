@@ -70,6 +70,12 @@ import shutil
 import socket
 import subprocess
 import sys
+try:  # no console flashes from child processes (nowin.py; operator 2026-11-10: python windows popping during ships)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import nowin  # noqa: E402
+    nowin.install()
+except Exception:
+    pass
 import time
 import hosts
 from datetime import datetime, timedelta, timezone
