@@ -261,8 +261,10 @@ MyTradingSys/execution/test_auto_trader_krown_s8.py
 MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_census_session_ladder.py
 MyTradingSys/tools/live_aid/test_pulse.py
 MyTradingSys/tools/live_aid/test_levelstory.py
+MyTradingSys/tools/live_aid/test_indread.py
 scripts/dev/test_agy_path.py
 MyTradingSys/tools/live_aid/test_oi_poller.py
 scripts/dev/test_run_all_tests_encoding.py
 scripts/dev/test_nowin_gate_scripts.py
 MyTradingSys/research/live_aid_pulse_2026-11/test_pulse_parity.py
+scripts/dev/test_buy_crypto.py

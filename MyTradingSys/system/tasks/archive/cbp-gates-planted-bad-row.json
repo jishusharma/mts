@@ -5,7 +5,7 @@
   "commands": [],
   "created": "2026-10-26T18:35:32Z",
   "depends_on": [],
-  "done_when": "research/cbp/GATES_TRIAL_GPT.md table: planted row, expected gate, actual gate; any row that passes all gates is a bug card.",
+  "done_when": "research/cbp/archive/GATES_TRIAL_GPT.md table: planted row, expected gate, actual gate; any row that passes all gates is a bug card.",
   "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],

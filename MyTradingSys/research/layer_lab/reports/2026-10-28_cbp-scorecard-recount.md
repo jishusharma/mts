@@ -21,7 +21,7 @@ Per task instructions:
 2. **Scorecard Recount**:
    - Checked store path `F:/CryptoScrapper/cbp_store/rows.json` (`MyTradingSys/cbp/__init__.py:19`).
    - Confirmed host state: `F:/CryptoScrapper` is absent on DESKTOP-F7IU69N (`NOT_IN_DATA` per task rule 4; store resides on JIS-NB per `GPT_CBP_GUIDE.md:5`).
-   - Recounted from documented producer figures (`MyTradingSys/research/cbp/CBP_STATUS_2026-10-27.md:5,7`): 13 total stored rows across 6 actionable analysts.
+   - Recounted from documented producer figures (`MyTradingSys/research/cbp/archive/CBP_STATUS_2026-10-27.md:5,7`): 13 total stored rows across 6 actionable analysts.
    - Applied D5 Gate 4 threshold (minimum 56 scored calls; `MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md:51`; `MyTradingSys/research/analysts/SCORECARD.md:22`):
      - Every analyst (Krown, Rekt Capital, Jason Pizzino, Michael van de Poppe, Michaal van de Poppe, Qriptal, Benjamin Cowen, Bob Loukas, Jala, CCU) has $< 56$ calls.
      - Marked all analysts: **NOT ENOUGH CALLS**.

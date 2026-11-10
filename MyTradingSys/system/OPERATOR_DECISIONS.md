@@ -2202,6 +2202,10 @@ Done: ROUTING.md section "Gemini access: one rule" is now the single source; HOW
 Measured gaps: desktop -> NUC works (SSH gate status ok 22Z); laptop has no sshd, so no other machine can start laptop Gemini; agy CLI on the laptop UNVERIFIED (broadcast asks login A to check); second Gemini account not signed in on either host.
 Operator-only steps (system setting / sign-in, never a session): enable sshd on the laptop (LENOVO_SETUP.md line 29 command); sign the other Gemini account into agy on each host.
 
+## 2026-11-10 07Z Live Aid: Home is the one screen; indicator insight, fewer tabs (operator)
+Operator: while trading he reads only Home and cannot click tabs; he wants value, not clutter; volume he sees on his own chart, he wants what the Volume Flow indicator and his other TradingView favourites say; he does not know how to use the Map now that Home exists.
+Done (defaults taken, no question asked): Home card "What the indicators say" (Volume Flow, Squeeze Momentum, ADX/DI, WaveTrend, RSI, buy vs sell on 15m / 1h / 4h closed bars, up to 3 plain sentences) replaces the 11-row grid (tools/live_aid/indread.js; formulas FORMULAS 30-32, sentence rules OURS, not backtested). Tab bar cut from 10 to 6: Home, Money, News, US open, In trade, All readings; Map, Levels, Momentum and Liquidations repeat Home and open from the rows of All readings. One idea banner at a time, for the nearest level.
+
 ## 2026-11-10 06Z Login C: spend the rest of the week before the reset (operator)
 Operator: "You will reset tonight - so we need to use you completely just before the reset so that we do not get stuck! So plan for it!"
 Measured 06:41Z (get_usage): weekly all models 87%, weekly Fable 83%, 5h window 6% (resets 10:10Z); weekly reset 2026-11-10T20:00Z (01:30 IST 11-11).
@@ -2224,3 +2228,32 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Proposed order (review critics, 5 of 5 agree on the first three): 1 forward slots T1 (A) 2 stop CI reds: doc-wording tests report-only, research count tests set-based 3 one gate queue per machine with slot wait logged 4 hook lines once per session (never STOP/HOLD/red CI), stop_guard own files only 5 T2/T3 (B) 6 STATUS.md stale fix, tool tests only on tool change (gate scripts' own tests stay always on). Rejected: changed-path selection in full mode. Trial only: ship by PR auto-merge.
 - Popping windows, third report: flashing coincided with three ship gates running at once; cause still not proven.
 - Lead C error, same turn: the tree cleanup removed three standing folders (mts-app, mts-relay, BinanceDataFeed.registry); all were clean and on trunk, restored at once (registry restored detached at trunk).
+
+## 2026-11-10 12:25Z Fold the review into B's 24 h plan; start rolling super sessions; keep or replace this session (operator)
+- Order: "Integrate all your work with the plan that login B has made for the 24 hours, and start the rolling super sessions"; and a question: continue in this long, often-compacted session or start a new one.
+- Done: PLAN_24H_2026-11-10.md section 8 holds the review order and four login C links (L1 to L4); handover/SUPERVISOR_C.md rewritten; link L1 started on Sonnet.
+- Answer given (OURS): start new. After compaction this session held 130 K tokens of 1 M, so size was not the cost. The cost was the model (Fable on every turn, week at 95 %) and detail lost at each compaction (the lane-tree removal on 11-10). The state that matters is in files, so a fresh link loses little. From now: a Fable Lead plans once a day in a short session; Sonnet links run the plan and hand over through the file.
+- Flashing windows, fourth report ("Still flashing"): a 75 s watcher on the desktop saw no new window; a Remote Desktop window to the NUC is open; ask q-2295a4 to login B; the operator was asked whether the windows are inside that window.
+
+## 2026-11-10 13Z One Buy Crypto page; idle sessions; guided simulator session (operator)
+- Order 1 (12:55Z): one live private page "Buy Crypto" for BTC and altcoins: phases and where we are, coins by bucket with tracked prices, his position, all studies on the same page, no separate dark-horse page. Started as a Sonnet session. Holdings and amounts stay on the private page only. Claude sets no personal sizes; the page has boxes for his own proportions.
+- Order 2 (13:00Z): "I don't know what [the idle sessions] are waiting for ... check in simulator whatever is worth watching ... only failures to look at ... a Sonnet session guided by a plan set by the Fable model".
+- Done: Live Aid coach is waiting on its own ship (9 commits, branch claude/jovial-easley-efb700). The Tom/Fabio census session was idle since 11-09 21:11Z with 1 unshipped commit and staged files; told to ship and report in plain words. Plan written: research/sim_desk/GUIDED_SESSION_PLAN_2026-11-10.md (six steps, one idea per session, two filters at most, three verdicts). A Sonnet guide session is started and waits for his "start".
+- Flashing windows: login B checked the NUC at 12:50Z, no python running there; the NUC is ruled out, cause still open.
+
+## 2026-11-10 13:00Z One live "Buy Crypto" page replaces Dark Horse Desk (operator)
+- Order (voice): one live page like Live Aid showing where the market is in his buying phases, which coins are open to buy, how each moved, and his own position; one page with tabs, no separate pages.
+- Done: page built with tabs Now / Coins / My position / Studies; data via `scripts/dev/buy_crypto.py` + one db write (QUICK_ANSWERS.md). Position and his split live only in the page db. The page gives no sizes or buy orders; he sets his own proportions.
+
+## 2026-11-10 14Z Clean up CBP (operator: "remove/archive/cleanup/update CBP")
+- Done: 11 superseded files in research/cbp moved to research/cbp/archive/ (status 10-25/10-27, audit 10-28, ingestion wiring, alt buy plan 10-31, alt update 11-07, sister notes 11-03/11-04, GPT gate trial and quote review); full-path references rewritten; research/cbp/README.md lists what is current, with the 11-10 altcoin session's 50/30/20 bucket split as a template (OURS, not advice).
+- Kept in place: files read by tests or live cards (SCORECARD_GPT, GPT_CBP_GUIDE, SISTER_NOTE 11-07 for sister_signals.json).
+- Stale tree mts-jis-nb-lead-c-reval-1106-2 removed: its 3 commits' content is on trunk; its two dirty files saved in the scratchpad first.
+
+## 2026-11-10 14Z BTC 74,527 and 71,795 are lines, not orders (operator)
+- Words: "these are just lines - not orders - i do not trade on Binance."
+- Meaning: replies and the Buy Crypto page call 74,527.40 and 71,795.36 his price lines, never an order or a Binance position; the BTC price shown is a USD reference only. Page relabel asked of its session (local_2ae61a41).
+
+## 2026-11-10 14:05Z Every session: Chrome "Browser 2" only, never his main profile (operator, angry)
+- Words: "tell every session to use the other chrome profile not this one!!!!!!!" with a screenshot of "Claude started debugging this browser" on his CoinGlass trading tabs (Browser 1).
+- Done: told the 5 open sessions on JIS-NB (buy-crypto-page, live-aid-coach, sup-c-l1, sim-guide, tf-real-frame); Eagle_Eyes did not take the message. CLAUDE.md hard rule added; fleet broadcast sent.

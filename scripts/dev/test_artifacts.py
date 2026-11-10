@@ -73,7 +73,7 @@ class Registry(unittest.TestCase):
         rows = mc.page_index()
         self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
                                                       "Test Simulator", "CBP Analyst Desk", "Live feed one page",
-                                                      "Tom and Fabio Setup Review"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
+                                                      "Tom and Fabio Setup Review", "Buy Crypto"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")

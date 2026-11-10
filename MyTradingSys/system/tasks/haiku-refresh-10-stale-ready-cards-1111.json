@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T19:04:16Z",
+  "depends_on": [],
+  "done_when": "tasks.py lint prints no 'STALE scope changed' line for ready cards (10 at 2026-11-11); lint output quoted in Result",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Clear the STALE-scope warnings so those ready cards are dispatchable again",
+  "id": "haiku-refresh-10-stale-ready-cards-1111",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY twin check: prior haiku refresh cards are done; these ids went stale since. DECISION (OURS): ROUTINE",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T19:04:37Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks"
+  ],
+  "scope_out": [
+    "card goal/scope edits: if a card no longer fits its scope change, tasks.py tried <id> and leave it"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-A-20261111 (D11_PROGRAMME s6 Haiku seed)"
+  ],
+  "state": "ready",
+  "steps": [
+    "For each id: tasks.py show <id>; compare to the commit that changed its scope",
+    "If still valid run tasks.py tag <id> --refresh; else tasks.py tried <id>",
+    "Run tasks.py lint and quote the STALE count"
+  ],
+  "tests": "none (card metadata only); lint before and after counts quoted in the Result line",
+  "title": "Haiku: refresh the 10 ready cards that tasks.py lint flags STALE (scope changed after refresh): re-read each card against its scope change, then tasks.py tag <id> --refresh",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

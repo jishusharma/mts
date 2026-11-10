@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "login-B-sonnet",
+  "closed": "2026-11-10T19:16:10Z",
   "commands": [
     "python -m pytest scripts/dev/test_mts_signal.py --durations=20 -q"
   ],
@@ -16,23 +18,35 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "GATE_SLOW_STEPS.md: 3sig 85s one file, 4f 47s test_wt_maint, 3xt top test_planted_error_tr",
+      "ref": "d97098d0f",
+      "utc": "2026-11-10T19:16:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "acks view: ack from host/login alias counts; GEMINI_START opens with agy.exe",
-      "ref": "ea1541be1544",
-      "utc": "2026-11-09T19:53:58Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/gate-4c-edge-shard-timeout-ai",
+      "ref": "963003442cc1",
+      "utc": "2026-11-10T12:02:38Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: doc delivered; code cards to be filed by planner",
   "note": "DECISION (OURS, planner-A-1110b): split from gate-slow-steps-3xt-3sig-4f-1107 per LAB_GUY defect 1; one run_all_tests.py editor at a time: the code cards wait for this doc.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T20:17:41Z",
+  "refreshed": "2026-11-10T18:59:32Z",
   "refs": [],
-  "result": "",
+  "result": "GATE_SLOW_STEPS.md: 3sig 85s one file, 4f 47s test_wt_maint, 3xt top test_planted_error_trial 68s",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/health_2026-11-07/GATE_SLOW_STEPS.md (new)",
     "runtime_data/gate_timing.jsonl (read)",
@@ -43,17 +57,18 @@
     "no code change, no CI workflow, no live tree",
     "4f stays in the local ship gate (test_a_ship_leaves_the_slow_coordination_steps_to_ci): the doc may only propose"
   ],
-  "scope_sha": "ea1541be1544",
+  "scope_sha": "963003442cc1",
   "size": "S",
   "sources": [
     "MyTradingSys/research/health_2026-11-07/SHIP_HEALTH.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "run the durations command on an idle machine; record load",
     "sum per-file seconds for 3xt and 4f from gate_timing.jsonl (median over the last 10 samples)",
     "write the table plus a proposal per step; each proposal names the invariant it must keep"
   ],
+  "taken": "2026-11-10T18:59:33Z",
   "tests": "doc card; the table is the test; git diff outside the doc is empty",
   "title": "Gate slow steps profile: per-file seconds for 3sig, 3xt, 4f (doc only)",
   "weight": "ROUTINE",

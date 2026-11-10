@@ -3,7 +3,7 @@
 Operator order 2026-10-27: a small layer from the two brothers (Jason @JasonPizzinoOfficial, Michael @MichaelPizzino). Their 1-bar / 2-bar / 3-bar indicator, 50% corrections, retests off pivot points. Reuse what CBP already holds.
 
 ## What the repo already knows (read this turn)
-- Both are T1 CBP analysts, pillar "Multi-asset macro", actionable "partial" (CryptoScrapper cbp_v2/analysts.json). Both are in the actionable-6 profile (research/cbp/CBP_STATUS_2026-10-25.md:7).
+- Both are T1 CBP analysts, pillar "Multi-asset macro", actionable "partial" (CryptoScrapper cbp_v2/analysts.json). Both are in the actionable-6 profile (research/cbp/archive/CBP_STATUS_2026-10-25.md:7).
 - Legacy CBP extracted only macro stances: Jason "overbalance in time and price", levels 87.5k up / 82-83k double-top invalidation (cbp_v2/consensus.md:18, daily_actionable.md:51). Michael was never read line by line (consensus.md:71). Nothing records the 1-2-3 bar method, pivots or retest rules: that is the gap.
 - Roadmap already reserves this: "Jason+Michael layer reads cbp.query ... its own card", with targeted extraction (thinker/2026-10-23_cbp_roadmap_opus.md:44,60).
 - No existing layer, card or claim names them (checked layer_index.json, LAYERS.md, tasks list, sync.py claims).
