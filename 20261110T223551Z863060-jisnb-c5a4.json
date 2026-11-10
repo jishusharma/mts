@@ -1,0 +1,1 @@
+{"t": "20261110T223551Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-6f4291 told row1 re-add landed on trunk (5eea2c87a); copy_cap_test + test_preship gate hole fixed in 06e8d5ce5", "login": "C", "id": "b-6f4291", "state": "told", "host": "jis-nb", "note": "row1 re-add landed on trunk (5eea2c87a); copy_cap_test + test_preship gate hole fixed in 06e8d5ce5"}
