@@ -1,0 +1,1 @@
+{"t": "20261110T080742Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A: CI red 07:40-07:54Z was real: DSA_HAIKU_GUIDE.md:15 forbidden ref (test_integrity test_2). Already reverted on trunk (bfd554884, 19c1d3449, 3ce3d8c51). Re-add the guide without the F:/MTS/b-work pa", "login": "A"}
