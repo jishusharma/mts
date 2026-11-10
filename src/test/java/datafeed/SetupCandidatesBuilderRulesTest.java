@@ -181,6 +181,100 @@ public class SetupCandidatesBuilderRulesTest {
         assertEquals("ct_long", setupType("prior_day_close", "long", "balance"));
     }
 
+    // ---------- breakdown-continuation short below VAL, asserted on the CANDIDATE list (card java-below-val-short-no-setup-type-1109) ----------
+
+    private static ObjectNode belowValRoot(String vwapSlope, String cvdSlope, String priceVsVa) {
+        ObjectNode r = M.createObjectNode();
+        r.put("asset", "TESTBV");
+        r.put("current_price", 100.0);
+        ObjectNode cond = r.putObject("conditions");
+        cond.put("vwap_slope", vwapSlope);
+        cond.put("cvd_slope", cvdSlope);
+        cond.put("price_vs_va", priceVsVa);
+        cond.put("price_vs_poc", "below");
+        cond.putNull("fvg_nearest_unfilled");
+        ObjectNode vwap = r.putObject("vwap");
+        vwap.put("price", 150.0);   // far away: no vwap zone inside its cap
+        vwap.put("slope", vwapSlope);
+        ObjectNode daily = r.putObject("daily_vp");
+        daily.put("poc", 95.0);     // node below the VAL zone: short target
+        daily.put("val", 100.1);    // zone 0.1% above price
+        daily.putArray("hvns");
+        ObjectNode weekly = r.putObject("weekly_vp");
+        weekly.put("poc", 105.0);   // node above: long target
+        weekly.putArray("hvns");
+        ObjectNode m15 = r.putObject("structure").putObject("15m");
+        m15.put("stale", false);
+        m15.put("swing_high", 101.0);
+        m15.put("swing_low", 99.0);
+        ObjectNode cvd = r.putObject("cvd");
+        cvd.put("slope", cvdSlope);
+        cvd.putObject("cvd_recent").put("slope_1h", cvdSlope);
+        r.putObject("trade_flow").put("net_delta_1m", 0.0);
+        r.putObject("order_book_depth").put("bid_ask_ratio", 1.0);
+        return r;
+    }
+
+    private static ArrayNode flatKlines() {
+        ArrayNode k = M.createArrayNode();
+        for (int i = 0; i < 25; i++) {
+            ArrayNode bar = k.addArray();
+            bar.add(1_700_000_000_000L + i * 60_000L).add(99.9).add(100.0).add(99.8).add(99.95).add(10.0)
+               .add(0L).add(1000.0).add(10).add(5.0).add(500.0).add(0);
+        }
+        return k;
+    }
+
+    private static List<String> candidateTypes(ObjectNode root) {
+        ArrayNode out = SetupCandidatesBuilder.build(M, root, new HashMap<String, JsonNode>(), flatKlines());
+        java.util.ArrayList<String> types = new java.util.ArrayList<>();
+        for (JsonNode c : out) {
+            if (c.has("zone") && "daily_val".equals(c.get("zone").path("name").asText())) {
+                types.add(c.get("setup_type").asText() + ":" + c.get("direction").asText());
+            }
+        }
+        return types;
+    }
+
+    @Test
+    public void belowValTrendHealthyProducesTcShortCandidateAndKeepsCtLong() {
+        // vwap falling + cvd falling (aligned, not opposed) below VAL = trend_healthy
+        List<String> types = candidateTypes(belowValRoot("falling", "falling", "below_val"));
+        org.junit.jupiter.api.Assertions.assertTrue(types.contains("tc_short:short"), "candidates: " + types);
+        org.junit.jupiter.api.Assertions.assertTrue(types.contains("ct_long:long"), "ct_long at VAL unchanged: " + types);
+    }
+
+    @Test
+    public void belowValTrendUnhealthyProducesNoShortCandidate() {
+        // vwap rising + cvd falling = opposed outside VA = trend_unhealthy
+        List<String> types = candidateTypes(belowValRoot("rising", "falling", "below_val"));
+        org.junit.jupiter.api.Assertions.assertFalse(types.stream().anyMatch(t -> t.endsWith(":short")), "candidates: " + types);
+        org.junit.jupiter.api.Assertions.assertTrue(types.contains("ct_long:long"), "candidates: " + types);
+    }
+
+    @Test
+    public void shortAtValNeedsBelowValTrendHealthyAndValZone() throws Exception {
+        Class<?> zc = Class.forName("datafeed.SetupCandidatesBuilder$Zone");
+        Constructor<?> ctor = zc.getDeclaredConstructor();
+        ctor.setAccessible(true);
+        Class<?>[] sig = new Class<?>[]{zc, String.class, String.class, String.class};
+        for (String zt : new String[]{"daily_val", "weekly_val", "4h_val", "prior_day_val"}) {
+            Object zone = ctor.newInstance();
+            Field f = zc.getDeclaredField("type");
+            f.setAccessible(true);
+            f.set(zone, zt);
+            assertEquals("tc_short", call("determineSetupType", sig, zone, "short", "trend_healthy", "below_val"));
+            assertNull(call("determineSetupType", sig, zone, "short", "trend_unhealthy", "below_val"));
+            assertNull(call("determineSetupType", sig, zone, "short", "transition", "below_val"));
+            assertNull(call("determineSetupType", sig, zone, "short", "balance", "below_val"));
+            assertNull(call("determineSetupType", sig, zone, "short", "trend_healthy", "in_va"));
+            assertNull(call("determineSetupType", sig, zone, "short", "trend_healthy", null));
+            assertEquals("ct_long", call("determineSetupType", sig, zone, "long", "trend_healthy", "below_val"));
+        }
+        assertNull(setupType("daily_val", "short", "trend_healthy"));          // 3-arg form: no location, fail closed
+        assertNull(setupType("15m_swing_low", "short", "trend_healthy"));
+    }
+
     // ---------- pickTarget (floor 1.25, runner min distance 0 unless stated) ----------
 
     @Test
