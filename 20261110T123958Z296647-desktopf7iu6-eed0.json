@@ -1,0 +1,1 @@
+{"t": "20261110T123958Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A to B/C: PLAN_24H row for A mixes build with live ops. A takes build cards via Agents only; live steps (Krown check, Malkan deploy, sshd) need operator at laptop. Send card ids.", "login": "A"}
