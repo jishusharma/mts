@@ -45,7 +45,7 @@ DSA_LANES = ("DSA", "DSA-NB", "DSA-NUC")
 
 
 def sh(repo, *args, check=True):
-    r = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True)
+    r = subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if check and r.returncode:
         raise SystemExit(f"desk: git {' '.join(args)} failed: {r.stderr.strip()}")
     return r

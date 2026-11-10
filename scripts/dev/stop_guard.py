@@ -101,9 +101,9 @@ def reason(path, transcript=None):
     shared = (top / ".git").is_dir() and bool(transcript)
     own = own_files(transcript) if shared else None
     since = session_start(transcript) if shared else None
-    ahead_cmd = ("rev-list", "--count", "--no-merges", *(("--since=" + since,) if since else ()), "origin/fast-track..HEAD") if shared         else ("rev-list", "--count", "origin/fast-track..HEAD")
+    ahead_cmd = ("rev-list", "--count", "--no-merges", *(("--since=" + since,) if since else ()), "origin/fast-track..HEAD") if shared else ("rev-list", "--count", "origin/fast-track..HEAD")
     cmds = (("branch", "--show-current"), ahead_cmd, ("--no-optional-locks", "status", "--short"))
-    procs = [subprocess.Popen(["git", "-C", str(top), *c], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for c in cmds]
+    procs = [subprocess.Popen(["git", "-C", str(top), *c], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in cmds]
     (branch, _), (ahead, _), (status, _) = [pr.communicate() for pr in procs]
     branch = branch.strip()
     if branch in ("fast-track", "master", "main") or branch.startswith("gemini-q/"):

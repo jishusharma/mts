@@ -96,7 +96,7 @@ RECOVERY = (
 def refresh_clone(repo: Path, run=None) -> str:
     """Fast-forward the dedicated clone to origin/fast-track so the woken session boots from current scripts. Never raises."""
     import subprocess
-    run = run or (lambda *a: subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True, timeout=120))
+    run = run or (lambda *a: subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)))
     try:
         run("fetch", "-q", "origin", "fast-track")
         r = run("merge", "-q", "--ff-only", "origin/fast-track")
@@ -123,7 +123,7 @@ def launch_app(running=None, start=None) -> str:
     import subprocess
     try:
         if running is None:
-            out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq Claude.exe", "/NH"], capture_output=True, text=True, timeout=30).stdout
+            out = subprocess.run(["tasklist", "/FI", "IMAGENAME eq Claude.exe", "/NH"], capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
             running = "Claude.exe" in out
         if running:
             return "already running"

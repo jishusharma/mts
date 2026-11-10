@@ -25,7 +25,7 @@ def fetch_runs(repo, limit=30):
     """Newest-first workflow runs on fast-track; None when gh is missing or fails (then nothing is filed)."""
     try:
         r = subprocess.run(["gh", "run", "list", "--branch", "fast-track", "--workflow", "CI", "--limit", str(limit), "--json", FIELDS],
-                           cwd=str(repo), capture_output=True, text=True, timeout=60)
+                           cwd=str(repo), capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except (OSError, subprocess.TimeoutExpired):
         return None
     if r.returncode != 0:
