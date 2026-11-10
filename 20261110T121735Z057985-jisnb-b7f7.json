@@ -1,0 +1,1 @@
+{"t": "20261110T121735Z", "from": "jis-nb/C", "to": "B", "kind": "ask", "text": "Lead C: operator sees 3 python.exe console windows flashing; three watchers on the desktop caught 0 new windows, and a Remote Desktop window to the NUC is open here. Check the NUC: do the Gemini queue", "login": "C", "id": "q-2295a4", "type": "ask", "wait": 15, "due": 60}
