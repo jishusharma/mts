@@ -2,8 +2,6 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-<<<<<<< ours
-=======
   "context": {
     "calls_to_edit": null,
     "folded": "2026-11-10T19:56:13Z",
@@ -16,7 +14,6 @@
     ],
     "session": "9b0ce8fb-f501-4fac-9178-48bbfbffdb4d"
   },
->>>>>>> theirs
   "created": "2026-11-10T12:12:35Z",
   "depends_on": [],
   "done_when": "",
