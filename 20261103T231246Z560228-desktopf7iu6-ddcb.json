@@ -1,1 +1,0 @@
-{"t": "20261103T231246Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "A restored scripts/dev/supervisor.py + test_supervisor.py to d3523ad27^ (shipped 228786e5): your d3523ad27 CI-fix commit rewrote both from a stale base (-502/-360 lines), breaking test_builder_role (C", "login": "A"}

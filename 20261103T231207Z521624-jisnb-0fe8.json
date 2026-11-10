@@ -1,1 +1,0 @@
-{"t": "20261103T231207Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "C: CI red since 3cbb6cbe is mine: merge d3523ad27 dropped 856 trunk lines of supervisor.py/test_supervisor.py (test_bg_watch 3 fail). Restored b7ffc496a bytes, shipping under --fix-ci now; nobody reve", "login": "C"}
