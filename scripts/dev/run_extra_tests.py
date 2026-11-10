@@ -43,13 +43,35 @@ def all_tests(repo=None):
     return EXTRA + discovered(repo)
 
 
-def jobs():
-    """Concurrent pytest processes: MTS_GATE_JOBS (the gate's knob), default min(4, cpu count)."""
+JOBS_MAX = 8   # OURS 2026-11-11: default cap; half the logical CPUs above 8 (12 on JIS-NUC -> 6), never under the old min(4, cpu)
+
+
+def jobs(cpu=None):
+    """Concurrent pytest processes: MTS_GATE_JOBS (the gate's knob), else min(JOBS_MAX, max(min(4, cpu), cpu // 2)):
+    4 on a 4- to 8-CPU box as before, 6 on the 12-CPU NUC (3xt measured 245 s wall at 4 jobs, 2026-11-11)."""
     try:
         n = int(os.environ.get("MTS_GATE_JOBS", ""))
     except ValueError:
-        n = min(4, os.cpu_count() or 1)
+        cpu = cpu or os.cpu_count() or 1
+        n = min(JOBS_MAX, max(min(4, cpu), cpu // 2))
     return max(1, n)
+
+
+# OURS: seconds per file measured 2026-11-11 on JIS-NUC (GATE_SLOW_STEPS.md, 4 jobs, idle); every other file is about 2 s.
+# These start first so the pool does not end on one 60 s file running alone. Order only: every file still runs.
+SLOW_FIRST = {
+    "scripts/dev/test_planted_error_trial.py": 65,
+    "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py": 56,
+    "MyTradingSys/tools/live_aid/test_live_aid.py": 46,
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py": 43,
+    "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py": 37,
+    "scripts/dev/test_lab_query.py": 27,
+}
+
+
+def slowest_first(rels):
+    """`rels` with the SLOW_FIRST files first (slowest leading), the rest in their list order; same files, each once."""
+    return sorted(rels, key=lambda r: -SLOW_FIRST.get(r, 0))
 
 
 def child_env(repo=None):
@@ -109,7 +131,7 @@ def run_files(rels, n_jobs, one=run_one, tmp=None):
         done[rel] = (ok, tail)
 
     with ThreadPoolExecutor(max_workers=max(1, n_jobs)) as pool:
-        list(pool.map(work, enumerate(rels)))
+        list(pool.map(work, enumerate(slowest_first(rels))))
     return [f"{rel}: missing" if done[rel][1] == "missing" else rel for rel in rels if not done[rel][0]]
 
 
