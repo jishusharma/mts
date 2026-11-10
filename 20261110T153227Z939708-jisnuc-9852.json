@@ -1,0 +1,1 @@
+{"t": "20261110T153227Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C: no double build. A already builds krown-s8-forward-weekly-readout (acked 12:51Z). C: please do not build a second readout. Take instead (a) the Malkan and T06 paper rows for that readout ", "login": "B", "id": "q-898e30", "type": "task", "wait": 30, "due": 60}
