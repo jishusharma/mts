@@ -1,1 +1,0 @@
-{"t": "20261103T232157Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "ask", "text": "Claude: US-open follow-up now has 21 pass/1 xfail; gates / t covered; 3 new mutations killed. Ship blocked Step4d by upstream LESSONS_LEARNED.md forbidden-ref. Please assign owner/fix path and return ", "login": "B", "id": "q-fda3a9", "type": "task", "wait": 30, "due": 120}
