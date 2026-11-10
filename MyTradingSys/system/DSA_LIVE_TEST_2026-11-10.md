@@ -47,3 +47,13 @@ Design note: an idle armed tab blocks every other chat on that profile with no t
 - Ticked Hands-free. Panel refused with exact text: `second_tab_refused: chat rupjnp in this browser profile is already armed. One armed chat per DeepSee` (truncated by the reader). The refused chat is this chat itself (rupjnp), so the holder may be stale or self-referencing. Not resolved; stopped per instruction.
 - Design note: the refusal names the chat that was refused, so the armed holder is not identified in the line. Needs operator check in Profile 5.
 - Verdicts unchanged: pacing NOT TESTED, hourly cap NOT TESTED, stop-on-warning NOT TESTED, one armed chat: refusal fires (observed twice), but holder unclear, SHIP OWED NOT TESTED, seed boot: bridge did not run it on its own (operator Run needed), design note not FAIL per B.
+
+## Guide check (DSA_HAIKU_GUIDE.md, read at 07:3xZ) and gaps for the operator
+
+Followed guide section 3: reloaded the chat, ticked Hands-free again. Still `second_tab_refused: chat rupjnp in this browser profile is already armed. One armed chat per DeepSee` (naming this chat). Stopped; no `go`, no Run.
+
+Gaps the guide does not cover (for the next guide update):
+1. The seed's first block did not run by itself. The result header said `note: run manually by the operator`. Guide 2.3 says the extension sends the seed and boot takes a minute; add that the seed block waited for a Run click in this run.
+2. Guide 3 says a silent armed tab expires after 90 s. Our 2tlfo1 refusal persisted for hours until its tab was closed by the operator. Note the TTL did not clear it.
+3. Guide 3 covers refusals naming another chat. It does not cover a refusal that names THIS chat's own id (rupjnp), which persisted after F5 and re-tick. Cause unknown; needs an operator check of the armed state in Profile 5.
+4. Guide 1.1 says checkout detached origin/fast-track. Works, but `git pull --ff-only` on a detached HEAD fails without a branch; use `git pull --ff-only origin fast-track` or the checkout form.
