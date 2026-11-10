@@ -104,6 +104,17 @@ class UserHookTest(unittest.TestCase):
         U.remember(str(gone))          # newest first, but it does not exist
         self.assertIn("cwd=" + self.clone.resolve().as_posix(), self.run_runner(self.outside))
 
+    def test_command_uses_windowless_pythonw_when_installed(self):
+        """The app starts hook commands without a console; python.exe then opens a visible window on every prompt (operator, 11-10/11)."""
+        if sys.platform != "win32" or not Path(sys.executable).with_name("pythonw.exe").is_file():
+            self.skipTest("windows with pythonw only")
+        self.assertIn("pythonw.exe", U.command())
+
+    def test_runner_reads_stdin_without_sys_stdin(self):
+        """pythonw has no sys.stdin: the runner must read fd 0 (v3)."""
+        self.assertIn("os.read(0", U.runner_text())
+        self.assertNotIn("sys.stdin", U.runner_text())
+
     def test_ensure_installed_skips_in_signal_tests_and_when_off(self):
         os.environ["MTS_USER_HOOK"] = "off"
         self.assertEqual(U.ensure_installed(str(HERE)), [])
