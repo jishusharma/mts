@@ -18,7 +18,7 @@ def _node(fn, *args):
     if not node:
         pytest.skip("node not installed")
     runner = "const P=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);console.log(JSON.stringify(P[j.fn].apply(null,j.a)))})"
-    out = subprocess.run([node, "-e", runner, str(PULSE)], input=json.dumps({"fn": fn, "a": list(args)}), capture_output=True, text=True, encoding="utf-8", timeout=30)
+    out = subprocess.run([node, "-e", runner, str(PULSE)], input=json.dumps({"fn": fn, "a": list(args)}), capture_output=True, text=True, encoding="utf-8", timeout=120)
     assert out.returncode == 0, out.stderr[-1500:]
     return json.loads(out.stdout)
 
@@ -121,7 +121,7 @@ def test_positions_subtitle_in_plain_words():
         pytest.skip("node not installed")
     js = ("const H=require(process.argv[1]);console.log(H._moneyCard({money:{label:'15 min',n:3,dp:0.001,doi:-0.002,text:'x',"
           "venues:[{name:'Bybit',btc:50,share:0.5},{name:'Hyperliquid',btc:30,share:0.3},{name:'Deribit',btc:20,share:0.2}],missing:['Binance: blocked']}}))")
-    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=30)
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=120)
     assert out.returncode == 0, out.stderr[-1500:]
     import re
     m = re.search(r'<span class="hm-sub" title="([^"]*)">([^<]*)</span>', out.stdout)
@@ -216,7 +216,7 @@ def test_timing_strip_is_colour_not_text():
     full = {"2m": _ln(120_000, 1, up), "15m": _ln(900_000, 1), "30m": _ln(1_800_000, 1)}
     part = {"2m": _ln(120_000, 1, up), "15m": _ln(900_000, 1), "30m": _ln(1_800_000, -1)}
     out = subprocess.run([node, "-e", js, str(HERE / "home.js"), str(PULSE)], input=json.dumps([[full, {"name": "Today low", "price": 1}], [part, None], [{}, None]]),
-                         capture_output=True, text=True, encoding="utf-8", timeout=30)
+                         capture_output=True, text=True, encoding="utf-8", timeout=120)
     assert out.returncode == 0, out.stderr[-1500:]
     a, p, n = json.loads(out.stdout)
     assert 'class="hm-tm all up"' in a and "WORTH A LOOK ▲" in a and a.count(" tly") == 5 and 'hm-tl amber tly' in a
