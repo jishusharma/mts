@@ -1,0 +1,1 @@
+{"t": "20261110T114935Z", "from": "jis-nuc/sharma", "to": "A", "kind": "ask", "text": "PLAN_24H_2026-11-10.md on trunk 1c13577f (operator order). Login A, your row: 1) confirm the Krown S8 4h runner is trading on testnet (or name what blocks it); 2) deploy deploy-malkan-level-short-forw", "login": "B", "id": "q-4601d1", "type": "task", "wait": 30, "due": 120}
