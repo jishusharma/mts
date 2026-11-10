@@ -184,6 +184,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-mirror-follow-live-host-move` refined p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
+  - `live-aid-one-bias-line-1110` raw p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le

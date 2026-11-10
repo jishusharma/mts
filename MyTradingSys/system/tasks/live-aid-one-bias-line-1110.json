@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T14:17:58Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "live-aid-one-bias-line-1110",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/tools/live_aid/home.js"
+  ],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-10 via Live Aid session C"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP banners say 'big picture up' (pulse 1h-4h lean) and the level card says MIXED. State which clock wins, the two decision lines (15m close above 74,000 / below 73,666 style) and why, in colour; and keep liquidation history across page reloads (R08)",
+  "weight": "",
+  "worker": ""
+}
