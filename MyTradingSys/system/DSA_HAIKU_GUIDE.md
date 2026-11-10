@@ -31,8 +31,6 @@ Read this before you start, test, or babysit a DSA chat. DSA = DeepSeek working 
 - `account_in_use` / lease refused: another machine holds the DeepSeek account lease (one machine per account). Report the exact panel text; do not force it.
 - Warning cooldown: the extension stops hands-free on its own after a DeepSeek warning. Leave it off and report.
 
-**Is it armed? Do not trust the red toast.** It can stay on screen after the arm succeeded. Check instead: the Hands-free box is ticked with a counter (0/200), and the bridge audit tail has `EXT-EVENT lease acquire deepseek-default -> ok` (`grep EXT-EVENT` on `F:/AIBridge/src/audit.jsonl`, never print token fields).
-
 ## 4. What normal looks like (0.7.34 limits)
 - Every auto post is paced: 20 s + 5-15 s jitter since the last post of the profile, max 30 an hour, 200 a day. A "paced" status is not a hang. An hour or day limit stops hands-free; that is the guard working.
 - A reply can hold up to 6 command blocks; they run in order and one `[AIRUN RESULT]` comes back.
