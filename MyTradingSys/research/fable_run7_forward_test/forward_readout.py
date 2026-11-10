@@ -238,6 +238,12 @@ def to_markdown(res):
               "mean + 1.28 SE < 0. Fee-net R, one observation per UTC-day cluster (n counts trades).",
               f"Excluded: contaminated (Krown source, other account) {res['contaminated']}, unresolved "
               f"{res['unresolved']}, no risk/R {res['unscored']}, other sources {res['other_sources']}."]
+    if res.get("paper"):
+        p = res["paper"]
+        lines.append(f"Paper journals: scored {p['scored']}, signals {p['signal']}, no_fill {p['no_fill']}, "
+                     f"unresolved {p['unresolved']}, open {p['open']} (counted, not scored).")
+        for k in res["kills"]:
+            lines.append("Kill row: " + ", ".join(f"{a}={b}" for a, b in sorted(k.items())))
     return "\n".join(lines) + "\n"
 
 
