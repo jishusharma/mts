@@ -40,3 +40,10 @@ The panel line may be stale; the arm state could not be confirmed. Run stopped a
 Verdict stays: pacing NOT TESTED, hourly cap NOT TESTED, stop-on-warning NOT TESTED, SHIP OWED NOT TESTED, seed boot design note only.
 
 Design note: an idle armed tab blocks every other chat on that profile with no time limit; the refusal names the old chat id but there is no timeout to clear it.
+
+## Second retry after F5 (operator reload)
+
+- Operator pressed F5 on the chat (refusal line from 2tlfo1 cleared). Seed boot block: result #1 `rid=rupjnp-mwadart2-3` ran at 07:27:24Z with `note: run manually by the operator`. The bridge did not run it on its own, the operator pressed Run. Boot banner completed: worktree `mts-dsa-jis-nuc-1110-0727`, `dsa.py boot` ok, DSA waiting for an order (no "go" sent).
+- Ticked Hands-free. Panel refused with exact text: `second_tab_refused: chat rupjnp in this browser profile is already armed. One armed chat per DeepSee` (truncated by the reader). The refused chat is this chat itself (rupjnp), so the holder may be stale or self-referencing. Not resolved; stopped per instruction.
+- Design note: the refusal names the chat that was refused, so the armed holder is not identified in the line. Needs operator check in Profile 5.
+- Verdicts unchanged: pacing NOT TESTED, hourly cap NOT TESTED, stop-on-warning NOT TESTED, one armed chat: refusal fires (observed twice), but holder unclear, SHIP OWED NOT TESTED, seed boot: bridge did not run it on its own (operator Run needed), design note not FAIL per B.
