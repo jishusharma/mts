@@ -23,11 +23,35 @@ CARDS = cards()
 FILES = [f for f in ALL if os.path.basename(f)[:-5] in CARDS]
 
 
-def test_all_337_rows_present():
-    assert len(FILES) == 337
-    late = [os.path.basename(f)[:-5] for f in ALL if f not in FILES]
-    assert all(i[-10:] >= '2026-11-04' for i in late), late
-    assert len(late) == 21, late   # 2026-11-10 live_aid-pulse-backtest; 2026-11-06 backtest-pre-us-failed-break-dev-run; 2026-11-05 oi-pivot-1h-4h-long-oi-followup, wt-extreme-cross-volmatch, level-approach-eth-replicate; 2026-11-04 context re-run rows: rsi-div x2, wavetrend-c30 x2, bb x4 (incl. eth-pool), fabio-l1-strict, bear-proxy-context-tuning, rsi-40-60-line-behaviour; desk-trades x5 (fabio_v3 a-d/b/c, tom_vp-fade, tom_spike_level)
+# card rows that never had a results json (no result file, not a failure); the header row is 'id'
+NO_JSON = {'id', 'rsi-deep-confluence-2026-11-04', 'rsi-deep-confirmations-2026-11-04',
+           'rsi-deep-context-tables-2026-11-04', 'rsi-deep-divergence-context-2026-11-04'}
+
+
+def rows_problems(card_ids, result_ids):
+    """Set-based (arch review row 2): every card row has its result json, and every result without a card
+    is a later one (id ends 2026-11-04 or newer). A new result landing never changes the outcome."""
+    missing = sorted(set(card_ids) - set(result_ids) - NO_JSON)
+    late = [i for i in result_ids if i not in set(card_ids)]
+    old_uncarded = sorted(i for i in late if i[-10:] < '2026-11-04')
+    return missing, old_uncarded
+
+
+def test_all_card_rows_present():
+    ids = [os.path.basename(f)[:-5] for f in ALL]
+    missing, old_uncarded = rows_problems(CARDS, ids)
+    assert not missing, missing
+    assert not old_uncarded, old_uncarded
+    assert len(FILES) >= 337   # floor, the 2026-11-03 set; never an exact count
+
+
+def test_new_result_landing_does_not_break_rows_check():
+    """The old exact asserts (len(late) == 21) failed the moment one more result json landed."""
+    ids = [os.path.basename(f)[:-5] for f in ALL]
+    assert rows_problems(CARDS, ids + ['some-new-study-2026-12-01']) == rows_problems(CARDS, ids)
+    # a card row that lost its json, or an old uncarded result, is still caught
+    assert rows_problems(CARDS, ids[1:])[0] == [ids[0]] if ids[0] in CARDS else True
+    assert rows_problems(CARDS, ids + ['stray-2026-10-01'])[1] == ['stray-2026-10-01']
 
 
 @pytest.mark.parametrize('f', FILES, ids=lambda f: os.path.basename(f)[:-5])

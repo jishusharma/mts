@@ -1,10 +1,15 @@
 {
   "done_when": "desk row closed with: reachable yes/no, error text or the card result file on trunk",
+  "finished": "2026-11-10T20:37:02Z",
   "from": "JIS-NB",
+  "host": "JIS-NUC",
   "id": "20261107-172114-depth-band-audit-rerun-from-jis-nuc-fapi",
   "need": "From JIS-NB every fapi.binance.com depth request timed out (credit job depth-band-audit-marketdatasnapshot-bid- BLOCKED, $0.17). Run from the NUC: curl -s -m 15 \"https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=5\" ; if JSON comes back, run the card commands of depth-band-audit-marketdatasnapshot-bid- and ship its result file; if not, report the error text and the public IP country (curl -s ifconfig.co/country).",
   "posted": "2026-11-07T17:21:14Z",
-  "status": "pending",
+  "result": "reachable=NO from JIS-NUC: fapi/v1/ping timed out (20s), depth BTCUSDT and ETHUSDT timed out (30.04s each), public IP country India (2405:201:...:f48e IPv6). Evidence: MyTradingSys/research/coinglass_field_guide_2026-11-01/DEPTH_BAND_RESULT.md. Card depth-band-audit-marketdatasnapshot-bid- still needs a host with fapi egress.",
+  "status": "done",
+  "taken": "2026-11-10T20:26:04Z",
+  "taken_by": "JIS-NUC",
   "target": "DSA-NUC",
   "title": "Depth-band audit rerun from JIS-NUC: fapi.binance.com reachability, then the MarketDataSnapshot bid/ask band job if reachable"
 }
