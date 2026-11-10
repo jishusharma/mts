@@ -60,13 +60,25 @@ def child_env(repo=None):
     return env
 
 
-def run_one(rel, basetemp):
-    """(ok, one-line result) for one extra test file: its own pytest process, cwd and basetemp."""
+FILE_TIMEOUT_S = 300   # OURS: ceiling per extra test file (all take < 60 s); a file still running at it = hung, it fails and frees its slot
+
+
+def run_one(rel, basetemp, timeout=None):
+    """(ok, one-line result) for one extra test file: its own pytest process, cwd and basetemp. A file past `timeout`
+    (FILE_TIMEOUT_S) fails as 'timed out'. A child that dies with no output at all (2026-11-10: a native crash while pytest
+    imported numpy/pandas at collection, one CI shard; the re-run of the same commit passed) is run once more."""
     p = REPO / rel
     if not p.exists():
         return False, "missing"
-    r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
-                       cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env())
+    limit = timeout or FILE_TIMEOUT_S
+    for attempt in (1, 2):
+        try:
+            r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
+                               cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env(), timeout=limit)
+        except subprocess.TimeoutExpired:
+            return False, f"timed out after {limit}s (hung; killed)"
+        if r.returncode == 0 or (r.stdout or "").strip() or attempt == 2:
+            break
     tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
     if r.returncode != 0:
         tail += failure_detail(r.stdout, r.stderr)

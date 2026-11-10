@@ -80,3 +80,21 @@ def test_child_env_lets_a_test_in_a_subfolder_import_a_repo_root_package(tmp_pat
     assert rx.child_env()["PYTHONPATH"] == os.pathsep.join(["keepfirst", str(tmp_path)])
     ok, tail = rx.run_one("sub/test_imp.py", tmp_path / "bt")
     assert ok, tail
+
+
+def test_a_hung_file_is_killed_at_the_timeout_and_fails(tmp_path, monkeypatch):
+    (tmp_path / "test_hang.py").write_text("import time" + NL + "def test_h():" + NL + "    time.sleep(60)" + NL, encoding="utf-8", newline=NL)
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    ok, tail = rx.run_one("test_hang.py", tmp_path / "bt", timeout=3)
+    assert not ok and "timed out after 3s" in tail
+
+
+def test_a_child_that_dies_with_no_output_is_run_once_more(tmp_path, monkeypatch):
+    mark = tmp_path / "mark"
+    src = NL.join(["import os", f"m = {str(mark)!r}", "if not os.path.exists(m):", "    open(m, 'w').close()", "    os._exit(3)", ""])
+    (tmp_path / "conftest.py").write_text(src, encoding="utf-8", newline=NL)
+    (tmp_path / "test_ok.py").write_text("def test_a():" + NL + "    pass" + NL, encoding="utf-8", newline=NL)
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    ok, tail = rx.run_one("test_ok.py", tmp_path / "bt")
+    assert ok and "1 passed" in tail
+
