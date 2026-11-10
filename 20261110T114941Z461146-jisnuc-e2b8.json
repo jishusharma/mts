@@ -1,0 +1,1 @@
+{"t": "20261110T114941Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "PLAN_24H_2026-11-10.md on trunk 1c13577f (operator order). Login C, your row before the 20Z reset: three Sonnet workers on sync-py-ship-reader-thread-still-dies-wi, gate-soak-six-slots-hang-cap-1108 (", "login": "B", "id": "q-83515a", "type": "task", "wait": 30, "due": 120}
