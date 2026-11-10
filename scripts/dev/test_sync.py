@@ -130,7 +130,9 @@ class SyncTest(unittest.TestCase):
         """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
         cap = "MyTradingSys/tests/docs/test_integrity.py"
         (self.a / cap).parent.mkdir(parents=True)
-        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        real = Path(__file__).resolve().parents[2] / cap
+        commit(self.a, cap, real.read_text(encoding="utf-8"))
+        commit(self.a, cap.replace("test_integrity.py", "doc_drift.py"), real.with_name("doc_drift.py").read_text(encoding="utf-8"))
         sync.ship(self.a, gate=lambda repo, files: None)
         commit(self.a, "CLAUDE.md", "x" * 100_000)
         with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
