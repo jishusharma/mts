@@ -111,6 +111,7 @@ MyTradingSys/execution/halt_history/*
 MyTradingSys/execution/plans/*
 !MyTradingSys/execution/plans/.gitkeep
 MyTradingSys/research/fast_track_2026-09-27/bt_runs/
+MyTradingSys/research/live_aid_pulse_2026-11/events.json
 runtime_data/mts-watch.log
 backup_session/
 
@@ -254,4 +255,3 @@ MyTradingSys/research/tom_fabio_course_correction_2026-11-07/runtime/
 MyTradingSys/runtime/live_aid_toasts.jsonl
 MyTradingSys/runtime/live_aid_toasts.js
 MyTradingSys/runtime/level_touch_state.json
-MyTradingSys/research/live_aid_pulse_2026-11/events.json
