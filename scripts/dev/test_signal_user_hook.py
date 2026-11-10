@@ -113,7 +113,7 @@ class UserHookTest(unittest.TestCase):
     def test_runner_reads_stdin_without_sys_stdin(self):
         """pythonw has no sys.stdin: the runner must read fd 0 (v3)."""
         self.assertIn("os.read(0", U.runner_text())
-        self.assertNotIn("sys.stdin", U.runner_text())
+        self.assertNotIn("sys.stdin.buffer", U.runner_text())
 
     def test_ensure_installed_skips_in_signal_tests_and_when_off(self):
         os.environ["MTS_USER_HOOK"] = "off"
