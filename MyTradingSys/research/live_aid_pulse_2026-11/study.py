@@ -337,7 +337,7 @@ def standard_card(res):
             {"name": "Rule", "value_plain": "pulse.js setup() ported line for line to python and parity-tested against the live JS through node; thresholds as shipped", "label": "OURS"},
             {"name": "Levels", "value_plain": "PDH, PDL, PDC, day open, week open, PWH, PWL, Asia high/low merged within 0.15 %; analyst, VAL/POC/VAH, MA-strip, VWAP levels and the Home direction are NOT_IN_DATA", "label": "OURS"},
             {"name": "Entry and exit", "value_plain": "5-minute decision times, entry at the open of the next 1m bar plus one bar, exit by time after 15, 30 or 60 min, 60-minute same-side cooldown", "label": "OURS"},
-            {"name": "Costs", "value_plain": "Binance taker 0.05 % per side (fees.py) plus 2 bp per side slippage = 14 bp round trip", "label": "SOURCED"},
+            {"name": "Costs", "value_plain": "Binance taker 0.05 % per side (fees.py) plus a 2 bp per side fill allowance = 14 bp round trip", "label": "SOURCED"},
         ],
         "how": "Walk BTCUSDT USD-M 1m klines (Binance perp tape, proxy for the page's feed) every 5 minutes, rebuild the page's candles per timeframe (1000 x 1m, 150 for the rest, forming candle included), run grid() and setup(); null = same near-level times with no setup and the signal's side mix; 95 % day-clustered bootstrap, 4000 draws.",
         "window": "DEV 2022-02-01 to 2024-06-30 (881 UTC days); VALIDATION and HOLDOUT never opened",
@@ -397,8 +397,7 @@ def cmd_outcomes(a):
     sys.path.insert(0, str(HERE.parent / "sim_desk" / "artifact"))
     import build_artifact as ba  # noqa: E402  the desk's fixed verdict banner rule (test_every_committed_result_has_banner)
     res["banner"] = ba.banner_of(res)
-    Path(a.json).write_text(json.dumps(res, indent=1), newline="
-")
+    Path(a.json).write_text(json.dumps(res, indent=1), newline="\n")
     print("wrote", a.json)
 
 

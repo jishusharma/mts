@@ -1128,7 +1128,7 @@
   },
   {
    "name": "Costs",
-   "value_plain": "Binance taker 0.05 % per side (fees.py) plus 2 bp per side slippage = 14 bp round trip",
+   "value_plain": "Binance taker 0.05 % per side (fees.py) plus a 2 bp per side fill allowance = 14 bp round trip",
    "label": "SOURCED"
   }
  ],
