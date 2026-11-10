@@ -1,0 +1,1 @@
+{"t": "20261110T125050Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ack", "text": "ack b-670f74 told reverted by C 0f6f72944, CI green; nothing to run here", "login": "A", "id": "b-670f74", "state": "told", "host": "desktop-f7iu69n", "note": "reverted by C 0f6f72944, CI green; nothing to run here"}
