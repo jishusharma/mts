@@ -678,14 +678,15 @@ def build_plan(quick):
 NOT_RUN = {}   # step num -> why it did not run (fail-fast / precheck failed); results[num] is None for these
 
 
-def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None, precheck_slot=None):
+def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None):
     """Run the plan and print each step's block as it finishes. Independent steps run `jobs` at a time, slowest first; SERIAL_STEPS
     follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}.
     GATE_SPEED (sync.py ship only; CI, auto_deploy and a bare run pass none of these):
-      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, holding precheck_slot when provided;
+      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time (inside the one slot, when there is one);
                  any failure there and the rest is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
       fail_fast  in the main phase, after the first failed step the steps not yet started are NOT RUN; started ones finish
-      slot       zero-argument context manager (the gate slot) held around the main phase only
+      slot       zero-argument context manager (the gate slot): taken ONCE, around the precheck and the main phase (ARCH_REVIEW row 3:
+                 one queue per machine, one wait per ship); not taken when there is nothing to run
       reused     {num: note} of steps the pass record shows passing on this exact tree: PASS without running"""
     out = out or sys.stdout
     results = {}
@@ -746,24 +747,31 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     if precheck:
         pre = [s for s in todo if s.num in CHEAP_STEPS or s.num == TARGET_STEP]
         main_steps = [s for s in todo if s not in pre]
-        slot_msg = "with precheck slot" if precheck_slot else "no gate slot"
-        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, {slot_msg}"
+        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time"
               + (f"; {len(reused)} reused from the pass record" if reused else ""), file=out, flush=True)
-        with (precheck_slot() if precheck_slot else contextlib.nullcontext()):
+        with (slot() if slot and todo else contextlib.nullcontext()):   # one slot for the whole ship; a precheck failure frees it at once
             run_steps(pre, min(jobs, PRECHECK_JOBS), False)
-        if failed_first:
-            for s in main_steps:
-                not_run(s, f"precheck failed: step {failed_first[0]}")
-            return results
-        print(f"Precheck passed in {time.monotonic() - t_start:.0f}s; main {len(main_steps)} steps, {jobs} at a time", file=out, flush=True)
-    else:
-        main_steps = todo
-        print(f"Gate: {len(todo)} steps, {jobs} at a time" + (f"; {len(reused)} reused from the pass record" if reused else ""),
-              file=out, flush=True)
-    if main_steps:
+            if failed_first:
+                for s in main_steps:
+                    not_run(s, f"precheck failed: step {failed_first[0]}")
+                return results
+            print(f"Precheck passed in {time.monotonic() - t_start:.0f}s; main {len(main_steps)} steps, {jobs} at a time", file=out, flush=True)
+            if main_steps:
+                run_steps(main_steps, jobs, fail_fast)
+        return results
+    print(f"Gate: {len(todo)} steps, {jobs} at a time" + (f"; {len(reused)} reused from the pass record" if reused else ""),
+          file=out, flush=True)
+    if todo:
         with (slot() if slot else contextlib.nullcontext()):
-            run_steps(main_steps, jobs, fail_fast)
+            run_steps(todo, jobs, fail_fast)
     return results
+
+
+def gate_slot_factory(mode):
+    """ARCH_REVIEW row 3: the zero-argument gate-slot context manager of EVERY gate mode (fast, full, deploy): one pool, GATE_SLOTS wide.
+    `mode` only labels the line in wait.log."""
+    import sync
+    return lambda: sync.gate_slot(REPO, slots=sync.GATE_SLOTS, name=sync.GATE_POOL, mode=mode)
 
 
 def step_timeout_for(mode):
@@ -805,7 +813,6 @@ def targeted_tests(files, root=REPO):
 
 
 FAST_JOBS_MAX = 6
-FAST_SLOTS = 2
 FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
 LOOKAHEAD_MUST = "3la"   # picked by gate_select.LOOKAHEAD_RE; in a fast ship it is must-pass (NO_DEFER_CMDS)
 FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
@@ -1410,16 +1417,10 @@ def main(argv=None):
         if use_record:
             reused = {**load_input_reused(plan), **reused}
     slot = None
-    precheck_slot = None
     if "--slot" in args and mode not in ("docs", "none"):
-        import sync
-        if fast_applied:   # own pool: a fast gate never queues behind the 9-minute full gates
-            slot = lambda: sync.gate_slot(REPO, slots=FAST_SLOTS, name="gate-slots-fast")   # noqa: E731
-        else:
-            slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
-            precheck_slot = lambda: sync.gate_slot(REPO, slots=sync.GATE_PRECHECK_SLOTS, name="gate-slots-precheck")   # noqa: E731
+        slot = gate_slot_factory("fast" if fast_applied else "full")   # one pool for every mode (ARCH_REVIEW row 3)
     results = run_plan(plan, fast_jobs() if fast_applied else gate_jobs(), fail_fast="--fail-fast" in args,
-                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused, precheck_slot=precheck_slot)
+                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused)
     if use_record:
         save_record(plan, results, start_tree=start_tree, deferred=fast_info.get("deferred") if fast_applied else None)
         save_input_record(plan, results, reused=reused, start_tree=start_tree)

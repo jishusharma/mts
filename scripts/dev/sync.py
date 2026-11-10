@@ -290,7 +290,9 @@ def code_ship(files):
 
 
 GATE_SLOTS = 2
+GATE_POOL = "gate-slots"   # ARCH_REVIEW row 3: the ONE gate queue per machine (fast, full, precheck and deploy gates all take from it)
 GATE_WAIT_NOTE_S = 60
+WAIT_LOG_KEEP = 200
 
 
 def pid_alive(pid):
@@ -317,10 +319,7 @@ def pid_alive(pid):
     return True
 
 
-GATE_PRECHECK_SLOTS = 2
-
-
-def host_gate_slots_dir(name="gate-slots", repo=None):
+def host_gate_slots_dir(name=GATE_POOL, repo=None):
     """Host-wide gate slots directory (SUPERVISOR.md SV7).
     Separate clones on the same host share the same slot pool so concurrent gates respect the machine budget.
     MTS_GATE_SLOTS_DIR overrides the base directory for tests."""
@@ -345,10 +344,33 @@ class gate_slot:
     came free in that time (deploy: fail closed)."""
 
     def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0, timeout=None,
-                 name="gate-slots"):
+                 name=GATE_POOL, mode="full"):
         self.repo, self.slots, self.alive, self.sleep = repo, slots, alive, sleep
         self.note_every, self.poll, self.path, self.timeout, self.name = note_every, poll, None, timeout, name
+        self.mode = mode   # fast | full | deploy: only labels the wait.log line
         self.wait_s = 0.0
+        self.busy_first = 0
+
+    def _log_wait(self, d):
+        """One JSON line per acquired slot in <slots base>/wait.log (temp dir, never the repo: the repo is public): the real slot wait.
+        One O_APPEND write; kept to the last WAIT_LOG_KEEP lines, best-effort; any error is swallowed, a log never fails a gate."""
+        try:
+            log = d.parent / "wait.log"
+            row = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "host": socket.gethostname(), "repo": Path(str(self.repo)).name,
+                   "pid": os.getpid(), "mode": self.mode, "wait_s": round(self.wait_s, 2), "busy": self.busy_first}
+            fd = os.open(str(log), os.O_CREAT | os.O_APPEND | os.O_WRONLY)
+            try:
+                os.write(fd, (json.dumps(row) + "\n").encode("utf-8"))
+            finally:
+                os.close(fd)
+            if log.stat().st_size > 20000:
+                lines = log.read_text(encoding="utf-8").splitlines()
+                if len(lines) > WAIT_LOG_KEEP:
+                    tmp = log.with_name(f"wait.log.{os.getpid()}.tmp")
+                    tmp.write_text("\n".join(lines[-WAIT_LOG_KEEP:]) + "\n", encoding="utf-8")
+                    os.replace(str(tmp), str(log))
+        except Exception:
+            pass
 
     def _dir(self):
         return host_gate_slots_dir(self.name, self.repo)
@@ -385,10 +407,16 @@ class gate_slot:
     def __enter__(self):
         d = self._dir()
         start = last = time.monotonic()
+        first = True
         while True:
             self.path, busy = self._try(d)
+            if first:
+                self.busy_first, first = busy, False
             if self.path:
                 self.wait_s = time.monotonic() - start
+                self._log_wait(d)
+                if self.wait_s >= 1.0:
+                    print(f"gate slot acquired after {self.wait_s:.0f}s ({self.mode})")
                 return self
             left = None if self.timeout is None else self.timeout - (time.monotonic() - start)
             if left is not None and left <= 0:

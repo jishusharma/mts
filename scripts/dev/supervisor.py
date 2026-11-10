@@ -251,25 +251,20 @@ def _gate_slots_raw(repo: Path = REPO) -> dict:
     total = sync.GATE_SLOTS
     busy = 0
     pids = []
-    dirs = [d]
-    fast_d = d.parent / "gate-slots-fast"
-    if fast_d != d and fast_d.is_dir():
-        dirs.append(fast_d)
-    for cur_d in dirs:
-        for i in range(max(total, getattr(sync, "FAST_GATE_SLOTS", 1))):
-            p = cur_d / f"slot-{i}"
-            if not p.exists():
-                continue
-            try:
-                raw = p.read_text(encoding="utf-8").strip()
-                owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
-            except (OSError, ValueError):
-                owner = None
-            if owner is None:
-                busy += 1
-            elif owner > 0 and pid_alive(owner):
-                busy += 1
-                pids.append(owner)
+    for i in range(total):   # ARCH_REVIEW row 3: one pool; an old gate-slots-fast dir left by old code is ignored
+        p = d / f"slot-{i}"
+        if not p.exists():
+            continue
+        try:
+            raw = p.read_text(encoding="utf-8").strip()
+            owner = int(raw) if raw else (0 if time.time() - p.stat().st_mtime > 10 else None)
+        except (OSError, ValueError):
+            owner = None
+        if owner is None:
+            busy += 1
+        elif owner > 0 and pid_alive(owner):
+            busy += 1
+            pids.append(owner)
     return {"busy": busy, "total": total, "free": max(0, total - busy), "pids": pids}
 
 
