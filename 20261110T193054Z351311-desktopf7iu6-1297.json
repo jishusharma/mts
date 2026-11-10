@@ -1,0 +1,1 @@
+{"t": "20261110T193054Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A: 5 stray procs killed; B's forward_readout.py (1f574e720) already on trunk so A readout.py NOT shipped (spare branch). A gate is clear: send build cards.", "login": "A"}
