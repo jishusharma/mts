@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-10T20:49:06Z",
+    "misses": 8,
+    "reads": [
+      "MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py"
+    ],
+    "session": "agent-a239e8a3adb685979"
+  },
   "created": "2026-11-10T19:47:54Z",
   "depends_on": [],
   "done_when": "",

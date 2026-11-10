@@ -108,12 +108,27 @@ class PreshipTest(unittest.TestCase):
             self.assertEqual(out["permissionDecision"], "deny")
             self.assertIn("look-ahead lint", out["permissionDecisionReason"])
 
+    def test_copy_cap_test_brings_the_helpers_beside_it(self):
+        src = Path(self.d.name) / "src"
+        docs = src / Path(P.CAP_TEST).parent
+        docs.mkdir(parents=True)
+        (src / P.CAP_TEST).write_text("import helper_x" + chr(10), encoding="utf-8")
+        for name in ("helper_x.py", "conftest.py", "test_other.py"):
+            (docs / name).write_text("x = 1" + chr(10), encoding="utf-8")
+        P.copy_cap_test(src, self.root)
+        got = sorted(p.name for p in (self.root / P.CAP_TEST).parent.iterdir())
+        self.assertEqual(got, ["conftest.py", "helper_x.py", Path(P.CAP_TEST).name])
+
     def test_cap_failures_runs_the_real_cap_test_on_the_shipped_files_only(self):
+<<<<<<< HEAD
         real = Path(__file__).resolve().parents[2] / P.CAP_TEST
         (self.root / P.CAP_TEST).parent.mkdir(parents=True)
         (self.root / P.CAP_TEST).write_text(real.read_text(encoding="utf-8"), encoding="utf-8")
         helper = real.with_name("doc_drift.py")   # the cap test imports it; a copy must carry it
         (self.root / P.CAP_TEST).with_name("doc_drift.py").write_text(helper.read_text(encoding="utf-8"), encoding="utf-8")
+=======
+        P.copy_cap_test(Path(__file__).resolve().parents[2], self.root)   # the cap test plus the helpers beside it (42d8b197a: doc_drift.py)
+>>>>>>> origin/fast-track
         (self.root / "CLAUDE.md").write_text("x" * 100, encoding="utf-8")
         self.assertEqual(P.cap_failures(str(self.root), ["CLAUDE.md"]), [])
         (self.root / "CLAUDE.md").write_text("x" * 100_000, encoding="utf-8")
@@ -270,6 +285,20 @@ class RealRulesTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             self.assertEqual(P.docs_ship_failures(d, ["CLAUDE.md", "MyTradingSys/system/roles/supervisor.md",
                                                       "MyTradingSys/system/tasks/x.json", "MyTradingSys/research/BUGS.md"]), [])
+
+    def test_a_docs_ship_with_conflict_markers_is_refused(self):
+        """3dad1aece (shipped in b1ca5d8bb): a docs-only ship pushed `<<<<<<< ours` into a task card; the docs ship ran no 3cm step,
+        CI 42891528302 and 42891857913 went red and the marker failed other trees' gates at step 4d."""
+        with tempfile.TemporaryDirectory() as d:
+            card = Path(d) / "MyTradingSys/system/tasks/x.json"
+            card.parent.mkdir(parents=True)
+            card.write_text("{\n" + "<" * 7 + " ours\n" + "=" * 7 + "\n" + ">" * 7 + " theirs\n}\n", encoding="utf-8")
+            (Path(d) / "NOTE.md").write_text("fine\n", encoding="utf-8")
+            res = P.docs_ship_failures(d, ["MyTradingSys/system/tasks/x.json", "NOTE.md", "gone.md"])
+            self.assertEqual([r[0][0] for r in res], ["conflict markers"])
+            self.assertIn("x.json:2", " ".join(res[0][1]))
+            card.write_text("{}\n", encoding="utf-8")
+            self.assertEqual(P.docs_ship_failures(d, ["MyTradingSys/system/tasks/x.json"]), [])
 
     def test_every_hook_mode_in_settings_exists(self):
         s = json.loads((Path(__file__).resolve().parents[2] / ".claude" / "settings.json").read_text(encoding="utf-8"))

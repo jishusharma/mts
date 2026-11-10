@@ -8,7 +8,7 @@ transcript, so it is verbatim by construction; scripts/dev/verify_extract_quotes
 
 expected_btc_dir = the analyst says what BTC will do around the event (up/down), else none. timing = before the event
 (a stated expectation) or after it (a description of what happened); only 'before' + a direction is compared to the measured move.
-No transcript text beyond a ~25-word quote is stored.
+No transcript text beyond a ~50-word (260-character) quote is stored.
 """
 import glob
 import os

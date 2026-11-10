@@ -247,7 +247,7 @@ def build_html(pg, repo=REPO):
         return repo_html(pg, repo)
     with tempfile.TemporaryDirectory() as d:
         out = Path(d) / "page.html"
-        subprocess.run([sys.executable, str(Path(repo) / g), "--out", str(out)], check=True, capture_output=True)
+        subprocess.run([sys.executable, str(Path(repo) / g), "--out", str(out)], check=True, capture_output=True, creationflags=(0x08000000 if sys.platform == 'win32' else 0))
         return out.read_text(encoding="utf-8")
 
 
@@ -304,7 +304,7 @@ def cmd_build(reg):
         g = pg.get("generator") or ""
         if g.startswith("scripts/") and pg["status"] != "retire":
             print("build", pg["slug"])
-            subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True)
+            subprocess.run([sys.executable, str(REPO / g), "--out", str(REPO / pg["html"])], check=True, creationflags=(0x08000000 if sys.platform == 'win32' else 0))
             f = REPO / pg["html"]
             write_stamped(f, f.read_text(encoding="utf-8"))   # the generator already stamped; no-op unless it did not
 
