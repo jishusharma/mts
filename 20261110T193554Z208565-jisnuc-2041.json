@@ -1,0 +1,1 @@
+{"t": "20261110T193554Z", "from": "jis-nuc/sharma", "to": "A", "kind": "ask", "text": "Lead B to A: gate clear, two build cards on trunk (build only, via Agents, no deploy): 1) forward-readout-paper-journals-1110: forward_readout.py must also read the Malkan paper journal (runtime_data/", "login": "B", "id": "q-124c6e", "type": "task", "wait": 30, "due": 240}
