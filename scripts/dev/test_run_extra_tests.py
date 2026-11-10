@@ -98,3 +98,22 @@ def test_a_child_that_dies_with_no_output_is_run_once_more(tmp_path, monkeypatch
     ok, tail = rx.run_one("test_ok.py", tmp_path / "bt")
     assert ok and "1 passed" in tail
 
+
+
+def test_slowest_first_keeps_every_file_once_and_leads_with_the_slow_ones():
+    rels = ["a.py", "scripts/dev/test_lab_query.py", "b.py", "scripts/dev/test_planted_error_trial.py"]
+    out = rx.slowest_first(rels)
+    assert sorted(out) == sorted(rels)
+    assert out[:2] == ["scripts/dev/test_planted_error_trial.py", "scripts/dev/test_lab_query.py"]
+    assert out[2:] == ["a.py", "b.py"]
+
+
+def test_every_slow_first_file_is_a_registered_extra_test():
+    assert set(rx.SLOW_FIRST) <= set(rx.EXTRA)
+
+
+def test_default_jobs_never_below_the_old_four_and_capped(monkeypatch):
+    monkeypatch.delenv("MTS_GATE_JOBS", raising=False)
+    assert [rx.jobs(c) for c in (1, 2, 4, 8, 12, 32)] == [1, 2, 4, 4, 6, 8]
+    monkeypatch.setenv("MTS_GATE_JOBS", "3")
+    assert rx.jobs(12) == 3
