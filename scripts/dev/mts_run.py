@@ -28,6 +28,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 sys.path.insert(0, str(HERE))
+try:  # no console flashes from child processes (nowin.py; operator 2026-11-10: python windows popping during ships)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import nowin  # noqa: E402
+    nowin.install()
+except Exception:
+    pass
 
 RUN_DIR = REPO / "runtime_data" / "mts_run"
 LEDGER = RUN_DIR / "ledger.jsonl"

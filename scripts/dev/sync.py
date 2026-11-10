@@ -40,6 +40,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hosts  # noqa: E402  (machine names: old and new both match)
+try:  # no console flashes from child processes (nowin.py; operator 2026-11-10: python windows popping during ships)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import nowin  # noqa: E402
+    nowin.install()
+except Exception:
+    pass
 
 TRUNK = "fast-track"
 LIVE_MARKER = ".mts_live"
