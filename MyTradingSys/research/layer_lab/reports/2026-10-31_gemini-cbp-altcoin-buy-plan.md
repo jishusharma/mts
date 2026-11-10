@@ -12,7 +12,7 @@
 | Videos Read | SOURCED | 30 | 5 latest per channel across 6 channels |
 | Rules Found | OURS | 11 | 1 rule from Jala (`lJ8rI4iiXG4`), 10 rules from vdPoppe (`Jn9hM3jwEik`, `MiQePVTGCXQ`, `SfPE7sWygLE`, `fnRXA4AzEcI`, `_QG1bt4iwQc`) |
 | Analysts with NOT_IN_DATA | OURS | 4 | Rekt, Cowen, Bob Loukas, CCU |
-| Verification Gate | SOURCED | PASS (0 problems) | `python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md` |
+| Verification Gate | SOURCED | PASS (0 problems) | `python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp/archive/ALT_BUY_PLAN_2026-10-31.md` |
 
 ## 2. Findings by Analyst
 

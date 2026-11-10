@@ -6,7 +6,7 @@ User requested sequential useful work with commits and shipping until the curren
 
 | Audit | Delivered evidence | State |
 |---|---|---|
-| CBP quote gate | `research/cbp/QUOTE_REVIEW_GPT.md`, executable synthetic attachment `quote_review_repro.py.txt`; seven probes expose empty evidence, partial-word and semantic-ellipsis limitations | Production 13-row audit BLOCKED: remote store/transcripts absent |
+| CBP quote gate | `research/cbp/archive/QUOTE_REVIEW_GPT.md`, executable synthetic attachment `quote_review_repro.py.txt`; seven probes expose empty evidence, partial-word and semantic-ellipsis limitations | Production 13-row audit BLOCKED: remote store/transcripts absent |
 | Guidance Q33 | `research/gpt_rederive_2026-10-26/layer_rederive/guidance.md`; independent 336-cell recount and BH across 186 tested rows; minimum q=.62 and zero primary survivors | Raw event/return reconstruction BLOCKED; horizon attribution and incomplete filter key reported |
 | CryptoCred | `research/gpt_rederive_2026-10-26/layer_rederive/cryptocred.md`; 14 table/JSON comparisons, integer-hit consistency; widest ATR is not least negative in setup1 | Raw trade/fee/split reconstruction BLOCKED; extra-cell revision provenance missing |
 

@@ -12,7 +12,7 @@ A comprehensive cross-vendor audit of 60 numeric claims (10 claims per extract) 
 1. Malkan Top-12 RSI (`MyTradingSys/research/malkan_rsi_2026-10-31/MALKAN_RULES_2026-10-31.md`)
 2. Jala Method (`MyTradingSys/research/jala_layer_2026-10-31/method_jala.md`)
 3. Krown Beyond TA101 Setups (`MyTradingSys/research/krown_ta101_2026-10-13/KROWN_LIVE_SETUPS_2026-10-31.md`)
-4. CBP Altcoin Buy Plan (`MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md`)
+4. CBP Altcoin Buy Plan (`MyTradingSys/research/cbp/archive/ALT_BUY_PLAN_2026-10-31.md`)
 5. CryptoCred Stop Buffer (`MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md`)
 6. Krown TA101 Missing 4 (`MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_*.md`)
 

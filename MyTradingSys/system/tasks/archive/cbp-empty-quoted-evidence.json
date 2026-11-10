@@ -80,7 +80,7 @@
   "scope_sha": "cc3147641617",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md",
+    "MyTradingSys/research/cbp/archive/QUOTE_REVIEW_GPT.md",
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md",
     "MyTradingSys/system/tasks/cbp-quote-empty-fragment-word-boundary.json"
   ],

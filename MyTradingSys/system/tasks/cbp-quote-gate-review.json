@@ -4,7 +4,7 @@
   "commands": [],
   "created": "2026-10-26T18:35:30Z",
   "depends_on": [],
-  "done_when": "research/cbp/QUOTE_REVIEW_GPT.md lists 13 rows with PASS/FAIL and reason with file:line; the known 1 rejected row is reproduced.",
+  "done_when": "research/cbp/archive/QUOTE_REVIEW_GPT.md lists 13 rows with PASS/FAIL and reason with file:line; the known 1 rejected row is reproduced.",
   "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
@@ -33,7 +33,7 @@
   "refs": [
     "MyTradingSys/research/cbp/GPT_CBP_GUIDE.md"
   ],
-  "result": "Partial audit: seven synthetic probes; empty/punctuation evidence, partial-word and negation-ellipsis gaps reproduced. Production row review blocked on unavailable CBP data. See research/cbp/QUOTE_REVIEW_GPT.md.",
+  "result": "Partial audit: seven synthetic probes; empty/punctuation evidence, partial-word and negation-ellipsis gaps reproduced. Production row review blocked on unavailable CBP data. See research/cbp/archive/QUOTE_REVIEW_GPT.md.",
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py; MyTradingSys/research/cbp/"
   ],
