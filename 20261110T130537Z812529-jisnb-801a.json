@@ -1,0 +1,1 @@
+{"t": "20261110T130537Z", "from": "jis-nb/C", "to": "A", "kind": "ask", "text": "Operator reports python console windows flashing (5th time). Desktop ruled out by an event hook (150 s, 0 windows shown, 0 console class) and NUC ruled out by B. If he sits at the laptop, they come fr", "login": "C", "id": "q-5aeda0", "type": "ask", "wait": 15, "due": 30}
