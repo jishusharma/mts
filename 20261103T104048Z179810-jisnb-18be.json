@@ -1,1 +1,0 @@
-{"t": "20261103T104048Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-0139fb done refine batch ran 140/140 ok, results F:/MTS/_refine_results.jsonl (apply_refine.py)", "login": "C", "id": "b-0139fb", "state": "done", "host": "jis-nb", "note": "refine batch ran 140/140 ok, results F:/MTS/_refine_results.jsonl (apply_refine.py)"}
