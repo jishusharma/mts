@@ -57,3 +57,9 @@ Gaps the guide does not cover (for the next guide update):
 2. Guide 3 says a silent armed tab expires after 90 s. Our 2tlfo1 refusal persisted for hours until its tab was closed by the operator. Note the TTL did not clear it.
 3. Guide 3 covers refusals naming another chat. It does not cover a refusal that names THIS chat's own id (rupjnp), which persisted after F5 and re-tick. Cause unknown; needs an operator check of the armed state in Profile 5.
 4. Guide 1.1 says checkout detached origin/fast-track. Works, but `git pull --ff-only` on a detached HEAD fails without a branch; use `git pull --ff-only origin fast-track` or the checkout form.
+
+## Retry after 100 s wait (no F5, one tick)
+
+- Waited 100 s with no clicks, then ticked Hands-free once. Toast (read from screenshot): `second_tab_refused: chat rupjnp in this browser profile is already armed. One armed chat per DeepSeek account; untick there first.` The Hands-free checkbox appears ticked in the bottom-right panel. Stopped per instruction.
+- Peer's cause (not verified here): content.js:21 gives each page load a random tab id; nothing releases the arm on reload (no pagehide handler). The earlier arm of this chat (rupjnp) can ghost for 90 s after F5 and then refuse the new page. Suggested bridge fix: release the arm on pagehide. This is a bridge defect to log; DSA must not change bridge code.
+- Still NOT TESTED: pacing, hourly cap, stop-on-warning, SHIP OWED. The 60-minute watch has not run because arming was never confirmed.
