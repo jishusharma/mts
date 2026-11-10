@@ -1,1 +1,0 @@
-{"t": "20261103T160207Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED fix by C shipping: MTS Home hub 30339>30000 from undecided 915c162c entry; reverted + re-added as decided. Do not also fix.", "login": "C"}

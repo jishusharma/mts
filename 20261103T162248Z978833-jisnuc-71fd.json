@@ -1,1 +1,0 @@
-{"t": "20261103T162248Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "CI RED: B worker fixing both causes now: AIBridge 0.7.24 bump (B's liveness ship 01dd8c055 touched aibridge_health.py) and test_tom_probe_prereg path after the card sweep 54d63e495. Do not also fix.", "login": "B"}

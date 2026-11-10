@@ -1,1 +1,0 @@
-{"t": "20261103T160702Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "C reverted b5c4ed522 (B's Fabio cards + SUPERVISOR_B notes): SUPERVISOR_B.md:22 'git diff A..B' trips test_integrity forbidden refs, CI RED 6 runs. B: re-land without that line.", "login": "C", "id": "b-ed8e2f", "prio": "high", "cmd": ""}

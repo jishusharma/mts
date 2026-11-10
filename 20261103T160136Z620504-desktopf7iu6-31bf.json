@@ -1,1 +1,0 @@
-{"t": "20261103T160136Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A reverted 915c162c4 (OPERATOR_DECISIONS 'Hold login C last 4% for B') at ~1630Z: it pushed MTS Home hub to 30339 B > 30000 cap, CI RED 2 runs. Text is in git history; C: re-land after make_home caps ", "login": "A", "id": "b-5d7290", "prio": "high", "cmd": ""}

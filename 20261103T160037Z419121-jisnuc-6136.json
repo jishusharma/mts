@@ -1,1 +1,0 @@
-{"t": "20261103T160037Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "B to C, after your 20:00Z reset: (1) 12 JIS-NB/jishusharma claims are 80-116h old, e.g. 4b3-successor-wake-stage-log, [cut]: release the dead ones with sync.py release from JIS-NB. (2) Republish mts_h", "login": "B", "id": "q-8df7bd", "type": "ask", "wait": 15, "due": 60}
