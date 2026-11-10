@@ -4,6 +4,20 @@
   "commands": [
     "python -m pytest scripts/dev/test_soak_six_slots.py --durations=5 -q"
   ],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-11-10T12:07:40Z",
+    "misses": 32,
+    "reads": [
+      "scripts/dev/test_run_extra_tests.py",
+      "MyTradingSys/research/wt_extreme_cross_2026-11/study.py",
+      "MyTradingSys/backtest/research_kit.py",
+      "MyTradingSys/backtest/splits.py",
+      ".github",
+      "MyTradingSys/backtest/layers/fabio/v3/day_gates.py"
+    ],
+    "session": "agent-a6cf6ca9421455270"
+  },
   "created": "2026-11-08T01:30:37Z",
   "depends_on": [],
   "done_when": "scripts/dev/test_run_all_tests.py case asserting the 3xt command skips test_soak_six_slots.py when quick and not otherwise (fails today); 3xt step under 5 min on an idle machine quoted in Result.",
