@@ -82,7 +82,7 @@ def child_env(repo=None):
     return env
 
 
-FILE_TIMEOUT_S = 300   # OURS: ceiling per extra test file (all take < 60 s); a file still running at it = hung, it fails and frees its slot
+FILE_TIMEOUT_S = 600   # OURS: ceiling per extra test file; a file still running at it = hung, it fails and frees its slot. Was 300 (all took < 60 s): under 3 gates at once test_planted_error_trial ran 212 s and failed 3xt on 2 ships 2026-11-11 (audit)
 
 
 def run_one(rel, basetemp, timeout=None):
