@@ -1,7 +1,7 @@
 {
 "_doc": "Catalogue of known tests on trunk. kind is inferred (kind_source). Built by sim_desk/build_catalogue.py.",
-"count": 357,
-"exported": 357,
+"count": 358,
+"exported": 358,
 "rows": [
 {
 "id": "st-_archive-loose_2026-10-cbp_profile6_result",
@@ -5176,6 +5176,20 @@
 "date": "2026-11-06",
 "status": "UNCLEAR",
 "verdict_class": "unclear"
+},
+{
+"id": "live_aid-pulse-backtest",
+"family": "Live Aid pulse SETUP FORMING",
+"title": "Live Aid pulse SETUP FORMING (level within 0.15 %, 1h-4h lean away, low-timeframe divergence) vs a matched near-level null, fee-net 15/30/60 min, by session, DEV",
+"kind": "backtest",
+"kind_source": "result file",
+"verdict": "FAIL: SETUP FORMING is a coin flip beyond being near a level; fee-net about -14 bp at every horizon",
+"source": "MyTradingSys/research/live_aid_pulse_2026-11/RESULT.md",
+"exported": true,
+"result_id": "live_aid-pulse-backtest",
+"date": "2026-11-10",
+"status": "FAILED",
+"verdict_class": "failed"
 }
 ]
 }
