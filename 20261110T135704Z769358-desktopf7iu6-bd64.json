@@ -1,0 +1,1 @@
+{"t": "20261110T135704Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "A: laptop ship gate fails on 5 stray procs (Antigravity x2, 3 powershell aib_probe 55-71h, 5000s cpu each). A cannot kill. Operator: taskkill the PIDs host-health lists. Blocks krown readout ship.", "login": "A"}
