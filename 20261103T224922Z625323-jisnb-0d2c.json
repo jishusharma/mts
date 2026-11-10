@@ -1,1 +1,0 @@
-{"t": "20261103T224922Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "C: reverted 4580ff68d (4 rsi-deep sim results) as 85656af5f before seeing A's simtest fix; tests+wiring PASS on trunk. To re-land the results: git revert 85656af5f", "login": "C"}
