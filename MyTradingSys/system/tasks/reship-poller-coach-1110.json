@@ -2,53 +2,43 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-10T20:00:49Z",
+    "misses": 1,
+    "reads": [
+      "scripts/dev/bg_watch.py"
+    ],
+    "session": "agent-afc327df4202d6446"
+  },
   "created": "2026-11-10T13:14:18Z",
   "depends_on": [],
-  "done_when": "git cherry origin/fast-track <each sha> is empty and git ls-tree -r origin/fast-track shows the poller and coach files; sync.py ship Result line quotes both shas",
-  "est_turns": 10,
+  "done_when": "",
+  "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Land the 2 unshipped commits: OI poller (tree mts-jis-nb-live-aid-oi-poller-all-venues-1110) and Live Aid coach 61be0d9cc (branch claude/jovial-easley-efb700) on origin/fast-track, one ship at a time",
+  "goal": "",
   "id": "reship-poller-coach-1110",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "Live Aid: level names anchored (yesterday's low was shown as Today low), weekly high/low l",
-      "ref": "74c91b0bd1eb",
-      "utc": "2026-11-10T14:09:45Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-11 T0-ONLY twin check: none. Poller tree path and shas not on disk here (only coach 61be0d9cc); worker finds them via git worktree list on JIS-NB. DECISION (OURS): re-ship of already-reviewed commits, ROUTINE",
+  "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-10T19:03:25Z",
   "refs": [],
   "result": "",
-  "scope_in": [
-    "MyTradingSys/tools/live_aid/home.js"
-  ],
-  "scope_out": [
-    "any edit beyond conflict resolution; deploy; live tree"
-  ],
-  "scope_sha": "74c91b0bd1eb",
-  "size": "S",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
   "sources": [],
-  "state": "ready",
-  "steps": [
-    "git cherry origin/fast-track 61be0d9cc and the poller tree's two shas; confirm still unshipped",
-    "cherry-pick or merge each into a fresh worktree branch (no rebase), resolve conflicts, then sync.py ship --release; wait if another ship runs",
-    "verify with cherry empty plus ls-tree"
-  ],
-  "tests": "sync.py ship smoke gate green; no new tests unless gate demands",
+  "state": "raw",
+  "steps": [],
+  "tests": "",
   "title": "Re-ship OI poller (tree mts-jis-nb-live-aid-oi-poller-all-venues-1110, 2 commits) and Live Aid coach 61be0d9cc (branch claude/jovial-easley-efb700); no ship running at 13:15Z, neither on trunk; one ship at a time",
-  "weight": "ROUTINE",
-  "worker": "agent"
+  "weight": "",
+  "worker": ""
 }

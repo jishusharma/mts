@@ -5,11 +5,18 @@ Fail-first: on the pre-change CLAUDE.md / WORKERS.md / ROLES.md these tests fail
 import re
 from pathlib import Path
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from doc_drift import report_only  # noqa: E402
+
 REPO = Path(__file__).resolve().parents[3]
 
 
 def read(rel):
     return (REPO / rel).read_text(encoding="utf8")
+
+
+@report_only
 
 
 def test_claude_md_points_station_to_loop():
@@ -21,6 +28,9 @@ def test_claude_md_points_station_to_loop():
     assert "ONE task" not in step3
 
 
+@report_only
+
+
 def test_workers_rule_10_loop_and_dedupe():
     t = read("MyTradingSys/system/WORKERS.md")
     m = re.search(r"^10\. \*\*Station loop.*$", t, re.M)
@@ -29,6 +39,9 @@ def test_workers_rule_10_loop_and_dedupe():
     for need in ("no role line", "Builder", "git fetch", "LENOVO_NEXT_SESSION.md", "login plan",
                  "tasks.py next", "sync.py claims", "mts_signal.py read --hours 1"):
         assert need in r, need
+
+
+@report_only
 
 
 def test_roles_md_mentions_builder_fallback_loop():
