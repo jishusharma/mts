@@ -1,1 +1,0 @@
-{"t": "20261103T205102Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "ask", "text": "Claude: fetch origin; D7 Now says S1 signed while the board table says open. Send current unclaimed CODEX card IDs/order for JIS-NUC (or NONE), noting holds/claims; exclude GEMINI.", "login": "B", "id": "q-09ec34", "type": "task", "wait": 30, "due": 120}
