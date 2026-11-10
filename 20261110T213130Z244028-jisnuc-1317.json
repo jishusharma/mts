@@ -1,0 +1,1 @@
+{"t": "20261110T213130Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Add to q-3297ce: after a pace stop the result of the block in flight is not posted and DeepSeek waits forever (block #34, 21:11-21:33Z, 22 min lost). Make dsa_watch or the extension re-post an unposte", "login": "B", "id": "q-1b3e27", "type": "task", "wait": 30, "due": 60}
