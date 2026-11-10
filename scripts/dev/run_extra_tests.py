@@ -32,7 +32,7 @@ def discovered(repo=None):
     """Tracked test_*.py under a study folder that EXTRA does not list and run_all_tests.py does not name: they run
     without a hand-kept entry (2026-10-17 audit: the two-list registration cost ~100 commits and several red gates in 72 h)."""
     repo = Path(repo or REPO)
-    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True).stdout.splitlines()
+    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
     gate_py = repo / "scripts" / "dev" / "run_all_tests.py"
     gate = gate_py.read_text(encoding="utf-8") if gate_py.exists() else ""
     return sorted(p for p in out if p.endswith(".py") and Path(p).name.startswith("test_") and "archive" not in p.lower()
@@ -96,7 +96,7 @@ def run_one(rel, basetemp, timeout=None):
     for attempt in (1, 2):
         try:
             r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
-                               cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env(), timeout=limit)
+                               cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env(), timeout=limit, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
             return False, f"timed out after {limit}s (hung; killed)"
         if r.returncode == 0 or (r.stdout or "").strip() or attempt == 2:

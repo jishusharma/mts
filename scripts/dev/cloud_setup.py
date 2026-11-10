@@ -24,7 +24,7 @@ def is_cloud(env=None):
 
 
 def git(*args):
-    r = subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True, timeout=120)
+    r = subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout.strip() if r.returncode == 0 else ""
 
 
@@ -35,7 +35,7 @@ def main(env=None):
     missing = [m for m in GATE_DEPS if importlib.util.find_spec(m) is None]
     if missing:
         r = subprocess.run([sys.executable, "-m", "pip", "install", "-q", *missing], capture_output=True, text=True,
-                           timeout=300)
+                           timeout=300, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         lines.append(f"pip install {' '.join(missing)}: {'ok' if r.returncode == 0 else 'FAILED ' + r.stderr[-200:]}")
     git("fetch", "-q", "origin", "fast-track", "green/fast-track")
     branch = git("branch", "--show-current") or "(detached)"

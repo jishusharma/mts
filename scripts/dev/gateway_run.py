@@ -125,7 +125,7 @@ def claude_exe() -> str:
 def probe(auth: str) -> int:
     base, key = load_secret()
     r = subprocess.run([claude_exe(), "-p", "Reply with the single word OK.", "--model", MODEL, "--output-format", "json"],
-                       env=child_env(base, key, auth), capture_output=True, text=True, timeout=180)
+                       env=child_env(base, key, auth), capture_output=True, text=True, timeout=180, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     s = summary(r.stdout, key)
     s["auth"], s["exit"], s["stderr"] = auth, r.returncode, redact(r.stderr[-300:], key)
     print(json.dumps(s))
@@ -136,7 +136,7 @@ def repo_root(cwd: Path = None) -> Path:
     # old git (the NUC) has no --path-format; --git-common-dir may be relative to cwd
     cwd = Path(cwd or Path.cwd())
     out = subprocess.run(["git", "rev-parse", "--git-common-dir"], cwd=cwd,
-                         capture_output=True, text=True, check=True).stdout.strip()
+                         capture_output=True, text=True, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
     return (cwd / out).resolve().parent
 
 
@@ -148,9 +148,9 @@ def start(card: str, run: str, auth: str) -> int:
     load_secret()  # fail early, names only
     repo = repo_root()
     wt = repo / ".claude" / "worktrees" / f"gw-{card}"
-    subprocess.run(["git", "-C", str(repo), "fetch", "-q", "origin", "fast-track"], check=True)
+    subprocess.run(["git", "-C", str(repo), "fetch", "-q", "origin", "fast-track"], check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if not wt.exists():
-        subprocess.run(["git", "-C", str(repo), "worktree", "add", "-q", str(wt), "-b", f"gateway/{card}", "origin/fast-track"], check=True)
+        subprocess.run(["git", "-C", str(repo), "worktree", "add", "-q", str(wt), "-b", f"gateway/{card}", "origin/fast-track"], check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     (wt / ".gateway_owner").write_text(f"gateway_run {card}\n", encoding="utf-8", newline="\n")
     d = RUNS / card
     d.mkdir(parents=True, exist_ok=True)
@@ -174,8 +174,8 @@ def launch(card: str, run: str, auth: str, wt: Path, resume: bool) -> None:
     cmd.write_text(line + chr(13) + chr(10), encoding="utf-8", newline="")
     tn = task_name(card)
     subprocess.run(["schtasks", "/Create", "/TN", tn, "/SC", "ONCE", "/ST", "00:00", "/TR", f'"{cmd}"', "/IT", "/F"],
-                   check=True, capture_output=True)
-    subprocess.run(["schtasks", "/Run", "/TN", tn], check=True, capture_output=True)
+                   check=True, capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    subprocess.run(["schtasks", "/Run", "/TN", tn], check=True, capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     (d / "started").write_text(tn + chr(10), encoding="utf-8", newline=chr(10))
 
 
@@ -198,15 +198,15 @@ def child(card: str, run: str, auth: str, cwd: str, resume: bool = False) -> int
         base, key = load_secret()
         env = child_env(base, key, auth)
         if resume:  # operator order: compact first, then resume on the same session
-            subprocess.run(claude_args("/compact", sid, True), cwd=cwd, env=env, capture_output=True, text=True, timeout=1800)
+            subprocess.run(claude_args("/compact", sid, True), cwd=cwd, env=env, capture_output=True, text=True, timeout=1800, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         prompt = (RESUME_PROMPT if resume else CHILD_PROMPT).format(run=run, model=MODEL)
         with open(out, "a", encoding="utf-8", newline="\n") as fo, open(d / "err.log", "a", encoding="utf-8") as fe:
-            p = subprocess.Popen(claude_args(prompt, sid, resume), cwd=cwd, env=env, stdout=fo, stderr=fe, text=True)
+            p = subprocess.Popen(claude_args(prompt, sid, resume), cwd=cwd, env=env, stdout=fo, stderr=fe, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             (d / "pid").write_text(str(p.pid), encoding="utf-8", newline="\n")
             try:
                 rc = p.wait(timeout=6 * 3600)
             except subprocess.TimeoutExpired:
-                subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True)
+                subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 rc = 124
         text = redact(out.read_text(encoding="utf-8", errors="replace"), key)
         out.write_text(text, encoding="utf-8", newline="\n")
@@ -217,12 +217,12 @@ def child(card: str, run: str, auth: str, cwd: str, resume: bool = False) -> int
     finally:
         if not (d / "killed").exists():  # a tick that killed a hung child relaunches it; no done marker then
             (d / "done").write_text(f"exit={rc}\n", encoding="utf-8", newline="\n")
-            subprocess.run(["schtasks", "/Delete", "/TN", task_name(card), "/F"], capture_output=True)
+            subprocess.run(["schtasks", "/Delete", "/TN", task_name(card), "/F"], capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return rc
 
 
 def task_running(card: str) -> bool:
-    r = subprocess.run(["schtasks", "/Query", "/TN", task_name(card), "/FO", "CSV", "/NH"], capture_output=True, text=True)
+    r = subprocess.run(["schtasks", "/Query", "/TN", task_name(card), "/FO", "CSV", "/NH"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.returncode == 0 and "Running" in r.stdout
 
 
@@ -317,7 +317,7 @@ def tick() -> int:
             else:
                 if v == "kill-resume" and (d / "pid").exists():
                     (d / "killed").write_text("hung\n", encoding="utf-8")
-                    subprocess.run(["taskkill", "/PID", (d / "pid").read_text().strip(), "/T", "/F"], capture_output=True)
+                    subprocess.run(["taskkill", "/PID", (d / "pid").read_text().strip(), "/T", "/F"], capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                     for _ in range(12):  # the wrapper sees `killed`, skips done, and exits
                         if not task_running(card):
                             break

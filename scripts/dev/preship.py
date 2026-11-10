@@ -136,7 +136,7 @@ def run_rule(rule, paths, root, timeout=120):
     env = dict(os.environ, MTS_GATE_CHANGED_FILES=chr(10).join(paths))
     for cmd in rule[2](root, paths):
         try:
-            r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace", env=env)
+            r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
             fails.append(f"{' '.join(cmd[1:])}: timed out after {timeout} s")
             continue
@@ -213,12 +213,12 @@ def report(results):
 
 
 def toplevel(cwd):
-    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=cwd, capture_output=True, text=True)
+    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=cwd, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout.strip() if r.returncode == 0 else None
 
 
 def git_lines(root, *args):
-    r = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True)
+    r = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return [x for x in r.stdout.splitlines() if x.strip()] if r.returncode == 0 else []
 
 
@@ -364,7 +364,7 @@ def reach_commit_failures(root):
         files = git_lines(root, "diff-tree", "--no-commit-id", "--name-only", "-r", sha)
         if any(_reach_path(f) for f in files):
             body = subprocess.run(["git", "show", "-s", "--format=%B", sha], cwd=root, capture_output=True, text=True,
-                                  encoding="utf-8", errors="replace").stdout
+                                  encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
             if not reach_text_ok(body):
                 bad.append(f"{sha[:9]} {body.strip().splitlines()[0][:70] if body.strip() else ''}")
     return bad

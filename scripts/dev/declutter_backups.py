@@ -22,7 +22,7 @@ REJECT_DIRS = ('_nuc_rejected', 'qwen_raw_015_017')
 
 
 def git(*a):
-    return subprocess.run(['git', *a], cwd=ROOT, capture_output=True, text=True).stdout
+    return subprocess.run(['git', *a], cwd=ROOT, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
 
 
 def sha256(p):

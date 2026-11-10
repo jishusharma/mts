@@ -81,7 +81,7 @@ def run(cmd, cwd=None, timeout=60, input_text=None):
     """-> (returncode, stdout, stderr). Never raises on a missing program or a timeout."""
     try:
         r = subprocess.run(cmd, cwd=None if cwd is None else str(cwd), capture_output=True, timeout=timeout,
-                           input=None if input_text is None else input_text.encode("utf-8"))
+                           input=None if input_text is None else input_text.encode("utf-8"), creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         return 124, "", f"timeout after {timeout:.0f}s: {' '.join(map(str, cmd))[:120]}"
     except OSError as e:

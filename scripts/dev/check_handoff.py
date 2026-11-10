@@ -65,7 +65,7 @@ def state_section(text):
 
 def hash_resolves(h, repo):
     r = subprocess.run(["git", "-C", str(repo), "cat-file", "-e", h + "^{commit}"],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.returncode == 0
 
 

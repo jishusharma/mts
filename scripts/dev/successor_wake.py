@@ -254,7 +254,7 @@ def task_state(name: str) -> str:
     try:
         r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
                             f"(Get-ScheduledTask -TaskName '{name}' -ErrorAction SilentlyContinue).State"],
-                           capture_output=True, text=True, timeout=60)
+                           capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return r.stdout.strip()
     except Exception:
         return ""
@@ -263,7 +263,7 @@ def task_state(name: str) -> str:
 def auth_preflight(runner=None) -> None:
     """Refuse to register a headless wake the saved login cannot run (bug-headless-wake-voice-misread, 2026-10-30: the 10-29 and
     10-30 wakes fired into an expired OAuth session and nothing started). `claude -p ok` must exit 0; any failure raises WakeError."""
-    run = runner or (lambda: subprocess.run(["claude", "-p", "ok"], capture_output=True, text=True, timeout=120))
+    run = runner or (lambda: subprocess.run(["claude", "-p", "ok"], capture_output=True, text=True, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)))
     try:
         r = run()
     except Exception as e:
@@ -338,7 +338,7 @@ def _run_ps(script: str) -> None:
         path = f.name
     try:
         r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", path],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     finally:
         try:
             os.unlink(path)

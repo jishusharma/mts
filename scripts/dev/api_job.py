@@ -94,7 +94,7 @@ def compose_prompt(brief: str, slug: str, card: str) -> str:
 
 def card_brief(card: str) -> str:
     r = subprocess.run([sys.executable, str(REPO / "scripts/dev/tasks.py"), "brief", card], capture_output=True, text=True,
-                       encoding="utf-8", errors="replace")
+                       encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0 or not r.stdout.strip():
         die(f"tasks.py brief {card} failed: {r.stderr.strip()[:300]}")
     return r.stdout.strip()

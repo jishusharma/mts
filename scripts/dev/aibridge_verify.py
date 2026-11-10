@@ -133,7 +133,7 @@ def check(root, roundtrip=True):
     else:
         add('roundtrip', 'NOT_CHECKED', 'agent not answering or --no-roundtrip')
     try:
-        q = subprocess.run(['schtasks', '/query', '/tn', 'AIBridge-Agent'], capture_output=True, text=True, timeout=20)
+        q = subprocess.run(['schtasks', '/query', '/tn', 'AIBridge-Agent'], capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         add('autostart', 'PASS' if q.returncode == 0 else 'NOT_CHECKED',
             'task AIBridge-Agent registered' if q.returncode == 0 else
             'no task AIBridge-Agent; SCHEDULING_POLICY.md forbids standing tasks, so start on demand: '

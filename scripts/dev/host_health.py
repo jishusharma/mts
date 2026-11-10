@@ -75,7 +75,7 @@ def log(msg):
 
 def _ps(script, timeout=90):
     r = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", script], capture_output=True, text=True,
-                       timeout=timeout)
+                       timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode:
         raise OSError(f"powershell failed: {r.stderr.strip()[:200]}")
     return r.stdout
@@ -104,7 +104,7 @@ def queue_length():
 
 def kill_tree(pid):
     """Returns (rc, stderr). rc 128 = PID not found = already gone. The injected kill= may also return a bare bool."""
-    r = subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, text=True)
+    r = subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.returncode, (r.stderr or r.stdout or "").strip()
 
 
@@ -400,7 +400,7 @@ def post_strays(repo, strays):
         r = subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "desk.py"), "post",
                             "Stray CPU hog on " + os.environ.get("COMPUTERNAME", "host"), "--need", need,
                             "--done-when", "operator ran the stop command or allow-listed the pattern in " + POLICY_REL,
-                            "--no-ship"], cwd=repo, capture_output=True, text=True, timeout=60)
+                            "--no-ship"], cwd=repo, capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if r.returncode:
             log(f"desk post failed: {r.stderr.strip()[:300]}")
             return 0
@@ -525,7 +525,7 @@ def run_safe(repo, **kw):
 
 
 def main(argv):
-    repo = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True).stdout.strip() or "."
+    repo = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip() or "."
     run_safe(repo, reap="--no-reap" not in argv, post="--no-post" not in argv)
     return 0
 
