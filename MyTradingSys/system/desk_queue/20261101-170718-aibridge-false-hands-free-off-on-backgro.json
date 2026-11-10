@@ -1,0 +1,10 @@
+{
+  "done_when": "The extension correctly detects generation completion and keeps hands-free ON when the tab is in the background.",
+  "from": "JIS-NUC",
+  "id": "20261101-170718-aibridge-false-hands-free-off-on-backgro",
+  "need": "When the browser tab running the DeepSeek chat is unfocused or backgrounded (e.g., while waiting on a 7-minute gate), the AIBridge extension fails to detect the end of the generation and falsely triggers 'AIBridge hands-free is OFF. DSA showed no final answer after the result and the chat never went idle'. Root cause hypothesis: Chrome background tab throttling delays the DOM MutationObserver scrape, so the bridge misses the final idle state, times out, and disables hands-free. This causes massive idle time for DSA (7 hours wasted in MTS-2026-11-01-0852Z).",
+  "posted": "2026-11-01T17:07:18Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "aibridge-false-hands-free-off-on-background-tab-11-01"
+}

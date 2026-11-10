@@ -105,6 +105,7 @@ it for the bridge operator.
 - Create mts-dsa (DSA, first boot).
 
 ## Pointers
+- DSA operator guide for Haiku/test sessions (arming, refusals, limits, shipping): MyTradingSys/system/DSA_HAIKU_GUIDE.md
 - DSA delegation queue (desk board, target DSA): MyTradingSys/system/DSA_DELEGATION.md, prompt section 5e.
 
 - DSA_SESSION_PROMPT.md section 0 (direct mode) and 0.8 (paste and news, protected)
