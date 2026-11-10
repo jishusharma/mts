@@ -135,3 +135,45 @@ def test_same_day_trades_pool_into_one_observation(tmp_path):
     rs = rows(T06, "paper", [1.0, -1.0, 1.0, 1.0], per_day=2)
     r = state_of(tmp_path, rs, "t06_rsi_ma")
     assert r["n"] == 4 and r["n_obs"] == 2
+
+
+def _journal(tmp_path, jrows, name="malkan.jsonl"):
+    return write(tmp_path, jrows, name)
+
+
+def _malkan_rows():
+    ms = 1_796_083_200_000  # 2026-12-01 00:00Z
+    day = 86_400_000
+    return [
+        {"kind": "signal", "t_trigger": ms},
+        {"kind": "outcome", "t_trigger": ms, "t_fill": ms, "status": "closed", "net_r": 1.5},
+        {"kind": "outcome", "t_trigger": ms + day, "t_fill": ms + day, "status": "closed", "net_r": -1.0},
+        {"kind": "outcome", "t_trigger": ms + 2 * day, "status": "open"},
+        {"kind": "no_fill", "t_trigger": ms + 3 * day},
+        {"kind": "unresolved", "t_trigger": ms + 4 * day},
+        {"kind": "kill", "params_id": "p1", "verdict": "KILL"},
+    ]
+
+
+def test_malkan_outcome_rows_scored(tmp_path):
+    res = fr.readout(None, asof="2027-01-20", paper=[(_journal(tmp_path, _malkan_rows()), "malkan_level_short")])
+    m = {s["slot"]: s for s in res["slots"]}["malkan_level_short"]
+    assert m["n"] == 2 and abs(m["mean_r"] - 0.25) < 1e-9
+    assert res["paper"] == {"signal": 1, "no_fill": 1, "unresolved": 1, "open": 1, "scored": 2}
+    assert res["kills"][0]["verdict"] == "KILL"
+    md = fr.to_markdown(res)
+    assert "Kill row:" in md and "no_fill 1" in md
+
+
+def test_paper_source_routes_to_t06_and_cli(tmp_path, capsys):
+    jr = [{"kind": "outcome", "source": T06, "t_fill": 1_796_083_200_000, "status": "closed", "net_r": 2.0}]
+    p = _journal(tmp_path, jr, "t06.jsonl")
+    assert fr.main(["--paper", str(p), "--asof", "2027-01-20"]) == 0
+    out = capsys.readouterr().out
+    assert "| t06_rsi_ma | 1 |" in out
+
+
+def test_ledger_only_output_has_no_paper_lines(tmp_path):
+    res = fr.readout(write(tmp_path, rows(KROWN, "krown_s8", [1.0])), asof="2027-01-20")
+    md = fr.to_markdown(res)
+    assert "Paper journals" not in md and "Kill row" not in md
