@@ -2212,3 +2212,11 @@ Measured 06:41Z (get_usage): weekly all models 87%, weekly Fable 83%, 5h window 
 Decision: the 78% monitor-only cap on login C is lifted for this last day. Spend to about 97% by 18Z on Sonnet workers (never Fable for building), keep 3% so the Lead can still answer him until 20Z; in the last 2 h spend what is left on short jobs that ship in one turn. Lead C (this session, now Fable 5.2) only coordinates.
 Order of work: live-aid-oi-poller-all-venues-1110, tom-swing-trendline-extract-1109, java-below-val-short-no-setup-type-1109, then stale pages and broadcast hygiene.
 
+## 2026-11-10 11Z Two Fable sessions: altcoin dark horses, architecture cuts (operator)
+Operator: "spawn a Fable session ... look into the altcoins especially the dark horses that Claude can recommend and has been recommending and what is the latest ... fire it right now", then "Start another Fable session. Which will look into the optimizations and deductions from the architectural point of view."
+Decision: both run on Fable 5.2 by his order (this overrides "never start a Fable session" for these two only). Altcoin session: research and education only, no sizing or orders, family names and holdings never in the repo, output = one page plus a short reply. Architecture session: read-only review, removals and simplifications only (no new gates), output = top cuts, optimisations, what must stay, target shape, 2-week card list.
+Mechanism: `start_session` ignores a model above the caller's, so each was parked, switched with `set_session_model`, read back with `get_session` (claude-fable-5-2), then given its brief.
+
+## 2026-11-10 11Z Popping python.exe windows, second report (operator)
+Operator: "still seeing all three" (screenshot: a blank python.exe console window over the app).
+Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not stop it. A live check showed a python started from the app's PowerShell tool has a console with no window, so that guess was wrong and no code was changed for it. Lead C runs a short watcher that logs the owner of every visible console window, then fixes the process it names.
