@@ -30,3 +30,13 @@ Result: run did NOT reach the 60-minute watch. Arming was refused at about 07:12
 ## Next step
 
 Operator: disarm the other armed chat (2tlfo1) in Profile 5, or tell me to continue on a different chat. Then re-run the arm step and the full 60-minute watch.
+
+## Retry after operator closed chat 2tlfo1
+
+Operator reported 2tlfo1 disarmed and closed in Profile 5. Retried arming the DSA chat (Hands-free ticked). Panel still shows, exact text:
+`second_tab_refused: chat 2tlfo1 in this browser profile is already armed. One armed chat per DeepSee` (truncated by the reader).
+The panel line may be stale; the arm state could not be confirmed. Run stopped again. Nothing was clicked on Run.
+
+Verdict stays: pacing NOT TESTED, hourly cap NOT TESTED, stop-on-warning NOT TESTED, SHIP OWED NOT TESTED, seed boot design note only.
+
+Design note: an idle armed tab blocks every other chat on that profile with no time limit; the refusal names the old chat id but there is no timeout to clear it.
