@@ -2220,3 +2220,17 @@ Mechanism: `start_session` ignores a model above the caller's, so each was parke
 ## 2026-11-10 11Z Popping python.exe windows, second report (operator)
 Operator: "still seeing all three" (screenshot: a blank python.exe console window over the app).
 Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not stop it. A live check showed a python started from the app's PowerShell tool has a console with no window, so that guess was wrong and no code was changed for it. Lead C runs a short watcher that logs the owner of every visible console window, then fixes the process it names.
+
+## 2026-11-10 12Z Wrap up at 95 % weekly; 24h order from the architecture review (operator)
+- Order 1 (12:05Z): close done sessions, clean worktrees, implement the architecture review and the roadmap with cheap workers, agree the next 24 h with logins A and B, critical things first.
+- Order 2 (12:10Z): login C crossed 95 % weekly; every session slows down and finishes economically. Order 2 outranks new workers on login C until the reset at 20:00Z.
+- Done: altcoin session archived; 4 finished trees removed; arch-optimise-cut, live-aid-coach and the soak worker told to land what exists and stop; asks q-def2f8 (A) and q-4501f0 (B) carry the proposed order.
+- Proposed order (review critics, 5 of 5 agree on the first three): 1 forward slots T1 (A) 2 stop CI reds: doc-wording tests report-only, research count tests set-based 3 one gate queue per machine with slot wait logged 4 hook lines once per session (never STOP/HOLD/red CI), stop_guard own files only 5 T2/T3 (B) 6 STATUS.md stale fix, tool tests only on tool change (gate scripts' own tests stay always on). Rejected: changed-path selection in full mode. Trial only: ship by PR auto-merge.
+- Popping windows, third report: flashing coincided with three ship gates running at once; cause still not proven.
+- Lead C error, same turn: the tree cleanup removed three standing folders (mts-app, mts-relay, BinanceDataFeed.registry); all were clean and on trunk, restored at once (registry restored detached at trunk).
+
+## 2026-11-10 12:25Z Fold the review into B's 24 h plan; start rolling super sessions; keep or replace this session (operator)
+- Order: "Integrate all your work with the plan that login B has made for the 24 hours, and start the rolling super sessions"; and a question: continue in this long, often-compacted session or start a new one.
+- Done: PLAN_24H_2026-11-10.md section 8 holds the review order and four login C links (L1 to L4); handover/SUPERVISOR_C.md rewritten; link L1 started on Sonnet.
+- Answer given (OURS): start new. After compaction this session held 130 K tokens of 1 M, so size was not the cost. The cost was the model (Fable on every turn, week at 95 %) and detail lost at each compaction (the lane-tree removal on 11-10). The state that matters is in files, so a fresh link loses little. From now: a Fable Lead plans once a day in a short session; Sonnet links run the plan and hand over through the file.
+- Flashing windows, fourth report ("Still flashing"): a 75 s watcher on the desktop saw no new window; a Remote Desktop window to the NUC is open; ask q-2295a4 to login B; the operator was asked whether the windows are inside that window.
