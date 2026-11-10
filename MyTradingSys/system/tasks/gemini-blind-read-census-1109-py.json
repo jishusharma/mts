@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-10T11:57:50Z",
   "commands": [],
   "created": "2026-11-09T06:31:08Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-census-1109-py.md (MA",
+      "ref": "fada3ade8",
+      "utc": "2026-11-10T11:57:50Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sim desk: 11-09 studies table (census, T01-T12, Malkan arms, operator 5 points) with verdi",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed",
   "note": "DECISION (OURS, planner-A-1110b): refined from raw. Gemini queue, load as <card>:low. Blind read: use only the files named, do not open sibling RESULT or review files first.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T20:16:20Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-census-1109-py.md (MATCH=10 DIFF=0 NOT_IN_DATA=0)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/sim_desk/census_1109.py (read)",
     "MyTradingSys/research/sim_desk/census_1109.py (module docstring rules only) (read)",
@@ -47,12 +60,13 @@
   "sources": [
     "MyTradingSys/research/sim_desk/census_1109.py (module docstring rules only)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the docstring (lines 1-10) as the spec",
     "Read the code; list each rule MATCH/DIFF/NOT_IN_DATA (any price leak, any HOLDOUT path, any re-fetch)",
     "Write the table, counts on line 1"
   ],
+  "taken": "2026-11-10T11:57:50Z",
   "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of MyTradingSys/research/sim_desk/census_1109.py",
   "weight": "ROUTINE",
