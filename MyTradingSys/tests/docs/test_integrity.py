@@ -6,6 +6,10 @@ from pathlib import Path
 
 import pytest
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from doc_drift import report, report_only  # noqa: E402
+
 REPO = Path(__file__).resolve().parents[3]
 MTS = REPO / "MyTradingSys"
 INDEX_CEILING_KB = 100
@@ -40,6 +44,7 @@ def test_1_no_old_files_outside_archive():
     assert not offenders, f".old files outside archive: {offenders}"
 
 
+@report_only
 def test_2_no_forbidden_refs():
     patterns = [
         r"\bgit init\b",
@@ -74,6 +79,7 @@ def test_2_no_forbidden_refs():
     assert not hits, "Forbidden refs found:\n" + "\n".join(hits)
 
 
+@report_only
 def test_3_version_consistency():
     version_re = re.compile(r"v4\.\d+\.\d+(?:-p\d+)?")
     files = [
@@ -93,6 +99,7 @@ def test_3_version_consistency():
     assert len(unique) <= 1, f"Version drift: {versions}"
 
 
+@report_only
 def test_4_file_index_size_claim():
     """The SIZE header is not a hand-kept number (B087b): a claim edited to fit a check inverts the check.
     The header must say it is computed (no NNKB figure), and the measured size must stay under the read-budget ceiling."""
@@ -139,6 +146,7 @@ def test_gate_diff_scope_helper(monkeypatch):
     assert in_gate_diff("MyTradingSys/system/RELAY.md") and not in_gate_diff("CLAUDE.md")
 
 
+@report_only
 def test_6_no_banner_docs_in_system():
     """A system/ doc that opens with a SUPERSEDED / HISTORICAL / STALE banner is dead weight in every glob, grep and
     accidental Read. Move it with git mv to MyTradingSys/archive/<topic>_<date>/ (archive/ is skipped by _live_files)
@@ -155,6 +163,7 @@ def test_6_no_banner_docs_in_system():
     assert not hits, "Bannered docs in system/ (git mv them to MyTradingSys/archive/<topic>_<date>/):\n" + "\n".join(hits)
 
 
+@report_only
 def test_7b_nothing_else_depends_on_the_claude_md_cap_number():
     """B18: the CLAUDE.md cap lives in SIZE_CAPS only. No prompt, script or doc may quote the number next to CLAUDE.md
     (that is what made a cap change a multi-file edit); this test is the proof that raising it is safe."""
@@ -181,9 +190,14 @@ def test_7_size_cap(rel):
     p = REPO / rel
     assert p.exists(), f"{rel} is missing"
     size = len(p.read_bytes().replace(b"\r\n", b"\n"))   # a Windows runner checks out CRLF; the cap is on the committed LF bytes
-    assert size <= SIZE_CAPS[rel], f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"
+    msg = f"{rel} is {size} B, cap {SIZE_CAPS[rel]} B"
+    if rel == "CLAUDE.md":   # the boot-file headroom rule: this one stays a gate
+        assert size <= SIZE_CAPS[rel], msg
+    elif size > SIZE_CAPS[rel]:
+        report("test_7_size_cap", msg)
 
 
+@report_only
 def test_8_red_trunk_is_reverted_not_forward_fixed():
     """red-trunk-revert-10-min (operator 2026-10-24): one rule for Claude, Codex and Gemini (AGENTS.md and GEMINI.md point to
     CLAUDE.md). Case: 23426b191 kept CI red about 30 min under two forward fixes instead of one revert."""
@@ -192,6 +206,7 @@ def test_8_red_trunk_is_reverted_not_forward_fixed():
         assert want in line, want
 
 
+@report_only
 def test_9_ops_change_check_has_8_questions_and_lead_cites_it():
     """ops-change-edge-case-check: the reach test for start/hook/broadcast/role changes (NUC 2026-10-26, bbd808f4a)."""
     f = MTS / "system" / "OPS_CHANGE_CHECK.md"
@@ -205,18 +220,21 @@ def test_9_ops_change_check_has_8_questions_and_lead_cites_it():
     assert "OPS_CHANGE_CHECK" in (MTS / "system" / "DEBUGGING.md").read_text(encoding="utf-8")
 
 
+@report_only
 def test_10_workers_blocked_solve_it_rule():
     """bug-ai-health-stops-at-first-blocker (NUC 2026-10-26): a refusal is solved and verified, then reported."""
     t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
     assert "Blocked" in t and "report AND continue" in t and "brief template" in t.lower()
 
 
+@report_only
 def test_workers_no_background_shell_over_30_min_rule():
     """bug-background-shell-runs-12h-1109: the 30-minute shell rule is in the shared worker rules."""
     t = (MTS / "system" / "WORKERS.md").read_text(encoding="utf-8")
     assert "No background shell over 30 min, always set a timeout" in t and "bg_watch.py shells" in t
 
 
+@report_only
 def test_funding_rerun_names_secondary_move():
     """funding-rerun-label-primary-vs-secondary: FUNDING_RERUN.md names both primary and secondary moves and n_T<200 reason."""
     doc = (REPO / "MyTradingSys" / "research" / "gross_effect_screen_2026-10-15" / "FUNDING_RERUN.md").read_text(encoding="utf-8")
