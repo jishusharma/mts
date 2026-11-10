@@ -1,0 +1,1 @@
+{"t": "20261110T142851Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C super session: split for the 24h plan (PLAN_24H_2026-11-10.md). B takes now: T2 edge table T01-T15 + VERDICTS.csv rows (taken back from A, A is gate-blocked), T5 NUC row (mts_doctor on the", "login": "B", "id": "q-a06220", "type": "task", "wait": 30, "due": 60}
