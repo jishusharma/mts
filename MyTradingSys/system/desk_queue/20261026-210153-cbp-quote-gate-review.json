@@ -1,6 +1,6 @@
 {
   "card": "cbp-quote-gate-review",
-  "done_when": "research/cbp/QUOTE_REVIEW_GPT.md lists 13 rows with PASS/FAIL and reason with file:line; the known 1 rejected row is reproduced.",
+  "done_when": "research/cbp/archive/QUOTE_REVIEW_GPT.md lists 13 rows with PASS/FAIL and reason with file:line; the known 1 rejected row is reproduced.",
   "finished": "2026-10-27T08:36:27Z",
   "from": "lane_health",
   "host": "lane_health",

@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Live Aid Map tab: one-screen bias map, levels deduped across Live Aid",
-      "ref": "4ac3eddee5d9",
-      "utc": "2026-11-09T07:35:57Z"
+      "line": "Live Aid: level names anchored (yesterday's low was shown as Today low), weekly high/low l",
+      "ref": "74c91b0bd1eb",
+      "utc": "2026-11-10T14:09:45Z"
     },
     {
       "auto": true,
@@ -36,7 +36,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T20:16:22Z",
+  "refreshed": "2026-11-10T19:36:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -50,7 +50,7 @@
     "no live-tree edit, no deploy, no .secrets or .env read",
     "no trade, no order"
   ],
-  "scope_sha": "4ac3eddee5d9",
+  "scope_sha": "74c91b0bd1eb",
   "size": "S",
   "sources": [
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md"

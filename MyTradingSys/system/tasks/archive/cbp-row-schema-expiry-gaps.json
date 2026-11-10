@@ -49,7 +49,7 @@
   "refined_by": "",
   "refreshed": "2026-10-26T20:58:47Z",
   "refs": [
-    "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md"
+    "MyTradingSys/research/cbp/archive/GATES_TRIAL_GPT.md"
   ],
   "result": "cbp/__init__.py fail-closed direction enum + expires_at validation in query; 3 xfails removed, 24 tests pass",
   "result_receipt": {
@@ -67,7 +67,7 @@
   "scope_sha": "4b2e525dd997",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/cbp/GATES_TRIAL_GPT.md",
+    "MyTradingSys/research/cbp/archive/GATES_TRIAL_GPT.md",
     "MyTradingSys/research/v1_plan_2026-10-20/D5_CBP_MODULE.md"
   ],
   "state": "done",

@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T14:17:58Z",
+  "depends_on": [],
+  "done_when": "home.js renders one Bias line placed above the rail gauge; test in MyTradingSys/tools/live_aid/test_live_aid.py asserts the line text for a SHORT 5/5 gauge with LONG-lean pulse fixture and a liquidation list restored after reload; test fails on current home.js",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Live Aid Home shows one Bias line that states which clock wins (gauge vs pulse 1h-4h vs level card), the two decision lines (15m close above/below the nearest levels) and why, in colour; liquidation history survives page reload (R08). Observation only, no order wording",
+  "id": "live-aid-one-bias-line-1110",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid: level names anchored (yesterday's low was shown as Today low), weekly high/low l",
+      "ref": "74c91b0bd1eb",
+      "utc": "2026-11-10T14:09:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 ACCEPT (after one FIX applied: live_aid.html and replay test added to scope, est_turns 30). twin check: none. Precedence default OURS",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T19:03:48Z",
+  "refs": [
+    "MyTradingSys/tools/live_aid/home.js"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_live_aid_replay.py"
+  ],
+  "scope_out": [
+    "live path, order/size/entry wording, other panels (see live-aid-closed-bars-sweep-1110)"
+  ],
+  "scope_sha": "74c91b0bd1eb",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-10 via Live Aid session C"
+  ],
+  "state": "ready",
+  "steps": [
+    "Persist S.liq (live_aid.html ~405/476/1048) to localStorage in try/catch and restore it before PAGE_T0/since is computed; add a reload test in test_live_aid_replay.py"
+  ],
+  "tests": "Fail-first test_live_aid.py cases (bias line conflict case, liquidation reload); python scripts/dev/run_all_tests.py --quick",
+  "title": "Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP banners say 'big picture up' (pulse 1h-4h lean) and the level card says MIXED. State which clock wins, the two decision lines (15m close above 74,000 / below 73,666 style) and why, in colour; and keep liquidation history across page reloads (R08)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}

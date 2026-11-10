@@ -20,6 +20,47 @@ PAYLOAD = ROOT / "scripts" / "aibridge"
 ORIGIN = "chrome-extension://selftestselftestselftestselftest"
 
 
+def _kill_on_close_job(proc):
+    """Put proc in a Windows Job Object with KILL_ON_JOB_CLOSE. The job handle lives in this python process, so when it dies
+    for any reason (cap kill, crash) the OS kills the agent and its whole tree. Returns the handle (keep it alive) or None."""
+    if os.name != "nt":
+        return None
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k = ctypes.WinDLL("kernel32", use_last_error=True)
+        k.CreateJobObjectW.restype = wintypes.HANDLE
+        k.CreateJobObjectW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR]
+        k.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+        k.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+        k.OpenProcess.restype = wintypes.HANDLE
+        k.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+
+        class BASIC(ctypes.Structure):
+            _fields_ = [("a", ctypes.c_int64), ("b", ctypes.c_int64), ("LimitFlags", wintypes.DWORD), ("c", ctypes.c_size_t),
+                        ("d", ctypes.c_size_t), ("e", wintypes.DWORD), ("f", ctypes.c_size_t), ("g", wintypes.DWORD), ("h", wintypes.DWORD)]
+
+        class IOC(ctypes.Structure):
+            _fields_ = [("v", ctypes.c_uint64 * 6)]
+
+        class EXT(ctypes.Structure):
+            _fields_ = [("Basic", BASIC), ("Io", IOC), ("p", ctypes.c_size_t), ("j", ctypes.c_size_t), ("pk", ctypes.c_size_t), ("jk", ctypes.c_size_t)]
+
+        job = k.CreateJobObjectW(None, None)
+        if not job:
+            return None
+        info = EXT()
+        info.Basic.LimitFlags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+        if not k.SetInformationJobObject(job, 9, ctypes.byref(info), ctypes.sizeof(info)):
+            return None
+        h = k.OpenProcess(0x0101, False, proc.pid)  # SET_QUOTA | TERMINATE
+        if not h or not k.AssignProcessToJobObject(job, h):
+            return None
+        return job
+    except Exception:
+        return None
+
+
 class Scratch:
     def __init__(self, extra_config=None):
         self.work = tempfile.mkdtemp(prefix="aib_probe_")
@@ -45,6 +86,7 @@ class Scratch:
         json.dump(pol, open(os.path.join(self.sdir, "policy.json"), "w"))
         self.proc = subprocess.Popen(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", os.path.join(self.sdir, "agent.ps1")],
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, creationflags=0x08000000)
+        self._job = _kill_on_close_job(self.proc)   # parent death (capped/killed pytest) kills the probe tree
         for _ in range(80):
             time.sleep(0.5)
             try:

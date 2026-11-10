@@ -19,21 +19,22 @@
   }
   // items: [{price, src ('playbook'|'panel'|'ma'|'analyst'), label, badge, bias?}] -> items with a valid price only
   function fromPlaybook(levels) {
-    return (levels || []).map(function (l) {
+    return (levels || []).filter(Boolean).map(function (l) {
       var k = KEYS[l.k] || [String(l.name || l.k || 'Level').split(' ')[0], String(l.k || '').slice(0, 4)], p = num(l.price);
       return p ? { price: p, src: 'playbook', label: k[0], badge: k[1] } : null;
     }).filter(Boolean);
   }
   function fromAnalysts(list) {
-    return (list || []).map(function (a) {
+    return (list || []).filter(Boolean).map(function (a) {
       var p = num(a.level);
       return p ? { price: p, src: 'analyst', label: 'Analyst', badge: initials(a.analyst), bias: a.bias || '' } : null;
     }).filter(Boolean);
   }
+  // Names are anchored: 'Prev day low' contains 'day low', and an unanchored test labelled yesterday's low 'Today low' (11-10).
   function fromPanel(list) {          // [{n, p}] from the Levels panel (day VWAP, day high/low, previous day, weekly open)
-    return (list || []).map(function (l) {
-      var p = num(l.p), n = String(l.n || '').replace(/ \(typed\)$/, '');
-      var b = /vwap/i.test(n) ? 'VWAP' : /day high/i.test(n) ? 'DH' : /day low/i.test(n) ? 'DL' : /prev day high/i.test(n) ? 'PDH' : /prev day low/i.test(n) ? 'PDL' : /weekly open/i.test(n) ? 'WO' : n.slice(0, 4).toUpperCase();
+    return (list || []).filter(Boolean).map(function (l) {
+      var p = num(l.p), n = String(l.n || '').replace(/ \(typed\)$/, '').trim();
+      var b = /vwap/i.test(n) ? 'VWAP' : /^prev day high/i.test(n) ? 'PDH' : /^prev day low/i.test(n) ? 'PDL' : /^day high/i.test(n) ? 'DH' : /^day low/i.test(n) ? 'DL' : /^weekly high/i.test(n) ? 'WH' : /^weekly low/i.test(n) ? 'WL' : /^weekly open/i.test(n) ? 'WO' : n.slice(0, 4).toUpperCase();
       var lab = /vwap/i.test(n) ? 'VWAP' : /high/i.test(n) ? 'High' : /low/i.test(n) ? 'Low' : /open/i.test(n) ? 'Open' : 'Level';
       return p ? { price: p, src: 'panel', label: lab, badge: b } : null;
     }).filter(Boolean);
@@ -55,7 +56,7 @@
     var s = (items || []).filter(function (x) { return x && num(x.price); }).slice().sort(function (a, b) { return a.price - b.price; }), out = [];
     s.forEach(function (it) {
       var z = out[out.length - 1];
-      if (z && it.price / z.lo - 1 <= tol) { z.hi = it.price; z.items.push(it); } else out.push({ lo: it.price, hi: it.price, items: [it] });
+      if (z && it.price / z.lo - 1 <= tol + 1e-9) { z.hi = it.price; z.items.push(it); } else out.push({ lo: it.price, hi: it.price, items: [it] });
     });
     return out.map(function (z) {
       var badges = [], srcs = [], best = z.items[0];

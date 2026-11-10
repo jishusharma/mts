@@ -31,7 +31,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-fabio-rebuild-from-beginner-videos-1109` ready p1 CODEX: Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what c
-  - `tom-swing-trendline-extract-1109` ready p1 SONNET: Tom swing trading (trendline swings 1-3): extract his rules from the new EN video, map to trendline_core, pre-
   - `tom-btc-dev-backtest` blocked p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config
@@ -185,10 +184,12 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-mirror-follow-live-host-move` refined p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
+  - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
+  - `live-aid-closed-bars-sweep-1110` raw p3 SONNET: Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP ca
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
   - `venue-gap-tight-stop-rerun-on-deribit` ready p3 DSA-NB: Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)
 
@@ -217,7 +218,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-dev-event-study` refined p2 SONNET: Krown DEV event study: hypotheses H-V1..H-T1, DEV only, fee-net, same-window placebo, power first; DONE when: 
   - `krown-dev-event-study-candles` refined p2 SONNET: Krown DEV event study 3/3: candle hypotheses H-C1, H-C2 (H-T1 not run); DONE when: DEV_RESULTS.md has N, power
   - `krown-dev-event-study-levels` refined p2 SONNET: Krown DEV event study 2/3: level and moving-average hypotheses H-M1, H-M3, H-Z1 (H-M2 not run); DONE when: DEV
-  - `gemini-blind-read-fable-r7-forward-prereg` ready p3 CODEX: [GEMINI] blind read of fable R7 FORWARD_PREREG.md: do the FAIL rule, parity spec and months-to-power arithmeti
   - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` refined p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 

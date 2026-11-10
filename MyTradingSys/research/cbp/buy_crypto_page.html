@@ -109,7 +109,7 @@ function phaseSvg(){
   const marks=[[60000,'Phase 3','60k double bottom'],[77000,'Phase 1','77k']];
   for(const[v,a,t] of marks){s+=`<line x1="${X(v)}" y1="46" x2="${X(v)}" y2="78" stroke="var(--accent)" stroke-width="2"/><text x="${X(v)}" y="96" text-anchor="middle">${a}</text><text class="m" x="${X(v)}" y="110" text-anchor="middle">${t}</text>`}
   s+=`<text x="${(X(72000)+X(75000))/2}" y="96" text-anchor="middle">Phase 2</text><text class="m" x="${(X(72000)+X(75000))/2}" y="110" text-anchor="middle">72-75k</text>`;
-  if(P&&P.limit_usd){const v=P.limit_usd;s+=`<line x1="${X(v)}" y1="40" x2="${X(v)}" y2="84" stroke="var(--dn)" stroke-width="2" stroke-dasharray="3 3"/><text class="m" x="${X(v)}" y="36" text-anchor="middle" style="fill:var(--dn)">your limit ${nm(v)}</text>`}
+  if(P&&P.limit_usd){const v=P.limit_usd;s+=`<line x1="${X(v)}" y1="40" x2="${X(v)}" y2="84" stroke="var(--dn)" stroke-width="2" stroke-dasharray="3 3"/><text class="m" x="${X(v)}" y="36" text-anchor="middle" style="fill:var(--dn)">your line ${nm(v)}</text>`}
   const x=X(b);s+=`<path d="M${x} 56 l-8 -16 h16 z" fill="var(--here)"/><text x="${x}" y="14" text-anchor="middle" style="fill:var(--here)">WE ARE HERE ${nm(b)}</text>`;
   s+=`<text class="m" x="30" y="78">55k</text><text class="m" x="670" y="78" text-anchor="end">80k</text></svg>`;return s;
 }
@@ -148,7 +148,7 @@ function renderCoins(){
 function pnlBlock(){
   if(!P)return`<div class="empty">No position loaded yet. Ask Claude to write it to the page.</div>`;
   const b=M.btc.usd,pl=(b/P.entry_usd-1)*100,val=P.inr_spent*(1+pl/100),d=P.limit_usd?(P.limit_usd/b-1)*100:null;
-  return`<div class="pos"><div class="kpi"><span>${P.exchange||'Exchange'} BTC buy, INR</span><b>${nm(P.inr_spent)}</b></div><div class="kpi"><span>Average entry, USD</span><b>${P.entry_usd.toLocaleString('en-US',{minimumFractionDigits:2})}</b></div><div class="kpi"><span>BTC now, USD</span><b>${nm(b)}</b></div><div class="kpi"><span>Profit or loss</span><b class="${cl(pl)}">${num(pl,2)}%</b></div><div class="kpi"><span>Worth now, INR (est.)</span><b>${nm(val)}</b></div><div class="kpi"><span>Open limit buy, USD</span><b>${P.limit_usd?P.limit_usd.toLocaleString('en-US',{minimumFractionDigits:2}):'–'}</b></div><div class="kpi"><span>Limit is below price by</span><b>${d==null?'–':num(d,1)+'%'}</b></div></div><div class="legend">Profit is price against entry in USD. INR worth ignores the rupee move and exchange fees.</div>`;
+  return`<div class="pos"><div class="kpi"><span>${P.exchange||'Exchange'} BTC buy, INR</span><b>${nm(P.inr_spent)}</b></div><div class="kpi"><span>Average entry, USD</span><b>${P.entry_usd.toLocaleString('en-US',{minimumFractionDigits:2})}</b></div><div class="kpi"><span>BTC now, USD</span><b>${nm(b)}</b></div><div class="kpi"><span>Profit or loss</span><b class="${cl(pl)}">${num(pl,2)}%</b></div><div class="kpi"><span>Worth now, INR (est.)</span><b>${nm(val)}</b></div><div class="kpi"><span>Your lower line, USD</span><b>${P.limit_usd?P.limit_usd.toLocaleString('en-US',{minimumFractionDigits:2}):'–'}</b></div><div class="kpi"><span>Line is below price by</span><b>${d==null?'–':num(d,1)+'%'}</b></div></div><div class="legend">Your lines are price levels you watch, not orders. BTC price here is a USD reference (CoinGecko), not your exchange's INR quote. Profit is price against entry in USD. INR worth ignores the rupee move and exchange fees.</div>`;
 }
 const SPLIT=['anchor','leader','darkhorse'];
 function renderPos(){
