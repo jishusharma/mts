@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-10T11:52:58Z",
   "commands": [],
   "created": "2026-11-09T16:16:35Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH: 24 | DIFF: 0 | NOT_IN_DATA: 0 in MyTradingSys/research/layer_lab/reports/2026-11-10",
+      "ref": "bfff754c7",
+      "utc": "2026-11-10T11:52:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed",
   "note": "DECISION (OURS, planner-A-1110b): refined from raw. Gemini queue, load as <card>:low. Blind read: use only the files named, do not open sibling RESULT or review files first.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T20:16:27Z",
   "refs": [],
-  "result": "",
+  "result": "MATCH: 24 | DIFF: 0 | NOT_IN_DATA: 0 in MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-of-malkan-level-short-.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/malkan_level_short_live.py (read)",
     "MyTradingSys/research/malkan_level_shorts_2026-11-09/FORWARD_PREREG.md (read)",
@@ -54,12 +67,13 @@
   "sources": [
     "MyTradingSys/research/malkan_level_shorts_2026-11-09/FORWARD_PREREG.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FORWARD_PREREG.md as the spec",
     "Read malkan_level_short_live.py; list each pinned parameter and rule MATCH/DIFF/NOT_IN_DATA",
     "Write the table, counts on line 1"
   ],
+  "taken": "2026-11-10T11:52:58Z",
   "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of malkan_level_short_live.py",
   "weight": "ROUTINE",
