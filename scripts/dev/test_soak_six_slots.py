@@ -38,3 +38,12 @@ def test_the_wake_leaves_fewer_slots_empty_than_the_old_watcher():
     new = sum(K.run(180, s, out=io.StringIO(), quiet=True)["idle_slot_min"] for s in range(1, 7))
     old = sum(K.run(180, s, out=io.StringIO(), quiet=True, baseline=True)["idle_slot_min"] for s in range(1, 7))
     assert new < 0.8 * old, (new, old)      # 2026-10-22: see the soak section of research/thinker/2026-10-22_six_slots.md
+
+
+def test_the_soak_never_builds_the_published_pages(monkeypatch):
+    """2026-11-10: plan() built three real pages per publisher plan, so one soak test held a gate slot for over an hour."""
+    import artifacts
+    calls = []
+    monkeypatch.setattr(artifacts, "republish_lines", lambda reg: calls.append(1) or [])
+    K.run(180, 1, out=io.StringIO(), quiet=True)
+    assert calls == []

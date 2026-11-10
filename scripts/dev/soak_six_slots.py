@@ -353,7 +353,7 @@ def _patch(world, clock, tmp):
     import traffic
     import mts_signal
     saved = [(mod, name, getattr(mod, name)) for mod, names in (
-        (S, ("_now_utc", "read_gate_slots", "fetch_origin", "read_ci", "_git_show", "_local_bridge", "nuc_budget_ok", "_dispatch_raw")),
+        (S, ("_now_utc", "read_gate_slots", "fetch_origin", "read_ci", "_git_show", "_local_bridge", "nuc_budget_ok", "_dispatch_raw", "republish_notes")),
         (mts_signal, ("send",)), (traffic, ("read_signals", "refresh_signals", "budget_view", "inv_cache"))) for name in names]
     env = os.environ.get("MTS_RELAY_HOME")
 
@@ -372,6 +372,7 @@ def _patch(world, clock, tmp):
     S._git_show = lambda repo, rel: None
     S._local_bridge = lambda host: None
     S.nuc_budget_ok = lambda *a, **k: False
+    S.republish_notes = lambda login: []       # the real one builds every page by subprocess on each plan (gate ran 60+ min, 2026-11-10)
     S._dispatch_raw = lambda repo, as_of, host=None, login=None, logins=None: {"dispatch": list(world.cards[host_of(repo)])}
 
     def send(text, to="all", kind="note", **k):
