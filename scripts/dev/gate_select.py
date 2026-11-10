@@ -220,6 +220,9 @@ MUST_EXTRAS = {
     "MyTradingSys/research/sim_desk/test_backfill.py": re.compile(r"^MyTradingSys/research/sim_desk/"),
     # gate_gap_2026-11-03: TRIAL_REGISTRY rows shipped without the rebuilt ledger (C26 Phase 2, rumers): 2 reverts
     "scripts/dev/test_trial_ledger.py": re.compile(r"^MyTradingSys/research/(.*/)?TRIAL_(REGISTRY[^/]*|LEDGER_BUILT)\.csv$"),
+    # 42d8b197a: test_preship copies the doc cap test (and now its helpers) into a scratch repo by path, so no import graph reaches it;
+    # a new docs helper import went red only in CI (42892614113), revert 288b5d93d
+    "scripts/dev/test_preship.py": re.compile(r"^MyTradingSys/tests/docs/[^/]+\.py$"),
 }
 
 

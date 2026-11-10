@@ -128,9 +128,10 @@ class SyncTest(unittest.TestCase):
 
     def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
         """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
-        cap = "MyTradingSys/tests/docs/test_integrity.py"
-        (self.a / cap).parent.mkdir(parents=True)
-        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        import preship   # the cap test plus the helpers beside it (42d8b197a: a new doc_drift.py import broke a one-file copy)
+        preship.copy_cap_test(Path(__file__).resolve().parents[2], self.a)
+        sh(self.a, "add", "-A")
+        sh(self.a, "commit", "-q", "-m", "cap test")
         sync.ship(self.a, gate=lambda repo, files: None)
         commit(self.a, "CLAUDE.md", "x" * 100_000)
         with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
@@ -715,6 +716,26 @@ class SyncTest(unittest.TestCase):
             self.assertIsNone(sync.reuse_finished_tree(self.a, marked))
         self.assertTrue(marked.exists())
         self.assertFalse(plain.exists())
+
+    def test_gateway_marker_alone_is_not_ignored_data(self):
+        """2026-11-11 JIS-NB: tidy kept 19 released gateway trees as 'ignored data would be deleted (.gateway_owner)': the real repo
+        gitignores the marker, so `status --ignored` listed it as data and no remover (tidy, start's retire, wt_maint) could go on."""
+        with open(self.a / ".git" / "info" / "exclude", "a", encoding="utf-8") as f:
+            f.write(chr(10) + sync.GATEWAY_MARKER + chr(10))
+        with contextlib.redirect_stdout(io.StringIO()):
+            rel = sync.new_worktree(self.a, "relx")
+        (rel / sync.GATEWAY_MARKER).write_text("x", newline=chr(10))
+        self.assertEqual(sync.ignored_data(rel), [])
+        (rel / "Dumps").mkdir()
+        (rel / "Dumps" / "keep.txt").write_text("x", newline=chr(10))
+        with open(self.a / ".git" / "info" / "exclude", "a", encoding="utf-8") as f:
+            f.write("Dumps/" + chr(10))
+        self.assertEqual(sync.ignored_data(rel), ["Dumps/"])          # real data is still data
+        later = time.time() + 48 * 3600
+        (rel / "Dumps" / "keep.txt").unlink()
+        with mock.patch.object(sync, "open_claims", return_value=[]), contextlib.redirect_stdout(io.StringIO()) as out:
+            gone = sync.tidy(self.a, apply=True, now=later, fetch=False, gateway_only=True)
+        self.assertEqual(gone, [str(rel.resolve())], out.getvalue())
 
     def test_start_retires_released_shipped_gateway_tree_despite_hold(self):
         with contextlib.redirect_stdout(io.StringIO()):
