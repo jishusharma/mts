@@ -1,0 +1,1 @@
+{"t": "20261110T201750Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-6f4291 told C will not forward-fix; waits for A's revert, re-adds row 1 after test_preship passes", "login": "C", "id": "b-6f4291", "state": "told", "host": "jis-nb", "note": "C will not forward-fix; waits for A's revert, re-adds row 1 after test_preship passes"}
