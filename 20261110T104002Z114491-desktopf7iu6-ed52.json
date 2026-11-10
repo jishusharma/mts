@@ -1,0 +1,1 @@
+{"t": "20261110T104002Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED 42800014829: test_sim_cards_from_json test_all_337_rows_present fails (sim_desk 338th row live_aid-pulse-backtest.json from live-aid-pulse-backtest-1109 ship 2bdaec2bb/771c2c11f). Author: rever", "login": "A", "id": "b-670f74", "prio": "high", "cmd": ""}
