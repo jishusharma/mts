@@ -32,7 +32,6 @@ EXPORTED_BY_SOURCE = {
     "MyTradingSys/research/fable_run6_powered_prereg/CROSSCHECK.md": "krown-s8-e2-desk-crosscheck",
     "MyTradingSys/research/setup_alpha_beta_v2_2026-10/RESULT.md": "ask-p0-65-setup-alpha-beta-backtest",
     "MyTradingSys/research/tf_break_event_study_2026-10-30/RESULT.md": "ask-p0-45-tf-break-event-study",
-    "MyTradingSys/research/live_aid_pulse_2026-11/RESULT.md": "live_aid-pulse-backtest",
     "MyTradingSys/research/meta_label_breaks_2026-10-31/RESULT.md": "meta-label-breaks",
     "MyTradingSys/research/meta_label_breaks_2026-10-31/PRE_REG_DIV.md": "malkan-div-breaks",
     "MyTradingSys/research/fractals_2026-10-31/p1b_rsi_feenet/RESULT.md": "fractals-p1b-rsi-by-phase",
