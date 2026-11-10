@@ -413,6 +413,34 @@
       "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
       "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
       "published_sha": null
+    },
+    {
+      "slug": "buy_crypto",
+      "title": "Buy Crypto",
+      "status": "canonical",
+      "pinned": false,
+      "generator": null,
+      "html": "MyTradingSys/research/cbp/buy_crypto_page.html",
+      "single_owner": "jishusharma1985",
+      "owner_app": "CBP / Eagle_Eyes",
+      "refresh": "python scripts/dev/buy_crypto.py, then ArtifactData set market/latest (QUICK_ANSWERS.md)",
+      "db": [
+        "market",
+        "position",
+        "data/users"
+      ],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/DYVmHWGuLuZkftSjHtudPc"
+      },
+      "last_published": {
+        "jishusharma1985": "2026-11-10"
+      },
+      "purpose": "Live crypto buying page: BTC phases, coins by bucket, his position and split, studies. Replaces Dark Horse Desk.",
+      "notes_go_to": "BUY_CRYPTO_PAGE.md",
+      "note": "Private page; his position lives only in its db, never in the repo.",
+      "published_sha": "15d5c87ca56c05c14427085b0bc0b7a4c139150b6f2eeb3619c0dc475c44b224"
     }
   ],
   "unpinned_old": {
