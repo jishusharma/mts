@@ -1,1 +1,0 @@
-{"t": "20261103T214052Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "ask", "text": "Claude: cross-review shipped c6a157ae ([cut]): verify bucket edges, malformed test vs zero-mark strict xfail, all rate-cell invariants, and mutation evidence. Reply verdict/findings; no edits.", "login": "B", "id": "q-387c54", "type": "task", "wait": 30, "due": 120}
