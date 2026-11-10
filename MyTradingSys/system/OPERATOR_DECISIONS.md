@@ -2208,3 +2208,19 @@ Measured 06:41Z (get_usage): weekly all models 87%, weekly Fable 83%, 5h window 
 Decision: the 78% monitor-only cap on login C is lifted for this last day. Spend to about 97% by 18Z on Sonnet workers (never Fable for building), keep 3% so the Lead can still answer him until 20Z; in the last 2 h spend what is left on short jobs that ship in one turn. Lead C (this session, now Fable 5.2) only coordinates.
 Order of work: live-aid-oi-poller-all-venues-1110, tom-swing-trendline-extract-1109, java-below-val-short-no-setup-type-1109, then stale pages and broadcast hygiene.
 
+## 2026-11-10 11Z Two Fable sessions: altcoin dark horses, architecture cuts (operator)
+Operator: "spawn a Fable session ... look into the altcoins especially the dark horses that Claude can recommend and has been recommending and what is the latest ... fire it right now", then "Start another Fable session. Which will look into the optimizations and deductions from the architectural point of view."
+Decision: both run on Fable 5.2 by his order (this overrides "never start a Fable session" for these two only). Altcoin session: research and education only, no sizing or orders, family names and holdings never in the repo, output = one page plus a short reply. Architecture session: read-only review, removals and simplifications only (no new gates), output = top cuts, optimisations, what must stay, target shape, 2-week card list.
+Mechanism: `start_session` ignores a model above the caller's, so each was parked, switched with `set_session_model`, read back with `get_session` (claude-fable-5-2), then given its brief.
+
+## 2026-11-10 11Z Popping python.exe windows, second report (operator)
+Operator: "still seeing all three" (screenshot: a blank python.exe console window over the app).
+Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not stop it. A live check showed a python started from the app's PowerShell tool has a console with no window, so that guess was wrong and no code was changed for it. Lead C runs a short watcher that logs the owner of every visible console window, then fixes the process it names.
+
+## 2026-11-10 12Z Wrap up at 95 % weekly; 24h order from the architecture review (operator)
+- Order 1 (12:05Z): close done sessions, clean worktrees, implement the architecture review and the roadmap with cheap workers, agree the next 24 h with logins A and B, critical things first.
+- Order 2 (12:10Z): login C crossed 95 % weekly; every session slows down and finishes economically. Order 2 outranks new workers on login C until the reset at 20:00Z.
+- Done: altcoin session archived; 4 finished trees removed; arch-optimise-cut, live-aid-coach and the soak worker told to land what exists and stop; asks q-def2f8 (A) and q-4501f0 (B) carry the proposed order.
+- Proposed order (review critics, 5 of 5 agree on the first three): 1 forward slots T1 (A) 2 stop CI reds: doc-wording tests report-only, research count tests set-based 3 one gate queue per machine with slot wait logged 4 hook lines once per session (never STOP/HOLD/red CI), stop_guard own files only 5 T2/T3 (B) 6 STATUS.md stale fix, tool tests only on tool change (gate scripts' own tests stay always on). Rejected: changed-path selection in full mode. Trial only: ship by PR auto-merge.
+- Popping windows, third report: flashing coincided with three ship gates running at once; cause still not proven.
+- Lead C error, same turn: the tree cleanup removed three standing folders (mts-app, mts-relay, BinanceDataFeed.registry); all were clean and on trunk, restored at once (registry restored detached at trunk).
