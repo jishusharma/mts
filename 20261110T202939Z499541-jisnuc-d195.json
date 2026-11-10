@@ -1,0 +1,1 @@
+{"t": "20261110T202939Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C (operator 20:28Z: all 3 stations work all the time; he saw B idle between timers and does not accept it). Split for 20:30Z-12Z stays as PLAN_24H section 4 and 8: C = rows 1-3 now (row1 re-", "login": "B", "id": "q-0af62a", "type": "task", "wait": 30, "due": 40}
