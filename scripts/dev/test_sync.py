@@ -128,18 +128,10 @@ class SyncTest(unittest.TestCase):
 
     def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
         """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
-<<<<<<< HEAD
-        cap = "MyTradingSys/tests/docs/test_integrity.py"
-        (self.a / cap).parent.mkdir(parents=True)
-        real = Path(__file__).resolve().parents[2] / cap
-        commit(self.a, cap, real.read_text(encoding="utf-8"))
-        commit(self.a, cap.replace("test_integrity.py", "doc_drift.py"), real.with_name("doc_drift.py").read_text(encoding="utf-8"))
-=======
         import preship   # the cap test plus the helpers beside it (42d8b197a: a new doc_drift.py import broke a one-file copy)
         preship.copy_cap_test(Path(__file__).resolve().parents[2], self.a)
         sh(self.a, "add", "-A")
         sh(self.a, "commit", "-q", "-m", "cap test")
->>>>>>> origin/fast-track
         sync.ship(self.a, gate=lambda repo, files: None)
         commit(self.a, "CLAUDE.md", "x" * 100_000)
         with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):

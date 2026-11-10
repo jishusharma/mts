@@ -120,15 +120,7 @@ class PreshipTest(unittest.TestCase):
         self.assertEqual(got, ["conftest.py", "helper_x.py", Path(P.CAP_TEST).name])
 
     def test_cap_failures_runs_the_real_cap_test_on_the_shipped_files_only(self):
-<<<<<<< HEAD
-        real = Path(__file__).resolve().parents[2] / P.CAP_TEST
-        (self.root / P.CAP_TEST).parent.mkdir(parents=True)
-        (self.root / P.CAP_TEST).write_text(real.read_text(encoding="utf-8"), encoding="utf-8")
-        helper = real.with_name("doc_drift.py")   # the cap test imports it; a copy must carry it
-        (self.root / P.CAP_TEST).with_name("doc_drift.py").write_text(helper.read_text(encoding="utf-8"), encoding="utf-8")
-=======
         P.copy_cap_test(Path(__file__).resolve().parents[2], self.root)   # the cap test plus the helpers beside it (42d8b197a: doc_drift.py)
->>>>>>> origin/fast-track
         (self.root / "CLAUDE.md").write_text("x" * 100, encoding="utf-8")
         self.assertEqual(P.cap_failures(str(self.root), ["CLAUDE.md"]), [])
         (self.root / "CLAUDE.md").write_text("x" * 100_000, encoding="utf-8")
