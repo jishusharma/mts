@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
+  "closed": "2026-11-10T09:36:50Z",
   "commands": [],
   "created": "2026-10-12T15:34:42Z",
   "depends_on": [
@@ -17,8 +19,10 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Same file as live-orderflow card, so sequential.\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "already shipped 2264a3316 (volume_info in market_guide.py; cherry empty). DECISION (OURS): drop as shipped",
+  "pinned": false,
   "prio": 3,
+  "reason": "already shipped 2264a3316 (volume_info in market_guide.py; cherry empty). DECISION (OURS): drop as shipped",
   "refine_tries": 0,
   "refined_by": "gemini-nuc",
   "refs": [],
@@ -33,7 +37,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "read the same-slot relative-volume definition in the volume study feature code (do not copy numbers)",
     "add one guide line with value, slot baseline n and label descriptive",
@@ -41,8 +45,7 @@
   ],
   "tests": "test_market_guide.py; fails before the function exists",
   "title": "Time-adjusted volume context line for the live read (same-slot baseline, effort vs result, OI scope) as read-only market-guide field; VOLUME report recommendation (c)",
-  "weight": "IMPORTANT",
-  "worker": "session",
   "updated": "2026-10-18T10:00:00Z",
-  "class": "C1"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
