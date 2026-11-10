@@ -23,14 +23,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-VERSION = 2
+VERSION = 3
 EVENTS = ("SessionStart", "UserPromptSubmit", "Stop")
 MARK = "signal_user_hook_runner"
 KEEP = 6                     # OURS: clones remembered per machine
 TIMEOUT_S = 11               # OURS: under the 12 s hook timeout
 
 RUNNER = r'''# MTS signal hook runner v%(v)d (written by scripts/dev/signal_user_hook.py; do not edit, it is rewritten)
-import json, subprocess, sys
+import json, os, subprocess, sys
 from pathlib import Path
 HOME = Path(%(home)r)
 
@@ -53,17 +53,26 @@ def has_repo_hook(cwd):
 
 
 try:
-    raw = sys.stdin.buffer.read().decode("utf-8", "replace")
+    chunks = []                       # pythonw has no sys.stdin: read fd 0 directly (v3, no console window)
+    while True:
+        b = os.read(0, 65536)
+        if not b:
+            break
+        chunks.append(b)
+    raw = b"".join(chunks).decode("utf-8", "replace")
     d = json.loads(raw) if raw.strip() else {}
     if not has_repo_hook(d.get("cwd") or "."):
         repos = json.loads((HOME / "repo_paths.json").read_text(encoding="utf-8"))
         repo = next((r for r in repos if (Path(r) / "scripts" / "dev" / "mts_signal.py").is_file()), None)
         if repo:
             d["cwd"] = repo
-            r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "mts_signal.py"), "hook"],
+            exe = Path(sys.executable)
+            if exe.name.lower() == "pythonw.exe" and (exe.parent / "python.exe").is_file():
+                exe = exe.parent / "python.exe"      # child keeps stdout; CREATE_NO_WINDOW hides its console
+            r = subprocess.run([str(exe), str(Path(repo) / "scripts" / "dev" / "mts_signal.py"), "hook"],
                                input=json.dumps(d).encode("utf-8"), capture_output=True, cwd=repo, timeout=%(t)d,
                                creationflags=0x08000000 if sys.platform == "win32" else 0)
-            sys.stdout.buffer.write(r.stdout)
+            os.write(1, r.stdout)
 except Exception:
     pass
 '''
@@ -86,7 +95,12 @@ def runner_text():
 
 
 def command():
-    return '"%s" "%s"' % (Path(sys.executable).as_posix(), runner_path().as_posix())
+    """pythonw.exe when it sits next to the interpreter: a console python.exe started by the app opens a visible window on every hook."""
+    exe = Path(sys.executable)
+    w = exe.with_name("pythonw.exe")
+    if sys.platform == "win32" and w.is_file():
+        exe = w
+    return '"%s" "%s"' % (exe.as_posix(), runner_path().as_posix())
 
 
 def remember(repo):
