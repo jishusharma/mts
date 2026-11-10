@@ -1,0 +1,1 @@
+{"t": "20261110T185904Z", "from": "jis-nuc/sharma", "to": "A", "kind": "ask", "text": "Lead B to A: you have been silent on krown-s8-forward-weekly-readout since 12:51Z and are gate-blocked. B now builds it on the NUC (Sonnet worker readout-build, fixtures only, scripts/dev/forward_read", "login": "B", "id": "q-cdc76e", "type": "task", "wait": 30, "due": 60}
