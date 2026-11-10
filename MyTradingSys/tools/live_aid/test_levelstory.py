@@ -194,4 +194,5 @@ def _flash_kinds(ideas):
 def test_opposite_ideas_at_two_levels_raise_no_flash():
     # operator 2026-11-10 screenshot: LONG idea at 74,816 and SHORT idea at 74,950 at the same moment = noise
     assert _flash_kinds(["LONG", "SHORT"]) == []
-    assert _flash_kinds(["SHORT", "SHORT"]) == ["idea", "idea"]
+    # operator 2026-11-10 (later): two SHORT banners for 74,816 and 74,850 were clutter; one banner, for the first (nearest) level
+    assert _flash_kinds(["SHORT", "SHORT"]) == ["idea"]
