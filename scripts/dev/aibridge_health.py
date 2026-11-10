@@ -67,7 +67,7 @@ def running_version():
 
 def trunk_current():
     """RELEASES.json current on origin/fast-track as last fetched (no network); this checkout's when git cannot say."""
-    r = subprocess.run(["git", "-C", av.REPO, "show", f"origin/fast-track:{av.RELEASES_REL}"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    r = subprocess.run(["git", "-C", av.REPO, "show", f"origin/fast-track:{av.RELEASES_REL}"], capture_output=True, text=True)
     if r.returncode == 0:
         return json.loads(r.stdout)["current"], "origin/fast-track"
     return av.load(av.REPO)["current"], "this checkout"

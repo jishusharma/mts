@@ -18,6 +18,7 @@ SCOPE = [HERE, REPO / ".claude" / "hooks"]
 INTERACTIVE = {
     "aibridge_install.py": 2, "cbp_schedule.py": 2, "ci_revert.py": 1, "desk.py": 1, "dsa.py": 2, "dsa_seed.py": 1,
     "lane_health.py": 1, "logon_wake.py": 1, "refresh_klines.py": 1, "run_staged_tests.py": 1, "station_disk_report.py": 1,
+    "aibridge_health.py": 1, "aibridge_verify.py": 1,   # fingerprinted bridge files: a code change needs a bridge version bump (aibridge_version.py), its own card
     "sync.py": 1,   # the gate run; sync installs nowin, which adds the flag when the console is hidden
 }
 # Run by Claude hooks (.claude/settings.json) or the ship path: no entry on the list above, ever, except sync's one gate run.
