@@ -31,7 +31,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `tom-btc-eye-read` blocked p1 SONNET: Tom on BTC T3: eye read of the 80 lab charts by two readers (Claude + Jis), blind; agreement per Tom concept
   - `tom-fabio-rebuild-from-beginner-videos-1109` ready p1 CODEX: Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what c
-  - `tom-swing-trendline-extract-1109` ready p1 SONNET: Tom swing trading (trendline swings 1-3): extract his rules from the new EN video, map to trendline_core, pre-
   - `tom-btc-dev-backtest` blocked p2 SONNET: Tom on BTC T6: DEV backtest + adjustments (both fills, maker vs taker entry, management arms) - every variant 
   - `tom-btc-encode` blocked p2 SONNET: Tom on BTC T5: encode the concepts that separated into a flag-gated BTC detector (entry paths A1-A3, stop at t
   - `tom-btc-validation` blocked p2 DSA-NUC: Tom on BTC T7: VALIDATION read once (2025-04..2025-06) of the frozen DEV config

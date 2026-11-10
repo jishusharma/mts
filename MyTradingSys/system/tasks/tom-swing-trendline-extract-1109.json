@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-10T14:08:49Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -28,10 +29,18 @@
   "id": "tom-swing-trendline-extract-1109",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tom_swing_2026-11-09/extract_M7ompiwv5co.md",
+      "ref": "31fdc9de7",
+      "utc": "2026-11-10T14:08:49Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: Tom swing rules extracted, mapped to trendlines, PRE_REG written for Claude review",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
@@ -41,7 +50,12 @@
     "MyTradingSys/research/trendlines_2026-10-17/AUDIT_2026-10-18.md",
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/AUDIT_AND_COURSE_CORRECTION.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/tom_swing_2026-11-09/extract_M7ompiwv5co.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": "MyTradingSys/research/tom_swing_2026-11-09/ (extract, mapping, PRE_REG)",
   "scope_out": "running the backtest; orders; live tree",
   "scope_sha": "",
@@ -49,12 +63,13 @@
   "sources": [
     "operator chat 11-09 (shot 3c939c155c73)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find video, fetch captions (gemini YouTube rule: captions, never 'watch video').",
     "Extract + verify quotes.",
     "Map to trendline layer, write PRE_REG, ship."
   ],
+  "taken": "2026-11-10T14:08:49Z",
   "tests": "scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_swing_2026-11-09/extract_<id>.md (exit 0); research/docs only, no code",
   "title": "Tom swing trading (trendline swings 1-3): extract his rules from the new EN video, map to trendline_core, pre-register a BTC 4h/1d count",
   "weight": "",
