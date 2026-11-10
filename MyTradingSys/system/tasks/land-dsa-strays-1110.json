@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-10T09:07:00Z",
+  "commands": [],
+  "created": "2026-11-10T08:49:31Z",
+  "depends_on": [],
+  "done_when": "git cherry origin/fast-track HEAD shows nothing; run_all_tests --quick green; CI green",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Land work stranded on dsa/jis-nuc-1016-0629, -1019-0713, -1101-0853 plus the DSA Haiku guide; trunk keeps its newer T01 forensics doc.",
+  "id": "land-dsa-strays-1110",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Landed 7 commits: DSA Haiku guide (no forbidden git phrases), T01 repro scripts + progress",
+      "ref": "4e4f10660",
+      "utc": "2026-11-10T09:07:00Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: old dsa/jis-nuc-* branches stay for the operator to delete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T08:49:32Z",
+  "refs": [],
+  "result": "Landed 7 commits: DSA Haiku guide (no forbidden git phrases), T01 repro scripts + progress file + wiring entries (trunk T01 doc kept, it is newer), q76 independent power check + allowlist row, 11-01 desk item. Quick gate green except 3k test_sync FailCi/OwnCiWait, which touch no changed file.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "research/dsa_backtest_audit_2026-10-16, layer_lab q76 report, wiring_registry, lookahead_allowlist, DSA_HAIKU_GUIDE"
+  ],
+  "scope_out": [
+    "live trading, gates, bridge code"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "B/NUC 2026-11-10"
+  ],
+  "state": "done",
+  "steps": [
+    "cherry-pick",
+    "ship"
+  ],
+  "taken": "2026-11-10T09:07:00Z",
+  "tests": "test_wiring_scan, test_integrity, run_all_tests --quick",
+  "title": "Land 3 stranded DSA branches (T01 scripts, q76 recheck) and the DSA Haiku guide",
+  "weight": "",
+  "worker": "session"
+}
