@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-10T15:36:29Z",
   "commands": [],
   "created": "2026-11-08T19:02:03Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md",
+      "ref": "25ec0e923",
+      "utc": "2026-11-10T15:36:29Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge fast-track; parity test (re-landed fixture version) adapted to krown_live runner-eve",
@@ -27,6 +34,7 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed and all sections SOUND",
   "note": "REVIEWED: Lab_Guy 2026-11-09 ACCEPT (independent Haiku Agent; must-fixes applied the same turn)",
   "prio": 3,
   "refine_tries": 0,
@@ -36,7 +44,12 @@
     "MyTradingSys/research/fable_run7_forward_test/FORWARD_PREREG.md",
     "MyTradingSys/research/fable_run6_powered_prereg/COUNTS.csv"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md",
     "MyTradingSys/research/fable_run7_forward_test/",
@@ -50,13 +63,14 @@
   "sources": [
     "fable R7 session 2026-11-09 (FORWARD_PREREG.md section 5)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FORWARD_PREREG.md and COUNTS.csv POOLED and BTCUSDT S8 rows",
     "Re-derive the months table with the R1 formula",
     "Read e2_run.py 61-89 against section 1; read section 3 for a looser rule",
     "Write MyTradingSys/research/layer_lab/reports/fable_r7_gemini_blind_read.md"
   ],
+  "taken": "2026-11-10T15:36:29Z",
   "tests": "",
   "title": "[GEMINI] blind read of fable R7 FORWARD_PREREG.md: do the FAIL rule, parity spec and months-to-power arithmetic hold",
   "weight": "IMPORTANT",
