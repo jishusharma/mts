@@ -20,3 +20,7 @@ Moved 2026-10-25 by the Lead to make room for the operator principles. Text is v
 4. Hand-over: no schedulers or routines run anywhere (SCHEDULING_POLICY.md); nothing starts the next session by itself. Overwrite NEXT_SESSION.md, `sync.py ship`; coordinator (SUPER_SESSION.md) starts the next. The block must run with zero operator input (defaults for open questions).
 
 - Interactive sessions and subagents: Sonnet (implementations, spec-derived tests), Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md (card fields `worker`, `est_turns`). Wait on a queue with one background shell; spot-check one worker claim.
+
+## Moved from CLAUDE.md 2026-11-10 (size cap, to make room for the Chrome profile rule)
+- Windows: files with `newline='\n'`; long patches in a .py script; the Bash tool strips backslashes, use Write/Edit; Write decodes backslash-u: use `chr()`.
+- Never use `.git/info/exclude`: ignores go in `.gitignore`.
