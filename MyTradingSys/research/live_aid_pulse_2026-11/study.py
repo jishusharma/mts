@@ -233,10 +233,9 @@ def cmd_counts(a):
     c = arr[:, 4]
     t = arr[:, 0]
     m = (t >= ev["from"]) & (t < ev["to"])
-    idx = np.nonzero(m)[0]
-    idx = idx[idx + 30 < len(c)]
-    ok = t[idx + 30] - t[idx] == 30 * MIN
-    r = (c[idx + 30][ok] / c[idx][ok] - 1) * 100
+    tw, cw = t[m], c[m]
+    ok = tw[30:] - tw[:-30] == 30 * MIN
+    r = (cw[30:][ok] / cw[:-30][ok] - 1) * 100
     print(f"sd of unconditional 30m return, percent: {r.std():.4f} (n={len(r)})")
 
 

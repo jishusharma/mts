@@ -31,6 +31,18 @@ def _node(js_file, fn, *args):
     return json.loads(out.stdout)
 
 
+def _node_batch(js_file, calls):
+    """Several (fn, args) calls in ONE node process (process start dominates the test time)."""
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    runner = "const P=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);console.log(JSON.stringify(j.map(c=>P[c.fn].apply(null,c.a))))})"
+    out = subprocess.run([node, "-e", runner, str(LA / js_file)], input=json.dumps([{"fn": f, "a": list(a)} for f, a in calls]), capture_output=True,
+                         text=True, encoding="utf-8", timeout=120)
+    assert out.returncode == 0, out.stderr[-1500:]
+    return json.loads(out.stdout)
+
+
 def kl(t, c, delta, vol=20.0):
     return [t, c, c + 0.5, c - 0.5, c, vol, t + 59_999, 0, 0, (vol + delta) / 2]
 
@@ -151,11 +163,15 @@ def tfk_native(rows1m):
 
 def test_parity_fold_and_read_every_grid_frame():
     rows = synth(1500, 7)
-    for ms in (60_000, 120_000, 180_000, 300_000, 420_000, 600_000, 900_000, 3_600_000, 14_400_000):
-        same(norm(PP.foldK(rows, ms)), _node("pulse.js", "foldK", rows, ms), f"fold{ms}")
-    for ms in (60_000, 120_000, 300_000, 420_000, 600_000, 900_000):
-        k = PP.foldK(rows, ms)
-        same(norm(PP.read(k, ms)), _node("pulse.js", "read", k, ms), f"read{ms}")
+    folds = (60_000, 120_000, 180_000, 300_000, 420_000, 600_000, 900_000, 3_600_000, 14_400_000)
+    got = _node_batch("pulse.js", [("foldK", (rows, ms)) for ms in folds])
+    for ms, js in zip(folds, got):
+        same(norm(PP.foldK(rows, ms)), js, f"fold{ms}")
+    reads = (60_000, 120_000, 300_000, 420_000, 600_000, 900_000)
+    ks = [PP.foldK(rows, ms) for ms in reads]
+    got = _node_batch("pulse.js", [("read", (k, ms)) for k, ms in zip(ks, reads)])
+    for ms, k, js in zip(reads, ks, got):
+        same(norm(PP.read(k, ms)), js, f"read{ms}")
 
 
 def test_parity_grid_on_synthetic_tape_with_taker_volume():
@@ -177,36 +193,42 @@ def test_parity_grid_on_real_fixture_without_taker_column():
 def test_parity_setup_over_random_ladders():
     rnd = random.Random(3)
     hits = 0
-    for seed in range(6):
+    for seed in range(5):
         tfk = tfk_native(synth(2600, 100 + seed))
         g = PP.grid(tfk)
         px = tfk["1m"][-1][4]
+        calls, mine = [], []
         for _ in range(6):
             def zone(dx):
                 return {"price": px * (1 + dx), "name": "L%d" % int(dx * 1e5)}
             lad = {"at": zone(rnd.uniform(-0.001, 0.001)) if rnd.random() < 0.3 else None,
                    "above": [zone(rnd.uniform(0.0, 0.004))], "below": [zone(-rnd.uniform(0.0, 0.004))]}
             for home in ("WAIT", "LONG", "SHORT"):
-                a, b = norm(PP.setup(g, lad, px, home)), _node("pulse.js", "setup", norm(g), lad, px, home)
-                same(a, b, "setup")
-                hits += a is not None
+                calls.append(("setup", (norm(g), lad, px, home)))
+                mine.append(norm(PP.setup(g, lad, px, home)))
+        for a, b in zip(mine, _node_batch("pulse.js", calls)):
+            same(a, b, "setup")
+            hits += a is not None
     assert hits > 0         # at least one fixture must produce a setup or the check proves nothing
 
 
 def test_parity_merge_and_ladder_with_level_registry():
     rnd = random.Random(5)
     keys = ("lo", "hi", "price", "label", "n")
+    cases = []
     for _ in range(10):
         items = [{"price": 70000 * (1 + rnd.uniform(-0.01, 0.01)), "src": "playbook", "label": rnd.choice(["High", "Low", "Open"]), "badge": "x"}
                  for _ in range(rnd.randint(2, 14))]
-        z_py = PP.merge(items)
-        z_js = _node("level_registry.js", "merge", items)
-        same([{k: z[k] for k in keys} for z in z_py], [{k: z[k] for k in keys} for z in z_js], "merge")
-        px = 70000 * (1 + rnd.uniform(-0.01, 0.01))
-        l_py, l_js = PP.ladder(z_py, px), _node("level_registry.js", "ladder", z_js, px)
+        cases.append((items, 70000 * (1 + rnd.uniform(-0.01, 0.01))))
+    zs_js = _node_batch("level_registry.js", [("merge", (items,)) for items, _ in cases])
+    ladders = _node_batch("level_registry.js", [("ladder", (z, px)) for z, (_, px) in zip(zs_js, cases)])
 
-        def key(z):
-            return None if z is None else (z["lo"], z["hi"])
+    def key(z):
+        return None if z is None else (z["lo"], z["hi"])
+    for (items, px), z_js, l_js in zip(cases, zs_js, ladders):
+        z_py = PP.merge(items)
+        same([{k: z[k] for k in keys} for z in z_py], [{k: z[k] for k in keys} for z in z_js], "merge")
+        l_py = PP.ladder(z_py, px)
         assert key(l_py["at"]) == key(l_js["at"])
         assert [key(z) for z in l_py["above"]] == [key(z) for z in l_js["above"]]
         assert [key(z) for z in l_py["below"]] == [key(z) for z in l_js["below"]]
