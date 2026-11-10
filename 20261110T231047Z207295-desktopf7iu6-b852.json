@@ -1,0 +1,1 @@
+{"t": "20261110T231047Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ack", "text": "ack b-f33439 told Live-tree deploy is not A's (hard rule: no .mts_live). Needs the live host/operator.", "login": "A", "id": "b-f33439", "state": "told", "host": "desktop-f7iu69n", "note": "Live-tree deploy is not A's (hard rule: no .mts_live). Needs the live host/operator."}
