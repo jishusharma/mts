@@ -147,6 +147,40 @@ def run_rule(rule, paths, root, timeout=120):
     return fails
 
 
+def copy_cap_test(src_root, dst_root):
+    """Copy CAP_TEST and the non-test .py files beside it (helpers it imports, conftest) from src_root into dst_root. Test fixtures that
+    run the real cap test in a scratch repo use this: copying the one file broke when test_integrity began importing doc_drift.py
+    (42d8b197a, CI 42892614113)."""
+    import shutil
+    src = Path(src_root) / CAP_TEST
+    dst = Path(dst_root) / CAP_TEST
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, dst)
+    for p in src.parent.glob("*.py"):
+        if not p.name.startswith("test_"):
+            shutil.copyfile(p, dst.parent / p.name)
+
+
+MARKERS_RULE = ("conflict markers", lambda p: True, None, True,
+                "resolve the merge: delete the marker lines and keep the right text",
+                "3dad1aece shipped `<<<<<<< ours` in a task card by a docs ship; CI 42891528302/42891857913 red")
+
+
+def marker_failures(root, paths):
+    """Merge-conflict marker lines in the shipped `paths` (conflict_marker_lint's own scan, in process, milliseconds)."""
+    import conflict_marker_lint
+    out = []
+    for p in paths:
+        if p in conflict_marker_lint.SKIP:
+            continue
+        try:
+            data = (Path(root) / p).read_bytes()
+        except OSError:
+            continue   # deleted in this ship, or a directory
+        out += [f"{p}:{n}: {t[:80]}" for n, t in conflict_marker_lint.scan_bytes(data)]
+    return out
+
+
 def cap_failures(root, paths):
     """The doc size cap for `paths` (under 1 s); sync.py runs it on a docs-only ship, which has no other local gate."""
     ps = [p for p in paths if CAP_RULE[1](p)]
@@ -163,9 +197,10 @@ DOCS_SHIP_RULES = ("doc size cap", "role files", "task cards", "bug group map")
 def docs_ship_failures(root, paths):
     """-> [(rule, failure texts)] of the DOCS_SHIP_RULES the paths reach; sync.py runs it on a docs-only ship.
     A rule whose checker script is not in `root` is not run (a repo without it: test_sync's scratch repos), as cap_failures did."""
-    out = []
+    marks = marker_failures(root, paths)   # a docs ship runs no step 3cm (gate_select docs mode)
+    out = [(MARKERS_RULE, marks)] if marks else []
     for rule, ps in rules_for(paths):
-        scripts = [a for cmd in rule[2](root, ps) for a in cmd[1:] if a.endswith(".py")]
+        scripts =[a for cmd in rule[2](root, ps) for a in cmd[1:] if a.endswith(".py")]
         if rule[0] in DOCS_SHIP_RULES and all((Path(root) / s).exists() for s in scripts):
             fails = run_rule(rule, ps, root)
             if fails:
