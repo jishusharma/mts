@@ -241,7 +241,16 @@ class TestShardedPytest(unittest.TestCase):
         shards = [plan[n].cmd_text for n in rat.PYTEST_SHARD_NUMS + ("4d",)]
         for f in (rat.REPO / "MyTradingSys" / "tests").glob("test_*.py"):
             hits = sum(f"MyTradingSys/tests/{f.name}" in c.split() or f"MyTradingSys/tests/{f.name}" in c for c in shards)
-            self.assertEqual(hits, 1, f.name)
+            self.assertEqual(hits, 0 if f.name in rat.SMOKE_SKIP_FILES else 1, f.name)
+
+    def test_aibridge_exploratory_is_in_no_smoke_shard_but_in_one_full_shard(self):
+        """Card gate-4c-edge-shard-timeout-aibridge-exploratory-1108: the headless-browser file is out of build_plan(True), in one shard of build_plan(False)."""
+        name = "MyTradingSys/tests/test_aibridge_exploratory.py"
+
+        def hits(quick):
+            return sum(name in s.cmd_text for s in rat.build_plan(quick) if s.num in rat.PYTEST_SHARD_NUMS)
+        self.assertEqual(hits(True), 0)
+        self.assertEqual(hits(False), 1)
 
     def test_smoke_selection_skips_unselected_steps_and_full_keeps_all(self):
         import tempfile

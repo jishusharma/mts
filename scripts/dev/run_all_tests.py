@@ -107,6 +107,10 @@ TEST_FILE_SECONDS = {
     "test_dsa_direct_mode.py": 6,
     "test_soak_six_slots.py": 806,                   # pure CPU: 806 s idle on JIS-NUC 2026-11-08 (was 135-164 s on 10-22); card gate-soak-six-slots-hang-cap-1108
 }
+# Files the --quick (smoke) plan leaves out of every pytest shard; CI and --full call build_plan(quick=False) and still run them.
+# test_aibridge_exploratory.py: 139 s alone on JIS-NB 2026-11-10 (headless Edge/Chrome + run-task.ps1 subprocesses, up to 180 s each),
+# the cause of the step-4c shard timeout; card gate-4c-edge-shard-timeout-aibridge-exploratory-1108.
+SMOKE_SKIP_FILES = frozenset({"test_aibridge_exploratory.py"})
 SLOWEST_FIRST = ("4", "4b", "4c", "4g", "4h", "4e", "4f","3xt", "5b", "3k", "3ds", "3dk", "3bk", "3w")
 _LOCK = threading.Lock()
 
@@ -613,6 +617,8 @@ def build_plan(quick):
     doc_shard = ["MyTradingSys/tests/docs", "MyTradingSys/tests/test_relay_prompts.py"]
     top = sorted(f"MyTradingSys/tests/{f.name}" for f in tests_dir.glob("test_*.py")) if tests_dir.exists() else []
     top = [f for f in top if f not in doc_shard]
+    if quick:
+        top = [f for f in top if Path(f).name not in SMOKE_SKIP_FILES]
     # a new test subfolder under MyTradingSys/tests is collected wholesale, as before the split
     top += sorted(f"MyTradingSys/tests/{d.name}" for d in tests_dir.iterdir()
                   if d.is_dir() and d.name not in ("docs", "fixtures", "__pycache__") and any(d.rglob("test_*.py"))) if tests_dir.exists() else []
