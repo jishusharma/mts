@@ -4,34 +4,54 @@
   "commands": [],
   "created": "2026-11-10T14:23:10Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "New test in MyTradingSys/tests/test_aibridge_probe_noise.py spawns Scratch, kills its parent python, and asserts zero powershell with agent.ps1 under aib_probe_ remains; it fails on current aibridge_scratch.py",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Scratch agent.ps1 probes die with their parent test process: Scratch tree-kills on close AND on parent death (Job Object or atexit/taskkill /T), so a capped or killed pytest leaves no aib_probe_ powershell",
   "id": "aib-probe-orphans-leak-1110",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease u",
+      "ref": "5b6548bb8521",
+      "utc": "2026-11-08T10:34:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY twin check: none. Source: title evidence, cap commit 99d903d5. DECISION (OURS): test-helper only, ROUTINE",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-10T19:03:24Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tests/aibridge_scratch.py",
+    "MyTradingSys/tests/test_aibridge_probe_noise.py"
+  ],
+  "scope_out": [
+    "scripts/dev/run_all_tests.py cap logic; AIBridge payload code"
+  ],
+  "scope_sha": "5b6548bb8521",
+  "size": "S",
   "sources": [
     "MyTradingSys/tests/aibridge_scratch.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reproduce: list aib_probe_ powershell after a capped run (Scratch.close at aibridge_scratch.py:94 only runs on clean teardown)",
+    "Assign the Popen to a Windows Job Object (KILL_ON_JOB_CLOSE) or register atexit + sweep of aib_probe_ children; keep taskkill /T in close",
+    "Add the parent-kill test; run it before and after the fix"
+  ],
+  "tests": "Fail-first: parent-kill test above red on current code, green after; run_all_tests.py --quick green",
   "title": "aibridge_scratch leaves orphan powershell agent.ps1 probes (15 on JIS-NB 11-06..11-10, ~1000 s CPU each; laptop A same). Parent test process dies before teardown, likely the 300 s per-file cap (99d903d5) killing pytest without its children. Fix: start probe in a Job Object / kill tree on cap; test that no aib_probe_ process survives a capped run",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
