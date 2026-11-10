@@ -124,7 +124,7 @@ def send_report(device, res):
 
 # ---- probes (exit 0 = done) ----
 def primary():
-    r = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--git-common-dir"], capture_output=True, text=True)
+    r = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--git-common-dir"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     p = Path(r.stdout.strip())
     return (p if p.is_absolute() else ROOT / p).resolve().parent
 
@@ -134,8 +134,8 @@ def probe(kind, arg=""):
         return 0 if shutil.disk_usage(Path(ROOT.anchor or "/")).free / 1e9 >= float(arg) else 1
     if kind == "behind":
         pr = str(primary())
-        subprocess.run(["git", "-C", pr, "fetch", "-q", "origin", "fast-track"], capture_output=True, timeout=60)
-        r = subprocess.run(["git", "-C", pr, "rev-list", "--count", "HEAD..origin/fast-track"], capture_output=True, text=True)
+        subprocess.run(["git", "-C", pr, "fetch", "-q", "origin", "fast-track"], capture_output=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        r = subprocess.run(["git", "-C", pr, "rev-list", "--count", "HEAD..origin/fast-track"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         n = int(r.stdout.strip() or 10 ** 9)
         print("primary checkout %s is %d behind" % (pr, n))
         return 0 if n <= int(arg) else 1
@@ -149,14 +149,14 @@ def probe(kind, arg=""):
         except (ImportError, OSError):
             return 1
     if kind == "git-min":
-        m = re.search(r"(\d+)\.(\d+)", subprocess.run(["git", "--version"], capture_output=True, text=True).stdout)
+        m = re.search(r"(\d+)\.(\d+)", subprocess.run(["git", "--version"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout)
         return 0 if m and (int(m[1]), int(m[2])) >= tuple(int(x) for x in arg.split(".")[:2]) else 1
     if kind == "no-mts-tasks":
         if os.name != "nt":
             return 0
         r = subprocess.run(["powershell", "-NoProfile", "-Command",
                             "(Get-ScheduledTask | Where-Object { $_.TaskName -like 'MTS-*' }).TaskName"],
-                           capture_output=True, text=True, timeout=60)
+                           capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         bad = [n for n in r.stdout.split() if not n.startswith(ALLOWED_TASKS)]
         print("stray MTS tasks: " + (", ".join(bad) or "none"))
         return 1 if bad else 0

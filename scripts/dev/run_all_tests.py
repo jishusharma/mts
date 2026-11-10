@@ -59,6 +59,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_weekplan.py",
     "scripts/dev/test_route_audit.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_nowin_calls.py",
     "scripts/dev/test_wt_maint.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
@@ -154,7 +155,7 @@ def _short_sha():
     if _SHA:   # one `git rev-parse` per gate, not one per step (GATE_SPEED X2: 0.1 s each on Windows)
         return _SHA[0]
     try:
-        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10)
+        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         _SHA.append(r.stdout.strip() or "?")
         return _SHA[0]
     except Exception:
@@ -257,7 +258,7 @@ def exec_step(cmd, cwd=None):
         limit = max(1.0, min(limit, GATE_DEADLINE - time.monotonic()))   # a step queued behind others gets only what is left of the budget
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
-                                shell=isinstance(cmd, str), timeout=limit)
+                                shell=isinstance(cmd, str), timeout=limit, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except FileNotFoundError as e:
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
@@ -396,7 +397,7 @@ def exec_layer_chunks(modules, jobs):
     the output is the last lines of each failing chunk."""
     chunks = split_modules(modules, jobs)
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace") for c in chunks]
+                              stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
     def passed(p, o):
@@ -429,7 +430,7 @@ def exec_unittest_shards(script, jobs, part=None):
     chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                              text=True, encoding="utf-8", errors="replace", env=env) for c in chunks]
+                              text=True, encoding="utf-8", errors="replace", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     ok = all(p.returncode == 0 for p in procs)
     def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
@@ -492,7 +493,7 @@ def run_mvn():
     """Maven, or (None, reason) when mvn is not installed."""
     mvn = shutil.which("mvn") or shutil.which("mvn.cmd") or "mvn"  # Windows: mvn.cmd
     try:
-        if subprocess.run([mvn, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace").returncode != 0:
+        if subprocess.run([mvn, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).returncode != 0:
             return None, "mvn not found"
     except FileNotFoundError:
         return None, "mvn not found"
@@ -1158,7 +1159,7 @@ def apply_selection(plan, args):
 
 
 def _git_out(root, *args):
-    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip())
     return r.stdout

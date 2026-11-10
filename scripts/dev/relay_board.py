@@ -119,11 +119,11 @@ def claims(repo):
     for f in sorted(d.glob("*.md")) if d.exists() else []:
         rows[f.stem] = _claim_row(f.stem, f.read_text(encoding="utf-8"))
     ls = subprocess.run(["git", "-C", str(repo), "ls-tree", "--name-only", "origin/claims", "MyTradingSys/system/claims/"],
-                        capture_output=True, text=True, encoding="utf-8", check=False)
+                        capture_output=True, text=True, encoding="utf-8", check=False, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     for rel in ls.stdout.split() if ls.returncode == 0 else []:
         if rel.endswith(".md"):
             show = subprocess.run(["git", "-C", str(repo), "show", f"origin/claims:{rel}"], capture_output=True, text=True,
-                                  encoding="utf-8", check=False)
+                                  encoding="utf-8", check=False, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if show.returncode == 0:
                 rows[Path(rel).stem] = _claim_row(Path(rel).stem, show.stdout)
     return list(rows.values())

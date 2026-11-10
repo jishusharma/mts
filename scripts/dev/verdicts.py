@@ -172,7 +172,7 @@ def kill_scope_of(*texts):
 def git_info(path):
     try:
         out = subprocess.run(["git", "-C", str(path.parent), "log", "-1", "--abbrev=8", "--format=%h|%cd", "--date=short", "--", path.name],
-                             capture_output=True, text=True, timeout=30).stdout.strip()
+                             capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
     except Exception:
         out = ""
     if "|" in out:

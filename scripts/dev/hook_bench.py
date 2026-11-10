@@ -131,7 +131,7 @@ def isolated_env(tmp, repo):
 
 def time_hook(argv, payload, env, cwd):
     t0 = time.perf_counter()
-    subprocess.run(argv, input=json.dumps(payload), capture_output=True, text=True, env=env, cwd=str(cwd), timeout=60)
+    subprocess.run(argv, input=json.dumps(payload), capture_output=True, text=True, env=env, cwd=str(cwd), timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return time.perf_counter() - t0
 
 
@@ -142,7 +142,7 @@ def clean_tree(tmp):
 
     def git(*args):
         subprocess.run(["git", "-C", str(d), "-c", "user.name=bench", "-c", "user.email=bench@example.invalid", *args],
-                       capture_output=True, text=True, check=True)
+                       capture_output=True, text=True, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     git("init", "-q")
     (d / "README.md").write_text("bench\n", newline="\n")
     git("add", "README.md")

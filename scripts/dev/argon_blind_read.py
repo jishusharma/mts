@@ -210,7 +210,7 @@ def invoke_agy(
     """Run agy in an isolated subfolder containing ONLY that image."""
     cmd = [str(AGY_BIN), "--print", prompt, "--model", model, "--effort", effort]
     t0 = time.time()
-    res = subprocess.run(cmd, cwd=str(isolated_dir), capture_output=True, text=True)
+    res = subprocess.run(cmd, cwd=str(isolated_dir), capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     dur = time.time() - t0
     return {
         "model": model,

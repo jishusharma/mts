@@ -21,7 +21,7 @@ SNIFF = 8000
 
 
 def tracked_files(root):
-    out = subprocess.run(["git", "-C", str(root), "ls-files", "-z"], capture_output=True, check=True).stdout
+    out = subprocess.run(["git", "-C", str(root), "ls-files", "-z"], capture_output=True, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
     return [p for p in out.decode("utf-8", "replace").split("\0") if p]
 
 

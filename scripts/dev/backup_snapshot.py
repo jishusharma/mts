@@ -35,7 +35,7 @@ def git(args, cwd, env=None, check=True):
     e = dict(os.environ, GIT_OPTIONAL_LOCKS="0")
     if env:
         e.update(env)
-    r = subprocess.run(["git"] + args, cwd=str(cwd), env=e, capture_output=True, text=True, encoding="utf-8")
+    r = subprocess.run(["git"] + args, cwd=str(cwd), env=e, capture_output=True, text=True, encoding="utf-8", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if check and r.returncode != 0:
         raise RuntimeError("git %s failed in %s: %s" % (" ".join(args), cwd, r.stderr.strip()))
     return r

@@ -342,7 +342,7 @@ def asks_gaps(repo=None, now=None, hours=24, days=14, rows=None, cards=None, com
         if cand:
             try:
                 out = subprocess.run(["git", "-C", str(repo), "log", "origin/fast-track", f"--since={min(c[0] for c in cand).isoformat()}",
-                                      "--format=%aI\t%s"], capture_output=True, text=True, timeout=60).stdout
+                                      "--format=%aI\t%s"], capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
                 for ln in out.splitlines():
                     a, _, b = ln.partition("\t")
                     if _utc(a):

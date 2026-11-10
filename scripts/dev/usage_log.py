@@ -163,7 +163,7 @@ def cmd_idle(a):
     claimed = set()
     try:
         out = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "dev", "sync.py"), "claims"], capture_output=True,
-                             text=True, timeout=60).stdout.lower()
+                             text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.lower()
         claimed = {w for w in last if re.search(r"\b" + re.escape(w) + r"\b", out)}
     except (OSError, subprocess.SubprocessError):
         pass

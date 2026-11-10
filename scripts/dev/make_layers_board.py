@@ -43,7 +43,7 @@ DAY = 86400.0
 
 def git(repo, *args):
     try:
-        r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=60)
+        r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return r.stdout if r.returncode == 0 else ""
     except (OSError, subprocess.SubprocessError):
         return ""

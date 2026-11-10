@@ -54,7 +54,7 @@ def nd(why):
 
 
 def run(cmd, timeout=15, cwd=None):
-    p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=str(cwd or REPO), encoding="utf-8", errors="replace")
+    p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=str(cwd or REPO), encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return p.stdout
 
 
@@ -515,7 +515,7 @@ def signal_rows(repo, sig=None):
     if not names:
         return []
     r = subprocess.run(["git", "-C", str(h), "cat-file", "--batch"], input="".join(f"{ref}:{n}\n" for n in names).encode(),
-                       capture_output=True, timeout=60)
+                       capture_output=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     rows, buf, i = [], r.stdout, 0
     while i < len(buf):
         j = buf.index(b"\n", i)
