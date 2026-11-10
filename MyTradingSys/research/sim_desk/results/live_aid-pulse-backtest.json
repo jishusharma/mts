@@ -5,7 +5,7 @@
  "data": "BTCUSDT USD-M perpetual 1m klines, F:/MTS/data/tom_raw/klines (proxy for the page's feed)",
  "cost_bp_round_trip": 14.0,
  "fee_bp": 10.0,
- "slippage_bp_per_side": 2,
+ "slippage_bp_round_trip": 4.0,
  "decision_step_min": 5,
  "horizons_min": [
   15,

@@ -22,7 +22,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent.parent / "backtest"))
 import pulse_port as PP  # noqa: E402
-from fees import BINANCE_TAKER  # noqa: E402  shared cost source: 2 x taker = 10 bp round trip
+from fees import BINANCE_TAKER, SLIPPAGE_RT_S13  # noqa: E402  shared cost source: 2 x taker = 10 bp round trip; s13 slippage 2 bp round trip
 
 KLINES = os.environ.get("PULSE_KLINES", "F:/MTS/data/tom_raw/klines")
 MIN, DAY = 60_000, 86_400_000
@@ -30,9 +30,9 @@ DEV_END = int(dt.datetime(2024, 7, 1, tzinfo=dt.timezone.utc).timestamp() * 1000
 FIRST_FILE = "2022-01"
 STEP = 5 * MIN                      # decision cadence (OURS)
 HORIZONS = (15, 30, 60)             # minutes
-SLIP_BP_PER_SIDE = 2                # OURS, convention of PRE_REG_VOLUME_2026-10-09
 FEE_BP = BINANCE_TAKER * 2 * 1e4    # 10 bp
-COST_BP = FEE_BP + 2 * SLIP_BP_PER_SIDE   # 14 bp primary
+SLIP_BP_RT = SLIPPAGE_RT_S13 * 1e4 * 2   # OURS: twice the FORMULAS s13 round-trip allowance = 2 bp per side (PRE_REG_VOLUME_2026-10-09 convention), 4 bp
+COST_BP = round(FEE_BP + SLIP_BP_RT, 9)   # 14 bp primary
 COOLDOWN = 60 * MIN
 SESSIONS = (("Asia", 0, 8), ("Europe", 8, 13), ("US", 13, 21), ("Late", 21, 24))   # UTC hours (OURS)
 EVAL_FROM_DEFAULT = "2022-02-01"
@@ -329,7 +329,7 @@ def cmd_outcomes(a):
     reg = regime_by_day(arr)
     res = {"study": "live_aid_pulse_2026-11", "card": "live-aid-pulse-backtest-1109", "split": "DEV only (2022-02-01 to 2024-06-30), VALIDATION and HOLDOUT never opened",
            "data": "BTCUSDT USD-M perpetual 1m klines, F:/MTS/data/tom_raw/klines (proxy for the page's feed)",
-           "cost_bp_round_trip": COST_BP, "fee_bp": FEE_BP, "slippage_bp_per_side": SLIP_BP_PER_SIDE, "decision_step_min": 5, "horizons_min": list(HORIZONS),
+           "cost_bp_round_trip": COST_BP, "fee_bp": FEE_BP, "slippage_bp_round_trip": round(SLIP_BP_RT, 9), "decision_step_min": 5, "horizons_min": list(HORIZONS),
            "setups_raw": sum(1 for r in rows if r[4]), "signals": len(sig), "window_from": ev["from"], "window_to": ev["to"], "cells": {}}
     print("computing forward returns ...", flush=True)
     fw = {h: {} for h in HORIZONS}
