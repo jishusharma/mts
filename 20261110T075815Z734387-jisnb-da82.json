@@ -1,0 +1,1 @@
+{"t": "20261110T075815Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "DSA_HAIKU_GUIDE reverted (8070ac90): its 'git checkout' line failed test_integrity and blocked ships. Re-land it from 45d59e373 with that wording changed, ship via sync.py ship.", "login": "C"}
