@@ -560,7 +560,7 @@ def build_plan(quick):
     add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
     add("3cxp", "Codex status parser tests", [sys.executable, "scripts/dev/test_codex_status_parse.py"], "Step 3cxp: Codex status parser tests")
-    add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
+    plan.append(Step("3sig", "Signals between logins (mts_signal.py)", "Step 3sig: Signals tests", run=lambda: exec_unittest_shards("scripts/dev/test_mts_signal.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_mts_signal.py, 2 shards)", tail=None))   # 63 tests ~85 s: two concurrent processes, same tests (GATE_SLOW_STEPS.md)
     add("3suh", "User-level signal hook (signal_user_hook.py)", [sys.executable, "scripts/dev/test_signal_user_hook.py"], "Step 3suh: User signal hook tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
