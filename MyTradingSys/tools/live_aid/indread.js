@@ -8,7 +8,7 @@
   'use strict';
   var node = typeof module !== 'undefined' && module.exports;
   var A = node ? require('./live_aid_indicators.js') : root.LiveAid;
-  var P = { adxTrend: 20, adxStrong: 25, slope: 3, flat: 0.001, cvdN: 10, pxN: 10, volN: 20, minBars: 60, wtWarm: 60, wtHot: 53 };   // OURS (20 / 25 = the usual ADX reading)
+  var P = { adxTrend: 20, adxStrong: 25, slope: 3, flat: 0.001, cvdN: 10, pxN: 10, volN: 20, minBars: 60, wtWarm: 60, wtHot: 53, staleMs: 1860000 };   // staleMs: 2 bars + 1 min of 15m   // OURS (20 / 25 = the usual ADX reading)
   var TFS = [['15m', 900000, 'frame'], ['1h', 3600000, 'bias'], ['4h', 14400000, 'context']];
   var ROWS = [['vfi', 'Volume flow'], ['sqz', 'Squeeze'], ['adx', 'Trend ADX'], ['wt', 'WaveTrend'], ['rsi', 'RSI'], ['cvd', 'Buy vs sell']];
 
@@ -74,13 +74,13 @@
     var rows = (k || []).filter(function (r) { return !(now > 0) || +r[6] < now; });
     if (rows.length < P.minBars) return null;
     var t = [], h = [], l = [], c = [], v = [], cum = [], s = 0, okCvd = true;
-    rows.forEach(function (r) { t.push(+r[0]); h.push(+r[2]); l.push(+r[3]); c.push(+r[4]); v.push(+r[5]); var b = +r[9]; if (!isFinite(b) || !isFinite(+r[5])) okCvd = false; else s += 2 * b - +r[5]; cum.push(s); });
+    rows.forEach(function (r) { t.push(+r[0]); h.push(+r[2]); l.push(+r[3]); c.push(+r[4]); v.push(+r[5]); var b = r[9] === '' || r[9] == null ? NaN : +r[9]; if (!isFinite(b) || !isFinite(+r[5])) okCvd = false; else s += 2 * b - +r[5]; cum.push(s); });
     var n = c.length - 1, cells = {};
     var F = vfi(h, l, c, v, 130, 0.2, 2.5, 30, 3), f = F.sm[n], f0 = F.sm[n - P.slope];
-    cells.vfi = !isFinite(f) ? { v: null, txt: 'needs 263 bars' } : { v: sgn(f), val: f, rising: isFinite(f0) ? sgn(f - f0) : 0, txt: (f > 0 ? '+' : '') + f.toFixed(1) + (f > f0 ? ' ↑' : f < f0 ? ' ↓' : '') };
+    cells.vfi = !isFinite(f) ? { v: null, txt: c.length >= 263 ? 'no volume data' : 'needs 263 bars' } : { v: sgn(f), val: f, rising: isFinite(f0) ? sgn(f - f0) : 0, txt: (f > 0 ? '+' : '') + f.toFixed(1) + (f > f0 ? ' ↑' : f < f0 ? ' ↓' : '') };
     var Q = squeeze(h, l, c, 20, 1.5, 1.5), m = Q.mom[n], m0 = Q.mom[n - 1], rel = -1;
     for (var i = n; i > 0 && n - i < 6; i--) if (Q.on[i - 1] && !Q.on[i]) { rel = n - i; break; }
-    cells.sqz = !isFinite(m) ? { v: null, txt: '--' } : { v: sgn(m), on: Q.on[n], rel: rel, rising: sgn(m - m0), txt: Q.on[n] ? 'COILED' : (m > 0 ? (m > m0 ? 'up, growing' : 'up, fading') : (m < m0 ? 'down, growing' : 'down, fading')) };
+    cells.sqz = !isFinite(m) ? { v: null, txt: '--' } : { v: sgn(m), on: Q.on[n], rel: rel, rising: sgn(m - m0), txt: Q.on[n] ? 'COILED' : (m > 0 ? (m > m0 ? 'up, growing' : 'up, fading') : m < 0 ? (m < m0 ? 'down, growing' : 'down, fading') : 'flat') };
     var D = adx(h, l, c, 14), ax = D.adx[n], side = sgn(D.pdi[n] - D.mdi[n]);
     cells.adx = !isFinite(ax) ? { v: null, txt: '--' } : { v: ax >= P.adxTrend ? side : 0, adx: ax, side: side, strong: ax >= P.adxStrong, txt: Math.round(ax) + (ax < P.adxTrend ? ' no trend' : side > 0 ? ' up' : side < 0 ? ' down' : '') };
     var W = A.wavetrend(t, h, l, c, ms, P.wtWarm), w1 = W.wt1[n], w2 = W.wt2[n];
@@ -98,15 +98,17 @@
   function says(R) {
     var out = [], a = R['15m'], b = R['1h'], q = a || b, nm = a ? '15m' : '1h';
     if (q && q.cells.vfi.v !== null && q.cells.cvd.v !== null) {
-      var f = q.cells.vfi, cv = q.cells.cvd.v, d = Math.abs(q.dpx) < P.flat ? 0 : sgn(q.dpx), back = f.rising === d && cv === d;
-      if (d > 0) out.push(back ? { cls: 'up', t: nm + ' rise is backed by volume: flow rising, buyers lead' } : { cls: 'amber', t: nm + ' rise is NOT backed by volume (' + (f.rising < 0 ? 'flow falling' : 'sellers lead the tape') + '): fade risk' });
-      else if (d < 0) out.push(back ? { cls: 'down', t: nm + ' fall is backed by volume: flow falling, sellers lead' } : { cls: 'amber', t: nm + ' fall is NOT backed by volume (' + (f.rising > 0 ? 'flow rising' : 'buyers lead the tape') + '): bounce risk' });
+      var f = q.cells.vfi, cv = q.cells.cvd.v, d = Math.abs(q.dpx) < P.flat ? 0 : sgn(q.dpx), back = f.rising === d && cv === d, why = [];
+      if (f.rising !== d) why.push('flow ' + (f.rising > 0 ? 'rising' : f.rising < 0 ? 'falling' : 'flat'));
+      if (cv !== d) why.push(cv > 0 ? 'buyers lead the tape' : cv < 0 ? 'sellers lead the tape' : 'tape even');
+      if (d > 0) out.push(back ? { cls: 'up', t: nm + ' rise is backed by volume: flow rising, buyers lead' } : { cls: 'amber', t: nm + ' rise is NOT backed by volume (' + why.join(', ') + '): fade risk' });
+      else if (d < 0) out.push(back ? { cls: 'down', t: nm + ' fall is backed by volume: flow falling, sellers lead' } : { cls: 'amber', t: nm + ' fall is NOT backed by volume (' + why.join(', ') + '): bounce risk' });
       else out.push(f.rising === cv && cv ? { cls: cv > 0 ? 'up' : 'down', t: nm + ' price flat while flow is ' + (cv > 0 ? 'rising and buyers lead: quiet buying' : 'falling and sellers lead: quiet selling') }
         : { cls: 'dim', t: nm + ' price flat, volume mixed (flow ' + (f.rising > 0 ? 'rising' : f.rising < 0 ? 'falling' : 'flat') + ', ' + (cv > 0 ? 'buyers' : cv < 0 ? 'sellers' : 'nobody') + ' lead the tape)' });
       if (isFinite(q.relVol) && q.relVol >= 2 && out.length) out[0].t += '; last bar ' + q.relVol.toFixed(1) + 'x normal volume';
     }
-    var tr = [a && a.cells.adx, b && b.cells.adx].filter(function (x) { return x && x.v !== null; });
-    if (tr.length && tr.every(function (x) { return x.adx < P.adxTrend; })) out.push({ cls: 'dim', t: 'No trend on 15m or 1h (ADX ' + tr.map(function (x) { return Math.round(x.adx); }).join(' / ') + '): range, levels matter more than indicators' });
+    var tr = [a && a.cells.adx, b && b.cells.adx].filter(function (x) { return x && x.v !== null; }), tn = [a && a.cells.adx.v !== null ? '15m' : '', b && b.cells.adx.v !== null ? '1h' : ''].filter(Boolean).join(' or ');
+    if (tr.length && tr.every(function (x) { return x.adx < P.adxTrend; })) out.push({ cls: 'dim', t: 'No trend on ' + tn + ' (ADX ' + tr.map(function (x) { return Math.round(x.adx); }).join(' / ') + '): range, levels matter more than indicators' });
     else if (b && b.cells.adx.v) out.push({ cls: b.cells.adx.v > 0 ? 'up' : 'down', t: '1h trend ' + (b.cells.adx.v > 0 ? 'up' : 'down') + (b.cells.adx.strong ? ', strong' : ', weak') + ' (ADX ' + Math.round(b.cells.adx.adx) + ')' });
     var co = TFS.filter(function (x) { return R[x[0]] && R[x[0]].cells.sqz.on; }).map(function (x) { return x[0]; });
     var rl = TFS.filter(function (x) { return R[x[0]] && R[x[0]].cells.sqz.rel >= 0; }).map(function (x) { return x[0] + ' ' + (R[x[0]].cells.sqz.v > 0 ? 'up' : 'down'); });
@@ -118,7 +120,8 @@
   function table(TFK, now) {
     var R = {};
     TFS.forEach(function (x) { try { R[x[0]] = read(TFK && TFK[x[0]], x[1], now); } catch (e) { R[x[0]] = null; } });
-    return { tfs: TFS, rows: ROWS, r: R, says: says(R) };
+    var q = R['15m'], age = q && now > 0 ? now - (q.t + 900000) : NaN;   // ms since the last 15m bar closed
+    return { tfs: TFS, rows: ROWS, r: R, says: says(R), age: age, stale: isFinite(age) && age > P.staleMs };
   }
 
   var api = { P: P, TFS: TFS, ROWS: ROWS, adx: adx, squeeze: squeeze, vfi: vfi, read: read, says: says, table: table };

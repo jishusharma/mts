@@ -189,6 +189,8 @@
     var tally = '<div class="hm-ir hm-it"><b>Agree</b>' + T.tfs.map(function (x) { var R = T.r[x[0]];
       return '<span class="' + (!R ? 'dim' : R.dn > R.up ? 'down' : R.up > R.dn ? 'up' : 'dim') + '">' + (R ? R.dn + ' down · ' + R.up + ' up' : '--') + '</span>'; }).join('') + '</div>';
     var says = (T.says || []).map(function (s) { return '<div class="hm-is ' + s.cls + '">' + esc(s.t) + '</div>'; }).join('');
+    // feed stalled: the cells are old bars, say so before the reader trusts them (e2e test 11-10)
+    if (T.stale) says = '<div class="hm-is amber">STALE: last 15m candle closed ' + Math.round(T.age / 60000) + ' min ago (feed stalled?) - these readings are old</div>' + says;
     return '<div class="hm-card"><div class="hm-h">What the indicators say' + sub + '</div>' + head + rows + tally + says + '</div>';
   }
   // Liquidations: one column per window; red part = longs forced out, green part = shorts; height = share, total under it.

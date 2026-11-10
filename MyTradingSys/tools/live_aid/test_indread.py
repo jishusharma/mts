@@ -108,3 +108,46 @@ def test_read_drops_the_forming_bar_and_needs_history():
     assert full["cells"]["vfi"]["v"] is not None and full["n"] == 6
     short = _node("read", rows[:200], ms, t0 + 300 * ms)          # under 263 bars: VFI says so, the rest still read
     assert short["cells"]["vfi"] == {"v": None, "txt": "needs 263 bars"} and short["n"] == 5
+
+
+def test_not_backed_names_every_reason_and_the_right_side():
+    # e2e 11-10: flow flat with buyers leading printed "(sellers lead the tape)" on a rise
+    s = _node("says", {"15m": _cells(0, 1, 0.005), "1h": _cells(1, 1, 0.01, side=1)})
+    assert s[0]["t"] == "15m rise is NOT backed by volume (flow flat): fade risk"
+    s = _node("says", {"15m": _cells(1, 0, -0.005), "1h": _cells(-1, -1, -0.01)})
+    assert s[0]["t"] == "15m fall is NOT backed by volume (flow rising, tape even): bounce risk"
+
+
+def test_no_trend_names_only_timeframes_read():
+    s = _node("says", {"15m": _cells(-1, -1, -0.004, adx=14), "1h": None})
+    assert s[1]["t"].startswith("No trend on 15m (ADX 14)")
+
+
+def _rows(n, vol=None, tb=None, flat=False):
+    t0, ms = 1_794_182_400_000, 900_000
+    out = []
+    for i in range(n):
+        c = 100 if flat else 100 + (i % 9) - 4
+        out.append([t0 + i * ms, c, c if flat else 101 + (i % 7), c if flat else 99 - (i % 5), c, 20 + (i % 3) if vol is None else vol,
+                    t0 + (i + 1) * ms - 1, 0, 0, (10 + (i % 4)) if tb is None else tb])
+    return out, t0 + n * ms
+
+
+def test_bad_feed_values_are_not_read_as_signals():
+    rows, now = _rows(300, vol=0)
+    assert _node("read", rows, 900_000, now)["cells"]["vfi"]["txt"] == "no volume data"
+    rows, now = _rows(300, tb="")
+    assert _node("read", rows, 900_000, now)["cells"]["cvd"]["v"] is None       # missing taker-buy is not "all sellers"
+    rows, now = _rows(300, flat=True)
+    assert _node("read", rows, 900_000, now)["cells"]["sqz"]["txt"] in ("COILED", "flat")
+
+
+def test_home_card_warns_when_the_candles_are_stale():
+    rows, now = _rows(300)
+    fresh = _node("table", {"15m": rows}, now + 60_000)
+    old = _node("table", {"15m": rows}, now + 40 * 60_000)
+    assert fresh["stale"] is False and old["stale"] is True
+    node = shutil.which("node")
+    js = ("const H=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{console.log(H._indCard({ind:JSON.parse(j)}))})")
+    html = subprocess.run([node, "-e", js, str(HERE / "home.js")], input=json.dumps(old), capture_output=True, text=True, encoding="utf-8", timeout=30).stdout
+    assert "STALE: last 15m candle closed 40 min ago" in html
