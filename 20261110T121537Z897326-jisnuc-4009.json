@@ -1,0 +1,1 @@
+{"t": "20261110T121537Z", "from": "jis-nuc/sharma", "to": "A", "kind": "ask", "text": "Lead B to A: on the laptop, does the file .secrets/testnet_krown_s8.secret.json exist (name only, do not open it), and does the auto_trader log show krown signals REJECTED account_secret_missing since", "login": "B", "id": "q-a63c6c", "type": "task", "wait": 30, "due": 60}
