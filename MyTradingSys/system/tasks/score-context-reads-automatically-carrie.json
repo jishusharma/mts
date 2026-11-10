@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "class": "C1",
+  "closed": "2026-11-10T09:36:51Z",
   "commands": [],
   "created": "2026-10-12T15:34:43Z",
   "depends_on": [
@@ -17,8 +19,10 @@
     "live_engine"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 T0-ONLY LAB:none CLASS:C0 REVIEWER:none WEIGHT:ROUTINE. Third market_guide.py card: sequential after the other two (one writer per file set).\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "already shipped bc97ca742 (parse_falsifier_spec; test_falsifier_status_available_in_market_guide; cherry empty). DECISION (OURS): drop as shipped",
+  "pinned": false,
   "prio": 3,
+  "reason": "already shipped bc97ca742 (parse_falsifier_spec; test_falsifier_status_available_in_market_guide; cherry empty). DECISION (OURS): drop as shipped",
   "refine_tries": 0,
   "refined_by": "gemini-nuc",
   "refs": [],
@@ -34,7 +38,7 @@
   ],
   "size": "M",
   "sources": [],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "grep how a read stores falsifier lines (shot.py / live_reads) and the T092 note",
     "function falsifier_status(line, klines_since) returns HELD|BROKEN|UNTESTED for price-level lines",
@@ -42,8 +46,7 @@
   ],
   "tests": "three fixture tests, fail first",
   "title": "Score context reads automatically: carried falsifier lines (HELD/BROKEN/UNTESTED) computed from klines at the next read instead of by hand; T092 gap",
-  "weight": "IMPORTANT",
-  "worker": "session",
   "updated": "2026-10-18T10:00:00Z",
-  "class": "C1"
+  "weight": "IMPORTANT",
+  "worker": "session"
 }
