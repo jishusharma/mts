@@ -27,3 +27,14 @@ History, `runtime_data/gate_timing.jsonl` (full-mode rows, last 10): 3sig median
 - 3sig: test_mts_signal.py is one file whose 63 tests each spawn a fresh hook subprocess and git hub (1.4 to 6 s each); split it into two files (ask tests vs signal tests) so two shards run them side by side, or mark the 10 slowest (over 3 s) CI-only. Invariant: the broadcast/ask/told/ack behaviour tests keep running on every ship that touches mts_signal.py.
 - 3xt: 397 files, 6 files make up about 270 s of the sum; cap each at one fast smoke test locally and leave the full run to CI, or give test_planted_error_trial and both test_context_asof files their own shard. Invariant: the file list check test_gate_discovery_b150 still sees every file, and a changed file always runs (gate_select D6).
 - 4f: one file is 80 % of the step; test_wt_maint.py (28 tests, each builds a git repo and worktree) can be split in two files, or its fixture repo built once per class. Invariant: 4f stays in the local ship gate (test_a_ship_leaves_the_slow_coordination_steps_to_ci) and the worktree-safety tests (never remove an unshipped tree) keep running.
+
+## After (2026-11-11, JIS-NUC, idle, 2 samples each)
+
+| step | before (s) | after (s) | change |
+|---|---|---|---|
+| 4f (pytest_cmd(PYTEST_LAYER_PATHS) wall) | 68 / 62 | 50.2 / 50.3 | test_wt_maint.py 47 / 42 -> 30.4 / 30.4 |
+| 3sig (exec_unittest_shards, 2 shards) | 85.6 / 84.5 | 51.7 / 52.7 | about 33 s saved |
+
+- 4f (ship 4f10aa79b): test_wt_maint.py builds the bare origin + primary clone once per run (module template) and copies it per test, then `git remote set-url origin` to the copy's own origin. All 30 tests and every assertion unchanged; each test still gets its own fresh repo. No split: 4f is one pytest process, so a second file would not run in parallel.
+- 3sig: no file split needed. The gate already has `exec_unittest_shards` (used by 3dk, 3k, 3ds, 3bk); step 3sig now calls it with 2 shards (round-robin of the same 63 test ids, union = every test once; gate_jobs() == 1 keeps one process). test_mts_signal.py untouched.
+- Not changed: SHARD_EST_WIN / STEP_EST for 3sig (test_ci_split pins them); CI partition estimates are therefore a little high.
