@@ -1,8 +1,7 @@
 # Architecture review of the dev system: ordered cut list (2026-11-10)
 
-Read-only review on the desktop (JIS-NB), login C. Every item is a removal or a simplification, never a new check.
-Bounds: operator decision d-simplify-align-s0 (machinery frozen, research never cut) and his order of 2026-11-10:
-ship carefully, do not blindly ship. Nothing below is applied; each row is a card for the Lead to file.
+Read-only review on the desktop (JIS-NB), login C. Every item is a removal or simplification, never a new check. Bounds:
+d-simplify-align-s0 (machinery frozen, research never cut) and the operator's order of 2026-11-10: ship carefully, not blindly. Nothing here is applied; each row is a card for the Lead to file.
 
 ## What was measured (source in brackets)
 - 7 days: 159 ships, 124 pass, 35 fail; median 11.6 s, p90 176 s, worst 74 min. Today: 19 ships, 11 fail,
