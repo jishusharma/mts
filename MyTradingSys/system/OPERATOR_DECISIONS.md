@@ -2236,3 +2236,7 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Order 2 (13:00Z): "I don't know what [the idle sessions] are waiting for ... check in simulator whatever is worth watching ... only failures to look at ... a Sonnet session guided by a plan set by the Fable model".
 - Done: Live Aid coach is waiting on its own ship (9 commits, branch claude/jovial-easley-efb700). The Tom/Fabio census session was idle since 11-09 21:11Z with 1 unshipped commit and staged files; told to ship and report in plain words. Plan written: research/sim_desk/GUIDED_SESSION_PLAN_2026-11-10.md (six steps, one idea per session, two filters at most, three verdicts). A Sonnet guide session is started and waits for his "start".
 - Flashing windows: login B checked the NUC at 12:50Z, no python running there; the NUC is ruled out, cause still open.
+
+## 2026-11-10 13:00Z One live "Buy Crypto" page replaces Dark Horse Desk (operator)
+- Order (voice): one live page like Live Aid showing where the market is in his buying phases, which coins are open to buy, how each moved, and his own position; one page with tabs, no separate pages.
+- Done: page built with tabs Now / Coins / My position / Studies; data via `scripts/dev/buy_crypto.py` + one db write (QUICK_ANSWERS.md). Position and his split live only in the page db. The page gives no sizes or buy orders; he sets his own proportions.

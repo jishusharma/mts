@@ -1,0 +1,206 @@
+<title>Buy Crypto</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@400;600;700&display=swap">
+<style>
+/* layout: one fixed-height screen, header + four tabs, each tab a dense board; symbols carry state, words stay under eight per cell */
+:root{--bg:#f3f5f1;--panel:#ffffff;--fg:#17201b;--mute:#5d6a62;--line:#cfd6cf;--accent:#0b6b55;--up:#0a7a3d;--dn:#b3261e;--warn:#9a6200;--chip:#e6ebe5;--here:#c2410c;--sel:#ffffff;
+--sans:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;--mono:"IBM Plex Mono",Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1512;--panel:#17201b;--fg:#e7ede8;--mute:#93a198;--line:#2c3932;--accent:#4fd1a5;--up:#4cc77c;--dn:#ff7b72;--warn:#e3b341;--chip:#22302a;--here:#ff9a5c;--sel:#0f1512;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1512;--panel:#17201b;--fg:#e7ede8;--mute:#93a198;--line:#2c3932;--accent:#4fd1a5;--up:#4cc77c;--dn:#ff7b72;--warn:#e3b341;--chip:#22302a;--here:#ff9a5c;--sel:#0f1512;color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font:15px/1.3 var(--sans);padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+.app{height:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:6px;min-height:0}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+h1{font-size:1.35rem;margin:0}
+.stamp{color:var(--mute);font-size:.8rem}
+.tabs{display:flex;gap:6px;overflow-x:auto}
+.tabs button{font:600 .95rem var(--sans);padding:6px 12px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:4px;white-space:nowrap;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--sel);border-color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{flex:1;min-height:0;overflow:auto}
+section{display:flex;flex-direction:column;gap:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.kpi{background:var(--panel);border:1px solid var(--line);padding:5px 8px;min-width:0}
+.kpi b{display:block;font:600 1.15rem var(--mono);font-variant-numeric:tabular-nums}
+.kpi span{font-size:.72rem;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+h2{font-size:.82rem;margin:2px 0 0;text-transform:uppercase;letter-spacing:.07em;color:var(--mute)}
+.tw{overflow-x:auto;background:var(--panel);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:3px 7px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);position:sticky;top:0;background:var(--panel)}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+td.s{font-size:1.1rem;line-height:1;text-align:center}
+td.c{font-weight:700;font-family:var(--mono)}
+td.w{white-space:normal;min-width:150px}
+.grp td{background:var(--chip);font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;white-space:normal}
+.up{color:var(--up)}.dn{color:var(--dn)}.wa{color:var(--warn)}.mu{color:var(--mute)}.hr{color:var(--here)}
+.legend{font-size:.76rem;color:var(--mute)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px}
+.cols>*{min-width:0}
+svg{width:100%;height:auto;display:block;background:var(--panel);border:1px solid var(--line)}
+svg text{font:600 11px var(--mono);fill:var(--fg)}svg .m{fill:var(--mute);font-weight:400}
+.seg{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.seg button{font:600 .8rem var(--sans);padding:3px 9px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:3px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--chip);border-color:var(--accent)}
+.note{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--warn);padding:5px 9px;font-size:.82rem}
+.pos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.bk{background:var(--panel);border:1px solid var(--line);padding:6px 8px;display:flex;flex-direction:column;gap:3px}
+.bk h3{margin:0;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em}
+.bk .rule{font-size:.74rem;color:var(--mute)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:.84rem}
+.row input{width:64px;font:600 .85rem var(--mono);padding:2px 4px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:3px;text-align:right}
+.empty{padding:20px;color:var(--mute);border:1px dashed var(--line);background:var(--panel)}
+a{color:var(--accent)}
+</style>
+<div class="app">
+<header><h1>Buy Crypto</h1><span class="stamp" id="stamp">loading data…</span></header>
+<div class="tabs" role="tablist" id="tabs">
+<button role="tab" data-t="now" aria-selected="true">Now</button>
+<button role="tab" data-t="coins" aria-selected="false">Coins</button>
+<button role="tab" data-t="pos" aria-selected="false">My position</button>
+<button role="tab" data-t="studies" aria-selected="false">Studies</button>
+</div>
+<main>
+<section id="t-now"></section>
+<section id="t-coins" hidden></section>
+<section id="t-pos" hidden></section>
+<section id="t-studies" hidden></section>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let M=null,P=null,I={},uid=null,dbh=null,view='moves',saveT=null;
+const BK={anchor:['Anchor','◆','Carry the portfolio through a lower low. Bought first. Later phases may be larger.'],
+ leader:['Leader, pullback only','▲','Already ran. Bought only after a 40-50% retrace and dominance under 55%.'],
+ darkhorse:['Dark horse','◇','Smallest equal slices. Expect half to go to zero. Wait below 72k.'],
+ watch:['Watch only','○','No buy. Reviewed 11-10; added to the list.'],
+ avoid:['Avoid','✗','58-78% off high, unlocks or churn, no revenue story.']};
+const ORDER=['anchor','leader','darkhorse','watch','avoid'];
+const num=(x,d=1)=>x==null||isNaN(x)?'–':(x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(d);
+const cl=x=>x==null?'mu':x>0.5?'up':x<-0.5?'dn':'mu';
+const px=v=>v==null?'–':v>=1000?Math.round(v).toLocaleString('en-US'):v>=10?v.toFixed(2):v>=1?v.toFixed(3):v.toFixed(4);
+const inr=v=>v==null?'–':v>=100?Math.round(v).toLocaleString('en-IN'):v.toFixed(2);
+const nm=(x)=>x==null?'–':Math.round(x).toLocaleString('en-US');
+
+function gates(){ // the plan's own rules at the current BTC level (OURS, ALT_PICKS 11-03 sections 3 and 4)
+  const b=M.btc.usd,dom=M.dominance.btc,st=M.dominance.stable;
+  return {b,dom,st,paused:st>11,dhOpen:b>=72000,leaderOpen:dom<55};
+}
+function mark(c,g){
+  if(c.bucket==='avoid')return['✗','dn','Avoid'];
+  if(c.bucket==='watch')return['○','mu','Watch only, no buy'];
+  if(g.paused)return['⏸','wa','Paused: stablecoin dominance over 11%'];
+  if(c.bucket==='anchor')return['●','up','Open: anchors are bought first'];
+  if(c.bucket==='darkhorse')return g.dhOpen?['●','up','Open: equal small slices']:['○','wa','Wait: BTC under 72k, decide at 60k'];
+  const pull=c.off_ath!=null&&c.off_ath<=-40;
+  return(g.leaderOpen&&pull)?['●','up','Open: pullback and dominance under 55%']:['○','wa','Closed: needs 40%+ pullback and dominance under 55%'];
+}
+function zone(b){
+  if(b>=75000)return['Phase 1 zone','Phase 1 was set at 77k. Anchors and equal-slice dark horses are open.'];
+  if(b>=72000)return['Phase 2 zone','72-75k: the analysts\' zone. Anchors and dark horses open.'];
+  if(b>=60000)return['Below 72k','Anchors only. Dark horses wait for the 60k decision.'];
+  return['Phase 3 zone','Around the 60k double bottom: the last planned phase.'];
+}
+function phaseSvg(){
+  const b=M.btc.usd,lo=55000,hi=80000,X=v=>30+(Math.min(Math.max(v,lo),hi)-lo)/(hi-lo)*640;
+  let s=`<svg viewBox="0 0 700 118" role="img" aria-label="BTC against the three buying phases">`;
+  s+=`<line x1="30" y1="62" x2="670" y2="62" stroke="var(--line)" stroke-width="3"/>`;
+  s+=`<rect x="${X(72000)}" y="52" width="${X(75000)-X(72000)}" height="20" fill="var(--warn)" opacity=".35"/>`;
+  const marks=[[60000,'Phase 3','60k double bottom'],[77000,'Phase 1','77k']];
+  for(const[v,a,t] of marks){s+=`<line x1="${X(v)}" y1="46" x2="${X(v)}" y2="78" stroke="var(--accent)" stroke-width="2"/><text x="${X(v)}" y="96" text-anchor="middle">${a}</text><text class="m" x="${X(v)}" y="110" text-anchor="middle">${t}</text>`}
+  s+=`<text x="${(X(72000)+X(75000))/2}" y="96" text-anchor="middle">Phase 2</text><text class="m" x="${(X(72000)+X(75000))/2}" y="110" text-anchor="middle">72-75k</text>`;
+  if(P&&P.limit_usd){const v=P.limit_usd;s+=`<line x1="${X(v)}" y1="40" x2="${X(v)}" y2="84" stroke="var(--dn)" stroke-width="2" stroke-dasharray="3 3"/><text class="m" x="${X(v)}" y="36" text-anchor="middle" style="fill:var(--dn)">your limit ${nm(v)}</text>`}
+  const x=X(b);s+=`<path d="M${x} 56 l-8 -16 h16 z" fill="var(--here)"/><text x="${x}" y="14" text-anchor="middle" style="fill:var(--here)">WE ARE HERE ${nm(b)}</text>`;
+  s+=`<text class="m" x="30" y="78">55k</text><text class="m" x="670" y="78" text-anchor="end">80k</text></svg>`;return s;
+}
+function renderNow(){
+  const g=gates(),z=zone(g.b),ap=M.alt_proxy_30d_beating_btc;
+  const tr=(sy,k,thr,val,ok,note)=>`<tr><td class="s ${ok}">${sy}</td><td>${k}</td><td class="n">${thr}</td><td class="n">${val}</td><td class="w mu">${note}</td></tr>`;
+  const open=ORDER.slice(0,3).map(k=>{const cs=M.coins.filter(c=>c.bucket===k),o=cs.filter(c=>mark(c,g)[0]==='●').length;return`<tr><td class="s ${o?'up':'wa'}">${o?'●':'○'}</td><td class="c">${BK[k][1]} ${BK[k][0]}</td><td class="n">${o} of ${cs.length} open</td><td class="w mu">${BK[k][2]}</td></tr>`}).join('');
+  $('t-now').innerHTML=`${phaseSvg()}
+<div class="kpis"><div class="kpi"><span>BTC now, USD</span><b>${nm(g.b)}</b></div><div class="kpi"><span>BTC since 11-03</span><b class="${cl(M.btc.since_1103)}">${num(M.btc.since_1103)}%</b></div><div class="kpi"><span>BTC 30 d</span><b class="${cl(M.btc.chg30)}">${num(M.btc.chg30)}%</b></div><div class="kpi"><span>BTC dominance</span><b>${g.dom.toFixed(1)}%</b></div><div class="kpi"><span>Stablecoin dominance</span><b>${g.st.toFixed(1)}%</b></div><div class="kpi"><span>Alts beating BTC, 30 d</span><b>${ap==null?'–':Math.round(ap)+'%'}</b></div></div>
+<div class="note"><b class="hr">${z[0]}.</b> ${z[1]} <span class="mu">Plan buying order: anchors first, leaders only on a pullback, dark horses in the smallest equal slices.</span></div>
+<div class="cols"><div><h2>Triggers (plan section 4)</h2><div class="tw"><table><tr><th></th><th>Trigger</th><th>Line</th><th>Now</th><th>Meaning</th></tr>
+${tr(g.dom<55?'●':'○','BTC dominance, week close','&lt; 55%',g.dom.toFixed(1)+'%',g.dom<55?'up':'wa','Under: altseason starts, leaders open')}
+${tr(g.st>11?'⏸':'○','Stablecoin dominance','&gt; 11%',g.st.toFixed(1)+'%',g.st>11?'wa':'mu','Over: pause every phase')}
+${tr(g.b<72000?'⚠':'○','BTC under 72k','&lt; 72k',nm(g.b),g.b<72000?'dn':'mu','Anchors only; dark horses wait')}
+${tr('○','Altseason index (official)','&gt; 75','40–47','mu','Manual read 11-10; no keyless feed')}
+${tr('○','Coin FDV / market cap','&gt; 2','see coin','mu','Over: hold, do not add')}</table></div>
+<div class="legend">● trigger met · ○ not met · ⏸ pause · ⚠ warning. Exit lines: dominance under 40%, index over 75, stablecoins under 5%. Official index and CoinGlass: no keyless feed, not pulled.</div></div>
+<div><h2>What the plan opens at BTC ${nm(g.b)}</h2><div class="tw"><table>${open}</table></div><div class="legend">The plan's own rules, applied by this page. Not a buy order.</div></div></div>`;
+}
+function renderCoins(){
+  const g=gates(),b=M.btc.usd;
+  let h=`<div class="seg"><button data-v="moves" aria-pressed="${view==='moves'}">Moves</button><button data-v="scen" aria-pressed="${view==='scen'}">If BTC goes to…</button><span class="legend">${view==='moves'?'vs BTC = percentage points ahead (+) or behind (−). Off high = off all-time high.':'Scenario from each coin\'s measured down-beta and up-beta (11-03). Not a forecast. – = not measured.'}</span></div><div class="tw"><table>`;
+  h+=view==='moves'?`<tr><th></th><th>Coin</th><th>USD</th><th>INR</th><th>Since 11-03</th><th>7 d</th><th>30 d</th><th>Off high</th><th>vs BTC 7 d</th><th>vs BTC since</th><th>Plan</th></tr>`
+   :`<tr><th></th><th>Coin</th><th>USD now</th><th>Down β</th><th>Up β</th><th>BTC 77k</th><th>BTC 72k</th><th>BTC 60k</th><th>Plan</th></tr>`;
+  const cols=view==='moves'?11:9;
+  for(const k of ORDER){const cs=M.coins.filter(c=>c.bucket===k);if(!cs.length)continue;
+    h+=`<tr class="grp"><td colspan="${cols}">${BK[k][1]} ${BK[k][0]} · <span class="mu">${BK[k][2]}</span></td></tr>`;
+    for(const c of cs){const m=mark(c,g);
+      if(view==='moves')h+=`<tr><td class="s ${m[1]}" title="${m[2]}">${m[0]}</td><td class="c">${c.sym}</td><td class="n">${px(c.usd)}</td><td class="n">${inr(c.inr)}</td><td class="n ${cl(c.since_1103)}">${num(c.since_1103)}%</td><td class="n ${cl(c.chg7)}">${num(c.chg7)}%</td><td class="n ${cl(c.chg30)}">${num(c.chg30)}%</td><td class="n">${num(c.off_ath,0)}%</td><td class="n ${cl(c.vs_btc_7d)}">${num(c.vs_btc_7d)}</td><td class="n ${cl(c.vs_btc_since)}">${num(c.vs_btc_since)}</td><td class="mu">${m[2]}</td></tr>`;
+      else{const sc=l=>{const v=c.scen&&c.scen[l];return v==null?'<td class="n mu">–</td>':`<td class="n ${cl(v)}">${num(v,0)}%<br><span class="mu">${px(c.usd*(1+v/100))}</span></td>`};
+        h+=`<tr><td class="s ${m[1]}" title="${m[2]}">${m[0]}</td><td class="c">${c.sym}</td><td class="n">${px(c.usd)}</td><td class="n">${c.betas&&c.betas[0]!=null?c.betas[0].toFixed(2):'–'}</td><td class="n">${c.betas&&c.betas[1]!=null?c.betas[1].toFixed(2):'–'}</td>${sc('77000')}${sc('72000')}${sc('60000')}<td class="mu">${m[2]}</td></tr>`}}}
+  h+=`</table></div><div class="legend">● open under the plan · ○ closed or waiting · ⏸ paused · ✗ avoid. BTC row: ${nm(b)} USD, INR ${nm(M.btc.inr)}. Missing from CoinGecko: ${M.missing&&M.missing.length?M.missing.join(', '):'none'}.</div>`;
+  $('t-coins').innerHTML=h;
+  $('t-coins').querySelectorAll('.seg button').forEach(x=>x.onclick=()=>{view=x.dataset.v;renderCoins()});
+}
+function pnlBlock(){
+  if(!P)return`<div class="empty">No position loaded yet. Ask Claude to write it to the page.</div>`;
+  const b=M.btc.usd,pl=(b/P.entry_usd-1)*100,val=P.inr_spent*(1+pl/100),d=P.limit_usd?(P.limit_usd/b-1)*100:null;
+  return`<div class="pos"><div class="kpi"><span>${P.exchange||'Exchange'} BTC buy, INR</span><b>${nm(P.inr_spent)}</b></div><div class="kpi"><span>Average entry, USD</span><b>${P.entry_usd.toLocaleString('en-US',{minimumFractionDigits:2})}</b></div><div class="kpi"><span>BTC now, USD</span><b>${nm(b)}</b></div><div class="kpi"><span>Profit or loss</span><b class="${cl(pl)}">${num(pl,2)}%</b></div><div class="kpi"><span>Worth now, INR (est.)</span><b>${nm(val)}</b></div><div class="kpi"><span>Open limit buy, USD</span><b>${P.limit_usd?P.limit_usd.toLocaleString('en-US',{minimumFractionDigits:2}):'–'}</b></div><div class="kpi"><span>Limit is below price by</span><b>${d==null?'–':num(d,1)+'%'}</b></div></div><div class="legend">Profit is price against entry in USD. INR worth ignores the rupee move and exchange fees.</div>`;
+}
+const SPLIT=['anchor','leader','darkhorse'];
+function renderPos(){
+  const g=gates();
+  let h=`${pnlBlock()}<div class="note">Claude is not a licensed adviser. This page gives no sizes and no buy orders. Type your own split; the plan's rule for each bucket sits beside it.</div><h2>Your split, % (you set it)</h2><div class="pos">`;
+  for(const k of SPLIT){const cs=M.coins.filter(c=>c.bucket===k);
+    h+=`<div class="bk"><h3>${BK[k][1]} ${BK[k][0]}</h3><div class="row"><span>Bucket share</span><input type="number" min="0" max="100" step="1" id="b_${k}" data-k="b_${k}" value="${I['b_'+k]??''}" aria-label="${BK[k][0]} share percent"></div>`;
+    for(const c of cs)h+=`<div class="row"><span>${c.sym} <span class="${mark(c,g)[1]}">${mark(c,g)[0]}</span></span><input type="number" min="0" max="100" step="1" id="c_${c.sym}" data-k="c_${c.sym}" value="${I['c_'+c.sym]??''}" aria-label="${c.sym} share of bucket percent"></div>`;
+    h+=`<div class="legend" id="chk_${k}"></div><div class="rule">Plan: ${BK[k][2]}</div></div>`}
+  h+=`<div class="bk"><h3>Cash</h3><div class="row"><span>Cash share</span><input type="number" min="0" max="100" step="1" id="b_cash" data-k="b_cash" value="${I.b_cash??''}" aria-label="Cash share percent"></div><div class="legend" id="chk_all"></div><div class="rule">Coins inside a bucket are shares of that bucket and add to 100.</div><div class="legend" id="saved">${uid?'':'Signed out: inputs will not be saved.'}</div></div></div>`;
+  $('t-pos').innerHTML=h;
+  $('t-pos').querySelectorAll('input').forEach(x=>x.oninput=()=>{I[x.dataset.k]=x.value===''?null:Number(x.value);check();queueSave()});
+  check();
+}
+function check(){
+  const v=k=>Number(I[k])||0;let tot=v('b_cash');
+  for(const k of SPLIT){tot+=v('b_'+k);const cs=M.coins.filter(c=>c.bucket===k),s=cs.reduce((a,c)=>a+v('c_'+c.sym),0),el=$('chk_'+k);if(!el)continue;
+    let t=s===0?'':(s===100?'● coins add to 100':'⚠ coins add to '+s);
+    if(k==='darkhorse'){const xs=cs.map(c=>v('c_'+c.sym)).filter(x=>x>0);if(xs.length>1&&Math.max(...xs)!==Math.min(...xs))t+=' · ⚠ plan says equal slices'}
+    el.textContent=t}
+  const a=$('chk_all');if(a)a.textContent=tot===0?'':(tot===100?'● buckets and cash add to 100':'⚠ buckets and cash add to '+tot);
+}
+function queueSave(){if(!dbh||!uid)return;clearTimeout(saveT);saveT=setTimeout(async()=>{try{await dbh.doc('data/users/'+uid+'/inputs').set({...I,saved:new Date().toISOString()});const e=$('saved');if(e)e.textContent='● saved'}catch(e){const el=$('saved');if(el)el.textContent='⚠ not saved: '+(e&&e.code||'error')}},700)}
+const CYC=[['BTC','−77%','+573%','792','−53%','+48%'],['ETH','−79%','+308%','632','−70%','+228%'],['SOL','−96%','+2,618%','751','−76%','+96%'],['LINK','−90%','+434%','716','−75%','+115%'],['HBAR','−93%','+926%','748','−82%','+85%'],['UNI','−92%','+411%','904','−87%','+327%'],['NEAR','−94%','+605%','439','−89%','+513%'],['XRP','−83%','+971%','944','−71%','+51%']];
+const FACTS=[['✓','up','New coins still trading at 90 days','4.55%'],['✓','up','New coins reaching a real pool','0.26%'],['✓','up','2021 top-100 alts that did 10×','0'],['✓','up','2021 top-100 alts down 90%+','~2 in 3'],['✓','up','Former top-100 coins now dead','71.9%'],['✓','up','Scams took in 2025','≥ $14B'],['✓','up','Hacks took in 2025','$3.4B'],['◐','wa','Airdrop holders who sell in 90 days','78–94%'],['✓','up','India tax on gains, no loss offset','30%'],['◐','wa','India TDS on each sale','1%'],['✓','up','Top-100 of 2016 still top-100 in 2024','9 of 100']];
+const WATCH=[['INJ','ETF listed; fully unlocked','30-day edge vs BTC turns negative'],['JST','19% of supply burned','Burn tranche skipped; claims are the project\'s'],['SKY','Q3 net revenue $37M; buybacks','Revenue falls with rates'],['GEOD','Revenue 2.3× year on year','Tiny, thin volume'],['VVV','AI sales burn tokens','Emissions still exceed burns'],['MORPHO','Record deposits $11.6B','Token earns nothing yet'],['ETHFI','Card spend $124M in Sept','Buybacks stay near zero'],['AKT','Compute spend burns AKT','Issuance beats burn']];
+function renderStudies(){
+  let c='<tr><th>Coin</th><th>2022 low</th><th>To peak</th><th>Days</th><th>2026 low</th><th>So far</th></tr>'+CYC.map(r=>`<tr><td class="c">${r[0]}</td>${r.slice(1).map(x=>`<td class="n ${x[0]==='+'?'up':x[0]==='−'?'dn':'mu'}">${x}</td>`).join('')}</tr>`).join('');
+  let f=FACTS.map(r=>`<tr><td class="s ${r[1]}">${r[0]}</td><td>${r[2]}</td><td class="n">${r[3]}</td></tr>`).join('');
+  let w=WATCH.map(r=>`<tr><td class="c">${r[0]}</td><td class="w">${r[1]}</td><td class="w mu">${r[2]}</td></tr>`).join('');
+  $('t-studies').innerHTML=`<div class="cols"><div><h2>Cycle drawdowns and rebounds</h2><div class="tw"><table>${c}</table></div><div class="legend">Binance daily closes, measured 11-04. Majors already fell as far as in 2022; BTC fell less (−53% vs −77%). Median rebound from a cycle low, about +450% over 440-950 days.</div></div>
+<div><h2>Survival and scam facts</h2><div class="tw"><table>${f}</table></div><div class="legend">✓ source opened and matched · ◐ partly confirmed. Sources: CoinGecko, The Block, Fortune, CryptoRank, Chainalysis; checked 11-10.</div></div>
+<div><h2>Review 11-10</h2><div class="tw"><table><tr class="grp"><td colspan="3">Dropped: GRASS (investors unlocked), AERO (new token), EIGEN (unlock)</td></tr><tr><th>Watch</th><th>Why</th><th>Fails if</th></tr>${w}</table></div><div class="legend">Watch only: no buy until a plan trigger opens it. Binance hack 10-29 and paused withdrawals: per the 11-10 review.</div></div></div>`;
+}
+function renderAll(){const e=M.coins&&M.btc;if(!e)return;renderNow();renderCoins();renderPos();renderStudies();
+  $('stamp').textContent=`CoinGecko ${M.generated_utc} · 1 USD = ${M.usd_inr?M.usd_inr.toFixed(1):'–'} INR · research, not advice`}
+function empty(msg){for(const k of['now','coins','pos'])$('t-'+k).innerHTML=`<div class="empty">${msg}</div>`;renderStudies();}
+const tabs=[...document.querySelectorAll('#tabs button')];
+function show(t){tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));['now','coins','pos','studies'].forEach(k=>$('t-'+k).hidden=k!==t);try{history.replaceState(null,'','#'+t)}catch(e){}}
+tabs.forEach(b=>b.onclick=()=>show(b.dataset.t));
+{const h=(location.hash||'').slice(1);if(['now','coins','pos','studies'].includes(h))show(h)}
+empty('Loading market data…');
+(async()=>{
+  let to=setTimeout(()=>{if(!M)empty('Market data cannot be reached yet. Studies still work.')},10000);
+  try{
+    const db=await claude.use('db');
+    if(!db){clearTimeout(to);empty('The page database is not available in this view. Studies still work.');return}
+    dbh=db;
+    try{const u=await claude.use('user');uid=u&&u.id?await u.id():null}catch(e){}
+    db.doc('market/latest').onSnapshot(s=>{clearTimeout(to);if(!s.exists){empty('No market data yet. Ask Claude to pull the page: one command, one db write.');return}M=s.data();renderAll()},e=>{clearTimeout(to);empty('Cannot read market data ('+(e&&e.code)+').')});
+    db.doc('position/btc').onSnapshot(s=>{P=s.exists?s.data():null;if(M)renderAll()},()=>{});
+    if(uid)db.doc('data/users/'+uid+'/inputs').onSnapshot(s=>{if(s.exists&&!Object.keys(I).length){I={...s.data()};if(M)renderPos()}},()=>{});
+  }catch(e){clearTimeout(to);empty('Database error. Studies still work.')}
+})();
+</script>
