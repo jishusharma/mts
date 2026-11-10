@@ -313,6 +313,47 @@ def boot_scope(sig, pool, lean, allp, B=4000, seed=7):
     return out
 
 
+def standard_card(res):
+    """Fields the sim_desk results schema requires (sim_desk/DESIGN.md, build_artifact.REQUIRED), written from the cells above."""
+    C = res["cells"]
+    p = C["h30|ALL|ALL"]
+    f = lambda x: "%.1f" % x  # noqa: E731
+    ci = lambda v: "[%s, %s]" % (f(v[0]), f(v[1]))  # noqa: E731
+    kp = [{"label": "signals (raw setups %d)" % res["setups_raw"], "value": str(p["n"])}]
+    for h in HORIZONS:
+        c = C["h%d|ALL|ALL" % h]
+        kp.append({"label": "h%d fee-net mean, 14 bp" % h, "value": "%s bp %s" % (f(c["net_bp"]), ci(c["net_ci_bp"])), "tone": "bad"})
+    kp.append({"label": "h30 signal minus near-level null", "value": "%s bp %s" % (f(p["diff_vs_null_bp"]), ci(p["diff_ci_bp"]))})
+    rows = []
+    for h in HORIZONS:
+        for ses in ("ALL", "Asia", "Europe", "US", "Late"):
+            c = C["h%d|%s|ALL" % (h, ses)]
+            rows.append([str(h), ses, str(c["n"]), f(c["gross_bp"]), f(c["net_bp"]), ci(c["net_ci_bp"]), f(c["diff_vs_null_bp"]), ci(c["diff_ci_bp"])])
+    return {
+        "id": "live_aid-pulse-backtest", "kind": "backtest", "parity": None, "provenance": "run", "date": "2026-11-10",
+        "family": "Live Aid pulse SETUP FORMING",
+        "title": "Live Aid pulse SETUP FORMING (level within 0.15 %, 1h-4h lean away, low-timeframe divergence) vs a matched near-level null, fee-net 15/30/60 min, by session, DEV",
+        "what": [
+            {"name": "Rule", "value_plain": "pulse.js setup() ported line for line to python and parity-tested against the live JS through node; thresholds as shipped", "label": "OURS"},
+            {"name": "Levels", "value_plain": "PDH, PDL, PDC, day open, week open, PWH, PWL, Asia high/low merged within 0.15 %; analyst, VAL/POC/VAH, MA-strip, VWAP levels and the Home direction are NOT_IN_DATA", "label": "OURS"},
+            {"name": "Entry and exit", "value_plain": "5-minute decision times, entry at the open of the next 1m bar plus one bar, exit by time after 15, 30 or 60 min, 60-minute same-side cooldown", "label": "OURS"},
+            {"name": "Costs", "value_plain": "Binance taker 0.05 % per side (fees.py) plus 2 bp per side slippage = 14 bp round trip", "label": "SOURCED"},
+        ],
+        "how": "Walk BTCUSDT USD-M 1m klines (Binance perp tape, proxy for the page's feed) every 5 minutes, rebuild the page's candles per timeframe (1000 x 1m, 150 for the rest, forming candle included), run grid() and setup(); null = same near-level times with no setup and the signal's side mix; 95 % day-clustered bootstrap, 4000 draws.",
+        "window": "DEV 2022-02-01 to 2024-06-30 (881 UTC days); VALIDATION and HOLDOUT never opened",
+        "verdict": {"label": "FAIL: SETUP FORMING is a coin flip beyond being near a level; fee-net about -14 bp at every horizon", "tone": "bad"},
+        "why": ["At 30 min n = %d, gross %s bp %s and fee-net %s bp %s; the flag minus the near-level null is %s bp %s." % (p["n"], f(p["gross_bp"]), ci(p["gross_ci_bp"]), f(p["net_bp"]), ci(p["net_ci_bp"]), f(p["diff_vs_null_bp"]), ci(p["diff_ci_bp"])),
+                "No horizon, session or regime cell has a fee-net mean above zero; the best is about -12 bp against a 14 bp cost.",
+                "The flag fires at 62 % of the 5-minute times near a level, so it is not selective; one secondary contrast (60 min, bear, vs lean-only) has a CI above zero and is a lead for a PRE_REG only."],
+        "kpis": kp,
+        "examples": [{"kind": "table", "title": "Horizon x session: n, gross and fee-net means and signal minus near-level null (bp)", "caption": "CI = 95 % day-clustered bootstrap; cost 14 bp",
+                      "cols": ["horizon min", "session", "n", "gross bp", "net bp", "net CI", "vs null bp", "vs null CI"], "rows": rows}],
+        "source_files": ["MyTradingSys/research/live_aid_pulse_2026-11/RESULT.md", "MyTradingSys/research/live_aid_pulse_2026-11/PRE_REG.md", "MyTradingSys/research/live_aid_pulse_2026-11/study.py",
+                         "MyTradingSys/research/live_aid_pulse_2026-11/pulse_port.py"],
+        "commit": "this card",
+    }
+
+
 def cmd_outcomes(a):
     pre = (HERE / "PRE_REG.md").read_text(encoding="utf-8")
     assert "FROZEN_UTC:" in pre, "PRE_REG.md is not frozen: no outcome may be read"
@@ -352,7 +393,12 @@ def cmd_outcomes(a):
                 Al = [(T // DAY, fw[h][T]) for T in allT if T in fw[h] and ok(T)]
                 cell = boot_scope(S, Pl, Ln, Al) if S else None
                 res["cells"][f"h{h}|{ses}|{rg}"] = cell or {"n": 0}
-    Path(a.json).write_text(json.dumps(res, indent=1))
+    res.update(standard_card(res))
+    sys.path.insert(0, str(HERE.parent / "sim_desk" / "artifact"))
+    import build_artifact as ba  # noqa: E402  the desk's fixed verdict banner rule (test_every_committed_result_has_banner)
+    res["banner"] = ba.banner_of(res)
+    Path(a.json).write_text(json.dumps(res, indent=1), newline="
+")
     print("wrote", a.json)
 
 
