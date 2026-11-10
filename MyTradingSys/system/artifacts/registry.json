@@ -440,7 +440,7 @@
       "purpose": "Live crypto buying page: BTC phases, coins by bucket, his position and split, studies. Replaces Dark Horse Desk.",
       "notes_go_to": "BUY_CRYPTO_PAGE.md",
       "note": "Private page; his position lives only in its db, never in the repo.",
-      "published_sha": "15d5c87ca56c05c14427085b0bc0b7a4c139150b6f2eeb3619c0dc475c44b224"
+      "published_sha": "a3dd55ce823e70526ecb07cc4b714df02478443238ec34b0eb25e9b0269715ad"
     }
   ],
   "unpinned_old": {
