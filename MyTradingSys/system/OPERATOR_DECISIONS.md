@@ -2201,3 +2201,10 @@ Operator: "there are two Gemini accounts, not just on NUC but also on Lenovo ...
 Done: ROUTING.md section "Gemini access: one rule" is now the single source; HOW_MTS_RUNS (dropped "hand-started only" and the wrong "no Claude login" on the laptop), CLOUD_ACCOUNTS ("one per machine") and GEMINI_START (NUC-only title) point to it.
 Measured gaps: desktop -> NUC works (SSH gate status ok 22Z); laptop has no sshd, so no other machine can start laptop Gemini; agy CLI on the laptop UNVERIFIED (broadcast asks login A to check); second Gemini account not signed in on either host.
 Operator-only steps (system setting / sign-in, never a session): enable sshd on the laptop (LENOVO_SETUP.md line 29 command); sign the other Gemini account into agy on each host.
+
+## 2026-11-10 06Z Login C: spend the rest of the week before the reset (operator)
+Operator: "You will reset tonight - so we need to use you completely just before the reset so that we do not get stuck! So plan for it!"
+Measured 06:41Z (get_usage): weekly all models 87%, weekly Fable 83%, 5h window 6% (resets 10:10Z); weekly reset 2026-11-10T20:00Z (01:30 IST 11-11).
+Decision: the 78% monitor-only cap on login C is lifted for this last day. Spend to about 97% by 18Z on Sonnet workers (never Fable for building), keep 3% so the Lead can still answer him until 20Z; in the last 2 h spend what is left on short jobs that ship in one turn. Lead C (this session, now Fable 5.2) only coordinates.
+Order of work: live-aid-oi-poller-all-venues-1110, tom-swing-trendline-extract-1109, java-below-val-short-no-setup-type-1109, then stale pages and broadcast hygiene.
+
