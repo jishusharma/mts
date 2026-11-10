@@ -94,9 +94,11 @@
   // 4h is context). Last nShow bars of wt1/wt2, the cross marks (+1 up, -1 down; strong when wt1 is beyond +-hot at the cross, as in
   // LazyBear's WT_CROSS: 53 = his overbought/oversold level 2, SOURCED), volume and taker delta per bar, and the last cross in words.
   var WT_HOT = 53;   // SOURCED: LazyBear WaveTrend obLevel2 / osLevel2
-  function lane(TFK, tfName, nShow) {
+  // now > 0 drops the bar still forming (close time >= now), so a lane and the indicator card read the same closed bars.
+  function lane(TFK, tfName, nShow, now) {
     var tf = GRID.filter(function (g) { return g[0] === tfName; })[0]; if (!tf) return null;
-    var k = rowsFor(TFK, tf); if (!k || k.length < P.minBars) return null;
+    var k = rowsFor(TFK, tf); if (k && now > 0) k = k.filter(function (r) { return +r[6] < now; });
+    if (!k || k.length < P.minBars) return null;
     var t = [], h = [], l = [], c = [];
     k.forEach(function (r) { t.push(+r[0]); h.push(+r[2]); l.push(+r[3]); c.push(+r[4]); });
     var w = A.wavetrend(t, h, l, c, tf[1], P.wtWarm), n = k.length, from = Math.max(0, n - (nShow || 60)), out = [], lastX = null;
@@ -117,6 +119,36 @@
     return s + (L.last.ago === 0 ? 'this bar' : L.last.ago + ' bar' + (L.last.ago === 1 ? '' : 's') + ' ago') + (L.last.strong ? (L.last.side === 1 ? ' from oversold' : ' from overbought') : '') + z;
   }
 
-  var api = { GRID: GRID, P: P, WT_HOT: WT_HOT, foldK: foldK, rowsFor: rowsFor, read: read, grid: grid, setup: setup, lane: lane, laneWords: laneWords };
+  // Timing check (operator 2026-11-10: "the one cross worth a look" must be a picture, not a sentence). Five lights:
+  // trigger = the newest big-dot cross (out of beyond +-53) on 1m / 2m / 3m, at most trigAgo bars old; 15m and 30m = that lane's
+  // side; level = price within P.near of a named level; tape = net taker flow over the trigger lane's last tapeN bars.
+  // ok = the light agrees with the trigger. ALIGNED = a trigger and all four others agree. Descriptive only: no entry, stop or size.
+  var TP = { trigAgo: 5, tapeN: 5, tfs: ['1m', '2m', '3m'] };   // OURS, not backtested
+  function timing(lanes, level) {
+    lanes = lanes || {};
+    var trig = null;
+    TP.tfs.forEach(function (tf) {
+      var L = lanes[tf]; if (!L || !L.last || !L.last.strong || L.last.ago > TP.trigAgo) return;
+      var age = L.last.ago * L.ms; if (!trig || age < trig.age) trig = { tf: tf, side: L.last.side, ago: L.last.ago, age: age };
+    });
+    var side = trig ? trig.side : 0, sd = function (tf) { var L = lanes[tf]; return L && (L.side === 1 || L.side === -1 || L.side === 0) ? L.side : null; };
+    var f15 = sd('15m'), f30 = sd('30m'), tape = null, src = lanes[trig ? trig.tf : '1m'];
+    if (src && src.bars && src.bars.length >= TP.tapeN) {
+      var s = 0, okT = true; src.bars.slice(-TP.tapeN).forEach(function (b) { if (!isFinite(b.delta)) okT = false; else s += b.delta; });
+      tape = okT ? sgn(s) : null;
+    }
+    var w = function (v) { return v === 1 ? 'up' : v === -1 ? 'down' : v === 0 ? 'flat' : 'no data'; };
+    var lights = [
+      { k: 'trigger', v: side, ok: !!trig, t: trig ? trig.tf + ' big dot ' + w(side) + ', ' + (trig.ago ? trig.ago + ' bar' + (trig.ago === 1 ? '' : 's') + ' ago' : 'this bar') : 'no big dot on 1m 2m 3m in the last ' + TP.trigAgo + ' bars' },
+      { k: '15m', v: f15, ok: !!trig && f15 === side, t: '15m WaveTrend ' + w(f15) },
+      { k: '30m', v: f30, ok: !!trig && f30 === side, t: '30m WaveTrend ' + w(f30) },
+      { k: 'level', v: level ? 1 : 0, ok: !!level, t: level ? 'at ' + level.name : 'not at a named level' },
+      { k: 'tape', v: tape, ok: !!trig && tape === side, t: tape === 1 ? 'buyers lead the last ' + TP.tapeN + ' bars' : tape === -1 ? 'sellers lead the last ' + TP.tapeN + ' bars' : tape === 0 ? 'tape even' : 'tape no data' }
+    ];
+    var n = lights.filter(function (x) { return x.ok; }).length;
+    return { side: side, trig: trig, lights: lights, n: n, of: lights.length, state: !trig ? 'NONE' : n === lights.length ? 'ALIGNED' : 'PARTIAL' };
+  }
+
+  var api = { GRID: GRID, P: P, WT_HOT: WT_HOT, foldK: foldK, rowsFor: rowsFor, read: read, grid: grid, setup: setup, lane: lane, laneWords: laneWords, TP: TP, timing: timing };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAPULSE = api;
 })(typeof window !== 'undefined' ? window : this);

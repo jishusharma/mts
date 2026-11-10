@@ -168,3 +168,57 @@ def test_long_setup_at_low():
     g = {"hi": 0.4, "rows": [{"tf": "7m", "r": {"div": {"rsi": 1, "wt": 1, "cvd": 0}}}]}
     s = _node("setup", g, LAD, 73800, "WAIT")
     assert s["side"] == "LONG" and s["divs"] == ["7m RSI", "7m WaveTrend"]
+
+
+def test_lane_reads_closed_bars_only():
+    # 11-10: the 4h lane said "falling" while the indicator card (closed bars) showed up: the lane counted the bar still forming
+    rows = _vee()
+    now = rows[-1][0] + 30_000   # 30 s into the last 1m bar
+    live, closed = _node("lane", {"1m": rows}, "1m", 60), _node("lane", {"1m": rows}, "1m", 60, now)
+    assert live["bars"][-1]["t"] == rows[-1][0] and closed["bars"][-1]["t"] == rows[-2][0]
+    assert closed["last"]["ago"] == live["last"]["ago"] - 1
+
+
+def _ln(ms, side, last=None, delta=1.0):
+    return {"ms": ms, "side": side, "last": last, "bars": [{"delta": delta}] * 5}
+
+
+def test_timing_all_five_agree():
+    # big dot up on 2m two bars ago, 15m and 30m up, at a level, buyers lead the tape -> ALIGNED up, 5 of 5
+    lanes = {"1m": _ln(60_000, 1), "2m": _ln(120_000, 1, {"side": 1, "ago": 2, "strong": True}), "3m": _ln(180_000, 1),
+             "15m": _ln(900_000, 1), "30m": _ln(1_800_000, 1)}
+    T = _node("timing", lanes, {"name": "Today low", "price": 74015})
+    assert (T["state"], T["side"], T["n"], T["of"]) == ("ALIGNED", 1, 5, 5) and T["trig"]["tf"] == "2m"
+    assert [x["ok"] for x in T["lights"]] == [True] * 5
+
+
+def test_timing_partial_and_none():
+    up = {"side": 1, "ago": 1, "strong": True}
+    lanes = {"1m": _ln(60_000, 1, up, delta=-1.0), "15m": _ln(900_000, 1), "30m": _ln(1_800_000, -1)}
+    T = _node("timing", lanes, None)   # 30m against, no level, sellers on the tape -> trigger + 15m only
+    assert (T["state"], T["n"]) == ("PARTIAL", 2) and [x["ok"] for x in T["lights"]] == [True, True, False, False, False]
+    # a small dot (not from oversold), or a big dot older than 5 bars, is no trigger; a level alone does not make a state
+    for last in ({"side": 1, "ago": 1, "strong": False}, {"side": 1, "ago": 6, "strong": True}, None):
+        N = _node("timing", {"1m": _ln(60_000, 1, last), "15m": _ln(900_000, 1), "30m": _ln(1_800_000, 1)}, {"name": "x", "price": 1})
+        assert N["state"] == "NONE" and N["side"] == 0 and N["n"] == 1
+    # the newest big dot wins: 3m one bar ago (180 s) is older than 1m two bars ago (120 s)
+    two = {"1m": _ln(60_000, -1, {"side": -1, "ago": 2, "strong": True}), "3m": _ln(180_000, 1, up)}
+    assert _node("timing", two, None)["trig"]["tf"] == "1m"
+
+
+def test_timing_strip_is_colour_not_text():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    js = ("const H=require(process.argv[1]),P=require(process.argv[2]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{"
+          "j=JSON.parse(j);console.log(JSON.stringify(j.map(a=>H._timingStrip(P.timing(a[0],a[1])))))})")
+    up = {"side": 1, "ago": 2, "strong": True}
+    full = {"2m": _ln(120_000, 1, up), "15m": _ln(900_000, 1), "30m": _ln(1_800_000, 1)}
+    part = {"2m": _ln(120_000, 1, up), "15m": _ln(900_000, 1), "30m": _ln(1_800_000, -1)}
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js"), str(PULSE)], input=json.dumps([[full, {"name": "Today low", "price": 1}], [part, None], [{}, None]]),
+                         capture_output=True, text=True, encoding="utf-8", timeout=30)
+    assert out.returncode == 0, out.stderr[-1500:]
+    a, p, n = json.loads(out.stdout)
+    assert 'class="hm-tm all up"' in a and "WORTH A LOOK ▲" in a and a.count(" tly") == 5 and 'hm-tl amber tly' in a
+    assert 'class="hm-tm part"' in p and "3 of 5 lined up" in p and 'hm-tl down tln' in p and "WORTH A LOOK" not in p
+    assert 'class="hm-tm none"' in n and "no trigger" in n and n.count(" tln") == 5

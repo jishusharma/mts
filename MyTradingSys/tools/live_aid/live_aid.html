@@ -1046,7 +1046,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     if (PU && pkey !== PULSE.key) {
       PULSE.key = pkey; try { PULSE.g = PU.grid(TF.k); } catch (e) { PULSE.g = null; }
       try { PULSE.ind = window.LAIND ? window.LAIND.table(TF.k, now) : null; } catch (e) { PULSE.ind = null; }
-      PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60); } catch (e) { PULSE.lanes[tf] = null; } });
+      PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60, now); } catch (e) { PULSE.lanes[tf] = null; } });
     }
     var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
     if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }

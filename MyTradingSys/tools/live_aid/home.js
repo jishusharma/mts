@@ -227,6 +227,32 @@
     var ev = ctx.ev ? '<span class="hm-ev">' + esc(ctx.ev.name) + ' in ' + esc(ctx.ev.inTxt) + '</span>' : '';
     return '<div class="hm-card hm-news"><div class="hm-h">News, last hour <span class="hm-sub">▲ good for BTC ▼ bad; bar = weight 0-10</span>' + ev + '</div>' + rows + '</div>';
   }
+  // Timing check strip (operator 11-10: the one cross worth a look, as lights not text). pulse.js timing() decides; this only draws:
+  // badge (solid green / red = all five agree, amber = some, grey = no trigger) then one pill per light. A pill's colour is its
+  // own direction (green up, red down, amber = at a level, grey = none); a faded pill does not agree with the trigger.
+  var TM_LAB = { trigger: 'Big dot', '15m': '15m', '30m': '30m', level: 'Level', tape: 'Tape' };
+  function nearLevel(md, PU) {
+    if (!md || !md.lad || !(md.px > 0) || !PU) return null;
+    var c = [md.lad.at, md.lad.above[0], md.lad.below[0]].filter(function (z) { return z && Math.abs(md.px / z.price - 1) <= PU.P.near; })
+      .sort(function (a, b) { return Math.abs(md.px - a.price) - Math.abs(md.px - b.price); });
+    return c[0] || null;
+  }
+  function timingOf(ctx, md) {
+    var PU = (typeof module !== 'undefined' && module.exports) ? require('./pulse.js') : root.LAPULSE;
+    if (!PU || !PU.timing) return null;
+    try { return PU.timing(ctx.lanes, nearLevel(md, PU)); } catch (e) { return null; }
+  }
+  function timingStrip(T) {
+    if (!T) return '<div class="hm-tm none"><b class="hm-tmb">Timing check</b><span class="hm-tmx">pulse.js missing</span></div>';
+    var sy = function (v) { return v === 1 ? '▲' : v === -1 ? '▼' : '○'; }, cl = function (v) { return v === 1 ? 'up' : v === -1 ? 'down' : 'dim'; };
+    var st = T.state === 'ALIGNED' ? 'all ' + cl(T.side) : T.state === 'PARTIAL' ? 'part' : 'none';
+    var badge = T.state === 'ALIGNED' ? 'WORTH A LOOK ' + sy(T.side) : T.state === 'PARTIAL' ? sy(T.side) + ' ' + T.n + ' of ' + T.of + ' lined up' : 'no trigger';
+    var pills = T.lights.map(function (x) {
+      var c = x.k === 'level' ? (x.v ? 'amber' : 'dim') : cl(x.v), s = x.k === 'level' ? (x.v ? '◆' : '◇') : x.k === 'trigger' ? (x.v ? '●' + sy(x.v) : '○') : sy(x.v);
+      return '<span class="hm-tl ' + c + (x.ok ? ' tly' : ' tln') + '" title="' + esc(x.t) + '"><i>' + s + '</i>' + TM_LAB[x.k] + (x.k === 'trigger' && T.trig ? ' <small>' + T.trig.tf + '</small>' : '') + '<em>' + (x.ok ? '✓' : '') + '</em></span>';
+    }).join('');
+    return '<div class="hm-tm ' + st + '" title="The one WaveTrend cross worth a look: a big dot on 1m / 2m / 3m that agrees with 15m and 30m, at a named level, with the tape. Observation only, no entry or size. Rules ours, not backtested."><b class="hm-tmb">' + badge + '</b>' + pills + '</div>';
+  }
   // WaveTrend lanes (operator 11-10): 1m 2m 3m = timing crosses, 15m 30m = the frame, 4h = context only (its crosses are too frequent
   // to act on, so no dots there). Green line wt1, red line wt2 (TradingView WT_CROSS colours); dot = cross, big dot = cross from
   // overbought/oversold (beyond +-53). Each lane keeps its own time scale: the last 60 bars of that timeframe.
@@ -244,6 +270,8 @@
       var bars = Lz && Lz.bars || [], nb = bars.length, xw = (R - L) / Math.max(nb, 1), xi = function (j) { return L + (j + 0.5) * xw; };
       var line = function (key, cls) { var p = []; bars.forEach(function (b, j) { if (isFinite(b[key])) p.push(xi(j).toFixed(1) + ',' + yv(b[key]).toFixed(1)); }); return p.length > 1 ? '<polyline points="' + p.join(' ') + '" class="' + cls + '"/>' : ''; };
       s += line('wt2', 'hm-w2') + line('wt1', 'hm-w1');
+      var tg = ctx._tm && ctx._tm.trig && ctx._tm.trig.tf === ln[0] ? nb - 1 - ctx._tm.trig.ago : -1;   // the timing-check trigger gets a ring
+      if (tg >= 0 && bars[tg]) s += '<circle cx="' + xi(tg) + '" cy="' + yv(bars[tg].wt1) + '" r="9" class="hm-wxr ' + (ctx._tm.trig.side > 0 ? 'up' : 'down') + '"/>';
       if (ln[1] !== 'context') bars.forEach(function (b, j) { if (b.x) s += '<circle cx="' + xi(j) + '" cy="' + yv(b.wt1) + '" r="' + (b.strong ? 4.5 : 2.5) + '" class="hm-wx ' + (b.x > 0 ? 'up' : 'down') + '"/>'; });
       var words = PU ? PU.laneWords(Lz) : 'pulse.js missing', c = !Lz ? 'dim' : Lz.side === 1 ? 'up' : Lz.side === -1 ? 'down' : 'dim';
       if (ln[1] === 'context' && Lz) words = (Lz.side === 1 ? 'rising' : Lz.side === -1 ? 'falling' : 'flat') + (Lz.zone === 'hot' ? ', overbought' : Lz.zone === 'cold' ? ', oversold' : '') + ' (context only)';
@@ -288,7 +316,8 @@
       (md.lad.below[0] ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
     var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 44 - wh) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    ctx._tm = timingOf(ctx, md);
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + timingStrip(ctx._tm) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -324,10 +353,16 @@
     '.hm-wts{width:100%;flex:none;border-top:1px solid var(--line)}.hm-wth{fill:var(--dim);font:700 10px system-ui}.hm-wtl{fill:var(--fg);font:700 13px var(--mono,monospace)}.hm-wtk{fill:var(--dim);font:10px system-ui}' +
     '.hm-wt0{stroke:var(--dim);stroke-width:.5;opacity:.6}.hm-wtb{stroke:var(--down);stroke-width:.5;stroke-dasharray:3 3;opacity:.6}.hm-wtsep{stroke:var(--line);stroke-width:1}' +
     '.hm-w1{fill:none;stroke:#22c55e;stroke-width:2}.hm-w2{fill:none;stroke:#ef4444;stroke-width:1.5}.hm-wx.up{fill:#22c55e}.hm-wx.down{fill:#ef4444}.hm-wx{stroke:#111;stroke-width:.5}' +
+    '.hm-wxr{fill:none;stroke-width:2}.hm-wxr.up{stroke:#22c55e}.hm-wxr.down{stroke:#ef4444}' +
+    '.hm-tm{display:flex;gap:6px;align-items:center;height:26px;flex:none;border-top:1px solid var(--line);padding:0 4px;white-space:nowrap;overflow:hidden}' +
+    '.hm-tmb{font:700 12px system-ui;padding:2px 10px;border-radius:10px;border:1px solid var(--dim);color:var(--dim)}.hm-tm.part .hm-tmb{border-color:var(--amber);color:var(--amber)}' +
+    '.hm-tm.all .hm-tmb{color:#111;border-color:transparent}.hm-tm.all.up .hm-tmb{background:var(--up)}.hm-tm.all.down .hm-tmb{background:var(--down);color:#fff}.hm-tmx{font-size:11px;color:var(--dim)}' +
+    '.hm-tl{display:inline-flex;gap:4px;align-items:center;font:700 11px system-ui;padding:1px 8px;border-radius:4px;color:#111;background:var(--line)}.hm-tl i{font-style:normal}.hm-tl em{font-style:normal}.hm-tl small{font:10px var(--mono,monospace)}' +
+    '.hm-tl.up{background:var(--up)}.hm-tl.down{background:var(--down);color:#fff}.hm-tl.amber{background:var(--amber)}.hm-tl.dim{color:var(--fg)}.hm-tl.tln{opacity:.4}.hm-tl.tly{outline:2px solid var(--fg);outline-offset:-2px}' +
     '.hm-wtw{font:12px system-ui;fill:var(--fg)}.hm-wtw.up{fill:var(--up)}.hm-wtw.down{fill:var(--down)}.hm-wtn{font:700 12px var(--mono,monospace)}' +
     '#flash{display:none;gap:6px;flex-direction:column}#flash.on{display:flex}#flash .fl{padding:6px 12px;border-radius:6px;font:700 15px system-ui;color:#111;animation:hmfl 1s ease-in-out 6}#flash .fl.up{background:var(--up)}#flash .fl.down{background:var(--down);color:#fff}#flash .fl.amber{background:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
-  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories };
+  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);
