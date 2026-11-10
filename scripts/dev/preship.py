@@ -287,6 +287,8 @@ def hook_ship(data, cmd):
         tp = own if os.path.isfile(own) else tp
     if not root or not tp or not os.path.isfile(tp):
         return "unfolded (no tree or transcript)"
+    if (Path(root) / ".git").is_dir() and sum(1 for l in git_lines(root, "worktree", "list", "--porcelain") if l.startswith("worktree ")) > 1:
+        return "unfolded (shared main checkout)"    # many sessions share it: a card edit there dirties every session's tree (audit 2026-11-11)
     br = git_lines(root, "branch", "--show-current")
     if not br or br[0] in ("master", "main", "fast-track"):
         return "unfolded (trunk branch)"
