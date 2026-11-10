@@ -25,7 +25,8 @@ Read this before you start, test, or babysit a DSA chat. DSA = DeepSeek working 
 
 ## 3. Arming refusals and how to clear them
 - `second_tab_refused: chat <id> in this browser profile is already armed`: only one armed chat per profile. A silent armed tab expires after 90 s (loop.js `ARM_TTL_MS`), so if you still see it, some tab in that profile is still open and ticked.
-  - The text stays on screen after the cause is gone. **Press F5 on your chat, then tick hands-free again** before you decide anything.
+  - **Ghost arm (found 2026-11-10):** every page load gets a random tab id (content.js:21) and a reload does not release the arm. After arm then F5 (or a closed tab), the old id holds the slot for 90 s and the new page is refused, often naming a chat id that is really your own earlier load. Do not F5 or retry in a loop: wait 100 s with no clicks, then tick hands-free once.
+  - The refusal text can also stay on screen after the cause is gone; an F5 clears it, but start the 100 s wait after the F5.
   - Your browser tools only see tabs your own session opened. You cannot see or close the operator's or an older session's tabs. Ask the operator to close or untick that tab; do not retry in a loop.
 - `account_in_use` / lease refused: another machine holds the DeepSeek account lease (one machine per account). Report the exact panel text; do not force it.
 - Warning cooldown: the extension stops hands-free on its own after a DeepSeek warning. Leave it off and report.
