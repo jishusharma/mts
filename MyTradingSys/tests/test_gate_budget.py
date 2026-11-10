@@ -94,10 +94,10 @@ class GateBudgetTest(unittest.TestCase):
                 self.tail = None
 
             def run(self):
-                # Check if precheck slot is held
-                precheck_dir = sync.host_gate_slots_dir("gate-slots-precheck") if hasattr(sync, "host_gate_slots_dir") else (self.slots_dir / "gate-slots-precheck")
-                slots_present = list(precheck_dir.glob("slot-*")) if precheck_dir.exists() else []
-                slot_held_during_precheck.append(len(slots_present) > 0)
+                # ARCH_REVIEW row 3: the precheck holds a slot of the ONE machine pool; no separate precheck pool exists
+                pool_dir = sync.host_gate_slots_dir(sync.GATE_POOL)
+                slots_present = list(pool_dir.glob("slot-*"))
+                slot_held_during_precheck.append(len(slots_present) > 0 and not (pool_dir.parent / "gate-slots-precheck").exists())
                 return True, "ok"
 
         plan = [DummyStep("3c", "User guide in sync"), DummyStep("4t", "Targeted test"), DummyStep("4b", "Main shard")]
@@ -110,9 +110,8 @@ class GateBudgetTest(unittest.TestCase):
                 jobs=2,
                 precheck=True,
                 slot=lambda: sync.gate_slot(self.clone1),
-                precheck_slot=lambda: sync.gate_slot(self.clone1, slots=2, name="gate-slots-precheck") if hasattr(sync, "GATE_PRECHECK_SLOTS") else None,
             )
-        self.assertTrue(any(slot_held_during_precheck), "Precheck must hold a precheck slot while running cheap steps")
+        self.assertTrue(any(slot_held_during_precheck), "Precheck must hold a slot of the one machine pool while running cheap steps")
 
     def test_ship_timing_logged_wait_run_retry(self):
         """sync.ship logs wait, run and retry seconds into runtime_data/gate_timing.jsonl."""
