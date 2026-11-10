@@ -40,6 +40,7 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 - Noticed gaps: non-Agent sessions file a raw card the same turn; Agents end with `Noticed:`; chat decisions go to OPERATOR_DECISIONS.md (WORKERS.md rule 11).
 - Windows: files with `newline='\n'`; long patches in a .py script; the Bash tool strips backslashes, use Write/Edit; Write decodes backslash-u: use `chr()`.
 - Never use `.git/info/exclude`: ignores go in `.gitignore`.
+- Chrome: never the operator's main profile ("Browser 1"). First Chrome call is `select_browser` to "Browser 2" (`list_connected_browsers` gives its id); none: stop and say so.
 
 ## Where to look (`MyTradingSys/system/`)
 | Need | Read |

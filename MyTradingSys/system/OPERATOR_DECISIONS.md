@@ -2253,3 +2253,7 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 ## 2026-11-10 14Z BTC 74,527 and 71,795 are lines, not orders (operator)
 - Words: "these are just lines - not orders - i do not trade on Binance."
 - Meaning: replies and the Buy Crypto page call 74,527.40 and 71,795.36 his price lines, never an order or a Binance position; the BTC price shown is a USD reference only. Page relabel asked of its session (local_2ae61a41).
+
+## 2026-11-10 14:05Z Every session: Chrome "Browser 2" only, never his main profile (operator, angry)
+- Words: "tell every session to use the other chrome profile not this one!!!!!!!" with a screenshot of "Claude started debugging this browser" on his CoinGlass trading tabs (Browser 1).
+- Done: told the 5 open sessions on JIS-NB (buy-crypto-page, live-aid-coach, sup-c-l1, sim-guide, tf-real-frame); Eagle_Eyes did not take the message. CLAUDE.md hard rule added; fleet broadcast sent.
