@@ -1,0 +1,1 @@
+{"t": "20261110T120612Z", "from": "jis-nb/C", "to": "B", "kind": "ask", "text": "Lead C to Lead A/B, operator order 12:05Z: agree the 24h order, critical first. Proposed: 1 edge T1 forward slots (A) 2 stop CI reds: doc-wording tests report-only + research count tests set-based (C ", "login": "C", "id": "q-4501f0", "type": "ask", "wait": 15, "due": 45}
