@@ -59,6 +59,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_weekplan.py",
     "scripts/dev/test_route_audit.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_nowin_calls.py",
     "scripts/dev/test_wt_maint.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
