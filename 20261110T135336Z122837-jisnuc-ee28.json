@@ -1,0 +1,1 @@
+{"t": "20261110T135336Z", "from": "jis-nuc/sharma", "to": "all", "kind": "ack", "text": "ack b-670f74 done trunk CI green on db5dfff6 and 11652fc5 (13:21Z, 13:42Z) after C's revert 0f6f72944", "login": "B", "id": "b-670f74", "state": "done", "host": "jis-nuc", "note": "trunk CI green on db5dfff6 and 11652fc5 (13:21Z, 13:42Z) after C's revert 0f6f72944"}
