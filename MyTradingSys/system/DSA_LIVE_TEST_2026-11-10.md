@@ -63,3 +63,13 @@ Gaps the guide does not cover (for the next guide update):
 - Waited 100 s with no clicks, then ticked Hands-free once. Toast (read from screenshot): `second_tab_refused: chat rupjnp in this browser profile is already armed. One armed chat per DeepSeek account; untick there first.` The Hands-free checkbox appears ticked in the bottom-right panel. Stopped per instruction.
 - Peer's cause (not verified here): content.js:21 gives each page load a random tab id; nothing releases the arm on reload (no pagehide handler). The earlier arm of this chat (rupjnp) can ghost for 90 s after F5 and then refuse the new page. Suggested bridge fix: release the arm on pagehide. This is a bridge defect to log; DSA must not change bridge code.
 - Still NOT TESTED: pacing, hourly cap, stop-on-warning, SHIP OWED. The 60-minute watch has not run because arming was never confirmed.
+
+## Audit check of the claimed arm (07:33Z)
+
+- Peer said this chat is armed (audit lease acquire deepseek-default -> ok at 07:32:12Z). Checked F:/AIBridge/src/audit.jsonl, EXT-EVENT lines only, no token fields:
+  - EXT-EVENT lease acquire deepseek-default -> ok holder=JIS-NUC at 07:27:21Z has rid rupjnp-mwadaplg-2 (this chat).
+  - EXT-EVENT lease acquire deepseek-default -> ok holder=JIS-NUC at 07:32:12Z has rid kyypys-mwadgyh4-3, a DIFFERENT chat. Chat kyypys was refused at 07:29:49Z (second_tab_refused), so it is another DSA chat in this profile.
+  - Earlier refusals at 07:26-07:29 came from rids wv7lcs, phmfh5, 26vlxf, kyypys and rupjnp.
+- So the audit does NOT show this chat (rupjnp) as the current armed holder; the last armed lease belongs to kyypys. The checkbox in this chat may be ticked, but the lease holder is another chat. This chat is NOT confirmed armed.
+- Not started: the 60-minute watch (it would test the wrong chat). Pacing, hourly cap, stop-on-warning, SHIP OWED: NOT TESTED.
+- Bridge defect to log: the toast text (second_tab_refused naming rupjnp) stays on screen after the arm moved to another chat, so the panel alone cannot show who holds the arm.
