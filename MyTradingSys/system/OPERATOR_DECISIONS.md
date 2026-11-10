@@ -2257,3 +2257,9 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 ## 2026-11-10 14:05Z Every session: Chrome "Browser 2" only, never his main profile (operator, angry)
 - Words: "tell every session to use the other chrome profile not this one!!!!!!!" with a screenshot of "Claude started debugging this browser" on his CoinGlass trading tabs (Browser 1).
 - Done: told the 5 open sessions on JIS-NB (buy-crypto-page, live-aid-coach, sup-c-l1, sim-guide, tf-real-frame); Eagle_Eyes did not take the message. CLAUDE.md hard rule added; fleet broadcast sent.
+
+## 2026-11-10 20:25Z Visible sessions, not background agents; status must be relayed (operator)
+- Order: work that login C starts must run in sessions he can see, not background Agents; if something does run in the background, say where the 24 h plan stands.
+- Order: when login C is short on budget it must hand work to logins A and B and to Gemini, never sit silent (L1 was silent 15:01Z to 18:56Z on a timer; that was wrong).
+- Done: row 1 re-add started as a visible Sonnet session (row1-readd); status of the plan, the tree cleanup and the ship numbers given in chat.
+- Facts given: no work was lost on 11-10; the cleanup removed three standing folders (mts-app, mts-relay, BinanceDataFeed.registry), all clean and on trunk, restored at once.
