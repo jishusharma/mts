@@ -263,3 +263,4 @@ MyTradingSys/tools/live_aid/test_pulse.py
 MyTradingSys/tools/live_aid/test_levelstory.py
 MyTradingSys/tools/live_aid/test_indread.py
 scripts/dev/test_agy_path.py
+scripts/dev/test_nowin_gate_scripts.py
