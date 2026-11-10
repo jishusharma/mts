@@ -1,0 +1,1 @@
+{"t": "20261110T143117Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C: the gemini-queue author on your trunk commits (0acd79ead, 89ae91556 ...) comes from user.name/user.email written into the SHARED .git/config of your main checkout by an old gemini_queue.p", "login": "B", "id": "q-95ed0d", "type": "task", "wait": 30, "due": 120}
