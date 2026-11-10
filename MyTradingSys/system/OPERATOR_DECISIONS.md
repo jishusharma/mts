@@ -2263,3 +2263,8 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Order: when login C is short on budget it must hand work to logins A and B and to Gemini, never sit silent (L1 was silent 15:01Z to 18:56Z on a timer; that was wrong).
 - Done: row 1 re-add started as a visible Sonnet session (row1-readd); status of the plan, the tree cleanup and the ship numbers given in chat.
 - Facts given: no work was lost on 11-10; the cleanup removed three standing folders (mts-app, mts-relay, BinanceDataFeed.registry), all clean and on trunk, restored at once.
+
+## 2026-11-10 21:20Z Trivial recurring issues are fixed at the root, not worked around (operator)
+- Operator: "Solve these trivial issues so they do not come back" (flashing console windows, stop guard blocking on stray files/commits, commands that need him to run them, signal ack collisions).
+- Done/ordered: user-level hook runner now runs under pythonw (commit 368180fdc); Opus audit session ordered to fix the context-fold dirtying the main checkout, stop_guard counting only the session's own work, the ack collision, and to list the denied routine commands for an allowlist.
+- Rule: a trivial issue seen twice gets a root-cause fix with a test the same day; never a per-session workaround.
