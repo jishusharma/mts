@@ -52,8 +52,8 @@
   "refined_by": "gemini-4-argon",
   "refreshed": "2026-10-28T09:54:52Z",
   "refs": [
-    "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md",
-    "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md"
+    "MyTradingSys/research/cbp/archive/CBP_AUDIT_2026-10-28.md",
+    "MyTradingSys/research/cbp/archive/INGESTION_WIRING_2026-10-27.md"
   ],
   "result": "29 passed; report MyTradingSys/research/layer_lab/reports/2026-10-29_cbp-ingestion.md",
   "result_receipt": {

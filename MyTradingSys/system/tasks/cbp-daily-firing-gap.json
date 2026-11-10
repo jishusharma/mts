@@ -15,8 +15,8 @@
       "scripts/dev/cbp_run.py",
       "scripts/dev/test_cbp_schedule.py",
       "MyTradingSys/tests/test_cbp_query.py",
-      "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md",
-      "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md"
+      "MyTradingSys/research/cbp/archive/CBP_AUDIT_2026-10-28.md",
+      "MyTradingSys/research/cbp/archive/INGESTION_WIRING_2026-10-27.md"
     ],
     "session": "agent-a99508ecdea583d01"
   },
@@ -42,7 +42,7 @@
       "auto": true,
       "kind": "report",
       "line": "2bb01c50064a cbp: windows match the 05:00/20:00 schedule, trigger start in the past",
-      "ref": "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md",
+      "ref": "MyTradingSys/research/cbp/archive/INGESTION_WIRING_2026-10-27.md",
       "utc": "2026-11-01T17:10:54Z"
     }
   ],
@@ -59,8 +59,8 @@
   "scope_in": [
     "scripts/dev/cbp_schedule.py",
     "scripts/dev/cbp_run.py",
-    "MyTradingSys/research/cbp/INGESTION_WIRING_2026-10-27.md",
-    "MyTradingSys/research/cbp/CBP_AUDIT_2026-10-28.md"
+    "MyTradingSys/research/cbp/archive/INGESTION_WIRING_2026-10-27.md",
+    "MyTradingSys/research/cbp/archive/CBP_AUDIT_2026-10-28.md"
   ],
   "scope_out": [
     "the CBP gates and quote rules",

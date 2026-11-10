@@ -121,7 +121,7 @@ For full corpus coverage across `MyTradingSys/research`, here is the audit of th
 | Document Path | Exit Code | Failing Quote Count / Status | Total Quotes | Video IDs |
 |---|:---:|:---:|:---:|---|
 | `MyTradingSys/research/EXEC_PROVENANCE_AUDIT.md` | `0` | **0** | 52 | 0jM5Y31YJak, 3o1VVsfBmmU, 4MoNjEQ2Dd8, 8CWKfoSJu3c, BVpYGKz9PBU, FawPrRUGNpk, UOBgXV20yCM, UrZ4vpHJ97g, WSCIURybK3U, fZlNGWvd2Ko, k0zm5NYn0IQ, kXhIAug0Gh8, qLnQan0KGmQ, tS6ZEiHj8gQ, yRvMW6lgN1o |
-| `MyTradingSys/research/cbp/ALT_BUY_PLAN_2026-10-31.md` | `1` | **UNCHECKABLE** | 11 | Jn9hM3jwEik, MiQePVTGCXQ, SfPE7sWygLE, _QG1bt4iwQc, fnRXA4AzEcI, lJ8rI4iiXG4 |
+| `MyTradingSys/research/cbp/archive/ALT_BUY_PLAN_2026-10-31.md` | `1` | **UNCHECKABLE** | 11 | Jn9hM3jwEik, MiQePVTGCXQ, SfPE7sWygLE, _QG1bt4iwQc, fnRXA4AzEcI, lJ8rI4iiXG4 |
 | `MyTradingSys/research/cryptocred_stop_2026-10-10/STOP_SOURCE_HUNT_2026-10-31.md` | `1` | **UNCHECKABLE** | 9 | BHwoN7VPrBE, XeQV2ECtZVQ, inqHN8q57X4 |
 | `MyTradingSys/research/fast_track_2026-09-27/ANGLE_TRADE_CATALOG.md` | `0` | **0** | 39 | 0jM5Y31YJak, 3o1VVsfBmmU, 4MoNjEQ2Dd8, 8CWKfoSJu3c, BVpYGKz9PBU, FawPrRUGNpk, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, UrZ4vpHJ97g, WSCIURybK3U, Wvq1TZh8aF0, dh-ysRR8f-M, fZlNGWvd2Ko, jasv3L-d8ZE, k0zm5NYn0IQ, kXhIAug0Gh8, l8RZrBfzvp4, n7ZSkjb7JXs, pgdmKLJ0hhA, tS6ZEiHj8gQ, ujedEcmvBMk, wPMiyJXL0zU, yRvMW6lgN1o, zAwEX_tRUfE, zQTbdEweG3c |
 | `MyTradingSys/research/fast_track_2026-09-27/FABIO_LINE_BY_LINE_fZlNGWvd2Ko.md` | `0` | **0** | 25 | fZlNGWvd2Ko |

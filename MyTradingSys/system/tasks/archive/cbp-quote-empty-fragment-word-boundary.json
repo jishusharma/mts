@@ -37,7 +37,7 @@
   "refined_by": "",
   "refreshed": "2026-10-27T21:13:33Z",
   "refs": [
-    "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md"
+    "MyTradingSys/research/cbp/archive/QUOTE_REVIEW_GPT.md"
   ],
   "result": "verify_extract_quotes.py: require non-empty normalized fragment and word-boundary matching; 3 regression tests in test_verify_extract_quotes.py (14 passed)",
   "result_receipt": {
@@ -55,7 +55,7 @@
   "scope_sha": "b4eced018d26",
   "size": "S",
   "sources": [
-    "MyTradingSys/research/cbp/QUOTE_REVIEW_GPT.md"
+    "MyTradingSys/research/cbp/archive/QUOTE_REVIEW_GPT.md"
   ],
   "state": "done",
   "steps": [

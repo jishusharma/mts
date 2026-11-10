@@ -2244,3 +2244,8 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 ## 2026-11-10 13:00Z One live "Buy Crypto" page replaces Dark Horse Desk (operator)
 - Order (voice): one live page like Live Aid showing where the market is in his buying phases, which coins are open to buy, how each moved, and his own position; one page with tabs, no separate pages.
 - Done: page built with tabs Now / Coins / My position / Studies; data via `scripts/dev/buy_crypto.py` + one db write (QUICK_ANSWERS.md). Position and his split live only in the page db. The page gives no sizes or buy orders; he sets his own proportions.
+
+## 2026-11-10 14Z Clean up CBP (operator: "remove/archive/cleanup/update CBP")
+- Done: 11 superseded files in research/cbp moved to research/cbp/archive/ (status 10-25/10-27, audit 10-28, ingestion wiring, alt buy plan 10-31, alt update 11-07, sister notes 11-03/11-04, GPT gate trial and quote review); full-path references rewritten; research/cbp/README.md lists what is current, with the 11-10 altcoin session's 50/30/20 bucket split as a template (OURS, not advice).
+- Kept in place: files read by tests or live cards (SCORECARD_GPT, GPT_CBP_GUIDE, SISTER_NOTE 11-07 for sister_signals.json).
+- Stale tree mts-jis-nb-lead-c-reval-1106-2 removed: its 3 commits' content is on trunk; its two dirty files saved in the scratchpad first.
