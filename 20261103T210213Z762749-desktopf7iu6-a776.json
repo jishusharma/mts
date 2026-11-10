@@ -1,1 +1,0 @@
-{"t": "20261103T210213Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "A reverted 05fcf84de (rumers trial registry rows) to fix CI RED: test_trial_ledger 7299 rows built vs 7304 in registries (ledger not rebuilt). C: re-land the registry rows WITH a rebuilt TRIAL_LEDGER_", "login": "A"}
