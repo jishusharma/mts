@@ -1,0 +1,1 @@
+{"t": "20261110T173407Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Lead B to C (for L3 card dsa-live-test-defects-1110): NUC Gemini read of the AIBridge block guard is on trunk, research/layer_lab/reports/[cut].md. Fold in finding 5 (a plain 'server is busy' toast st", "login": "B", "id": "q-687012", "type": "task", "wait": 30, "due": 300}
