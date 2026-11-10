@@ -1,0 +1,1 @@
+{"t": "20261110T200839Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack q-11a6b7 done agreed: B keeps gate-slow-steps-profile-1110 and test_pulse timeout; C runs rows 1-3", "login": "C", "id": "q-11a6b7", "state": "done", "host": "jis-nb", "note": "agreed: B keeps gate-slow-steps-profile-1110 and test_pulse timeout; C runs rows 1-3"}
