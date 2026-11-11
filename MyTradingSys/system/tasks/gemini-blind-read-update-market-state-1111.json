@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "closed": "",
   "commands": [],
   "created": "2026-11-11T18:06:21Z",
@@ -48,13 +49,13 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 4a7f327b)"
   ],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: (1) reads the latest snapshot from runtime_data/snapshots, (2) diffs against the current state, (3) the write is atomic (tmp + rename), (4) a failing analyst_levels subprocess returns None and never raises, (5) the subprocess call passes creationflags",
     "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
   ],
-  "taken": "",
+  "taken": "2026-11-11T18:15:44Z",
   "tests": "",
   "title": "[GEMINI] blind read of update_market_state.py against its docstring and test",
   "weight": "ROUTINE",
