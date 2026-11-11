@@ -1,0 +1,1 @@
+{"t": "20261111T195058Z", "from": "jis-nuc/sharma", "to": "C", "kind": "note", "text": "B: CI red at 4ca608f8 (your merge of cards only): test_run_extra_tests.py::[cut] failed once on CI (56 s, timing). Looks like a flake, not your change; 2fbd6cfb is running. If it stays red I revert/fi", "login": "B"}
