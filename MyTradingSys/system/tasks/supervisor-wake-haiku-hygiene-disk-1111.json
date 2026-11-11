@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_supervisor.py -q"
+  ],
+  "created": "2026-11-11T17:55:54Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/supervisor.py plan prints exactly one 'SPAWN haiku hygiene' line per login per 5 h window (second plan in the same window prints none) and the agent brief names MyTradingSys/system/hygiene/<utc-date>_<login>.md",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Standing Supervisor duty (operator 2026-11-11 17:55Z): plan_lines in supervisor.py prints one 'SPAWN haiku hygiene' line per login per 5 h window; the Haiku agent runs station_disk_report.py (C:, F:, NUC via SSH gate), lists clean-up candidates, writes a dated report; report only, no removal (lane trees never removed).",
+  "id": "supervisor-wake-haiku-hygiene-disk-1111",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/arch-row3-1110",
+      "ref": "bef9f1e75083",
+      "utc": "2026-11-11T04:18:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "4b192ce1ae09 station cleanup docs: cutover to the laptop 2026-10-22, STATION_CLEANUP s1 fr",
+      "ref": "MyTradingSys/system/STATION_CLEANUP.md",
+      "utc": "2026-11-04T21:04:23Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): report only, removals stay with the Supervisor. Twin check: station_disk_report.py is the tool reused, no card duplicates the plan line.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T18:05:09Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/supervisor.py",
+    "scripts/dev/test_supervisor.py",
+    "scripts/dev/station_disk_report.py",
+    "MyTradingSys/system/STATION_CLEANUP.md"
+  ],
+  "scope_out": [
+    "deleting anything",
+    "live tree",
+    "worktree removal"
+  ],
+  "scope_sha": "bef9f1e75083",
+  "size": "S",
+  "sources": [
+    "OPERATOR_DECISIONS.md 2026-11-11 17:55Z"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read plan_lines (supervisor.py near line 1246) and how another per-window line stores its last-fired time",
+    "Add the hygiene line (model Haiku, explicit) with a per-login window stamp; brief: run station_disk_report.py here, ssh gate verb for the NUC, list candidates, write the dated report",
+    "Add the fail-first test; one line in STATION_CLEANUP.md"
+  ],
+  "tests": "scripts/dev/test_supervisor.py: new test, two plan_lines calls in one 5 h window give one SPAWN haiku hygiene line, a call after the window gives another (fails on old code: no such line)",
+  "title": "Supervisor wake: one Haiku agent per login checks disk health, free space and clean-up candidates; done when supervisor.py plan prints a SPAWN haiku hygiene line once per 5 h window and the result lands in a dated file",
+  "weight": "",
+  "worker": "agent"
+}
