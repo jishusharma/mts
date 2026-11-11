@@ -11,7 +11,7 @@ Event shape: collection_only + shadow_side, NO "side" (the auto_trader cannot ma
 layer:rsi:rsi_ma_cross (forward_readout.py slot t06_rsi_ma).
 Journal (jsonl, append-only, runtime_data/ is git-ignored): rows kind signal | outcome | no_fill | unresolved | kill.
 Kill rule (OURS, same as the Malkan forward): after KILL_TRADES closed paper trades net R <= 0 -> verdict KILL, alerts stop.
-DECISIONS (OURS): funding is not charged in paper net R (context-only; the study's funding term was ~ -0.001 R); the busy rule
+DECISIONS (OURS): funding is not charged in paper net R (context-only; the study's funding term was negligible in R); the busy rule
 (one trade per side) is replayed over the history window given, so it can differ from a longer batch only for a signal whose
 entry falls inside a trade that started before the window.
 """
