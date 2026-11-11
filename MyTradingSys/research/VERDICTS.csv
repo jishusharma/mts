@@ -159,3 +159,7 @@ edge_hunt_2026-11-09/eh-s3-rsi-line-confluence,Edge hunt 2026-11-09 frozen trial
 edge_hunt_2026-11-09/eh-o1-confluence-dose-response,Edge hunt 2026-11-09 frozen trial T13,T13 confluence score 0-5 slope (score>=3 n=410 -0.163),DEV,13851,UNPARSED,UNPARSED,UNPARSED,INCONCLUSIVE,"this frozen trial only (TRIALS.md, m=15); VALIDATION not read",yes,e5e02bb2,2026-11-09
 edge_hunt_2026-11-09/eh-o2-phase-lens,Edge hunt 2026-11-09 frozen trial T14,"T14 1h level fade, balance phase (net -0.232 R, SE 0.071, CI -0.371..-0.094)",DEV,358,UNPARSED,UNPARSED,UNPARSED,FAIL,"this frozen trial only (TRIALS.md, m=15); VALIDATION not read",yes,67957cb7,2026-11-09
 edge_hunt_2026-11-09/eh-o2-phase-lens,Edge hunt 2026-11-09 frozen trial T15,"T15 MLK-S1 4h RSI-40 long, accumulation/bull (net +0.016 R, SE 0.247, CI -0.467..+0.500)",DEV,51,UNPARSED,UNPARSED,UNPARSED,INCONCLUSIVE,"this frozen trial only (TRIALS.md, m=15); VALIDATION not read",yes,67957cb7,2026-11-09
+btc_orderflow_map_1112,BTC order-flow map events,A2_absorption_15m,DEV,170,0.041,UNPARSED,0.10,INSUFFICIENT_N,none,no,UNPARSED,2026-11-12
+btc_orderflow_map_1112,BTC order-flow map events,A2_absorption_60m,DEV,170,0.066,UNPARSED,0.10,INSUFFICIENT_N,none,no,UNPARSED,2026-11-12
+btc_orderflow_map_1112,BTC order-flow map events,A3_funding_15m,DEV,819,0.010,UNPARSED,0.10,FAIL,none,no,UNPARSED,2026-11-12
+btc_orderflow_map_1112,BTC order-flow map events,A3_funding_60m,DEV,819,0.025,UNPARSED,0.10,FAIL,none,no,UNPARSED,2026-11-12
