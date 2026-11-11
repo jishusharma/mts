@@ -3,17 +3,6 @@
   "asks": "",
   "body": "Goal: the Home Positions card and Money tab show the open positions of all big BTC perp venues (CoinGlass-style total), not only the ones a browser on JIS-NB can reach.\n\nVenue table, measured from JIS-NB on 2026-11-10 by the Super Session with curl and Origin claude.ai:\n\n| Venue | In page now? | Why not |\n|---|---|---|\n| Deribit, Bybit | yes | - |\n| Gate | yes (11-10) | - |\n| Hyperliquid | yes (11-10) | - |\n| HTX (api.hbdm.com), MEXC (contract.mexc.com) | no | reachable but no CORS: needs the poller |\n| Binance fapi, OKX, Bitget, BitMEX, Kraken Futures, BingX | no | ISP DNS block, http 000: needs the poller with DoH |\n| CME | no | no free live OI API: skip unless a free source is found |\n\nBuild:\n- Generalise MyTradingSys/runtime/binance_doh.py (DoH resolve, then pin the IP with SNI) into a host-agnostic helper.\n- Write MyTradingSys/tools/live_aid/oi_poller.py, public market data only. Every 30 s it fetches BTC USDT-perp OI per venue, in BTC (state each venue's contract size: SOURCED from the venue docs).\n- It writes runtime_data/live_aid/oi_snapshot.js as window.LIVEAID_OI_SNAP = {t, venues: {NAME: {btc, px, t, err}}}. Write it atomically; it is gitignored, never committed.\n- The page loads the file every 30 s (a script tag reload, so no CORS is needed). It calls omPush per venue only when that venue's t is under 60 s old. Failure is closed: a stale or missing file reads NOT_IN_DATA, never a guess.\n- Add OMV entries for each venue, so the label and shares stay dynamic.\n\nNever: machine DNS changes, Chrome settings, keys, or any order or account endpoint.\n\nTests:\n- Parse one recorded reply per venue into BTC with numbers worked out by hand.\n- A stale snapshot must be ignored.\n- The poller must survive one venue timing out.\n- Restart and reset state: no state file leftovers.\n\nDone when the Home subtitle on JIS-NB lists 8 or more venues with shares, and the Money tab has a column per venue.",
   "commands": [],
-  "context": {
-    "calls_to_edit": 11,
-    "folded": "2026-11-10T06:52:28Z",
-    "misses": 57,
-    "reads": [
-      "MyTradingSys/tools/live_aid/live_aid.html",
-      "MyTradingSys/tools/live_aid/home.js",
-      "MyTradingSys/tools/live_aid/test_oi_money.py"
-    ],
-    "session": "agent-a8c49013383ce8f05"
-  },
   "created": "2026-11-09T22:33:02Z",
   "depends_on": [],
   "done_when": "On JIS-NB the Home subtitle lists 8 or more venues with shares and the Money tab has a column per venue; tests pass.",
