@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-11T07:51:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Two full gates in runtime_data/gate_timing.jsonl after the change show ship_wall 300 s or less with every step ok, and test_run_all_tests.py plus test_run_extra_tests.py pass",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Full gate on JIS-NUC (12 CPU) at 5 min or less wall (PLAN_24H T4), same steps and same pass/fail as now",
   "id": "gate-3xt-long-pole-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/nowin-hooks-1111",
+      "ref": "68da2fc39253",
+      "utc": "2026-11-11T04:53:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Filed by lead B from f77fa069 gate: wall 529 s, 3xt 362 s, 5b 201 s, 4g 194 s, 4f 142 s, 3cr 120 s, 3sig 112 s",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T08:05:59Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py (SLOWEST_FIRST order, worker count default min(4, cpu) at line ~382)",
+    "scripts/dev/run_extra_tests.py (inner MTS_GATE_JOBS, one pytest process per file)"
+  ],
+  "scope_out": [
+    "no ci.yml edit; no test removed or skipped; no live tree"
+  ],
+  "scope_sha": "68da2fc39253",
+  "size": "M",
   "sources": [
     "lead B, T4 re-measure 2026-11-11"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "T4 gate time: step 3xt (run_extra_tests.py, 270 files, one pytest process each, MTS_GATE_JOBS default 4) is the long pole of the full gate on JIS-NUC: 362 s of 529 s wall at f77fa069 (next: 5b layer tests 201 s, 4g shard 194 s, 4f 142 s, 3cr 120 s, 3sig 112 s). Cut 3xt: batch files per dir into one pytest process where helper names do not collide, or run 3xt first with more jobs; target full gate 5 min or less (PLAN_24H T4). Data: runtime_data/gate_timing.jsonl",
+  "state": "ready",
+  "steps": [
+    "Measure: 3xt starts about 150 s into the gate because the 4-worker pool is taken by pytest shards 4-4h first; it then runs 270 files 4 at a time (362 s)",
+    "Try: worker default from cpu count (e.g. cpu-4, cap 8) for the pool and 3xt; submit 3xt first; check per-file seconds (run_all_tests parses durations) for the slowest extra files",
+    "Run two full gates on JIS-NUC and record ship_wall"
+  ],
+  "tests": "scripts/dev/test_run_all_tests.py scripts/dev/test_run_extra_tests.py",
+  "title": "T4 gate time: cut step 3xt (extra tests, 362 of 529 s full gate on JIS-NUC) so the full gate is 5 min or less",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
