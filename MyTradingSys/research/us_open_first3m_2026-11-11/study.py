@@ -6,7 +6,7 @@ and whether the 30 minutes before the open (drift, taker-buy share) say anything
 Operator question 2026-11-11: "how do we know the first 1-3 min move just after US open and positioning just before".
 Public data only (Binance spot klines, data-api.binance.vision first). Descriptive, no fees, no entries, never a signal.
 Writes results.json here and us_open_first3m_rates.js into tools/live_aid/base_rates_input/ (registry input;
-then `python MyTradingSys/tools/live_aid/base_rates.py build`).
+then rebuild the registry by hand, see tools/live_aid/STEPS.md "Base rates").
 
 Definitions (all OURS, fixed before the run; bar 60 of the 121 fetched is the 09:30 New York bar):
   m1, m3   close of minute 1 / minute 3 over the open of the 09:30 bar, minus 1
