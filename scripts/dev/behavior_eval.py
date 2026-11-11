@@ -116,7 +116,7 @@ def call_claude(prompt, model, system=None, timeout=180):
     if system:
         cmd += ["--system-prompt", system]
     r = subprocess.run(cmd, input=prompt, capture_output=True, text=True,
-                       encoding="utf-8", timeout=timeout)
+                       encoding="utf-8", timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0:
         raise RuntimeError(f"claude exit {r.returncode}: {r.stderr[:200]}")
     return r.stdout.strip()
@@ -208,12 +208,12 @@ def changed_lines(label, path, base=BASE_REF, root=ROOT):
     if label.startswith("memory/"):
         return set(range(1, n + 1))
     r = subprocess.run(["git", "-C", str(root), "diff", "-U0", base, "--", label],
-                       capture_output=True, text=True, encoding="utf-8")
+                       capture_output=True, text=True, encoding="utf-8", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0:
         return set(range(1, n + 1))
     if not r.stdout.strip():
         t = subprocess.run(["git", "-C", str(root), "ls-files", "--error-unmatch", label],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return set(range(1, n + 1)) if t.returncode != 0 else set()
     out = set()
     for m in re.finditer(r"^@@ -\S+ \+(\d+)(?:,(\d+))? @@", r.stdout, re.M):

@@ -134,7 +134,7 @@ def parse_cim_date(v):
 def query_processes():
     cmd = ["powershell", "-NoProfile", "-Command",
            "Get-CimInstance Win32_Process | Select ProcessId,CreationDate,CommandLine | ConvertTo-Json"]
-    p = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+    p = subprocess.run(cmd, capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if p.returncode != 0:
         raise RuntimeError("rc=%s" % p.returncode)
     return p.stdout
@@ -324,7 +324,7 @@ def check_journal(res, repo):
 
 # ---------------------------------------------------------------- 5 new code
 def git(repo, *a):
-    return subprocess.run(["git", "-C", str(repo)] + list(a), capture_output=True, text=True, timeout=60)
+    return subprocess.run(["git", "-C", str(repo)] + list(a), capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def find_java_tree(repo):
@@ -356,7 +356,7 @@ def classify(files, java_tree):
 
 def run_gate(repo, cmd):
     try:
-        p = subprocess.run(cmd, cwd=str(repo), capture_output=True, text=True, timeout=900)
+        p = subprocess.run(cmd, cwd=str(repo), capture_output=True, text=True, timeout=900, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         return False, "timeout 900s"
     lines = [x for x in (p.stdout + "\n" + p.stderr).splitlines() if x.strip()]

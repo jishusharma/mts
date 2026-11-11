@@ -42,7 +42,7 @@ def is_protected(path):
 
 def git(repo, *args):
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+                          encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def classify(porcelain):
@@ -175,7 +175,7 @@ def post_steps(repo, say=print):
                  ["scripts/dev/wt_maint.py"]):
         say("run: python " + " ".join(args))
         r = subprocess.run([sys.executable, *args], cwd=str(repo), capture_output=True, text=True,
-                           encoding="utf-8", errors="replace")
+                           encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         out = (r.stdout + r.stderr).strip()
         say("   " + out[-1500:].replace("\n", "\n   ") if out else "   (no output)")
         if r.returncode:

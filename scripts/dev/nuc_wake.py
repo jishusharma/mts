@@ -99,7 +99,7 @@ def main() -> int:
         print(script)
         return 0
     try:    # it only registers a detached scheduled task: seconds. 300 s (OURS) = the NUC verb cap (bg-process-audit 2026-10-28)
-        r = subprocess.run(GATE + ["ps"], input=script, text=True, capture_output=True, timeout=300)
+        r = subprocess.run(GATE + ["ps"], input=script, text=True, capture_output=True, timeout=300, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         print("TIMEOUT nuc_wake after 300s: no reply from the NUC gate; not retried")
         return 124

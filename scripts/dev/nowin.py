@@ -36,6 +36,10 @@ def _console_hidden():
 
 
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+# The one flag every captured-output child must pass: `subprocess.run(cmd, capture_output=True, creationflags=nowin.NOWIN)`. 0 off Windows.
+# Scripts that cannot import nowin write the same thing inline: creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0).
+# test_nowin_calls.py fails on any subprocess call in scripts/dev or .claude/hooks that sets neither (operator 2026-11-11: flashing windows).
+NOWIN = CREATE_NO_WINDOW if sys.platform == "win32" else 0
 DEFAULT_SPAWN_LOG = Path.home() / ".claude" / "nowin_spawns.jsonl"
 
 

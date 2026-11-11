@@ -35,14 +35,14 @@ HOOK_FILES = (".claude/settings.json",)
 
 
 def tracked(repo):
-    out = subprocess.run(["git", "-C", str(repo), "ls-files"], capture_output=True, text=True).stdout.splitlines()
+    out = subprocess.run(["git", "-C", str(repo), "ls-files"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
     return [p for p in out if p]
 
 
 def _git(repo, *args):
     """One git call, as a result object (callers read .stdout / .returncode). Injected heals read through this so they stay
     testable: `git_fn` can be swapped, and it needs no network."""
-    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
+    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 # ---- self-heal (O1 2026-10-28, HEAL_MAP.md): the safe class of doctor finding that fixes itself instead of piling up as
@@ -306,7 +306,7 @@ def memory_drift(memory_dir):
 
 
 def card_warnings(repo):
-    r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "tasks.py"), "lint"], capture_output=True, text=True, cwd=repo)
+    r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "tasks.py"), "lint"], capture_output=True, text=True, cwd=repo, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     lines = [ln for ln in (r.stdout or "").splitlines() if ln.strip() and not ln.startswith("tasks lint:")]
     return [("CARD", ln.split(" ")[1] if ln.startswith("WARN") else ln.split(" ")[0], ln[:140], "tasks.py tag <id> --refresh, or fix the card")
             for ln in lines[:20]]
@@ -314,7 +314,7 @@ def card_warnings(repo):
 
 def dup_cards(repo):
     """Likely twin cards (`tasks.py twins`): two open cards for one job, e.g. made by two sessions."""
-    r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "tasks.py"), "twins"], capture_output=True, text=True, cwd=repo)
+    r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "tasks.py"), "twins"], capture_output=True, text=True, cwd=repo, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     out = []
     for ln in (r.stdout or "").splitlines():
         m = re.match(r"TWIN (\S+) (\S+) \((.*)\)$", ln)
@@ -338,13 +338,13 @@ def hook_drift(repo, ref="origin/fast-track"):
     """Claude Code loads hooks and env from the main checkout, not the worktree (seen 2026-10-21: a main checkout 1858 commits
     behind ran the old turn_meter.py). Each HOOK_FILES file there that differs from trunk is a finding; no trunk ref, no finding."""
     common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--git-common-dir"],      # no --path-format: git < 2.31 echoes it
-                            capture_output=True, text=True).stdout.strip()
+                            capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
     if not common:
         return []
     main = (Path(repo) / common).resolve().parent       # relative to repo; an absolute common dir wins
     out = []
     for rel in HOOK_FILES:
-        trunk = subprocess.run(["git", "-C", str(repo), "show", f"{ref}:{rel}"], capture_output=True)
+        trunk = subprocess.run(["git", "-C", str(repo), "show", f"{ref}:{rel}"], capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if trunk.returncode:
             continue
         try:
@@ -526,7 +526,7 @@ def ship_time(log, now=None, hours=24):
 
 def hook_reg(repo, ref="origin/fast-track"):
     """Worktree sessions take hooks from the MAIN checkout: it must register HOOK_NAMES and not be far behind trunk."""
-    common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--git-common-dir"], capture_output=True, text=True).stdout.strip()
+    common = subprocess.run(["git", "-C", str(repo), "rev-parse", "--git-common-dir"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
     if not common:
         return "unavailable", "not a git checkout"
     main = (Path(repo) / common).resolve().parent
@@ -535,7 +535,7 @@ def hook_reg(repo, ref="origin/fast-track"):
     except OSError:
         return "WARN", f"{main / '.claude' / 'settings.json'} missing: git -C {main} pull --ff-only"
     warns = [f"{n} not registered in {main / '.claude' / 'settings.json'}" for n in HOOK_NAMES if n not in text]
-    r = subprocess.run(["git", "-C", str(main), "rev-list", "--count", f"HEAD..{ref}"], capture_output=True, text=True)
+    r = subprocess.run(["git", "-C", str(main), "rev-list", "--count", f"HEAD..{ref}"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     behind = int(r.stdout.strip()) if r.returncode == 0 and r.stdout.strip().isdigit() else None
     if behind is not None and behind > HOOKS_BEHIND_MAX:
         warns.append(f"main checkout is {behind} commits behind {ref} (limit {HOOKS_BEHIND_MAX})")
@@ -746,7 +746,7 @@ def _default_git_procs():
         )
         try:
             r = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", ps_cmd],
-                               capture_output=True, text=True, timeout=15)
+                               capture_output=True, text=True, timeout=15, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if r.returncode == 0 and r.stdout.strip():
                 data = json.loads(r.stdout.strip())
                 if isinstance(data, dict):
@@ -757,7 +757,7 @@ def _default_git_procs():
     else:
         try:
             r = subprocess.run(["ps", "-eo", "pid,ppid,etimes,comm,args"],
-                               capture_output=True, text=True, timeout=10)
+                               capture_output=True, text=True, timeout=10, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if r.returncode == 0:
                 lines = r.stdout.splitlines()[1:]
                 for ln in lines:

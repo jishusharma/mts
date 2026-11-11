@@ -80,7 +80,7 @@ def verdict_rows(root, study):
 def git_log(root, rel, n=5):
     try:
         out = subprocess.run(["git", "-C", str(root), "log", "-n", str(n), "--format=%h %ad %s", "--date=short", "--", rel],
-                             capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
     except OSError:
         return []
     return [l for l in out.splitlines() if l.strip()]

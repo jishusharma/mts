@@ -146,7 +146,7 @@ def rescue_patch(repo, row):
         dest.mkdir(parents=True, exist_ok=True)
         # a trunk copy has no HEAD: its index IS the trunk commit, so index-vs-worktree holds exactly the real edits
         diff = subprocess.run(["git", "-C", str(p), "--no-optional-locks", "diff", "--binary"] + ([] if row.get("copy") else ["HEAD"]),
-                              capture_output=True)
+                              capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if diff.returncode != 0:
             return None
         (dest / "uncommitted.patch").write_bytes(diff.stdout)
@@ -392,7 +392,7 @@ def append_log(repo, s):
 # ---- scheduled task ---------------------------------------------------------------------------------------------------------
 
 def ps(script):
-    return subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", script], capture_output=True, text=True)
+    return subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", script], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def install_script(repo, device, at="07:15"):

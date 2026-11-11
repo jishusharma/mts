@@ -238,7 +238,7 @@ def _on_trunk(paths, tree, ref="origin/fast-track"):
     if not paths:
         return set()
     r = subprocess.run(["git", "-C", tree, "cat-file", "--batch-check"], input="".join(f"{ref}:{p}{NL}" for p in paths),
-                       capture_output=True, text=True, timeout=20)
+                       capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return {p for p, line in zip(paths, r.stdout.splitlines()) if not line.endswith("missing")}
 
 
@@ -278,7 +278,7 @@ def card_for(prompt, tree, slug=""):
 
 
 def _git_out(tree, *a):
-    return subprocess.run(["git", "-C", tree, *a], capture_output=True, text=True, timeout=20)
+    return subprocess.run(["git", "-C", tree, *a], capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def _commit_into_ship(tree, rel):
@@ -291,8 +291,8 @@ def _commit_into_ship(tree, rel):
         return "left"   # a merge HEAD: amending it would rewrite the merge
     if _git_out(tree, "merge-base", "--is-ancestor", "HEAD", "origin/fast-track").returncode != 1:
         return "left"   # HEAD already on trunk (or no trunk ref): nothing of ours to amend into
-    subprocess.run(["git", "-C", tree, "add", "--", rel], capture_output=True, timeout=20, check=True)
-    subprocess.run(["git", "-C", tree, "commit", "-q", "--amend", "--no-edit", "--", rel], capture_output=True, timeout=20, check=True)
+    subprocess.run(["git", "-C", tree, "add", "--", rel], capture_output=True, timeout=20, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    subprocess.run(["git", "-C", tree, "commit", "-q", "--amend", "--no-edit", "--", rel], capture_output=True, timeout=20, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return "amended"
 
 
@@ -303,7 +303,7 @@ def fold(transcript, tree, now=None, commit=True):
         f = fold_reads(transcript, tree)
         if not f:
             return "unfolded", "no readable transcript"
-        br = subprocess.run(["git", "-C", tree, "branch", "--show-current"], capture_output=True, text=True, timeout=20).stdout.strip()
+        br = subprocess.run(["git", "-C", tree, "branch", "--show-current"], capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
         cid = card_for(f["prompt"], tree, re.sub(r"-\d+$", "", br.split("/")[-1]) if br else "")
         if not cid:
             return "unfolded", "no card id in the first prompt"

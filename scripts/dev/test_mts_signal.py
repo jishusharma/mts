@@ -926,5 +926,75 @@ class WhoAgentTest(unittest.TestCase):
         self.assertIn("H1", out.upper())
 
 
+class HubLockTest(SignalTest):
+    """Operator 2026-11-11 (audit finding 5): every session on a machine shares ONE signals clone, and its fetch / checkout -B / commit /
+    push ran with no cross-process lock: index.lock and FETCH_HEAD collisions in hook_errors.log, acks lost. One lock file beside the
+    clone serialises them; the fetch lands in a named ref instead of the shared FETCH_HEAD."""
+
+    def test_the_hub_lock_is_exclusive_and_released(self):
+        self.machine("jis-nb", "pro")
+        h = S.home()
+        with S.hub_lock(h) as first:
+            self.assertTrue(first)
+            t0 = time.time()
+            with S.hub_lock(h, wait=0.4) as second:
+                self.assertFalse(second)                # held: a second holder times out, never runs "inside" the first
+            self.assertGreaterEqual(time.time() - t0, 0.3)
+        with S.hub_lock(h, wait=0.4) as again:
+            self.assertTrue(again)                      # released on exit, even when the first holder is gone
+
+    def test_a_stale_lock_is_taken_over(self):
+        self.machine("jis-nb", "pro")
+        h = S.home()
+        h.parent.mkdir(parents=True, exist_ok=True)
+        lock = S.hub_lock_path(h)
+        lock.write_text("dead\n")
+        old = time.time() - 3600
+        os.utime(lock, (old, old))                      # a crashed holder left it an hour ago
+        with S.hub_lock(h, wait=0.4, stale=60) as got:
+            self.assertTrue(got)
+
+    def test_the_hub_never_reads_the_shared_fetch_head(self):
+        self.machine("jis-nb", "pro")
+        seen = []
+        real = S.git
+
+        def spy(cwd, *args, **kw):
+            seen.append(args)
+            return real(cwd, *args, **kw)
+        S.git = spy
+        try:
+            self.assertTrue(S.send("hello"))
+            S.ensure()
+        finally:
+            S.git = real
+        self.assertEqual([a for a in seen if "FETCH_HEAD" in a], [], "a concurrent fetch rewrites FETCH_HEAD under us")
+
+    def test_six_sessions_sending_at_once_all_arrive(self):
+        import threading
+        self.machine("jis-nb", "pro")
+        S.ensure()
+        errors, results = [], []
+
+        def go(i):
+            try:
+                results.append(S.send("note %d" % i, kind="claim"))
+            except Exception as e:      # noqa: BLE001
+                errors.append(repr(e))
+        ts = [threading.Thread(target=go, args=(i,)) for i in range(6)]
+        [t.start() for t in ts]
+        [t.join() for t in ts]
+        self.assertEqual(errors, [])
+        self.assertEqual(results, [True] * 6)
+        clone = self.tmp / "verify"
+        sh(self.tmp, "clone", "-q", "-b", S.BRANCH, str(self.origin), str(clone))
+        self.assertEqual(sorted(r["text"] for r in S.load(clone)), ["note %d" % i for i in range(6)])
+
+
+for _n in dir(SignalTest):      # reuse SignalTest's fixture only: its own tests already ran once
+    if _n.startswith("test_") and _n not in HubLockTest.__dict__:
+        setattr(HubLockTest, _n, None)
+
+
 if __name__ == "__main__":
     unittest.main()

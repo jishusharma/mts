@@ -21,7 +21,7 @@ LINE_MAX = 90
 
 
 def git(repo, *a):
-    r = subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True, encoding="utf-8", errors="replace")
+    r = subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout.strip() if r.returncode == 0 else ""
 
 

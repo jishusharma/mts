@@ -266,7 +266,7 @@ def publish(repo, root, now=None):
             redacted += nred
             files.append({"rel": rel, "size": len(data), "sha256": hashlib.sha256(data).hexdigest(),
                           "mtime": dt.datetime.fromtimestamp(Path(path).stat().st_mtime, dt.timezone.utc).isoformat()})
-        head = subprocess.run(["git", "-C", str(repo), "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
+        head = subprocess.run(["git", "-C", str(repo), "rev-parse", "--short", "HEAD"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
         manifest = {"schema": 1, "host": socket.gethostname(), "utc": now.isoformat(), "version": version, "git_head": head,
                     "redacted_lines": redacted, "flags": {Path(f).name: (repo / f).exists() for f in FLAGS}, "files": files}
         (vdir / "manifest.json").write_text(json.dumps(manifest, indent=1), encoding="utf-8", newline="\n")
