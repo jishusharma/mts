@@ -1,0 +1,35 @@
+Counts: MATCH: 7, DIFF: 0, NOT_IN_DATA: 0
+
+# Gemini Blind Read of `scripts/sched/autogo.py` Against Its Docstring
+
+- **Card ID**: `gemini-blind-read-autogo-docstring-1111`
+- **Auditor**: Gemini 3.8 Flash (Low)
+- **Scope In Read**:
+  - `scripts/sched/autogo.py` (read)
+  - `MyTradingSys/tests/test_autogo.py` (read)
+  - `MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-autogo-docstring-1111.md` (new)
+- **Scope Out**: No edit to source files; no live-tree edit, no deploy, no `.secrets` or `.env` read; read-only audit.
+
+---
+
+## Verification Table
+
+| Clause ID | Docstring Clause Description | Implementation in `scripts/sched/autogo.py` | Test Verification in `MyTradingSys/tests/test_autogo.py` | Status | File:Line Citations & Detailed Audit Findings |
+|---|---|---|---|---|---|
+| C1 | Sense condition: Brake files (`HALT`, `HALT_DAILY_LOSS`, `AUTO_PAUSE` in `execution/`, existence only) removes flag and logs reason | `scripts/sched/autogo.py:6,35,104-106,131-135` | `MyTradingSys/tests/test_autogo.py:77-82` | MATCH | **Docstring (`scripts/sched/autogo.py:6`)**: `"Sense conditions (each derived from disk): brake file (HALT, HALT_DAILY_LOSS, AUTO_PAUSE in execution/, existence only);"`<br>**Implementation (`scripts/sched/autogo.py:35,104-106,131-135`)**: Lines 35 defines `BRAKES = ("HALT", "HALT_DAILY_LOSS", "AUTO_PAUSE")`. Lines 104-106 check `present = [b for b in BRAKES if (EXEC / b).exists()]` and return `"brake file present: " + ",".join(present)`. Lines 131-135 execute `FLAG.unlink()` and `log("auto_disable", now, reason=why)`.<br>**Test (`MyTradingSys/tests/test_autogo.py:77-82`)**: `test_3_brake_file_auto_disables` creates `AUTO_PAUSE` and verifies flag unlinked and logged. |
+| C2 | Sense condition: Canary RED removes flag and logs reason | `scripts/sched/autogo.py:7,93-100,107-108,131-135` | `MyTradingSys/tests/test_autogo.py:84-88` | MATCH | **Docstring (`scripts/sched/autogo.py:7`)**: `"canary RED;"`<br>**Implementation (`scripts/sched/autogo.py:93-100,107-108,131-135`)**: Lines 93-100 `canary_red()` checks canary subprocess and fails closed on returncode not in (0, 1) or error/timeout. Lines 107-108 return `"canary RED"`. Lines 131-135 unlink `FLAG` and log `"auto_disable"`.<br>**Test (`MyTradingSys/tests/test_autogo.py:84-88`)**: `test_4_canary_red_auto_disables` runs with `canary=RED_CANARY` and verifies disable and log. |
+| C3 | Sense condition: No pickable slot removes flag and logs reason | `scripts/sched/autogo.py:7,79-90,109-110,131-135` | `MyTradingSys/tests/test_autogo.py:90-94` | MATCH | **Docstring (`scripts/sched/autogo.py:7`)**: `"no pickable slot;"`<br>**Implementation (`scripts/sched/autogo.py:79-90,109-110,131-135`)**: Lines 79-90 read slot `.txt` and `.json` files, omitting `IDLE` slots. Lines 109-110 check `if not rows: return "no pickable slot"`. Lines 131-135 unlink `FLAG` and log `"auto_disable"`.<br>**Test (`MyTradingSys/tests/test_autogo.py:90-94`)**: `test_5_no_pickable_slot_auto_disables` runs with `rows=()` and asserts disable with `"no pickable slot"`. |
+| C4 | Sense condition: Every slot older than STALE_H hours and never launched removes flag and logs reason | `scripts/sched/autogo.py:7,36,111-122,131-135` | `MyTradingSys/tests/test_autogo.py:96-100` | MATCH | **Docstring (`scripts/sched/autogo.py:7`)**: `"every slot older than STALE_H hours and never launched (the 2026-10-03 TF1 case)."`<br>**Implementation (`scripts/sched/autogo.py:36,111-122,131-135`)**: Line 36 sets `STALE_H = 24`. Lines 111-120 filter for `r["id"] in st["launched"] or t > cutoff` into `fresh`. Lines 120-121 check `if not fresh: return "every slot held over %dh with no launch" % STALE_H`. Lines 131-135 unlink `FLAG` and log `"auto_disable"`.<br>**Test (`MyTradingSys/tests/test_autogo.py:96-100`)**: `test_6_stale_unlaunched_slots_auto_disable` runs with an old slot unlaunched and asserts disable with `"held over 24h"`. |
+| C5 | Skips: running inside Claude Code, launched run still alive, slot launched within last STALE_H hours keep flag and launch nothing | `scripts/sched/autogo.py:8-9,36,63-76,136-146` | `MyTradingSys/tests/test_autogo.py:126-128,130-136` | MATCH | **Docstring (`scripts/sched/autogo.py:8-9`)**: `"Skips (flag stays, nothing launched this tick): running inside Claude Code (B086), a launched run still alive, a slot launched within the last STALE_H hours."`<br>**Implementation (`scripts/sched/autogo.py:136-146`)**: Lines 136-137 return `emit(..., "skip: inside Claude Code (one writer per tree)")` if `os.environ.get("CLAUDECODE")`. Lines 138-139 check `pid_alive(st.get("pid"))` and return `emit(..., "skip: launched run pid ... still alive")`. Lines 140-146 filter `todo` slots not launched in last `STALE_H` hours, and if `not todo` returns `emit(..., "skip: every slot already launched in the last 24h")`. In all three cases, `FLAG.unlink()` is not called and no launch is executed.<br>**Test (`MyTradingSys/tests/test_autogo.py:126-128,130-136`)**: `test_8_inside_claude_code_skips_launch` asserts flag stays and launch skipped; `test_7_enabled_launches_first_slot_headless_once` second tick asserts skip `"already launched"`. |
+| C6 | One launch per tick via `go.py --id <rid> --headless` | `scripts/sched/autogo.py:10,147-157` | `MyTradingSys/tests/test_autogo.py:114-125` | MATCH | **Docstring (`scripts/sched/autogo.py:10`)**: `"One launch per tick, via go.py --id <rid> --headless (go.py carries the per-run --max-budget-usd cap)."`<br>**Implementation (`scripts/sched/autogo.py:147-157`)**: Line 147 picks `rid = todo[0]["id"]`. Lines 149 launches `subprocess.Popen([sys.executable, str(HERE / "go.py"), "--id", rid, "--headless"], cwd=ROOT, ...)`. Only one slot is selected and launched per tick invocation.<br>**Test (`MyTradingSys/tests/test_autogo.py:114-125`)**: `test_7_enabled_launches_first_slot_headless_once` captures argv and asserts `json.loads(argv.read_text()) == ["--id", "B074", "--headless"]`. |
+| C7 | Enable is operator-only: `--enable` needs `--words "<text>"` and logs words | `scripts/sched/autogo.py:4-5,162-171` | `MyTradingSys/tests/test_autogo.py:61-68` | MATCH | **Docstring (`scripts/sched/autogo.py:4-5`)**: `"Enable is operator-only: runtime/sched/autogo_enabled must exist; --enable --words \"<operator words>\" creates it and logs the words."`<br>**Implementation (`scripts/sched/autogo.py:162-171`)**: Lines 162-166 check if `--words` exists and is non-empty; if empty, prints error to stderr and returns code 2. Lines 167-169 create `FLAG`, write words into `FLAG`, and call `log("enable", now, words=words.strip())`.<br>**Test (`MyTradingSys/tests/test_autogo.py:61-68`)**: `test_2_enable_needs_operator_words_and_logs_them` verifies `--enable` without words returns 2, while `--enable --words "enable it"` succeeds and writes log event `"enable"` with `"words": "enable it"`. |
+
+---
+
+## Summary of Findings
+
+- Total clauses audited: 7
+- **MATCH**: 7
+- **DIFF**: 0
+- **NOT_IN_DATA**: 0
+- The implementation in `scripts/sched/autogo.py` and test fixture coverage in `MyTradingSys/tests/test_autogo.py` match all 7 docstring clauses exactly.
