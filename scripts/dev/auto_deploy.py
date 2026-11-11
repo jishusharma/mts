@@ -257,7 +257,7 @@ class Ops:
         must not deploy (fail closed)."""
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import sync
-        with sync.gate_slot(REPO, timeout=gate_timeout()):
+        with sync.gate_slot(REPO, timeout=gate_timeout(), mode="deploy"):
             return self._gate_in_worktree(sha)
 
     def _gate_in_worktree(self, sha):

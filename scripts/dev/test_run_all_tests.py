@@ -597,22 +597,37 @@ class TestGateSpeed(unittest.TestCase):
             log.append(("end", "slot", time.monotonic()))
         return held
 
-    def test_a_cheap_failure_stops_the_gate_before_the_slow_steps_and_the_slot(self):
+    def test_a_cheap_failure_stops_the_gate_before_the_slow_steps(self):
         log = []
         plan = [fake("4d", log, 0.01, ok=False), fake("3c", log, 0.01), fake("4h", log, 0.01), fake("3xt", log, 0.01)]
         results, text = self.run_plan(plan, precheck=True, fail_fast=True, slot=self.slot(log))
         self.assertEqual(results, {"4d": False, "3c": True, "4h": None, "3xt": None})
-        self.assertEqual({n for _, n, _ in log}, {"4d", "3c"})          # neither slow step nor the slot ran
+        self.assertEqual({n for _, n, _ in log}, {"4d", "3c", "slot"})  # the single slot covers the precheck; no slow step ran
+        self.assertEqual(len([e for e in log if e[:2] == ("start", "slot")]), 1)
         self.assertIn("Step 4h: NOT RUN (precheck failed: step 4d)", text)
         self.assertEqual(rat.NOT_RUN, {"4h": "precheck failed: step 4d", "3xt": "precheck failed: step 4d"})
 
-    def test_slot_is_held_around_the_main_phase_only(self):
+    def test_ship_takes_one_slot_around_precheck_and_main(self):
+        """ARCH_REVIEW row 3: one wait per ship; the slot is taken once, before the precheck, and held to the end of the main phase."""
         log = []
         plan = [fake("4d", log, 0.02), fake("4h", log, 0.02), fake("3xt", log, 0.02)]
         _, text = self.run_plan(plan, precheck=True, slot=self.slot(log))
-        self.assertGreaterEqual(at(log, "start", "slot"), at(log, "end", "4d"))
-        self.assertLessEqual(at(log, "start", "slot"), min(at(log, "start", "4h"), at(log, "start", "3xt")))
+        self.assertEqual(len([e for e in log if e[:2] == ("start", "slot")]), 1)
+        self.assertLessEqual(at(log, "start", "slot"), at(log, "start", "4d"))
+        self.assertGreaterEqual(at(log, "end", "slot"), max(at(log, "end", "4h"), at(log, "end", "3xt")))
         self.assertIn("Precheck passed", text)
+
+    def test_a_plan_with_nothing_to_run_takes_no_slot(self):
+        log = []
+        self.run_plan([], precheck=True, slot=self.slot(log))
+        self.assertEqual(log, [])
+
+    def test_gate_slot_factory_uses_the_one_pool_for_every_mode(self):
+        import sync
+        for mode in ("fast", "full", "deploy"):
+            g = rat.gate_slot_factory(mode)()
+            self.assertEqual((g.name, g.slots, g.mode), (sync.GATE_POOL, sync.GATE_SLOTS, mode))
+        self.assertNotIn("precheck_slot", rat.run_plan.__code__.co_varnames[:rat.run_plan.__code__.co_argcount])
 
     def test_fail_fast_does_not_start_new_steps_after_a_failure(self):
         log = []
