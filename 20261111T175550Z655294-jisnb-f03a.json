@@ -1,0 +1,1 @@
+{"t": "20261111T175550Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "Operator order 1755Z: every Supervisor has a Haiku agent check disk health + free space on its own machine and ack with the result (PROBLEM if not Healthy or a volume under 10 pct free)", "login": "C"}
