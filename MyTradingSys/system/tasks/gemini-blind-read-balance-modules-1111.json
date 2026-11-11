@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T13:19:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-balance-modules-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of balance_modules, split_modules and exec_layer_chunks in scripts/dev/run_all_tests.py against the ship commit claim: LPT balancing by the cost table, empty subset spawns no process, no module-name collisions across layer dirs.",
+  "id": "gemini-blind-read-balance-modules-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: balance_modules([]) returns no chunks so an empty 5b subset spawns no process; no ",
+      "ref": "5b609656cf16",
+      "utc": "2026-11-11T11:51:38Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T13:19:24Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py (balance_modules, split_modules, exec_layer_chunks; read)",
+    "scripts/dev/test_run_all_tests.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-balance-modules-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "5b609656cf16",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-feed-lanes-1111"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: (1) chunks are filled longest-cost-first into the least-loaded job, (2) balance_modules([]) returns no chunks, (3) a module missing from the cost table gets a defined default cost, (4) no two chunks share a module, (5) a failing chunk fails the step",
+    "Mark each MATCH/DIFF/NOT_IN_DATA (or CONSISTENT/CONTRADICTION) with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "tests": "",
+  "title": "[GEMINI] blind read of run_all_tests.py balance_modules / split_modules vs the 5b balancing claim",
+  "weight": "ROUTINE",
+  "worker": ""
+}
