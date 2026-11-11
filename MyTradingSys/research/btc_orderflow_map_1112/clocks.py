@@ -58,8 +58,8 @@ def load_dev(pattern=KLINES, last_month=LAST_MONTH):
     n = (tend - t0) // 60000 + 1
     out = np.full((4, n), np.nan)
     idx = ((a[:, 0] - t0) // 60000).astype(int)
-    for k in range(4):
-        out[k, idx] = a[:, k + 1]
+    for k, col in enumerate(a[:, 1:5].T):
+        out[k, idx] = col
     return t0, out[0], out[1], out[2], out[3]
 
 

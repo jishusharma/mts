@@ -40,16 +40,18 @@ def test_missing_bar_drops_instance_and_fwd_math():
     inst = clocks.build_instances(o, c, v, tb, START, DAYS)
     assert len(inst['hour']) == DAYS * 24 - 1
     e = START + 60
+    j60, j15 = e + 59, e + 14
     row = inst['hour'][0]
-    assert row[0] == 1 and abs(row[5] - (c[e + 59] / o[e] - 1) * 1e4) < 1e-9
-    assert abs(row[4] - (c[e + 14] / o[e] - 1) * 1e4) < 1e-9
+    assert row[0] == 1 and abs(row[5] - (c[j60] / o[e] - 1) * 1e4) < 1e-9
+    assert abs(row[4] - (c[j15] / o[e] - 1) * 1e4) < 1e-9
 
 
 def test_funding_entry_is_one_minute_after_settlement():
     o, c, v, tb = synth()
     row = clocks.build_instances(o, c, v, tb, START, DAYS)['fund'][1]  # day 0, 08Z
     e = START + 8 * 60 + 1
-    assert row[0] == 1 and abs(row[5] - (c[e + 59] / o[e] - 1) * 1e4) < 1e-9
+    j60 = e + 59
+    assert row[0] == 1 and abs(row[5] - (c[j60] / o[e] - 1) * 1e4) < 1e-9
 
 
 def test_only_dev_split_allowed():
