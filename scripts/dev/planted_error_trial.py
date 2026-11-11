@@ -40,6 +40,7 @@ def _ledger(cid):
 
 
 def eligible():
+    all_cards, registry = tasks.load_all(ROOT), tasks.registry(ROOT)   # read once: re-reading 1.7k card files per candidate was ~110 s
     clean = []
     skipped = []
     for p in sorted((ROOT / tasks.DIR / "archive").glob("*.json")):
@@ -52,11 +53,11 @@ def eligible():
         if not m or not (ROOT / m.group()).is_file():
             skipped.append({"card": cid, "reason": "missing or invalid report path in result"})
             continue
-        prob = tasks.problems(c, tasks.load_all(ROOT), tasks.registry(ROOT), repo=ROOT)
+        prob = tasks.problems(c, all_cards, registry, repo=ROOT)
         if prob:
             skipped.append({"card": cid, "reason": f"tasks.problems: {prob}"})
             continue
-        gate_err = lab_flow.gate(c, tasks.load_all(ROOT), ROOT)
+        gate_err = lab_flow.gate(c, all_cards, ROOT)
         if gate_err:
             skipped.append({"card": cid, "reason": f"lab_flow.gate: {gate_err}"})
             continue
