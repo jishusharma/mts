@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T16:36:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-sim-desk-smoke-gate-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 4) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of 70857d4a0: a change under root sim_desk/results/*.json selects the smoke gate and not the fail-closed full gate; check the selector code, its test and the claim that the test fails on the old code.",
+  "id": "gemini-blind-read-sim-desk-smoke-gate-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: root sim_desk/results/*.json selects the smoke gate, not fail-closed full (test fa",
+      "ref": "70857d4a0f8e",
+      "utc": "2026-11-11T15:48:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T16:36:19Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/gate_select.py (read; the change is git show 70857d4a0)",
+    "scripts/dev/test_gate_select.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-sim-desk-smoke-gate-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "70857d4a0f8e",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 4 clauses: (1) root sim_desk/results/*.json maps to the smoke gate, (2) other unknown paths still fail closed to the full gate, (3) the new test asserts clause 1, (4) the same test would fail on the code before the commit (reason from the diff)",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of the sim_desk results smoke-gate selection (70857d4a0)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
