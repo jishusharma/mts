@@ -1,1 +1,0 @@
-{"t": "20261104T050148Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-1aa316 told C cannot run gemini_queue on jis-nb; NUC (login B) owns the step; broadcast targets NUC", "login": "C", "id": "b-1aa316", "state": "told", "host": "jis-nb", "note": "C cannot run gemini_queue on jis-nb; NUC (login B) owns the step; broadcast targets NUC"}
