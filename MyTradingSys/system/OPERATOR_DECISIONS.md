@@ -2290,3 +2290,14 @@ Answer: review run; actions the reviews agree on become cards; nothing here is a
 ## 2026-11-11 16:00Z Find the edge or close the project; fees question; start an edge session (operator)
 Operator (voice): the roadmap is built on finding the edge and we are stuck there; he wants naked Tom/Fabio trades on the everyday chart by session, built on what happened before, and directional trades; he does not accept that "before fees / after fees" keeps deciding (a 100 USD move on 1 BTC leaves about 30 after market fees, about 60 with limit orders) while others quote 53-70 % win rates; "if I'm not able to close this gap, then this project has to be closed"; "perhaps you can start a session with the right models".
 Answer: his fee arithmetic is right for a winner; the break-even table (win rate needed by size of move) and the reason (entries at levels are right about half the time; Tom/Fabio stops of 5-8 bp are smaller than the fee) are in research/four_model_review_2026-11-11/COMPARE.md section 4. Edge session started as a visible Sonnet session (his ask): forward paper slots for the four leads, with-trend session trades of 500 USD or more, the Opus rule pre-registered. Closing the project stays his decision; the session reports a dated decision point, it does not decide.
+
+## 2026-11-11 15:45Z Ship has been a problem: what can realistically be done (operator, with a DSA chat screenshot)
+- His words: "See - Ship has been a problem - what can we realictically do? i need answers !!!"
+- Measured (gate_timing.jsonl, all trees, since 11-10 15Z): 24 ships, 17 under 2 min, 6 took 17-48 min, 3 failed.
+- Causes: (1) live-path or unrecognised paths run the full test set locally; (2) root sim_desk/results/*.json matched no
+  selector rule, so a research-only DSA ship ran the full set and hit its 1100 s cap; (3) no per-test limit, one hung test held a ship 50 min.
+- Done: cards dsa-research-ship-full-gate-timeout-1111 + ship-gate-per-test-timeout-1111 built on branch
+  JIS-NB/builder-c-shipgate-1111 (70857d4a0, 582709541), diff-only review before ship (SUPER_SESSION rule 11).
+- Filed, not started: ship-full-gate-moves-to-ci-1111 (local ship = changed-file tests + smoke; full suite once on CI).
+- Same turn, forwarded newsletter on overfitting (purged k-fold, Lopez de Prado ch. 7-9): taken as a warning only; one rule
+  passed to the edge session (no parameter sweeps, gap between DEV and VALIDATION). No card.
