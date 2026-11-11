@@ -5,6 +5,17 @@
     "python scripts/dev/live_aid_learn.py --date 2026-11-11",
     "python scripts/dev/test_live_aid_learn.py"
   ],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-11-11T15:39:12Z",
+    "misses": 18,
+    "reads": [
+      "MyTradingSys/research/live_aid_review_2026-11-11/tables.md",
+      "MyTradingSys/research/live_aid_review_2026-11-11/replay.js",
+      "scripts/dev/test_us_prep.py"
+    ],
+    "session": "agent-a264e0dc7d4e21917"
+  },
   "created": "2026-11-11T15:24:14Z",
   "depends_on": [],
   "done_when": "python scripts/dev/live_aid_learn.py --date 2026-11-11 writes MyTradingSys/research/live_aid_learning/2026-11-11.md with >= 3 rows (change, evidence n, hit rate, test or NOT-ENOUGH-EVIDENCE); the file is on trunk; SUPER_SESSION.md line 71a P4 names the command",
