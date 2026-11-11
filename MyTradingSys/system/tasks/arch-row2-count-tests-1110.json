@@ -4,12 +4,14 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-10T20:49:06Z",
+    "folded": "2026-11-11T08:03:07Z",
     "misses": 8,
     "reads": [
-      "MyTradingSys/research/api_jobs_2026-11-03/test_sim_cards_from_json.py"
+      "scripts/dev/tasks.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/tests/test_aibridge_probe_noise.py"
     ],
-    "session": "agent-a239e8a3adb685979"
+    "session": "agent-ab146e395631e4fc8"
   },
   "created": "2026-11-10T19:47:54Z",
   "depends_on": [],
