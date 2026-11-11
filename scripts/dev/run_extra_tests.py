@@ -7,6 +7,7 @@ the other), each with its own --basetemp, and print their line when they finish.
 MyTradingSys/tests/test_gate_discovery_b150.py: a new tracked test file must be gated, listed here, or skipped with a reason.
 """
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -117,14 +118,26 @@ def failure_detail(stdout, stderr, n=30):
 GROUP_MAX = 12   # OURS 2026-11-11: files per merged pytest process; keeps several groups per dir so the pool stays busy
 
 
+_SHARED_STATE = re.compile(r"sys\.modules\s*\[[^\]]*\]\s*=|os\.chdir\s*\(|os\.environ\s*\[[^\]]*\]\s*=|os\.environ\.(?:update|setdefault|pop)\s*\(|os\.putenv\s*\(|os\.unsetenv\s*\(|sys\.modules\.(?:update|setdefault|pop)\s*\(")
+
+
+def shares_state(rel):
+    """True when the file's source writes shared interpreter state (sys.modules, cwd, os.environ): such a file could pass in a group
+    only through a neighbour's leak, so it never groups. An unreadable file counts as True (fail closed: run alone)."""
+    try:
+        return bool(_SHARED_STATE.search((REPO / rel).read_text(encoding="utf-8", errors="replace")))
+    except OSError:
+        return True
+
+
 def plan_units(rels, group_max=GROUP_MAX):
-    """Split `rels` into run units: ("one", rel) for a SLOW_FIRST file (its time is known to be large) and ("group", dir, [rels])
+    """Split `rels` into run units: ("one", rel) for a SLOW_FIRST file (its time is known to be large) or a file that writes shared interpreter state (shares_state) and ("group", dir, [rels])
     for the other files of one directory, at most `group_max` per group (most of the ~400 files take under 1 s, so their wall is
     pytest start-up; one process per group pays it once). A group of one is a plain "one". Same files, each exactly once;
     slow singles lead (slowest first), then the groups in list order. Anything unexpected -> the caller runs per file."""
     units, by_dir = [], {}
     for rel in slowest_first(rels):
-        if rel in SLOW_FIRST:
+        if rel in SLOW_FIRST or shares_state(rel):
             units.append(("one", rel))
         else:
             by_dir.setdefault(str(Path(rel).parent), []).append(rel)

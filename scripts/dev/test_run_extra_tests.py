@@ -124,14 +124,16 @@ def _mk(tmp_path, name, body):
     (tmp_path / name).write_text(body + NL, encoding="utf-8", newline=NL)
 
 
-def test_plan_units_groups_fast_files_per_dir_and_keeps_slow_ones_single():
+def test_plan_units_groups_fast_files_per_dir_and_keeps_slow_ones_single(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    for r in ("a/test_1.py", "a/test_2.py", "b/test_3.py", "a/test_4.py"):
+        _mk(tmp_path, r, "def test_x(): pass")
     slow = "scripts/dev/test_planted_error_trial.py"
     rels = ["a/test_1.py", slow, "a/test_2.py", "b/test_3.py", "a/test_4.py"]
     units = rx.plan_units(rels, group_max=2)
     assert units[0] == ("one", slow)
     assert ("group", "a", ["a/test_1.py", "a/test_2.py"]) in units
     assert ("one", "a/test_4.py") in units and ("one", "b/test_3.py") in units
-    flat = [u[1] if u[0] == "one" else None for u in units]
     assert sorted(r for u in units for r in ([u[1]] if u[0] == "one" else u[2])) == sorted(rels)
 
 
@@ -177,3 +179,18 @@ def test_a_crashing_group_runner_falls_back_to_the_per_file_run(tmp_path):
     bad = rx.run_files(["d/test_1.py", "d/test_2.py"], 2, one=lambda rel, bt: (seen.append(rel) or rel.endswith("1.py"), "t"),
                        tmp=str(tmp_path), many=boom)
     assert sorted(seen) == ["d/test_1.py", "d/test_2.py"] and bad == ["d/test_2.py"]
+
+
+def test_files_writing_shared_interpreter_state_stay_single(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    ok = "def test_x(): pass"
+    bodies = {"d/test_clean1.py": ok, "d/test_clean2.py": ok,
+              "d/test_cd.py": "import os" + NL + "def test_x(): os.chdir('.')",
+              "d/test_mod.py": "import sys" + NL + "sys.modules['m'] = object()" + NL + ok,
+              "d/test_env.py": "import os" + NL + "os.environ['A'] = '1'" + NL + ok}
+    for r, b in bodies.items():
+        _mk(tmp_path, r, b)
+    units = rx.plan_units(list(bodies))
+    assert ("group", "d", ["d/test_clean1.py", "d/test_clean2.py"]) in units
+    assert {u[1] for u in units if u[0] == "one"} == {"d/test_cd.py", "d/test_mod.py", "d/test_env.py"}
+    assert rx.shares_state("d/missing.py")

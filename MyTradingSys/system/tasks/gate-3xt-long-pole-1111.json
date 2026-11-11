@@ -3,6 +3,16 @@
   "asks": "",
   "claim": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 24,
+    "folded": "2026-11-11T09:49:43Z",
+    "misses": 37,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_planted_error_trial.py"
+    ],
+    "session": "agent-a4ab10c795df71d95"
+  },
   "created": "2026-11-11T07:51:06Z",
   "depends_on": [],
   "done_when": "Two full gates in runtime_data/gate_timing.jsonl after the change show ship_wall 300 s or less with every step ok, and test_run_all_tests.py plus test_run_extra_tests.py pass",
@@ -29,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T08:05:59Z",
+  "refreshed": "2026-11-11T09:28:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
