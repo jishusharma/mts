@@ -1,1 +1,0 @@
-{"t": "20261104T003016Z", "from": "desktop-f7iu69n/A", "to": "c", "kind": "note", "text": "CI RED since c8de5c8c (2 runs): gate step 3pc PRE_REG context lint fails on research/[cut] (PRE_REG lacks ## Context Regime/Phase/Session/Entry; RESULT lacks Regime mix:). Yours (bb0755baa/83e1edfd). ", "login": "A"}
