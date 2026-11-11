@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:46:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-nowin-unattended-fix-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per call) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini check that every subprocess run/Popen/check_output call in scripts/sched, scripts/worker, MyTradingSys/execution and MyTradingSys/runtime (non-test files) that captures output now passes creationflags; list each one still without it and whether it inherits the console on purpose.",
+  "id": "gemini-blind-read-nowin-unattended-fix-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:46:44Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/sched/*.py, scripts/worker/*.py (read)",
+    "MyTradingSys/execution/*.py, MyTradingSys/runtime/*.py (read)",
+    "scripts/dev/nowin_scan.py (the rule; read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-nowin-unattended-fix-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: one per subprocess call in those files (file:line, captured yes/no, has creationflags yes/no); MATCH = captured and has the flag, or not captured and console is the intent; DIFF = captured without the flag or an unattended call without it",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of the no-window fix outside scripts/dev (c0354cca9)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
