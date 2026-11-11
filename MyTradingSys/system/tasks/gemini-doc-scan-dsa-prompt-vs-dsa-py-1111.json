@@ -18,16 +18,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "DSA prompt rewrite: settle 5 contradictions, fix Java from JAVA_HOME, DeepSeek thinking ru",
-      "ref": "47b513a29faa",
-      "utc": "2026-11-11T14:13:02Z"
+      "line": "DSA prompt: fix 11 findings from the Haiku + Sonnet review of 47b513a2",
+      "ref": "cf4a350f3477",
+      "utc": "2026-11-11T14:27:21Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "47b513a29faa DSA prompt rewrite: settle 5 contradictions, fix Java from JAVA_HOME, DeepSee",
+      "line": "cf4a350f3477 DSA prompt: fix 11 findings from the Haiku + Sonnet review of 47b513a2",
       "ref": "DSA_SESSION_PROMPT.md",
-      "utc": "2026-11-11T14:13:02Z"
+      "utc": "2026-11-11T14:27:21Z"
     }
   ],
   "layers": [],
@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T14:23:27Z",
+  "refreshed": "2026-11-11T14:51:00Z",
   "refs": [],
   "result": "",
   "result_receipt": {},
@@ -51,7 +51,7 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
   ],
-  "scope_sha": "47b513a29faa",
+  "scope_sha": "cf4a350f3477",
   "size": "S",
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
