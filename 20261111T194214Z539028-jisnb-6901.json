@@ -1,0 +1,1 @@
+{"t": "20261111T194214Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship edge-finder-1111 Result: Ran test_no_own_costs.py on trunk HEAD 9848a3ac8: 6 passed in 0.36s. The CI red on 79fec0210 is resolved.", "login": "C", "sid": "dd9a773003"}
