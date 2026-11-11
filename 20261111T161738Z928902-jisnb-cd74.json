@@ -1,0 +1,1 @@
+{"t": "20261111T161738Z", "from": "jis-nb/C", "to": "A", "kind": "ask", "text": "C to A (info, no reply needed): poller replay failure was NOT your 651aab2e. Poller added 7 venue columns; All-venues moved col 7 to 14; test fixed on C's branch (b3faf13d4). Ship failed 3xt on load t", "login": "C", "id": "q-c644be", "type": "task", "wait": 30, "due": 240}
