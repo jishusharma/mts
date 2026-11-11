@@ -27,7 +27,7 @@ Win rate needed with target = stop = the move (OURS arithmetic; 10 bp round trip
 
 ## (d) Proposed decision date (the operator decides; this plan does not)
 **2026-12-31.** By then (7 weeks from 11-11): T06L about 40 trades (30-trade rule reached about 2026-12-25), MLK about 7, KS8 about 8, C30 about 3. So on that date only T06L can be read; the other three show pace only. A second look **2027-05-31** is when KS8 and MLK reach about 30. Estimates are OURS from DEV rates and move with the market.
-Honest limit: only one slot can reach a verdict by the proposed date, and a +0.10 R slot cannot be proven at n 30 (SD 1.4 R: detectable effect about 0.5 R). The 30-trade rule can kill a slot, it cannot promote one.
+Honest limit: only one slot can reach a verdict by the proposed date, and a +0.10 R slot cannot be proven at n 30 (SD 1.4 R: detectable effect about 0.64 R at one-sided 5 percent, 80 percent power: 2.49 x 1.4 / sqrt(30); Gemini recompute 2026-11-11). The 30-trade rule can kill a slot, it cannot promote one.
 
 ## (e) Overfit rules for every backtest in this plan (Lopez de Prado, Advances in Financial ML ch. 7-9; added on the Supervisor's request)
 The best-looking settings are the most overfit, and overlapping trades leak between train and test. So: (1) no parameter sweeps: thresholds are fixed in the pre-registration, a changed value is a new trial; (2) one trade at a time per rule, so outcomes do not overlap; (3) a gap of at least the longest holding time between the DEV and VALIDATION periods (24 h for the 15m with-trend rules, 100 bars = 16.7 days for Krown 4h).
