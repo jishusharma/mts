@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T14:22:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-supervisor-c-runbook-1111.md line 1 has counts CONSISTENT/CONTRADICTION/NOT_IN_DATA and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of the new supervisor C runbook (577bf052) for contradictions with CLAUDE.md and the operator decisions it must follow (shipping, YOU DO limits, paid API, critical files, DSA account rules).",
+  "id": "gemini-doc-scan-supervisor-c-runbook-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor C 24 h runbook for the Sonnet model switch",
+      "ref": "577bf052c7fa",
+      "utc": "2026-11-11T14:18:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "577bf052c7fa Supervisor C 24 h runbook for the Sonnet model switch",
+      "ref": "MyTradingSys/system/handover/SUPERVISOR_C_RUNBOOK_2026-11-11.md",
+      "utc": "2026-11-11T14:18:22Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:28Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "MyTradingSys/system/handover/SUPERVISOR_C_RUNBOOK_2026-11-11.md (read)",
+    "CLAUDE.md (read)",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-supervisor-c-runbook-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "577bf052c7fa",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Claims: every instruction in the runbook (one row each, at least 10)",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: SUPERVISOR_C_RUNBOOK_2026-11-11 vs CLAUDE.md and OPERATOR_DECISIONS.md",
+  "weight": "ROUTINE",
+  "worker": ""
+}
