@@ -180,3 +180,74 @@ def test_value_area_math():
     va2 = up.value_area([(110.0, 40.0), (160.0, 35.0), (210.0, 25.0)], 50.0)
     assert va2["POC"] == 125.0 and va2["VAL"] == 100.0 and va2["VAH"] == 200.0
     assert up.value_area([], 50.0) == "UNKNOWN"
+
+
+# ---------- Live Aid playbook wiring (us_prep is the daily trigger) ----------
+class _R:
+    def __init__(self, rc=0, out="", err=""):
+        self.returncode, self.stdout, self.stderr = rc, out, err
+
+
+def _trees(tmp_path):
+    root, main = tmp_path / "wt", tmp_path / "main"
+    for d in (root, main):
+        (d / up.PLAYBOOK_REL).mkdir(parents=True)
+    return root, main
+
+
+def test_build_playbook_copies_to_main_checkout(tmp_path):
+    root, main = _trees(tmp_path)
+    calls = []
+
+    def run(cmd, **kw):
+        calls.append(cmd)
+        (root / up.PLAYBOOK_REL / "playbook_data.js").write_text('window.PLAYBOOK_DATA = {"day": "2026-11-11"};', encoding="utf-8")
+        return _R(0, "playbook 2026-11-11: 3 scenarios")
+
+    line = up.build_playbook(root, run=run, main_root=main)
+    assert line.startswith("PLAYBOOK built and copied")
+    assert calls and calls[0][-1].endswith("daily_playbook.py")
+    assert "2026-11-11" in (main / up.PLAYBOOK_REL / "playbook_data.js").read_text(encoding="utf-8")
+
+
+def test_build_playbook_fails_soft_and_leaves_main_untouched(tmp_path):
+    root, main = _trees(tmp_path)
+    old = main / up.PLAYBOOK_REL / "playbook_data.js"
+    old.write_text("OLD", encoding="utf-8")
+    assert up.build_playbook(root, run=lambda cmd, **kw: _R(1, "", "Traceback\nURLError: dns"), main_root=main) == "PLAYBOOK FAILED: exit 1: URLError: dns"
+
+    def boom(cmd, **kw):
+        raise OSError("no python")
+
+    assert up.build_playbook(root, run=boom, main_root=main).startswith("PLAYBOOK FAILED: OSError")
+    # exit 0 without a data file is a failure too (fail closed), and a stale copy is never overwritten by nothing
+    assert up.build_playbook(root, run=lambda cmd, **kw: _R(0), main_root=main).startswith("PLAYBOOK FAILED")
+    assert old.read_text(encoding="utf-8") == "OLD"
+
+
+def test_build_playbook_without_main_checkout_says_so(tmp_path):
+    root, _main = _trees(tmp_path)
+
+    def run(cmd, **kw):
+        if cmd[0] == "git":
+            return _R(128, "", "not a git repository")
+        (root / up.PLAYBOOK_REL / "playbook_data.js").write_text("x", encoding="utf-8")
+        return _R(0)
+
+    assert "main checkout not found" in up.build_playbook(root, run=run)
+
+
+def test_main_runs_playbook_on_p1_to_p3_not_p4(tmp_path, monkeypatch, capsys):
+    seen = []
+    monkeypatch.setattr(up, "build_brief", lambda phase, date: {"phase": phase, "date": date})
+    monkeypatch.setattr(up, "write_brief", lambda b: tmp_path / "x.md")
+    monkeypatch.setattr(up, "render_md", lambda b: "brief")
+    monkeypatch.setattr(up, "render_p4_md", lambda res: "score")
+    monkeypatch.setattr(up, "score_p4", lambda date: {})
+    monkeypatch.setattr(up, "OUTDIR", tmp_path)
+    monkeypatch.setattr(up, "build_playbook", lambda: seen.append(1) or "PLAYBOOK built: t")
+    for ph in ("P1", "P2", "P3"):
+        up.main(["--phase", ph, "--date", "2026-11-11"])
+    assert len(seen) == 3 and "PLAYBOOK built: t" in capsys.readouterr().out
+    up.main(["--phase", "P4", "--date", "2026-11-11"])
+    assert len(seen) == 3
