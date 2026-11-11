@@ -2308,3 +2308,8 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Result: trend, clock and funding views fail on BTC alone. One lead: long after a 1h drop of 3 % or more on 3x volume (+0.58 % DEV, +1.34 % VALIDATION, n 17: too few). 4h Donchian 55/20 positive in both periods, t under 2.
 - Corrections recorded: about 100 studies were run, not 15; forced flows were looked at 7 times before, never as a trade rule with fees.
 - Next: card forced-selloff-long-pooled-10-coins-1111 (same frozen rules on ten coins, events counted per day). DECISION (OURS): no new rule family before that pooled result.
+
+## 2026-11-11 17:55Z Cheap agents do clean-up and check disk health on all devices, kept running by the Supervisors (operator)
+- His words: "clean up cheap agents and keep them running in the super sessions - make them check disk health on all devices" (voice; read as: use Haiku agents for clean-up, as a standing Supervisor duty).
+- Done: Haiku agent started on the desktop (disk health, free space, NUC through the SSH gate, clean-up candidates; report only). Broadcast to the other Supervisors with the command.
+- Standing: card supervisor-wake-haiku-hygiene-disk-1111 (plan prints one Haiku hygiene spawn per 5 h window). DECISION (OURS): the agents report; removals stay with the Supervisor and the existing rules (lane trees never removed).
