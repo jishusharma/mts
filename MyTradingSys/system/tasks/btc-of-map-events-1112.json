@@ -4,34 +4,67 @@
   "commands": [],
   "created": "2026-11-11T21:00:42Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "events.py + test_events.py exist and pytest passes; EVENTS.md has the A2/A3 table (event, horizon, n, mean net %, sd, t, share positive, placebo 1-99 % band, session mix, Regime mix) with INSUFFICIENT_N where n<180; no VALIDATION/GAP/RESERVE/HOLDOUT file opened; verdicts.py backfill row added.",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Run PREREG A2 (absorption, from 1m klines) and A3 (funding extreme at settlement) on DEV 2022-02..2024-05 only, exactly as frozen: 4 cells (2 events x 15m/60m), de-clustered, 1,000-draw placebo seed 1112, fee 10 bp, n floor 180.",
   "id": "btc-of-map-events-1112",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: clocks.py lookahead-lint clean (no index-forward hits), same table Next: btc-of-ma",
+      "ref": "e5bd9ac5535c",
+      "utc": "2026-11-11T20:38:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "082d8bccfcba Result: BTC order-flow map PREREG frozen (3 events, 6 cells, DEV/30d gap/VAL,",
+      "ref": "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md",
+      "utc": "2026-11-11T20:12:04Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "planner-a-1112 2026-11-12: refined from raw. Split A2 here (klines, full DEV) vs prints card (A1/A2 from aggTrades on 60 sampled days): not twins. DECISION (OURS): VALIDATION stays unopened until a cell clears DEV (PREREG). Independent of prints/clocks, no dependency.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T21:25:15Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "btc-clocks-lint-1112 builder: PREREG A2/A3 DEV run follows the clocks"
+  "scope_in": [
+    "MyTradingSys/research/btc_orderflow_map_1112/events.py (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/test_events.py (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/EVENTS.md (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (read, frozen)",
+    "MyTradingSys/research/btc_orderflow_map_1112/clocks.py (read: reuse load_dev, placebo pattern)",
+    "MyTradingSys/research/VERDICTS.csv"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "PREREG.md and clocks.py (frozen)",
+    "A1 (needs aggTrades, card prints)",
+    "VALIDATION, GAP, RESERVE, HOLDOUT data; live tree; orders"
+  ],
+  "scope_sha": "e5bd9ac5535c",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (frozen)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read PREREG.md Events, De-clustering, Outcomes, Placebo; write test_events.py first and see it fail",
+    "Implement events.py: refuse any split but dev; A2 from clocks.load_dev klines (5m delta5, 30-day trailing 98th pct, move<0.1 %); A3 from F:/MTS/Dumps/backtest/raw/fundingRate BTCUSDT files (90-day trailing 90th pct of |rate|); 60-min de-clustering; fwd 15m/60m minus 10 bp",
+    "Placebo 1,000 draws seed 1112 per cell; write EVENTS.md copying the PREREG mark table; cells with DEV n<180 are INSUFFICIENT_N; run verdicts.py backfill"
+  ],
+  "tests": "MyTradingSys/research/btc_orderflow_map_1112/test_events.py (new, fail-first before events.py exists): synthetic bars flag an A2 event only when delta5 is in the top 2 % AND the bar moves < 0.1 %; a second event inside 60 min is dropped; A3 shorts when the rate is positive and longs when negative; a split other than dev is refused.",
   "title": "BTC order-flow map: A2 bar-delta and A3 funding event cells on DEV (PREREG.md, 6 cells, n floor 180)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
