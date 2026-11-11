@@ -956,3 +956,62 @@ def test_home_bias_line_names_the_clock_that_wins():
     assert "15m close above 74,000 (Today high)" in text and "15m close below 73,666 (Yesterday low)" in text
     assert 'class="up">15m close above' in html and 'class="down">15m close below' in html     # in colour
     assert not re.search(r"\b(buy|sell|enter|entry|stop|size)\b", text, re.I)                   # observation only
+
+
+# ---------- two-sided setup board on Home (card live-aid-board-render-1111) ----------
+def _board_page(browser, rates, board_inputs, mix):
+    """Render home.js into a bare page (no network) with setup_board.js and, optionally, a BASE_RATES row; return (text, html, errors)."""
+    ctx = browser.new_context(offline=True, viewport={"width": 1400, "height": 900})
+    page = ctx.new_page()
+    errs = []
+    page.on("pageerror", lambda e: errs.append(str(e).splitlines()[0][:200]))
+    page.set_content('<html><head></head><body><div id="el" style="width:1300px;height:800px"></div></body></html>')
+    if rates is not None:
+        page.add_script_tag(content="var BASE_RATES = " + json.dumps(rates) + ";")
+    for f in ("level_registry.js", "setup_board.js", "home.js"):
+        page.add_script_tag(path=str(HERE / f))
+    page.evaluate("(a) => { LAHOME.injectCss(document); LAHOME.render(document.getElementById('el'), {now: 1e12, px: 100, rows5: [], votes: [1,1,0,0,0,0], map: {}, "
+                  "boardInputs: a[0], mix: a[1], liq: null}); }", [board_inputs, mix])
+    out = (page.inner_text("#el"), page.inner_html("#el"), errs)
+    ctx.close()
+    return out
+
+
+MIX_LONG = {"home": 1, "grid": 1, "adx15": 0, "adx1h": 0, "vfi15": 1, "wt30": 0}
+RATES = {"setup_board_mix": {"table": {"meta": {"min_n": 30}, "rows": [
+    {"side": "LONG", "mix": "home+grid+vfi15", "n": 212, "hits": 118, "rate": 118 / 212, "window": "2026-10-14..2026-11-10", "low_n": False},
+    {"side": "SHORT", "mix": "none", "n": 12, "hits": 5, "rate": 5 / 12, "window": "2026-10-14..2026-11-10", "low_n": True}]}}}
+INP = {"15m": {"div": {"rsi": 1}, "sweep": 1}, "1h": {"bb": {"out": 1, "cvd": "spike"}}}
+
+
+def test_two_sided_board_renders(tmp_path):
+    pw = pytest.importorskip("playwright.sync_api")
+    with pw.sync_playwright() as p:
+        try:
+            b = p.chromium.launch(headless=True)
+        except Exception:  # noqa: BLE001
+            try:
+                b = p.chromium.launch(channel="msedge", headless=True)
+            except Exception as e:  # noqa: BLE001
+                pytest.skip("no Chromium: " + str(e).splitlines()[0])
+        text, html, errs = _board_page(b, RATES, INP, MIX_LONG)
+        assert not errs, errs
+        # both cards, side by side, with their strength bar (hand-counted from INP: 2 long items, 1 short)
+        assert 'class="hm-bcard hm-bl' in html and 'class="hm-bcard hm-bs' in html
+        assert html.count('class="hm-bbar') == 2 and 'data-n="2"' in html and 'data-n="1"' in html
+        assert "LONG" in text and "SHORT" in text
+        # rate of the LONG mix (home+grid+vfi15) = 118 of 212 = 55.7 %; the SHORT mix is empty-agree = "none" (n 12, below 30)
+        assert "n 212" in text and "56 %" in text
+        assert "NO RATE" not in text.split("SHORT", 1)[0]
+        assert "n 12" in text and "LOW N" in text
+        # old banners are gone
+        assert "BOTH SIDES" not in text and "BOTH SIDES" not in (HERE / "live_aid.html").read_text(encoding="utf-8")
+        assert "BOTH SIDES" not in (HERE / "home.js").read_text(encoding="utf-8")
+        # no rates file on this machine: the board still draws and says NO RATE
+        text2, html2, errs2 = _board_page(b, None, INP, MIX_LONG)
+        assert not errs2, errs2
+        assert text2.count("NO RATE") == 2 and 'class="hm-bcard hm-bl' in html2
+        # no inputs at all: both cards say nothing live, no crash
+        text3, _, errs3 = _board_page(b, None, {}, None)
+        assert not errs3 and "nothing live" in text3
+        b.close()
