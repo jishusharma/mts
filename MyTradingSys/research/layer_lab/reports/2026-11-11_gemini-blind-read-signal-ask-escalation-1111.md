@@ -1,6 +1,6 @@
 COUNTS: MATCH=4 DIFF=1 NOT_IN_DATA=0
 
-Independent blind read of ask lifecycle, deadlines, and escalation in [`scripts/dev/mts_signal.py`](file:///F:/MTS/gq/gemini-blind-read-signal-ask-escalation-1111/scripts/dev/mts_signal.py) and [`scripts/dev/test_mts_signal.py`](file:///F:/MTS/gq/gemini-blind-read-signal-ask-escalation-1111/scripts/dev/test_mts_signal.py).
+Independent blind read of ask lifecycle, deadlines, and escalation in [`scripts/dev/mts_signal.py`](../../../../scripts/dev/mts_signal.py) and [`scripts/dev/test_mts_signal.py`](../../../../scripts/dev/test_mts_signal.py).
 
 | # | Clause | Status | Code & Test Evidence (`file:line` + quote) | SOURCED / OURS Analysis |
 |---|---|---|---|---|
