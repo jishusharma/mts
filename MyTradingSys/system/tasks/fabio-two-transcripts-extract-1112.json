@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/analyst_video_status_1112/count_status.py"
+  ],
+  "created": "2026-11-11T20:53:46Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/orderflow_extracts_1112/extract_9IliXww64uM.md and extract_DyS79Eb92Ug.md with ledger quotes_verified=PASS; count_status.py shows Fabio transcript_no_extract 0.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the Fabio gap: every Fabio transcript on disk has a verified extract.",
+  "id": "fabio-two-transcripts-extract-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: 10 order-flow extracts verified (exit 0 each), 83 SOURCED rules in ORDERFLOW_RULES",
+      "ref": "d9b74c5a1ee1",
+      "utc": "2026-11-11T20:39:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:53:48Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/orderflow_extracts_1112/ (2 new files, draft append)"
+  ],
+  "scope_out": [
+    "network fetches"
+  ],
+  "scope_sha": "d9b74c5a1ee1",
+  "size": "S",
+  "sources": [
+    "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read both transcripts (live-session captions, no speaker labels: quote only Fabio-attributable lines)",
+    "Write extracts; rules into ORDERFLOW_RULES_DRAFT.md",
+    "Run build_ledger.py and analyst_video_status_1112/count_status.py"
+  ],
+  "tests": "verify exit nonzero on altered copy first",
+  "title": "Extract the 2 Fabio Valentini transcripts on disk with no extract: 9IliXww64uM and DyS79Eb92Ug (order-flow idea only)",
+  "weight": "",
+  "worker": "agent"
+}
