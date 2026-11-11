@@ -285,16 +285,24 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
 
 def rebuild_dashboard(run=subprocess.run):
     """Refresh market data, then rebuild the v5 CBP Analyst Desk board (cbp_v2/cbp_board.html).
-    Each step is best effort: a failure here never fails the run, and the build runs on the last data."""
+    Each step is best effort: a failure here never fails the run, and the build runs on the last data.
+    Returns the names of tools that failed (non-zero exit or exception) so the run log says which one."""
     tools = CBP_HOME / "cbp_v2" / "tools"
+    failed = []
     for name in ("fetch_board_data.py", "build_board.py"):
         tool = tools / name
         if tool.is_file():
             try:
-                run([sys.executable, str(tool)], check=False)
+                res = run([sys.executable, str(tool)], check=False)
+                rc = getattr(res, "returncode", 0)
+                if isinstance(rc, int) and rc != 0:
+                    print("cbp: %s exit %d; board built on stale data" % (name, rc))
+                    failed.append(name)
             except Exception as e:  # noqa: BLE001
                 print("cbp: " + name + " failed: " + str(e))
+                failed.append(name)
     announce_republish()
+    return failed
 
 
 def announce_republish(out=print, ask=None, login=None, reg=None):
