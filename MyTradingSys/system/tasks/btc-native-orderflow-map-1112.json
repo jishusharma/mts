@@ -1,35 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/verdicts.py backfill"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T20:02:31Z",
+    "misses": 31,
+    "reads": [
+      "scripts/dev/fetch_captions_timed.py",
+      "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/backtest/fetch_binance_archive.py",
+      "MyTradingSys/backtest/layers/fabio/of_backfill.py",
+      "MyTradingSys/system/ROUTING.md",
+      "scripts/dev/gemini_queue.py",
+      "scripts/dev/fetch_captions.py"
+    ],
+    "session": "agent-afe593fcda67d0261"
+  },
   "created": "2026-11-11T19:46:46Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "btc-of-map-clocks-1112",
+    "btc-of-map-prints-1112"
+  ],
+  "done_when": "MyTradingSys/research/btc_orderflow_map_1112/RESULT.md has a table of BTC clocks vs events (same numbers as CLOCKS.md and PRINTS.md), a VERDICTS.csv row appended (verdicts.py backfill), and either a frozen rule in PAPER_SLOT.md (entry, stop, fee 0.05%/side, params_id) or NOT_IN_DATA.md listing the missing feed.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Assemble steps 1-3 into one BTC order-flow map and decide the next move: one frozen rule queued as a paper slot, or NOT_IN_DATA naming the missing feed. Tom/Fabio supply the idea only.",
   "id": "btc-native-orderflow-map-1112",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Original one-session scope split 1/4..4/4 by planner-edge-cards-1112 (DECISION OURS: four small cards). Earlier CVD results stand, not repeated.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
+  "scope_in": [
+    "MyTradingSys/research/btc_orderflow_map_1112/RESULT.md (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/PAPER_SLOT.md (new, if a rule survives)",
+    "MyTradingSys/research/btc_orderflow_map_1112/NOT_IN_DATA.md",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "clocks.py and prints.py (frozen)",
+    "live tree",
+    "testnet orders (paper only)"
+  ],
+  "size": "S",
+  "sources": [
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z"
+  ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "BTC-native order-flow map: from Tom/Fabio take only the order-flow IDEA (who is forced, where size trades), not their candle-close/settlement clocks. Using BTC data only (aggTrades from data.binance.vision, 1m taker delta, OI, funding, liquidation feeds where public), measure how BTC actually trades: its own session/funding/settlement clocks, where large prints and absorption cluster, what follows forced flow; descriptive first, fee-net, DEV/gap/VALIDATION, pre-reg before results. Done when: research/btc_orderflow_map_1112/ has PREREG.md, RESULT.md with a table of BTC clocks vs events and at least one frozen rule queued as a paper slot or NOT_IN_DATA listing the missing feed.",
+  "steps": [
+    "Read CLOCKS.md and PRINTS.md; copy tables into RESULT.md unchanged, one headline per table: effect, n, VALIDATION sign",
+    "A rule goes to PAPER_SLOT.md only if DEV and VALIDATION agree in sign and |z|>=2 vs placebo; else write NOT_IN_DATA.md (liquidation history: no public feed) and call it FAIL or NOT_IN_DATA",
+    "Run verdicts.py backfill for the row"
+  ],
+  "tests": "Docs card: checker is a grep that RESULT.md holds both child tables and PAPER_SLOT.md or NOT_IN_DATA.md exists; with both files absent it must fail first.",
+  "title": "BTC order-flow map 4/4: assemble clocks and prints, one paper slot or NOT_IN_DATA (Tom/Fabio give the idea only)",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

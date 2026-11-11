@@ -1,0 +1,83 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T20:20:37Z",
+  "commands": [
+    "python scripts/dev/verdicts.py check \"btc order flow clock absorption forced flow\"",
+    "python scripts/dev/prereg_context_lint.py MyTradingSys/research/btc_orderflow_map_1112/PREREG.md"
+  ],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-11-11T20:12:03Z",
+    "misses": 32,
+    "reads": [
+      "scripts/dev/prereg_gate.py",
+      "scripts/dev/prereg_context_lint.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/backtest/fetch_binance_archive.py"
+    ],
+    "session": "agent-a387eb4d850c4aa27"
+  },
+  "created": "2026-11-11T19:59:31Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md has sections Context, Events, Clocks (BTC own: funding 00/08/16Z, UTC hour, weekday, Asia/EU/US sessions), Splits (DEV to 2024-06-30, VALIDATION 2024-07-01..2025-06-30, HOLDOUT sealed), Fee 0.05%/side; prereg_gate.py and prereg_context_lint.py exit 0; DATA_INVENTORY.md has one row per feed marked LOCAL, FETCHABLE or NOT_IN_DATA.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Freeze before any result what the BTC-native order-flow map measures, on which data and splits, so cards 2-4 cannot tune after looking. Order-flow idea only from Tom/Fabio; no index-futures clock is carried to BTC.",
+  "id": "btc-of-map-prereg-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "PREREG.md + DATA_INVENTORY.md shipped (082d8bccf)",
+      "ref": "cee5a6f86",
+      "utc": "2026-11-11T20:20:37Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "btc-of-map-clocks-1112",
+  "note": "Step 1/4 of btc-native-orderflow-map-1112. OURS: split dates follow SPLIT_ALIGNMENT_2026-10-17.md.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:01:20Z",
+  "refs": [],
+  "result": "PREREG.md + DATA_INVENTORY.md shipped (082d8bccf)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/DATA_INVENTORY.md (new)"
+  ],
+  "scope_out": [
+    "any result, return or count of an event",
+    "product code",
+    "Dumps/ downloads"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
+    "MyTradingSys/research/fabio_cvd_2026-10-30/RESULT.md",
+    "MyTradingSys/research/edge_views_2026-11-11/README.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read fabio_cvd_2026-10-30/RESULT.md, orderflow_views_2026-10-14/RESULT.md (U7 price drift, U8 absorption fails) and edge_views_2026-11-11/README.md; list what is NOT repeated in Context",
+    "DATA_INVENTORY.md: rows for 1m klines+taker (F:/MTS/data/tom_raw/klines), aggTrades (data.binance.vision via fetch_binance_archive.py), metrics OI (local from 2025-09), fundingRate, forceOrder liquidations (no public history: NOT_IN_DATA); name path and date range actually on disk",
+    "PREREG.md: events (large print = top 0.1% trade size per day; absorption = delta extreme with <0.1% price move in 5 min; funding-minute window), outcomes (forward 15m/60m return net of 0.05%/side), each number SOURCED or OURS",
+    "Run verdicts.py check, prereg_gate.py --m auto, prereg_context_lint.py; paste outputs; exit 1 = say why the hypothesis differs, do not freeze"
+  ],
+  "taken": "2026-11-11T20:20:37Z",
+  "tests": "Docs card: checkers are prereg_context_lint.py and prereg_gate.py; run lint on a PREREG.md with Context removed first, expect exit 1, then exit 0 on the real one.",
+  "title": "BTC order-flow map 1/4: PREREG and data inventory",
+  "weight": "",
+  "worker": "agent"
+}

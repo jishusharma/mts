@@ -238,6 +238,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     <div class="hd"><h2>US open: if up, if down</h2><span class="src" title="Levels known at the open: UTC-day-so-far high/low, prior day, prior 3 days, prior 7 days, and the first-15-min opening range: OURS. Odds = MEASURED base rates, Binance BTCUSDT 1m 2022-01..2026-09, 1230 weekdays: how often a level that far from the open price was reached in the first 2 h, and how often the close 60 min after the first touch was still beyond it. No fees, no entries.">MEASURED</span><span class="age" id="age-uo">--</span></div>
     <div class="vrow"><span class="huge" id="uo-when">--</span><span class="sub" id="uo-box"></span></div>
     <div class="scroll"><table><thead><tr><th>If price goes</th><th>Level</th><th>Price</th><th>Distance</th><th>Reached in the 2 h after the open</th><th>Still beyond it 60 min after the touch</th></tr></thead><tbody id="uo-rows"></tbody></table></div>
+    <span class="tag" id="uo-first3"></span>
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
 
@@ -859,6 +860,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
     var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
     $('uo-when').textContent = when;
+    $('uo-first3').textContent = brRow('us_open_first3m') ? A.first3Line(brRow('us_open_first3m').table) : '';
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
       (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded' + brWin('us_open_levels');
     if (!isFinite(px)) { tb.innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }

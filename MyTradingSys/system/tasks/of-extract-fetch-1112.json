@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom <ids from ORDERFLOW_QUEUE.md>"
+  ],
+  "created": "2026-11-11T19:59:39Z",
+  "depends_on": [
+    "of-extract-queue-1112"
+  ],
+  "done_when": "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md has one row per id (OK, EXISTS, DEFERRED, BLOCKED or NO_CAPTIONS) with UTC; a BLOCKED row names the retry time from --status; at most 5 network fetches in the run.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fetch captions through the guarded fetcher for the newest Tom uploads since 2026-11-04 and the top 5 TO_FETCH priority ids; stop at the first 429.",
+  "id": "of-extract-fetch-1112",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Guard lockout 6/24/72 h, never evade. Extraction of fetched ids is a later wave.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md (new)",
+    "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md (read)"
+  ],
+  "scope_out": [
+    "proxy, VPN, cookies or any path around a 429",
+    "scripts/dev/fetch_captions*.py",
+    "raw_transcripts_canonical content (git-ignored)"
+  ],
+  "size": "S",
+  "sources": [
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
+    "scripts/dev/fetch_captions_timed.py"
+  ],
+  "state": "raw",
+  "steps": [
+    "Run --status; if BLOCKED write the retry time to FETCH_LOG.md and stop",
+    "Newest Tom: fetch_captions_timed.py --channel with --latest 3 --scan 12 (handle from the CBP channel list); then the top 5 TO_FETCH ids, one run, max 5 videos",
+    "On the first 429 stop and log BLOCKED; ids without captions go to a Gemini-lane list in FETCH_LOG.md, no ASR here"
+  ],
+  "tests": "Run card: FETCH_LOG.md is the test; git diff outside scope_in must be empty.",
+  "title": "Extraction backlog 3/3a: guarded caption fetch, newest Tom and top priority ids",
+  "weight": "",
+  "worker": "agent"
+}

@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/btc_orderflow_map_1112/clocks.py --split dev",
+    "python -m pytest MyTradingSys/research/btc_orderflow_map_1112/test_clocks.py -q"
+  ],
+  "created": "2026-11-11T19:59:33Z",
+  "depends_on": [
+    "btc-of-map-prereg-1112"
+  ],
+  "done_when": "MyTradingSys/research/btc_orderflow_map_1112/clocks.py and test_clocks.py exist and pytest passes; MyTradingSys/research/btc_orderflow_map_1112/CLOCKS.md has one table of BTC clocks (24 UTC hours, 3 funding windows, 7 weekdays) with n, delta share, mean abs return bp, fwd 60m net bp, DEV only; VALIDATION run once after freeze goes in a second table.",
+  "est_turns": 18,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure BTC own clocks on DEV only from 1m taker delta: where in the UTC day/week and around funding (00/08/16Z) delta, volume and absolute return concentrate, and what the next 15/60 min does, fee-net.",
+  "id": "btc-of-map-clocks-1112",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Data is on the desktop F:/MTS (JIS-NB); run there or fetch klines with fetch_binance_archive.py. No tuning on VALIDATION. DECISION (OURS) 2026-11-12: DATA_INVENTORY.md shows complete 1m only 2022-01-01..2024-05-31 (1,270,080 bars); DEV = that range, any June 2024 gap is reported as missing, not filled. PREREG.md is frozen (shipped 082d8bccf).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:20:46Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_orderflow_map_1112/clocks.py (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/test_clocks.py (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/CLOCKS.md (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/results_clocks.json (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (read); DATA_INVENTORY.md (read)"
+  ],
+  "scope_out": [
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (frozen)",
+    "HOLDOUT 2025-07 onward (never opened)",
+    "Tom/Fabio index-futures clocks",
+    "live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
+    "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py",
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md; DATA_INVENTORY.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Load F:/MTS/data/tom_raw/klines BTCUSDT-1m-*.csv; DEV = 2022-01-01..2024-06-30 only; delta = 2*taker_buy - volume (as cvd_u7_u8.py)",
+    "Per clock bucket compute n, delta/volume, mean abs return bp, forward 60m return minus 10 bp round-trip fee; placebo = same buckets on shuffled day labels, report z",
+    "After PREREG freeze run VALIDATION once with the same code; write both tables; mark cells with |z|<2 as noise"
+  ],
+  "tests": "test_clocks.py: synthetic 1m series with delta injected only at 08:00Z must put the top bucket at hour 8 and a shuffled-label placebo must not; fails before clocks.py exists.",
+  "title": "BTC order-flow map 2/4: BTC own clocks from 1m taker delta (DEV)",
+  "weight": "",
+  "worker": "session"
+}
