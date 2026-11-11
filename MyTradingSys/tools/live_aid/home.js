@@ -7,7 +7,7 @@
   'use strict';
   var REG = (typeof module !== 'undefined' && module.exports) ? require('./level_registry.js') : root.LEVELREG;
   var BIG_PRINT = 250000, BURST_1M = 1000000, TOUCH = 0.0005, NEWS_HI = 7, NEWS_FRESH = 180000;   // OURS
-  var FLASH_MS = { news: 90000, liq: 60000, touch: 45000, setup: 180000, idea: 300000 };
+  var FLASH_MS = { news: 90000, liq: 60000, touch: 45000 };
   var VOTE_NAMES = ['Analysts', 'Price vs day average', 'RSI 1h', 'RSI 4h', 'Breakout', 'Playbook'];
   var WORDS = { PDH: 'Yesterday high', PDL: 'Yesterday low', PDC: 'Yesterday close', PWH: 'Last week high', PWL: 'Last week low', DO: 'Day open',
                 WO: 'Week open', WH: 'Week high', WL: 'Week low', VAL: 'Yesterday value low', POC: 'Yesterday busiest price', VAH: 'Yesterday value high', DH: 'Today high', DL: 'Today low', VWAP: 'Day average price' };
@@ -59,30 +59,12 @@
       if (e.usd >= BIG_PRINT && now - e.t <= 60000) add('l' + e.t + e.usd, 'liq', e.side === 'long' ? 'down' : 'up', usd(e.usd) + ' of ' + (e.side === 'long' ? 'LONGS' : 'SHORTS') + ' forced out at ' + n0(e.px));
     });
     if (l.m1 && l.m1.long + l.m1.short >= BURST_1M) add('b' + Math.floor(now / 60000), 'liq', l.m1.long >= l.m1.short ? 'down' : 'up', 'LIQUIDATION BURST: ' + usd(l.m1.long + l.m1.short) + ' in 1 min, mostly ' + (l.m1.long >= l.m1.short ? 'longs' : 'shorts'));
-    var PU = (typeof module !== 'undefined' && module.exports) ? require('./pulse.js') : root.LAPULSE;
-    var su = ctx.setup !== undefined ? ctx.setup : (PU && ctx.pulse ? PU.setup(ctx.pulse, md.lad, md.px, md.dir) : null);
-    // ideas at two levels pointing opposite ways cancel: no flash (operator 11-10: buy flashes that turned into shorts)
-    var ideas = (stories(ctx, md) || []).filter(function (st) { return st && st.idea; }), mixed = ideas.some(function (st) { return st.idea !== ideas[0].idea; });
-    (mixed ? [] : ideas.slice(0, 1)).forEach(function (st) { var ik = 'i' + st.idea + Math.round(st.price) + st.state + Math.floor(now / 900000);
-      if (!FL.seen[ik]) FL.list = FL.list.filter(function (f) { return f.kind !== 'idea'; });
-      add(ik, 'idea', st.idea === 'SHORT' ? 'down' : 'up', st.idea + ' IDEA (coin flip so far): ' + st.why + ' (' + st.ev.filter(function (e) { return e.cls === (st.state === 'ACCEPTED' ? 'thru' : 'turn'); }).map(function (e) { return e.t; }).slice(0, 3).join(', ') + '). ' + st.valid + ' (your call)'); });
-    if (su) add('s' + su.side + Math.round(su.level) + Math.floor(now / 900000), 'setup', su.side === 'SHORT' ? 'down' : 'up', su.side + ' SETUP FORMING: ' + su.why.join('; ') + ' (your call)');
+    // IDEA / SETUP banners and the both-sides line are gone (card live-aid-board-render-1111): the two-sided board card shows both sides at once.
     if (md.px > 0) md.zones.forEach(function (z) {
       if (Math.abs(md.px / z.price - 1) <= TOUCH) add('t' + Math.round(z.price) + Math.floor(now / 900000), 'touch', 'amber', 'TOUCHING ' + z.name + ' ' + n0(z.price));
     });
     FL.list = FL.list.filter(function (f) { return now - f.t <= FLASH_MS[f.kind]; });
-    // one call or none (operator 11-11, screenshot: LONG SETUP + LONG IDEA + SHORT SETUP at the same level at once): when the direction
-    // flashes still on screen point both ways, show one amber NO CALL line instead of them. Review 2026-11-11: 58 % of these flags were
-    // followed by an opposite one within 30 min and they were right 47-51 % of the time (research/live_aid_review_2026-11-11).
-    var isDir = function (f) { return f.kind === 'idea' || f.kind === 'setup'; }, dirs = FL.list.filter(isDir);
-    var both = dirs.some(function (f) { return f.cls === 'up'; }) && dirs.some(function (f) { return f.cls === 'down'; });
-    var nz = md.lad && (md.lad.at || [md.lad.above[0], md.lad.below[0]].filter(Boolean).sort(function (a, b) { return Math.abs(md.px - a.price) - Math.abs(md.px - b.price); })[0]);
-    // nothing is dropped (operator 11-11: "make sure I do not miss any long setup"): the one line carries the LONG case and the SHORT case, newest of each
-    var caseOf = function (cls) { var f = dirs.filter(function (x) { return x.cls === cls; }).pop(); return f ? f.text.replace(/^[A-Z ]+(\(coin flip so far\))?: /, '').replace(/ \(your call\)$/, '') : ''; };
-    var lc = caseOf('up'), sc = caseOf('down'), at = nz ? ' at ' + nz.name + ' ' + n0(nz.price) : '';
-    var shown = !both ? FL.list : FL.list.filter(function (f) { return !isDir(f); }).concat([{ k: 'mixed', kind: 'mixed', cls: 'amber', t: now,
-      text: 'BOTH SIDES' + at + ', no call yet. LONG case: ' + lc + ' | SHORT case: ' + sc + ' | a 15m close away from the level decides',
-      html: '<b>BOTH SIDES' + esc(at) + ', no call yet</b> <span class="fl-c up">▲ LONG case: ' + esc(lc) + '</span> <span class="fl-c down">▼ SHORT case: ' + esc(sc) + '</span> <i>a 15m close away from the level decides</i>' }]);
+    var shown = FL.list;
     var out = shown.slice(-3).reverse(), fb = root.document && root.document.getElementById('flash');
     if (fb) { fb.innerHTML = out.map(function (f) { return '<div class="fl ' + f.cls + '">' + (f.html || esc(f.text)) + '</div>'; }).join(''); fb.classList.toggle('on', out.length > 0); }
     return out;
@@ -319,6 +301,63 @@
     var id2 = v.filter(function (st) { return st && st.idea; }), mx = id2.length > 1 && id2.some(function (st) { return st.idea !== id2[0].idea; });
     return '<div class="hm-card"><div class="hm-h">At the level ' + (mx ? '<b class="amber" style="font-size:13px">MIXED: levels disagree, no idea</b>' : '') + '<span class="hm-sub" title="Read on 15m closes. Green chip = evidence for a turn, red = for going through. Measured over 180 days: ideas right 49 % (n 2,852), a coin flip, not an edge (research/level_story_1110).">15m closes · measured 49 % right: a coin flip</span></div>' + (rows || '<div class="hm-nid">no level near</div>') + '</div>';
   }
+  // ---------- two-sided setup board (card live-aid-board-render-1111) ----------
+  // LONG card and SHORT card side by side from setup_board.js (a plain count of live evidence per side; no weight, no probability),
+  // a strength bar per side, and the n and hit rate of the CURRENT evidence mix from BASE_RATES.setup_board_mix (history, in-sample, no fees).
+  // No rates file = "NO RATE". The percent is only ever copied from that table, never made up here. Observation only.
+  var SB = (typeof module !== 'undefined' && module.exports) ? require('./setup_board.js') : root.LASB;
+  var READINGS = ['home', 'grid', 'adx15', 'adx1h', 'vfi15', 'wt30'];   // same six, same order as base_rates.py READINGS
+  var LAYER_WORDS = { rsi_div: 'RSI divergence', wt_div: 'WaveTrend divergence', cvd_div: 'Buyer/seller flow divergence', bb_cvd: 'Outside the band, flow exhausted',
+    sweep: 'Swept stops and closed back', absorb: 'Absorption', vfi: 'Volume flow', sqz_release: 'Squeeze released', adx_di: 'Trend (ADX/DI)', value_area: 'Value area' };
+  function sg(x) { return typeof x === 'number' && isFinite(x) ? (x > 0 ? 1 : x < 0 ? -1 : 0) : 0; }
+  // Layer inputs per timeframe from what Home already computes (indicator table). Divergence, sweep, absorption and band readings are not
+  // wired here yet: they simply do not appear (nothing invented). ctx.boardInputs overrides (tests, later wiring).
+  function boardInputs(ctx) {
+    if (ctx.boardInputs) return ctx.boardInputs;
+    var T = ctx.ind, out = {};
+    if (!T || !T.r) return out;
+    (T.tfs || []).forEach(function (x) {
+      var R = T.r[x[0]]; if (!R || !R.cells) return;
+      var c = R.cells, o = {};
+      if (c.vfi && c.vfi.v != null) o.vfi = { v: c.vfi.v };
+      if (c.sqz && c.sqz.v != null) o.sqz = { rel: c.sqz.rel, v: c.sqz.v };
+      if (c.adx && c.adx.v != null) o.adx = { v: c.adx.v };
+      out[x[0]] = o;
+    });
+    return out;
+  }
+  // The six readings of the review as +1 / -1 / 0; null when any cannot be read now (then no rate). ctx.mix overrides.
+  function mixReadings(ctx, md) {
+    if (ctx.mix) return ctx.mix;
+    var T = ctx.ind, r = T && T.r, g = ctx.pulse, hi = g && isFinite(g.hi) ? g.hi : NaN, w = ctx.lanes && ctx.lanes['30m'];
+    var cell = function (tf, k) { var R = r && r[tf]; return R && R.cells && R.cells[k] && R.cells[k].v != null ? R.cells[k].v : null; };
+    var m = { home: md.dir === 'LONG' ? 1 : md.dir === 'SHORT' ? -1 : 0, grid: !isFinite(hi) ? null : hi >= 0.25 ? 1 : hi <= -0.25 ? -1 : 0,
+      adx15: cell('15m', 'adx'), adx1h: cell('1h', 'adx'), vfi15: cell('15m', 'vfi'), wt30: w && w.side != null ? w.side : null };
+    return READINGS.some(function (k) { return m[k] === null; }) ? null : m;
+  }
+  function rateRow(side, mix) {
+    var tb = typeof BASE_RATES !== 'undefined' && BASE_RATES && BASE_RATES.setup_board_mix && BASE_RATES.setup_board_mix.table;
+    if (!tb || !tb.rows || !mix) return null;
+    var s = side === 'LONG' ? 1 : -1, key = READINGS.filter(function (k) { return s * sg(mix[k]) > 0; }).join('+') || 'none';
+    for (var i = 0; i < tb.rows.length; i++) if (tb.rows[i].side === side && tb.rows[i].mix === key) return tb.rows[i];
+    return null;
+  }
+  function boardCard(ctx, md) {
+    var B = null;
+    try { B = SB ? SB.board(boardInputs(ctx)) : null; } catch (e) { B = null; }
+    if (!B) return '<div class="hm-card"><div class="hm-h">Setup board</div><div class="hm-nid">setup_board.js NOT_IN_DATA</div></div>';
+    var mix = mixReadings(ctx, md), mx = Math.max(B.strength.long, B.strength.short, 4);
+    var card = function (side, cls) {
+      var key = side.toLowerCase(), items = B[key], n = B.strength[key], r = rateRow(side, mix);
+      var list = items.map(function (it) { return '<li><b>' + esc(it.tf) + '</b> ' + esc(LAYER_WORDS[it.layer] || it.layer) + '</li>'; }).join('');
+      var rate = r ? 'n ' + n0(r.n) + ' · right ' + Math.round(r.rate * 100) + ' % 1h later' + (r.low_n ? ' <b class="amber">LOW N</b>' : '') + ' <small>' + esc(r.window) + ', in-sample, no fees</small>'
+        : '<span class="dim">NO RATE</span>';
+      return '<div class="hm-bcard hm-b' + key[0] + ' ' + cls + '"><div class="hm-h"><b class="' + cls + '">' + side + '</b><span class="hm-sub">' + n + ' live</span></div>' +
+        '<div class="hm-bbar ' + cls + '" data-n="' + n + '"><span style="width:' + Math.round(n / mx * 100) + '%"></span></div>' +
+        (list ? '<ul class="hm-bl2">' + list + '</ul>' : '<div class="hm-nid">nothing live</div>') + '<div class="hm-brate">' + rate + '</div></div>';
+    };
+    return '<div class="hm-board">' + card('LONG', 'up') + card('SHORT', 'down') + '</div>';
+  }
   // One Bias line (operator 11-10: gauge SHORT 5 of 5 while two LONG SETUP banners said "big picture up" and the level card said MIXED).
   // Names the three clocks, which one wins (OURS: the shortest clock governs the next 15m close, the 1h-4h lean is the backdrop; the level
   // card only breaks a tie), then the two 15m-close lines. Observation only: no order, size or entry wording.
@@ -349,7 +388,7 @@
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
     var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
     ctx._tm = timingOf(ctx, md);
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + timingStrip(ctx._tm) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + biasLine(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + timingStrip(ctx._tm) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -359,7 +398,7 @@
     '.hm-lv{stroke-width:1;stroke-dasharray:5 4;opacity:.75}.hm-lv.multi{stroke-width:2;stroke-dasharray:none;opacity:.6}.hm-lv.up{stroke:var(--up)}.hm-lv.down{stroke:var(--down)}' +
     '.hm-sc{stroke-width:3;opacity:.9}.hm-sc.up{stroke:var(--up)}.hm-sc.down{stroke:var(--down)}.hm-sct{font:700 12px system-ui}.hm-sct.up{fill:var(--up)}.hm-sct.down{fill:var(--down)}.hm-lead{stroke:var(--dim);stroke-width:.5}.hm-lt{font:12px system-ui;fill:var(--fg)}.hm-lt.up .hm-lp{fill:var(--up)}.hm-lt.down .hm-lp{fill:var(--down)}.hm-lp{font:700 12px var(--mono,monospace)}' +
     '.hm-uo{stroke:#60a5fa;stroke-width:2}.hm-uot{fill:#60a5fa;font:700 12px system-ui}.hm-now{stroke:var(--amber);stroke-width:1;stroke-dasharray:2 3}.hm-tag{fill:var(--amber)}.hm-tagt{fill:#111;font:700 12px var(--mono,monospace)}' +
-    '.hm-rail{display:grid;grid-template-rows:auto auto auto auto auto auto 1fr;gap:6px;min-height:0;overflow:hidden}.hm-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:0;overflow:hidden}' +
+    '.hm-rail{display:grid;grid-template-rows:auto auto auto auto auto auto auto 1fr;gap:6px;min-height:0;overflow:hidden}.hm-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:0;overflow:hidden}' +
     '.hm-h{display:flex;gap:8px;align-items:baseline;font:600 13px system-ui;flex-wrap:wrap}.hm-h b{font:700 20px var(--mono,monospace)}.hm-sub{font:11px system-ui;color:var(--dim)}.up{color:var(--up)}.down{color:var(--down)}.dim{color:var(--dim)}' +
     '.hm-g{width:100%;max-height:78px}.hm-arc{fill:none;stroke-width:14}.hm-arc.up{stroke:var(--up)}.hm-arc.down{stroke:var(--down)}.hm-arc.dim{stroke:var(--line)}.hm-needle{stroke:var(--fg);stroke-width:3;stroke-linecap:round}.hm-hub{fill:var(--fg)}.hm-gl{font:700 12px system-ui}.hm-gl.up{fill:var(--up)}.hm-gl.down{fill:var(--down)}' +
     '.hm-vcs{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px}.hm-vc i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;background:var(--dim)}.hm-vc.up i{background:var(--up)}.hm-vc.down i{background:var(--down)}.hm-vc.nid i{background:transparent;border:1px dashed var(--dim)}.hm-vc{color:var(--fg)}' +
@@ -394,9 +433,12 @@
     '.hm-tl.up{background:var(--up)}.hm-tl.down{background:var(--down);color:#fff}.hm-tl.amber{background:var(--amber)}.hm-tl.dim{color:var(--fg)}.hm-tl.tln{opacity:.4}.hm-tl.tly{outline:2px solid var(--fg);outline-offset:-2px}' +
     '.hm-wtw{font:12px system-ui;fill:var(--fg)}.hm-wtw.up{fill:var(--up)}.hm-wtw.down{fill:var(--down)}.hm-wtn{font:700 12px var(--mono,monospace)}' +
     '#flash{display:none;gap:6px;flex-direction:column}#flash.on{display:flex}#flash .fl{padding:6px 12px;border-radius:6px;font:700 15px system-ui;color:#111;animation:hmfl 1s ease-in-out 6}#flash .fl.up{background:var(--up)}#flash .fl.down{background:var(--down);color:#fff}#flash .fl.amber{background:var(--amber)}' +
+    '.hm-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.hm-bcard{box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-width:0;overflow:hidden}.hm-bcard.up{border-color:var(--up)}.hm-bcard.down{border-color:var(--down)}' +
+    '.hm-bbar{height:8px;border-radius:4px;background:var(--line);margin:3px 0}.hm-bbar span{display:block;height:100%;border-radius:4px}.hm-bbar.up span{background:var(--up)}.hm-bbar.down span{background:var(--down)}' +
+    '.hm-bl2{margin:0;padding-left:14px;font-size:11px;max-height:64px;overflow:hidden}.hm-brate{font-size:11px;margin-top:3px}.hm-brate small{color:var(--dim);font-size:10px}' +
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
-  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine };
+  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

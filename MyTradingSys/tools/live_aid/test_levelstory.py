@@ -191,11 +191,10 @@ def _flash_kinds(ideas):
     return json.loads(out.stdout)
 
 
-def test_opposite_ideas_at_two_levels_raise_no_flash():
-    # operator 2026-11-10 screenshot: LONG idea at 74,816 and SHORT idea at 74,950 at the same moment = noise
+def test_ideas_raise_no_flash_banner():
+    # card live-aid-board-render-1111: IDEA banners are gone from the flash bar (the board card shows both sides instead)
     assert _flash_kinds(["LONG", "SHORT"]) == []
-    # operator 2026-11-10 (later): two SHORT banners for 74,816 and 74,850 were clutter; one banner, for the first (nearest) level
-    assert _flash_kinds(["SHORT", "SHORT"]) == ["idea"]
+    assert _flash_kinds(["SHORT", "SHORT"]) == []
 
 
 def _flash_seq(steps):
@@ -213,12 +212,7 @@ def _flash_seq(steps):
     return json.loads(out.stdout)
 
 
-def test_long_and_short_banners_never_show_together():
-    # operator 2026-11-11 screenshot: LONG SETUP + LONG IDEA + SHORT SETUP at Yesterday low, all on screen at once
-    got = _flash_seq([{"setup": "LONG"}, {"idea": "LONG"}, {"setup": "SHORT"}])
-    assert [g[:2] for g in got] == [["mixed", "amber"]], got
-    # nothing is lost: the one line names the level and carries both the LONG case and the SHORT case
-    assert "BOTH SIDES at Yesterday low" in got[0][2] and "LONG case: " in got[0][2] and "SHORT case: at Yesterday low" in got[0][2]
-    # reads that agree stay as they were
-    got = _flash_seq([{"setup": "LONG"}, {"idea": "LONG"}])
-    assert sorted(g[0] for g in got) == ["idea", "setup"] and {g[1] for g in got} == {"up"}
+def test_no_setup_or_both_sides_banner_ever():
+    # operator 2026-11-11: LONG SETUP / LONG IDEA / SHORT SETUP banners and the BOTH SIDES line are replaced by the board card
+    for steps in ([{"setup": "LONG"}, {"idea": "LONG"}, {"setup": "SHORT"}], [{"setup": "LONG"}, {"idea": "LONG"}]):
+        assert _flash_seq(steps) == [], steps
