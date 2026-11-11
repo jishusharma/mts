@@ -12,6 +12,8 @@ inside every ship and on demand.
   3. DISK: C: free space and its growth; below the threshold names the largest folders in the temp dir and the worktree dirs and deletes
      only this repo's own temp caches (OWN_TEMP_PREFIXES) older than a day.
   4. QUEUE: processor queue above 4 x CPUs: warn and name the top CPU consumers over a 10 s window.
+  5. TOOLCHAIN: java on PATH is JDK 17 (pom.xml) and the same as JAVA_HOME's, mvn and node found (2026-11-11: JIS-NUC had
+     JAVA_HOME set but its bin not on PATH, so every Java step was skipped and no check said so). Report only, with the fix.
 
 Never kills: the live trading system (.mts_live, live_runner_cli, loop-supervisor, start-trading-day), this process and its ancestors,
 another session's live ship (a gate with a live claude.exe / ship process above it). Fail closed: any error is logged to
@@ -416,8 +418,62 @@ def post_strays(repo, strays):
     return len(new)
 
 
-def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=None, queue=None, resnap=None):
-    """All four checks. Returns report lines. Each part is isolated: an error in one is logged and the rest still run.
+JDK_MAJOR = 17   # pom.xml maven.compiler target
+
+
+def java_major(version_line):
+    """'openjdk version "17.0.20.1" 2026-08-18 LTS' -> 17; 'java version "1.8.0_391"' -> 8; unparsable -> None."""
+    m = re.search(r'version "(\d+)(?:\.(\d+))?', version_line or "")
+    if not m:
+        return None
+    major = int(m.group(1))
+    return int(m.group(2) or 0) if major == 1 else major
+
+
+def _java_version(exe):
+    r = subprocess.run([exe, "-version"], capture_output=True, text=True, timeout=20,
+                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    return ((r.stderr or r.stdout).strip().splitlines() or [""])[0]
+
+
+def check_toolchain(which=shutil.which, env=None, version=_java_version, exists=os.path.exists):
+    """-> warning lines; empty when java on PATH is JDK 17 and the same as JAVA_HOME's, and mvn and node are found."""
+    env = os.environ if env is None else env
+    out = []
+    exe_name = "java.exe" if os.name == "nt" else "java"
+    home = (env.get("JAVA_HOME") or "").strip().strip('"')
+    home_java = os.path.join(home, "bin", exe_name) if home else ""
+    if home and not exists(home_java):
+        out.append(f"TOOLCHAIN JAVA_HOME={home} has no bin/{exe_name}: point it at a JDK {JDK_MAJOR}")
+        home_java = ""
+    path_java = which("java")
+    if not path_java:
+        fix = (f"add %JAVA_HOME%\\bin to the user PATH ({home_java} exists), then open a new shell" if home_java
+               else f"install JDK {JDK_MAJOR} and set JAVA_HOME")
+        out.append(f"TOOLCHAIN java not on PATH: Maven/Java steps cannot run; fix: {fix}")
+        probe = home_java
+    else:
+        probe = path_java
+        if home_java and os.path.normcase(os.path.realpath(path_java)) != os.path.normcase(os.path.realpath(home_java)):
+            out.append(f"TOOLCHAIN java on PATH ({path_java}) is not JAVA_HOME's ({home_java}): Maven uses JAVA_HOME, tests may use PATH")
+    if probe:
+        line = ""
+        try:
+            line = version(probe)
+        except Exception as e:   # fail closed: report, never raise
+            out.append(f"TOOLCHAIN java -version failed ({probe}): {e!r}"[:200])
+        major = java_major(line)
+        if line and major != JDK_MAJOR:
+            out.append(f"TOOLCHAIN java is {major or '?'} ({line[:60]}), pom.xml needs JDK {JDK_MAJOR}")
+    if not (which("mvn") or which("mvn.cmd")):
+        out.append("TOOLCHAIN mvn not on PATH: Maven builds cannot run")
+    if not which("node"):
+        out.append("TOOLCHAIN node not on PATH: the live_aid and aibridge JS tests cannot run")
+    return out
+
+
+def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=None, queue=None, resnap=None, toolchain=None):
+    """All five checks. Returns report lines. Each part is isolated: an error in one is logged and the rest still run.
     disk(repo) -> (lines, freed) and queue() -> lines default to check_disk / check_queue; tests inject stubs (the real disk scan hangs a test on a full C:)."""
     lines = []
     now = now or time.time()
@@ -501,6 +557,7 @@ def run(repo, reap=True, post=True, procs=None, kill=kill_tree, now=None, disk=N
     part("strays", strays)
     part("disk", lambda: (disk or check_disk)(repo)[0])
     part("queue", queue or check_queue)
+    part("toolchain", toolchain or check_toolchain)
     return lines
 
 
