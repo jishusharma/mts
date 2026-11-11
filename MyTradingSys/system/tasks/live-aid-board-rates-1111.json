@@ -2,6 +2,18 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T04:26:09Z",
+    "misses": 21,
+    "reads": [
+      "MyTradingSys/tools/live_aid/test_base_rates.py",
+      "MyTradingSys/tools/live_aid/base_rates.py",
+      "MyTradingSys/research/live_aid_review_2026-11-11/RESULT.md",
+      "MyTradingSys/tools/live_aid/setup_board.js"
+    ],
+    "session": "agent-ad67e4ebb1aee51fa"
+  },
   "created": "2026-11-11T02:53:28Z",
   "depends_on": [],
   "done_when": "base_rates_input/setup_board_rates.js exists with one row per mix having n and rate and window; a test recomputes two mixes by hand from a 10-row fixture and matches exactly; mixes with n below 30 are marked LOW_N; test fails before the writer exists.",
