@@ -238,6 +238,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     <div class="hd"><h2>US open: if up, if down</h2><span class="src" title="Levels known at the open: UTC-day-so-far high/low, prior day, prior 3 days, prior 7 days, and the first-15-min opening range: OURS. Odds = MEASURED base rates, Binance BTCUSDT 1m 2022-01..2026-09, 1230 weekdays: how often a level that far from the open price was reached in the first 2 h, and how often the close 60 min after the first touch was still beyond it. No fees, no entries.">MEASURED</span><span class="age" id="age-uo">--</span></div>
     <div class="vrow"><span class="huge" id="uo-when">--</span><span class="sub" id="uo-box"></span></div>
     <div class="scroll"><table><thead><tr><th>If price goes</th><th>Level</th><th>Price</th><th>Distance</th><th>Reached in the 2 h after the open</th><th>Still beyond it 60 min after the touch</th></tr></thead><tbody id="uo-rows"></tbody></table></div>
+    <span class="tag" id="uo-first3"></span>
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
 
@@ -278,7 +279,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   <section id="p-money">
     <div class="hd"><h2>What the money is doing</h2><span class="src" title="Price vs open interest per venue over 5 / 15 / 60 min. Six-state sentences, flat under 0.1 %, venues disagree at 0.2 % up vs 0.2 % down, FLUSH / SQUEEZE = a Bybit 5m bar with its wick 0.25 % past the previous close while OI falls 0.2 %, trapped line at OI +0.2 % since the event: OURS (spec fixed before use). Lines marked MEASURED come from C24 (Bybit 5m 07-02..10-30, oi_after_flush.py). Feeds SOURCED: Deribit ticker, Bybit tickers + REST open-interest, Binance fapi openInterest.">OURS + MEASURED</span><span class="tag" id="m-feeds"></span></div>
     <div class="vrow"><span class="huge" id="m-call">--</span><span class="sub" id="m-sub"></span></div>
-    <div class="scroll"><table><thead><tr><th>Window</th><th>Price</th><th>Deribit OI</th><th>Bybit OI</th><th>Binance OI</th><th>Gate OI</th><th>Hyperliquid OI</th><th>All venues OI</th><th>What it means</th></tr></thead><tbody id="m-rows"></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>Window</th><th>Price</th><th>Deribit OI</th><th>Bybit OI</th><th>Binance OI</th><th>Gate OI</th><th>Hyperliquid OI</th><th>OKX OI</th><th>Bitget OI</th><th>BitMEX OI</th><th>Kraken OI</th><th>BingX OI</th><th>HTX OI</th><th>MEXC OI</th><th>All venues OI</th><th>What it means</th></tr></thead><tbody id="m-rows"></tbody></table></div>
     <ul id="m-lines" class="it"></ul>
     <span class="tag">Says where positions are going, not where price goes next. Only lines marked MEASURED carry a base rate; no size, no orders.</span>
   </section>
@@ -405,7 +406,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
             trades: [], trT: 0, book: null, bookT: 0, oi: null, oiT: 0, oiHist: [], flowErr: '',
             liq: [], lq: { BYBIT: { t: 0, err: '' }, BINANCE: { t: 0, err: '' } }, byt: { d: null, t: 0 }, news: { items: [], t: 0, err: '' },
             tt: { pos: null, acc: null, t: 0, err: '' }, ph: { d1: null, w1: null, t: 0, err: '' },
-            om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, GATE: { live: [], rest: [], err: '' }, HYPERLIQUID: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
+            om: { DERIBIT: { live: [], rest: [], err: '' }, BYBIT: { live: [], rest: [], err: '' }, BINANCE: { live: [], rest: [], err: '' }, GATE: { live: [], rest: [], err: '' }, HYPERLIQUID: { live: [], rest: [], err: '' }, OKX: { live: [], rest: [], err: '' }, BITGET: { live: [], rest: [], err: '' }, BITMEX: { live: [], rest: [], err: '' }, KRAKEN: { live: [], rest: [], err: '' }, BINGX: { live: [], rest: [], err: '' }, HTX: { live: [], rest: [], err: '' }, MEXC: { live: [], rest: [], err: '' }, bars: [], barsT: 0, barsErr: '' } };
 
   function fmt(x, d) { return isFinite(x) ? x.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--'; }
   function sgn(x, d) { return isFinite(x) ? (x > 0 ? '+' : '') + fmt(x, d) : '--'; }
@@ -576,6 +577,27 @@ main>#p-pos:not(.off){flex:0 0 auto}
         var i = j[0].universe.map(function (u) { return u.name; }).indexOf('BTC'), c = i >= 0 ? j[1][i] : null; st.err = '';
         if (c && +c.openInterest > 0) omPush('HYPERLIQUID', +c.markPx, +c.openInterest, +c.openInterest); else st.err = 'Hyperliquid: BTC not in reply';
       }, function (e) { st.err = 'api.hyperliquid.xyz failed: ' + (e.name === 'AbortError' ? 'timeout' : e.message); });
+  }
+  // Venues the browser cannot reach (ISP DNS block) or that send no CORS headers come from MyTradingSys/tools/live_aid/oi_poller.py,
+  // which writes runtime_data/live_aid/oi_snapshot.js (window.LIVEAID_OI_SNAP). Reloaded every 30 s as a script tag (no CORS needed).
+  // A venue is used only when its own t is under 60 s old (A.oiSnapFresh); stale or missing = NOT_IN_DATA with the reason, never a guess.
+  var SNAP_VENUES = ['BINANCE', 'OKX', 'BITGET', 'BITMEX', 'KRAKEN', 'BINGX', 'HTX', 'MEXC'];
+  function applyOiSnap() {
+    var snap = window.LIVEAID_OI_SNAP, now = Date.now(), f = A.oiSnapFresh(snap, now, 60000);
+    SNAP_VENUES.forEach(function (v) {
+      var st = S.om[v], x = f[v], L = st.live, own = L.length && now - L[L.length - 1].t < 20000 && L[L.length - 1].snapT == null;
+      if (x) { st.snapErr = ''; if (!own && x.t !== st.snapT) { st.snapT = x.t; omPush(v, x.px, x.btc, x.btc); L[L.length - 1].snapT = x.t; } return; }
+      var e = snap && snap.venues && snap.venues[v];
+      st.snapErr = !snap ? 'oi_snapshot.js not loaded (start oi_poller.py)' : !e ? 'not in snapshot' : e.err ? e.err : 'snapshot older than 60 s';
+      if (!(own || (L.length && now - L[L.length - 1].t < A.OM.staleMs))) st.err = 'poller: ' + st.snapErr;
+    });
+  }
+  function loadOiSnap() {
+    var s2 = document.createElement('script');
+    s2.src = '../../../runtime_data/live_aid/oi_snapshot.js?_=' + Date.now();
+    s2.onload = function () { applyOiSnap(); s2.remove(); };
+    s2.onerror = function () { window.LIVEAID_OI_SNAP = null; applyOiSnap(); s2.remove(); };
+    document.head.appendChild(s2);
   }
   function loadBinanceOi(hist) {
     var st = S.om.BINANCE;
@@ -838,6 +860,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
     var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
     $('uo-when').textContent = when;
+    $('uo-first3').textContent = brRow('us_open_first3m') ? A.first3Line(brRow('us_open_first3m').table) : '';
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
       (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded' + brWin('us_open_levels');
     if (!isFinite(px)) { tb.innerHTML = '<tr><td colspan="6">' + NID + '</td></tr>'; return; }
@@ -1147,7 +1170,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   window.addEventListener('hashchange', route);
 
   // ---------- what the money is doing (maths in live_aid_indicators.js, spec OI_COMMENTARY_SPEC.md) ----------
-  var OMV = [['DERIBIT', 'Deribit'], ['BYBIT', 'Bybit'], ['BINANCE', 'Binance'], ['GATE', 'Gate'], ['HYPERLIQUID', 'Hyperliquid']];
+  var OMV = [['DERIBIT', 'Deribit'], ['BYBIT', 'Bybit'], ['BINANCE', 'Binance'], ['GATE', 'Gate'], ['HYPERLIQUID', 'Hyperliquid'], ['OKX', 'OKX'], ['BITGET', 'Bitget'], ['BITMEX', 'BitMEX'], ['KRAKEN', 'Kraken'], ['BINGX', 'BingX'], ['HTX', 'HTX'], ['MEXC', 'MEXC']];
   function omCell(w) { return w.err ? '<td title="' + esc(w.err) + '">' + NID + '</td>' : '<td class="' + cls(w.doi) + '">' + sgn(w.doi * 100, 2) + '%</td>'; }
   function renderMoney(now) {
     var H = {}; OMV.forEach(function (v) { H[v[0]] = omHist(v[0]); });
@@ -1707,7 +1730,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   loadMaFast(); setInterval(loadMaFast, 15000); loadMaMid(); setInterval(loadMaMid, 60000); loadMaSlow(); setInterval(loadMaSlow, 300000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
-  loadGateOi(); setInterval(loadGateOi, 30000); loadHlOi(); setInterval(loadHlOi, 30000);
+  loadOiSnap(); setInterval(loadOiSnap, 30000); loadGateOi(); setInterval(loadGateOi, 30000); loadHlOi(); setInterval(loadHlOi, 30000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   loadCal();
   route();

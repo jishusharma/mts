@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "reads": [
+      "raw_transcripts_canonical/D-0xTsMPwys_raw.txt",
+      "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md"
+    ]
+  },
+  "created": "2026-11-12T01:50:00Z",
+  "depends_on": [],
+  "done_when": "Claude reviews extract_D-0xTsMPwys.md, verifies strategy rules against MTS orderflow/liquidity layers, and records review verdict.",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review newly downloaded canonical transcript (raw_transcripts_canonical/D-0xTsMPwys_raw.txt) and verified extract (MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md) from Baileysforex video D-0xTsMPwys. Assess the multi-timeframe liquidity sweep + 15m demand mitigation mechanics for BTC and evaluate whether to pre-register a quantitative event-study count.",
+  "id": "baileysforex-btc-liquidity-extract-1112",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: transcript downloaded and extract verified; ready for Claude review",
+  "note": "REVIEWED:2026-11-12 T0-ONLY",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "gemini-3.8-flash",
+  "refreshed": "2026-11-12T01:50:00Z",
+  "refs": [
+    "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md"
+  ],
+  "result": "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "raw_transcripts_canonical/D-0xTsMPwys_raw.txt",
+    "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md"
+  ],
+  "scope_out": [
+    "running live trades",
+    "modifying production execution",
+    "live tree"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "https://www.youtube.com/watch?v=D-0xTsMPwys"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read raw_transcripts_canonical/D-0xTsMPwys_raw.txt and extract_D-0xTsMPwys.md",
+    "Verify mechanics: Daily trend bias, 1H liquidity sweep, 15m BOS and demand mitigation with 1:3 RR",
+    "Record verdict on viability of BTC automated detector and stop-buffer requirements"
+  ],
+  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md (passes 0 problems)",
+  "title": "Review Baileysforex Bitcoin liquidity strategy extract and canonical transcript (D-0xTsMPwys)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

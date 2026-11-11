@@ -5,7 +5,7 @@ test is still running after the limit, the plugin prints `TEST TIMEOUT: <nodeid>
 ends the pytest process with exit 1, so the shard fails with the test's name instead of holding the ship (2026-11-11: one ship sat 50 min on a
 hung pytest with no test name).
 
-DECISION (OURS): limit 120 s locally; MTS_TEST_LIMIT_S overrides it on any host (0 = off). ON GITHUB CI THE LIMIT IS OFF unless MTS_TEST_LIMIT_S
+DECISION (OURS): limit 300 s locally (raised from 120 s 2026-11-12: test_aibridge_selftest_concurrent ran past 120 s on a loaded machine); MTS_TEST_LIMIT_S overrides it on any host (0 = off). ON GITHUB CI THE LIMIT IS OFF unless MTS_TEST_LIMIT_S
 is set: the first version (582709541, reverted c2771d345) applied 120 s on CI and killed test_aibridge_chain's long test (the CI file total of
 that file was 121-144 s in runs 43074883278/43075303873). CI prints per-FILE seconds only, so per-test CI times are unknown until the
 "Gate test times" notice (run_all_tests.times_notice, top 25 single tests) has shown one green CI run; then set MTS_TEST_LIMIT_S on CI.
@@ -19,9 +19,10 @@ import threading
 
 import pytest
 
-DEFAULT_LIMIT_S = 120
+DEFAULT_LIMIT_S = 300
 SLOW_OK = {
     "test_aibridge_chain.py": 450,        # CI file total 121-144 s (long unattended chain test) x3
+    "test_aibridge_selftest_concurrent.py": 450,  # blocked a ship 2026-11-12 at 120 s on a loaded machine (CI 27-39 s)
     "test_aibridge_exploratory.py": 400,  # CI 46-56 s; 139 s locally (headless browser + run-task.ps1, up to 180 s each)
     "test_context_asof.py": 360,          # CI file total 87-111 s x3
     "test_trunk_lag.py": 360,             # CI file total 72-114 s x3

@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst LongShort --status",
+    "python scripts/dev/fetch_captions_timed.py --analyst LongShort K31xH-6g9Vc",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/backtest_howto_K31xH_1112/EXTRACT.md"
+  ],
+  "created": "2026-11-11T20:15:10Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/backtest_howto_K31xH_1112/EXTRACT.md and GAP_TABLE.md exist, verify_extract_quotes.py exits 0 on EXTRACT.md, GAP_TABLE.md has one row per taught step (step, our practice with file path, status DONE/PARTIAL/SKIPPED); or NOT_IN_DATA.md names the block (429 retry time from --status).",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Extract one video (K31xH-6g9Vc, How to Backtest a Trading Strategy step by step, The Long & The Short Ep. 12) with SOURCED quotes and compare each step it teaches against what our backtests already do.",
+  "id": "extract-backtest-howto-K31xH-6g9Vc-1112",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS) 2026-11-12: analyst tag LongShort for the channel; YouTube is pre-approved public data. Guard lockout 6/24/72 h, never evade.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:21:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/backtest_howto_K31xH_1112/EXTRACT.md (new)",
+    "MyTradingSys/research/backtest_howto_K31xH_1112/GAP_TABLE.md (new)",
+    "MyTradingSys/research/backtest_howto_K31xH_1112/NOT_IN_DATA.md (new, only if blocked)"
+  ],
+  "scope_out": [
+    "any fetch beyond this one video",
+    "proxy, VPN, cookies or any path around a 429",
+    "scripts/dev/fetch_captions*.py",
+    "ASR; no-caption video goes to the Gemini lane list in NOT_IN_DATA.md"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "operator link 2026-11-12",
+    "scripts/dev/fetch_captions_timed.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/fetch_captions_timed.py --analyst LongShort --status; if BLOCKED write NOT_IN_DATA.md with the retry time and stop",
+    "Fetch K31xH-6g9Vc once (max 1 video); on a 429 stop and log",
+    "Write EXTRACT.md: each taught step with verbatim quote, timestamp, label SOURCED (format of research/tom_swing_2026-11-09/extract_M7ompiwv5co.md); run verify_extract_quotes.py until exit 0 (fix the quote, never the checker)",
+    "Write GAP_TABLE.md: compare each step to our practice (DEV/gap/VALIDATION, fees, placebo, pre-reg) citing the file, e.g. research/btc_orderflow_map_1112/PREREG.md; list steps we skip"
+  ],
+  "tests": "verify_extract_quotes.py on EXTRACT.md with one quote altered must exit nonzero first; then exit 0 on the real file.",
+  "title": "Extract video K31xH-6g9Vc (How to Backtest, Long & Short Ep. 12) and gap-table it against our backtests",
+  "weight": "",
+  "worker": "agent"
+}

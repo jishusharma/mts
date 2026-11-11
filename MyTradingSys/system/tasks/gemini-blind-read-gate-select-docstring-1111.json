@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T19:18:20Z",
+  "commands": [],
+  "created": "2026-11-11T19:05:51Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-select-docstring-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per clause) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of scripts/dev/gate_select.py: how a ship picks the smoke or full gate, GATE_RE, fail-closed rules, and the sim_desk results rule.",
+  "id": "gemini-blind-read-gate-select-docstring-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-select-docstring",
+      "ref": "24302e234",
+      "utc": "2026-11-11T19:18:20Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: root sim_desk/results/*.json selects the smoke gate, not fail-closed full (test fa",
+      "ref": "70857d4a0f8e",
+      "utc": "2026-11-11T15:48:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: card complete, committed on gemini-q branch",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T19:05:54Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-select-docstring-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/gate_select.py (read)",
+    "scripts/dev/test_gate_select.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-select-docstring-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "70857d4a0f8e",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 8 clauses from the docstring (smoke versus full, GATE_RE, fail closed, results rule), each with file:line",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of gate_select.py against its docstring and test",
+  "weight": "ROUTINE",
+  "worker": ""
+}

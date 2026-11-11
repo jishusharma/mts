@@ -205,7 +205,7 @@ def gate_tmp(prefix):
 
 
 # Per-test limit (ship-gate-per-test-timeout-1111): pytest-timeout is not installed, so the gate loads its own plugin, pytest_test_limit.py
-# (DECISION OURS: 120 s). `-p` needs the module importable in the pytest child, so scripts/dev goes on its PYTHONPATH.
+# (DECISION OURS: 300 s). `-p` needs the module importable in the pytest child, so scripts/dev goes on its PYTHONPATH.
 _dev = str(Path(__file__).resolve().parent)
 if _dev not in os.environ.get("PYTHONPATH", "").split(os.pathsep):
     os.environ["PYTHONPATH"] = _dev + (os.pathsep + os.environ["PYTHONPATH"] if os.environ.get("PYTHONPATH") else "")

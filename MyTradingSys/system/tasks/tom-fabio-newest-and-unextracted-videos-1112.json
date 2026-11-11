@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/extraction_ledger_2026-10/build_ledger.py",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md"
+  ],
+  "created": "2026-11-11T19:46:47Z",
+  "depends_on": [
+    "of-extract-ondisk-1112",
+    "of-extract-fetch-1112"
+  ],
+  "done_when": "EXTRACTION_LEDGER.csv rebuilt by build_ledger.py with the new extract rows; GAPS.md count \"transcript but no extract\" below 71; MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md (one page) has every rule with id and verbatim quote and verify_extract_quotes.py exits 0 on it.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the backlog loop after the three child cards: rebuild the ledger and gaps counts and write the one-page list of order-flow rules with SOURCED quotes.",
+  "id": "tom-fabio-newest-and-unextracted-videos-1112",
+  "kind": "build",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "fabio-layer-v2-spec",
+    "of-extract-queue-1112",
+    "of-extract-ondisk-1112",
+    "of-extract-fetch-1112"
+  ],
+  "note": "Original one-session scope split into 4 by planner-edge-cards-1112. Rest of the backlog (60+ ids) is a later wave: DECISION (OURS).",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv",
+    "MyTradingSys/research/extraction_ledger_2026-10/GAPS.md",
+    "MyTradingSys/research/extraction_ledger_2026-10/build_ledger.py (run only)",
+    "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md (new)"
+  ],
+  "scope_out": [
+    "edits to build_ledger.py",
+    "new fetches",
+    "carrying index-futures clocks to BTC"
+  ],
+  "size": "S",
+  "sources": [
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
+    "MyTradingSys/research/extraction_ledger_2026-10/GAPS.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Run build_ledger.py; confirm GAPS.md counts fall by the number of new extracts",
+    "Merge ORDERFLOW_RULES_DRAFT.md into ORDERFLOW_RULES.md, one line per rule: idea, quote, id, SOURCED; mark clocks as index-futures-only",
+    "Run verify_extract_quotes.py on ORDERFLOW_RULES.md until exit 0"
+  ],
+  "tests": "test_build_ledger.py exists and must pass; GAPS.md count before vs after is the check; verify_extract_quotes.py exit 0.",
+  "title": "Extraction backlog 3/3b: rebuild ledger and GAPS, one-page SOURCED order-flow rules",
+  "weight": "",
+  "worker": "agent"
+}
