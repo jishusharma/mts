@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T08:07:43Z",
   "commands": [
     "python scripts/dev/test_cbp_run.py"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "rebuild_dashboard now prints 'cbp: <tool> exit N; board built on stale data' and returns f",
+      "ref": "0846ae4a1",
+      "utc": "2026-11-11T08:07:43Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done",
   "note": "DECISION (OURS, planner-A-1110b): root cause of the 401 and the Bob SOCKS timeout is in CBP_HOME code not in this repo, so this card only makes the failure visible (repo part). Builder: if the fetch tool is reachable on its machine, a JIS-NB/DSA desk run of fetch_board_data.py for the traceback is a separate task, not this one.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T08:06:09Z",
   "refs": [],
-  "result": "",
+  "result": "rebuild_dashboard now prints 'cbp: <tool> exit N; board built on stale data' and returns failed tool names; new test fails on old code, test_cbp_run 14 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/cbp_run.py (rebuild_dashboard l.285)",
     "scripts/dev/test_cbp_run.py"
@@ -47,12 +60,13 @@
   "sources": [
     "scripts/dev/cbp_run.py l.285-296"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "write the failing test next to test_rebuild_dashboard_survives_failed_fetch (l.145): run() returns an object with returncode 1 for the fetch tool",
     "rebuild_dashboard: read returncode, print \"cbp: <tool> exit N; board built on stale data\", collect failed names, return them; build_board still runs; announce_republish unchanged",
     "run python scripts/dev/test_cbp_run.py"
   ],
+  "taken": "2026-11-11T08:07:43Z",
   "tests": "scripts/dev/test_cbp_run.py: new case (fail-first)",
   "title": "CBP: a non-zero fetch_board_data.py exit (HTTP 401 on 2026-11-08) is surfaced, not silently built on stale data",
   "weight": "ROUTINE",
