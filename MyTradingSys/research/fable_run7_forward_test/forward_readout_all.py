@@ -5,7 +5,7 @@ malkan_level_short_forward.jsonl, t06_rsi_ma_cross_forward.jsonl, c30_h2_forward
 crashes: its slot prints "n 0, no data yet". State: slot rule (E-/E+/Krown FAIL) or, per EDGE_PLAN (c),
 KILL at >= 30 trades with net R per trade <= 0, or a journal kill row; else RUNNING.
 T06L = the long rows of the T06 journal; short rows are reported on their own line, never scored.
-Run: python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py [--ledger P] [--malkan P] [--t06 P] [--c30 P] [--asof D]
+Run: python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py [--ledger P] [--malkan P] [--t06 P] [--c30 P] [--calls P] [--asof D]
 """
 from __future__ import annotations
 
@@ -21,6 +21,8 @@ LEDGER = ROOT / "MyTradingSys/execution/trade_ledger.jsonl"
 MALKAN = ROOT / "runtime_data/malkan_level_short_forward.jsonl"
 T06 = ROOT / "runtime_data/t06_rsi_ma_cross_forward.jsonl"
 C30 = ROOT / "runtime_data/c30_h2_forward.jsonl"
+CALLS = ROOT / "runtime_data/analyst_call_forward.jsonl"
+CALL_MOD = ROOT / "MyTradingSys/research/analyst_call_slot_2026-11-11/call_paper_log.py"
 ROWS = [("krown_s8", "Krown S8", "testnet"), ("malkan_level_short", "Malkan", "paper"),
         ("t06_rsi_ma", "T06L", "paper"), ("c30_h2_long", "C30", "paper")]
 STOP_N = 30
@@ -54,7 +56,21 @@ def combined(ledger=LEDGER, malkan=MALKAN, t06=T06, c30=C30, asof=None):
     return {"rows": out, "res": res}
 
 
-def render(c):
+def call_line(journal=CALLS):
+    """One plain line for the analyst-call slot (setup and its two placebos); the slot's own module does the maths."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("call_paper_log", CALL_MOD)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    rows = m._read(journal)
+    part = []
+    for arm, name in (("setup", "setup"), ("placebo_a", "level only"), ("placebo_b", "trigger only")):
+        s = m.arm_stats(rows, arm)
+        part.append(f"{name} n {s['n']}, net R {fr._f(s['mean_r'], 3) if s['n'] else '-'}")
+    return f"Analyst-call slot (paper, stop at {m.STOP_N} trades with net R <= 0): " + "; ".join(part) + f". State: {m.verdict(rows)}."
+
+
+def render(c, calls=CALLS):
     f = fr._f
     L = ["| Slot | Mode | Trades | Net R | E+ | E- | State |", "|---|---|---|---|---|---|---|"]
     for r in c["rows"]:
@@ -71,6 +87,7 @@ def render(c):
         L.append(f"T06 side field missing on {res['t06_no_side']} outcome rows (counted as long).")
     for k in res["kills"]:
         L.append("Kill row: " + ", ".join(f"{a}={b}" for a, b in sorted(k.items())))
+    L += ["", call_line(calls)]
     return "\n".join(L) + "\n"
 
 
@@ -80,9 +97,10 @@ def main(argv=None):
     ap.add_argument("--malkan", default=str(MALKAN))
     ap.add_argument("--t06", default=str(T06))
     ap.add_argument("--c30", default=str(C30))
+    ap.add_argument("--calls", default=str(CALLS))
     ap.add_argument("--asof")
     a = ap.parse_args(argv)
-    sys.stdout.write(render(combined(a.ledger, a.malkan, a.t06, a.c30, a.asof)))
+    sys.stdout.write(render(combined(a.ledger, a.malkan, a.t06, a.c30, a.asof), a.calls))
     return 0
 
 
