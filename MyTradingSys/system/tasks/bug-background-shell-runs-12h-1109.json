@@ -30,16 +30,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "eh-o2: phase lens (PHASE_LABEL) + T14/T15 DEV screen; halving lookup reviewed (scheduled d",
-      "ref": "67957cb73102",
-      "utc": "2026-11-09T07:43:22Z"
+      "line": "Result: sender_note says Cut to 200 only on real truncation; redaction gets its own line N",
+      "ref": "71d5cbd545b7",
+      "utc": "2026-11-11T09:01:09Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "dea81301a70a Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend en",
+      "line": "dad3977fc0c2 CLAUDE.md under size cap: Windows file and exclude lines moved to MOVED_RULES",
       "ref": "CLAUDE.md",
-      "utc": "2026-11-04T16:25:21Z"
+      "utc": "2026-11-10T14:04:04Z"
     }
   ],
   "layers": [],
@@ -52,7 +52,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T07:57:53Z",
+  "refreshed": "2026-11-11T09:11:24Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -64,7 +64,7 @@
   "scope_out": [
     "no change to CI or ship logic"
   ],
-  "scope_sha": "67957cb73102",
+  "scope_sha": "71d5cbd545b7",
   "size": "M",
   "sources": [
     "operator 2026-11-09 via login B (JIS-NUC)"

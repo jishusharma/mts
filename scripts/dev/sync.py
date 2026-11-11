@@ -709,6 +709,17 @@ def area_overlap(xs, ys):
     return next(((x, y) for x in xs for y in ys if x == y or x.startswith(y + "/") or y.startswith(x + "/")), None)
 
 
+def old_shell_notes(lister=None):
+    """bug-background-shell-runs-12h-1109: one NOTE line per bash/sh process over 30 min (bg_watch.live_shells). Not counted as an
+    issue (a 40 min ship shell is legitimate); never raises."""
+    try:
+        import bg_watch
+        return [f"NOTE OLD-SHELL pid {r['pid']} {r['age']:.0f}m > {bg_watch.SHELL_LIMIT_MIN}m: {' '.join(r['cmd'].split())[:70]} "
+                f"-> stop it unless a task you own waits on it (bg_watch.py shells --kill)" for r in bg_watch.live_shells(lister=lister)]
+    except Exception:
+        return []
+
+
 def health(repo):
     """Collision health, one line per problem, last line `HEALTH: <n> issue(s)`. Returns n. Read-only."""
     git(repo, "fetch", "--quiet", "origin", TRUNK)
@@ -764,6 +775,8 @@ def health(repo):
     for i in issues:
         if not i.startswith("UNSHIPPED"):
             print(i)
+    for line in old_shell_notes():
+        print(line)
     print(f"HEALTH: {len(issues)} issue(s)")
     return len(issues)
 
