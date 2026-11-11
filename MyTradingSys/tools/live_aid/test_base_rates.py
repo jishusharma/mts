@@ -103,3 +103,56 @@ def test_studies_write_into_the_registry_input_dir_not_next_to_it():
         assert '"live_aid" / "' not in src.replace('"live_aid" / "base_rates_input"', ""), d
     import base_rates
     assert base_rates.INPUT_DIR == base_rates.HERE / "base_rates_input"
+
+
+# ---- setup board hit rate per evidence mix (card live-aid-board-rates-1111) ----
+def _ev(side, home, grid, adx15, adx1h, vfi15, wt30, r1h, ts, kind="idea"):
+    return {"kind": kind, "side": side, "home": home, "grid": grid, "adx15": adx15, "adx1h": adx1h, "vfi15": vfi15, "wt30": wt30, "r1h": r1h, "ts": ts}
+
+
+D = 86400000
+FIXTURE = [  # ten rows; hand counts in the test below
+    _ev("LONG", "LONG", "UP", 0, 0, 0, 0, 0.5, 20000 * D),
+    _ev("LONG", "LONG", "UP", 0, 0, 0, 0, -0.2, 20000 * D + 1),
+    _ev("LONG", "LONG", "UP", 5, 0, 0, 0, 0.1, 20001 * D),
+    _ev("LONG", "LONG", "UP", 0, 0, 0, 0, 1.0, 20002 * D),
+    _ev("SHORT", "SHORT", "DOWN", 0, 0, 0, 0, 0.3, 20001 * D),
+    _ev("SHORT", "SHORT", "DOWN", 0, 0, 0, 0, -0.4, 20001 * D),
+    _ev("LONG", "WAIT", "UP", 25, 0, 0, 0, 0.2, 20002 * D),
+    _ev("LONG", "WAIT", "UP", 30, 0, 0, 0, 0.0, 20002 * D),
+    _ev("LONG", "LONG", "UP", 0, 0, 0, 0, 0.9, 20003 * D, kind="setup"),   # not an idea flag: ignored
+    _ev("LONG", "LONG", "UP", 0, 0, 0, 0, None, 20003 * D),                # not scored yet: ignored
+]
+
+
+def test_setup_board_rates_hand_case():
+    import base_rates as br
+    t = br.setup_board_table(FIXTURE)
+    by = {(r["side"], r["mix"]): r for r in t["rows"]}
+    assert set(by) == {("LONG", "home+grid"), ("LONG", "grid+adx15"), ("SHORT", "home+grid")}
+    a = by[("LONG", "home+grid")]          # r1h 0.5, -0.2, 0.1, 1.0 -> 3 right of 4
+    assert (a["n"], a["hits"], a["rate"]) == (4, 3, 0.75)
+    b = by[("LONG", "grid+adx15")]         # 0.2 right, 0.0 is not right (strict > 0) -> 1 of 2
+    assert (b["n"], b["hits"], b["rate"]) == (2, 1, 0.5)
+    c = by[("SHORT", "home+grid")]
+    assert (c["n"], c["hits"], c["rate"]) == (2, 1, 0.5)
+    assert all(r["low_n"] is True for r in t["rows"])
+    assert all(r["window"] == "2024-10-04..2024-10-06" for r in t["rows"])
+    assert t["meta"]["min_n"] == 30 and t["meta"]["range"] == ["2024-10-04", "2024-10-06"]
+
+
+def test_setup_board_rates_low_n_boundary():
+    import base_rates as br
+    mk = lambda k: [_ev("LONG", "LONG", "UP", 0, 0, 0, 0, 0.1, 20000 * D + i) for i in range(k)]
+    assert br.setup_board_table(mk(29))["rows"][0]["low_n"] is True
+    assert br.setup_board_table(mk(30))["rows"][0]["low_n"] is False
+
+
+def test_setup_board_rates_writes_input_file(tmp_path, monkeypatch):
+    import base_rates as br
+    monkeypatch.setattr(br, "INPUT_DIR", tmp_path)
+    ev = tmp_path / "events.json"
+    ev.write_text(json.dumps(FIXTURE))
+    br.write_setup_board_rates(ev)
+    t = br.read_js_var(tmp_path / "setup_board_rates.js")
+    assert len(t["rows"]) == 3 and t["meta"]["events"] == 8

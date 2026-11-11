@@ -56,6 +56,53 @@ def load_table(js_name, var, prev):
     return prev["table"]
 
 
+READINGS = ("home", "grid", "adx15", "adx1h", "vfi15", "wt30")   # the six readings of the review (analyze.py parts), fixed order
+LOW_N = 30
+
+
+def _sg(x):
+    return (x > 0) - (x < 0) if x is not None else 0
+
+
+def _agreeing(e):
+    """Readings that point the flag's way. Same definitions as research/live_aid_review_2026-11-11/analyze.py parts()."""
+    s = 1 if e["side"] == "LONG" else -1
+    v = {"home": {"LONG": 1, "SHORT": -1}.get(e["home"], 0), "grid": {"UP": 1, "DOWN": -1}.get(e["grid"], 0),
+         "adx15": _sg(e["adx15"]) if e["adx15"] is not None and abs(e["adx15"]) >= 20 else 0,
+         "adx1h": _sg(e["adx1h"]) if e["adx1h"] is not None and abs(e["adx1h"]) >= 20 else 0,
+         "vfi15": _sg(e["vfi15"]), "wt30": _sg(e["wt30"])}
+    return [k for k in READINGS if s * v[k] > 0]
+
+
+def setup_board_table(events):
+    """Hit rate per evidence mix (side + set of agreeing readings) over replayed idea flags (events.json of replay.js).
+    right = price 1h later beyond the flag's price in the flag's direction (r1h > 0). Mixes with n < 30 are LOW_N.
+    Mix definition is OURS (descriptive, in-sample, no fees)."""
+    ev = [e for e in events if e.get("kind") == "idea" and e.get("r1h") is not None]
+    if not ev:
+        raise SystemExit("no scored idea flags")
+    day = lambda ms: datetime.fromtimestamp(ms / 1000, timezone.utc).strftime("%Y-%m-%d")
+    lo, hi = day(min(e["ts"] for e in ev)), day(max(e["ts"] for e in ev))
+    win = "%s..%s" % (lo, hi)
+    g = {}
+    for e in ev:
+        k = (e["side"], "+".join(_agreeing(e)) or "none")
+        n, h = g.get(k, (0, 0))
+        g[k] = (n + 1, h + (1 if e["r1h"] > 0 else 0))
+    rows = [{"side": k[0], "mix": k[1], "n": n, "hits": h, "rate": h / n, "window": win, "low_n": n < LOW_N} for k, (n, h) in sorted(g.items())]
+    return {"meta": {"range": [lo, hi], "events": len(ev), "min_n": LOW_N, "readings": list(READINGS),
+                     "outcome": "close 60 min after the flag beyond the flag price in its direction",
+                     "source": "research/live_aid_review_2026-11-11/replay.js events.json (idea flags)"}, "rows": rows}
+
+
+def write_setup_board_rates(events_json):
+    t = setup_board_table(json.loads(Path(events_json).read_text(encoding="utf-8")))
+    INPUT_DIR.mkdir(exist_ok=True)
+    (INPUT_DIR / "setup_board_rates.js").write_text("var SETUP_BOARD_RATES = " + json.dumps(t, sort_keys=True, separators=(",", ":")) + ";" + chr(10),
+                                                   encoding="utf-8", newline=chr(10))
+    return t
+
+
 def window_of(meta):
     return "%s..%s" % tuple(meta["range"])
 
@@ -94,6 +141,13 @@ def rows(prev=None):
         units="big 1h events (5m events %d with a 12-bar lockout)" % m["events_5m"], window=window_of(m),
         regime_mix=regime_line(RES / "bigcandle_story_2026-11-05" / "RESULT.md"), fee_status="fee-free, descriptive",
         source="research/bigcandle_story_2026-11-05/study.py", table=t)
+    if (INPUT_DIR / "setup_board_rates.js").exists() or prev.get("setup_board_mix"):   # row exists once the replay has been run
+        t = load_table("setup_board_rates.js", "SETUP_BOARD_RATES", prev.get("setup_board_mix"))
+        m = t["meta"]
+        out["setup_board_mix"] = dict(
+            event="Live Aid idea flag replayed every 5 min, grouped by side and the set of readings that agree", condition="mix of home / grid / adx15 / adx1h / vfi15 / wt30 agreeing; LOW_N below %d" % m["min_n"],
+            outcome=m["outcome"], horizon="60 min", n=m["events"], units="idea flags (a flag counts when it first appears; neighbours not independent)", window=window_of(m),
+            regime_mix=NO_MIX, fee_status="fee-free, in-sample, descriptive", source="research/live_aid_review_2026-11-11/replay.js", table=t)
     cells = flip_table()
     mix = (FLIP_DIR / "regime_mix.txt").read_text(encoding="utf-8").strip().splitlines()
     out["candle_flip_cells"] = dict(
@@ -145,6 +199,9 @@ def build():
 
 
 if __name__ == "__main__":
-    if sys.argv[1:] != ["build"]:
-        raise SystemExit("usage: base_rates.py build")
-    build()
+    if sys.argv[1:] == ["build"]:
+        build()
+    elif len(sys.argv) == 3 and sys.argv[1] == "setup-board":
+        write_setup_board_rates(sys.argv[2])
+    else:
+        raise SystemExit("usage: base_rates.py build | setup-board <events.json>")
