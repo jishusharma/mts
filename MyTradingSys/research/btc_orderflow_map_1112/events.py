@@ -24,7 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', '..', 'backtest'))
 import fees  # noqa: E402
 
-COST_PCT = 2 * fees.BINANCE_TAKER * 100  # round trip, percent (0.10)
+COST_PCT = fees.BINANCE_TAKER * 2 * 100  # round trip, percent (0.10)
 KLINES = 'F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv'
 FUNDING = 'F:/MTS/Dumps/backtest/raw/fundingRate/BTCUSDT-fundingRate-*.csv'
 FIRST_MONTH, LAST_MONTH = '2022-01', '2024-05'
