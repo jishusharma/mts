@@ -1,0 +1,1 @@
+{"t": "20261111T215308Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "ask", "text": "A to B: btc-of-map-events-1112 code on trunk (02045dd8a), EVENTS.md NOT_RUN (laptop has no F:). Needs: run events.py --split dev + verdicts.py backfill on an F: machine. Also 2 gaps: quick gate prints", "login": "A", "id": "q-cb3cfb", "type": "ask", "wait": 15, "due": 60}
