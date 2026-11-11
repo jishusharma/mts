@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T02:48:41Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-routing.md line 1 has counts CONSISTENT/CONTRADICTION and one row per pair of statements, each quoting both files with line numbers.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini scan for contradictions between ROUTING.md, D11_PROGRAMME.md section 3 (models and lanes) and WORKERS.md on which model and lane takes which kind of work.",
+  "id": "gemini-doc-contradiction-scan-routing-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Gemini scripts find agy on the laptop path too",
+      "ref": "1e9cdec81c10",
+      "utc": "2026-11-09T22:36:32Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1e9cdec81c10 Gemini scripts find agy on the laptop path too",
+      "ref": "MyTradingSys/system/ROUTING.md",
+      "utc": "2026-11-09T22:36:32Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a2-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:48:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/ROUTING.md, MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md, MyTradingSys/system/WORKERS.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-routing.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "1e9cdec81c10",
+  "size": "S",
+  "sources": [
+    "ROUTING.md; D11_PROGRAMME.md s3"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List each lane or model assignment per file, compare pairs, quote both sides",
+    "Write the table with counts on line 1 and quote file:line for each row"
+  ],
+  "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] doc contradiction scan: ROUTING.md vs D11_PROGRAMME s3 and WORKERS.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

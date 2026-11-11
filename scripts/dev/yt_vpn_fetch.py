@@ -154,7 +154,7 @@ def main(argv):
     proc, result, not_restored = None, EXIT_REFUSED, False
     try:
         proc = subprocess.Popen(build_cmd(a.openvpn, a.profile, routes), stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT, text=True)
+                                stderr=subprocess.STDOUT, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if not wait_ready(proc, a.connect_timeout):
             print("VPN did not come up in time; stopping.")
         else:

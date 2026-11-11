@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T02:52:06Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,8 +26,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "landed on trunk eea67f56e (doc_drift.report_only); planner-a2-1111",
+  "pinned": false,
   "prio": 2,
+  "reason": "landed on trunk eea67f56e (doc_drift.report_only); planner-a2-1111",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -35,7 +38,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "ARCH_REVIEW row 1: tests that assert doc wording or format become report-only (keep path-exists and live-path rule checks; never touch the 61 execution tests)",

@@ -30,7 +30,7 @@ FLAGS = {"overhead_pct": 50, "bookkeeping_pct": 5, "b4_adoption_pct": 50}
 def git(*a, timeout=120):
     try:
         return subprocess.run(["git", "-C", str(REPO), *a], capture_output=True, text=True, encoding="utf-8", errors="replace",
-                              timeout=timeout).stdout
+                              timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
     except (OSError, subprocess.TimeoutExpired):
         return ""
 
@@ -83,7 +83,7 @@ def ci(limit=30):
 def stale_claims():
     try:
         out = subprocess.run([sys.executable, str(REPO / "scripts" / "dev" / "sync.py"), "claims"], capture_output=True, text=True,
-                             encoding="utf-8", errors="replace", cwd=REPO, timeout=120).stdout.splitlines()
+                             encoding="utf-8", errors="replace", cwd=REPO, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
     except (OSError, subprocess.TimeoutExpired):
         return []
     return [ln.strip() for ln in out if "STALE" in ln]
@@ -102,7 +102,7 @@ def audit(hours=72, fetch=True):
     fetched = "skipped (--no-fetch)"
     if fetch:
         fetched = "ok" if subprocess.run(["git", "-C", str(REPO), "fetch", "origin", "-q"], capture_output=True,
-                                         timeout=120).returncode == 0 else "FAILED: numbers may be stale"
+                                         timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).returncode == 0 else "FAILED: numbers may be stale"
     mixline = TR.report(hours)
     lines = [f"# health audit, last {hours} h (git fetch: {fetched})", "", "## Commit mix", mixline]
     flags = []

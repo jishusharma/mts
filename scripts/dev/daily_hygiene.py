@@ -40,7 +40,7 @@ def subprocess_runner(argv, timeout):
     """-> (returncode, combined output). A timeout is rc 124, never an exception."""
     try:
         p = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, timeout=timeout,
-                           env={**os.environ, "PYTHONIOENCODING": "utf-8"})
+                           env={**os.environ, "PYTHONIOENCODING": "utf-8"}, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return p.returncode, (p.stdout or "") + (p.stderr or "")
     except subprocess.TimeoutExpired:
         return 124, f"timed out after {timeout}s"

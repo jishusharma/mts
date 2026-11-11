@@ -114,16 +114,16 @@ def push_heartbeat(repo, ts):
     """Write one heartbeat as a plumbing commit on the side branch HB_REF (parent = its tip) and push it. True when pushed."""
     try:
         def g(*args, stdin=None):
-            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, input=stdin)
+            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, input=stdin, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if r.returncode != 0:
                 raise OSError(r.stderr)
             return r.stdout.strip()
         blob = g("hash-object", "-w", "--stdin", stdin=ts)
         tree = g("mktree", "-z", stdin=f"100644 blob {blob}" + chr(9) + "heartbeat" + chr(0))   # -z: text-mode stdin would turn the newline into CRLF on Windows
-        parent = subprocess.run(["git", "-C", str(repo), "rev-parse", "--verify", "-q", f"origin/{HB_REF}"], capture_output=True, text=True)
+        parent = subprocess.run(["git", "-C", str(repo), "rev-parse", "--verify", "-q", f"origin/{HB_REF}"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         args = ["commit-tree", tree, "-m", f"heartbeat {ts}"] + (["-p", parent.stdout.strip()] if parent.returncode == 0 else [])
         commit = subprocess.run(["git", "-C", str(repo), "-c", "user.name=lane-health", "-c", "user.email=lane-health@local", *args],
-                                capture_output=True, text=True)
+                                capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if commit.returncode != 0:
             return False
         return git(repo, "push", "--quiet", "origin", f"{commit.stdout.strip()}:refs/heads/{HB_REF}", check=False).returncode == 0
@@ -379,7 +379,7 @@ def git(repo, *args, check=True, timeout=None):
     from sync import GIT_NOPROMPT, GIT_NET_TIMEOUT_S, GIT_NET_VERBS
     timeout = GIT_NET_TIMEOUT_S if (timeout is None and args and args[0] in GIT_NET_VERBS) else (timeout or 60)
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=check,
-                          timeout=timeout, env={**os.environ, **GIT_NOPROMPT})
+                          timeout=timeout, env={**os.environ, **GIT_NOPROMPT}, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def commit_ship(repo, paths, msg):

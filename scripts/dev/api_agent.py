@@ -94,7 +94,7 @@ def run_tool(name: str, inp: dict, cwd: Path) -> str:
             env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
             env["PYTHONIOENCODING"] = "utf-8"
             r = subprocess.run(cmd, shell=True, cwd=str(cwd), capture_output=True, text=True, encoding="utf-8", errors="replace",
-                               timeout=t, env=env, stdin=subprocess.DEVNULL)
+                               timeout=t, env=env, stdin=subprocess.DEVNULL, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             return f"rc={r.returncode}\nstdout:\n{r.stdout[-12000:]}\nstderr:\n{r.stderr[-4000:]}"
         return f"unknown tool {name}"
     except subprocess.TimeoutExpired:

@@ -238,7 +238,7 @@ def pick_card(card_id=None, repo=None):
 
 
 def sync(*args, cwd=None):
-    return subprocess.run([sys.executable, str(HERE / "sync.py"), *args], cwd=str(cwd or REPO), capture_output=True, text=True, timeout=600)
+    return subprocess.run([sys.executable, str(HERE / "sync.py"), *args], cwd=str(cwd or REPO), capture_output=True, text=True, timeout=600, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def start_worktree(slug):

@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T00:03:59Z",
+  "depends_on": [],
+  "done_when": "A test makes two sessions on one machine see the same ask: it shows in the first prompt-hook output and not the second; pages_line prints once per session id; both tests fail on the pre-change code; test_mts_signal.py and test_trunk_lag.py pass.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hook lines: an ask is loud for ONE owner per machine (first session that sees it), and PAGES STALE prints at most once per session; STOP/HOLD/HALT/red-CI lines unchanged.",
+  "id": "arch-row4-hook-lines-one-owner-1111",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX signal hub: one cross-process lock on the shared clone, fetch into a named ref instead",
+      "ref": "1dc45606c2ae",
+      "utc": "2026-11-11T00:02:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:52:24Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py (ask_block, ask_for_me)",
+    "scripts/dev/trunk_lag.py (pages_line)",
+    "scripts/dev/test_mts_signal.py",
+    "scripts/dev/test_trunk_lag.py"
+  ],
+  "scope_out": [
+    "no change to STOP, HOLD, HALT or red-CI hook lines; no live tree; no settings.json edit"
+  ],
+  "scope_sha": "1dc45606c2ae",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/ARCH_REVIEW_2026-11-10.md row 4"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read ask_block, ask_for_me and pages_line; write the two failing tests",
+    "Record the owning session per ask and gate pages_line per session id",
+    "Run both test files and tasks.py lint"
+  ],
+  "tests": "scripts/dev/test_mts_signal.py (two sessions, one ask; fails first: both print it) and scripts/dev/test_trunk_lag.py (second pages_line call empty; fails first)",
+  "title": "ARCH_REVIEW row 4: an ask in the session hook lines goes to ONE owner (not every session of the machine) and PAGES STALE stops printing once the 3 pages are republished; done when two sessions on one machine see an ask once between them and a test covers it",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -38,7 +38,7 @@ def problems(root=REPO):
         except (OSError, ValueError) as e:
             return [f"{SETTINGS}: does not parse: {e}"]
         bad += [f"{SETTINGS}: hook script missing: {s}" for s in hook_scripts(settings) if not (root / s).is_file()]
-    r = subprocess.run(["git", "-C", str(root), "check-ignore", "--no-index", *SECRET_SENTINELS], capture_output=True, text=True)
+    r = subprocess.run(["git", "-C", str(root), "check-ignore", "--no-index", *SECRET_SENTINELS], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     ignored = set(r.stdout.split())
     bad += [f".gitignore: secret path not ignored: {s}" for s in SECRET_SENTINELS if s not in ignored]
     return bad

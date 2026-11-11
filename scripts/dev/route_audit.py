@@ -33,7 +33,7 @@ FIX = 'add a line `Next: <card-id | stage | END: reason>` (sync.py ship --next "
 
 
 def git(repo, *args, check=True):
-    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, encoding="utf-8", errors="replace")
+    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if check and r.returncode:
         raise SystemExit(f"route_audit: git {' '.join(args[:3])} failed: {r.stderr.strip()[:200]}")
     return r.stdout
@@ -104,7 +104,7 @@ def gate_start(repo, ref):
 def covered_by_later(repo, c, tagged):
     for t in tagged:
         if t["author"] == c["author"] and c["at"] <= t["at"] <= c["at"] + timedelta(hours=SHIP_GROUP_H) \
-                and subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", c["sha"], t["sha"]]).returncode == 0:
+                and subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", c["sha"], t["sha"]], creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).returncode == 0:
             return True
     return False
 
@@ -164,7 +164,7 @@ def card_texts(repo, ref):
     if not paths:
         return []
     r = subprocess.run(["git", "-C", str(repo), "cat-file", "--batch"], input="".join(f"{ref}:{p}\n" for p in paths),
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     out = []
     for chunk in re.split(r"^[0-9a-f]{40} blob \d+$", r.stdout, flags=re.M):
         m = re.search(r'"created":\s*"([^"]+)"', chunk)

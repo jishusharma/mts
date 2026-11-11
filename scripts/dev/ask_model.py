@@ -90,10 +90,10 @@ def run(which: str, prompt: str, model: str | None, effort: str, files, env=os.e
     if which == 'gemini':
         if not AGY.exists():
             raise SystemExit(f'ask_model: agy not found at {AGY} (install: GEMINI_START.md)')
-        r = subprocess.run(gemini_cmd(prompt, model or 'flash', effort), cwd=wd, capture_output=True, text=True, timeout=timeout)
+        r = subprocess.run(gemini_cmd(prompt, model or 'flash', effort), cwd=wd, capture_output=True, text=True, timeout=timeout, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     else:
         r = subprocess.run(gpt_cmd(model, effort, wd, find_codex(env)), cwd=wd, input=prompt, capture_output=True,
-                           text=True, timeout=timeout, env=penv)
+                           text=True, timeout=timeout, env=penv, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     out = (r.stdout or '').strip() or (r.stderr or '').strip()
     (wd / 'answer.txt').write_text(out, encoding='utf-8', newline='\n')
     return r.returncode, out, wd

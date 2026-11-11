@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T02:48:37Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ship-gate.md line 1 has counts MATCH/DIFF/NOT_IN_DATA and one row per Gates clause.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of needs_gate and run_gate in sync.py against the CLAUDE.md Gates section: live-path or unknown paths run the full smoke set, other paths rely on CI, --quick and --full behave as stated.",
+  "id": "gemini-blind-read-ship-gate-select-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a2-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:48:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/sync.py (needs_gate, run_gate) and CLAUDE.md Gates section (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ship-gate.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "CLAUDE.md Gates"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "Read needs_gate and run_gate, list each Gates clause, mark MATCH/DIFF/NOT_IN_DATA with file:line",
+    "Write the table with counts on line 1 and quote file:line for each row"
+  ],
+  "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of sync.py run_gate/needs_gate vs CLAUDE.md Gates",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

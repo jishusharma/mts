@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T02:48:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-stop-guard.md line 1 has counts MATCH/DIFF/NOT_IN_DATA and one row per docstring promise.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of stop_guard.py: each promise in the module docstring (block once, second stop allowed, never raises, ignores .mts_live and trunk, MTS_STOP_GUARD=off) is implemented as written.",
+  "id": "gemini-blind-read-stop-guard-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/opus-audit-guards",
+      "ref": "4804ba85663e",
+      "utc": "2026-11-10T23:44:37Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a2-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:48:32Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/stop_guard.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-stop-guard.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "4804ba85663e",
+  "size": "S",
+  "sources": [
+    "scripts/dev/stop_guard.py docstring"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List each docstring promise, mark MATCH/DIFF/NOT_IN_DATA against the code path that implements it",
+    "Write the table with counts on line 1 and quote file:line for each row"
+  ],
+  "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of stop_guard.py vs its docstring contract",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

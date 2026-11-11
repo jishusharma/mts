@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git log --since=7.days --grep='Next: ship' --oneline",
+    "python scripts/dev/route_audit.py check --ref HEAD"
+  ],
+  "created": "2026-11-11T01:47:39Z",
+  "depends_on": [],
+  "done_when": "On or after 2026-11-18: git grep shows no card or doc naming ship.json, route_audit.py check lists no NO-CARD for 8ad71ab67/99a6a6291 after the delete, and tasks.py check exits 0 with ship.json gone",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Delete junk marker card tasks/ship.json once no Result commit inside the route_audit 7-day window points Next at it (commits 8ad71ab67 and 99a6a6291 do today; history cannot be rewritten)",
+  "id": "ship-marker-card-cleanup-1111",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Refiner default 2026-11-11: delete refused today, the two tagged commits are inside the 7-day window and the card ship.json is what resolves them; ship.json stays raw p5 until the window passes.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T01:54:19Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/ (only the marker card named in the goal)"
+  ],
+  "scope_out": [
+    "rewriting commit messages, route_audit.py rules, other cards"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "scripts/dev/route_audit.py check() NO-CARD branch",
+    "commits 8ad71ab67, 99a6a6291 (Next: ship t06)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run git grep -n 'Next: ship' and git log --grep='Next: ship' --since=7.days: if any Result commit is in the window, stop and leave the card ready",
+    "Else git rm MyTradingSys/system/tasks/ship.json, run tasks.py check and route_audit.py check, ship"
+  ],
+  "tests": "Before deleting, run route_audit.py check --ref HEAD on a branch with ship.json removed: it must show NO-CARD for both commits (fail-first proof the card is still referenced); delete only when that no longer shows",
+  "title": "Remove junk marker card tasks/ship.json (added by t06 ship so two route tags resolve); fix the two commit Next: tags instead",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
