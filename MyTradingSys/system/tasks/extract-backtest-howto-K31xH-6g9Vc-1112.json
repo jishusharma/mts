@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T20:54:48Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst LongShort --status",
     "python scripts/dev/fetch_captions_timed.py --analyst LongShort K31xH-6g9Vc",
@@ -17,17 +18,30 @@
   "id": "extract-backtest-howto-K31xH-6g9Vc-1112",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "EXTRACT.md 13 quotes PASS (verify + ledger); GAP_TABLE.md 12 steps: 7 DONE, 3 PARTIAL, 1 N",
+      "ref": "d9b74c5a1",
+      "utc": "2026-11-11T20:54:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "backtest-log-sanity-and-year-lines-1112",
   "note": "DECISION (OURS) 2026-11-12: analyst tag LongShort for the channel; YouTube is pre-approved public data. Guard lockout 6/24/72 h, never evade.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T20:21:33Z",
   "refs": [],
-  "result": "",
+  "result": "EXTRACT.md 13 quotes PASS (verify + ledger); GAP_TABLE.md 12 steps: 7 DONE, 3 PARTIAL, 1 N/A, 1 rejected",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/backtest_howto_K31xH_1112/EXTRACT.md (new)",
     "MyTradingSys/research/backtest_howto_K31xH_1112/GAP_TABLE.md (new)",
@@ -45,13 +59,14 @@
     "operator link 2026-11-12",
     "scripts/dev/fetch_captions_timed.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "python scripts/dev/fetch_captions_timed.py --analyst LongShort --status; if BLOCKED write NOT_IN_DATA.md with the retry time and stop",
     "Fetch K31xH-6g9Vc once (max 1 video); on a 429 stop and log",
     "Write EXTRACT.md: each taught step with verbatim quote, timestamp, label SOURCED (format of research/tom_swing_2026-11-09/extract_M7ompiwv5co.md); run verify_extract_quotes.py until exit 0 (fix the quote, never the checker)",
     "Write GAP_TABLE.md: compare each step to our practice (DEV/gap/VALIDATION, fees, placebo, pre-reg) citing the file, e.g. research/btc_orderflow_map_1112/PREREG.md; list steps we skip"
   ],
+  "taken": "2026-11-11T20:54:48Z",
   "tests": "verify_extract_quotes.py on EXTRACT.md with one quote altered must exit nonzero first; then exit 0 on the real file.",
   "title": "Extract video K31xH-6g9Vc (How to Backtest, Long & Short Ep. 12) and gap-table it against our backtests",
   "weight": "",

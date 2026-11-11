@@ -4,7 +4,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 
 | topic | path | machine | channel | note |
 |---|---|---|---|---|
-| -2uZSqKKrFQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| -2uZSqKKrFQ Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript -2uZSqKKrFQ_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | -9rAJNUpMsk Cointelegraph | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Cointelegraph | ledger: method=none, quotes=-/-, used_by=none |
 | -CBvFi40sIQ Malkan | MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md | repo | Malkan | ledger: method=captions, quotes=PASS/4, used_by=none |
 | -CBvFi40sIQ Malkan | MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md | repo | Malkan | ledger: method=captions, quotes=PASS/10, used_by=none |
@@ -34,7 +34,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | 1Ghq_j5M6vU  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | 1utSjHs_Mq8  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 1utSjHs_Mq8_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=*:FORMULAS.md |
 | 1xBWnyr1qe4  | extracts/gemini_out/1xBWnyr1qe4_audit.md | repo |  | ledger: method=captions, quotes=PASS/13, used_by=none |
-| 2-nG9bsMoPQ Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_2-nG9bsMoPQ.md | repo | Krown | ledger: method=captions, quotes=FAIL/74, used_by=none |
+| 2-nG9bsMoPQ Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_2-nG9bsMoPQ.md | repo | Krown | ledger: method=captions, quotes=PASS/74, used_by=none |
 | 2_6iIvo25CA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | 2ei4fj-Ba24 Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_2ei4fj-Ba24.md | repo | Krown | ledger: method=captions, quotes=PASS/100, used_by=none |
 | 2HcJ3NeZmEQ Malkan | MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md | repo | Malkan | ledger: method=captions, quotes=PASS/1, used_by=none |
@@ -52,15 +52,17 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | 4kpH94Hb0GQ  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/3, used_by=none |
 | 4MoNjEQ2Dd8 Tom | MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md | repo | Tom | ledger: method=captions, quotes=PASS/1, used_by=none |
 | 4MoNjEQ2Dd8 Tom | extracts/v2/tom/4MoNjEQ2Dd8_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/21, used_by=none |
-| 4P5WAxyPCis  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 4P5WAxyPCis_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| 4P5WAxyPCis  | MyTradingSys/research/orderflow_extracts_1112/extract_4P5WAxyPCis.md | repo |  | ledger: method=captions, quotes=PASS/9, used_by=none |
 | 4VXpUjhKG2U  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 4VXpUjhKG2U_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| 4zazKDSXlh8  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | 5Aoyw_sG_88  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | 5Ljfwvtktek Tom | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Tom | ledger: method=captions, quotes=PASS/3, used_by=none |
 | 5Ljfwvtktek Tom | extracts/v2/tom/5Ljfwvtktek_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/21, used_by=none |
 | 5MgOwizsnjk Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 5MgOwizsnjk_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
-| 6aA-P4Gvhrc Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md | repo | Krown | ledger: method=captions, quotes=FAIL/66, used_by=none |
+| 6aA-P4Gvhrc Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_6aA-P4Gvhrc.md | repo | Krown | ledger: method=captions, quotes=PASS/66, used_by=none |
 | 6BAzqewtPUk  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 6BAzqewtPUk_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | 6rHybt-DfQ0 Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 6rHybt-DfQ0_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
+| 6WfTIyJ-YzQ  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md | repo |  | ledger: method=none, quotes=FAIL/6, used_by=none |
 | 7BQPMJ39WpI  | extracts/gemini_out/7BQPMJ39WpI_gemini.md | repo |  | ledger: method=captions, quotes=FAIL/11, used_by=none |
 | 7BQPMJ39WpI Tom | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Tom | ledger: method=captions, quotes=PASS/1, used_by=none |
 | 7BQPMJ39WpI Tom | extracts/processed/tom/new_selected_10/extract_7BQPMJ39WpI.md | repo | Tom | ledger: method=captions, quotes=PASS/5, used_by=none |
@@ -74,11 +76,12 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | 8TvLQ87KrfU  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
 | 96iPFDpXEcU  | extracts/gemini_out/96iPFDpXEcU_gemini.md | repo |  | ledger: method=captions, quotes=PASS/13, used_by=none |
 | 96iPFDpXEcU Tom | extracts/processed/tom/new_selected_10/extract_96iPFDpXEcU.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
+| 9ba0p8ZPL4c  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | 9eHZMVXilgc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 9eHZMVXilgc_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | 9IliXww64uM Fabio Valentini | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 9IliXww64uM_raw.txt on the host that fetched it) | Fabio Valentini | ledger: method=captions, quotes=-/-, used_by=none |
 | 9VN9y2DVtGQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 9VN9y2DVtGQ_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | <id> Malkan | MyTradingSys/research/malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md | repo | Malkan | ledger: method=none, quotes=FAIL/1, used_by=none |
-| _JoJbu_Ug-A Krown | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Krown | ledger: method=none, quotes=-/-, used_by=none |
+| _JoJbu_Ug-A Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract__JoJbu_Ug-A.md | repo | Krown | ledger: method=none, quotes=FAIL/11, used_by=none |
 | _t_XIBrcjRk Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract__t_XIBrcjRk.md | repo | Krown | ledger: method=captions, quotes=PASS/49, used_by=none |
 | _Uvb2RIjZvk  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript _Uvb2RIjZvk_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | A-CQiV_UFB4 Malkan | MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md | repo | Malkan | ledger: method=captions, quotes=PASS/2, used_by=rsi:malkan_divergence_default.json |
@@ -86,14 +89,18 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | A-CQiV_UFB4 Malkan | MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_A-CQiV_UFB4.md | repo | Malkan | ledger: method=captions, quotes=PASS/63, used_by=rsi:malkan_divergence_default.json |
 | a0sy0EW_nSA  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/3, used_by=none |
 | a5tvBwyCddA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| ACb0Qtt3DSQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript ACb0Qtt3DSQ_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| ACb0Qtt3DSQ  | MyTradingSys/research/orderflow_extracts_1112/extract_ACb0Qtt3DSQ.md | repo |  | ledger: method=captions, quotes=PASS/8, used_by=none |
 | am0m_KZLN2M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | AQR6zIgCx7I  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript AQR6zIgCx7I_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| aTMFouI9mF4  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md | repo |  | ledger: method=none, quotes=FAIL/4, used_by=none |
 | AtR_c-B0jw8  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript AtR_c-B0jw8_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | aursfDVYzUk  | extracts/gemini_out/aursfDVYzUk_gemini.md | repo |  | ledger: method=captions, quotes=PASS/12, used_by=*:FORMULAS.md |
 | aursfDVYzUk Tom | extracts/processed/tom/new_selected_10/extract_aursfDVYzUk.md | repo | Tom | ledger: method=captions, quotes=PASS/10, used_by=*:FORMULAS.md |
+| avCqX8ephOU  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | Aysdt7PBETQ Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_Aysdt7PBETQ.md | repo | Krown | ledger: method=captions, quotes=PASS/39, used_by=none |
 | b0ha9ubd1q8  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| BB3c8visnkI Tom | extracts/processed/tom/extract_BB3c8visnkI.md | repo | Tom | ledger: method=none, quotes=FAIL/19, used_by=*:FORMULAS.md |
+| bekghgecip8  | extracts/processed/cowen/extract_bekghgecip8.md | repo |  | ledger: method=none, quotes=FAIL/40, used_by=none |
 | BsNHqXJeGbA  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
 | BVpYGKz9PBU Tom | extracts/v2/tom/BVpYGKz9PBU_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/23, used_by=none |
 | BVpYGKz9PBU Tom | extracts/v2/tom/CATALOG_DELTA_v1batch1.md | repo | Tom | ledger: method=captions, quotes=PASS/7, used_by=none |
@@ -109,13 +116,15 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | cUTsoU-15Tc Fabio | extracts/v2/fabio/cUTsoU-15Tc_v2.md | repo | Fabio | ledger: method=captions, quotes=PASS/13, used_by=none |
 | cw8LWQmec1E  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript cw8LWQmec1E_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | CY7-W_b7UAU  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/4, used_by=none |
+| D-0xTsMPwys  | MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md | repo |  | ledger: method=none, quotes=FAIL/12, used_by=none |
 | DD73wDVvObI Fabio | extracts/gemini_out/fabio/DD73wDVvObI_note.md | repo | Fabio | ledger: method=none, quotes=FAIL/2, used_by=none |
 | dh-ysRR8f-M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript dh-ysRR8f-M_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
-| DVZVE9rXGtU  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript DVZVE9rXGtU_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| DVZVE9rXGtU  | MyTradingSys/research/orderflow_extracts_1112/extract_DVZVE9rXGtU.md | repo |  | ledger: method=captions, quotes=PASS/10, used_by=none |
 | DyS79Eb92Ug Fabio Valentini | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript DyS79Eb92Ug_raw.txt on the host that fetched it) | Fabio Valentini | ledger: method=captions, quotes=-/-, used_by=none |
 | e6Gm1n2h05M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript e6Gm1n2h05M_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | e83njGZFrPw Tom | MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md | repo | Tom | ledger: method=none, quotes=FAIL/6, used_by=none |
 | E_AP5kudK5Y  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
+| EoQDQVblmMY  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | EQy4HouRMMk Cointelegraph | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Cointelegraph | ledger: method=none, quotes=-/-, used_by=none |
 | etg6j0JybfE Tom | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Tom | ledger: method=captions, quotes=PASS/2, used_by=none |
 | etg6j0JybfE Tom | extracts/v2/tom/etg6j0JybfE_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/18, used_by=none |
@@ -291,13 +300,14 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | FawPrRUGNpk Fabio | extracts/processed/fabio_valentini/FawPrRUGNpk/extract_FawPrRUGNpk_3of3.md | repo | Fabio | ledger: method=captions, quotes=PASS/24, used_by=none |
 | FawPrRUGNpk Fabio | extracts/v2/fabio/CATALOG_DELTA.md | repo | Fabio | ledger: method=captions, quotes=PASS/6, used_by=none |
 | FawPrRUGNpk Fabio | extracts/v2/fabio/FawPrRUGNpk_v2.md | repo | Fabio | ledger: method=captions, quotes=PASS/22, used_by=none |
-| fgN6QBFY3Ss  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| ferg8JGxSzk  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
+| fgN6QBFY3Ss Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript fgN6QBFY3Ss_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | FHEoMmD6xKM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | Fj4FDZQxw0I  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript Fj4FDZQxw0I_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | fLt_t4qomeo  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| fMRvOt26xcA Krown | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Krown | ledger: method=none, quotes=-/-, used_by=none |
+| fMRvOt26xcA Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_fMRvOt26xcA.md | repo | Krown | ledger: method=none, quotes=FAIL/11, used_by=none |
 | FPaXP3LE6c8  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
-| ftK2BqggabQ Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ftK2BqggabQ.md | repo | Krown | ledger: method=captions, quotes=FAIL/63, used_by=none |
+| ftK2BqggabQ Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ftK2BqggabQ.md | repo | Krown | ledger: method=captions, quotes=PASS/63, used_by=none |
 | fZlNGWvd2Ko Fabio | MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2_FABIO.md | repo | Fabio | ledger: method=captions, quotes=PASS/1, used_by=none |
 | fZlNGWvd2Ko Fabio | extracts/processed/fabio_valentini/fZlNGWvd2Ko/extract_fZlNGWvd2Ko.md | repo | Fabio | ledger: method=captions, quotes=PASS/7, used_by=none |
 | fZlNGWvd2Ko Fabio | extracts/v2/fabio/CATALOG_DELTA.md | repo | Fabio | ledger: method=captions, quotes=PASS/4, used_by=none |
@@ -326,7 +336,8 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | HAB-P5 wOpen (weekly open Monday 00:00Z): price above = long bias | MyTradingSys/research/habib_plan_imbalance_2026-10-20/README.md | repo | Habib | wiring: unwired-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv |
 | HhV4HI9p5Uw Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_HhV4HI9p5Uw.md | repo | Krown | ledger: method=captions, quotes=PASS/24, used_by=none |
 | Hlot1KhrlMs  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
-| hNfjyrJEytI Krown | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Krown | ledger: method=none, quotes=-/-, used_by=none |
+| hMURCHLnZVE  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
+| hNfjyrJEytI Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_hNfjyrJEytI.md | repo | Krown | ledger: method=none, quotes=FAIL/14, used_by=none |
 | hQ8sOq67x5o  | extracts/gemini_out/hQ8sOq67x5o_gemini.md | repo |  | ledger: method=captions, quotes=PASS/11, used_by=none |
 | hQ8sOq67x5o Tom | extracts/processed/tom/new_selected_10/extract_hQ8sOq67x5o.md | repo | Tom | ledger: method=captions, quotes=PASS/9, used_by=none |
 | HySZZSjMxF8  | extracts/gemini_out/HySZZSjMxF8_gemini.md | repo |  | ledger: method=captions, quotes=FAIL/12, used_by=none |
@@ -343,9 +354,10 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | jXR1afMy-3o  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript jXR1afMy-3o_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | k0zm5NYn0IQ Tom | extracts/v2/tom/CATALOG_DELTA_v1batch1.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
 | k0zm5NYn0IQ Tom | extracts/v2/tom/k0zm5NYn0IQ_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/33, used_by=none |
+| K31xH-6g9Vc LongShort | MyTradingSys/research/backtest_howto_K31xH_1112/EXTRACT.md | repo | LongShort | ledger: method=captions, quotes=PASS/13, used_by=none |
 | K8qtT2_axPo  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript K8qtT2_axPo_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | Kch59nKMYeA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| kcMnnQr1VFg Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md | repo | Krown | ledger: method=captions, quotes=FAIL/93, used_by=none |
+| kcMnnQr1VFg Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_kcMnnQr1VFg.md | repo | Krown | ledger: method=captions, quotes=PASS/93, used_by=none |
 | KEe_CWHyuSg  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript KEe_CWHyuSg_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | Kg6sYKgtkrY  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript Kg6sYKgtkrY_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | Khgj5q1-ln8 Fabio | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Fabio | ledger: method=captions, quotes=PASS/3, used_by=none |
@@ -353,6 +365,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | Khgj5q1-ln8 Fabio | extracts/v2/fabio/Khgj5q1-ln8_v2.md | repo | Fabio | ledger: method=captions, quotes=PASS/14, used_by=none |
 | kKZCJui4S9U  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript kKZCJui4S9U_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | kL7_ybtI_Fc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| kozesVBKkg4  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | KR-C01 Candle definitions | MyTradingSys/backtest/layers/krown/krown_core.py | repo | Krown | wiring: wired, extent=partial; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | KR-C02 A wick is a failed move; size is rejection | MyTradingSys/backtest/layers/krown/krown_core.py | repo | Krown | wiring: wired, extent=partial; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | KR-C03 Hammer | MyTradingSys/backtest/layers/krown/krown_core.py | repo | Krown | wiring: wired, extent=full; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
@@ -484,8 +497,9 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | KR-Z16 Confluence: static zone plus rising average | MyTradingSys/research/krown_ta101_2026-10-13/KROWN_RULES.csv | repo | Krown | wiring: unwired-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | KR-Z17 Levels work with the trend | MyTradingSys/backtest/layers/krown/krown_events.py | repo | Krown | wiring: wired, extent=full; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | KR-Z18 Keep levels relevant: dominant only, look left, favour recent | MyTradingSys/backtest/layers/krown/krown_core.py | repo | Krown | wiring: wired, extent=partial; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
-| kVIvcn7T44o  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| kVIvcn7T44o Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript kVIvcn7T44o_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | kXhIAug0Gh8 Tom | extracts/v2/tom/kXhIAug0Gh8_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/13, used_by=none |
+| l0j1irTKIUw  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | l8RZrBfzvp4  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript l8RZrBfzvp4_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | layer callers Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | MyTradingSys/items/B162_qriptal_signal_layer.md | repo | callers | layer_index spec |
 | layer callers Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md | repo | callers | layer_index spec |
@@ -586,7 +600,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | layer wavetrend WaveTrend (LazyBear oscillator) | MyTradingSys/research/wavetrend_2026-10-17/PRE_REG.md | repo | wavetrend | layer_index spec |
 | layer wavetrend WaveTrend (LazyBear oscillator) | MyTradingSys/research/wavetrend_2026-10-17/RESULT.md | repo | wavetrend | layer_index results |
 | layer wavetrend WaveTrend (LazyBear oscillator) | MyTradingSys/research/wavetrend_2026-10-17/STATUS_2026-10-19.md | repo | wavetrend | layer_index results |
-| LB3DRYxnA0A Krown | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Krown | ledger: method=none, quotes=-/-, used_by=none |
+| LB3DRYxnA0A Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_LB3DRYxnA0A.md | repo | Krown | ledger: method=none, quotes=FAIL/10, used_by=none |
 | Ld1dhjGdTCA Tom | extracts/v2/tom/Ld1dhjGdTCA_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/38, used_by=none |
 | LD_LOEeKzMs Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript LD_LOEeKzMs_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
 | LJkYLhAputg  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
@@ -596,6 +610,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | LQvv5xgy_ik Fabio | extracts/v2/fabio/LQvv5xgy_ik_v2.md | repo | Fabio | ledger: method=captions, quotes=PASS/64, used_by=none |
 | Ly62G168MkQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript Ly62G168MkQ_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | m3IMdc7QwN4  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript m3IMdc7QwN4_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| M7ompiwv5co Tom | MyTradingSys/research/tom_swing_2026-11-09/extract_M7ompiwv5co.md | repo | Tom | ledger: method=captions, quotes=PASS/15, used_by=none |
 | M8Z3A6mcUmE  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | MLK-D01 2.1 Normal (regular) divergence is contra-trend: a reversal signal | MyTradingSys/backtest/layers/rsi/rsi_divergence.py | repo | Malkan | wiring: wired, extent=full; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | MLK-D02 2.1 Compare close to close (RSI is built on the close) | MyTradingSys/backtest/layers/rsi/rsi_divergence.py | repo | Malkan | wiring: wired, extent=full; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
@@ -634,6 +649,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | MLK-W01 2.8 When PRD and regular divergence meet, PRD wins (trend following) | MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md | repo | Malkan | wiring: not-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | MLK-W02 2.8 When the PRD fails, look at the bearish divergence | MyTradingSys/research/setup_catalog_2026-10-15/malkan/MALKAN_DIVERGENCE_GLOSSARY.md | repo | Malkan | wiring: not-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_MALKAN_KROWN.csv |
 | mQQEJFaJvN4  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| N6zlfBJsoRc  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | n7ZSkjb7JXs Tom | extracts/v2/tom/CATALOG_DELTA_v1batch1.md | repo | Tom | ledger: method=captions, quotes=PASS/2, used_by=none |
 | n7ZSkjb7JXs Tom | extracts/v2/tom/n7ZSkjb7JXs_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/20, used_by=none |
 | N_l-fxQokqU  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
@@ -642,19 +658,22 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | NkQeOVDTAec Tom | extracts/v2/tom/NkQeOVDTAec_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/43, used_by=none |
 | o-w5Gxss6T0 Fabio | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Fabio | ledger: method=captions, quotes=PASS/3, used_by=none |
 | o-w5Gxss6T0 Fabio | extracts/v2/fabio/o-w5Gxss6T0_v2.md | repo | Fabio | ledger: method=captions, quotes=PASS/9, used_by=none |
-| oa8kxSLLkAo  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript oa8kxSLLkAo_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| oa8kxSLLkAo  | MyTradingSys/research/orderflow_extracts_1112/extract_oa8kxSLLkAo.md | repo |  | ledger: method=captions, quotes=PASS/7, used_by=none |
 | ODdF0Bn_KSc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript ODdF0Bn_KSc_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | Of_wlv3xaZo Tom | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Tom | ledger: method=captions, quotes=PASS/2, used_by=none |
 | Of_wlv3xaZo Tom | extracts/v2/tom/Of_wlv3xaZo_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/18, used_by=none |
+| OggsnATGbOg Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_OggsnATGbOg.md | repo | Krown | ledger: method=none, quotes=FAIL/3, used_by=none |
 | oPyUif2Zrtk Tom | extracts/v2/tom/oPyUif2Zrtk_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/12, used_by=none |
 | OUM9LYwL8eA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript OUM9LYwL8eA_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | oYu9SBQved0  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript oYu9SBQved0_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | P3rDSh187TE Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_P3rDSh187TE.md | repo | Krown | ledger: method=captions, quotes=PASS/18, used_by=none |
 | p5dywcojg1s  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| pcYO-yzAtrQ  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | Pg8Z7BezFeo  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
 | pgdmKLJ0hhA  | extracts/gemini_out/pgdmKLJ0hhA_gemini.md | repo |  | ledger: method=captions, quotes=PASS/12, used_by=none |
 | pgdmKLJ0hhA Tom | extracts/processed/tom/new_selected_10/extract_pgdmKLJ0hhA.md | repo | Tom | ledger: method=captions, quotes=PASS/7, used_by=none |
 | PjigwAmhiT0 Kurisko | extracts/processed/kurisko/QUAD_ROTATION.md | repo | Kurisko | ledger: method=captions, quotes=PASS/44, used_by=none |
+| PjigwAmhiT0 Kurisko | extracts/processed/kurisko/extract_PjigwAmhiT0.md | repo | Kurisko | ledger: method=captions, quotes=FAIL/47, used_by=none |
 | PpysVy2NNQ4 Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript PpysVy2NNQ4_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
 | Pz8f0wWW12M Fabio | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Fabio | ledger: method=captions, quotes=PASS/6, used_by=none |
 | Pz8f0wWW12M Fabio | extracts/gemini_out/fabio/Pz8f0wWW12M_note.md | repo | Fabio | ledger: method=captions, quotes=PASS/2, used_by=none |
@@ -668,16 +687,17 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | quoII9t08Qc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | RCq5pfzA4oo  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
 | rCTrQ4fkL1Y Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript rCTrQ4fkL1Y_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
-| rFPCtOcfUMI  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript rFPCtOcfUMI_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
-| ridY2Z0hSQA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript ridY2Z0hSQA_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| rFPCtOcfUMI  | MyTradingSys/research/orderflow_extracts_1112/extract_rFPCtOcfUMI.md | repo |  | ledger: method=captions, quotes=FAIL/9, used_by=none |
+| ridY2Z0hSQA  | MyTradingSys/research/orderflow_extracts_1112/extract_ridY2Z0hSQA.md | repo |  | ledger: method=captions, quotes=PASS/8, used_by=none |
 | RPmxr3c8mso  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | rrHj24GSR6M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript rrHj24GSR6M_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | RUKGEMdVNYA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | RwQBdF9TSvc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript RwQBdF9TSvc_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | RxQDKvTI1iw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| sCLLZKY_r8g Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_sCLLZKY_r8g.md | repo | Krown | ledger: method=none, quotes=FAIL/2, used_by=none |
 | ShYS_pD5cxQ Tom | extracts/v2/tom/ShYS_pD5cxQ_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/16, used_by=none |
 | SOaAP9vBgM4 Krown | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Krown | ledger: method=none, quotes=-/-, used_by=none |
-| sPu2SnAFEIY  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| sPu2SnAFEIY Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript sPu2SnAFEIY_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | sQ_biBKhPVU  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript sQ_biBKhPVU_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=*:FORMULAS.md |
 | StaphlRH8NQ Fabio | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Fabio | ledger: method=captions, quotes=PASS/1, used_by=none |
 | StaphlRH8NQ Fabio | extracts/processed/fabio_valentini/StaphlRH8NQ/extract_StaphlRH8NQ.md | repo | Fabio | ledger: method=captions, quotes=PASS/7, used_by=none |
@@ -686,10 +706,11 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | suXg3PvSDxg  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | Sy-x5AQ9-Pk  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript Sy-x5AQ9-Pk_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | sZwgzXLi8pU  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| T0H_jpQXdVI  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | T6hDJcHrVBM Tom | MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md | repo | Tom | ledger: method=captions, quotes=PASS/6, used_by=none |
 | TivMbkd5RvY  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | TjikX8gJh8A  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| TO3pLafk7Us  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| TO3pLafk7Us Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript TO3pLafk7Us_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | TOM-001 1.1 What Is a Trigger? | MyTradingSys/conditions/entry_timing_triggers.md | repo | Tom | wiring: not-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv |
 | TOM-002 1.2 Trigger vs Proof vs Idea | src/main/java/datafeed/SetupCandidatesBuilder.java | repo | Tom | wiring: wired, extent=partial; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv |
 | TOM-003 1.3 Three Trigger Categories (Synthesis from Tom + Research) | MyTradingSys/conditions/entry_timing_triggers.md | repo | Tom | wiring: not-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv |
@@ -961,7 +982,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | TOM-269 G26 - A gap that formed outside cash hours is not a substantial support zone (CO | MyTradingSys/conditions/gap_rules.md | repo | Tom | wiring: not-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv |
 | TOM-270 G26 - A gap that formed outside cash hours is not a substantial support zone (CO | MyTradingSys/conditions/gap_rules.md | repo | Tom | wiring: not-worth-wiring, extent=-; audit MyTradingSys/research/wiring_audit_2026-10/WIRING_TOM_FABIO_HABIB.csv |
 | Towyg2kYA64  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| TrZQ4Xat_sQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| TrZQ4Xat_sQ Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript TrZQ4Xat_sQ_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | tS6ZEiHj8gQ Tom | extracts/v2/tom/tS6ZEiHj8gQ_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/10, used_by=none |
 | TYB7GJODt-k  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | U12jz3LQhy0  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
@@ -972,19 +993,20 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | uk4PZV59nYw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript uk4PZV59nYw_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | ukCnj8MxLGM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | UOBgXV20yCM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript UOBgXV20yCM_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
-| UqAvU1loT_k Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_UqAvU1loT_k.md | repo | Krown | ledger: method=captions, quotes=FAIL/58, used_by=none |
+| UqAvU1loT_k Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_UqAvU1loT_k.md | repo | Krown | ledger: method=captions, quotes=PASS/58, used_by=none |
 | UrZ4vpHJ97g Tom | extracts/v2/tom/UrZ4vpHJ97g_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
 | usho6UVLqkE  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript usho6UVLqkE_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| V0gjxlaW2Qk Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_V0gjxlaW2Qk.md | repo | Krown | ledger: method=none, quotes=FAIL/3, used_by=none |
 | v5EuDl9c0iI  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript v5EuDl9c0iI_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | v8pCR_bA0_0  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | Vd83oo_geMk  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript Vd83oo_geMk_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
-| viT_VzF5Fsw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript viT_VzF5Fsw_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| viT_VzF5Fsw  | MyTradingSys/research/orderflow_extracts_1112/extract_viT_VzF5Fsw.md | repo |  | ledger: method=captions, quotes=PASS/9, used_by=none |
 | vjzy_KxJ_y8 Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md | repo | Krown | ledger: method=captions, quotes=PASS/93, used_by=none |
 | vk0mkNPuhDc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript vk0mkNPuhDc_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | vl01TiVTuoQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript vl01TiVTuoQ_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | VOiy8mAALWA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript VOiy8mAALWA_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | VumVuGnCcFM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript VumVuGnCcFM_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
-| VxN5IxTwpbE  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript VxN5IxTwpbE_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| VxN5IxTwpbE  | MyTradingSys/research/orderflow_extracts_1112/extract_VxN5IxTwpbE.md | repo |  | ledger: method=captions, quotes=PASS/6, used_by=none |
 | W1HrDl70Lhk Malkan | MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md | repo | Malkan | ledger: method=captions, quotes=PASS/14, used_by=none |
 | W1HrDl70Lhk Malkan | MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md | repo | Malkan | ledger: method=captions, quotes=PASS/23, used_by=none |
 | W1HrDl70Lhk Malkan | MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_W1HrDl70Lhk.md | repo | Malkan | ledger: method=captions, quotes=PASS/96, used_by=none |
@@ -999,12 +1021,14 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | Wvq1TZh8aF0 Malkan | MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_Wvq1TZh8aF0.md | repo | Malkan | ledger: method=captions, quotes=PASS/115, used_by=rsi:malkan_divergence_default.json |
 | Wvq1TZh8aF0 Malkan | extracts/processed/malkan/extract_Wvq1TZh8aF0.md | repo | Malkan | ledger: method=captions, quotes=PASS/21, used_by=rsi:malkan_divergence_default.json |
 | X-BmZlmOueo  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| XFO49JlODxI  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| XBOGd67BJks  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
+| XFO49JlODxI Malkan | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript XFO49JlODxI_raw.txt on the host that fetched it) | Malkan | ledger: method=captions, quotes=-/-, used_by=none |
 | XNfOIzPYChA Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript XNfOIzPYChA_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
+| xtN0U-j_4Jc  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | y0gP2Ih6jwE  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
-| y67l86cSqb8  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript y67l86cSqb8_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| y67l86cSqb8  | MyTradingSys/research/orderflow_extracts_1112/extract_y67l86cSqb8.md | repo |  | ledger: method=captions, quotes=FAIL/9, used_by=none |
 | YC1VwJJCALw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
-| YkclL6xgu-s  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript YkclL6xgu-s_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| YkclL6xgu-s  | MyTradingSys/research/orderflow_extracts_1112/extract_YkclL6xgu-s.md | repo |  | ledger: method=captions, quotes=PASS/8, used_by=none |
 | YmygDgtoxO8 Tom | extracts/v2/tom/YmygDgtoxO8_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/38, used_by=none |
 | YopZ5ZDmMFw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript YopZ5ZDmMFw_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | yp8rHZw8Ro0  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
@@ -1017,7 +1041,8 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | zAwEX_tRUfE  | extracts/gemini_out/zAwEX_tRUfE_gemini.md | repo |  | ledger: method=captions, quotes=FAIL/12, used_by=none |
 | zAwEX_tRUfE Tom | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Tom | ledger: method=captions, quotes=PASS/2, used_by=none |
 | zAwEX_tRUfE Tom | extracts/processed/tom/new_selected_10/extract_zAwEX_tRUfE.md | repo | Tom | ledger: method=captions, quotes=PASS/9, used_by=none |
+| ZNvLh3JyOco Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ZNvLh3JyOco.md | repo | Krown | ledger: method=none, quotes=FAIL/2, used_by=none |
 | zQTbdEweG3c Tom | MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md | repo | Tom | ledger: method=captions, quotes=PASS/3, used_by=none |
 | ZYrKqu8TxHo  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
 
-Rows: 1015. Sources: ledger, wiring audits, layer_index. Per-machine operator material is searched locally only.
+Rows: 1040. Sources: ledger, wiring audits, layer_index. Per-machine operator material is searched locally only.
