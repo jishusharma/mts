@@ -24,6 +24,10 @@ class Select(unittest.TestCase):
     def sel(self, *files):
         return gs.select(list(files), STEPS, mentioned=mentioned)
 
+    def test_sim_desk_results_json_is_docs(self):
+        # card venue-gap-tight-stop-rerun-on-deribit: sim_desk/ is tracked data, not unknown code
+        self.assertEqual(self.sel("sim_desk/results/venue-gap-tight-stop-deribit.json"), ("docs", []))
+
     def test_nothing(self):
         self.assertEqual(self.sel(), ("none", []))
 

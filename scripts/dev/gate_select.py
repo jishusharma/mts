@@ -20,7 +20,7 @@ REPO = Path(__file__).resolve().parents[2]
 DOC_SUFFIXES = (".md", ".txt")
 # data/docs folders: json/csv/html in here is content, not code (GATE_SPEED D5: .tsv .gz .err .log .png .svg .parquet .pdf .jpg too,
 # 2026-10-18: a research .tsv / .json.gz / .err each forced a full gate)
-DATA_DIRS = ("MyTradingSys/research/", "MyTradingSys/system/", "MyTradingSys/items/", "MyTradingSys/methodology/")
+DATA_DIRS = ("MyTradingSys/research/", "MyTradingSys/system/", "MyTradingSys/items/", "MyTradingSys/methodology/", "sim_desk/")
 DATA_SUFFIXES = (".json", ".csv", ".html", ".jsonl", ".tsv", ".gz", ".err", ".log", ".png", ".svg", ".parquet", ".pdf", ".jpg")
 # Config/data that is not code but that tests read (GATE_SPEED D5): smoke = ALWAYS + every step whose tests name the file.
 # .claude/settings.json also gets its JSON parse step (3js). .gitattributes, .github/, mts.ps1, scripts/core|sched stay full.
