@@ -2313,3 +2313,9 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - His words: "clean up cheap agents and keep them running in the super sessions - make them check disk health on all devices" (voice; read as: use Haiku agents for clean-up, as a standing Supervisor duty).
 - Done: Haiku agent started on the desktop (disk health, free space, NUC through the SSH gate, clean-up candidates; report only). Broadcast to the other Supervisors with the command.
 - Standing: card supervisor-wake-haiku-hygiene-disk-1111 (plan prints one Haiku hygiene spawn per 5 h window). DECISION (OURS): the agents report; removals stay with the Supervisor and the existing rules (lane trees never removed).
+
+## 2026-11-11 18:25Z Supervisor reviews what he discusses with its sessions and sends them input (operator)
+- His words: "look at what I have been discussing with these sessions that are spawned under you ... process what they are doing from your point of view, and provide valuable inputs to them if it makes sense."
+- Done: read the last turns of Edge finder, Live Aid helper and Eagle_Eyes live. Input sent to Edge finder (freeze triggers before looking; two placebos; forced-move reversion as the "when"; call back-catalogue via Gemini; paper slot before deck) and to Live Aid helper (one window grid 1-30 min with a multiple-testing bar; the 72 % jump give-back becomes a rule with entry, stop and fees before any leverage).
+- Observation (OURS): two independent counts agree that a fast forced move partly reverts (FLOW long after a 3 % 1h drop; 188 jumps of 1 %, half given back in 72 %). First confluence across views; to be tested as one pre-registered rule.
+- Standing: repeat this review each wake when he has talked to a side session. Eagle_Eyes live was not messaged (started by the helper, not by the Supervisor).
