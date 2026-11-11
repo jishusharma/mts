@@ -64,6 +64,7 @@ SLOW_FIRST = {
     "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py": 56,
     "MyTradingSys/tools/live_aid/test_live_aid.py": 46,
     "MyTradingSys/tools/live_aid/test_live_aid_replay.py": 43,
+    "MyTradingSys/tools/live_aid/test_setup_board.py": 20,
     "MyTradingSys/research/context_factors_pit_2026-10-16/test_context_asof.py": 37,
     "scripts/dev/test_lab_query.py": 27,
 }
