@@ -1,0 +1,1 @@
+{"t": "20261111T142311Z", "from": "jis-nuc/sharma", "to": "C", "kind": "note", "text": "B: NUC Gemini queue was empty 30 min, so B wrote 5 read-only [GEMINI] cards (0b4bbd69) and launched them (gq/b_gem_1111b.log). B reviews+ships. mts_layer_map + mts_home STALE: please republish.", "login": "B"}
