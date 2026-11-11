@@ -53,7 +53,7 @@ A gate on your tree cannot tell you about it. Recipe:
 3. Else run only that test, follow CLAUDE.md boot step 2 for revert vs forward-fix, and ship with `--fix-ci`.
 
 F. THE OPERATOR ASKS MID-TASK.
-You stay on the task. Start every reply with one line: TASK: <id> | STEP: <n> | NEXT: <next action>
+You stay on the task. Start every reply with one line: TASK: <id> | SLUG: <claim slug> | WT: <worktree> | STEP: <n> | NEXT: <next action>
 When he asks something: answer briefly using what you know of the task, then in the same reply carry on with the task's next block,
 unless he told you to stop or change task. A question never ends a task.
 If he corrects you, take it, say the change in one line, continue.
@@ -69,7 +69,8 @@ The watcher's "Check the desk tasks for DSA-<host> and do them." is "go". Never 
 
 H. FIX WHAT YOU CAN, REPORT WHAT YOU CANNOT.
 A missing tool, a wrong path or a stale file inside the roots is yours to fix (find how the repo's own runner finds it first);
-then say the fix in one line. Only a bridge refusal, the floor (0.3) or a Claude-only item (5d) goes `--target CLAUDE`.
+then say the fix in one line. Only a bridge refusal, the floor (0.3), a fix outside the roots (a user PATH, an install) or a Claude-only item (5d)
+goes `--target CLAUDE`.
 
 Scope: DSA works a task from pick to shipped commit by itself: pick, claim, read, test first, change, test, commit, ship,
 close, hand off. CLAUDE.md is the rule book; this file is how DSA follows it through AIRUN blocks. Bridge contract:
@@ -94,7 +95,8 @@ get past a gate is the one thing that ends your session.
 REVIEWER. You may review any Claude ship (git show, tests, the diff against the card). A defect is a BLOCKING FINDING:
 `python scripts/dev/tasks.py new --lane SONNET --prio 1 "BLOCKING review of <sha>: <one line>"` plus a desk row
 `--target CLAUDE` with the sha, the failing command and its output. You cannot stop, revert, override or HALT a Claude
-session; a finding is the only lever.
+session; a finding is the only lever. The Claude session that shipped the work answers the finding (a fix, or a
+reasoned refusal on the card) before it closes the work.
 
 ## 0. DIRECT MODE (AIBridge) - read first
 
@@ -105,7 +107,7 @@ then any number of command lines; every line runs. cwd default: the BinanceDataF
 A block without the AIRUN line is ignored.
 Write AIRUN fences only in your final answer, never while thinking. Since 0.7.4 the bridge ignores fences inside the thinking panel.
 Two identical blocks in one reply: the second gets "NOT RUN: duplicate of block K"; if you mean to repeat a command,
-change it (add a `# again` line).
+change it (append a `Write-Output 'again'` line; a second hash line is refused, 9a).
 The bridge is a queue. After you send blocks, your next input is their [AIRUN RESULT] (or BATCH) message. Never send a
 status-check block while a task runs; never put two gate or ship tasks in one reply; wait for the result header.
 Per chain the bridge runs 200 blocks, then hands-free turns off and says so.
@@ -143,7 +145,8 @@ failing step, do not re-run blind.
 0.2 Reach. Roots: C:\Users\E-ngineers\IdeaProjects (the live tree BinanceDataFeed and every worktree beside it),
 C:\Users\E-ngineers\AppData\Local\Temp, F:\MTS and F:\AIBridge. cwd must be inside a root.
 Inside the roots you read, write, create, move, copy, delete and run anything: python, pytest, Maven, git, pip, node,
-sync.py, desk.py, tasks.py, relay.py, dsa.py. Outside the roots you have nothing. F:\CryptoScrapper (CBP): by note only.
+sync.py, desk.py, tasks.py, relay.py, dsa.py. Writes stay out of another chat's tree and the main checkout (0b rule 3).
+Outside the roots you have nothing. F:\CryptoScrapper (CBP): by note only.
 
 0.3 The floor. The only standing limits; each protects the running testnet system, a secret, or the bridge itself.
 - Never read or print .secrets\, .env or key files (the bridge refuses them: denied_path).
@@ -228,8 +231,8 @@ You may be one of several DSA chats on this host and on the other host. A parall
 2. One card at a time: finish and ship it before the next take. Never hold two cards.
 3. Your worktree is `mts-dsa-<chat>` only. Never write in another chat's tree or in the main checkout (the live tree).
 4. One ship per card. A second ship within 10 minutes is allowed (sync.py prints a note only) when it finishes the same card.
-   A ship gate flake: wait 3 minutes (a `Start-Sleep -Seconds 180` block), retry the ship once, then stop and report the
-   failing step; never loop.
+   A ship gate flake (a failing test your change does not touch): wait 3 minutes (a `Start-Sleep -Seconds 180` block), retry the ship once, then stop and report the
+   failing step; never loop. A failure in your own change is no flake: fix it (FIRST, D); a second gate failure is 5e STOP.
 5. A card blocked on a fact the files do not hold goes back at once: `tasks.py tried <id> --asks "<the fact>"`,
    `sync.py release <slug>`, then the next card. Never a question in chat.
 6. Stdout must be UTF-8: every plain block sets `$env:PYTHONUTF8='1'; $env:PYTHONIOENCODING='utf-8'` before Set-Location
@@ -251,7 +254,7 @@ DeepSeek in the chat.deepseek.com page: serial, no subagents, no saved images, n
 - Keep DeepThink on for build, review and debugging work. Do not add "think step by step" scaffolding: the thinking panel
   already reasons. Plan in thinking, act in the final answer.
 - Your thinking is NOT carried into the next turn; only final answers and results stay in the chat. Anything you need
-  later (task id, step, slug, worktree, a number, a decision) goes in the final answer: the TASK | STEP | NEXT line (FIRST, F)
+  later (task id, step, slug, worktree, a number, a decision) goes in the final answer: the TASK line (FIRST, F)
   and the section 13 lines carry it.
 - Paste size is not a limit: read all of a 100-250 KB paste. A paste the chat refuses: read the files from disk instead.
 - An image in this chat is NOT saved. A reply resting on one starts "SHOT NOT SAVED (chat has no disk)"; chart reads
@@ -281,11 +284,12 @@ Both starts then:
    tasks for this host, and the news (flag every "Result: (not stated)"). Per-host facts come only from that output, never
    from this file or a note.
 5. Java: the JDK must be 17 (pom.xml targets 17); Maven is whatever `mvn` resolves to. `java: none` with JAVA_HOME set:
-   check `Test-Path "$env:JAVA_HOME\bin\java.exe"`; if true, start every Java/Maven block with
+   check `Test-Path "$env:JAVA_HOME\bin\java.exe"`; if true and `& "$env:JAVA_HOME\bin\java.exe" -version` says 17, start every Java/Maven block with
    `$env:Path = "$env:JAVA_HOME\bin;" + $env:Path`, say so in the banner, and post `--target CLAUDE` "add %JAVA_HOME%\bin to
    the user PATH on <host>". No JDK 17 at all, or no mvn: say so, run no Maven, post it `--target CLAUDE`.
 6. BUILD_REPORT gates only on its own host. `build_report: OTHER HOST` means it says nothing about this host: say so and
-   do not gate. On this host a `STATUS: FAIL (<axes>)` makes the failing axis task 1 when it is outside the live path;
+   do not gate. On this host (`build_report: MATCH`) read the STATUS line of MyTradingSys\runtime\BUILD_REPORT.md by range
+   (boot does not print it); a `STATUS: FAIL (<axes>)` makes the failing axis task 1 when it is outside the live path;
    a read-only task is never blocked by a FAIL report.
 7. Not on JIS-NB: `python scripts/dev/live_mirror.py brief` before any live read; quote it as mirror@<utc>.
 8. Print the BOOT banner and wait for the operator's order (FIRST, G). No question to him; the order is his move.
@@ -317,7 +321,7 @@ Keep output small; never re-read what is already in this chat. Find before you r
 A claim older than 24 h is stale: release it and say so in the Result line. Never redo a closed task.
 
 ### 5a. ONE TASK, END TO END (the recipe; about 5-8 replies)
-1. Claim (WORKTREE cwd): `python scripts/dev/sync.py start` then `python scripts/dev/sync.py claim "<task>"` (prints the slug;
+1. Claim (WORKTREE cwd): `python scripts/dev/sync.py start` then `python scripts/dev/sync.py claim "<task>"` (prints the claim slug, not the chat id dsa_seed.py names;
    the ship's `--release` uses it). A card: also `tasks.py take <id> --claim <slug>`; a desk row: `desk.py take <id>`.
 2. Read: the card brief or desk row, then only the files it names (`git grep -n`, ranged reads).
 3. Decide: the simplest path that meets the requirements, one or two sentences. A clear task-aligned default exists:
@@ -326,15 +330,17 @@ A claim older than 24 h is stale: release it and say so in the Result line. Neve
    `desk.py post "publish decision <id>" ... --target CLAUDE`; then take the next task.
 4. Test first (code tasks): write the test, run it, show it FAIL on the unchanged code.
 5. Change: `python scripts/dev/dsa.py put <path>` with the content piped from a single-quoted here-string for new files
-   (first line of that block after the AIRUN line: `$OutputEncoding = [Text.UTF8Encoding]::new($false)`, else PowerShell 5.1
+   (in that block, the first line after Set-Location: `$OutputEncoding = [Text.UTF8Encoding]::new($false)`, else PowerShell 5.1
    turns non-ASCII into ?); `python scripts/dev/dsa.py edit <path> --old "<text>" --new "<text>"` for exact replacements
    (refuses unless the anchor matches once; text starting with - is written --old=-x; `--escapes` lets \n stand for a line
    break). dsa.py exit codes: 0 ok, 1 could not, 2 refused and changed nothing. Long logic: a .py file run once, then deleted.
 6. Test: run only the test file for your change (`python -m pytest <file> -q`) -> PASS. No gate here; the ship runs it.
-7. `python scripts/dev/dsa.py commit "<subject>" --result "<what works now / the number>" --files <exact paths>`.
-8. Close the source BEFORE the ship, so it goes in the same push: `tasks.py done <id> --result "..."`, or rewrite the Qn line
-   `Qn. DONE ...`. A desk row: `desk.py done <id> --result "<numbers + file>"` ships itself (own block, timeout=300); then no
-   second ship unless other work is left.
+7. Close the source BEFORE the ship, in the commit: `tasks.py done <id> --result "..." --next "<card-id | stage | END: reason>"`
+   (it edits MyTradingSys/system/tasks/<id>.json and commits nothing), or rewrite the Qn line `Qn. DONE ...`. A desk row:
+   `desk.py done <id> --result "<numbers + file>"` ships itself (own block, timeout=300); then no second ship unless other
+   work is left.
+8. `python scripts/dev/dsa.py commit "<subject>" --result "<what works now / the number>" --files <exact paths> <card file>`.
+   The ship pushes commits only: a file left out of the commit stays behind.
 9. The inline ship block of FIRST, D (`--release <slug>` takes the claim out in the same push) -> TASK RESULT: PASS.
 10. The five lines of section 13. "go" mode: next task, no pause. A single ordered task: stop here.
 
@@ -501,9 +507,9 @@ MyTradingSys/system/NEXT_SESSION.md (section 13b).
 ## 12. SESSION END (after 4 tasks, about 60 results, or an empty queue)
 
 1. Never stop the runtime loop.
-2. Every task shipped, released and closed; `python scripts/dev/dsa.py end` removes this chat's worktree once nothing
-   is unshipped; `python scripts/dev/sync.py where` (from the live tree) shows none of yours.
-3. NEXT_SESSION.md overwritten and shipped (5e D).
+2. Every task shipped, released and closed; NEXT_SESSION.md overwritten and shipped (5e D) from your worktree.
+3. Last, `python scripts/dev/dsa.py end` removes this chat's worktree once nothing is unshipped;
+   `python scripts/dev/sync.py where` (from the live tree) shows none of yours.
 4. Regenerate the session paste (0.8a) so the next chat boots from current files.
 5. Last reply: the section 13 lines, then "DSA chat done; next chat: python scripts/dev/dsa.py start, paste the seed, wait for BOOT, say go".
 
@@ -520,4 +526,11 @@ NEXT:     one line
 NEXT_SESSION.md is the shared handoff for every surface. Dumps\operator\context\DSA_HANDOFF.md holds only what it cannot:
 mistakes this chat and the rule now preventing each, bridge behaviour seen (with result numbers), DSA-only notes.
 Facts from disk, cited. No emoji. LF. No BOM.
+
+## 14. KEEP IN VIEW (a recap; the sections above are the rules)
+1. Every reply starts with the TASK line (FIRST, F); while work is left it ends with a block (9a).
+2. Blocks only in the final answer, in the 9a order, at most 6, never one whose result is already in the chat.
+3. One card at a time: claimed, closed in the commit, shipped with the FIRST D block (5a).
+4. Wait for the [AIRUN RESULT] and read it before the next step.
+5. Fix what you can inside the roots; send `--target CLAUDE` only what you cannot (H).
 ## END
