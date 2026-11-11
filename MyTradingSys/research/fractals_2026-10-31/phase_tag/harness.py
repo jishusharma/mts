@@ -72,8 +72,7 @@ def _gaps(outcomes, labels, cells, pooled):
         return sums / cnt - pooled
 
 
-def _null_max_loop(y, lab, cells, n_shifts, rng):
-    """Reference: one np.roll + bincount per shift (slow; kept as the check for _null_max)."""
+def _null_max(y, lab, cells, n_shifts, rng):
     n = len(y)
     pooled = y.mean()
     out = np.empty(n_shifts)
@@ -81,23 +80,6 @@ def _null_max_loop(y, lab, cells, n_shifts, rng):
         k = int(rng.integers(1, n))
         out[i] = np.nanmax(np.abs(_gaps(y, np.roll(lab, k), cells, pooled)))
     return out
-
-
-def _null_max(y, lab, cells, n_shifts, rng):
-    """Same numbers as _null_max_loop (same rng draws). Per-cell sums for every circular shift come from one FFT
-    cross-correlation per cell; a rolled label sequence has the same cell counts as the original."""
-    n = len(y)
-    pooled = y.mean()
-    ks = np.array([int(rng.integers(1, n)) for _ in range(n_shifts)])
-    cnt = np.bincount(lab, minlength=cells).astype(float)
-    fy = np.fft.rfft(y)
-    gaps = np.full((cells, n_shifts), np.nan)
-    for c in range(cells):
-        if cnt[c] == 0:
-            continue
-        corr = np.fft.irfft(np.conj(np.fft.rfft((lab == c).astype(float))) * fy, n)
-        gaps[c] = corr[ks] / cnt[c] - pooled
-    return np.nanmax(np.abs(gaps), axis=0)
 
 
 def shift_null_test(outcomes, labels, n_shifts=1000, q=0.95, rng=None):
