@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T08:16:17Z",
+    "misses": 8,
+    "reads": [
+      "MyTradingSys/research/v1_plan_2026-10-20/D11_PROGRAMME.md"
+    ],
+    "session": "agent-a9c5f2777c89a062a"
+  },
   "created": "2026-11-11T06:50:51Z",
   "depends_on": [],
   "done_when": "Report 2026-11-11_gemini-doc-scan-routing.md rows 1-3 each resolved: the 3 pairs now state one rule (grep shows no contradicting line), test_integrity.py passes, each fix logged as DECISION (OURS) in ROUTING.md Changes.",

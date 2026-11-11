@@ -41,7 +41,7 @@ yields picks or LC3 says go, E in parallel on the live-path files. Three workers
 |---|---|---|---|
 | Haiku | lane HAIKU, one-use Agents (max 5) | counts, stale-card refresh, test registration, republish and `publish-record`, recount one worker claim, data-file checks | judgement, the live path |
 | Gemini Flash (effort low) | lane CODEX, title `[GEMINI]`, `gemini_queue.py run <id>:low` | SOURCED/OURS labels, blind reads of sheets and reports, cross-vendor review of GPT and Claude results, doc contradiction scans with file:line, search | verdicts; a number we quote without a second vendor |
-| GPT luna medium | lane CODEX, `codex_run.py` | formula audits vs FORMULAS.md, re-derivations, spec-derived and mutation tests, cross-vendor review of Claude and Gemini results | live-path edits; anything it cannot run on the lab data |
+| GPT luna medium | lane CODEX, `codex_run.py` | formula audits vs FORMULAS.md, re-derivations, lab-audit and mutation tests (tests written from a spec go to a Haiku Agent, WORKERS.md 3a), cross-vendor review of Claude and Gemini results | live-path edits; anything it cannot run on the lab data |
 | Sonnet | lane SONNET, background Agents | builds, pre-regs, DEV runs, layer sheets, audits needing judgement, diff review of live-path changes | a card it already got wrong twice (then Opus, by the operator's word) |
 | Opus | lane OPUS, `approved_by` | only cards the operator named: supervisor idle bug, cost checkup, O3 overhead cut | "better quality" |
 | Fable 5.1 | operator-run sessions | design and reviews with the operator (this file, setup review verdicts), R5 and R7 | background work; nobody starts or messages it |
