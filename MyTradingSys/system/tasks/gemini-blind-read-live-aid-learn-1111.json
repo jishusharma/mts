@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:46:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-live-aid-learn-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 6) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of scripts/dev/live_aid_learn.py against its docstring: hit = r1h > 0, verdict rule n >= 30 and gap >= 10 points, rows without r1h skipped, input order, output path.",
+  "id": "gemini-blind-read-live-aid-learn-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: live_aid_learn.py scores Live Aid flags vs 1h move; first list 2026-11-11 (17 rows",
+      "ref": "d15ca15979f7",
+      "utc": "2026-11-11T15:39:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d15ca15979f7 Result: live_aid_learn.py scores Live Aid flags vs 1h move; first list 2026-1",
+      "ref": "MyTradingSys/research/live_aid_learning/2026-11-11.md",
+      "utc": "2026-11-11T15:39:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:46:42Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/live_aid_learn.py (read)",
+    "scripts/dev/test_live_aid_learn.py (read)",
+    "MyTradingSys/research/live_aid_learning/2026-11-11.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-live-aid-learn-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "d15ca15979f7",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 6 clauses: (1) a hit is r1h > 0, (2) events with r1h None or empty are skipped, (3) verdict is test only when n >= 30 and |hit - 50| >= 10, (4) below that the verdict says NOT-ENOUGH-EVIDENCE with the reason, (5) input is --log, else review events.json, else tables.md, (6) the report is written to research/live_aid_learning/<date>.md; also check the 2026-11-11.md rows against the rule",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of live_aid_learn.py (d15ca1597)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
