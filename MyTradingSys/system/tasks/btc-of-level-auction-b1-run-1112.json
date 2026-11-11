@@ -4,6 +4,16 @@
   "commands": [
     "python scripts/dev/verdicts.py backfill"
   ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-11T22:51:08Z",
+    "misses": 63,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/btc_orderflow_map_1112/events.py"
+    ],
+    "session": "agent-a724c4f57df97ac2e"
+  },
   "created": "2026-11-11T22:41:35Z",
   "depends_on": [],
   "done_when": "btc_of_level_auction_1112/b1.py + test_b1.py exist and pytest passes; B1.md has the 2-cell table (event, horizon, n, mean net %, sd, t, share positive, placebo 1-99 % band, session mix, Regime mix, away-from-level contrast) with INSUFFICIENT_N where n<180, no loosening; B2 listed NOT_RUN (no DEV aggTrades); no VALIDATION/RESERVE/HOLDOUT file opened; verdicts.py backfill row added.",
