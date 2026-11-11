@@ -57,6 +57,15 @@ class DeskTest(unittest.TestCase):
         msg = subprocess.run(["git", "log", "-1", "--format=%B"], cwd=self.a, capture_output=True, text=True).stdout
         self.assertIn("Next: END:", msg)
 
+    def test_post_take_assign_bodies_have_next_line(self):
+        # live test 2026-11-10: `desk take` committed no Next:, so sync.py ship refused it
+        def last():
+            return subprocess.run(["git", "log", "-1", "--format=%B"], cwd=self.a, capture_output=True, text=True).stdout
+        rid = desk.post(self.a, "Copy", "copy x", "ok", ship=False)
+        self.assertIn("Next: END:", last())
+        desk.take(self.a, rid, ship=False)
+        self.assertIn("Next: END:", last())
+
     def test_declined_task_raises_operator_line(self):
         rid = desk.post(self.a, "Restart runner", "restart alert runner", "running", ship=False)
         desk.finish(self.a, rid, "declined: restarts are supervisor-only", failed=True, ship=False)
