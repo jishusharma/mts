@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
   "commands": [],
   "created": "2026-11-11T07:51:06Z",
   "depends_on": [],
@@ -24,7 +25,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Filed by lead B from f77fa069 gate: wall 529 s, 3xt 362 s, 5b 201 s, 4g 194 s, 4f 142 s, 3cr 120 s, 3sig 112 s",
+  "note": "Filed by lead B from f77fa069 gate: wall 529 s, 3xt 362 s, 5b 201 s, 4g 194 s, 4f 142 s, 3cr 120 s, 3sig 112 s | 2026-11-11 08:52Z lead B on JIS-NUC: MTS_GATE_JOBS=8 full gate = 600 s wall, ALL PASS, slower than 4 workers (529 s at f77fa069): shards 4b-4h 306-517 s vs 90-195 s, 3xt 477 s vs 362 s. The box saturates (CPU/disk); more workers is not the lever. Next try: cut work, not add workers - batch 3xt files per dir into one pytest process (270 python starts today), and find the slowest extra files from per-file durations.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
@@ -49,6 +50,7 @@
     "Try: worker default from cpu count (e.g. cpu-4, cap 8) for the pool and 3xt; submit 3xt first; check per-file seconds (run_all_tests parses durations) for the slowest extra files",
     "Run two full gates on JIS-NUC and record ship_wall"
   ],
+  "taken": "2026-11-11T08:35:37Z",
   "tests": "scripts/dev/test_run_all_tests.py scripts/dev/test_run_extra_tests.py",
   "title": "T4 gate time: cut step 3xt (extra tests, 362 of 529 s full gate on JIS-NUC) so the full gate is 5 min or less",
   "weight": "",
