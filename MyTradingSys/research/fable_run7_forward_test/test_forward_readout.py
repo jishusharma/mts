@@ -177,3 +177,64 @@ def test_ledger_only_output_has_no_paper_lines(tmp_path):
     res = fr.readout(write(tmp_path, rows(KROWN, "krown_s8", [1.0])), asof="2027-01-20")
     md = fr.to_markdown(res)
     assert "Paper journals" not in md and "Kill row" not in md
+
+
+# ---- card forward-readout-paper-journals-1110: one synthetic fixture per paper row kind, repeatable --paper, golden ledger-only ----
+def _one(tmp_path, row, slot="malkan_level_short"):
+    res = fr.readout(None, asof="2027-01-20", paper=[(_journal(tmp_path, [row]), slot)])
+    return res, {s["slot"]: s for s in res["slots"]}[slot]
+
+
+def test_paper_kind_signal_counted_not_scored(tmp_path):
+    res, s = _one(tmp_path, {"kind": "signal", "t_trigger": 1_796_083_200_000})
+    assert s["n"] == 0 and res["paper"]["signal"] == 1 and res["paper"]["scored"] == 0
+
+
+def test_paper_kind_no_fill_counted_not_scored(tmp_path):
+    res, s = _one(tmp_path, {"kind": "no_fill", "t_trigger": 1_796_083_200_000})
+    assert s["n"] == 0 and res["paper"]["no_fill"] == 1
+
+
+def test_paper_kind_unresolved_counted_not_scored(tmp_path):
+    res, s = _one(tmp_path, {"kind": "unresolved", "t_trigger": 1_796_083_200_000})
+    assert s["n"] == 0 and res["paper"]["unresolved"] == 1
+
+
+def test_paper_kind_kill_listed_not_scored(tmp_path):
+    res, s = _one(tmp_path, {"kind": "kill", "params_id": "px", "verdict": "KILL"})
+    assert s["n"] == 0 and res["kills"] == [{"slot": "malkan_level_short", "params_id": "px", "verdict": "KILL"}]
+    assert "Kill row: params_id=px, slot=malkan_level_short, verdict=KILL" in fr.to_markdown(res)
+
+
+def test_paper_kind_outcome_net_r_scored(tmp_path):
+    res, s = _one(tmp_path, {"kind": "outcome", "t_fill": 1_796_083_200_000, "status": "closed", "net_r": -0.5})
+    assert s["n"] == 1 and s["mean_r"] == -0.5 and res["paper"]["scored"] == 1
+
+
+def test_paper_flag_repeatable(tmp_path, capsys):
+    a = _journal(tmp_path, [{"kind": "outcome", "t_fill": 1_796_083_200_000, "status": "closed", "net_r": 1.0}], "a.jsonl")
+    b = _journal(tmp_path, [{"kind": "outcome", "source": T06, "t_fill": 1_796_169_600_000, "status": "closed", "net_r": 2.0}], "b.jsonl")
+    assert fr.main(["--paper", str(a), "--paper", str(b), "--asof", "2027-01-20"]) == 0
+    out = capsys.readouterr().out
+    assert "| malkan_level_short | 1 |" in out and "| t06_rsi_ma | 1 |" in out
+
+
+GOLDEN_LEDGER_ONLY = (
+    "# Forward readout (as of 2027-01-20)\n\n| slot | n | mean R | SE | DD R | streak | E+ | E- | state |\n"
+    "|---|---|---|---|---|---|---|---|---|\n"
+    "| krown_s8 | 1 | 1.000 | n/a | 0.00 | 0 | 1.11 | 0.88 | RUNNING |\n"
+    "| malkan_level_short | 0 | n/a | n/a | 0.00 | 0 | 1.00 | 1.00 | RUNNING |\n"
+    "| t06_rsi_ma | 0 | n/a | n/a | 0.00 | 0 | 1.00 | 1.00 | RUNNING |\n"
+    "| c30_h2_long | 0 | n/a | n/a | 0.00 | 0 | 1.00 | 1.00 | RUNNING |\n\n"
+    "Rule: PROMOTE E+ >= 80 after n_obs >= 30; KILL E- >= 10 after n_obs >= 10; RETIRE at 150 obs or 12 months; "
+    "Krown only: FAIL-A 12 R drawdown, FAIL-B 12 straight losers, FAIL-C n >= 30 and mean + 1.28 SE < 0. "
+    "Fee-net R, one observation per UTC-day cluster (n counts trades).\n"
+    "Excluded: contaminated (Krown source, other account) 0, unresolved 0, no risk/R 0, other sources 0.\n")
+
+
+def test_ledger_only_output_is_byte_identical_golden(tmp_path, capsys):
+    led = write(tmp_path, rows(KROWN, "krown_s8", [1.0]))
+    assert fr.to_markdown(fr.readout(led, asof="2027-01-20")) == GOLDEN_LEDGER_ONLY
+    out = tmp_path / "o.md"
+    assert fr.main(["--ledger", str(led), "--asof", "2027-01-20", "--out", str(out)]) == 0
+    assert out.read_bytes() == GOLDEN_LEDGER_ONLY.encode() and capsys.readouterr().out == GOLDEN_LEDGER_ONLY
