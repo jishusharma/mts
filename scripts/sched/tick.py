@@ -57,7 +57,7 @@ def save_state(state):
 
 def run_check(name, argv):
     try:
-        p = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, timeout=120)
+        p = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         return 2, f"{name} RED timeout 120s", state_hash(name, ["timeout"])
     lines = [l for l in p.stdout.splitlines() if l.strip()]
@@ -71,7 +71,7 @@ def run_check(name, argv):
 
 def run_pick():
     try:
-        p = subprocess.run([PY, "scripts/sched/pick_task.py"], cwd=REPO, capture_output=True, text=True, timeout=60)
+        p = subprocess.run([PY, "scripts/sched/pick_task.py"], cwd=REPO, capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         return "ERROR: pick_task timeout 60s"
     except OSError as e:

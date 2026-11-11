@@ -55,7 +55,7 @@ def list_procs(procs_json):
     if procs_json:
         return json.loads(Path(procs_json).read_text(encoding="utf-8"))
     out = subprocess.run(["powershell", "-NoProfile", "-Command", PS_LIST], capture_output=True, text=True,
-                         timeout=60, check=True).stdout
+                         timeout=60, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
     data = json.loads(out or "[]")
     return [data] if isinstance(data, dict) else data
 

@@ -674,6 +674,7 @@ def verify_one(task_id):
                     r = subprocess.run(
                         [sys.executable, "-m", "py_compile", str(tmp_py)],
                         capture_output=True, text=True, timeout=30,
+                        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
                     )
                 except subprocess.TimeoutExpired:
                     syntax_fail.append((target_rel, "py_compile timed out"))
@@ -702,6 +703,7 @@ def verify_one(task_id):
                         r = subprocess.run(
                             [sys.executable, "-m", "unittest", stem],
                             cwd=str(tdp), capture_output=True, text=True, timeout=120,
+                            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
                         )
                     except subprocess.TimeoutExpired:
                         failing_tests.append(f"{stem} (timed out)")

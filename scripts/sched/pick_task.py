@@ -113,7 +113,7 @@ def sweep_rows(rows, bug_rows):
 def landed_in_git(rid):
     try:
         p = subprocess.run(["git", "log", "-n", "1", "--format=%h", "-i", "-E", "--grep=^" + rid + ":"],
-                           cwd=ROOT, capture_output=True, text=True, timeout=30)
+                           cwd=ROOT, capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except (OSError, subprocess.TimeoutExpired):
         return False
     return p.returncode == 0 and bool(p.stdout.strip())
