@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import host_health as h  # noqa: E402
 
 NOW = 1_000_000.0
-QUIET = dict(disk=lambda repo: ([], 0), queue=lambda: [])   # the real check_disk scans the largest folders and hangs a test when C: is under 15 GB free
+QUIET = dict(disk=lambda repo: ([], 0), queue=lambda: [], toolchain=lambda: [])   # the real check_disk scans the largest folders and hangs a test when C: is under 15 GB free
 
 
 def P(pid, ppid, name, cmd="", age=10_000, cpu=1.0):
@@ -239,3 +239,52 @@ def test_failed_kill_retries_once_only_on_orphan_gate_leftovers(monkeypatch, tmp
     assert calls.count(11) == 1 and 12 not in calls and calls.count(10) <= 2
     assert sum(1 for pid in calls if pid == 11) == 1
     assert any("ORPHAN gate tree PID 10" in ln and "kill failed" in ln and "rc=1" in ln for ln in lines)
+
+
+# ---- toolchain (2026-11-11: JAVA_HOME set on JIS-NUC but its bin not on PATH; no check reported it)
+JH = "C:/jdk17"
+JH_JAVA = os.path.join(JH, "bin", "java.exe" if os.name == "nt" else "java")
+V17 = 'openjdk version "17.0.20.1" 2026-08-18 LTS'
+
+
+def _which(found):
+    return lambda name: found.get(name)
+
+
+def test_java_major_parses_modern_and_legacy():
+    assert h.java_major(V17) == 17
+    assert h.java_major('java version "1.8.0_391"') == 8
+    assert h.java_major('openjdk version "21" 2023-09-19') == 21
+    assert h.java_major("garbage") is None
+
+
+def test_toolchain_clean_host_reports_nothing():
+    w = _which({"java": JH_JAVA, "mvn": "mvn.cmd", "node": "node"})
+    assert h.check_toolchain(which=w, env={"JAVA_HOME": JH}, version=lambda e: V17, exists=lambda p: True) == []
+
+
+def test_toolchain_java_home_set_but_not_on_path_names_the_fix():
+    w = _which({"mvn": "mvn.cmd", "node": "node"})
+    out = h.check_toolchain(which=w, env={"JAVA_HOME": JH}, version=lambda e: V17, exists=lambda p: True)
+    assert len(out) == 1 and "java not on PATH" in out[0] and "%JAVA_HOME%\\bin" in out[0]
+
+
+def test_toolchain_wrong_major_mvn_node_missing():
+    w = _which({"java": JH_JAVA})
+    out = h.check_toolchain(which=w, env={"JAVA_HOME": JH}, version=lambda e: 'java version "1.8.0_391"', exists=lambda p: True)
+    text = " | ".join(out)
+    assert "java is 8" in text and "mvn not on PATH" in text and "node not on PATH" in text
+
+
+def test_toolchain_bad_java_home_and_version_error_never_raise():
+    def boom(e):
+        raise OSError("no exec")
+    out = h.check_toolchain(which=_which({"java": "/x/java", "mvn": "m", "node": "n"}), env={"JAVA_HOME": "/nope"},
+                            version=boom, exists=lambda p: False)
+    assert any("has no bin" in l for l in out) and any("-version failed" in l for l in out)
+
+
+def test_run_includes_toolchain_lines(tmp_path):
+    q = dict(QUIET, toolchain=lambda: ["TOOLCHAIN java not on PATH"])
+    out = h.run(str(tmp_path), procs=[], kill=lambda p: True, post=False, **q)
+    assert "TOOLCHAIN java not on PATH" in out
