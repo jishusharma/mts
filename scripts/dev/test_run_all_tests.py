@@ -105,6 +105,32 @@ class TestParallelLayerGate(unittest.TestCase):
             self.assertEqual(len(flat), len(set(flat)), jobs)
             self.assertTrue(all(chunks))
 
+    def test_balanced_chunks_beat_round_robin_on_synthetic_costs(self):
+        costs = {"a": 100.0, "b": 10.0, "c": 90.0, "d": 10.0, "e": 10.0, "f": 10.0}
+        mods = sorted(costs)
+        chunks = rat.balance_modules(mods, 2, costs)
+        span = max(sum(costs[m] for m in c) for c in chunks)
+        rr = max(sum(costs[m] for m in c) for c in rat.split_modules(mods, 2))
+        self.assertLessEqual(span, 120.0)
+        self.assertLess(span, rr)
+        self.assertEqual(chunks, rat.balance_modules(mods, 2, costs))   # deterministic
+
+    def test_balanced_every_module_exactly_once_and_cap(self):
+        mods = rat.find_layer_modules()
+        for jobs in (1, 2, 4, 7, 10_000):
+            chunks = rat.balance_modules(mods, jobs)
+            flat = [m for c in chunks for m in c]
+            self.assertEqual(sorted(flat), sorted(mods), jobs)
+            self.assertEqual(len(flat), len(set(flat)), jobs)
+            self.assertTrue(all(chunks))
+            self.assertLessEqual(len(chunks), max(1, jobs))
+
+    def test_failing_module_in_balanced_chunk_fails_step(self):
+        ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs",
+                                         "MyTradingSys.backtest.layers.alerts.no_such_module_xyz"], 2)
+        self.assertFalse(ok)
+        self.assertIn("no_such_module_xyz", out)
+
     def test_chunk_with_only_testless_modules_passes(self):
         ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs"], 1)
         self.assertTrue(ok, out)

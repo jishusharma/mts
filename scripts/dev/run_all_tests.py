@@ -393,10 +393,47 @@ def split_modules(modules, jobs):
     return [c for c in (modules[i::jobs] for i in range(jobs)) if c]
 
 
+# OURS: measured wall seconds per step-5b layer module (2026-11-11, JIS laptop, 4 parallel, one module per process); modules not listed
+# cost LAYER_DEFAULT_S. Only used to balance chunks (longest-processing-time first), never to skip or reorder what runs.
+LAYER_COST_S = {
+    "MyTradingSys.backtest.layers.promotion.test_promote": 84.0,
+    "MyTradingSys.backtest.layers.alerts.test_lookahead_forcing_wlow_session": 72.0,
+    "MyTradingSys.backtest.layers.test_run_bracket_grid": 50.0,
+    "MyTradingSys.backtest.layers.promotion.test_promote_spec": 28.0,
+    "MyTradingSys.backtest.layers.alerts.test_live_levels_confluence": 15.0,
+    "MyTradingSys.backtest.layers.krown.test_krown_live": 14.0,
+    "MyTradingSys.backtest.layers.alerts.test_lookahead_forcing_fabio_v3": 9.0,
+    "MyTradingSys.backtest.layers.cryptocred.test_cc_htf_count": 9.0,
+    "MyTradingSys.backtest.layers.alerts.test_live_runner_cli": 5.0,
+    "MyTradingSys.backtest.layers.krown.test_krown_context": 5.0,
+}
+LAYER_DEFAULT_S = 1.5   # OURS
+
+
+def balance_modules(modules, jobs, costs=None):
+    """Longest-processing-time-first split of `modules` into at most `jobs` non-empty chunks by cost (deterministic: ties by name,
+    each chunk keeps the input order). Union of the chunks is exactly `modules`, each once; a lost or duplicated module raises."""
+    costs = LAYER_COST_S if costs is None else costs
+    modules = list(modules)
+    if not modules:
+        return [modules]
+    n = max(1, min(jobs, len(modules)))
+    bins = [[0.0, i, []] for i in range(n)]
+    for m in sorted(modules, key=lambda m: (-costs.get(m, LAYER_DEFAULT_S), m)):
+        b = min(bins, key=lambda b: (b[0], b[1]))
+        b[0] += costs.get(m, LAYER_DEFAULT_S)
+        b[2].append(m)
+    pos = {m: i for i, m in enumerate(modules)}
+    chunks = [sorted(b[2], key=lambda m: pos[m]) for b in bins if b[2]]
+    if sorted(m for c in chunks for m in c) != sorted(modules):
+        raise RuntimeError("balance_modules lost or duplicated a module")
+    return chunks
+
+
 def exec_layer_chunks(modules, jobs):
     """Run every layer module in `jobs` concurrent unittest processes. Returns (ok, output); fails if any chunk fails, and then
     the output is the last lines of each failing chunk."""
-    chunks = split_modules(modules, jobs)
+    chunks = balance_modules(modules, jobs)
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
