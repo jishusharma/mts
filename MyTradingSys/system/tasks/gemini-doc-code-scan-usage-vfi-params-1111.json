@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T15:28:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-vfi-params-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini scan for contradictions between the parameters stated in USAGE_vfi.md and the defaults and logic in vfi.py (length 130, coef 0.2, vcoef 2.5, smooth 3, stdev_len 30).",
+  "id": "gemini-doc-code-scan-usage-vfi-params-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research: Volume Flow Indicator usage and crypto filter (card tvfav-usage-vfi-1107)",
+      "ref": "47d68f92380b",
+      "utc": "2026-11-07T16:04:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "47d68f92380b research: Volume Flow Indicator usage and crypto filter (card tvfav-usage-vfi",
+      "ref": "MyTradingSys/research/tv_favorites_2026-11/USAGE_vfi.md",
+      "utc": "2026-11-07T16:04:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "next: END: task complete",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:28:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tv_favorites_2026-11/USAGE_vfi.md (read)",
+    "MyTradingSys/backtest/layers/vfi/vfi.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-vfi-params-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "47d68f92380b",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-refine-1111b"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: length, coef, vcoef, smooth and smooth kind, the stdev window; find the matching default or line in the code; mark CONSISTENT or CONTRADICTION or NOT_IN_CODE",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "tests": "",
+  "title": "[GEMINI] scan: USAGE_vfi.md parameters vs vfi.py",
+  "weight": "ROUTINE",
+  "worker": ""
+}

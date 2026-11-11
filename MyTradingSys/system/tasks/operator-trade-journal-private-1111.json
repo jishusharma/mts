@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/tools/trade_journal/log_trade.py --check-path"
+  ],
+  "created": "2026-11-11T15:40:50Z",
+  "depends_on": [],
+  "done_when": "Schema and logger are on trunk with only the empty template; guard test passes; the operator logs his first trade to the external path (nothing from it in git status).",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Build the operator's discretionary trade journal (Eagle Eyes plan rank 7): schema plus logger tool in the repo, data written only outside the repo, layer readings captured at entry and exit. Repo is PUBLIC: no journal data is ever committed.",
+  "id": "operator-trade-journal-private-1111",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Buy Crypto page: source, CoinGecko feed script and test, recipe, decision, card",
+      "ref": "1de411d25374",
+      "utc": "2026-11-10T13:03:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1de411d25374 Buy Crypto page: source, CoinGecko feed script and test, recipe, decision, ca",
+      "ref": "MyTradingSys/system/QUICK_ANSWERS.md",
+      "utc": "2026-11-10T13:03:28Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS): default data dir F:/MTS_private (local, never pushed); first-trade logging is the operator's action, the card closes on tool + guard test.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:57:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/trade_journal/journal_schema.json",
+    "MyTradingSys/tools/trade_journal/log_trade.py",
+    "MyTradingSys/tools/trade_journal/test_log_trade.py",
+    "MyTradingSys/tools/trade_journal/template.jsonl",
+    "MyTradingSys/system/QUICK_ANSWERS.md"
+  ],
+  "scope_out": [
+    "execution/journal.py (order audit trail, different thing)",
+    "any real trade data",
+    "exchange accounts or keys"
+  ],
+  "scope_sha": "1de411d25374",
+  "size": "M",
+  "sources": [
+    "four-model review 2026-11-11"
+  ],
+  "state": "ready",
+  "steps": [
+    "Schema: id, utc_entry, utc_exit, symbol, side, entry, stop, exit, reason_text, layer readings at entry and exit (the six READINGS of home.js plus free notes)",
+    "log_trade.py appends one JSON line to the path in env MTS_TRADE_JOURNAL (default F:/MTS_private/trade_journal.jsonl); refuses any path inside the git repo",
+    "Ship an empty template.jsonl with one row marked EXAMPLE, plus a .gitignore line for *.private.jsonl",
+    "Add a one-line how-to to QUICK_ANSWERS.md"
+  ],
+  "tests": "test_log_trade.py: a path inside the repo is refused (fails on a logger without the guard); a valid row validates against the schema; a row missing layer readings is rejected",
+  "title": "Operator trade journal: schema and private logger in repo, data outside",
+  "weight": "",
+  "worker": "session"
+}

@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-11T14:44:58Z",
+  "closed": "2026-11-11T18:03:57Z",
   "commands": [],
   "context": {
     "calls_to_edit": 19,
@@ -33,22 +33,22 @@
   "latest": [
     {
       "kind": "ship",
-      "line": "OI poller commits on trunk; replay test fixed: all-venues column moved 7->14 (test shape, ",
-      "ref": "ae8a9fd22",
-      "utc": "2026-11-11T14:44:58Z"
+      "line": "All already on trunk: merge-base --is-ancestor exit 0 for 61be0d9cc, OI poller tree head a",
+      "ref": "7dc16994f",
+      "utc": "2026-11-11T18:03:57Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: poller shipped",
+  "next": "END: nothing missing on trunk",
   "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T02:52:17Z",
   "refs": [],
-  "result": "OI poller commits on trunk; replay test fixed: all-venues column moved 7->14 (test shape, not poller or 651aab2e)",
+  "result": "All already on trunk: merge-base --is-ancestor exit 0 for 61be0d9cc, OI poller tree head a5f51f1f4, JIS-NB/reship-poller-1110 040e56fe4 vs origin/fast-track 7dc16994f. Nothing to ship.",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -72,7 +72,7 @@
     "Else merge the branch into a worktree branch and run sync.py ship --release <slug>",
     "Record the sha on origin in the card result"
   ],
-  "taken": "2026-11-11T14:44:58Z",
+  "taken": "2026-11-11T18:03:57Z",
   "tests": "no new code; evidence is merge-base --is-ancestor exit 0 per sha, recorded in the result",
   "title": "Re-ship OI poller (tree mts-jis-nb-live-aid-oi-poller-all-venues-1110, 2 commits) and Live Aid coach 61be0d9cc (branch claude/jovial-easley-efb700); no ship running at 13:15Z, neither on trunk; one ship at a time",
   "weight": "ROUTINE",

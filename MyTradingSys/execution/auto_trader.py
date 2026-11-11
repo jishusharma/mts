@@ -683,7 +683,7 @@ def account_secret_missing(source: str, cfg: dict):
 def run(cmd: list, timeout: int = 900, account: str = None) -> tuple:
     env = {**os.environ, "MTS_ACCOUNT": account} if account else {k: v for k, v in os.environ.items() if k != "MTS_ACCOUNT"}
     r = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                       timeout=timeout, env=env)
+                       timeout=timeout, env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
@@ -765,7 +765,7 @@ def spawn_manager(plan_id: str, account: str = None):
     mlog = open(MANAGER_LOG_DIR / f"{plan_id}.log", "a", encoding="utf-8")
     penv = {**os.environ, "MTS_ACCOUNT": account} if account else {k: v for k, v in os.environ.items() if k != "MTS_ACCOUNT"}
     return subprocess.Popen([sys.executable, str(HERE / "position_manager.py"), plan_id], cwd=REPO, stdout=mlog,
-                            stderr=subprocess.STDOUT, env=penv)
+                            stderr=subprocess.STDOUT, env=penv, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def exchange_flat(account: str = None, instrument: str = "BTC-PERPETUAL"):
@@ -896,7 +896,7 @@ def list_process_cmdlines() -> list:
     try:
         r = subprocess.run(["powershell", "-NoProfile", "-Command",
                             "Get-CimInstance Win32_Process | Select-Object ProcessId,CommandLine | ConvertTo-Json -Compress"],
-                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         rows = json.loads(r.stdout or "[]")
         rows = [rows] if isinstance(rows, dict) else rows
         return [(int(x["ProcessId"]), x.get("CommandLine") or "") for x in rows]

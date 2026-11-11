@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T18:06:21Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-relay-docstring-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 7) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of relay.py: the relay header forms, the conditions under which kick stays IDLE, handoff and unlock behaviour, and that the creationflags edits changed no behaviour.",
+  "id": "gemini-blind-read-relay-docstring-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "no-window flag on 35 unattended subprocess calls outside scripts/dev (q-5aeda0)",
+      "ref": "c0354cca92cf",
+      "utc": "2026-11-11T15:37:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T18:06:28Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/sched/relay.py (read)",
+    "MyTradingSys/tests/test_relay.py, test_relay_tick.py, test_relay_queue.py, test_relay_prompts.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-relay-docstring-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "c0354cca92cf",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 4a7f327b)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 7 clauses from the docstring: (1) header forms go and stop with depth and id, (2) kick is IDLE on a stop flag, (3) IDLE on no header or a stop header, (4) IDLE when no task this host can run, (5) IDLE when a launch is younger than ACTIVE_MIN, (6) IDLE for the same handoff id under STALE_H, (7) IDLE when another host wrote the handoff under --peer-quiet-min",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of scripts/sched/relay.py against its docstring (11 no-window edits in c0354cca9)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

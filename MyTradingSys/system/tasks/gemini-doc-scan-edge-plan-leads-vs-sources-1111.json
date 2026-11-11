@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T16:04:34Z",
+  "commands": [],
+  "created": "2026-11-11T15:46:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-leads-vs-sources-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per number) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini check of EDGE_PLAN.md (b): each lead's frozen rule file exists and its quoted evidence (R, n, CI, Holm, trades per year) matches the cited file and line; list any number not found in the source.",
+  "id": "gemini-doc-scan-edge-plan-leads-vs-sources-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-leads-vs-sour",
+      "ref": "4db18ea5e",
+      "utc": "2026-11-11T16:04:34Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into HEAD",
+      "ref": "c4ba63fff097",
+      "utc": "2026-11-11T15:45:28Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0d79f9e8e4f8 Edge plan 2026-11-11: fee table, size rule, four leads, 30-trade stop, decisi",
+      "ref": "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md",
+      "utc": "2026-11-11T15:43:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:46:45Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-leads-vs-sources-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md (b, c; read)",
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py (read)",
+    "MyTradingSys/research/ (the cited result files: eh-h5 RESULT, malkan_level_shorts REPORT, fable_run7_forward_test/FORWARD_PREREG.md, eagle_eyes_picture_2026-10-28 PRE_REG_C30.md and C30_VALIDATION.md; read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-leads-vs-sources-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "c4ba63fff097",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 4 clauses, one per lead (T06L, MLK, KS8, C30): (1) the frozen rule file named exists, (2) the rule text matches the plan row, (3) every number in the Evidence column is found in the cited file at the cited line; write one row per number",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: EDGE_PLAN four leads against their cited sources",
+  "weight": "ROUTINE",
+  "worker": ""
+}

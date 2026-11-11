@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T17:28:03Z",
+  "commands": [],
+  "created": "2026-11-11T17:21:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-gate-speed-vs-gate-select-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per claim) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of every testable claim in GATE_SPEED.md about which files select which ship gate (docs, config, gate files, fail closed) against scripts/dev/gate_select.py and its test; list up to 10 claims, one row each.",
+  "id": "gemini-doc-scan-gate-speed-vs-gate-select-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH=9 DIFF=1 NOT_IN_DATA=0; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-do",
+      "ref": "e5d5bf9b5",
+      "utc": "2026-11-11T17:28:03Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: root sim_desk/results/*.json selects the smoke gate, not fail-closed full (test fa",
+      "ref": "70857d4a0f8e",
+      "utc": "2026-11-11T15:48:57Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c637bfa4e167 row3: one gate pool per machine, one slot per ship, wait.log",
+      "ref": "MyTradingSys/system/GATE_SPEED.md",
+      "utc": "2026-11-10T21:20:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T17:21:23Z",
+  "refs": [],
+  "result": "MATCH=9 DIFF=1 NOT_IN_DATA=0; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-gate-speed-vs-gate-select-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/GATE_SPEED.md (read)",
+    "scripts/dev/gate_select.py (read)",
+    "scripts/dev/test_gate_select.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-gate-speed-vs-gate-select-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "70857d4a0f8e",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 79fec021)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 10 testable claims from GATE_SPEED.md about gate selection, each with the code line that implements it; MATCH when code and doc agree, DIFF when they contradict, NOT_IN_DATA when the code has no such rule",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: GATE_SPEED.md vs gate_select.py selection rules",
+  "weight": "ROUTINE",
+  "worker": ""
+}
