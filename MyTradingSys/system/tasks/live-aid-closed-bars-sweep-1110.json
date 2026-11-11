@@ -4,35 +4,56 @@
   "commands": [],
   "created": "2026-11-10T14:07:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Each listed reader drops the last forming bar; one test per reader in test_live_aid.py shows its output unchanged when only the forming bar changes; all fail on the pre-change code; test_live_aid.py passes.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Live Aid panels that still read the forming candle (rsiVote 1h/4h, 5m delta, STRIP calc, atr15, ma_strip, dflags) use closed bars only, like pulse, indread and lane.",
   "id": "live-aid-closed-bars-sweep-1110",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid: level names anchored (yesterday's low was shown as Today low), weekly high/low l",
+      "ref": "74c91b0bd1eb",
+      "utc": "2026-11-10T14:09:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T02:52:26Z",
   "refs": [
     "MyTradingSys/tools/live_aid/live_aid.html"
   ],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "Live Aid session C Haiku audit 2026-11-10"
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html (rsiVote ~1393, atr15 ~710)",
+    "MyTradingSys/tools/live_aid/ma_strip.js",
+    "MyTradingSys/tools/live_aid/test_live_aid.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no live tree, no deploy, no new indicator, no threshold change"
+  ],
+  "scope_sha": "74c91b0bd1eb",
+  "size": "M",
+  "sources": [
+    "operator review 2026-11-11, research/live_aid_review_2026-11-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Find how pulse and indread drop the forming bar; reuse that helper",
+    "Write one failing test per reader",
+    "Apply the helper to each reader; run test_live_aid.py"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py: per reader, a changed forming bar must not change the value (fails first on current live_aid.html)",
   "title": "Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP calc ~977, atr15 ~710, ma_strip ~68, dflags ~1509): filter to closed bars like pulse/indread/lane, test each",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
