@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T02:53:31Z",
+  "depends_on": [],
+  "done_when": "test_live_aid.py has a test that renders the board from a fixture and finds both cards, the n and rate text, and no 'BOTH SIDES' string in live_aid.html; it fails on current code; test_live_aid.py and test_live_aid_layout.py pass.",
+  "est_turns": 24,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "live_aid.html shows a LONG card and a SHORT card side by side from setup_board.js, a strength bar per side, and the n and rate of the current mix from BASE_RATES (or NO RATE when absent); the IDEA / SETUP banners and the BOTH SIDES line are removed.",
+  "id": "live-aid-board-render-1111",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid review (4-week replay of its flags) + one BOTH SIDES banner",
+      "ref": "374458114aaf",
+      "utc": "2026-11-10T21:06:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run) depends on live-aid-board-core-1111 and live-aid-board-rates-1111; build core and rates first",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:53:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/home.js",
+    "MyTradingSys/tools/live_aid/test_live_aid.py",
+    "MyTradingSys/tools/live_aid/test_live_aid_layout.py"
+  ],
+  "scope_out": [
+    "no live tree, no deploy, no new maths (core and rates cards own it), no invented percent"
+  ],
+  "scope_sha": "374458114aaf",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-11 chat"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read home.js and where IDEA / SETUP / BOTH SIDES are rendered",
+    "Write the failing render test",
+    "Render the two cards from setup_board.js and the rate from BASE_RATES; delete the old banners",
+    "Run both live_aid test files"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py::test_two_sided_board_renders (fails first: IDEA banner still present)",
+  "title": "Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place of IDEA / SETUP banners",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

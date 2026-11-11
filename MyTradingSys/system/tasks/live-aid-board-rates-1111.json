@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T02:53:28Z",
+  "depends_on": [],
+  "done_when": "base_rates_input/setup_board_rates.js exists with one row per mix having n and rate and window; a test recomputes two mixes by hand from a 10-row fixture and matches exactly; mixes with n below 30 are marked LOW_N; test fails before the writer exists.",
+  "est_turns": 22,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From the replay in research/live_aid_review_2026-11-11 compute, for each evidence mix the board can show (set of layer ids on one side), the hit rate and n over the replayed days, and write it as a base_rates_input row so the page never prints an invented percent.",
+  "id": "live-aid-board-rates-1111",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid review (4-week replay of its flags) + one BOTH SIDES banner",
+      "ref": "374458114aaf",
+      "utc": "2026-11-10T21:06:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:53:30Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/live_aid_review_2026-11-11/replay.js (read)",
+    "MyTradingSys/tools/live_aid/base_rates.py",
+    "MyTradingSys/tools/live_aid/test_base_rates.py"
+  ],
+  "scope_out": [
+    "no new threshold, no HTML change, no weighting search (review found none beats 52 percent), no live tree"
+  ],
+  "scope_sha": "374458114aaf",
+  "size": "M",
+  "sources": [
+    "research/live_aid_review_2026-11-11/RESULT.md (flags right 47-51 percent)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read replay.js and RESULT.md for the flag definition and the 30 min contradiction check",
+    "Write the 10-row fixture and failing test",
+    "Write the writer and the registry row; run test_base_rates.py"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_base_rates.py::test_setup_board_rates_hand_case (fails first: no writer)",
+  "title": "Live Aid setup board hit rate per evidence mix from replay.js, printed with n",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
