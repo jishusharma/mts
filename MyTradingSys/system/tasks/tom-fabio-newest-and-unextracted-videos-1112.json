@@ -7,10 +7,9 @@
   ],
   "created": "2026-11-11T19:46:47Z",
   "depends_on": [
-    "of-extract-ondisk-1112",
     "of-extract-fetch-1112"
   ],
-  "done_when": "EXTRACTION_LEDGER.csv rebuilt by build_ledger.py with the new extract rows; GAPS.md count \"transcript but no extract\" below 71; MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md (one page) has every rule with id and verbatim quote and verify_extract_quotes.py exits 0 on it.",
+  "done_when": "build_ledger.py rebuilt EXTRACTION_LEDGER.csv; GAPS.md 'transcript but no extract' below 71 (about 61 expected); ORDERFLOW_RULES.md (one page, every rule with id, verbatim quote, SOURCED) exists and verify_extract_quotes.py exits 0 on it.",
   "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
@@ -28,7 +27,7 @@
     "of-extract-ondisk-1112",
     "of-extract-fetch-1112"
   ],
-  "note": "Original one-session scope split into 4 by planner-edge-cards-1112. Rest of the backlog (60+ ids) is a later wave: DECISION (OURS).",
+  "note": "Scope split into 4 by planner-edge-cards-1112. of-extract-ondisk-1112 shipped (d9b74c5a1: 10 extracts, 83 SOURCED rules in ORDERFLOW_RULES_DRAFT.md). Rest of backlog (60+ ids) is a later wave: DECISION (OURS). BLOCKED-BY: of-extract-fetch-1112 must be done first (check refuses a ready dependency); READY once it is done.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -52,9 +51,9 @@
   ],
   "state": "raw",
   "steps": [
-    "Run build_ledger.py; confirm GAPS.md counts fall by the number of new extracts",
-    "Merge ORDERFLOW_RULES_DRAFT.md into ORDERFLOW_RULES.md, one line per rule: idea, quote, id, SOURCED; mark clocks as index-futures-only",
-    "Run verify_extract_quotes.py on ORDERFLOW_RULES.md until exit 0"
+    "Run build_ledger.py; confirm the GAPS.md 'transcript but no extract' count falls from 71 to about 61",
+    "Merge ORDERFLOW_RULES_DRAFT.md (83 rules) into ORDERFLOW_RULES.md, one line per rule: idea, verbatim quote, id, SOURCED; mark index-futures clocks 'index-futures-only, not for BTC'",
+    "Run verify_extract_quotes.py on ORDERFLOW_RULES.md until exit 0 (fix the quote, never the checker)"
   ],
   "tests": "test_build_ledger.py exists and must pass; GAPS.md count before vs after is the check; verify_extract_quotes.py exit 0.",
   "title": "Extraction backlog 3/3b: rebuild ledger and GAPS, one-page SOURCED order-flow rules",

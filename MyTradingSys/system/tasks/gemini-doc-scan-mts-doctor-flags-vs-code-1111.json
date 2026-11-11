@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T21:04:46Z",
+  "commands": [],
+  "created": "2026-11-11T20:50:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-mts-doctor-flags-vs-code-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per clause) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of the flags and check names in MyTradingSys/system/MTS_DOCTOR.md against scripts/dev/mts_doctor.py argparse and check functions and test_mts_doctor.py; up to 10 claims.",
+  "id": "gemini-doc-scan-mts-doctor-flags-vs-code-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-mts-doctor-flags-vs-cod",
+      "ref": "8b5daff4f",
+      "utc": "2026-11-11T21:04:46Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8363dcf213b8 ci_revert.py: plan/refuse/apply a revert of the first red fast-track commit",
+      "ref": "MyTradingSys/system/MTS_DOCTOR.md",
+      "utc": "2026-11-05T05:03:38Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:50:47Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-mts-doctor-flags-vs-code-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/system/MTS_DOCTOR.md (read)",
+    "scripts/dev/mts_doctor.py (read)",
+    "scripts/dev/test_mts_doctor.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-mts-doctor-flags-vs-code-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 10 claims, each with the code line; MATCH, DIFF when code differs, NOT_IN_DATA when no code implements it",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: mts_doctor.py flags and checks vs MTS_DOCTOR.md",
+  "weight": "ROUTINE",
+  "worker": ""
+}

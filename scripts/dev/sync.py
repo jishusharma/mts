@@ -5,7 +5,7 @@
   python scripts/dev/sync.py health  # stale/overlapping claims, shared or orphan worktrees, branches never shipped
   python scripts/dev/sync.py ship [--full] [--fix-ci] [--again] [--wait-ci] [--result <text> [-m <subject>]] [--next <card-id | stage | END: reason>] [--release <slug>] [--after <slug>] [--train]  # --train (off by default): push queue/<host>/<slug>, wait on the train status file (ship_train.py; exit 4 = ejected); a second ship within 10 min only prints a note (--again still accepted); docs-only ships run no gate; merge origin/fast-track, SMOKE gate (steps for the changed paths; live path = all; --full = all), push; CI runs the full suite behind
                                            # ordinary code ships run the FAST gate (GATE_SPEED.md: ~60 s, tests chosen by import graph); a red CI blocks code ships until
-                                           # fixed: --fix-ci ships the fix through it with the full gate; --after waits for predecessor order ticket
+                                           # fixed: --fix-ci ships the fix through the fast 2-minute gate (not the full gate; sync.py:2374); --after waits for predecessor order ticket
                                            # after the push it returns at once; `sync.py ci [sha]` (or `ship --wait-ci` / SYNC_WAIT_CI=1) waits up to 10 min for the CI run of the sha and prints CI RED at once (exit 3)
   python scripts/dev/sync.py news [hours=24]  # what shipped: feature + Result line per commit, no code
   python scripts/dev/sync.py claim "<task>" [--area <paths>]  # tell parallel sessions what you work on (shipped at once); refused only when --area overlaps an open claim

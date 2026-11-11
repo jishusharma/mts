@@ -1015,3 +1015,36 @@ def test_two_sided_board_renders(tmp_path):
         text3, _, errs3 = _board_page(b, None, {}, None)
         assert not errs3 and "nothing live" in text3
         b.close()
+
+
+# ---------- flag log (card live-aid-flag-log-1111) ----------
+def test_flag_log_wired_in_page():
+    """live_aid.html keeps the banner log under mts_flag_log (cap 2000, storage in try/catch) and has a Download button. Runs without node."""
+    page = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    assert "mts_flag_log" in page and "cap: 2000" in page
+    assert 'id="flag-dl"' in page and "Download flag log" in page
+    assert page.count("onFlag: flagAdd") == 2                       # both the Home render and the other-tab flashes feed the log
+    wire = page.split("function flagAdd", 1)[1][:400]
+    assert "try {" in wire and "localStorage.setItem('mts_flag_log'" in wire
+
+
+def test_flag_log_records_each_banner():
+    """Two banners (a big liquidation print, a level touch) -> two rows with time, kind, side, level, evidence, price."""
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    js = ("const H=require(process.argv[1]);const rows=[];let log=[];"
+          "const md={px:74000,zones:[{price:74010,name:'Today high',items:[]}],lad:{above:[],below:[]}};"
+          "H.flashes({now:1e12,news:[],liq:{last:[{t:1e12-1000,usd:300000,side:'long',px:73990}]},onFlag:r=>{log=H.flagLogAdd(log,r,2000);}},md);"
+          "console.log(JSON.stringify({log,csv:H.flagCsv(log),cap:H.flagLogAdd(Array(2000).fill({t:1}),{t:2},2000).length}))")
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=30)
+    assert out.returncode == 0, out.stderr[-1500:]
+    got = json.loads(out.stdout)
+    assert len(got["log"]) == 2
+    for r in got["log"]:
+        assert set(r) == {"t", "kind", "side", "level", "evidence", "price"}
+    liq, touch = got["log"]
+    assert (liq["kind"], liq["side"], liq["price"]) == ("liq", "DOWN", 74000) and "300k of LONGS" in liq["evidence"]
+    assert (touch["kind"], touch["level"]) == ("touch", "Today high 74010") and "TOUCHING" in touch["evidence"]
+    assert got["cap"] == 2000
+    assert got["csv"].splitlines()[0] == "t,kind,side,level,evidence,price" and len(got["csv"].splitlines()) == 3

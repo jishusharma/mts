@@ -1,0 +1,10 @@
+{
+  "done_when": "LESSONS_LEARNED.md carries the rule 'before changing a gate, run the failing case through the current trunk's rule and read the test that guards it'",
+  "from": "JIS-NB",
+  "id": "20261111-203306-dsa-lesson-check-trunk-before-fixing-a-g",
+  "need": "2026-11-11: DSA added sim_desk/ to gate_select.DATA_DIRS to escape a full gate that timed out twice; trunk already had RESULT_DATA_RE for that path (card dsa-research-ship-full-gate-timeout-1111), so the fix was redundant and broke a FastGateRules guard. Cost: 2 killed ships, 1 revert commit f82469446.",
+  "posted": "2026-11-11T20:33:06Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "DSA lesson: check trunk before fixing a gate problem"
+}

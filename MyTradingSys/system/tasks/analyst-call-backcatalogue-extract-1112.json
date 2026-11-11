@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PARKED (planner-raw-1112b 2026-11-12): lane DSA and DSA/AIBridge are parked, assign nothing to DSA. Re-lane to a Gemini-queue card (gemini_queue.py on NUC, YouTube work is Gemini-only, low effort, captions via fetch_captions_timed.py, verify_extract_quotes exit 0) when Habib's call videos are listed; no outcomes read before extraction. DECISION (OURS); card stays raw.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

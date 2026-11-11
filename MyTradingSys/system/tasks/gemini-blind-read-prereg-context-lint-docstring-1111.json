@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T21:01:21Z",
+  "commands": [],
+  "created": "2026-11-11T20:50:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-prereg-context-lint-docstring-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per clause) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of scripts/dev/prereg_context_lint.py: what it scans (glob), what counts as an offender, the allow tsv, exit codes; read only.",
+  "id": "gemini-blind-read-prereg-context-lint-docstring-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-prereg-context-lint-d",
+      "ref": "456c9c8aa",
+      "utc": "2026-11-11T21:01:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CI fix: sim card rows for the 4 rsi-deep results; PRE_REG context lint (gate step 3pc); le",
+      "ref": "d3523ad273eb",
+      "utc": "2026-11-03T22:47:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read audit report complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:50:46Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-prereg-context-lint-docstring-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/prereg_context_lint.py (read)",
+    "scripts/dev/test_prereg_context_lint.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-prereg-context-lint-docstring-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "d3523ad273eb",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 8 clauses from the docstring, each with file:line",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of prereg_context_lint.py against its docstring and test",
+  "weight": "ROUTINE",
+  "worker": ""
+}

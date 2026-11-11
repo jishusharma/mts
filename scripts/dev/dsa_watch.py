@@ -3,8 +3,8 @@
   python scripts/dev/dsa_watch.py [--stale-hours 3] [--audit F:/AIBridge/src/audit.jsonl]
 
 Prints one line per DSA target (DSA, DSA-NB, DSA-NUC): pending, taken, oldest-pending age, and a verdict.
-Exit 0 = every bridge with work is moving, 1 = at least one STALLED/IDLE-WITH-WORK line. Run it from the stop-guard;
-only a non-zero exit needs a Claude look. The audit file is read for this host's bridge only (last call age).
+Exit 0 = every bridge with work is moving, 1 = at least one STALLED line (verdicts: EMPTY, OK, STALLED). Run it from the stop-guard;
+only a non-zero exit needs a Claude look. The audit file is read as its last line only, for the bridge_last_call age (no host filter).
 """
 import argparse
 import json

@@ -1,35 +1,47 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/tasks.py brief live-aid-board-value-area-not-wired-1111",
+    "python scripts/dev/tasks.py check live-aid-board-value-area-not-wired-1111"
+  ],
   "created": "2026-11-11T19:42:30Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "live-aid-board-value-area-not-wired-1111.json scope_in names live_aid.html and test_spec_tf_strip.py and tasks.py check prints READY for it.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-scope live-aid-board-value-area-not-wired-1111 so its Scope in lists live_aid.html and test_spec_tf_strip.py, then check it ready.",
   "id": "rescope-live-aid-value-area-card-1111",
   "kind": "build",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS 2026-11-12): value-area wiring is live-aid tooling, not the edge work; low prio 3. Premise lines come from the raw title, re-verify at the file before editing. BLOCKED (check): the cited card live-aid-board-value-area-not-wired-1111 carries a result with trust UNCHECKED (needs class C0+); a trust stamp on that result clears it, then rerun tasks.py check.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/system/tasks/live-aid-board-value-area-not-wired-1111.json (edit scope_in, steps, done_when)"
+  ],
+  "scope_out": [
+    "any product code",
+    "MyTradingSys/tools/live_aid/ files (read only)"
+  ],
+  "size": "S",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Re-scope live-aid-board-value-area-not-wired-1111: premise still true (home.js:315-327 passes only vfi, sqz, adx; setup_board.js:31 reads x.va; two yesterday-value-area definitions live_aid_indicators.js:793/810 and tf_strip.js:62/103) but the fix needs live_aid.html (pass S.pv or vaPriorDay at the LAHOME.render call, line ~1089) and test_spec_tf_strip.py, both outside the card's Scope in. Done when: the card's Scope in lists live_aid.html and test_spec_tf_strip.py and it passes tasks.py check",
+  "steps": [
+    "Open the card; read home.js:315-327, setup_board.js:31, live_aid.html near the LAHOME.render call (about line 1089), live_aid_indicators.js:793/810, tf_strip.js:62/103",
+    "Add MyTradingSys/tools/live_aid/live_aid.html and test_spec_tf_strip.py to scope_in; steps: pass S.pv or vaPriorDay at the render call, one yesterday-value-area definition",
+    "Run tasks.py check live-aid-board-value-area-not-wired-1111 until READY, else write the blocking reason into its note"
+  ],
+  "tests": "Docs card: tasks.py check on the target card exits READY; before the edit it must show the scope gap.",
+  "title": "Re-scope live-aid value-area card: add live_aid.html and test_spec_tf_strip.py to its scope_in",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

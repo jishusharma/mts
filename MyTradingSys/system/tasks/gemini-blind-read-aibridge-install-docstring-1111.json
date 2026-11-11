@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T20:55:54Z",
+  "commands": [],
+  "created": "2026-11-11T20:50:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-aibridge-install-docstring-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per clause) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of scripts/dev/aibridge_install.py docstring: --dry, --restart-agent, the .pre_v07 backup, what files it copies and never prints; read only, never run it.",
+  "id": "gemini-blind-read-aibridge-install-docstring-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-aibridge-install-docs",
+      "ref": "4ea3468ed",
+      "utc": "2026-11-11T20:55:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease u",
+      "ref": "5b6548bb8521",
+      "utc": "2026-11-08T10:34:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:50:45Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-aibridge-install-docstring-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/aibridge_install.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-aibridge-install-docstring-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "5b6548bb8521",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 8 clauses from the docstring, each with file:line",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of aibridge_install.py against its docstring",
+  "weight": "ROUTINE",
+  "worker": ""
+}

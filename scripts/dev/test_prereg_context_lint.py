@@ -30,6 +30,15 @@ class PreRegContextLint(unittest.TestCase):
             self.assertIn("Regime:, Phase:, Session:, Entry:", offenders[0][1])
             self.assertEqual(lint.main(["--root", str(root), "--allow", str(root / "none.tsv")]), 1)
 
+    def test_plain_prereg_md_without_context_is_an_offender(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            put(root, "MyTradingSys/research/s_1112/PREREG.md", "# PREREG" + chr(10) + "## Rules" + chr(10) + "buy" + chr(10))
+            put(root, "MyTradingSys/research/ok_1112/PREREG.md", GOOD_CONTEXT)
+            offenders, _ = lint.lint(root, set())
+            self.assertEqual([o[0] for o in offenders], ["MyTradingSys/research/s_1112/PREREG.md"])
+            self.assertEqual(lint.main(["--root", str(root), "--allow", str(root / "none.tsv")]), 1)
+
     def test_partial_context_names_the_missing_lines(self):
         text = "# p\n## Context\nRegime: none, because daily\nPhase: break\n## Rules\n"
         self.assertEqual(lint.context_missing(text), ["Session:", "Entry:"])
