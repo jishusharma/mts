@@ -123,10 +123,11 @@ def open_replay(browser, fixture=True, wrap=False):
         page.clock.set_fixed_time(datetime.datetime.fromtimestamp(NOW_MS / 1000, tz=datetime.timezone.utc))  # a bare number is read as seconds
         page.goto(PAGE.resolve().as_uri() + "?replay=fixture#momentum", wait_until="load", timeout=30000)
         page.check("#more-tog")     # the SMA, BBw, ATR, vs VWAP columns are hidden until "More detail"
-        try:
-            page.wait_for_selector("#strip td.x", state="visible", timeout=5000)
-        except Exception:
-            pass
+        if fixture:                 # without the fixture no number cell ever shows: do not sit out the 5 s timeout
+            try:
+                page.wait_for_selector("#strip td.x", state="visible", timeout=5000)
+            except Exception:
+                pass
         page.wait_for_timeout(1300)  # one 1 s render tick on top of the first render
         assert page.evaluate("Date.now()") == NOW_MS, "clock is not fixed at last bar open + 60 s"
         rows = page.eval_on_selector_all("#strip tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")
@@ -134,6 +135,17 @@ def open_replay(browser, fixture=True, wrap=False):
         return rows, errs, visible
     finally:
         ctx.close()
+
+
+_OPEN_CACHE = {}
+
+
+def open_replay_cached(browser, fixture=True, wrap=False):
+    """open_replay once per (fixture, wrap) for the tests that only read the result (same page, same frozen clock)."""
+    key = (fixture, wrap)
+    if key not in _OPEN_CACHE:
+        _OPEN_CACHE[key] = open_replay(browser, fixture=fixture, wrap=wrap)
+    return _OPEN_CACHE[key]
 
 
 def strip_problems(rows):
@@ -154,7 +166,7 @@ def strip_problems(rows):
 
 
 def test_rendered_strip_matches_python_maths(browser):
-    rows, errs, visible = open_replay(browser, wrap=BREAK == "rsi")
+    rows, errs, visible = open_replay_cached(browser, wrap=BREAK == "rsi")
     assert not errs, errs
     assert visible, "hidden columns are not shown after ticking More detail"
     problems = strip_problems(rows)
@@ -170,7 +182,7 @@ def test_wrapped_rsi_is_caught(browser):
 
 
 def test_short_windows_read_not_in_data(browser):
-    rows, _, _ = open_replay(browser)
+    rows, _, _ = open_replay_cached(browser)
     by_tf = {r[0].strip(): r for r in rows}
     for tf in ("15m", "1h", "4h"):   # 20, 5, 2 bars: fewer than the 40 the page needs
         assert tf in by_tf and "NOT_IN_DATA" in " ".join(by_tf[tf]), (tf, by_tf.get(tf))
@@ -204,20 +216,33 @@ def _cal_page(browser, iso_now, events=None, offline=True):
     return ctx, page, errs
 
 
-def _cal_text(browser, iso_now, events):
-    ctx, page, errs = _cal_page(browser, iso_now)
+def _cal_texts(browser, cases):
+    """Open one page per (iso_now, events) case, all together, wait one render tick for all of them, then read each.
+    Same per-page setup and the same 1.3 s wait as one page at a time, minus the serial waiting."""
+    opened = []
     try:
-        page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + ";")
-        if events is not None:
-            page.add_init_script("window.LIVEAID_CAL = " + json.dumps(events) + ";")
-        page.clock.set_fixed_time(datetime.datetime.fromisoformat(iso_now.replace("Z", "+00:00")))
-        page.goto(PAGE.resolve().as_uri() + "?replay=fixture#momentum", wait_until="load", timeout=30000)
-        page.wait_for_timeout(1300)
-        assert not errs, errs
-        return (page.inner_text("#mc-next"), page.inner_text("#mc-sub"),
-                page.eval_on_selector_all("#mc-rows tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))"))
+        for iso_now, events in cases:
+            ctx, page, errs = _cal_page(browser, iso_now)
+            opened.append((ctx, page, errs))
+            page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + ";")
+            if events is not None:
+                page.add_init_script("window.LIVEAID_CAL = " + json.dumps(events) + ";")
+            page.clock.set_fixed_time(datetime.datetime.fromisoformat(iso_now.replace("Z", "+00:00")))
+            page.goto(PAGE.resolve().as_uri() + "?replay=fixture#momentum", wait_until="load", timeout=30000)
+        opened[-1][1].wait_for_timeout(1300)
+        out = []
+        for ctx, page, errs in opened:
+            assert not errs, errs
+            out.append((page.inner_text("#mc-next"), page.inner_text("#mc-sub"),
+                        page.eval_on_selector_all("#mc-rows tr", "rs => rs.map(r => Array.from(r.children).map(c => c.innerText))")))
+        return out
     finally:
-        ctx.close()
+        for ctx, _, _ in opened:
+            ctx.close()
+
+
+def _cal_text(browser, iso_now, events):
+    return _cal_texts(browser, [(iso_now, events)])[0]
 
 
 def test_calendar_strip_renders_next_and_last(browser):
@@ -232,12 +257,11 @@ def test_calendar_strip_renders_next_and_last(browser):
 
 def test_calendar_time_honesty_at_the_event_minute(browser):
     """At exactly 12:30Z the GDP row is a result (time <= now), nothing is next, and the countdown is not negative."""
-    nxt, sub, rows = _cal_text(browser, "2026-10-29T12:30:00Z", FF)
+    (nxt, sub, rows), (_, _, rows2) = _cal_texts(browser, [("2026-10-29T12:30:00Z", FF), ("2026-10-29T12:29:00Z", FF)])
     assert nxt == "none left", nxt
     assert [r[1] for r in rows][0] == "Advance GDP q/q" and len(rows) == 3, rows
     assert "-" not in nxt
     # a minute earlier the GDP row must not be listed as a result
-    _, _, rows2 = _cal_text(browser, "2026-10-29T12:29:00Z", FF)
     assert "Advance GDP q/q" not in [r[1] for r in rows2], rows2
 
 
@@ -248,9 +272,11 @@ def test_no_calendar_without_data(browser):
 
 def test_no_calendar_on_429_then_numbers_on_200(browser):
     """Normal mode (no replay): a 429 from the feed gives NO CALENDAR and no numbers; a 200 with the fixture gives the strip."""
-    for status, want_numbers in ((429, False), (200, True)):
-        ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
-        try:
+    opened = []
+    try:
+        for status in (429, 200):
+            ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
+            opened.append((status, ctx, page))
             page.route("**/*", lambda r: r.continue_() if r.request.url.startswith("file:") else r.abort())      # local files load, every other feed is down
             page.route("**/ff_calendar_snapshot.js*", lambda r: r.abort())      # a dev machine may hold a real snapshot beside the page: this test is about the feed path
             body = json.dumps(FF) if status == 200 else "slow down"
@@ -260,37 +286,45 @@ def test_no_calendar_on_429_then_numbers_on_200(browser):
             page.route(CAL_URL_GLOB, answer)
             page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
             page.goto(PAGE.resolve().as_uri() + "#momentum", wait_until="load", timeout=30000)
-            page.wait_for_timeout(1500)
+        opened[-1][2].wait_for_timeout(1500)      # both pages load together, so one wait covers both
+        for status, ctx, page in opened:
             nxt = page.inner_text("#mc-next")
-            if want_numbers:
+            if status == 200:
                 assert nxt == "in 30 min", nxt
             else:
                 assert nxt == "NO CALENDAR" and "429" in page.inner_text("#mc-sub") and page.query_selector_all("#mc-rows tr") == [], (nxt, page.inner_text("#mc-sub"))
-        finally:
+    finally:
+        for _, ctx, _ in opened:
             ctx.close()
 
 
-def _snap_page_text(browser, snap_js, cors_feed=False):
-    """Normal mode, every network call aborted (the feed has no CORS header), the same-origin snapshot file served as snap_js (None = file missing)."""
-    ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
+def _snap_pages_text(browser, snaps):
+    """Normal mode, every network call aborted (the feed has no CORS header), the same-origin snapshot file served as each
+    entry of snaps (None = file missing). All pages load together and share one 1.5 s wait; returns [(next, sub), ...]."""
+    opened = []
     try:
-        def local(route):
-            if "ff_calendar_snapshot.js" in route.request.url:
-                if snap_js is None:
-                    route.abort()
+        for snap_js in snaps:
+            ctx, page, errs = _cal_page(browser, "2026-10-29T12:00:00Z", offline=False)
+            opened.append((ctx, page))
+
+            def local(route, _request=None, snap_js=snap_js):
+                if "ff_calendar_snapshot.js" in route.request.url:
+                    if snap_js is None:
+                        route.abort()
+                    else:
+                        route.fulfill(status=200, body=snap_js, content_type="application/javascript")
+                elif route.request.url.startswith("file:"):
+                    route.continue_()
                 else:
-                    route.fulfill(status=200, body=snap_js, content_type="application/javascript")
-            elif route.request.url.startswith("file:"):
-                route.continue_()
-            else:
-                route.abort()                                    # incl. nfs.faireconomy.media: blocked like a real CORS failure
-        page.route("**/*", local)
-        page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
-        page.goto(PAGE.resolve().as_uri() + "#momentum", wait_until="load", timeout=30000)
-        page.wait_for_timeout(1500)
-        return page.inner_text("#mc-next"), page.inner_text("#mc-sub")
+                    route.abort()                                    # incl. nfs.faireconomy.media: blocked like a real CORS failure
+            page.route("**/*", local)
+            page.clock.set_fixed_time(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc))
+            page.goto(PAGE.resolve().as_uri() + "#momentum", wait_until="load", timeout=30000)
+        opened[-1][1].wait_for_timeout(1500)
+        return [(page.inner_text("#mc-next"), page.inner_text("#mc-sub")) for _, page in opened]
     finally:
-        ctx.close()
+        for ctx, _ in opened:
+            ctx.close()
 
 
 def test_snapshot_file_feeds_the_strip_when_the_feed_is_cors_blocked(browser):
@@ -300,13 +334,18 @@ def test_snapshot_file_feeds_the_strip_when_the_feed_is_cors_blocked(browser):
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
     now_ms = int(datetime.datetime(2026, 10, 29, 12, 0, tzinfo=datetime.timezone.utc).timestamp() * 1000)
-    nxt, sub = _snap_page_text(browser, m.render(FF, now_ms - 3600_000))
+    fresh, old, missing, unreadable = _snap_pages_text(browser, [
+        m.render(FF, now_ms - 3600_000),
+        m.render(FF, now_ms - 27 * 3600_000),      # 27 h old -> too old
+        None,                                      # no file, feed blocked
+        "window.LIVEAID_CAL_SNAP = {};"])          # unreadable copy
+    nxt, sub = fresh
     assert nxt == "in 30 min" and "Advance GDP q/q at 12:30Z" in sub, (nxt, sub)
-    nxt, sub = _snap_page_text(browser, m.render(FF, now_ms - 27 * 3600_000))      # 27 h old -> too old
+    nxt, sub = old
     assert nxt == "NO CALENDAR", (nxt, sub)
-    nxt, sub = _snap_page_text(browser, None)                                       # no file, feed blocked
+    nxt, sub = missing
     assert nxt == "NO CALENDAR" and "no snapshot file" in sub, (nxt, sub)
-    nxt, sub = _snap_page_text(browser, "window.LIVEAID_CAL_SNAP = {};")            # unreadable copy
+    nxt, sub = unreadable
     assert nxt == "NO CALENDAR", (nxt, sub)
 
 
