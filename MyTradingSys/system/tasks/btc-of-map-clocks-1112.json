@@ -17,20 +17,23 @@
   "goal": "Measure BTC own clocks on DEV only from 1m taker delta: where in the UTC day/week and around funding (00/08/16Z) delta, volume and absolute return concentrate, and what the next 15/60 min does, fee-net.",
   "id": "btc-of-map-clocks-1112",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Data is on the desktop F:/MTS (JIS-NB); run there or fetch klines with fetch_binance_archive.py. No tuning on VALIDATION.",
+  "note": "Data is on the desktop F:/MTS (JIS-NB); run there or fetch klines with fetch_binance_archive.py. No tuning on VALIDATION. DECISION (OURS) 2026-11-12: DATA_INVENTORY.md shows complete 1m only 2022-01-01..2024-05-31 (1,270,080 bars); DEV = that range, any June 2024 gap is reported as missing, not filled. PREREG.md is frozen (shipped 082d8bccf).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T20:20:46Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/btc_orderflow_map_1112/clocks.py (new)",
     "MyTradingSys/research/btc_orderflow_map_1112/test_clocks.py (new)",
     "MyTradingSys/research/btc_orderflow_map_1112/CLOCKS.md (new)",
-    "MyTradingSys/research/btc_orderflow_map_1112/results_clocks.json (new)"
+    "MyTradingSys/research/btc_orderflow_map_1112/results_clocks.json (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (read); DATA_INVENTORY.md (read)"
   ],
   "scope_out": [
     "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (frozen)",
@@ -38,12 +41,14 @@
     "Tom/Fabio index-futures clocks",
     "live tree"
   ],
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
-    "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py"
+    "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py",
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md; DATA_INVENTORY.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Load F:/MTS/data/tom_raw/klines BTCUSDT-1m-*.csv; DEV = 2022-01-01..2024-06-30 only; delta = 2*taker_buy - volume (as cvd_u7_u8.py)",
     "Per clock bucket compute n, delta/volume, mean abs return bp, forward 60m return minus 10 bp round-trip fee; placebo = same buckets on shuffled day labels, report z",

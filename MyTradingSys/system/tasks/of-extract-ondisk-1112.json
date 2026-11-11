@@ -16,30 +16,48 @@
   "goal": "Extract the top 10 order-flow transcripts already on disk (no network) into verified extracts with SOURCED quotes: who is forced, where size trades, absorption, auction.",
   "id": "of-extract-ondisk-1112",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: ORDERFLOW_QUEUE.md ranks 69+2 ON_DISK and 63 TO_FETCH ids (rank_queue.py, 2 tests ",
+      "ref": "6a95dd88a7bb",
+      "utc": "2026-11-11T20:13:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6a95dd88a7bb Result: ORDERFLOW_QUEUE.md ranks 69+2 ON_DISK and 63 TO_FETCH ids (rank_queue",
+      "ref": "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md",
+      "utc": "2026-11-11T20:13:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Videos with no caption text go to the Gemini lane (gemini_queue.py), never ASR here. DECISION (OURS): 10 per session.",
+  "note": "Videos with no caption text go to the Gemini lane (gemini_queue.py), never ASR here. DECISION (OURS): 10 per session. DECISION (OURS) 2026-11-12: ORDERFLOW_QUEUE.md (shipped cee5a6f8) has ON_DISK 69 rows (not 71), analyst mostly 'unknown'; take the top 10 by rank, do not filter by analyst.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T20:20:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/orderflow_extracts_1112/extract_<id>.md and ORDERFLOW_RULES_DRAFT.md (new)",
-    "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md (read)"
+    "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md (read, exists: 69 ON_DISK rows)"
   ],
   "scope_out": [
     "YouTube network fetches",
     "EXTRACTION_LEDGER.csv (rebuilt by the parent card)",
     "index-futures clocks as BTC rules"
   ],
+  "scope_sha": "6a95dd88a7bb",
   "size": "M",
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
     "MyTradingSys/research/tom_swing_2026-11-09/extract_M7ompiwv5co.md"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Take the top 10 ON_DISK ids from ORDERFLOW_QUEUE.md; read the transcript in raw_transcripts_canonical/",
     "Per video write extract_<id>.md in the format of tom_swing_2026-11-09/extract_M7ompiwv5co.md: rule, verbatim quote with timestamp, label SOURCED",

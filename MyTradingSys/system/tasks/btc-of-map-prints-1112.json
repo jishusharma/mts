@@ -3,7 +3,8 @@
   "asks": "",
   "commands": [
     "python MyTradingSys/research/btc_orderflow_map_1112/prints.py --days MyTradingSys/research/btc_orderflow_map_1112/days.txt",
-    "python -m pytest MyTradingSys/research/btc_orderflow_map_1112/test_prints.py -q"
+    "python -m pytest MyTradingSys/research/btc_orderflow_map_1112/test_prints.py -q",
+    "python -c \"import shutil;print(shutil.disk_usage('F:/').free/1e9)\""
   ],
   "created": "2026-11-11T19:59:34Z",
   "depends_on": [
@@ -20,7 +21,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "aggTrades is 0.1-0.3 GB zipped per day: reduce and delete per day; if under 20 GB free, cut to 30 days and say so.",
+  "note": "aggTrades is FETCHABLE only (DATA_INVENTORY.md; F:/MTS/Dumps/backtest/raw/aggTrades/ empty); liquidations NOT_IN_DATA. DRIVE AND CAP (OURS, 2026-11-12): fetch to F: only (F: about 48 GB free; C: about 16 GB, never used). Before the first fetch check F: free >= 20 GB, else stop and write NOT_IN_DATA.md. Scratch cap 2 GB at once: fetch one day, reduce to per-minute stats, delete, next; 60 days at 0.1-0.3 GB/day = 6-18 GB total traffic, never stored. Local F:/MTS/data/orderflow_1m covers VALIDATION only (2024-12-02..), not DEV.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -31,7 +32,8 @@
     "MyTradingSys/research/btc_orderflow_map_1112/test_prints.py (new)",
     "MyTradingSys/research/btc_orderflow_map_1112/PRINTS.md (new)",
     "MyTradingSys/research/btc_orderflow_map_1112/days.txt (new)",
-    "MyTradingSys/research/btc_orderflow_map_1112/NOT_IN_DATA.md (new, only if needed)"
+    "MyTradingSys/research/btc_orderflow_map_1112/NOT_IN_DATA.md (new, only if needed)",
+    "F:/MTS/Dumps/backtest/raw/aggTrades/ (scratch only, emptied per day, never committed)"
   ],
   "scope_out": [
     "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (frozen)",
@@ -42,7 +44,8 @@
   "size": "M",
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
-    "MyTradingSys/backtest/layers/fabio/of_backfill.py"
+    "MyTradingSys/backtest/layers/fabio/of_backfill.py",
+    "MyTradingSys/research/btc_orderflow_map_1112/DATA_INVENTORY.md"
   ],
   "state": "raw",
   "steps": [
