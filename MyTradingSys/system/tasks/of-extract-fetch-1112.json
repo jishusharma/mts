@@ -3,27 +3,44 @@
   "asks": "",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
-    "python scripts/dev/fetch_captions_timed.py --analyst Tom <ids from ORDERFLOW_QUEUE.md>"
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom --channel @TomVorwald --since 2026-11-04 --latest 3 --scan 12 --max-videos 3"
   ],
   "created": "2026-11-11T19:59:39Z",
   "depends_on": [
     "of-extract-queue-1112"
   ],
-  "done_when": "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md has one row per id (OK, EXISTS, DEFERRED, BLOCKED or NO_CAPTIONS) with UTC; a BLOCKED row names the retry time from --status; at most 5 network fetches in the run.",
+  "done_when": "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md exists with one row per id (OK, EXISTS, DEFERRED, BLOCKED or NO_CAPTIONS) with UTC; a BLOCKED row names the retry time from --status; at most 3 network fetches in the run.",
   "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Fetch captions through the guarded fetcher for the newest Tom uploads since 2026-11-04 and the top 5 TO_FETCH priority ids; stop at the first 429.",
+  "goal": "Fetch captions through the guarded fetcher for the newest Tom uploads (@TomVorwald, since 2026-11-04); stop at the first 429. No priority-id fetch: TO_FETCH has one id with an order-flow score.",
   "id": "of-extract-fetch-1112",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: ORDERFLOW_QUEUE.md ranks 69+2 ON_DISK and 63 TO_FETCH ids (rank_queue.py, 2 tests ",
+      "ref": "6a95dd88a7bb",
+      "utc": "2026-11-11T20:13:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6a95dd88a7bb Result: ORDERFLOW_QUEUE.md ranks 69+2 ON_DISK and 63 TO_FETCH ids (rank_queue",
+      "ref": "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md",
+      "utc": "2026-11-11T20:13:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Guard lockout 6/24/72 h, never evade. Extraction of fetched ids is a later wave.",
+  "note": "Guard lockout 6/24/72 h, never evade. 2026-11-12 status: BLOCKED until 02:41Z (level 1, 87 of 150 budget), run after that. DECISION (OURS): ORDERFLOW_QUEUE.md TO_FETCH has 62 of 63 ids at score 0 (Malkan, Krown), so top-5 TO_FETCH dropped. Handle @TomVorwald from repo docs. Extraction of fetched ids is a later wave.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T20:59:22Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -35,15 +52,16 @@
     "scripts/dev/fetch_captions*.py",
     "raw_transcripts_canonical content (git-ignored)"
   ],
+  "scope_sha": "6a95dd88a7bb",
   "size": "S",
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
     "scripts/dev/fetch_captions_timed.py"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
-    "Run --status; if BLOCKED write the retry time to FETCH_LOG.md and stop",
-    "Newest Tom: fetch_captions_timed.py --channel with --latest 3 --scan 12 (handle from the CBP channel list); then the top 5 TO_FETCH ids, one run, max 5 videos",
+    "Run --status; if BLOCKED write the retry time to FETCH_LOG.md (one BLOCKED row) and stop",
+    "Run the --channel line (max 3 network fetches); log each id OK, EXISTS, DEFERRED or NO_CAPTIONS with UTC",
     "On the first 429 stop and log BLOCKED; ids without captions go to a Gemini-lane list in FETCH_LOG.md, no ASR here"
   ],
   "tests": "Run card: FETCH_LOG.md is the test; git diff outside scope_in must be empty.",
