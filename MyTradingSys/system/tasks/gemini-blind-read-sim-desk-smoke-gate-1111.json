@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T16:53:39Z",
   "commands": [],
   "created": "2026-11-11T16:36:02Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "4 MATCH, 0 DIFF; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-sim-",
+      "ref": "1562d7b85",
+      "utc": "2026-11-11T16:53:39Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,8 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T16:36:19Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "4 MATCH, 0 DIFF; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-sim-desk-smoke-gate-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gate_select.py (read; the change is git show 70857d4a0)",
     "scripts/dev/test_gate_select.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 4 clauses: (1) root sim_desk/results/*.json maps to the smoke gate, (2) other unknown paths still fail closed to the full gate, (3) the new test asserts clause 1, (4) the same test would fail on the code before the commit (reason from the diff)",
