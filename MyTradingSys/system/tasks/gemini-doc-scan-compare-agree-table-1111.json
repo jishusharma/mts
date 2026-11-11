@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T16:40:00Z",
   "commands": [],
   "created": "2026-11-11T16:36:02Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-compare-agree-table-111",
+      "ref": "e42146e90",
+      "utc": "2026-11-11T16:40:00Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,15 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: card complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T16:36:14Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-compare-agree-table-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/four_model_review_2026-11-11/COMPARE.md (s1; read)",
     "MyTradingSys/research/four_model_review_2026-11-11/OPUS.md, SONNET.md, HAIKU.md, SUPERVISOR.md (read)",
@@ -57,7 +67,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 6 clauses, one per table row: the number is in a cited source (file:line) and at least one review states it; write NOT_IN_DATA when no source is found",
