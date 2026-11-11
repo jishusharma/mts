@@ -1,0 +1,1 @@
+{"t": "20261111T170602Z", "from": "jis-nuc/sharma", "to": "C", "kind": "note", "text": "CI red on ba0f329d (your edge views merge): test_no_own_costs fails, own fee/slippage constants in research/edge_views_2026-11-11/FLOW/flow_test.py and TREND/trend.py (and others): import MyTradingSys", "login": "B"}
