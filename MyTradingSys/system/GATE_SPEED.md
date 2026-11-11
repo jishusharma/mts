@@ -13,8 +13,8 @@
 ## Changes (sync.py ship only; CI, auto_deploy and a bare run_all_tests keep their argv and run every step)
 | # | Change | Saves |
 |---|---|---|
-| D1 | `--precheck`: CHEAP_STEPS (median <= 25 s) + step 4t (pytest of the <= 12 `MyTradingSys/tests` files that reference a changed module or name a changed file, slow files excluded) run first, 2 at a time, no gate slot. Any failure: every other step is NOT RUN. | repeat failure ~9 min -> precheck time |
-| D2 | `--fail-fast`: after the first failure in the main phase, steps not yet started are NOT RUN (not timed; the summary fails closed). `--slot`: run_all_tests takes the gate slot around the main phase only. | rest of a doomed gate; slot not held by cheap steps |
+| D1 | `--precheck`: CHEAP_STEPS (median <= 25 s) + step 4t (pytest of the <= 12 `MyTradingSys/tests` files that reference a changed module or name a changed file, slow files excluded) run first, 2 at a time, inside the one gate slot (X3). Any failure: every other step is NOT RUN. | repeat failure ~9 min -> precheck time |
+| D2 | `--fail-fast`: after the first failure in the main phase, steps not yet started are NOT RUN (not timed; the summary fails closed). `--slot`: run_all_tests takes the one gate slot once, around precheck + main (X3). | rest of a doomed gate; one slot wait per ship |
 | D3 | `--record` (`<worktree git dir>/mts_gate_record.json`): a step that passed on this exact clean tree (untracked files count), same step signature, same python, < 24 h, is not run again. Written atomically, never when HEAD moved mid-gate. Ignored when `CI` is set. | push failed after ALL TESTS PASSED, or one flaky step: rerun = that step |
 | D4 | Fetch retried 3x with jitter; ship push 3 -> 5 tries, 1-5 s jitter; a lost race re-runs the gate once only when the incoming commits touch our paths or a module our .py files reference (`race_overlap`). | lost races stop failing |
 | D5 | gate_select: research data suffixes (.tsv .gz .err .log .png .svg .parquet .pdf .jpg) = docs; `.gitignore`, `.aiexclude`, `.claude/settings.json`, `scripts/dev/<x>.tsv/.json/.csv/.html` = smoke (ALWAYS + steps whose tests name the file); settings.json adds 3js. A `.txt` on the live path and `run_extra_tests.py` are full. | most "full" ships become smoke |
@@ -53,7 +53,10 @@ need the 544 s full gate; docs ships already take ~10 s.
   is reached, 3xt/5b use the closure too. Direct tests (they name the changed file) are never deferred; the transitive ones fill FAST_BUDGET_S = 30 s
   at EFFECTIVE_WORKERS = 3 (measured: 6 workers give 2-3x on this box, not 6x) by estimated seconds (STEP_EST, TEST_FILE_SECONDS); the rest is
   DEFERRED to CI and printed by name. Must-pass steps (3la, 3xm) are never deferred; 240 s is their ceiling, not a target. ALWAYS steps 3w/3tl/3dl run only when a changed file, test or ride-along doc concerns them.
-- X3 Fast gates use their own slot pool `gate-slots-fast` (2): never queued behind 9-minute full gates. Full/live/unknown ships keep slots and steps.
+- X3 (ARCH_REVIEW row 3, 2026-11-11; reverses the 10-24 own-pool rule) ONE gate pool per machine, `gate-slots` (GATE_SLOTS=2): fast, full, precheck and deploy gates
+  all take from it, once per ship (`run_all_tests.gate_slot_factory`), so at most 2 gates run at once, not 6 (fewer 240 s step timeouts under load). A fast gate
+  can now queue behind a 9-minute full gate (DECISION (OURS): accept; no FIFO or reserved slot until wait.log shows starvation). Every acquire appends one
+  JSON line {ts,host,repo,pid,mode,wait_s,busy} to `<tmp>/mts_gate_slots/wait.log` (temp dir, never the repo; last 200 lines; a log error never fails a gate).
   An empty slot file is its creator mid-write (busy, not a dead owner 0) unless older than 10 s.
 - X4 wiring_scan.build: suffix index + memo for `resolve`, per-file facts cached by content hash in the git common dir (a pure function of the text; a
   missing/corrupt/unwritable cache = recompute). 17 s cold becomes 1.2-1.7 s warm, so 3x and 3w no longer set the floor. `ship` also runs the

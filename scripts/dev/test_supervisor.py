@@ -107,6 +107,20 @@ def test_gate_slots_busy_count(monkeypatch, tmp_path):
     assert 1002 not in gs["pids"]
 
 
+def test_gate_slots_ignore_the_retired_fast_pool(monkeypatch, tmp_path):
+    """ARCH_REVIEW row 3: one pool; a leftover gate-slots-fast dir from old code is not added to busy (busy never exceeds total)."""
+    slots_dir = tmp_path / "gate-slots"
+    fast_dir = tmp_path / "gate-slots-fast"
+    for d in (slots_dir, fast_dir):
+        d.mkdir(parents=True)
+        for i in (0, 1):
+            (d / f"slot-{i}").write_text("1001", encoding="utf-8")
+    monkeypatch.setattr(S, "gate_slots_dir", lambda repo: slots_dir)
+    monkeypatch.setattr(S, "pid_alive", lambda pid: True)
+    gs = S.read_gate_slots(tmp_path)
+    assert gs["busy"] == 2 and gs["busy"] <= gs["total"]
+
+
 def test_lanes_ready_depth_and_dispatch_top_8(monkeypatch, tmp_path):
     """dispatch returns top 8 ready cards; lanes counts ready cards for CODEX, SONNET, GEMINI."""
     fake_cards = [{"id": f"c{i}", "rank": i, "lane": "SONNET"} for i in range(1, 12)]
