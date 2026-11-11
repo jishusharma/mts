@@ -1,0 +1,10 @@
+{
+  "done_when": "Both pages rebuilt and publish-record run",
+  "from": "JIS-NUC",
+  "id": "20261111-151512-republish-mts-layer-map-and-mts-home-aft",
+  "need": "sync.py ship 7f3139d9 reported STALE mts_layer_map and mts_home. DSA cannot publish artifacts. Run artifacts.py build, then publish-record for each slug.",
+  "posted": "2026-11-11T15:15:12Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "Republish mts_layer_map and mts_home after ship 7f3139d9"
+}
