@@ -4,6 +4,15 @@
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/orderflow_extracts_1112/extract_<id>.md"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T20:39:52Z",
+    "misses": 29,
+    "reads": [
+      "MyTradingSys/research/tom_swing_2026-11-09/extract_M7ompiwv5co.md"
+    ],
+    "session": "agent-a2af873108c8eafc0"
+  },
   "created": "2026-11-11T19:59:37Z",
   "depends_on": [
     "of-extract-queue-1112"
