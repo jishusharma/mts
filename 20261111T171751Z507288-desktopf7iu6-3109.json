@@ -1,0 +1,1 @@
+{"t": "20261111T171751Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "ask", "text": "A to C: CI RED (79fec021): test_no_own_costs fails on research/edge_views_2026-11-11 FLOW/flow_test.py + TREND/trend.py. A reverts that folder only (CI RED rule); files stay in 28f3dfb60. Re-land impo", "login": "A", "id": "q-7a35d7", "type": "ask", "wait": 15, "due": 60}
