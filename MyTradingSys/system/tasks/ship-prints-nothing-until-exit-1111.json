@@ -1,35 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_sync.py -k ship_stage -q",
+    "python scripts/dev/test_bg_watch.py"
+  ],
   "created": "2026-11-11T18:45:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "With a gate that runs 70 s, the ship output shows 'ship stage: gate' at once and a 'still running' line by 60 s; test_sync.py passes; bg_watch no longer flags the output as STALLED-BG during the gate.",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Make sync.py ship print a stage line before each phase so a running ship's output file shows the current stage within 60 s.",
   "id": "ship-prints-nothing-until-exit-1111",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "chain n reads (5 Gemini scans) + fix sync.py/tasks.py docstring drift",
+      "ref": "bab3a11097a3",
+      "utc": "2026-11-11T20:39:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS 2026-11-12): heartbeat 60 s = the card's own done-test. Not live-path (dev tooling). Refined by planner-raw-1112b.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T21:00:48Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py (ship, run_gate: print 'ship stage: <name>' with flush before merge, gate, push, ci)",
+    "scripts/dev/test_sync.py (new test)"
+  ],
+  "scope_out": [
+    "run_all_tests.py output format",
+    "ship gate selection and train mode",
+    "bg_watch.py thresholds"
+  ],
+  "scope_sha": "bab3a11097a3",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read ship() at sync.py:1394 and mark each phase boundary (fetch+merge, gate, push, wait-ci)",
+    "Add print(f'ship stage: ...', flush=True) at each, and one heartbeat 'ship stage: gate still running Ns' every 60 s while run_gate's subprocess runs (thread or poll loop on Popen)",
+    "Add the test in test_sync.py: with a fake gate that sleeps, the captured stdout holds the stage lines in order before ship returns"
+  ],
+  "tests": "test_sync.py::test_ship_prints_stage_lines: fake gate, assert 'ship stage: gate' appears in stdout before the gate returns; fails before the change (no such line).",
   "title": "sync.py ship prints nothing until it exits: a 27 min ship looks hung and is flagged STALLED-BG; print a line per gate stage. Done when: a running ship's output file shows the current stage within 60 s",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

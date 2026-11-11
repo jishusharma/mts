@@ -25,7 +25,7 @@
     "btc-of-map-clocks-1112",
     "btc-of-map-prints-1112"
   ],
-  "done_when": "MyTradingSys/research/btc_orderflow_map_1112/RESULT.md has a table of BTC clocks vs events (same numbers as CLOCKS.md and PRINTS.md), a VERDICTS.csv row appended (verdicts.py backfill), and either a frozen rule in PAPER_SLOT.md (entry, stop, fee 0.05%/side, params_id) or NOT_IN_DATA.md listing the missing feed.",
+  "done_when": "RESULT.md holds the CLOCKS.md DEV table and the PRINTS.md table unchanged plus one headline each (effect, n, z); VERDICTS.csv has a row (verdicts.py backfill); and either PAPER_SLOT.md has one frozen rule (entry, stop, fee 0.05%/side, params_id) or NOT_IN_DATA.md names the missing feed.",
   "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
@@ -37,7 +37,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Original one-session scope split 1/4..4/4 by planner-edge-cards-1112 (DECISION OURS: four small cards). Earlier CVD results stand, not repeated.",
+  "note": "Scope split 1/4..4/4 by planner-edge-cards-1112 (DECISION OURS). Earlier CVD results stand, not repeated. DECISION (OURS 2026-11-12): clocks.py refuses any split but dev, so PAPER_SLOT is the forward test; a validation run is a later card only for a frozen rule. Tom/Fabio give the order-flow idea only; DSA parked. BLOCKED-BY: btc-of-map-prints-1112 must be done first (tasks.py check refuses a ready dependency); it becomes READY the moment prints is done.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -60,11 +60,11 @@
   ],
   "state": "raw",
   "steps": [
-    "Read CLOCKS.md and PRINTS.md; copy tables into RESULT.md unchanged, one headline per table: effect, n, VALIDATION sign",
-    "A rule goes to PAPER_SLOT.md only if DEV and VALIDATION agree in sign and |z|>=2 vs placebo; else write NOT_IN_DATA.md (liquidation history: no public feed) and call it FAIL or NOT_IN_DATA",
+    "Read CLOCKS.md (DEV table, shipped bf380bbb) and PRINTS.md; copy both tables into RESULT.md unchanged, one headline per table: effect, n, z vs placebo",
+    "A rule goes to PAPER_SLOT.md only if DEV |z|>=2 vs placebo and it survives the 10 bp fee; the forward paper run is the out-of-sample test (clocks.py allows --split dev only, VALIDATION stays sealed); else NOT_IN_DATA.md (liquidation history: no public feed) and call it FAIL or NOT_IN_DATA",
     "Run verdicts.py backfill for the row"
   ],
-  "tests": "Docs card: checker is a grep that RESULT.md holds both child tables and PAPER_SLOT.md or NOT_IN_DATA.md exists; with both files absent it must fail first.",
+  "tests": "grep checker: RESULT.md holds both table headers; PAPER_SLOT.md or NOT_IN_DATA.md exists; with RESULT.md absent it must fail first.",
   "title": "BTC order-flow map 4/4: assemble clocks and prints, one paper slot or NOT_IN_DATA (Tom/Fabio give the idea only)",
   "weight": "",
   "worker": "agent"
