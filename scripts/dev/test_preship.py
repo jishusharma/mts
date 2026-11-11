@@ -300,3 +300,57 @@ class RealRulesTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ContextFoldSharedCheckoutTest(unittest.TestCase):
+    """Operator 2026-11-11 (audit finding 1): the ship-time context fold wrote a card into the SHARED main checkout (many sessions work
+    there: its .git is a directory and other worktrees hang off it), dirtying it for every session and blocking their stop guards.
+    It folds only into a session's own worktree or a single-session clone."""
+
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.main = Path(self.d.name) / "main"
+        self.main.mkdir()
+        git(self.main, "init", "-q", "-b", "jis-nb-trunk")
+        git(self.main, "config", "user.email", "t@t")
+        git(self.main, "config", "user.name", "t")
+        (self.main / "a.txt").write_text("a\n")
+        git(self.main, "add", "a.txt")
+        git(self.main, "commit", "-q", "-m", "init")
+        self.tp = Path(self.d.name) / "t.jsonl"
+        self.tp.write_text("{}\n")
+
+    def tearDown(self):
+        self.d.cleanup()
+
+    def ship(self, cwd):
+        import context_gap
+        calls = []
+
+        def fake_fold(tp, root, **kw):
+            calls.append(root)
+            return "folded", "card-x"
+        orig, context_gap.fold = context_gap.fold, fake_fold
+        try:
+            note = P.hook_ship({"cwd": str(cwd), "transcript_path": str(self.tp)}, "python scripts/dev/sync.py ship --release x")
+        finally:
+            context_gap.fold = orig
+        return note, calls
+
+    def test_the_main_checkout_with_worktrees_is_never_folded_into(self):
+        git(self.main, "worktree", "add", "-q", "-b", "s/one", str(Path(self.d.name) / "wt"))
+        note, calls = self.ship(self.main)
+        self.assertEqual(calls, [])
+        self.assertIn("shared main checkout", note)
+
+    def test_a_session_worktree_is_folded(self):
+        wt = Path(self.d.name) / "wt"
+        git(self.main, "worktree", "add", "-q", "-b", "s/one", str(wt))
+        note, calls = self.ship(wt)
+        self.assertEqual(len(calls), 1)
+        self.assertTrue(note.startswith("folded"))
+
+    def test_a_single_session_clone_is_folded(self):
+        git(self.main, "checkout", "-q", "-b", "host/slug")
+        note, calls = self.ship(self.main)
+        self.assertEqual(len(calls), 1)

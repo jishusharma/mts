@@ -192,6 +192,62 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class OwnWorkOnlyTest(StopGuardTest):
+    """Operator 2026-11-11 (audit finding 4): in the SHARED main checkout (its .git is a directory) a session is judged on its own
+    work only: files its transcript wrote, non-merge commits made since it started. Merges of origin/fast-track never count.
+    The inherited StopGuardTest cases run again here (no transcript = the old rules, unchanged)."""
+
+    def transcript(self, *edited, start="2026-11-05T00:00:00.000Z"):
+        rows = [{"type": "user", "timestamp": start, "message": {"role": "user", "content": "go"}}]
+        for f in edited:
+            rows.append({"type": "assistant", "timestamp": start, "message": {"role": "assistant", "content": [
+                {"type": "tool_use", "name": "Write", "input": {"file_path": str(self.a / f), "content": "x"}}]}})
+        t = self.tmp / "t.jsonl"
+        t.write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+        return str(t)
+
+    def commit(self, name, date=None, msg=None):
+        (self.a / name).write_text(name + "\n", newline="\n")
+        sh(self.a, "add", name)
+        env = dict(os.environ, **({"GIT_COMMITTER_DATE": date, "GIT_AUTHOR_DATE": date} if date else {}))
+        subprocess.run(["git", "commit", "-q", "-m", msg or name], cwd=self.a, check=True, capture_output=True, env=env)
+
+    def test_files_another_session_left_in_the_shared_checkout_do_not_block(self):
+        (self.a / "theirs.json").write_text("{}\n", newline="\n")
+        self.assertEqual(self.run_hook(transcript_path=self.transcript()), "")
+
+    def test_a_file_this_session_wrote_still_blocks(self):
+        (self.a / "mine.py").write_text("x\n", newline="\n")
+        (self.a / "theirs.json").write_text("{}\n", newline="\n")
+        out = json.loads(self.run_hook(transcript_path=self.transcript("mine.py")))
+        self.assertIn("1 uncommitted", out["reason"])
+
+    def test_a_commit_older_than_the_session_and_trunk_merges_do_not_block(self):
+        self.commit("old.py", date="2026-11-01T00:00:00Z")          # another session's, before this one started
+        other = self.tmp / "b"
+        sh(self.tmp, "clone", "-q", str(self.tmp / "origin.git"), str(other))
+        sh(other, "config", "user.email", "t@t")
+        sh(other, "config", "user.name", "t")
+        (other / "trunk.py").write_text("t\n", newline="\n")
+        sh(other, "add", "trunk.py")
+        sh(other, "commit", "-q", "-m", "trunk moves on")
+        sh(other, "push", "-q", "origin", "HEAD:fast-track")
+        sh(self.a, "fetch", "-q", "origin")
+        sh(self.a, "merge", "-q", "--no-edit", "origin/fast-track")      # the merge a session makes to catch up
+        self.assertEqual(self.run_hook(transcript_path=self.transcript()), "")
+
+    def test_a_commit_made_since_the_session_started_blocks(self):
+        self.commit("mine.py")      # now, after the 2026-11-05 start of the transcript
+        self.assertIn("not shipped", self.run_hook(transcript_path=self.transcript()))
+
+    def test_a_worktree_is_all_its_session_s_own_so_any_file_blocks(self):
+        wt = self.tmp / "wt"
+        sh(self.a, "worktree", "add", "-q", "-b", "claude/wt", str(wt), "origin/fast-track")
+        (wt / "x.py").write_text("x\n", newline="\n")
+        out = stop_guard.hook(json.dumps({"cwd": str(wt), "transcript_path": self.transcript()}))
+        self.assertIn("1 uncommitted", json.loads(out)["reason"])
+
+
 class SupervisorWatcherTest(StopGuardTest):
     """test_stop_guard_supervisor_watcher: a Supervisor turn may not end with no live watcher or no fresh plan."""
 
