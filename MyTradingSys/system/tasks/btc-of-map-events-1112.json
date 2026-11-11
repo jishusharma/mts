@@ -43,7 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "planner-a-1112 2026-11-12: refined from raw. Split A2 here (klines, full DEV) vs prints card (A1/A2 from aggTrades on 60 sampled days): not twins. DECISION (OURS): VALIDATION stays unopened until a cell clears DEV (PREREG). Independent of prints/clocks, no dependency.",
+  "note": "planner-a-1112 2026-11-12: refined from raw. Split A2 here (klines, full DEV) vs prints card (A1/A2 from aggTrades on 60 sampled days): not twins. DECISION (OURS): VALIDATION stays unopened until a cell clears DEV (PREREG). Independent of prints/clocks, no dependency. 2026-11-12 planner-close-1112c: events.py + test_events.py already shipped (bc4b2b304, 02045dd8a); remaining work = the DEV RUN on a machine with F:/MTS data (JIS-NB), EVENTS.md table, verdicts.py backfill. Dev-only cells: A2 bar-delta and A3 funding; n floor 180 per cell is frozen in PREREG.md. PRINTS.md already shows A2 absorption at n=15 on 60 sampled days, so full-DEV A2 may still fall below 180: if so the card MUST report INSUFFICIENT_N for that cell, never loosen the floor, threshold, or window. DECISION (OURS): btc-native-orderflow-map-1112 stays blocked (depends_on prints + clocks; it also reads events result) until this card is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

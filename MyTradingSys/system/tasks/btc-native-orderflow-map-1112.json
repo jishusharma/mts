@@ -34,6 +34,15 @@
   "id": "btc-native-orderflow-map-1112",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Edge hunt T01-T15 in one table; 13 VERDICTS.csv rows (PLAN_24H T2)",
+      "ref": "b43ad0be6253",
+      "utc": "2026-11-10T14:29:47Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -41,6 +50,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T22:02:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -54,11 +64,12 @@
     "live tree",
     "testnet orders (paper only)"
   ],
+  "scope_sha": "b43ad0be6253",
   "size": "S",
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read CLOCKS.md (DEV table, shipped bf380bbb) and PRINTS.md; copy both tables into RESULT.md unchanged, one headline per table: effect, n, z vs placebo",
     "A rule goes to PAPER_SLOT.md only if DEV |z|>=2 vs placebo and it survives the 10 bp fee; the forward paper run is the out-of-sample test (clocks.py allows --split dev only, VALIDATION stays sealed); else NOT_IN_DATA.md (liquidation history: no public feed) and call it FAIL or NOT_IN_DATA",
