@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T07:00:40Z",
   "commands": [],
   "created": "2026-11-11T06:40:06Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MATCH=30 DIFF=0 NOT_IN_DATA=19 in MyTradingSys/research/layer_lab/reports/2026-11-11_gemin",
+      "ref": "a1ccf2923",
+      "utc": "2026-11-11T07:00:40Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Live Aid review (4-week replay of its flags) + one BOTH SIDES banner",
@@ -25,6 +32,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read report complete",
   "not_twin_of": [
     "gemini-blind-read-ship-gate-select-1111"
   ],
@@ -34,7 +42,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T06:40:07Z",
   "refs": [],
-  "result": "",
+  "result": "MATCH=30 DIFF=0 NOT_IN_DATA=19 in MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-live-aid-review-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/live_aid_review_2026-11-11/ (read only)",
     "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-live-aid-review-1111.md (new)"
@@ -47,12 +60,13 @@
   "sources": [
     "D11_PROGRAMME s6 feeder; TASK_REFINEMENT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files in the study folder; list each number in the headline and tables",
     "Re-derive each from the script or data, mark MATCH/DIFF/NOT_IN_DATA with file:line",
     "Write MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-live-aid-review-1111.md with counts on line 1"
   ],
+  "taken": "2026-11-11T07:00:40Z",
   "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of live_aid_review_2026-11-11 RESULT.md vs its scripts",
   "weight": "ROUTINE",
