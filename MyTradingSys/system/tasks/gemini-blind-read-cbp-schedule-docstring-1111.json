@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T20:50:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-cbp-schedule-docstring-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per clause) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of scripts/dev/cbp_schedule.py: run slots per weekday (Mon-Fri 05:00 and 20:00 UTC, Sat 05:30, Sun 16:30), what the docstring says against the code and test_cbp_schedule.py; read only.",
+  "id": "gemini-blind-read-cbp-schedule-docstring-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:50:46Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/cbp_schedule.py (read)",
+    "scripts/dev/test_cbp_schedule.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-cbp-schedule-docstring-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 8 clauses from the docstring, each with file:line",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of cbp_schedule.py against its docstring and test",
+  "weight": "ROUTINE",
+  "worker": ""
+}
