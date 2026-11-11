@@ -250,7 +250,12 @@ def fetch_and_reduce(day, log):
         if dir_gb(SCRATCH) > SCRATCH_CAP_GB:
             return 'scratch > %.0f GB cap' % SCRATCH_CAP_GB
         f = os.path.join(SCRATCH, 'BTCUSDT-aggTrades-%s.csv' % day.isoformat())
-        df = pd.read_csv(f, usecols=['transact_time', 'quantity', 'is_buyer_maker'], dtype={'quantity': 'float64'})
+        with open(f) as fh:
+            first = fh.readline()
+        names = ['agg_trade_id', 'price', 'quantity', 'first_trade_id', 'last_trade_id', 'transact_time', 'is_buyer_maker']
+        hdr = first[:1].isalpha()  # some days ship without a header row
+        df = pd.read_csv(f, usecols=['transact_time', 'quantity', 'is_buyer_maker'], dtype={'quantity': 'float64'},
+                         **({} if hdr else dict(header=None, names=names)))
         ibm = df['is_buyer_maker'].astype(str).str.lower().eq('true').to_numpy()
         red = reduce_day(df['transact_time'].to_numpy(), df['quantity'].to_numpy(), ibm, day)
         np.savez_compressed(out, **red)
@@ -425,7 +430,10 @@ def main(argv=None):
     missing = {}
     if not a.analyze_only:
         for i, (d, b, r) in enumerate(days):
-            st = fetch_and_reduce(d, None)
+            try:
+                st = fetch_and_reduce(d, None)
+            except Exception as e:  # noqa: BLE001
+                st = 'reduce error: %s' % str(e)[:120]
             if st not in ('ok', 'skip'):
                 missing[d.isoformat()] = st
             print('%d/%d %s %s %s' % (i + 1, len(days), d, r, st), flush=True)
