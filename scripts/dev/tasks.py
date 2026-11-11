@@ -3,7 +3,7 @@
   python scripts/dev/tasks.py new "<title>" [--id B170] [--ref B170] [--lane SONNET] [--prio 3] [--from-inbox <fb id>] [--layer tom]
   python scripts/dev/tasks.py check [<id>]          # Definition of Ready; promotes raw/refined -> ready when it passes (fail closed)
   python scripts/dev/tasks.py lint                  # every card: a `ready`/`active` card that fails DoR is an error (exit 1)
-  python scripts/dev/tasks.py list [--state ready] [--lane SONNET] [--all]   # open cards only; --all adds done/dropped
+  python scripts/dev/tasks.py list [--state ready] [--lane SONNET] [--all] [--prefix Q:]   # open cards only; --all adds done/dropped
   python scripts/dev/tasks.py status                # counts + the line the dispatcher reads: REFINE_NEEDED / REFINE_OK
   python scripts/dev/tasks.py tried <id> [--asks "<question>"]   # refiner: a try that did not reach ready; --asks parks it for the operator
   python scripts/dev/tasks.py next [--n 3] [--lane SONNET] [--all]   # the first ready cards no session holds, best first (--all: claimed too, marked)
