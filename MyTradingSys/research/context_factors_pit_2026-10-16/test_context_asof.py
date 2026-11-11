@@ -221,6 +221,8 @@ def test_planted_lookahead_is_caught(tape60, plant):
                 a = ctx(CA.slice_bars(bars, t + 1), t, side, "vec", fund)   # bars[0..t] only
                 b = ctx(CA.slice_bars(bars, t + 1 + EXT), t, side, "vec", fund)
                 caught += diff_fields(a, b)
+            if caught:      # one disagreement is the proof; the assertion below needs no more points
+                break
     finally:
         CA.PLANT.clear()
     assert caught, f"plant {plant} not caught"
