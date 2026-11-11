@@ -87,7 +87,8 @@ def test_touch_band_is_ten_bp():
     lv = levels(o, h, l, c, v)
     k1, k2 = D * 288 + 40, D * 288 + 100
     inject(o, h, l, c, tb, k1, lv['PDL'] * 1.0004, -8.0, low_off=0.0)                   # low = PDL*(1.0003): inside
-    inject(o, h, l, c, tb, k2, lv['PDL'] * 1.0030, -8.0, low_off=0.0)                   # low ~0.3 % above: outside
+    far = next(lv['PDL'] * f for f in (1.003, 1.004, 1.006, 1.01, 0.997, 0.99) if all(abs(lv['PDL'] * f / x - 1) > .002 for x in lv.values()))
+    inject(o, h, l, c, tb, k2, far, -8.0, low_off=0.0)                                  # low >= 0.2 % from every level: outside
     ev = run(o, h, l, c, v, tb)
     at = {e['entry'] for e in ev['at']}
     assert (k1 + 1) * 5 in at and (k2 + 1) * 5 not in at
