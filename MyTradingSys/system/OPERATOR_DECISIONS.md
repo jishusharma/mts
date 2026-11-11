@@ -2268,3 +2268,10 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Operator: "Solve these trivial issues so they do not come back" (flashing console windows, stop guard blocking on stray files/commits, commands that need him to run them, signal ack collisions).
 - Done/ordered: user-level hook runner now runs under pythonw (commit 368180fdc); Opus audit session ordered to fix the context-fold dirtying the main checkout, stop_guard counting only the session's own work, the ack collision, and to list the denied routine commands for an allowlist.
 - Rule: a trivial issue seen twice gets a root-cause fix with a test the same day; never a per-session workaround.
+
+## 2026-11-11 13:20Z Allowlist applied; desktop runs the next 24 h super session on all LLMs (operator)
+- Order "Apply the allowlist": the 23 routine entries from PERMISSION_ALLOWLIST_PROPOSAL_2026-11-11 (merge of origin/fast-track, fetch, cherry, read-only git, the dev scripts, cd into the project tree) are in the user settings on JIS-NB; deletes, checkout and stash stay prompted.
+- Rule restated: a step a session can do itself is done by the session, never handed to him as a command (the main-checkout merge waited on him for hours; Supervisor C did it at 13:15Z, a85d5c710).
+- Order 13:35Z "Get latest DSA fixes on Desk. Start using all LLMs for the next 24 hour super session you will run from here": Supervisor C on JIS-NB (desktop) runs the super session until 2026-11-12T13:14Z. The DeepSeek hold is lifted for the desktop bridge (DSA / DSA-NB rows may run again); Gemini and GPT lanes are fed and run without a further ask.
+- Done: AIBridge 0.7.38 installed on JIS-NB (was 0.7.30), agent restarted, health all-match on disk and agent. Gemini card tvfav-usage-adx-1107 started on the NUC through the SSH gate. GPT lab stays down until someone logs in to Codex on the NUC (401 for 283 h).
+- Not covered by this order (money): paid API credit jobs still need his word.

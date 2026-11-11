@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T13:19:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-rsi-ma-cross-live-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 6) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of events, resolve, kill_status and step in MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py against its module docstring: newest closed 4h bar only, event has collection_only and shadow_side but no side, journal row kinds signal/outcome/no_fill/unresolved/kill, kill after KILL_TRADES closed paper trades with net R <= 0, no order or exchange call anywhere.",
+  "id": "gemini-blind-read-rsi-ma-cross-live-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: docstring no longer carries a cost-like literal; T06 cost inventory test passes Ne",
+      "ref": "e6c5ba837a3f",
+      "utc": "2026-11-11T01:11:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T13:19:35Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py (read)",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_ma_cross_live.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-rsi-ma-cross-live-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "e6c5ba837a3f",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-feed-lanes-1111"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 6 docstring clauses (newest closed bar only; no side key; five journal row kinds; kill rule; no order/exchange/auto_trader import; parity batch == one-bar feed)",
+    "Mark each MATCH/DIFF/NOT_IN_DATA (or CONSISTENT/CONTRADICTION) with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "tests": "",
+  "title": "[GEMINI] blind read of rsi_ma_cross_live.py against its own docstring and the frozen study",
+  "weight": "ROUTINE",
+  "worker": ""
+}
