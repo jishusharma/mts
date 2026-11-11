@@ -1,0 +1,63 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:07:20Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-old-shell-health-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 4) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of old_shell_notes in scripts/dev/sync.py: health prints one NOTE OLD-SHELL line per bash/sh process older than bg_watch.SHELL_LIMIT_MIN and never fails health.",
+  "id": "gemini-blind-read-old-shell-health-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: sync.py health prints NOTE OLD-SHELL for any bash/sh over 30 min (extends bg_watch",
+      "ref": "f6824b1ef8a7",
+      "utc": "2026-11-11T09:15:39Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:07:23Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/sync.py (old_shell_notes and its caller in health; read)",
+    "scripts/dev/bg_watch.py (live_shells, SHELL_LIMIT_MIN; read)",
+    "scripts/dev/test_old_shell_health.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-old-shell-health-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "f6824b1ef8a7",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 15:10Z (NUC queue empty, no ready GEMINI cards)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 4 clauses: (1) only bash/sh shells older than SHELL_LIMIT_MIN produce a note, (2) the note names pid, age and a command cut to 70 chars, (3) a lister error yields no note and no exception, (4) the notes never change the health exit code",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of sync.py health OLD-SHELL notes (f6824b1ef)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

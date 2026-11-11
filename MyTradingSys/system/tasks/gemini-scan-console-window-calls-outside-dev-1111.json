@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:07:20Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-scan-console-window-calls-outside-dev-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (MATCH = has the flag or console-inheriting on purpose, DIFF = missing on an unattended path) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "8b71721d8 gave every scripts/dev subprocess call CREATE_NO_WINDOW, yet the operator still sees flashing python consoles. List each subprocess/os.system call in MyTradingSys, scripts/aibridge and scripts/*.py (not scripts/dev) with no creationflags, and mark which run unattended.",
+  "id": "gemini-scan-console-window-calls-outside-dev-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:07:22Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "MyTradingSys/**/*.py, scripts/aibridge/**/*.py, scripts/*.py (read; git grep -n for subprocess and os.system)",
+    "scripts/dev/nowin_scan.py and scripts/dev/test_nowin_calls.py (read, for the rule)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-scan-console-window-calls-outside-dev-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 15:10Z (NUC queue empty, no ready GEMINI cards)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: one per call site without creationflags (file:line, the call, unattended yes/no with the caller that proves it)",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] scan: subprocess calls outside scripts/dev with no CREATE_NO_WINDOW (flashing consoles, q-5aeda0)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

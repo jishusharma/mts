@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:07:20Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-pool-slots-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of the machine-wide gate pool: host_gate_slots_dir and gate_slot_factory give one slot per ship across every worktree on a host, a waiting ship logs to wait.log, and a crashed holder never blocks the pool forever.",
+  "id": "gemini-blind-read-gate-pool-slots-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: balance_modules([]) returns no chunks so an empty 5b subset spawns no process; no ",
+      "ref": "5b609656cf16",
+      "utc": "2026-11-11T11:51:38Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c637bfa4e167 row3: one gate pool per machine, one slot per ship, wait.log",
+      "ref": "MyTradingSys/system/GATE_SPEED.md",
+      "utc": "2026-11-10T21:20:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:07:24Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/sync.py (host_gate_slots_dir, gate_slot_factory, _log_wait and callers; read)",
+    "scripts/dev/run_all_tests.py (run_plan slot argument; read)",
+    "scripts/dev/supervisor.py (the slot use; read)",
+    "MyTradingSys/system/GATE_SPEED.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-pool-slots-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "5b609656cf16",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 15:10Z (NUC queue empty, no ready GEMINI cards)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: (1) the slots dir is per machine, not per worktree, (2) one ship holds one slot for its whole gate, (3) a waiting ship appends to wait.log, (4) a slot held by a dead process is reclaimed, (5) GATE_SPEED.md describes the same behaviour",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of the one-gate-pool-per-machine slots (c637bfa4e)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:07:20Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-aibridge-0739-cap-pagehide-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of AIBridge 0.7.39: L.capResult keeps head and tail and states the cut, content.js applies the 60000-char cap to every posted result, and pagehide frees this tab's arm.",
+  "id": "gemini-blind-read-aibridge-0739-cap-pagehide-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.39: release the arm on pagehide, cap one result at 60000 chars, desk post/tak",
+      "ref": "2411379b6ded",
+      "utc": "2026-11-11T13:23:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:07:21Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/aibridge/extension/loop.js (L.capResult, L.VERSION; read)",
+    "scripts/aibridge/extension/content.js (aibridge_result_cap, pagehide listener, releaseArm; read)",
+    "scripts/aibridge/tests/loop.test.js (read)",
+    "scripts/aibridge/RELEASES.json and scripts/aibridge/extension/manifest.json (version; read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-aibridge-0739-cap-pagehide-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "2411379b6ded",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 15:10Z (NUC queue empty, no ready GEMINI cards)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: (1) capResult returns text unchanged at or under max, (2) over max the output length is at most max plus the note and keeps a 70/30 head/tail split, (3) the note states chars cut and total, (4) every result post path in content.js goes through capResult, (5) pagehide releases the arm only when this tab holds it; manifest, RELEASES.json and L.VERSION agree on 0.7.39",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of AIBridge 0.7.39: result cap and pagehide arm release (2411379b6)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
