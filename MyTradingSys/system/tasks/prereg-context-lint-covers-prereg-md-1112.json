@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [
+    "python -m pytest -q scripts/dev/test_prereg_context_lint.py",
+    "python scripts/dev/prereg_context_lint.py"
+  ],
+  "created": "2026-11-11T20:29:10Z",
+  "depends_on": [],
+  "done_when": "a PREREG.md without a ## Context line is an offender (new test fails on old code); the lint passes on trunk after the 6 existing PREREG.md files get a Context line or an allowlist row; both test and lint run clean",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "prereg_context_lint.py only scans PRE_REG*.md, so 6 studies with a plain PREREG.md (btc_orderflow_map_1112, analyst_call_slot_2026-11-11, 4 edge_views) never get their Context lint. Scan PREREG*.md too, with a fail-first test.",
+  "id": "prereg-context-lint-covers-prereg-md-1112",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "CI: allowlist level_approach PRE_REG (frozen before the context gate existed)",
+      "ref": "cfada1ed3edd",
+      "utc": "2026-11-04T20:17:27Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:29:10Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/prereg_context_lint.py",
+    "scripts/dev/test_prereg_context_lint.py",
+    "scripts/dev/prereg_context_lint_allow.tsv"
+  ],
+  "scope_out": [
+    "no change to the Context rule itself; no edit of any PREREG.md body except adding a ## Context line where the lint demands it"
+  ],
+  "scope_sha": "cfada1ed3edd",
+  "size": "S",
+  "sources": [
+    "A ask q-85e33c 2026-11-11T20:21Z (A to B)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read prereg_context_lint.py lines 30-60 and its test",
+    "Write the fail-first test: a tmp PREREG.md with no Context is an offender",
+    "Change the glob at line 34 to match PRE_REG*.md and PREREG*.md",
+    "Run the lint: add a ## Context line (Regime/Phase/Session/Entry or none, because ...) to the 6 files, or allowlist the 3 frozen ones from 11-11",
+    "Run the test and the lint; ship"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "prereg_context_lint.py also lints files named PREREG*.md (no underscore)",
+  "weight": "ROUTINE",
+  "worker": ""
+}
