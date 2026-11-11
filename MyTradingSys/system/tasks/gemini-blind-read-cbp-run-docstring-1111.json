@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T18:44:43Z",
   "commands": [],
   "created": "2026-11-11T18:29:18Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH=7 DIFF=0 NOT_IN_DATA=0 (sum 7)",
+      "ref": "25cd56444",
+      "utc": "2026-11-11T18:44:43Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,8 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T18:29:20Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MATCH=7 DIFF=0 NOT_IN_DATA=0 (sum 7)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/cbp_run.py (read)",
     "scripts/dev/test_cbp_run.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 8 clauses from the docstring (analyst loop, DEFERRED on budget or lockout, row add, exit codes, zero-row run), each with file:line",
