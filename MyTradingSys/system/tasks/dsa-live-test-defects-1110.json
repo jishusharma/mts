@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T14:37:48Z",
   "commands": [],
   "created": "2026-11-10T07:54:25Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "AIBridge 0.7.39 d02e698fa: arm released on pagehide, one result capped at 60000 chars, des",
+      "ref": "6218a73cb",
+      "utc": "2026-11-11T14:37:48Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "AIBridge 0.7.34: pace 20 s + 5-15 s jitter, 30/h, 200/day (operator: 0.7.33 too slow); dsa",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: installed on JIS-NB, other machines install on next bridge update",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-10T07:54:34Z",
   "refs": [],
-  "result": "",
+  "result": "AIBridge 0.7.39 d02e698fa: arm released on pagehide, one result capped at 60000 chars, desk post/take/assign commits carry Next:",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/aibridge/extension/content.js, scripts/aibridge/RELEASES.json, scripts/dev/desk.py or dsa.py take path, their tests"
   ],
@@ -42,13 +55,14 @@
   "sources": [
     "B/NUC live DSA test 2026-11-10"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the report",
     "fix 1 with a test",
     "fix 2 with a test",
     "fix 3 with a test, bump version, ship"
   ],
+  "taken": "2026-11-11T14:37:48Z",
   "tests": "tests/test_aibridge_version_bump.py plus a new test per fix",
   "title": "Fix 3 DSA/bridge defects from the live test: ghost arm after reload, desk take lacks Next: line, result bloat",
   "weight": "",

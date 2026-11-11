@@ -126,7 +126,7 @@ def post(repo, title, need, done_when, target="JIS-NB", ship=True):
                     and old["title"].strip().lower() == title.strip().lower()):
                 return old["id"]
         save(wt, req)
-        commit_ship(wt, req, f"desk task: {title}\n\nResult: task {req['id']} queued for {target}\n", ship)
+        commit_ship(wt, req, f"desk task: {title}\n\nResult: task {req['id']} queued for {target}\nNext: END: desk task queued\n", ship)
     return req["id"]
 
 
@@ -149,7 +149,7 @@ def take(repo, rid, ship=True):
             raise SystemExit(f"desk: {rid} is {req['status']}, not pending")
         req.update(status="taken", taken_by=socket.gethostname(), taken=now())
         save(wt, req)
-        commit_ship(wt, req, f"desk: taken {rid}\n\nResult: {rid} claimed by {req['taken_by']}\n", ship)
+        commit_ship(wt, req, f"desk: taken {rid}\n\nResult: {rid} claimed by {req['taken_by']}\nNext: END: desk task taken\n", ship)
     return req
 
 
@@ -206,7 +206,7 @@ def assign(repo, ship=True):
             made.append(req["id"])
         if made:
             sh(wt, "commit", "-q", "-m", f"desk assign: {len(made)} DSA-lane card(s)\n\n"
-               f"Result: desk rows posted for ready cards: {', '.join(made)}\n", "--", QUEUE)
+               f"Result: desk rows posted for ready cards: {', '.join(made)}\nNext: END: desk rows posted\n", "--", QUEUE)
             if ship:
                 run_ship(wt)
     return made

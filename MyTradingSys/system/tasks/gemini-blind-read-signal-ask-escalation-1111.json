@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T14:35:06Z",
   "commands": [],
   "created": "2026-11-11T14:22:14Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-signal-ask-escalation",
+      "ref": "b634256ca",
+      "utc": "2026-11-11T14:35:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,8 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T14:23:29Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-signal-ask-escalation-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py (ask_state, asks_open, ask_due, ask_wait_end, escalated_to, ask_for_me, escalate, ask_rows; read)",
     "scripts/dev/test_mts_signal.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: (1) an ask is OVERDUE only after its deadline minutes, (2) escalate sends at most once per ask, (3) the escalation goes to the asked login's supervisor host, (4) an ack or done row closes the ask, (5) a closed ask never escalates",

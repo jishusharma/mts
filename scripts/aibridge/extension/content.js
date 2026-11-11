@@ -7,6 +7,7 @@
   // ---- tunables (override via chrome.storage.local keys of the same name) ----
   var CFG = {
     aibridge_quiet_ms: 2000,    // page text must be unchanged this long = reply finished
+    aibridge_result_cap: 60000,  // one result is cut to this, never posted as 5 parts of a 417 KB grep (live test 2026-11-10)
     aibridge_max_chars: 60000,  // largest single message we send; see HANDOFF.md for the measured limit
     aibridge_cap: 200,          // blocks run in one chain before auto turns itself off
     aibridge_wait_ms: 180000,   // give up waiting for an idle chat after this long
@@ -306,6 +307,7 @@
 
   // ---- posting several results as one message ----
   async function postParts(text, n, myToken, label) {
+    text = L.capResult(text, CFG.aibridge_result_cap);
     var parts = L.splitParts(text, n, CFG.aibridge_max_chars);
     for (var i = 0; i < parts.length; i++) {
       setStatus('posting ' + label + (parts.length > 1 ? ' part ' + (i + 1) + '/' + parts.length : ''));
@@ -603,6 +605,8 @@
     }
   }
   // 0.7.18: every stop and retry reason goes to the agent's audit log (the banner is invisible there)
+  // ghost arm: a reload minted a new tabId and left the old one in the arm registry for ~90 s; free it on pagehide
+  window.addEventListener('pagehide', function () { if (armedHere) { armedHere = false; try { releaseArm(); } catch (e) {} } });
   function auditEvent(text) {
     try { if (alive()) chrome.runtime.sendMessage({ type: 'airun', event: String(text).slice(0, 400), auto: true, rid: newRid() }, function () { void chrome.runtime.lastError; }); } catch (e) {}
   }

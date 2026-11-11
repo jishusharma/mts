@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T14:30:12Z",
   "commands": [],
   "created": "2026-11-11T14:22:14Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-supervisor-c-runbook-11",
+      "ref": "bec43096c",
+      "utc": "2026-11-11T14:30:12Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,8 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T14:23:28Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-supervisor-c-runbook-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/handover/SUPERVISOR_C_RUNBOOK_2026-11-11.md (read)",
     "CLAUDE.md (read)",
@@ -56,7 +66,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Claims: every instruction in the runbook (one row each, at least 10)",

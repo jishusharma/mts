@@ -51,6 +51,18 @@ t('splitParts: short text unchanged, long text split with headers', () => {
   const p = L.splitParts(('line\n').repeat(2000), 3, 3000);
   assert.ok(p.length > 1 && p[0].startsWith('[AIRUN RESULT #3 part 1/'));
 });
+t('capResult: short text unchanged, a 417 KB result is cut with a notice and keeps head and tail (0.7.39)', () => {
+  assert.strictEqual(L.capResult('abc', 100), 'abc');
+  const big = 'HEAD' + 'x'.repeat(417000) + 'TAIL';
+  const c = L.capResult(big, 60000);
+  assert.ok(c.length <= 60000 + 200 && c.startsWith('HEAD') && c.endsWith('TAIL') && c.includes('RESULT CAPPED'));
+  assert.strictEqual(L.splitParts(c, 1, 60000).length, 1);
+});
+t('content.js releases the arm on pagehide (ghost arm after reload, 0.7.39)', () => {
+  const src = require('fs').readFileSync(require('path').join(__dirname, '../extension/content.js'), 'utf8');
+  assert.ok(src.split('\n').some(l => l.includes("addEventListener('pagehide'") && l.includes('armedHere = false') && l.includes('releaseArm()')));
+  assert.ok(/L\.capResult\(text, CFG\.aibridge_result_cap\)/.test(src));
+});
 t('linkState: fresh port tick is ok', () => {
   const s = L.linkState(10000, { port: 9800, worker: 9900 });
   assert.strictEqual(s.state, 'ok'); assert.strictEqual(s.reconnect, false);
