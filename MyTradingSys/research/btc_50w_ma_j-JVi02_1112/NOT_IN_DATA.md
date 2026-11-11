@@ -4,3 +4,6 @@
 - `--status` after the run: `BLOCKED until 2026-11-12T02:41:59+00:00 (host JIS-NB) ; lockout level 1 of 3 (6/24/72 h, OURS)`.
 - Not evaded (no proxy, VPN, cookies, `--fallback`). Retry after 2026-11-12T02:42Z with the same command, one video. Card filed: `extract-50w-ma-j-JVi02-retry-1112`.
 - No quote from this video exists in the repo, so EXTRACT.md is not written. CHECK.md tests the title claim only ("BTC below the 50W MA") against our own weekly data; nothing in it is attributed to the video's author.
+
+- 2026-11-11T21:46Z retry (card extract-50w-ma-j-JVi02-retry-1112): `fetch_captions_timed.py --analyst LongShort --status` = `BLOCKED until 2026-11-13T13:58:11+00:00 (host DESKTOP-F7IU69N, ip 49.37.73.158); lockout level 3 of 3 (6/24/72 h, OURS)`. No fetch attempted (step 1: if BLOCKED write the time and stop).
+- FETCH rows: `j-JVi02_C88 BLOCKED`, `BB3c8visnkI BLOCKED`, `e83njGZFrPw BLOCKED` (not fetched; lockout). Retry after 2026-11-13T13:58Z, one video first. DECISION (OURS): no re-lane, no evasion; EXTRACT.md still not written (no verifiable quotes).
