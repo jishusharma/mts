@@ -843,7 +843,18 @@
     return { flag: flag, closes: keys.length, last: last, rate: r, src: flag ? (r ? 'MEASURED' : 'UNMEASURED') : null };
   }
 
-  var api = { VA: VA, valueArea: valueArea, vaPriorDay: vaPriorDay, vaAcceptance: vaAcceptance, LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, bigCandle: bigCandle, bcTopTraders: bcTopTraders, bcClass: bcClass, bcBand: bcBand, bcStreak: bcStreak, bcBig: bcBig, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
+  // Fresh venues of the poller snapshot (window.LIVEAID_OI_SNAP = {t, venues: {NAME: {btc, px, t, err}}}): only a venue whose own t is
+  // within maxMs of now (and not from the future) with finite btc > 0 and px > 0 is returned; everything else is absent (fail closed).
+  function oiSnapFresh(snap, now, maxMs) {
+    var out = {};
+    if (!snap || typeof snap !== 'object' || !snap.venues) return out;
+    Object.keys(snap.venues).forEach(function (k) {
+      var v = snap.venues[k];
+      if (v && isFinite(v.t) && v.t > 0 && now - v.t < maxMs && now - v.t > -5000 && v.btc > 0 && isFinite(v.btc) && v.px > 0 && isFinite(v.px)) out[k] = { btc: v.btc, px: v.px, t: v.t };
+    });
+    return out;
+  }
+  var api = { oiSnapFresh: oiSnapFresh, VA: VA, valueArea: valueArea, vaPriorDay: vaPriorDay, vaAcceptance: vaAcceptance, LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, bigCandle: bigCandle, bcTopTraders: bcTopTraders, bcClass: bcClass, bcBand: bcBand, bcStreak: bcStreak, bcBig: bcBig, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
     inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
