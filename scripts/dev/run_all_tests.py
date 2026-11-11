@@ -204,13 +204,21 @@ def gate_tmp(prefix):
     return Path(d)
 
 
+# Per-test limit (ship-gate-per-test-timeout-1111): pytest-timeout is not installed, so the gate loads its own plugin, pytest_test_limit.py
+# (DECISION OURS: 120 s). `-p` needs the module importable in the pytest child, so scripts/dev goes on its PYTHONPATH.
+_dev = str(Path(__file__).resolve().parent)
+if _dev not in os.environ.get("PYTHONPATH", "").split(os.pathsep):
+    os.environ["PYTHONPATH"] = _dev + (os.pathsep + os.environ["PYTHONPATH"] if os.environ.get("PYTHONPATH") else "")
+TEST_LIMIT_ARGS = ["-p", "pytest_test_limit"]
+
+
 def pytest_cmd(targets, root=REPO, deselect=()):
     """One gate pytest step: own basetemp (parallel pytest processes share %TEMP%/pytest-of-<user> and its cleanup raises PermissionError
     after all tests pass: JIS-NB 2026-10-14, six ships at once), no cache dir, and transient tmp dirs ignored (transient_ignore_glob)."""
     scratch = tempfile.mkdtemp(prefix="mts_s4_")
     _SCRATCH.append(scratch)
     durations = ["--durations=0", "--durations-min=0.5"] if os.environ.get("GITHUB_ACTIONS") else []   # per-file times for the notice
-    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", *durations, transient_ignore_glob(root),
+    return [sys.executable, "-m", "pytest", *targets, "-q", "-p", "no:cacheprovider", *TEST_LIMIT_ARGS, *durations, transient_ignore_glob(root),
             f"--basetemp={Path(scratch) / 'bt'}", *[a for d in deselect for a in ("--deselect", d)]]
 
 
@@ -303,6 +311,7 @@ STEP_SECONDS = {}   # step -> wall seconds of this run; on CI the slowest go out
 
 
 FILE_SECONDS = {}
+TEST_SECONDS = {}   # test id -> seconds (call only): per-test CI times that the per-test limit allowances are taken from
 
 
 def note_file_seconds(output):
@@ -312,6 +321,9 @@ def note_file_seconds(output):
         m = re.match(r"\s*([\d.]+)s (?:call|setup|teardown)\s+([^\s:]+\.py)::", ln)
         if m:
             FILE_SECONDS[m.group(2)] = FILE_SECONDS.get(m.group(2), 0) + float(m.group(1))
+            mt = re.match(r"\s*([\d.]+)s call\s+(\S+::\S+)", ln)
+            if mt:
+                TEST_SECONDS[mt.group(2)] = max(TEST_SECONDS.get(mt.group(2), 0), float(mt.group(1)))
             continue
         m = re.match(r"(?:ok  |FAIL) (\S+\.py): .* in ([\d.]+)s", ln)
         if m:
@@ -324,7 +336,9 @@ def times_notice(n=15):
     top = sorted(STEP_SECONDS.items(), key=lambda kv: -kv[1])[:n]
     files = sorted(FILE_SECONDS.items(), key=lambda kv: -kv[1])[:2 * n]
     return ("::notice title=Gate step times::" + ", ".join(f"{k}={v:.0f}s" for k, v in top)
-            + (("\n::notice title=Gate file times::" + ", ".join(f"{k}={v:.0f}s" for k, v in files)) if files else ""))
+            + (("\n::notice title=Gate file times::" + ", ".join(f"{k}={v:.0f}s" for k, v in files)) if files else "")
+            + (("\n::notice title=Gate test times::" + ", ".join(
+                f"{k}={v:.0f}s" for k, v in sorted(TEST_SECONDS.items(), key=lambda kv: -kv[1])[:25])) if TEST_SECONDS else ""))
 
 
 def format_step(num, description, cmd_text, ok, output, elapsed, progress="", tail=15):
@@ -693,7 +707,7 @@ def build_plan(quick):
 
     # Step 5c: options module (own pytest run: its bare module names, e.g. fees.py, collide with other packages); own basetemp and
     # no cache dir because it runs beside other pytest processes
-    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider", transient_ignore_glob(),
+    cmd5c = [sys.executable, "-m", "pytest", "MyTradingSys/options/tests", "-q", "-p", "no:cacheprovider", *TEST_LIMIT_ARGS, transient_ignore_glob(),
              f"--basetemp={gate_tmp('mts_s5c_') / 'bt'}"]
     add("5c", "Options module tests", cmd5c, "Step 5c: Options tests")
 

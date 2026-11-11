@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T14:44:22Z",
+  "commands": [],
+  "created": "2026-11-11T14:23:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-mtf-asof-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of malkan_mtf.py against its docstring: state_asof returns the value of the latest higher-timeframe bar with time <= t, no future bar can gate a daily bar, no RSI or regime computation inside this file, Monthly and Weekly regime gate the Daily bull/bear setup.",
+  "id": "gemini-blind-read-malkan-mtf-asof-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-mtf-asof-1111.",
+      "ref": "2af221cbf",
+      "utc": "2026-11-11T14:44:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Malkan rules wired offline: swing stop + c-point target + color confirm, RSI band for plai",
+      "ref": "cbcf7f8ae359",
+      "utc": "2026-11-04T22:50:20Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: card complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:31Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-mtf-asof-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/malkan_mtf.py (read)",
+    "MyTradingSys/backtest/layers/rsi/test_malkan_mtf.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-mtf-asof-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "cbcf7f8ae359",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-gemini-feed-1111b"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 docstring clauses (latest entry <= t; closed-bar only, no leakage; no own RSI computation; monthly+weekly gate daily; bull and bear both composed)",
+    "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "taken": "2026-11-11T14:44:22Z",
+  "tests": "",
+  "title": "[GEMINI] blind read of malkan_mtf.py state_asof and gating against its docstring",
+  "weight": "ROUTINE",
+  "worker": ""
+}

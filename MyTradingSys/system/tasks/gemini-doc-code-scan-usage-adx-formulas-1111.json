@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T15:28:27Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-adx-formulas-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini scan for contradictions between the formulas in USAGE_adx.md (+DM/-DM rule, TR, Wilder smoothing n=14, DI+/DI-, DX, ADX) and the logic and defaults in adx.py.",
+  "id": "gemini-doc-code-scan-usage-adx-formulas-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tvfav-usage-adx-1107: ADX and DI usage research note",
+      "ref": "952688782798",
+      "utc": "2026-11-11T13:35:56Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "952688782798 tvfav-usage-adx-1107: ADX and DI usage research note",
+      "ref": "MyTradingSys/research/tv_favorites_2026-11/USAGE_adx.md",
+      "utc": "2026-11-11T13:35:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "next: END: task complete",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:28:30Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tv_favorites_2026-11/USAGE_adx.md (read)",
+    "MyTradingSys/backtest/layers/adx/adx.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-adx-formulas-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "952688782798",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-refine-1111b"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: +DM/-DM rule, TR definition, Wilder smoothing with n=14, DI and DX formula, ADX as smoothed DX; find the matching default or line in the code; mark CONSISTENT or CONTRADICTION or NOT_IN_CODE",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "tests": "",
+  "title": "[GEMINI] scan: USAGE_adx.md formulas vs adx.py",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T16:36:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ci-revert-per-test-limit-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 4) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini check that c2771d345 restores the gate pytest calls exactly as before 6b3d0cd27: the revert diff leaves no 120 s per-test plugin, no leftover test for it and no card text claiming it exists.",
+  "id": "gemini-blind-read-ci-revert-per-test-limit-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: reverted 6b3d0cd27 (per-test 120 s limit broke CI step 4.9, test_aibridge_chain lo",
+      "ref": "c2771d345e91",
+      "utc": "2026-11-11T16:32:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T16:36:27Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/run_all_tests.py, scripts/dev/extra_tests.tsv (read; the revert is git show c2771d345, which removed scripts/dev/pytest_test_limit.py and test_pytest_test_limit.py)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ci-revert-per-test-limit-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "c2771d345e91",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 4 clauses: (1) the revert removes every file and line 6b3d0cd27 added to the gate, (2) no test still imports the removed plugin, (3) run_all_tests.py pytest commands match their pre-6b3d0cd27 form, (4) nothing left in the repo claims the 120 s limit is active",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of C's per-test limit revert (c2771d345 undoes 6b3d0cd27)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T14:35:06Z",
+  "commands": [],
+  "created": "2026-11-11T14:22:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-signal-ask-escalation-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of the ask lifecycle in scripts/dev/mts_signal.py: an ask past its deadline shows OVERDUE, escalates once to the asked login's supervisor host, and an ack/done clears it.",
+  "id": "gemini-blind-read-signal-ask-escalation-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-signal-ask-escalation",
+      "ref": "b634256ca",
+      "utc": "2026-11-11T14:35:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: sender_note says Cut to 200 only on real truncation; redaction gets its own line N",
+      "ref": "71d5cbd545b7",
+      "utc": "2026-11-11T09:01:09Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:29Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-signal-ask-escalation-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/mts_signal.py (ask_state, asks_open, ask_due, ask_wait_end, escalated_to, ask_for_me, escalate, ask_rows; read)",
+    "scripts/dev/test_mts_signal.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-signal-ask-escalation-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "71d5cbd545b7",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: (1) an ask is OVERDUE only after its deadline minutes, (2) escalate sends at most once per ask, (3) the escalation goes to the asked login's supervisor host, (4) an ack or done row closes the ask, (5) a closed ask never escalates",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of mts_signal.py ask deadlines and escalation",
+  "weight": "ROUTINE",
+  "worker": ""
+}

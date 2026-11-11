@@ -1,0 +1,81 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/live_aid_learn.py --date 2026-11-11",
+    "python scripts/dev/test_live_aid_learn.py"
+  ],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-11-11T15:39:12Z",
+    "misses": 18,
+    "reads": [
+      "MyTradingSys/research/live_aid_review_2026-11-11/tables.md",
+      "MyTradingSys/research/live_aid_review_2026-11-11/replay.js",
+      "scripts/dev/test_us_prep.py"
+    ],
+    "session": "agent-a264e0dc7d4e21917"
+  },
+  "created": "2026-11-11T15:24:14Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/live_aid_learn.py --date 2026-11-11 writes MyTradingSys/research/live_aid_learning/2026-11-11.md with >= 3 rows (change, evidence n, hit rate, test or NOT-ENOUGH-EVIDENCE); the file is on trunk; SUPER_SESSION.md line 71a P4 names the command",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "One script, scripts/dev/live_aid_learn.py, scores each Live Aid flag against the 1h price move, compares with earlier daily runs, and writes a point-wise list (what worked, what did not, proposed change, evidence count and hit rate). Input: the flag log CSV of live-aid-flag-log-1111 when present, else the replay.js events of research/live_aid_review_2026-11-11.",
+  "id": "live-aid-learning-loop-1111",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: us_prep.py P1-P3 now rebuild the Live Aid playbook and copy playbook_data.js to th",
+      "ref": "33d9eaf0c25a",
+      "utc": "2026-11-11T14:39:58Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "33d9eaf0c25a Result: us_prep.py P1-P3 now rebuild the Live Aid playbook and copy playbook_",
+      "ref": "MyTradingSys/system/SUPER_SESSION.md",
+      "utc": "2026-11-11T14:39:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS) Session_Planner: no hard depends_on live-aid-flag-log-1111 (still ready, not done); the script falls back to replay events until the log exists, so both can ship in any order. Thresholds n>=30 and 10 points are OURS, not sourced.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:30:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/live_aid_learn.py (new; reuses the scoring of MyTradingSys/research/live_aid_review_2026-11-11/analyze.py:1-49)",
+    "scripts/dev/test_live_aid_learn.py (new)",
+    "MyTradingSys/research/live_aid_learning/ (new, daily .md)",
+    "MyTradingSys/system/SUPER_SESSION.md (line 71a, P4 step: one clause)"
+  ],
+  "scope_out": [
+    "No edit to live_aid.html or any live_aid .js (the flag log is card live-aid-flag-log-1111); no live-tree edit, no deploy, no order; the script never changes Live Aid itself"
+  ],
+  "scope_sha": "33d9eaf0c25a",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-11 15:25Z (OPERATOR_DECISIONS.md last entry)",
+    "research/live_aid_review_2026-11-11/RESULT.md (759 IDEA flags 47% right after 1h)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read live_aid_review_2026-11-11/RESULT.md, analyze.py, replay.js; write the fail-first test with synthetic events (kind, side, state, r1h, mfe1h, mae1h)",
+    "Build live_aid_learn.py: load events (flag-log CSV path via --log, else replay events.json), score by flag kind and level state, diff against the previous day file in live_aid_learning/",
+    "Rule: change is 'implement' only if n >= 30 and hit rate differs from 50% by >= 10 points (OURS); everything else goes to a 'for the operator' list, point-wise, max 6 lines",
+    "Run it for 2026-11-11 (replay input), commit the first list, add the P4 command to SUPER_SESSION.md 71a, run test_live_aid_learn.py, ship"
+  ],
+  "tests": "scripts/dev/test_live_aid_learn.py (new): synthetic events with a known hit rate give the stated n and rate, a change with n < 30 lands in the operator list, not the implement list; fails today (module missing)",
+  "title": "Live Aid learning loop: a daily model run scores what Live Aid flagged against what price did and writes a point-wise change list",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

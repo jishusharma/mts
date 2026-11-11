@@ -1,0 +1,10 @@
+{
+  "done_when": "Diagnostic run by Claude or row acknowledged and closed as moot",
+  "from": "JIS-NUC",
+  "id": "20261111-151503-run-all-tests-py-quick-dsa-blocked-by-fi",
+  "need": "Row 20261107-182657-dsa-tests-quick-trunk-1107 asks DSA to run python scripts/dev/run_all_tests.py --quick. DSA_SESSION_PROMPT FIRST D forbids DSA from running that file. CI green at dff70c157 (2026-11-11 20:21 +0530), no red to diagnose. If a fresh diagnostic is wanted, a Claude session should run it.",
+  "posted": "2026-11-11T15:15:03Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "run_all_tests.py --quick: DSA blocked by FIRST D, CI green"
+}

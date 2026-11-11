@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T16:46:16Z",
+  "commands": [],
+  "created": "2026-11-11T16:36:02Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-live-aid-learning-rows-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per report row, expect 17) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini recompute of every row of research/live_aid_learning/2026-11-11.md (17 rows): n, hit percent and the verdict, from the review tables.md and events.json under the rule hit = r1h > 0, test only if n >= 30 and gap >= 10 points; list each row that does not recompute.",
+  "id": "gemini-recompute-live-aid-learning-rows-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-live-aid-learning-rows",
+      "ref": "c849b1655",
+      "utc": "2026-11-11T16:46:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: live_aid_learn.py scores Live Aid flags vs 1h move; first list 2026-11-11 (17 rows",
+      "ref": "d15ca15979f7",
+      "utc": "2026-11-11T15:39:13Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d15ca15979f7 Result: live_aid_learn.py scores Live Aid flags vs 1h move; first list 2026-1",
+      "ref": "MyTradingSys/research/live_aid_learning/2026-11-11.md",
+      "utc": "2026-11-11T15:39:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: task complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T16:36:17Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-live-aid-learning-rows-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/live_aid_learning/2026-11-11.md (read)",
+    "MyTradingSys/research/live_aid_review_2026-11-11/tables.md, events.json, analyze.py (read)",
+    "scripts/dev/live_aid_learn.py (rule; read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-live-aid-learning-rows-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "d15ca15979f7",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: one per row of 2026-11-11.md: n, hit percent and verdict recomputed from the sources; MATCH when all three agree",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] recompute the live_aid_learning 2026-11-11 hit rates from the review tables",
+  "weight": "ROUTINE",
+  "worker": ""
+}

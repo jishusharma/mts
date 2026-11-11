@@ -98,7 +98,7 @@ def pack_one(target: dict) -> bool:
     text = build_spec_text(target)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
-    result = subprocess.run([sys.executable, str(QUEUE_TOOL), "pack", str(path)], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, str(QUEUE_TOOL), "pack", str(path)], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     print(result.stdout)
     if result.returncode != 0:
         print(result.stderr)

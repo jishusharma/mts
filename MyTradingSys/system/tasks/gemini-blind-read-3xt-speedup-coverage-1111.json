@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T14:27:39Z",
+  "commands": [],
+  "created": "2026-11-11T14:22:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-3xt-speedup-coverage-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (MATCH = still covered, DIFF = coverage lost) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini read of the 3xt speedup diff (git diff 651aab2e^1 651aab2e^2) in 5 files: every assertion removed from a test is still made elsewhere or is genuinely redundant, and the context_null.py change (phase_tag FFT dropped) does not change any reported study number except the one p-value count A named.",
+  "id": "gemini-blind-read-3xt-speedup-coverage-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-3xt-speedup-coverage-",
+      "ref": "4ed15b08b",
+      "utc": "2026-11-11T14:27:39Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read complete, 12 clauses MATCH=12 DIFF=0",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:30Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-3xt-speedup-coverage-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "git diff 651aab2e^1 651aab2e^2 -- MyTradingSys/research/context_null_2026-10-16/context_null.py MyTradingSys/research/context_null_2026-10-16/test_context_null.py MyTradingSys/tools/live_aid/test_live_aid_replay.py scripts/dev/test_refresh_main_checkout.py scripts/dev/test_refresh_main_checkout_errors.py (read)",
+    "the same 5 files at origin/fast-track (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-3xt-speedup-coverage-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Clauses: one row per removed or rewritten assert/test function in the diff (each: still covered where, or LOST), plus one row for the context_null.py behaviour change",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read: A's 3xt test speedups (651aab2e) kept every assertion",
+  "weight": "ROUTINE",
+  "worker": ""
+}

@@ -32,7 +32,11 @@ SLOTS = [
     ("krown_s8", "layer:krown:s8_break:4h", "krown_s8", True, "Krown S8 4h (testnet)"),
     ("malkan_level_short", "layer:rsi:malkan_level_short", None, False, "Malkan level short 4h (paper)"),
     ("t06_rsi_ma", "layer:rsi:rsi_ma_cross", None, False, "T06 RSI-MA 4h (paper)"),
+    ("c30_h2_long", "layer:wt:c30_h2_long", None, False, "C30 WaveTrend H2 long 15m (paper)"),
 ]
+# T06 journals both sides pooled; the lead (EDGE_PLAN slot T06L) is the long side only. Outcome rows carry "side"
+# (rsi_ma_cross_live.step base row). Short rows are reported, never scored. A row without a side counts as long.
+T06_KEY = "t06_rsi_ma"
 FAIL_DD_R, FAIL_STREAK, FAIL_C_N, FAIL_C_Z = 12.0, 12, 30, 1.28
 RETIRE_DAYS = 365
 
@@ -155,12 +159,18 @@ def slot_stats(key, rs, days, krown, asof, sim):
 
 def _paper_ts(row):
     """UTC datetime of a paper-journal row: t_fill / t_trigger (open ms) or a ts string; None if absent."""
-    for k in ("t_fill", "t_trigger"):
+    for k in ("t_fill", "t_trigger", "t"):
         v = row.get(k)
         if isinstance(v, (int, float)):
             return datetime.fromtimestamp(v / 1000.0, tz=timezone.utc)
-    ts = row.get("ts")
-    return _ts(ts) if isinstance(ts, str) else None
+    for k in ("ts", "t"):
+        v = row.get(k)
+        if isinstance(v, str):
+            try:
+                return _ts(v)
+            except ValueError:
+                pass
+    return None
 
 
 def _paper_slot(row, default_slot):
@@ -178,6 +188,8 @@ def readout(ledger_path=None, asof=None, paper=()):
     contaminated = unresolved = unscored = other = 0
     pcount = {"signal": 0, "no_fill": 0, "unresolved": 0, "open": 0, "scored": 0}
     kills = []
+    t06_short = []
+    t06_no_side = 0
     for path, dslot in paper:
         for row in read_jsonl(path):
             kind, key = row.get("kind"), _paper_slot(row, dslot)
@@ -187,7 +199,14 @@ def readout(ledger_path=None, asof=None, paper=()):
                 pcount[kind] += 1
             elif kind == "outcome":
                 t = _paper_ts(row)
-                if row.get("status") != "closed":
+                side = row.get("side")
+                if key == T06_KEY and side == "short":
+                    if row.get("status") == "closed" and row.get("net_r") is not None:
+                        t06_short.append(float(row["net_r"]))
+                    continue
+                if key == T06_KEY and side is None:
+                    t06_no_side += 1
+                if row.get("status", "closed") != "closed":
                     pcount["open"] += 1
                 elif row.get("net_r") is None or t is None:
                     unscored += 1
@@ -220,7 +239,9 @@ def readout(ledger_path=None, asof=None, paper=()):
                       "label": label})
     return {"slots": slots, "contaminated": contaminated, "unresolved": unresolved, "unscored": unscored,
             "other_sources": other, "asof": str(asof_d),
-            "paper": pcount if paper else None, "kills": kills}
+            "paper": pcount if paper else None, "kills": kills,
+            "t06_short": {"n": len(t06_short), "mean_r": mean_se(t06_short)[0]},
+            "t06_no_side": t06_no_side}
 
 
 def _f(x, nd=2):
@@ -244,6 +265,10 @@ def to_markdown(res):
                      f"unresolved {p['unresolved']}, open {p['open']} (counted, not scored).")
         for k in res["kills"]:
             lines.append("Kill row: " + ", ".join(f"{a}={b}" for a, b in sorted(k.items())))
+        ts_ = res["t06_short"]
+        lines.append(f"T06 short (reported, not a lead): n {ts_['n']}, mean R {_f(ts_['mean_r'], 3)}, unscored.")
+        if res["t06_no_side"]:
+            lines.append(f"T06 side field: {res['t06_no_side']} outcome rows have no side, counted as long.")
     return "\n".join(lines) + "\n"
 
 

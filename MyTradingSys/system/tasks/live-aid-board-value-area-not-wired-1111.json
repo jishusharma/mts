@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/tools/live_aid/test_setup_board.py MyTradingSys/tools/live_aid/test_spec_tf_strip.py MyTradingSys/tools/live_aid/test_live_aid.py -q"
+  ],
+  "created": "2026-11-11T15:40:47Z",
+  "depends_on": [],
+  "done_when": "boardInputs returns va for every timeframe with a usable value area; one valueArea implementation feeds board and tf_strip (grep shows one); new test red before, green after.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Feed setup_board.js value_area: boardInputs in home.js (about lines 315-327) passes only vfi, sqz, adx, so value_area never fires. Two yesterday-value-area definitions also run on one page (live_aid_indicators.js vaPriorDay vs tf_strip.js valueArea): pick one.",
+  "id": "live-aid-board-value-area-not-wired-1111",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert \"Live Aid: OI poller for 8 more venues via DoH-pinned fetch, page reads snapshot\"",
+      "ref": "662314318f5e",
+      "utc": "2026-11-11T14:00:48Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Source: four-model review 2026-11-11. Observation only; no rate invented.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:57:10Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/home.js",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+    "MyTradingSys/tools/live_aid/tf_strip.js",
+    "MyTradingSys/tools/live_aid/test_setup_board.py"
+  ],
+  "scope_out": [
+    "setup_board.js layer list",
+    "BASE_RATES tables",
+    "live tree"
+  ],
+  "scope_sha": "662314318f5e",
+  "size": "S",
+  "sources": [
+    "four-model review 2026-11-11"
+  ],
+  "state": "ready",
+  "steps": [
+    "Single definition: keep live_aid_indicators.js vaPriorDay (used by vaAcceptance); tf_strip.js Prior VAH/VAL/POC call it (DECISION OURS)",
+    "In boardInputs set o.va to below/above/inside from last close vs val/vah, only when vaPriorDay has no err",
+    "Add tests; run the live_aid test files"
+  ],
+  "tests": "New test in test_setup_board.py (node harness): home.js boardInputs with price below the prior-day value area yields va 'below' and the board lists value_area; fails on old code (no va key)",
+  "title": "Live Aid setup board gets the value area from one definition",
+  "weight": "",
+  "worker": "agent"
+}

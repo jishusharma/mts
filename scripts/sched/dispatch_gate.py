@@ -54,10 +54,10 @@ def fetch_scripts(root):
         return Path(override)
     d = Path(tempfile.gettempdir()) / "mts_relay"
     d.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["git", "-C", str(root), "fetch", "-q", "origin", "fast-track"], capture_output=True, timeout=120)
+    subprocess.run(["git", "-C", str(root), "fetch", "-q", "origin", "fast-track"], capture_output=True, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     for name in ("relay", "handoff_lint"):
         r = subprocess.run(["git", "-C", str(root), "show", "origin/fast-track:scripts/sched/%s.py" % name],
-                           capture_output=True, timeout=60)
+                           capture_output=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if r.returncode == 0 and r.stdout:
             (d / (name + ".py")).write_bytes(r.stdout)
     return d / "relay.py"
@@ -94,11 +94,11 @@ def main(argv=None):
         print("GATE NO_LAUNCHER", argv0)
         return 2
     relay = fetch_scripts(a.root)
-    w = subprocess.run([sys.executable, str(relay), "watchdog"], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    w = subprocess.run([sys.executable, str(relay), "watchdog"], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if "RESUMED" in w.stdout:   # a dead super-session coordinator left the relay stopped; relay.py logged who/why/age
         log(w.stdout.strip())
     r = subprocess.run([sys.executable, str(relay), "tick", "--root", a.root, "--peer-quiet-min", a.peer_quiet_min,
-                        "--hourly-min", HOURLY_MIN, "--gate"], capture_output=True, text=True, encoding="utf-8", timeout=300)
+                        "--hourly-min", HOURLY_MIN, "--gate"], capture_output=True, text=True, encoding="utf-8", timeout=300, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     verdict, line = decide(r.stdout)
     if verdict == "ERROR":
         log("ERROR tick: %s | rc=%s %s" % (line, r.returncode, (r.stderr.strip().splitlines() or [""])[-1]))
@@ -110,7 +110,7 @@ def main(argv=None):
         if "refine=REFINE_NEEDED" in hourly and not a.dry_run:   # the only hourly item that needs a model; an idle hour launches nothing
             try:
                 p = subprocess.run(launcher_argv(a.launcher), input=REFINE_PREAMBLE + hourly, capture_output=True, text=True,
-                                   encoding="utf-8", timeout=3600, cwd=a.root)
+                                   encoding="utf-8", timeout=3600, cwd=a.root, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
                 log("REFINE launched rc=%s" % p.returncode)
             except (OSError, subprocess.SubprocessError) as e:
                 log("REFINE launch FAILED (%s): %s" % (type(e).__name__, e))
@@ -122,13 +122,13 @@ def main(argv=None):
         return 0
     try:
         p = subprocess.run(launcher_argv(a.launcher), input=PREAMBLE + r.stdout, capture_output=True, text=True,
-                           encoding="utf-8", timeout=3600, cwd=a.root)
+                           encoding="utf-8", timeout=3600, cwd=a.root, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         log("KICK launched rc=%s | %s" % (p.returncode, line))
         if p.returncode:   # the launch never ran the relay: free the lock so the next tick retries instead of waiting it out
-            subprocess.run([sys.executable, str(relay), "unlock"], capture_output=True, text=True)
+            subprocess.run([sys.executable, str(relay), "unlock"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         print("GATE KICK rc=%s" % p.returncode, line)
     except (OSError, subprocess.SubprocessError) as e:
-        subprocess.run([sys.executable, str(relay), "unlock"], capture_output=True, text=True)
+        subprocess.run([sys.executable, str(relay), "unlock"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         log("KICK launch FAILED (%s): %s" % (type(e).__name__, e))
         print("GATE KICK launch failed", e)
     return 0

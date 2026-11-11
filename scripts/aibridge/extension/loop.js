@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.38';
+  L.VERSION = '0.7.39';
 
   // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's POST /seed.
   // Case-insensitive; one trailing . or ! allowed; a longer sentence, a second line or a second message is an ordinary message (no swap).
@@ -81,6 +81,16 @@
 
   // Split into parts of at most max characters, cut on line boundaries when possible.
   // A single part is returned unchanged. Each part gets a header so DSA can tell order.
+  // Cap one result before it is posted: a multi-MB grep result bloats the chat and every later reply re-posts it.
+  // Keep the head and the tail, say how much was cut and how to narrow the command.
+  L.capResult = function (text, max) {
+    text = String(text == null ? '' : text);
+    if (!max || text.length <= max) return text;
+    var keep = max - 200, head = Math.floor(keep * 0.7), tail = keep - head;
+    return text.slice(0, head) + '\n[RESULT CAPPED: ' + (text.length - head - tail) + ' of ' + text.length +
+      ' chars cut from the middle; narrow the command (exclude *.jsonl, add | head, grep -l, a path)]\n' + text.slice(text.length - tail);
+  };
+
   L.splitParts = function (text, n, max) {
     if (text.length <= max) return [text];
     var body = max - 160; // room for the part header

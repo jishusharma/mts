@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T14:54:06Z",
+  "commands": [],
+  "created": "2026-11-11T14:23:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-forward-readout-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 6) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of forward_readout.py against its docstring: three slots by source prefix, Krown needs account krown_s8 else CONTAMINATED and excluded, risk taken from risk_usd then stop-derived then net_r, unresolved or no-R rows counted not scored, one observation per UTC-day cluster, E+/E- loaded from sim_sequential.py not copied.",
+  "id": "gemini-blind-read-forward-readout-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-forward-readout-1111.",
+      "ref": "98bea6b98",
+      "utc": "2026-11-11T14:54:06Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Forward readout: paper-journal summary and kill rows in markdown Result: markdown shows pa",
+      "ref": "e38ac8c0319a",
+      "utc": "2026-11-10T19:41:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:45Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-forward-readout-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/fable_run7_forward_test/forward_readout.py (read)",
+    "MyTradingSys/research/fable_run7_forward_test/test_forward_readout.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-forward-readout-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "e38ac8c0319a",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-gemini-feed-1111b"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 6 clauses (three slots; krown account filter; risk fallback order; unresolved counted not scored; day cluster observation; sim_sequential loaded not copied)",
+    "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "taken": "2026-11-11T14:54:06Z",
+  "tests": "",
+  "title": "[GEMINI] blind read of forward_readout.py against its docstring",
+  "weight": "ROUTINE",
+  "worker": ""
+}

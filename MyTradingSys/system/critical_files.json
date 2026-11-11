@@ -13,10 +13,10 @@
   },
   {
    "path": "DSA_SESSION_PROMPT.md",
-   "blob": "d2f1dd9a72fb389010a813cae394bb282fb0fff3",
-   "sha256_8": "72a89d59",
+   "blob": "383c4fe489ba1e21df7d6e7b4db25f434d3db97a",
+   "sha256_8": "918acd27",
    "eol": "CRLF",
-   "approved_by": "operator in chat 2026-11-11 (JIS-NUC lead B): rewrite the DSA prompt per the DeepSeek audit, 25-50 KB ok",
+   "approved_by": "operator in chat 2026-11-11 (JIS-NUC lead B): rewrite the DSA prompt per the DeepSeek audit, 25-50 KB ok; then get it reviewed with Haiku and Sonnet (confirmed findings fixed)",
    "approved_commit": "pending"
   },
   {

@@ -1,0 +1,80 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T15:03:55Z",
+  "commands": [],
+  "created": "2026-11-11T14:22:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-dsa-prompt-vs-dsa-py-1111.md line 1 has counts CONSISTENT/CONTRADICTION/NOT_IN_DATA and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of the rewritten DSA_SESSION_PROMPT.md (47b513a2) against the code that seeds and boots a DSA chat: every claim in sections 0b, 3, 9a and G about what the seed, boot and block format do must match scripts/dev/dsa.py (cmd_boot, seed_text, cmd_start) and scripts/dev/dsa_seed.py.",
+  "id": "gemini-doc-scan-dsa-prompt-vs-dsa-py-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-dsa-prompt-vs-dsa-py-11",
+      "ref": "7ad542dad",
+      "utc": "2026-11-11T15:03:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "DSA prompt: fix 11 findings from the Haiku + Sonnet review of 47b513a2",
+      "ref": "cf4a350f3477",
+      "utc": "2026-11-11T14:27:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "cf4a350f3477 DSA prompt: fix 11 findings from the Haiku + Sonnet review of 47b513a2",
+      "ref": "DSA_SESSION_PROMPT.md",
+      "utc": "2026-11-11T14:27:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:51:00Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-dsa-prompt-vs-dsa-py-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "DSA_SESSION_PROMPT.md (sections G, 0b, 3, 9a; read)",
+    "scripts/dev/dsa.py (cmd_boot, seed_text, cmd_start; read)",
+    "scripts/dev/dsa_seed.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-dsa-prompt-vs-dsa-py-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "cf4a350f3477",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Claims: list every sentence in sections G, 0b, 3 and 9a that states what the seed, the boot or a command block does or must contain (at least 8)",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: DSA_SESSION_PROMPT.md boot and block rules vs dsa.py / dsa_seed.py",
+  "weight": "ROUTINE",
+  "worker": ""
+}

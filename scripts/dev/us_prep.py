@@ -4,6 +4,8 @@
 
 Phases (UTC): P1 09:00 pre-market, P2 13:15 before the 13:30 releases, P3 14:45 after the open, P4 21:15 scoring.
 Writes MyTradingSys/runtime/us_prep/<date>_<phase>.md + .json (git-ignored; repo is public).
+P1-P3 also rebuild the Live Aid playbook (daily_playbook.py -> playbook_data.js) and copy it to the main checkout,
+where live_aid.html is opened from disk; a failed build prints PLAYBOOK FAILED and never stops the brief.
 Context, never a signal. Fail closed: a source that cannot be read gives the string UNKNOWN, never a number.
 Public market data only. Thresholds NQ -0.5% / Kospi -3% are premarket_risk.js PM (OURS, from the 11-05 case).
 """
@@ -12,6 +14,8 @@ import datetime as dt
 import importlib.util
 import json
 import math
+import shutil
+import subprocess
 import sys
 import urllib.request
 from pathlib import Path
@@ -26,6 +30,7 @@ except ImportError:  # run as a bare script from outside the repo root
 ROOT = Path(__file__).resolve().parents[2]
 OUTDIR = ROOT / "MyTradingSys" / "runtime" / "us_prep"
 LEDGER_PY = ROOT / "MyTradingSys" / "research" / "eagle_eyes_picture_2026-10-28" / "scenario_ledger.py"
+PLAYBOOK_REL = Path("MyTradingSys") / "tools" / "live_aid"
 UNKNOWN = "UNKNOWN"
 PM = {"nqPct": -0.5, "kospiPct": -3.0}  # same values as premarket_risk.js PM (OURS)
 PHASE_UTC = {"P1": (9, 0), "P2": (13, 15), "P3": (14, 45), "P4": (21, 15)}
@@ -263,6 +268,45 @@ def write_brief(b, outdir=OUTDIR):
     return outdir / f"{stem}.md"
 
 
+# ---------- Live Aid playbook (wiring: this script is the daily trigger, SUPER_SESSION.md 7a) ----------
+def _quiet():
+    return {"creationflags": 0x08000000} if sys.platform == "win32" else {}  # CREATE_NO_WINDOW: no console flash
+
+
+def main_checkout(root=ROOT, run=subprocess.run):
+    """The main checkout of this repo (the operator opens live_aid.html there), or None when it cannot be found."""
+    try:
+        r = run(["git", "-C", str(root), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+                capture_output=True, text=True, timeout=20, **_quiet())
+        top = Path(r.stdout.strip()).parent
+        return top if r.returncode == 0 and r.stdout.strip() and (top / PLAYBOOK_REL).is_dir() else None
+    except Exception:
+        return None
+
+
+def build_playbook(root=ROOT, run=subprocess.run, main_root=None):
+    """Run daily_playbook.py in this tree, then copy playbook_data.js (git-ignored) to the main checkout.
+    Returns one status line and never raises: the brief must print even when the playbook cannot be built."""
+    root = Path(root)
+    js = root / PLAYBOOK_REL / "playbook_data.js"
+    try:
+        r = run([sys.executable, str(root / PLAYBOOK_REL / "daily_playbook.py")], cwd=str(root),
+                capture_output=True, text=True, timeout=300, **_quiet())
+        if r.returncode != 0 or not js.exists():
+            tail = ((r.stderr or r.stdout or "").strip().splitlines() or ["no output"])[-1]
+            return f"PLAYBOOK FAILED: exit {r.returncode}: {tail[:200]}"
+        main_root = main_root if main_root is not None else main_checkout(root, run)
+        if main_root is None:
+            return f"PLAYBOOK built in {root} only: main checkout not found, open live_aid.html from this tree"
+        dest = Path(main_root) / PLAYBOOK_REL / "playbook_data.js"
+        if dest.resolve() == js.resolve():
+            return f"PLAYBOOK built: {js}"
+        shutil.copyfile(js, dest)
+        return f"PLAYBOOK built and copied to {dest}"
+    except Exception as exc:  # noqa: BLE001
+        return f"PLAYBOOK FAILED: {type(exc).__name__}: {str(exc)[:200]}"
+
+
 # ---------- P4 scorer ----------
 def _ledger():
     spec = importlib.util.spec_from_file_location("scenario_ledger", LEDGER_PY)
@@ -326,6 +370,8 @@ def main(argv=None):
         _dump(OUTDIR / f"{a.date}_P4_score.json", json.dumps(res, indent=1) + "\n")
         _dump(OUTDIR / f"{a.date}_P4_score.md", render_p4_md(res))
         print(render_p4_md(res))
+    else:
+        print(build_playbook())
     print("wrote", p)
 
 

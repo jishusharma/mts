@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T18:29:18Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-yt-proxy-vs-fetch-captions-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per claim) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of the testable claims in MyTradingSys/system/YT_PROXY.md (proxy used when wireproxy.conf exists, fail closed with exit 2, YT_PROXY override, 5 per run, lockout 6/24/72 h, 150 per 24 h proxy and 40 direct) against the code and tests; up to 10 claims.",
+  "id": "gemini-doc-scan-yt-proxy-vs-fetch-captions-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tests: make c_drive bucket and yt-guard tests hermetic",
+      "ref": "27cebdf07fe1",
+      "utc": "2026-11-02T13:24:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "20ca321e81aa yt: 150/24h request budget on the WARP proxy exit (40 stays for a direct IP)",
+      "ref": "MyTradingSys/system/YT_PROXY.md",
+      "utc": "2026-11-02T09:58:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T18:29:19Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "MyTradingSys/system/YT_PROXY.md (read)",
+    "scripts/dev/fetch_captions_timed.py (read)",
+    "scripts/dev/test_yt_proxy.py (read)",
+    "scripts/dev/test_fetch_captions_guard.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-yt-proxy-vs-fetch-captions-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "27cebdf07fe1",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 10 claims from YT_PROXY.md How it is used, each with the code line that implements it; MATCH, DIFF when the code differs, NOT_IN_DATA when no code implements it",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: YT_PROXY.md vs fetch_captions_timed.py (WARP proxy, guard, budget)",
+  "weight": "ROUTINE",
+  "worker": ""
+}

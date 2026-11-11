@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T14:47:23Z",
+  "commands": [],
+  "created": "2026-11-11T14:23:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-40-60-regime-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of malkan_40_60.py against its docstring: malkan_regime needs exactly lookback consecutive non-None RSI values and returns a list the same length as rsi, 40/60 defaults live only here, bounce at 40 is bull, reject at 60 is bear, single-timeframe only.",
+  "id": "gemini-blind-read-malkan-40-60-regime-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-40-60-regime-1",
+      "ref": "6e8cb9fad",
+      "utc": "2026-11-11T14:47:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Layers: malkan_40_60.py + tests (073, D2 MalkanView 40/60 single-tf setups)",
+      "ref": "6bce07fbe14a",
+      "utc": "2026-09-28T13:15:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:36Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-40-60-regime-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/malkan_40_60.py (read)",
+    "MyTradingSys/backtest/layers/rsi/test_malkan_40_60.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-40-60-regime-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "6bce07fbe14a",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-gemini-feed-1111b"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses (output length equals input; lookback window needs non-None run; defaults 40/60/20; bull setup at 40 and bear at 60; single timeframe only)",
+    "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "taken": "2026-11-11T14:47:23Z",
+  "tests": "",
+  "title": "[GEMINI] blind read of malkan_40_60.py regime classifier against its docstring and cited rules",
+  "weight": "ROUTINE",
+  "worker": ""
+}

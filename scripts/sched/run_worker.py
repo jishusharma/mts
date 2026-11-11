@@ -220,7 +220,7 @@ def find_claude():
 
 def supports_flag(claude, flag):
     try:
-        p = subprocess.run([claude, "--help"], capture_output=True, text=True, timeout=60)
+        p = subprocess.run([claude, "--help"], capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return flag in p.stdout
     except (OSError, subprocess.TimeoutExpired):
         return False
@@ -245,7 +245,7 @@ def build_prompt(prefix, mode, check, exit_code, evidence, utc):
 def spawn(cmd, prompt, ttl):
     """Run cmd in a kill-on-close Job Object; wall-clock TTL kills the whole tree. Returns (rc, out, err, pid, timed_out)."""
     job = make_kill_on_close_job()
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=REPO)
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=REPO, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     _k32.AssignProcessToJobObject(job, int(proc._handle))
     timed_out = False
     try:

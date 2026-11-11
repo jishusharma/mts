@@ -2275,3 +2275,55 @@ Status: cause not yet proven. The 07Z fix (gate scripts install nowin) did not s
 - Order 13:35Z "Get latest DSA fixes on Desk. Start using all LLMs for the next 24 hour super session you will run from here": Supervisor C on JIS-NB (desktop) runs the super session until 2026-11-12T13:14Z. The DeepSeek hold is lifted for the desktop bridge (DSA / DSA-NB rows may run again); Gemini and GPT lanes are fed and run without a further ask.
 - Done: AIBridge 0.7.38 installed on JIS-NB (was 0.7.30), agent restarted, health all-match on disk and agent. Gemini card tvfav-usage-adx-1107 started on the NUC through the SSH gate. GPT lab stays down until someone logs in to Codex on the NUC (401 for 283 h).
 - Not covered by this order (money): paid API credit jobs still need his word.
+- Order 14:16Z "make sure that Sonnet will carry out the next 24 hour plan here - I will change the model from Fable to Sonnet in this session": this Supervisor C session continues on Sonnet; its work plan is `handover/SUPERVISOR_C_RUNBOOK_2026-11-11.md` (loop, four model lanes, open items, limits). Workers stay Sonnet/Haiku.
+
+## 2026-11-11 15:25Z Live Aid learns from its own record; CBP feed checked (operator)
+- Order: "If there is a model that can look into the logs of Live Aid, understand how it could be more useful, and keep working on it every time, readjusting it based on current and past behaviour, what worked and what did not, and discuss with me all those changes point-wise. Whatever you have evidence and proof for, you can implement directly."
+- Rule: a daily Live Aid review (card live-aid-learning-loop-1111). Changes with evidence (count, hit rate, a test) ship without asking; the rest reach him as a short point-wise list. Live Aid keeps no log of its flags today, so card live-aid-flag-log-1111 goes first (raised to prio 1).
+- CBP question ("are we updating it twice a day"): task MTS-CBP-Ingestion is installed on JIS-NB (schtasks query 15:22Z: enabled, last run 2026-11-11 05:00Z result 0, next 20:00Z; Mon-Fri 05:00 and 20:00 UTC, Sat 05:30, Sun 16:30). Rows were added every day 10-30 to 11-10; the 11-11 05:00Z run added 0 because the shared 150-request YouTube budget was spent (card cbp-yt-budget-starved-1111). The board data step has failed with HTTP 401 on every run since 11-07 (card cbp-board-401-and-bob-timeout-1108, open). CBP Analyst Desk page last published 2026-11-07.
+
+## 2026-11-11 15:30Z Four-model review of the Bible, Eagle Eyes' learning, trades, ADX/DI and volume profile (operator)
+Operator (voice): look at the Bible and what Eagle Eyes learned as observer, what he said should be done, the latest understanding of which trades to take and which patterns match the confluences, especially the new ADX/DI and volume profile; assign the same three tasks to Opus, Sonnet and a third worker plus one different task each; the Supervisor does the tasks too, compares the results and decides what needs to be done.
+Done: Opus, Sonnet and Haiku background Agents plus the Supervisor (Fable), each writing research/four_model_review_2026-11-11/<MODEL>.md; comparison in COMPARE.md. Third worker = Haiku (DECISION OURS: he named Opus and Sonnet; the third name was lost in dictation). Opus was named by him, so the Opus Agent is his order.
+Answer: review run; actions the reviews agree on become cards; nothing here is a trade signal.
+
+## 2026-11-11 16:00Z Find the edge or close the project; fees question; start an edge session (operator)
+Operator (voice): the roadmap is built on finding the edge and we are stuck there; he wants naked Tom/Fabio trades on the everyday chart by session, built on what happened before, and directional trades; he does not accept that "before fees / after fees" keeps deciding (a 100 USD move on 1 BTC leaves about 30 after market fees, about 60 with limit orders) while others quote 53-70 % win rates; "if I'm not able to close this gap, then this project has to be closed"; "perhaps you can start a session with the right models".
+Answer: his fee arithmetic is right for a winner; the break-even table (win rate needed by size of move) and the reason (entries at levels are right about half the time; Tom/Fabio stops of 5-8 bp are smaller than the fee) are in research/four_model_review_2026-11-11/COMPARE.md section 4. Edge session started as a visible Sonnet session (his ask): forward paper slots for the four leads, with-trend session trades of 500 USD or more, the Opus rule pre-registered. Closing the project stays his decision; the session reports a dated decision point, it does not decide.
+
+## 2026-11-11 15:45Z Ship has been a problem: what can realistically be done (operator, with a DSA chat screenshot)
+- His words: "See - Ship has been a problem - what can we realictically do? i need answers !!!"
+- Measured (gate_timing.jsonl, all trees, since 11-10 15Z): 24 ships, 17 under 2 min, 6 took 17-48 min, 3 failed.
+- Causes: (1) live-path or unrecognised paths run the full test set locally; (2) root sim_desk/results/*.json matched no
+  selector rule, so a research-only DSA ship ran the full set and hit its 1100 s cap; (3) no per-test limit, one hung test held a ship 50 min.
+- Done: cards dsa-research-ship-full-gate-timeout-1111 + ship-gate-per-test-timeout-1111 built on branch
+  JIS-NB/builder-c-shipgate-1111 (70857d4a0, 582709541), diff-only review before ship (SUPER_SESSION rule 11).
+- Filed, not started: ship-full-gate-moves-to-ci-1111 (local ship = changed-file tests + smoke; full suite once on CI).
+- Same turn, forwarded newsletter on overfitting (purged k-fold, Lopez de Prado ch. 7-9): taken as a warning only; one rule
+  passed to the edge session (no parameter sweeps, gap between DEV and VALIDATION). No card.
+
+## 2026-11-11 16:15Z Edge: refine the ideas, look from several points of view, run Haiku and Sonnet in parallel (operator)
+- Asked: what are the ideas, are we doing enough, what do people do, what to do and not do, what to correct.
+- Done: five readers in parallel (TREND, FLOW, TIME on Sonnet; TESTED_MAP, DATA_MAP on Haiku), each with a PREREG before results. Folder research/edge_views_2026-11-11/ (README.md compares).
+- Result: trend, clock and funding views fail on BTC alone. One lead: long after a 1h drop of 3 % or more on 3x volume (+0.58 % DEV, +1.34 % VALIDATION, n 17: too few). 4h Donchian 55/20 positive in both periods, t under 2.
+- Corrections recorded: about 100 studies were run, not 15; forced flows were looked at 7 times before, never as a trade rule with fees.
+- Next: card forced-selloff-long-pooled-10-coins-1111 (same frozen rules on ten coins, events counted per day). DECISION (OURS): no new rule family before that pooled result.
+
+## 2026-11-11 17:55Z Cheap agents do clean-up and check disk health on all devices, kept running by the Supervisors (operator)
+- His words: "clean up cheap agents and keep them running in the super sessions - make them check disk health on all devices" (voice; read as: use Haiku agents for clean-up, as a standing Supervisor duty).
+- Done: Haiku agent started on the desktop (disk health, free space, NUC through the SSH gate, clean-up candidates; report only). Broadcast to the other Supervisors with the command.
+- Standing: card supervisor-wake-haiku-hygiene-disk-1111 (plan prints one Haiku hygiene spawn per 5 h window). DECISION (OURS): the agents report; removals stay with the Supervisor and the existing rules (lane trees never removed).
+
+## 2026-11-11 18:25Z Supervisor reviews what he discusses with its sessions and sends them input (operator)
+- His words: "look at what I have been discussing with these sessions that are spawned under you ... process what they are doing from your point of view, and provide valuable inputs to them if it makes sense."
+- Done: read the last turns of Edge finder, Live Aid helper and Eagle_Eyes live. Input sent to Edge finder (freeze triggers before looking; two placebos; forced-move reversion as the "when"; call back-catalogue via Gemini; paper slot before deck) and to Live Aid helper (one window grid 1-30 min with a multiple-testing bar; the 72 % jump give-back becomes a rule with entry, stop and fees before any leverage).
+- Observation (OURS): two independent counts agree that a fast forced move partly reverts (FLOW long after a 3 % 1h drop; 188 jumps of 1 %, half given back in 72 %). First confluence across views; to be tested as one pre-registered rule.
+- Standing: repeat this review each wake when he has talked to a side session. Eagle_Eyes live was not messaged (started by the helper, not by the Supervisor).
+
+## 2026-11-11 18:50Z This week's priority is finding the edge; proceed now on the setup and the presentation (operator)
+- His words: "Let's proceed now. We have been waiting for so much time. ... we have to focus this week on finding the edge. That is our priority right now. So how can I identify everything that we have discussed so far?"
+- DECIDED (operator): edge work outranks machinery work until 2026-11-17. Supervisor slots go to edge cards first; ship-gate and hygiene cards only when no edge card is READY.
+- Default taken (OURS, he said proceed; open since ~18:30Z in the Edge finder session): analyst calls with a level become the "where" of the setup, paper only. This narrows his 11-04 "calls are context, never signals" to paper trades; no live or testnet order follows from a call.
+- Order kept: analyst-call paper slot first, presentation (deck) second, atlas third.
+- New result the same hour: the pooled ten-coin test FAILED on VALIDATION for both rules (edge_views_2026-11-11/POOLED/RESULT.md). Long after a 3 % 1h drop on 3x volume: DEV +0.67 % per day (198 days), VALIDATION -0.19 % per day (69 days); BTC alone stays positive (+1.27 %, n 19), the eight alts are negative. 4h Donchian: monthly t 1.11, not separable from being long.
+- Where everything discussed is found: this file (every decision, dated); research/edge_views_2026-11-11/README.md (what was tested today and the result); research/four_model_review_2026-11-11/COMPARE.md (why no edge so far, fee table); `operator_questions.py list` (every question he asked).

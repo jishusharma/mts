@@ -198,7 +198,7 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
         "Write AIRUN fences only in your final answer, never while thinking.",
         "the bridge ignores fences inside the thinking panel",
         'NOT RUN: duplicate of block K',
-        "add a `# again` line",
+        "append a `Write-Output 'again'` line",
         "The bridge is a queue.",
         "your next input is their [AIRUN RESULT] (or BATCH) message",
         "Never send a status-check block while a task runs; never put two gate or ship tasks in one reply",
@@ -237,7 +237,7 @@ def test_prompt_top_holds_sections_a_to_f_and_the_ship_block():
                           ("E", "TRUNK CI RED IS NOT YOUR TREE"), ("F", "THE OPERATOR ASKS MID-TASK")):
         assert "\n%s. %s" % (letter, title) in first, letter
     assert "# AIRUN task=inline timeout=1200\n" + SHIP_BLOCK in first
-    for needle in ("python scripts/dev/ci_fail.py", "mts_signal.py read", "--fix-ci", "TASK: <id> | STEP: <n> | NEXT: <next action>",
+    for needle in ("python scripts/dev/ci_fail.py", "mts_signal.py read", "--fix-ci", "TASK: <id> | SLUG: <claim slug> | WT: <worktree> | STEP: <n> | NEXT: <next action>",
                    "NEVER run run_all_tests.py, task=mts-gate or task=mts-ship yourself", "Up to 6 blocks per reply"):
         assert needle in first, needle
 
@@ -319,8 +319,8 @@ def test_inline_plan_in_prompt_is_multiline_short_valid_json_with_doubled_backsl
 
 def test_5a_closes_the_source_before_the_one_ship():
     s = " ".join(text(PROMPT).split())
-    a, b = s.index("8. Close the source BEFORE the ship"), s.index("9. The inline ship block")
-    assert a < b and "A second ship within 10 minutes is allowed" in s and "ships itself" in s
+    a, c, b = s.index("7. Close the source BEFORE the ship"), s.index("8. `python scripts/dev/dsa.py commit"), s.index("9. The inline ship block")
+    assert a < c < b and "--files <exact paths> <card file>" in s and '--next "<card-id | stage | END: reason>"' in s and "A second ship within 10 minutes is allowed" in s and "ships itself" in s
 
 
 def test_prompt_boots_then_waits_for_the_order():
@@ -405,3 +405,13 @@ def test_prompt_size_and_no_stale_state():
     assert "Last DSA boot" not in s and "not yet recorded" not in s
     assert raw.decode("ascii")                          # ASCII only (PowerShell 5.1 pipes)
 
+
+def test_review_fixes_1111_hold():
+    # Haiku + Sonnet review of 47b513a2: hash line vs 9a, session end order, H vs the PATH post, flake defined
+    s = " ".join(text(PROMPT).split())
+    assert "add a `# again` line" not in s
+    assert s.index("NEXT_SESSION.md overwritten and shipped (5e D) from your worktree") < s.index("Last, `python scripts/dev/dsa.py end`")
+    assert "a fix outside the roots (a user PATH, an install)" in s
+    assert "a failing test your change does not touch" in s and "is no flake" in s
+    assert "the first line after Set-Location: `$OutputEncoding" in s
+    assert "## 14. KEEP IN VIEW" in s

@@ -78,3 +78,128 @@ Not worth fetching: the remaining 8 shorts (motivational or promo titles).
 |---|---|---|---|
 | U7 | In a pre-US coil (C17 events), does the CVD slope inside the box predict the break side? | Reuse the pre_us_squeeze events; CVD = cumulative taker delta over the box; split by sign; break side up vs down | MEASURED 11-05: CVD+ 59% vs CVD- 35% first-break up (n 298/332), but box price alone 63% vs 27%; within price direction CVD adds +6/-5 pp. Null beyond price |
 | U8 | CVD lower low with price within 0.1% of the prior low (F-CVD3): reversal rate vs matched non-divergence lows | 1m archive, 15m swings; forward 4 h; distance-matched control | MEASURED 11-05: reversal 28.5% (n 1469) vs 31.5% matched control (n 1439); low broken 65.4% vs 59.2%. Null, sign against the claim |
+
+# 5. Channel sweep 2026-11-11: passages the 10-30 read did not have
+
+Card fabervaale-cvd-sweep re-read the 13 channel uploads (inventory, dates and the blocked guest and short videos: CHANNEL_SWEEP.md in this folder). 16 rows follow, each with a verbatim quote and a Source GPS tag; scripts/dev/verify_extract_quotes.py checks every one.
+
+| # | Concept | Video | Plain meaning (OURS) |
+|---|---|---|---|
+| F-CVD17 | Law of effort and result | Khgj5q1-ln8 | Volume is effort, price is result. He frames every read as the pair, not as volume alone |
+| F-CVD18 | Absorption is the usual pattern when aggression hits a level | Khgj5q1-ln8 | Huge volume striking a level and only printing weakness = passive side is holding |
+| F-CVD19 | Same effort, skewed result | Khgj5q1-ln8 | Buyers and sellers both aggressive, sellers absorbed: direction, not size, decides |
+| F-CVD20 | Big pressure, zero result | o-w5Gxss6T0 | The trade form of F-CVD3: buyers punch a wall, result zero, he takes the short |
+| F-CVD21 | Path of least resistance | 8CWKfoSJu3c | When one side is completely absorbed, that side's direction is the harder path |
+| F-CVD22 | Absorbed-seller cluster at the value area low | 8CWKfoSJu3c | He reads absorption and control together at a reference level, then reloads it |
+| F-CVD23 | Failed auction of the seller | fZlNGWvd2Ko | He trades the failure, and if the level fails it becomes the new pivot |
+| F-CVD24 | Absorption as the reason to size and scale | fZlNGWvd2Ko | Absorbed sellers are the evidence to keep risk small and add as it holds |
+| F-CVD25 | Damage already done in the first hours | jasv3L-d8ZE | Big buyers absorbed early = the day's character is set, later longs are late |
+| F-CVD26 | Absorbed buyers become the entry area | 06R-ebyOhDI | Ties absorption to F-CVD11: after absorption the zone is the reload area |
+| F-CVD27 | Absorption mid-candle | Pz8f0wWW12M | Absorption is not only at highs and lows; it can print inside a candle |
+| F-CVD28 | Sudden drop in delta | Pz8f0wWW12M | The marker he watches when a big order prints is the delta dropping away |
+| F-CVD29 | Absorption on the test of an imbalance | cUTsoU-15Tc | An imbalance that gets absorbed on its test is his continuation spot |
+| F-CVD30 | The failuction | o-w5Gxss6T0 | His name for the failed auction that absorption produces |
+| F-CVD31 | Reload plus absorption | FawPrRUGNpk | The pattern he pairs with a directional bias; the reload is the continuation information |
+| F-CVD32 | Absorption and exhaustion at the range edges | cUTsoU-15Tc | Fading the top and bottom of a range by spotting absorption and exhaustion is the mean-reversion model |
+
+# F-CVD17 Law of effort and result
+
+> "this concept is the law of effort and result"
+
+**Source GPS: Khgj5q1-ln8 | BEGIN**
+
+# F-CVD18 Absorption is the usual pattern when aggression hits a level
+
+> "they are absorbing here. This is a usual pattern of a absorption"
+
+**Source GPS: Khgj5q1-ln8 | BEGIN**
+
+# F-CVD19 Same effort, skewed result
+
+> "the sellers are completely absorbed and the buyers are rewarded"
+
+**Source GPS: Khgj5q1-ln8 | MIDDLE**
+
+# F-CVD20 Big pressure, zero result
+
+> "All this pressure got zero results"
+
+**Source GPS: o-w5Gxss6T0 | END**
+
+# F-CVD21 Path of least resistance
+
+> "the path of least resistance of the buyers getting completely absorbed"
+
+**Source GPS: 8CWKfoSJu3c | BEGIN**
+
+# F-CVD22 Absorbed-seller cluster at the value area low
+
+> "cluster as you can see of absorbed sellers and control of the buyers"
+
+**Source GPS: 8CWKfoSJu3c | MIDDLE**
+
+# F-CVD23 Failed auction of the seller
+
+> "capitalize on the failed auction of the seller"
+
+**Source GPS: fZlNGWvd2Ko | BEGIN**
+
+# F-CVD24 Absorption as the reason to size and scale
+
+> "there are a huge amount of information that the sellers are being absorbed here"
+
+**Source GPS: fZlNGWvd2Ko | BEGIN**
+
+# F-CVD25 Damage already done in the first hours
+
+> "Big buyers getting absorbed"
+
+**Source GPS: jasv3L-d8ZE | BEGIN**
+
+# F-CVD26 Absorbed buyers become the entry area
+
+> "absorption of the buyers become our area"
+
+**Source GPS: 06R-ebyOhDI | END**
+
+# F-CVD27 Absorption mid-candle
+
+> "absorption in the middle of the candle"
+
+**Source GPS: Pz8f0wWW12M | MIDDLE**
+
+# F-CVD28 Sudden drop in delta
+
+> "sudden drop in the delta when this big"
+
+**Source GPS: Pz8f0wWW12M | MIDDLE**
+
+# F-CVD29 Absorption on the test of an imbalance
+
+> "absorption on the test of an imbalance"
+
+**Source GPS: cUTsoU-15Tc | END**
+
+# F-CVD30 The failuction
+
+> "the absorption pattern the failuction"
+
+**Source GPS: o-w5Gxss6T0 | END**
+
+# F-CVD31 Reload plus absorption
+
+> "reload that they put reload plus absorption. It's an amazing pattern"
+
+**Source GPS: FawPrRUGNpk | BEGIN**
+
+> "The buyers try to push, the sellers protected, but the buyers reloaded, reloaded the fresh liquidity"
+
+**Source GPS: FawPrRUGNpk | MIDDLE**
+
+# F-CVD32 Absorption and exhaustion at the range edges
+
+> "spotting the absorption of the sellers of the buyers the exhaustion on sensitive areas that are the top and the bottom of the range"
+
+**Source GPS: cUTsoU-15Tc | MIDDLE**
+
+OURS: F-CVD17 and F-CVD20 transfer to BTC unchanged, because they say what a delta tool reads, not what a market does. The other 14 are NQ reads; on BTC they stay unmeasured until a study names them, the same rule the 10-30 file uses for F-CVD1 to F-CVD12.
