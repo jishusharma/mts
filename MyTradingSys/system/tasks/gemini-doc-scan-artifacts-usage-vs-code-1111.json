@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T19:15:25Z",
   "commands": [],
   "created": "2026-11-11T19:05:51Z",
   "depends_on": [],
@@ -16,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-artifacts-usage-vs-code",
+      "ref": "d63423ba4",
+      "utc": "2026-11-11T19:15:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Hide console windows: artifacts stale-cache builders and gemini_queue children use CREATE_",
@@ -26,15 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: task complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T19:05:53Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-artifacts-usage-vs-code-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/artifacts.py (read)",
     "scripts/dev/test_artifacts.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 10 usage claims, each with the code line; MATCH, DIFF when code differs, NOT_IN_DATA when the command or flag does not exist",
