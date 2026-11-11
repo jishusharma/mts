@@ -480,8 +480,8 @@
   }
   // ---- 0.7.33: DeepSeek block guard (card dsa-bridge-avoid-deepseek-block-1108; pure rules in loop.js) ----
   // State lives in chrome.storage.local, so every chat tab of one browser profile (= one DeepSeek account) shares it.
-  var PACE_KEY = 'aibridge_pace', ARMED_KEY = 'aibridge_armed', COOL_KEY = 'aibridge_cooldown_until', ACCT_KEY = 'aibridge_account';
-  var armedHere = false, acctLabel = L.leaseAccount(''), lastBeat = 0, lastWarnChk = 0, paceAudited = 0;
+  var PACE_KEY = 'aibridge_pace', ARMED_KEY = 'aibridge_armed', COOL_KEY = 'aibridge_cooldown_v2', ACCT_KEY = 'aibridge_account';
+  var armedHere = false, acctLabel = L.leaseAccount(''), lastBeat = 0, lastWarnChk = 0, paceAudited = 0, hold = null, quietUntil = 0;
   function sget(keys) { return new Promise(function (res) { try { chrome.storage.local.get(keys, function (r) { res(r || {}); }); } catch (e) { res({}); } }); }
   function sset(o) { return new Promise(function (res) { try { chrome.storage.local.set(o, function () { res(); }); } catch (e) { res(); } }); }
   // one event to the agent (audit row, or the account lease); resolves with the worker's response or null
@@ -499,9 +499,18 @@
       for (var i = 0; i < l.length && o.length < 12; i++) { if (!isOurs(l[i])) o.push(String(l[i].innerText || l[i].textContent || '').slice(0, 400)); }
     } catch (e) {}
     var cf = false, pw = false;
-    try { cf = !!document.querySelector('iframe[src*="captcha" i], iframe[src*="turnstile" i], iframe[src*="recaptcha" i], iframe[src*="geetest" i], #captcha, [class*="captcha" i]'); } catch (e) {}
+    // 0.7.35: only a captcha element that is on screen counts (a hidden Turnstile container is not a warning); say what matched
+    var ci = '';
+    try {
+      var cl = document.querySelectorAll('iframe[src*="captcha" i], iframe[src*="turnstile" i], iframe[src*="challenges.cloudflare" i], iframe[src*="recaptcha" i], iframe[src*="geetest" i], #captcha, [class*="captcha" i]');
+      for (var k = 0; k < cl.length; k++) {
+        var el = cl[k], rc = el.getBoundingClientRect(), cs = getComputedStyle(el);
+        if (isOurs(el) || rc.width < 20 || rc.height < 20 || cs.display === 'none' || cs.visibility === 'hidden' || Number(cs.opacity) === 0) continue;
+        cf = true; ci = el.tagName + '.' + String(el.className || '').slice(0, 40) + ' ' + String(el.src || '').replace(/\?.*$/, '').slice(0, 60) + ' ' + Math.round(rc.width) + 'x' + Math.round(rc.height); break;
+      }
+    } catch (e) {}
     try { pw = !!document.querySelector('input[type="password"]'); } catch (e) {}
-    return { href: location.href, overlays: o, captchaFrame: cf, hasPassword: pw };
+    return { href: location.href, overlays: o, captchaFrame: cf, captchaInfo: ci, hasPassword: pw };
   }
   function refuseArm(reason, text) {
     autoRun = false; stopHold = true; token++; pending = []; watch = null;
@@ -514,7 +523,11 @@
     acctLabel = L.leaseAccount(r[ACCT_KEY]);
     if (L.cooldownLeft(r[COOL_KEY], now)) { refuseArm('cooldown', 'AIBridge hands-free refused: ' + L.cooldownText(r[COOL_KEY], now) + '. Use the chat by hand.'); return; }
     var w = L.warnState(pageSnapshot());
-    if (w.warn) { await sset((function () { var o = {}; o[COOL_KEY] = L.cooldownUntil(now); return o; })()); refuseArm('warning', L.warnStopText(w)); return; }
+    if (w.warn) {
+      if (L.needsCooldown(w)) { await sset((function () { var o = {}; o[COOL_KEY] = L.cooldownUntil(now); return o; })()); refuseArm('warning', L.warnStopText(w)); return; }
+      refuseArm('warning', 'AIBridge hands-free not armed: ' + w.warn + '. Wait until it clears (or solve the captcha by hand), then tick again. No cooldown.'); return;
+    }
+    hold = null; quietUntil = 0;
     var g = L.armGate(r[ARMED_KEY] || {}, tabId, now);
     if (!g.ok) { refuseArm('second_tab_refused', 'second_tab_refused: chat ' + g.holder + ' in this browser profile is already armed. One armed chat per DeepSeek account: untick it there first.'); return; }
     var lr = L.parseLeaseReply(await sendEvent(L.leaseEvent('acquire', acctLabel)));
@@ -533,15 +546,23 @@
     var now = Date.now();
     if (now - lastWarnChk >= 1000) {
       lastWarnChk = now;
-      var w = L.warnState(pageSnapshot());
-      if (w.warn) { onWarning(w); return; }
+      var snap = pageSnapshot(), w = L.warnState(snap), st = L.holdStep(hold, w, now);
+      if (st.act === 'stop') { hold = null; onWarning(w, st.text, snap); return; }
+      if (st.act === 'hold') { if (!hold) auditEvent('HOLD ' + w.warn + (snap.captchaInfo ? ' [' + snap.captchaInfo + ']' : '') + ' | no posts until it clears'); hold = st.hold; setStatus(st.text); }
+      else if (st.text) { auditEvent('HOLD END ' + st.text); hold = null; quietUntil = now + (st.quietMs || 0); setStatus(st.text); }
     }
     if (now - lastBeat >= 30000) { lastBeat = now; beatArm(); }
   }
-  async function onWarning(w) {
-    var o = {}; o[COOL_KEY] = L.cooldownUntil(Date.now()); await sset(o);
-    auditEvent('WARNING ' + w.warn + ' | hands-free off, no retry, 24 h cooldown on this profile');
-    stopAuto(L.warnStopText(w), true);
+  async function onWarning(w, holdText, snap) {
+    var info = (snap && snap.captchaInfo) ? ' [' + snap.captchaInfo + ']' : '';
+    if (L.needsCooldown(w)) {
+      var o = {}; o[COOL_KEY] = L.cooldownUntil(Date.now()); await sset(o);
+      auditEvent('WARNING ' + w.warn + info + ' | hands-free off, no retry, 24 h cooldown on this profile');
+      stopAuto(L.warnStopText(w), true); return;
+    }
+    var why = 'AIBridge hands-free off: ' + (holdText || w.warn) + '.';
+    auditEvent('WARNING ' + w.warn + info + ' | ' + why);
+    stopAuto(why, true);
   }
   async function beatArm() {
     var now = Date.now(), r = await sget([ARMED_KEY]), g = L.armGate(r[ARMED_KEY] || {}, tabId, now);
@@ -557,6 +578,7 @@
     var jit = L.paceJitter();
     while (true) {
       if (myToken !== token) return false;
+      if (hold || Date.now() < quietUntil) { if (!hold) setStatus('quiet after a hold: next post in ' + Math.ceil((quietUntil - Date.now()) / 1000) + ' s'); await sleep(1000); continue; }
       var now = Date.now(), r = await sget([PACE_KEY]), hist = (r[PACE_KEY] || []).filter(function (x) { return typeof x === 'number' && now - x < 86400000; });
       var c = L.paceCheck(hist, now, jit);
       if (c.ok) { hist.push(now); var o = {}; o[PACE_KEY] = hist.slice(-200); await sset(o); return true; }
