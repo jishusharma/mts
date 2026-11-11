@@ -117,6 +117,14 @@ def rows(prev=None):
         outcome="level touched inside the 120 min window; close 60 min after the first touch still beyond the level", horizon="%d min window, %d min hold" % (m["window_min"], m["hold_min"]),
         n=m["days"], units="weekday US opens (one per day)", window=window_of(m), regime_mix=NO_MIX,
         fee_status="fee-free, descriptive", source="research/us_open_levels_2026-10-30/results.json (study.py)", table=t)
+    t = load_table("us_open_first3m_rates.js", "US_OPEN_FIRST3M_RATES", prev.get("us_open_first3m"))
+    m = t["meta"]
+    out["us_open_first3m"] = dict(
+        event="US open (09:30 New York): the first 1 and 3 minutes", condition="every weekday open; also the 30 min before it (drift, taker-buy share)",
+        outcome="size of the first 3 min; its direction carries on over the next 27 / 57 min; pre-open drift or taker share matches it", horizon="3 min, then 27 and 57 min",
+        n=m["days"], units="weekday US opens (one per day)", window=window_of(m),
+        regime_mix=regime_line(RES / "us_open_first3m_2026-11-11" / "RESULT.md"), fee_status="fee-free, descriptive",
+        source="research/us_open_first3m_2026-11-11/results.json (study.py)", table=t)
     t = load_table("anticipation_rates.js", "ANTICIPATION_RATES", prev.get("anticipation_oi_delta"))
     m = t["meta"]
     out["anticipation_oi_delta"] = dict(
