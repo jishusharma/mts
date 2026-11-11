@@ -31,9 +31,10 @@ class PerTestLimit(unittest.TestCase):
 
     def test_limit_for(self):
         import pytest_test_limit as p
-        self.assertEqual(p.limit_for("a.py::t", {}), 120)
+        self.assertEqual(p.limit_for("a.py::t", {}), 300)
         self.assertEqual(p.limit_for("a.py::t", {"MTS_TEST_LIMIT_S": "0"}), 0)
         self.assertEqual(p.limit_for("x/test_aibridge_exploratory.py::t", {}), 400)
+        self.assertEqual(p.limit_for("MyTradingSys/tests/test_aibridge_selftest_concurrent.py::t::test_agent_live_selftest_concurrent_and_port_clash", {}), 450)
 
     def test_ci_has_no_limit_unless_env_set(self):
         import pytest_test_limit as p
