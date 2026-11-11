@@ -1,7 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "claim": "",
+  "closed": "2026-11-11T16:43:20Z",
   "commands": [],
   "created": "2026-11-11T16:36:02Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH=5 DIFF=0 NOT_IN_DATA=0 in MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-",
+      "ref": "e4fbb7365",
+      "utc": "2026-11-11T16:43:20Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,8 +47,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T16:36:16Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MATCH=5 DIFF=0 NOT_IN_DATA=0 in MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-census-numbers-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md (a, c; read)",
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/CENSUS_5M15M_1109.md, AUCTION_CENSUS_1108.md, REVIEW_FABLE.md (read)",
@@ -56,13 +67,13 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: (1) -0.106 R n 1,484 for 40 bp fades, (2) +0.064 R gross, (3) 10 bp round trip taker in AUCTION_CENSUS_1108.md, (4) null -0.087 R in REVIEW_FABLE d, (5) the stop rule cites d-phase-first-method-1106 and that section exists",
     "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
   ],
-  "taken": "",
+  "taken": "2026-11-11T16:41:04Z",
   "tests": "",
   "title": "[GEMINI] doc scan: EDGE_PLAN (a) and (c) numbers vs CENSUS_5M15M and REVIEW_FABLE",
   "weight": "ROUTINE",
