@@ -105,6 +105,39 @@ class TestParallelLayerGate(unittest.TestCase):
             self.assertEqual(len(flat), len(set(flat)), jobs)
             self.assertTrue(all(chunks))
 
+    def test_balanced_chunks_beat_round_robin_on_synthetic_costs(self):
+        costs = {"a": 100.0, "b": 10.0, "c": 90.0, "d": 10.0, "e": 10.0, "f": 10.0}
+        mods = sorted(costs)
+        chunks = rat.balance_modules(mods, 2, costs)
+        span = max(sum(costs[m] for m in c) for c in chunks)
+        rr = max(sum(costs[m] for m in c) for c in rat.split_modules(mods, 2))
+        self.assertLessEqual(span, 120.0)
+        self.assertLess(span, rr)
+        self.assertEqual(chunks, rat.balance_modules(mods, 2, costs))   # deterministic
+
+    def test_balanced_every_module_exactly_once_and_cap(self):
+        mods = rat.find_layer_modules()
+        for jobs in (1, 2, 4, 7, 10_000):
+            chunks = rat.balance_modules(mods, jobs)
+            flat = [m for c in chunks for m in c]
+            self.assertEqual(sorted(flat), sorted(mods), jobs)
+            self.assertEqual(len(flat), len(set(flat)), jobs)
+            self.assertTrue(all(chunks))
+            self.assertLessEqual(len(chunks), max(1, jobs))
+
+    def test_failing_module_in_balanced_chunk_fails_step(self):
+        ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs",
+                                         "MyTradingSys.backtest.layers.alerts.no_such_module_xyz"], 2)
+        self.assertFalse(ok)
+        self.assertIn("no_such_module_xyz", out)
+
+    def test_empty_module_list_spawns_nothing_and_passes(self):
+        from unittest import mock
+        with mock.patch.object(rat.subprocess, "Popen", side_effect=AssertionError("spawned")):
+            self.assertEqual(rat.balance_modules([], 4), [])
+            ok, _ = rat.exec_layer_chunks([], 4)
+        self.assertTrue(ok)
+
     def test_chunk_with_only_testless_modules_passes(self):
         ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs"], 1)
         self.assertTrue(ok, out)
@@ -224,6 +257,10 @@ class TestShardedPytest(unittest.TestCase):
     def test_quick_parts_partition_every_step_once_and_stay_under_cap(self):
         """--quick in QUICK_PARTS parts: every runnable step runs in exactly one part, and the largest part by the committed est table is
         within QUICK_PART_MAX_S on this platform. No 'smallest N' claim: the est table is per platform (Linux CI is far lower than Windows)."""
+        import os
+        _old = os.environ.get("MTS_GATE_JOBS")
+        os.environ["MTS_GATE_JOBS"] = "4"   # DECISION (OURS) 2026-11-11: the est table is for the default 4 workers; a lower MTS_GATE_JOBS divides est less and tripped the cap
+        self.addCleanup(lambda: os.environ.pop("MTS_GATE_JOBS", None) if _old is None else os.environ.__setitem__("MTS_GATE_JOBS", _old))
         n = rat.QUICK_PARTS
         self.assertGreater(n, 1)
         want = sorted((s.num, s.desc) for s in rat.split_for_shards(rat.build_plan(True), n) if not s.skip)
@@ -593,22 +630,37 @@ class TestGateSpeed(unittest.TestCase):
             log.append(("end", "slot", time.monotonic()))
         return held
 
-    def test_a_cheap_failure_stops_the_gate_before_the_slow_steps_and_the_slot(self):
+    def test_a_cheap_failure_stops_the_gate_before_the_slow_steps(self):
         log = []
         plan = [fake("4d", log, 0.01, ok=False), fake("3c", log, 0.01), fake("4h", log, 0.01), fake("3xt", log, 0.01)]
         results, text = self.run_plan(plan, precheck=True, fail_fast=True, slot=self.slot(log))
         self.assertEqual(results, {"4d": False, "3c": True, "4h": None, "3xt": None})
-        self.assertEqual({n for _, n, _ in log}, {"4d", "3c"})          # neither slow step nor the slot ran
+        self.assertEqual({n for _, n, _ in log}, {"4d", "3c", "slot"})  # the single slot covers the precheck; no slow step ran
+        self.assertEqual(len([e for e in log if e[:2] == ("start", "slot")]), 1)
         self.assertIn("Step 4h: NOT RUN (precheck failed: step 4d)", text)
         self.assertEqual(rat.NOT_RUN, {"4h": "precheck failed: step 4d", "3xt": "precheck failed: step 4d"})
 
-    def test_slot_is_held_around_the_main_phase_only(self):
+    def test_ship_takes_one_slot_around_precheck_and_main(self):
+        """ARCH_REVIEW row 3: one wait per ship; the slot is taken once, before the precheck, and held to the end of the main phase."""
         log = []
         plan = [fake("4d", log, 0.02), fake("4h", log, 0.02), fake("3xt", log, 0.02)]
         _, text = self.run_plan(plan, precheck=True, slot=self.slot(log))
-        self.assertGreaterEqual(at(log, "start", "slot"), at(log, "end", "4d"))
-        self.assertLessEqual(at(log, "start", "slot"), min(at(log, "start", "4h"), at(log, "start", "3xt")))
+        self.assertEqual(len([e for e in log if e[:2] == ("start", "slot")]), 1)
+        self.assertLessEqual(at(log, "start", "slot"), at(log, "start", "4d"))
+        self.assertGreaterEqual(at(log, "end", "slot"), max(at(log, "end", "4h"), at(log, "end", "3xt")))
         self.assertIn("Precheck passed", text)
+
+    def test_a_plan_with_nothing_to_run_takes_no_slot(self):
+        log = []
+        self.run_plan([], precheck=True, slot=self.slot(log))
+        self.assertEqual(log, [])
+
+    def test_gate_slot_factory_uses_the_one_pool_for_every_mode(self):
+        import sync
+        for mode in ("fast", "full", "deploy"):
+            g = rat.gate_slot_factory(mode)()
+            self.assertEqual((g.name, g.slots, g.mode), (sync.GATE_POOL, sync.GATE_SLOTS, mode))
+        self.assertNotIn("precheck_slot", rat.run_plan.__code__.co_varnames[:rat.run_plan.__code__.co_argcount])
 
     def test_fail_fast_does_not_start_new_steps_after_a_failure(self):
         log = []

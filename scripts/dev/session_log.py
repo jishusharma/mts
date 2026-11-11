@@ -27,7 +27,7 @@ def read(repo=REPO, hours=48):
     try:
         out = subprocess.run(["git", "-C", str(repo), "log", f"origin/{TRUNK}", f"--since={hours} hours ago", "--no-merges",
                               "--format=%x1e%h|%ct|%s%n%b"], capture_output=True, text=True, encoding="utf-8",
-                             errors="replace", timeout=60).stdout
+                             errors="replace", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
     except (OSError, subprocess.SubprocessError):
         return []
     rows = []

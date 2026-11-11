@@ -301,3 +301,28 @@ def test_artifact_inlines_the_registry_and_map():
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
+
+
+def test_panel_names_are_anchored_prev_day_is_never_today():
+    # 11-10: 'Prev day low' contains 'day low'; the unanchored test badged yesterday's low DL = "Today low" and the long idea sat on it
+    names = ["Day VWAP", "Day high 00:09Z", "Day low 13:30Z", "Prev day high", "Prev day low", "Weekly open (Mon 00:00Z)", "Weekly high", "Weekly low"]
+    got = _node(REG, "fromPanel", [{"n": n, "p": 100 + i} for i, n in enumerate(names)])
+    assert [g["badge"] for g in got] == ["VWAP", "DH", "DL", "PDH", "PDL", "WO", "WH", "WL"]
+    assert [g["label"] for g in got] == ["VWAP", "High", "Low", "High", "Low", "Open", "High", "Low"]
+    assert got[4]["price"] == 104   # yesterday's low keeps its own price
+    # and every panel badge has words on the Home chart (no raw badge leaks onto a line)
+    home = (HERE / "home.js").read_text(encoding="utf-8")
+    for b in ("PDH", "PDL", "DH", "DL", "WH", "WL", "WO"):
+        assert re.search(r"\b" + b + r": '", home), b
+
+
+def test_registry_survives_blank_entries_spaces_and_the_edge_of_the_merge_band():
+    # Haiku break test 11-10: a null entry threw and stopped the render; leading spaces lost the prev-day badge; exactly 0.15 % split a zone
+    for fn in ("fromPanel", "fromAnalysts", "fromPlaybook"):
+        assert _node(REG, fn, [None, {}]) == []
+    got = _node(REG, "fromPanel", [{"n": "  Prev day high", "p": 5}])
+    assert got[0]["badge"] == "PDH"
+    z = _node(REG, "merge", [{"price": 1000, "src": "panel", "label": "Low", "badge": "DL"}, {"price": 1001.5, "src": "panel", "label": "Low", "badge": "WL"}])
+    assert len(z) == 1
+    # the Weekly high/low maths skips a daily row with blank high or low (+null is 0)
+    assert "+r[2] > 0 && +r[3] > 0" in PAGE.read_text(encoding="utf-8")

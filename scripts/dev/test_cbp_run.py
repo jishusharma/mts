@@ -1,6 +1,7 @@
 """cbp_run.py: the extractor prompt carries the video metadata it is formatted with (audit 2026-10-30 finding 3:
 PROMPT % {...} on a string without placeholders silently dropped analyst, date and title)."""
 import sys
+import types
 import unittest
 from pathlib import Path
 
@@ -157,6 +158,25 @@ def test_rebuild_dashboard_survives_failed_fetch(tmp_path, monkeypatch):
 
     cbp_run.rebuild_dashboard(run=run)  # never fails the run
     assert calls == ["fetch_board_data.py", "build_board.py"]  # build still runs on the last data
+
+
+def test_rebuild_dashboard_surfaces_nonzero_fetch_exit(tmp_path, monkeypatch, capsys):
+    tools = tmp_path / "cbp_v2" / "tools"
+    tools.mkdir(parents=True)
+    for n in ("fetch_board_data.py", "build_board.py"):
+        (tools / n).write_text("", encoding="utf-8")
+    monkeypatch.setattr(cbp_run, "CBP_HOME", tmp_path)
+    calls = []
+
+    def run(cmd, **kw):
+        name = Path(cmd[1]).name
+        calls.append(name)
+        return types.SimpleNamespace(returncode=1 if name == "fetch_board_data.py" else 0)
+
+    failed = cbp_run.rebuild_dashboard(run=run)
+    assert failed == ["fetch_board_data.py"]
+    assert calls == ["fetch_board_data.py", "build_board.py"]  # build still runs
+    assert "fetch_board_data.py exit 1; board built on stale data" in capsys.readouterr().out
 
 
 def test_announce_republish_prints_line_and_asks_when_not_a_publisher(tmp_path, monkeypatch):

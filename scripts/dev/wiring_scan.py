@@ -75,7 +75,7 @@ def _wanted(rel):
 def collect(root):
     """Tracked code files (git ls-files), so CI and a work tree agree; a plain walk when git is unavailable."""
     try:
-        r = subprocess.run(['git', 'ls-files', '-z'], capture_output=True, cwd=root, check=True)
+        r = subprocess.run(['git', 'ls-files', '-z'], capture_output=True, cwd=root, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         names = [n.decode('utf-8', 'replace') for n in r.stdout.split(NUL) if n]
         found = [n for n in names if _wanted(n) and os.path.exists(os.path.join(root, n))]
         if found:
@@ -103,7 +103,7 @@ class ImportCache:
     def __init__(self, root):
         self.path, self.rows, self.dirty = None, {}, False
         try:
-            r = subprocess.run(['git', 'rev-parse', '--git-common-dir'], capture_output=True, text=True, cwd=root, timeout=20)
+            r = subprocess.run(['git', 'rev-parse', '--git-common-dir'], capture_output=True, text=True, cwd=root, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if r.returncode == 0 and r.stdout.strip():
                 common = r.stdout.strip()
                 self.path = os.path.join(root, common) if not os.path.isabs(common) else common
@@ -308,7 +308,7 @@ def _is_reader_doc(rel):
 
 def reader_docs_text(root):
     try:
-        r = subprocess.run(['git', 'ls-files', '-z'], capture_output=True, cwd=root, check=True)
+        r = subprocess.run(['git', 'ls-files', '-z'], capture_output=True, cwd=root, check=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         names = [n.decode('utf-8', 'replace') for n in r.stdout.split(NUL) if n]
     except (OSError, subprocess.CalledProcessError):
         names = []
@@ -410,7 +410,7 @@ def check(res, registry):
 def last_commit(root, p):
     try:
         r = subprocess.run(['git', 'log', '-1', '--format=%ad', '--date=short', '--', p],
-                           capture_output=True, text=True, cwd=root)
+                           capture_output=True, text=True, cwd=root, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return r.stdout.strip()
     except OSError:
         return ''

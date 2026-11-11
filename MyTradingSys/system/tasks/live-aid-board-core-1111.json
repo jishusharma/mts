@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T03:40:18Z",
+    "misses": 57,
+    "reads": [
+      "scripts/dev/run_extra_tests.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/tests/test_gate_discovery_b150.py",
+      "scripts/dev/run_all_tests.py"
+    ],
+    "session": "agent-a588b2d765402906c"
+  },
+  "created": "2026-11-11T02:53:24Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/tools/live_aid/setup_board.js and test_setup_board.py exist; the test feeds a hand-built input with 2 long and 1 short items and asserts the exact lists and strengths 2 and 1, and an empty input gives two empty lists; the test fails before the module exists; pytest passes.",
+  "est_turns": 22,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "New setup_board.js exposes board(inputs) returning {long:[...], short:[...], strength:{long,short}} where each evidence item names its layer, timeframe and side (RSI/WaveTrend/CVD divergence, outside Bollinger with CVD dip or spike, sweep and close back, absorption, Volume Flow, Squeeze release, ADX/DI side, value-area position); strength is the count of live items, no invented weight.",
+  "id": "live-aid-board-core-1111",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid Home: indicator lean grid (RSI, WaveTrend, Binance spot CVD, divergences) on 11 t",
+      "ref": "b58d13a0a0bd",
+      "utc": "2026-11-09T17:52:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:53:26Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/setup_board.js (new)",
+    "MyTradingSys/tools/live_aid/test_setup_board.py (new)",
+    "MyTradingSys/tools/live_aid/live_aid_indicators.js (read)"
+  ],
+  "scope_out": [
+    "no HTML change, no hit-rate numbers, no orders, no live tree; the strength is a count, never a probability"
+  ],
+  "scope_sha": "b58d13a0a0bd",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-11 chat; research/live_aid_review_2026-11-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read how pulse.js and indread.js export a pure function and how test_indread.py loads it",
+    "Write the failing test with the hand-built input",
+    "Implement board(); each item cites its source layer id",
+    "Run the test file"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_setup_board.py (node harness like test_live_aid.py js fixture; fails first: module missing)",
+  "title": "Live Aid setup board core: pure function returning LONG and SHORT evidence lists and a strength score from existing layer outputs",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

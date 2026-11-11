@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-10T20:39:01Z",
+  "commands": [],
+  "created": "2026-11-08T19:40:04Z",
+  "depends_on": [],
+  "done_when": "A written findings list (bug / wrong threshold / look-ahead / off-by-one on the Fri-Sun and Monday windows) in the card result, each with the line and a one-line repro; or 'no findings' with what was checked.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind read of MyTradingSys/research/monday_open_2026-11-09/monday_clocks.py: find logic errors in the month-breach recount, the Monday sweep classes and the lead-time count, without reading PLAYBOOK.md first.",
+  "id": "gemini-blind-read-of-monday-clocks-py-mo",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-of-monday-clocks-py-m",
+      "ref": "663e6cca1",
+      "utc": "2026-11-10T20:39:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: monday_clocks no longer caches the open 1h bar (test fails before, passes after); ",
+      "ref": "e8ad8024ce0f",
+      "utc": "2026-11-08T22:26:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed, report committed",
+  "note": "Feeder card from monday-open-playbook-1109 (ANNOUNCEMENTS A-20261104-1). Known limit: a 1h bar touching both levels is not split.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T20:17:24Z",
+  "refs": [
+    "monday-open-playbook-1109",
+    "A-20261104-1 feeder rule"
+  ],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-10_gemini-blind-read-of-monday-clocks-py-mo.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/monday_open_2026-11-09/monday_clocks.py",
+    "reads: MyTradingSys/research/btc_cycles_2026-11/btc_daily.csv"
+  ],
+  "scope_out": [
+    "no edits to the script",
+    "no trade, no order",
+    "no live tree touch"
+  ],
+  "scope_sha": "e8ad8024ce0f",
+  "size": "S",
+  "sources": [],
+  "state": "done",
+  "steps": [
+    "read monday_clocks.py cold",
+    "check part1 month windows, part3 Monday and ref windows, class thresholds, lead() W/F logic",
+    "write findings into the card result"
+  ],
+  "taken": "2026-11-10T20:39:01Z",
+  "tests": "MyTradingSys/research/eagle_eyes_picture_2026-10-28/test_scenario_ledger.py",
+  "title": "[GEMINI] blind read of monday_clocks.py (Monday open 11-09)",
+  "weight": "",
+  "worker": ""
+}

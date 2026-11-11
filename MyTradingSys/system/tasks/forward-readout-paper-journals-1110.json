@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T19:35:14Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/fable_run7_forward_test/forward_readout.py reads --ledger plus --paper <jsonl> (repeatable); Malkan rows kind outcome give net R; signal/no_fill/unresolved counted not scored; kill rows shown; fixture test per kind passes; readout table unchanged for ledger-only input",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The weekly readout must count the Malkan and T06 paper trades, which go to paper journals, not trade_ledger.jsonl.",
+  "id": "forward-readout-paper-journals-1110",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "forward readout: move into the study folder so the gate discovers its test",
+      "ref": "1f574e72074e",
+      "utc": "2026-11-10T19:05:25Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T19:35:32Z",
+  "refs": [],
+  "result": "",
+  "scope": [
+    "MyTradingSys/research/fable_run7_forward_test/forward_readout.py",
+    "MyTradingSys/research/fable_run7_forward_test/test_forward_readout.py"
+  ],
+  "scope_in": [
+    "MyTradingSys/research/fable_run7_forward_test/forward_readout.py",
+    "MyTradingSys/research/fable_run7_forward_test/test_forward_readout.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "1f574e72074e",
+  "size": "S",
+  "sources": [
+    "Lead B"
+  ],
+  "state": "ready",
+  "steps": [
+    "read malkan_level_short_live.py journal row shapes",
+    "add --paper input and per-kind handling",
+    "fixture per kind, tests",
+    "ship"
+  ],
+  "tests": [
+    "test_forward_readout.py::test_malkan_outcome_rows_scored (fail first)"
+  ],
+  "title": "Forward readout: also read the Malkan paper journal (runtime_data/malkan_level_short_forward.jsonl outcome rows) and the T06 paper journal, not only trade_ledger.jsonl; fixture tests per row kind",
+  "weight": "",
+  "worker": "agent"
+}

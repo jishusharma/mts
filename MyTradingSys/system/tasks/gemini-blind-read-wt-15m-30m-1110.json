@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T07:05:15Z",
+  "commands": [],
+  "created": "2026-11-11T06:40:03Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-wt-15m-30m-1110.md line 1 has counts MATCH/DIFF/NOT_IN_DATA and one row per headline number with file:line.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read: check every number in the headline and tables of research/wt_15m_30m_1110/RESULT.md against the committed script and data files in that folder; label each MATCH, DIFF or NOT_IN_DATA.",
+  "id": "gemini-blind-read-wt-15m-30m-1110",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH: 24, DIFF: 0, NOT_IN_DATA: 17; report: MyTradingSys/research/layer_lab/reports/2026-",
+      "ref": "82043b99c",
+      "utc": "2026-11-11T07:05:15Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid Home: WaveTrend lanes 1m-4h, 5m volume + CVD under candles",
+      "ref": "cdd5dd2dce76",
+      "utc": "2026-11-09T21:04:04Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: task complete",
+  "not_twin_of": [
+    "gemini-blind-read-ship-gate-select-1111"
+  ],
+  "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a4-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T06:40:04Z",
+  "refs": [],
+  "result": "MATCH: 24, DIFF: 0, NOT_IN_DATA: 17; report: MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-wt-15m-30m-1110.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/wt_15m_30m_1110/ (read only)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-wt-15m-30m-1110.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the study files; no live-tree edit, no deploy, no .secrets or .env read; no re-run of fetch scripts"
+  ],
+  "scope_sha": "cdd5dd2dce76",
+  "size": "S",
+  "sources": [
+    "D11_PROGRAMME s6 feeder; TASK_REFINEMENT.md"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files in the study folder; list each number in the headline and tables",
+    "Re-derive each from the script or data, mark MATCH/DIFF/NOT_IN_DATA with file:line",
+    "Write MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-wt-15m-30m-1110.md with counts on line 1"
+  ],
+  "taken": "2026-11-11T07:05:15Z",
+  "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of wt_15m_30m_1110 RESULT.md vs its scripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

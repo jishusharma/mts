@@ -12,8 +12,8 @@ QUOTES = HERE / "QUOTES_USED_TOM_FABIO.md"
 VERDICTS = {"wired", "unwired-worth-wiring", "not-worth-wiring"}
 
 
-def rows():
-    with CSV.open(encoding="utf-8", newline="") as fh:
+def rows(path=None):
+    with (path or CSV).open(encoding="utf-8", newline="") as fh:
         return list(csv.DictReader(fh))
 
 
@@ -34,9 +34,29 @@ def test_every_row_has_verdict_quote_and_locations():
             assert r["priority"] in {"H", "M", "L"}, r["rule_id"]
 
 
+def check_tom_ids(rs):
+    """Unique, non-empty Tom rule ids; no exact count (live research output grows)."""
+    ids = [r["rule_id"] for r in rs if r["trader"] == "Tom"]
+    assert ids and all(i.strip() for i in ids)
+    assert len(ids) == len(set(ids))
+    assert all(r["verdict"] in VERDICTS for r in rs if r["trader"] == "Tom")
+
+
 def test_one_row_per_tom_quote_id():
-    ids = [r["rule_id"] for r in rows() if r["trader"] == "Tom"]
-    assert len(ids) == len(set(ids)) == 270
+    check_tom_ids(rows())
+
+
+def test_tom_id_check_survives_extra_row(tmp_path):
+    cp = tmp_path / "copy.csv"
+    text = CSV.read_text(encoding="utf-8")
+    rs = rows()
+    extra = dict(next(r for r in rs if r["trader"] == "Tom"), rule_id="TOM-EXTRA-NEW")
+    with cp.open("w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rs[0].keys()))
+        w.writeheader()
+        w.writerows(rs + [extra])
+    assert text  # source untouched
+    check_tom_ids(rows(cp))
 
 
 def test_no_quote_rows_listed_in_md():

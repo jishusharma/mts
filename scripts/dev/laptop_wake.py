@@ -78,7 +78,7 @@ def main() -> int:
         print(" ".join(cmd)); print(script or "")
         return 0
     try:
-        r = subprocess.run(cmd, input=script, text=True, capture_output=True, timeout=300)
+        r = subprocess.run(cmd, input=script, text=True, capture_output=True, timeout=300, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         print("TIMEOUT laptop_wake after 300s: no reply from the laptop gate; not retried")
         return 124

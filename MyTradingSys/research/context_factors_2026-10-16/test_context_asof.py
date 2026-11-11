@@ -49,7 +49,24 @@ def test_replay_ignores_bars_after_t():
         assert not C.row_diff(a[s], b[s])
 
 
+_CLEAN_TRUNC = {}   # (side, T) -> rows: the clean truncation pair is independent of the planted leak, so build it once per file
+_RECS = {}
+
+
+def _recs(frame):
+    """{T: row dict} in one pass (same values as frame.loc[T].to_dict(), without ~5000 pandas row lookups)."""
+    return dict(zip(frame.index, frame.to_dict("records")))
+
+
 def _trunc_rows(side, T, leak=None, N=2100):
+    if leak is None:
+        if (side, T) not in _CLEAN_TRUNC:
+            _CLEAN_TRUNC[(side, T)] = _trunc_rows_build(side, T, None, N)
+        return _CLEAN_TRUNC[(side, T)]
+    return _trunc_rows_build(side, T, leak, N)
+
+
+def _trunc_rows_build(side, T, leak, N):
     t = C.decision_index(BARS, T)
     short = C.context_frame(_cut(BARS, t), side, leak=leak, decisions=[T]).iloc[0].to_dict()
     long_ = C.context_frame(_cut(BARS, min(t + N, len(BARS["ot"]) - 1)), side, leak=leak, decisions=[T]).iloc[0].to_dict()
@@ -70,7 +87,10 @@ def test_planted_leak_is_caught(leak):
     side = "short" if leak == "f5_next_bar" else "long"
     leaky = C.context_frame(BARS, side, leak=leak)
     clean = FULL[side]
-    cand = [int(T) for T in clean.index if C.row_diff(leaky.loc[T].to_dict(), clean.loc[T].to_dict())
+    if side not in _RECS:
+        _RECS[side] = _recs(clean)
+    lrec, crec = _recs(leaky), _RECS[side]
+    cand = [int(T) for T in clean.index if C.row_diff(lrec[T], crec[T])
             and C.decision_index(BARS, int(T)) >= 0 and int(T) < int(BARS["ot"][-1]) - 8 * C.DAY]
     assert cand, f"{leak}: the planted leak changes nothing on this tape"
     caught = 0

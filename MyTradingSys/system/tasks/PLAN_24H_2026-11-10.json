@@ -1,16 +1,17 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T02:50:08Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-10T13:15:27Z",
-    "misses": 2,
+    "folded": "2026-11-10T21:34:01Z",
+    "misses": 10,
     "reads": [
-      "scripts/dev/us_prep.py",
-      "scripts/dev/tasks.py"
+      "scripts/dev/test_sync.py",
+      "scripts/dev/cicd_run.py"
     ],
-    "session": "9b0ce8fb-f501-4fac-9178-48bbfbffdb4d"
+    "session": "c786586a-b99d-45da-b355-23f5d3bb36f2"
   },
   "created": "2026-11-10T12:12:35Z",
   "depends_on": [],
@@ -25,8 +26,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "coordinator plan edit, not a builder card; PLAN_24H_2026-11-10.md is the owner (planner-a2-1111)",
+  "pinned": false,
   "prio": 3,
+  "reason": "coordinator plan edit, not a builder card; PLAN_24H_2026-11-10.md is the owner (planner-a2-1111)",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -35,7 +38,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Fold the architecture-review order into PLAN_24H after logins A and B answer q-def2f8 and q-4501f0; then start the cheap workers for items 2-3 after the 20Z reset",

@@ -1,11 +1,13 @@
 """sync.py: two clones of one origin ship to fast-track without losing each other's work."""
 import contextlib
 import io
+import json
 import os
 import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 from pathlib import Path
@@ -128,9 +130,10 @@ class SyncTest(unittest.TestCase):
 
     def test_a_docs_only_ship_over_a_doc_size_cap_is_refused(self):
         """2175ef80: a docs ship ran no gate and pushed CLAUDE.md over its cap; the default docs gate now checks the caps."""
-        cap = "MyTradingSys/tests/docs/test_integrity.py"
-        (self.a / cap).parent.mkdir(parents=True)
-        commit(self.a, cap, (Path(__file__).resolve().parents[2] / cap).read_text(encoding="utf-8"))
+        import preship   # the cap test plus the helpers beside it (42d8b197a: a new doc_drift.py import broke a one-file copy)
+        preship.copy_cap_test(Path(__file__).resolve().parents[2], self.a)
+        sh(self.a, "add", "-A")
+        sh(self.a, "commit", "-q", "-m", "cap test")
         sync.ship(self.a, gate=lambda repo, files: None)
         commit(self.a, "CLAUDE.md", "x" * 100_000)
         with self.assertRaisesRegex(sync.SyncError, "doc size cap.*100000 <= "):
@@ -715,6 +718,26 @@ class SyncTest(unittest.TestCase):
             self.assertIsNone(sync.reuse_finished_tree(self.a, marked))
         self.assertTrue(marked.exists())
         self.assertFalse(plain.exists())
+
+    def test_gateway_marker_alone_is_not_ignored_data(self):
+        """2026-11-11 JIS-NB: tidy kept 19 released gateway trees as 'ignored data would be deleted (.gateway_owner)': the real repo
+        gitignores the marker, so `status --ignored` listed it as data and no remover (tidy, start's retire, wt_maint) could go on."""
+        with open(self.a / ".git" / "info" / "exclude", "a", encoding="utf-8") as f:
+            f.write(chr(10) + sync.GATEWAY_MARKER + chr(10))
+        with contextlib.redirect_stdout(io.StringIO()):
+            rel = sync.new_worktree(self.a, "relx")
+        (rel / sync.GATEWAY_MARKER).write_text("x", newline=chr(10))
+        self.assertEqual(sync.ignored_data(rel), [])
+        (rel / "Dumps").mkdir()
+        (rel / "Dumps" / "keep.txt").write_text("x", newline=chr(10))
+        with open(self.a / ".git" / "info" / "exclude", "a", encoding="utf-8") as f:
+            f.write("Dumps/" + chr(10))
+        self.assertEqual(sync.ignored_data(rel), ["Dumps/"])          # real data is still data
+        later = time.time() + 48 * 3600
+        (rel / "Dumps" / "keep.txt").unlink()
+        with mock.patch.object(sync, "open_claims", return_value=[]), contextlib.redirect_stdout(io.StringIO()) as out:
+            gone = sync.tidy(self.a, apply=True, now=later, fetch=False, gateway_only=True)
+        self.assertEqual(gone, [str(rel.resolve())], out.getvalue())
 
     def test_start_retires_released_shipped_gateway_tree_despite_hold(self):
         with contextlib.redirect_stdout(io.StringIO()):
@@ -1571,6 +1594,43 @@ class GateSlotTest(unittest.TestCase):
             self.assertIn("gate slot busy (2/2), waiting", out.getvalue())
             self.assertEqual(len(list(self.slots.iterdir())), 2)
 
+    def _wait_log(self):
+        p = self.slots_base / "wait.log"
+        return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines()] if p.exists() else []
+
+    def test_wait_is_logged(self):
+        """ARCH_REVIEW row 3: the real slot wait lands in <slots base>/wait.log (temp dir, never the repo)."""
+        a = sync.gate_slot(self.tmp, alive=lambda p: True).__enter__()
+        b = sync.gate_slot(self.tmp, alive=lambda p: True).__enter__()
+        threading.Timer(0.3, lambda: a.__exit__(None, None, None)).start()
+        with contextlib.redirect_stdout(io.StringIO()):
+            with sync.gate_slot(self.tmp, alive=lambda p: True, poll=0.05, mode="fast"):
+                pass
+        b.__exit__(None, None, None)
+        rows = [r for r in self._wait_log() if r["mode"] == "fast"]
+        self.assertEqual(len(rows), 1)
+        self.assertGreaterEqual(rows[0]["wait_s"], 0.2)
+        self.assertGreaterEqual(rows[0]["busy"], 1)
+        self.assertEqual(rows[0]["pid"], os.getpid())
+
+    def test_wait_log_is_rotated_and_a_log_failure_never_fails_the_gate(self):
+        log = self.slots_base / "wait.log"
+        log.write_text("".join(json.dumps({"i": i, "pad": "x" * 80}) + "\n" for i in range(300)), encoding="utf-8")
+        with sync.gate_slot(self.tmp, alive=lambda p: True):
+            pass
+        lines = log.read_text(encoding="utf-8").splitlines()
+        self.assertLessEqual(len(lines), sync.WAIT_LOG_KEEP + 1)
+        self.assertEqual(json.loads(lines[-1])["mode"], "full")
+        real_open = os.open
+
+        def bad_open(path, flags, *a):
+            if str(path).endswith("wait.log"):
+                raise OSError("disk")
+            return real_open(path, flags, *a)
+        with mock.patch.object(sync.os, "open", side_effect=bad_open):
+            with sync.gate_slot(self.tmp, alive=lambda p: True) as g:   # an unwritable log must not fail the gate
+                self.assertTrue(g.path)
+
     def test_stale_pid_slot_is_reclaimed(self):
         self.slots.mkdir()
         for i in (0, 1):
@@ -1790,17 +1850,27 @@ class FastShipTest(unittest.TestCase):
         with fake(""):
             self.assertFalse(sync.pure_revert(Path(".")))
 
-    def test_fast_slots_use_their_own_folder_and_an_empty_slot_file_is_busy(self):
+    def test_fast_and_full_gates_share_one_pool_and_an_empty_slot_file_is_busy(self):
+        """ARCH_REVIEW row 3: one gate queue per machine. A fast gate takes a slot from the same pool as a full gate."""
         tmp = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
         sh(tmp, "init", "-q")
         slots_base = tmp / "slots_base"
         os.environ["MTS_GATE_SLOTS_DIR"] = str(slots_base)
         self.addCleanup(lambda: os.environ.pop("MTS_GATE_SLOTS_DIR", None))
-        fast_d = sync.host_gate_slots_dir("gate-slots-fast")
-        main_d = sync.host_gate_slots_dir("gate-slots")
-        with sync.gate_slot(tmp, slots=1, name="gate-slots-fast", alive=lambda p: True):
-            self.assertTrue((fast_d / "slot-0").is_file())
+        self.assertFalse(hasattr(sync, "GATE_PRECHECK_SLOTS"))
+        import run_all_tests as rat
+        self.assertFalse(hasattr(rat, "FAST_SLOTS"))
+        main_d = sync.host_gate_slots_dir(sync.GATE_POOL)
+        with sync.gate_slot(tmp, alive=lambda p: True), sync.gate_slot(tmp, alive=lambda p: True):
+            fast = rat.gate_slot_factory("fast")()
+            fast.timeout, fast.poll, fast.note_every = 0.2, 0.05, 99
+            fast.alive = lambda p: True
+            with self.assertRaises(sync.GateSlotTimeout):   # both slots busy: the fast gate queues behind them
+                with fast:
+                    pass
+            self.assertEqual(fast.name, sync.GATE_POOL)
+            self.assertEqual(rat.gate_slot_factory("full")().name, fast.name)
         main_d.mkdir(parents=True, exist_ok=True)
         (main_d / "slot-0").write_text("")           # creator is mid-write: another gate must not take it over
         (main_d / "slot-1").write_text("")

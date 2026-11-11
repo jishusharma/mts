@@ -108,10 +108,19 @@ class PreshipTest(unittest.TestCase):
             self.assertEqual(out["permissionDecision"], "deny")
             self.assertIn("look-ahead lint", out["permissionDecisionReason"])
 
+    def test_copy_cap_test_brings_the_helpers_beside_it(self):
+        src = Path(self.d.name) / "src"
+        docs = src / Path(P.CAP_TEST).parent
+        docs.mkdir(parents=True)
+        (src / P.CAP_TEST).write_text("import helper_x" + chr(10), encoding="utf-8")
+        for name in ("helper_x.py", "conftest.py", "test_other.py"):
+            (docs / name).write_text("x = 1" + chr(10), encoding="utf-8")
+        P.copy_cap_test(src, self.root)
+        got = sorted(p.name for p in (self.root / P.CAP_TEST).parent.iterdir())
+        self.assertEqual(got, ["conftest.py", "helper_x.py", Path(P.CAP_TEST).name])
+
     def test_cap_failures_runs_the_real_cap_test_on_the_shipped_files_only(self):
-        real = Path(__file__).resolve().parents[2] / P.CAP_TEST
-        (self.root / P.CAP_TEST).parent.mkdir(parents=True)
-        (self.root / P.CAP_TEST).write_text(real.read_text(encoding="utf-8"), encoding="utf-8")
+        P.copy_cap_test(Path(__file__).resolve().parents[2], self.root)   # the cap test plus the helpers beside it (42d8b197a: doc_drift.py)
         (self.root / "CLAUDE.md").write_text("x" * 100, encoding="utf-8")
         self.assertEqual(P.cap_failures(str(self.root), ["CLAUDE.md"]), [])
         (self.root / "CLAUDE.md").write_text("x" * 100_000, encoding="utf-8")
@@ -269,6 +278,20 @@ class RealRulesTest(unittest.TestCase):
             self.assertEqual(P.docs_ship_failures(d, ["CLAUDE.md", "MyTradingSys/system/roles/supervisor.md",
                                                       "MyTradingSys/system/tasks/x.json", "MyTradingSys/research/BUGS.md"]), [])
 
+    def test_a_docs_ship_with_conflict_markers_is_refused(self):
+        """3dad1aece (shipped in b1ca5d8bb): a docs-only ship pushed `<<<<<<< ours` into a task card; the docs ship ran no 3cm step,
+        CI 42891528302 and 42891857913 went red and the marker failed other trees' gates at step 4d."""
+        with tempfile.TemporaryDirectory() as d:
+            card = Path(d) / "MyTradingSys/system/tasks/x.json"
+            card.parent.mkdir(parents=True)
+            card.write_text("{\n" + "<" * 7 + " ours\n" + "=" * 7 + "\n" + ">" * 7 + " theirs\n}\n", encoding="utf-8")
+            (Path(d) / "NOTE.md").write_text("fine\n", encoding="utf-8")
+            res = P.docs_ship_failures(d, ["MyTradingSys/system/tasks/x.json", "NOTE.md", "gone.md"])
+            self.assertEqual([r[0][0] for r in res], ["conflict markers"])
+            self.assertIn("x.json:2", " ".join(res[0][1]))
+            card.write_text("{}\n", encoding="utf-8")
+            self.assertEqual(P.docs_ship_failures(d, ["MyTradingSys/system/tasks/x.json"]), [])
+
     def test_every_hook_mode_in_settings_exists(self):
         s = json.loads((Path(__file__).resolve().parents[2] / ".claude" / "settings.json").read_text(encoding="utf-8"))
         cmds = [h["command"] for g in s["hooks"].values() for grp in g for h in grp["hooks"] if "preship.py" in h["command"]]
@@ -277,3 +300,58 @@ class RealRulesTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ContextFoldSharedCheckoutTest(unittest.TestCase):
+    """Operator 2026-11-11 (audit finding 1): the ship-time context fold wrote a card into the SHARED main checkout (many sessions work
+    there: its .git is a directory and other worktrees hang off it), dirtying it for every session and blocking their stop guards.
+    It folds only into a session's own worktree or a single-session clone."""
+
+    def setUp(self):
+        self.d = tempfile.TemporaryDirectory()
+        self.main = Path(self.d.name) / "main"
+        self.main.mkdir()
+        git(self.main, "init", "-q")
+        git(self.main, "symbolic-ref", "HEAD", "refs/heads/jis-nb-trunk")  # git < 2.28 (JIS-NUC 2.24) has no init -b
+        git(self.main, "config", "user.email", "t@t")
+        git(self.main, "config", "user.name", "t")
+        (self.main / "a.txt").write_text("a\n")
+        git(self.main, "add", "a.txt")
+        git(self.main, "commit", "-q", "-m", "init")
+        self.tp = Path(self.d.name) / "t.jsonl"
+        self.tp.write_text("{}\n")
+
+    def tearDown(self):
+        self.d.cleanup()
+
+    def ship(self, cwd):
+        import context_gap
+        calls = []
+
+        def fake_fold(tp, root, **kw):
+            calls.append(root)
+            return "folded", "card-x"
+        orig, context_gap.fold = context_gap.fold, fake_fold
+        try:
+            note = P.hook_ship({"cwd": str(cwd), "transcript_path": str(self.tp)}, "python scripts/dev/sync.py ship --release x")
+        finally:
+            context_gap.fold = orig
+        return note, calls
+
+    def test_the_main_checkout_with_worktrees_is_never_folded_into(self):
+        git(self.main, "worktree", "add", "-q", "-b", "s/one", str(Path(self.d.name) / "wt"))
+        note, calls = self.ship(self.main)
+        self.assertEqual(calls, [])
+        self.assertIn("shared main checkout", note)
+
+    def test_a_session_worktree_is_folded(self):
+        wt = Path(self.d.name) / "wt"
+        git(self.main, "worktree", "add", "-q", "-b", "s/one", str(wt))
+        note, calls = self.ship(wt)
+        self.assertEqual(len(calls), 1)
+        self.assertTrue(note.startswith("folded"))
+
+    def test_a_single_session_clone_is_folded(self):
+        git(self.main, "checkout", "-q", "-b", "host/slug")
+        note, calls = self.ship(self.main)
+        self.assertEqual(len(calls), 1)

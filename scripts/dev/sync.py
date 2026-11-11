@@ -94,12 +94,12 @@ def git(repo, *args, check=True):
     cmd = ["git", "-C", str(repo), *opts, *args]
     if args and args[0] in GIT_NET_VERBS:
         try:
-            r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT})
+            r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=GIT_NET_TIMEOUT_S, env={**os.environ, **GIT_NOPROMPT}, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
             r = subprocess.CompletedProcess(cmd, 124, "", f"TIMEOUT git {args[0]} after {GIT_NET_TIMEOUT_S}s (network down or a credential prompt)")
             print(r.stderr, file=sys.stderr)
     else:
-        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if check and r.returncode != 0:
         raise SyncError(f"git {' '.join(args)} failed:\n{r.stdout}{r.stderr}".rstrip())
     return r
@@ -290,7 +290,9 @@ def code_ship(files):
 
 
 GATE_SLOTS = 2
+GATE_POOL = "gate-slots"   # ARCH_REVIEW row 3: the ONE gate queue per machine (fast, full, precheck and deploy gates all take from it)
 GATE_WAIT_NOTE_S = 60
+WAIT_LOG_KEEP = 200
 
 
 def pid_alive(pid):
@@ -317,10 +319,7 @@ def pid_alive(pid):
     return True
 
 
-GATE_PRECHECK_SLOTS = 2
-
-
-def host_gate_slots_dir(name="gate-slots", repo=None):
+def host_gate_slots_dir(name=GATE_POOL, repo=None):
     """Host-wide gate slots directory (SUPERVISOR.md SV7).
     Separate clones on the same host share the same slot pool so concurrent gates respect the machine budget.
     MTS_GATE_SLOTS_DIR overrides the base directory for tests."""
@@ -345,10 +344,33 @@ class gate_slot:
     came free in that time (deploy: fail closed)."""
 
     def __init__(self, repo, slots=GATE_SLOTS, alive=pid_alive, sleep=time.sleep, note_every=GATE_WAIT_NOTE_S, poll=2.0, timeout=None,
-                 name="gate-slots"):
+                 name=GATE_POOL, mode="full"):
         self.repo, self.slots, self.alive, self.sleep = repo, slots, alive, sleep
         self.note_every, self.poll, self.path, self.timeout, self.name = note_every, poll, None, timeout, name
+        self.mode = mode   # fast | full | deploy: only labels the wait.log line
         self.wait_s = 0.0
+        self.busy_first = 0
+
+    def _log_wait(self, d):
+        """One JSON line per acquired slot in <slots base>/wait.log (temp dir, never the repo: the repo is public): the real slot wait.
+        One O_APPEND write; kept to the last WAIT_LOG_KEEP lines, best-effort; any error is swallowed, a log never fails a gate."""
+        try:
+            log = d.parent / "wait.log"
+            row = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "host": socket.gethostname(), "repo": Path(str(self.repo)).name,
+                   "pid": os.getpid(), "mode": self.mode, "wait_s": round(self.wait_s, 2), "busy": self.busy_first}
+            fd = os.open(str(log), os.O_CREAT | os.O_APPEND | os.O_WRONLY)
+            try:
+                os.write(fd, (json.dumps(row) + "\n").encode("utf-8"))
+            finally:
+                os.close(fd)
+            if log.stat().st_size > 20000:
+                lines = log.read_text(encoding="utf-8").splitlines()
+                if len(lines) > WAIT_LOG_KEEP:
+                    tmp = log.with_name(f"wait.log.{os.getpid()}.tmp")
+                    tmp.write_text("\n".join(lines[-WAIT_LOG_KEEP:]) + "\n", encoding="utf-8")
+                    os.replace(str(tmp), str(log))
+        except Exception:
+            pass
 
     def _dir(self):
         return host_gate_slots_dir(self.name, self.repo)
@@ -385,10 +407,16 @@ class gate_slot:
     def __enter__(self):
         d = self._dir()
         start = last = time.monotonic()
+        first = True
         while True:
             self.path, busy = self._try(d)
+            if first:
+                self.busy_first, first = busy, False
             if self.path:
                 self.wait_s = time.monotonic() - start
+                self._log_wait(d)
+                if self.wait_s >= 1.0:
+                    print(f"gate slot acquired after {self.wait_s:.0f}s ({self.mode})")
                 return self
             left = None if self.timeout is None else self.timeout - (time.monotonic() - start)
             if left is not None and left <= 0:
@@ -681,6 +709,17 @@ def area_overlap(xs, ys):
     return next(((x, y) for x in xs for y in ys if x == y or x.startswith(y + "/") or y.startswith(x + "/")), None)
 
 
+def old_shell_notes(lister=None):
+    """bug-background-shell-runs-12h-1109: one NOTE line per bash/sh process over 30 min (bg_watch.live_shells). Not counted as an
+    issue (a 40 min ship shell is legitimate); never raises."""
+    try:
+        import bg_watch
+        return [f"NOTE OLD-SHELL pid {r['pid']} {r['age']:.0f}m > {bg_watch.SHELL_LIMIT_MIN}m: {' '.join(r['cmd'].split())[:70]} "
+                f"-> stop it unless a task you own waits on it (bg_watch.py shells --kill)" for r in bg_watch.live_shells(lister=lister)]
+    except Exception:
+        return []
+
+
 def health(repo):
     """Collision health, one line per problem, last line `HEALTH: <n> issue(s)`. Returns n. Read-only."""
     git(repo, "fetch", "--quiet", "origin", TRUNK)
@@ -736,6 +775,8 @@ def health(repo):
     for i in issues:
         if not i.startswith("UNSHIPPED"):
             print(i)
+    for line in old_shell_notes():
+        print(line)
     print(f"HEALTH: {len(issues)} issue(s)")
     return len(issues)
 
@@ -746,7 +787,7 @@ def pull_mirror(repo):
     if not script.exists():
         return
     try:
-        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45, cwd=repo)
+        r = subprocess.run([sys.executable, str(script), "pull"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45, cwd=repo, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         print("live mirror: " + ((r.stdout or r.stderr).strip().splitlines() or ["no output"])[-1])
     except (subprocess.TimeoutExpired, OSError) as e:
         print(f"live mirror: skipped ({type(e).__name__}); run live_mirror.py pull by hand")
@@ -1124,7 +1165,7 @@ def wait_own_ci(pushed, fetch=None, failed_jobs=None, sleep=time.sleep, now_fn=t
 def stale_pages_lines(repo):
     """STALE lines from artifacts.py (published pages whose repo build differs from the last publish); raises on tool failure."""
     r = subprocess.run([sys.executable, str(Path(repo) / "scripts" / "dev" / "artifacts.py"), "stale"],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300)
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return [l for l in r.stdout.splitlines() if l.startswith("STALE ")]
 
 
@@ -1594,7 +1635,7 @@ def _cat_batch(repo, shas):
     if not shas:
         return {}
     NL = chr(10)
-    r = subprocess.run(["git", "-C", str(repo), "cat-file", "--batch"], input=(NL.join(shas) + NL).encode(), capture_output=True)
+    r = subprocess.run(["git", "-C", str(repo), "cat-file", "--batch"], input=(NL.join(shas) + NL).encode(), capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0:
         raise SyncError("git cat-file --batch failed:" + NL + r.stderr.decode(errors="replace").rstrip())
     out, buf, i = {}, r.stdout, 0
@@ -1715,7 +1756,7 @@ def push_claim_commit(repo, rel, text, msg, branch=CLAIMS_BRANCH, guard=None, sl
         env = {**os.environ, "GIT_INDEX_FILE": str(idx)}
 
         def plumb(*args, stdin=None):
-            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, input=stdin)
+            r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, input=stdin, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if r.returncode != 0:
                 raise SyncError(f"git {' '.join(args)} failed:" + chr(10) + f"{r.stdout}{r.stderr}".rstrip())
             return r.stdout.strip()
@@ -1925,8 +1966,9 @@ def holds_files(root, rel):
 def ignored_data(p):
     """Ignored paths in worktree `p` that are not trivially regenerable (`git worktree remove` deletes them)."""
     out = git(p, "status", "--porcelain", "--ignored=matching", check=False).stdout.splitlines()
+    # GATEWAY_MARKER is gitignored: without the name check it was "data" and no remover could retire a released gateway tree (19 on JIS-NB 11-11)
     return [l[3:] for l in out if l.startswith("!! ") and not (any(m in l for m in REGENERABLE) and not holds_answers(p, l[3:]))
-            and holds_files(p, l[3:])]
+            and l[3:].strip('"') != GATEWAY_MARKER and holds_files(p, l[3:])]
 
 
 def holds_answers(root, rel):

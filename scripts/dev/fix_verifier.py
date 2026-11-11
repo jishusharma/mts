@@ -71,7 +71,7 @@ def verify(commit, root=ROOT, run=True, runner=None):
 def _pytest(path, root):
     try:
         r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-x", "-p", "no:cacheprovider", path],
-                           cwd=root, capture_output=True, text=True, timeout=60)
+                           cwd=root, capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except subprocess.TimeoutExpired:
         return False, "timeout 60s"
     last = (r.stdout.strip().splitlines() or [""])[-1][:80]
@@ -81,7 +81,7 @@ def _pytest(path, root):
 def git_log(hours, ref, root=ROOT):
     fmt = SEP + "%H" + FIELD + "%s" + FIELD + "%b"
     r = subprocess.run(["git", "-C", str(root), "log", ref, "--no-merges", "--since=%d hours ago" % hours, "--format=" + fmt],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+                       capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode:
         raise SystemExit("git log failed: " + r.stderr.strip())
     return r.stdout
@@ -107,7 +107,7 @@ def main(argv=None):
         return 0
     for c in commits:  # test files the commit itself touched count as named
         r = subprocess.run(["git", "-C", str(ROOT), "show", "--name-only", "--format=", c["sha"]],
-                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         c["body"] += chr(10) + r.stdout
     rows = []
     for i, c in enumerate(commits):  # cheap = at most --max-run pytest launches

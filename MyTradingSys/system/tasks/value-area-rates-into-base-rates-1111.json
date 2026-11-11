@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T20:25:39Z",
+  "depends_on": [],
+  "done_when": "live_aid.html p-va has no hardcoded 44% or 77%; base_rates.js has a value_area row with n, window, fee_status; test_base_rates.py checks the panel text equals the registry row and fails on current code.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "The value-area panel reads its 44% and 77% rates from the BASE_RATES registry; accept80.py writes value_area_rates.js into base_rates_input and base_rates.py builds the row; the 77% stays labelled drift (OURS).",
+  "id": "value-area-rates-into-base-rates-1111",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid: level names anchored (yesterday's low was shown as Today low), weekly high/low l",
+      "ref": "74c91b0bd1eb",
+      "utc": "2026-11-10T14:09:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:52:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html (p-va, brRow)",
+    "MyTradingSys/tools/live_aid/base_rates.py",
+    "MyTradingSys/research/value_area_acceptance_2026-11-05/accept80.py",
+    "MyTradingSys/tools/live_aid/test_base_rates.py"
+  ],
+  "scope_out": [
+    "no new study run, no placebo, no live tree"
+  ],
+  "scope_sha": "74c91b0bd1eb",
+  "size": "M",
+  "sources": [
+    "Eagle_Eyes revalidation 2026-11-11; live_aid.html:265"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read how an existing study writes <name>_rates.js and its build row",
+    "Add the writer in accept80.py and the row in base_rates.py; failing test first",
+    "Replace the hardcoded text with a BASE_RATES lookup; run test_base_rates.py and test_live_aid.py"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_base_rates.py::test_value_area_row_equals_result_md (fails first: no row)",
+  "title": "live_aid value-area panel hardcodes 44%/77% (live_aid.html:265); move accept80 output into base_rates registry (accept80 writes value_area_rates.js to base_rates_input, base_rates.py row, panel reads BASE_RATES) so a re-run refreshes the page; keep the 77% labelled drift until placebo card lands",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

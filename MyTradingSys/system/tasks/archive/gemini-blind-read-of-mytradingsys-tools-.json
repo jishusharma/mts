@@ -1,0 +1,74 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-10T20:34:45Z",
+  "commands": [],
+  "created": "2026-11-07T20:33:29Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-news-feed.md has line 1 with counts (MATCH/DIFF/NOT_IN_DATA) and one row per rule checked (at least the 6 listed): independent expected value from the sample, value the code gives, DIFF rows with file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of the shipped News panel logic (news_feed.js) against its sample, so a defect is found before the weight and flash layer is built on it: the panel rules follow from the code and the 20-item Tree News sample.",
+  "id": "gemini-blind-read-of-mytradingsys-tools-",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-news-feed.md",
+      "ref": "2eade3b2f",
+      "utc": "2026-11-10T20:34:45Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_aid: News poll gate + news_feed.js (R23), Tree News sample and tests",
+      "ref": "a65df6891719",
+      "utc": "2026-11-07T20:34:14Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: blind read completed",
+  "note": "Gemini queue, load as <card>:low. Blind read: use only the files named. Gate for the weight/flash build: run before it starts (CRITICAL_PATH_2026-11-08.md item 8). | REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-07T21:34:03Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-news-feed.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/news_feed.js (read)",
+    "MyTradingSys/research/news_feeds_2026-10-30/sample_tree_news.json (read)",
+    "MyTradingSys/tools/live_aid/test_news_feed.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-08_gemini-blind-read-news-feed.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files",
+    "no live-tree edit, no deploy"
+  ],
+  "scope_sha": "a65df6891719",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/news_feeds_2026-10-30/sample_tree_news.json"
+  ],
+  "state": "done",
+  "steps": [
+    "Read news_feed.js; from sample_tree_news.json alone compute outside the repo: how many items have importance >= 7, the ids of the 12 newest, the duplicate ids if any",
+    "Check each panel rule in the code against that count: mark threshold 7, dedupe by _id, sort newest first, row limit, poll only while visible every 15 s, larger fetch limit after a gap",
+    "Write the table; every DIFF names file:line and the expected value; counts on line 1"
+  ],
+  "taken": "2026-11-10T20:34:45Z",
+  "tests": "audit card; output file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of MyTradingSys/tools/live_aid/news_feed.js",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

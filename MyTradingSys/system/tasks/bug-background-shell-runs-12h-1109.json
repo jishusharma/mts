@@ -4,17 +4,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-09T15:57:35Z",
-    "misses": 17,
+    "folded": "2026-11-11T09:17:52Z",
+    "misses": 24,
     "reads": [
-      "scripts/dev/bg_watch.py",
-      "MyTradingSys/tests/docs/test_integrity.py",
-      "MyTradingSys/system/WORKERS.md",
       "scripts/dev/test_bg_watch.py",
-      "scripts/dev/test_mts_signal.py",
-      "MyTradingSys/system/SUPERVISOR.md"
+      "scripts/dev/host_health.py",
+      "MyTradingSys/system/OPS_CHANGE_CHECK.md",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/mts_doctor.py"
     ],
-    "session": "agent-a6fee7faefea15b60"
+    "session": "agent-af9a27b5231639476"
   },
   "created": "2026-11-09T07:57:34Z",
   "depends_on": [],
@@ -30,16 +29,16 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "eh-o2: phase lens (PHASE_LABEL) + T14/T15 DEV screen; halving lookup reviewed (scheduled d",
-      "ref": "67957cb73102",
-      "utc": "2026-11-09T07:43:22Z"
+      "line": "Result: sender_note says Cut to 200 only on real truncation; redaction gets its own line N",
+      "ref": "71d5cbd545b7",
+      "utc": "2026-11-11T09:01:09Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "dea81301a70a Revert \"Revert route tag re-land 08d51e5b7 (CI RED: wiring stale wavetrend en",
+      "line": "dad3977fc0c2 CLAUDE.md under size cap: Windows file and exclude lines moved to MOVED_RULES",
       "ref": "CLAUDE.md",
-      "utc": "2026-11-04T16:25:21Z"
+      "utc": "2026-11-10T14:04:04Z"
     }
   ],
   "layers": [],
@@ -52,9 +51,9 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T07:57:53Z",
+  "refreshed": "2026-11-11T09:11:24Z",
   "refs": [],
-  "result": "",
+  "result": "Repro: a cat heredoc as a background shell exits at once here (exit 0); the 12 h hang was a harness shell that never exited, not reproducible from the command. Root cause of 'unnoticed': bg_watch (STALLED-BG/GHOST-BG/OLD-SHELL, shells --kill) and the WORKERS.md 30-min rule already existed (4498f4672) but nothing in boot/health showed live old shells; supervisor.py plan only runs for coordinators. Extended, not duplicated: sync.py health now prints NOTE OLD-SHELL from bg_watch.live_shells (test_old_shell_health.py, registered in extra_tests.tsv; test_bg_watch covers the lister).",
   "scope_in": [
     "scripts/dev/",
     "tests/",
@@ -64,7 +63,7 @@
   "scope_out": [
     "no change to CI or ship logic"
   ],
-  "scope_sha": "67957cb73102",
+  "scope_sha": "71d5cbd545b7",
   "size": "M",
   "sources": [
     "operator 2026-11-09 via login B (JIS-NUC)"

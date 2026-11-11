@@ -59,6 +59,8 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_weekplan.py",
     "scripts/dev/test_route_audit.py",
     "scripts/dev/test_nowin.py",
+    "scripts/dev/test_nowin_calls.py",
+    "scripts/dev/test_nowin_hooks.py",
     "scripts/dev/test_wt_maint.py",
     "scripts/dev/test_outcome_labeler_incremental.py",
     "scripts/dev/test_wrapper_load_resilience.py",
@@ -154,7 +156,7 @@ def _short_sha():
     if _SHA:   # one `git rev-parse` per gate, not one per step (GATE_SPEED X2: 0.1 s each on Windows)
         return _SHA[0]
     try:
-        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10)
+        r = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(REPO), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=10, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         _SHA.append(r.stdout.strip() or "?")
         return _SHA[0]
     except Exception:
@@ -257,7 +259,7 @@ def exec_step(cmd, cwd=None):
         limit = max(1.0, min(limit, GATE_DEADLINE - time.monotonic()))   # a step queued behind others gets only what is left of the budget
     try:
         result = subprocess.run(cmd, cwd=cwd or str(REPO), capture_output=True, text=True, errors="replace",
-                                shell=isinstance(cmd, str), timeout=limit)
+                                shell=isinstance(cmd, str), timeout=limit, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except FileNotFoundError as e:
         return None, f"not found: {e}"
     except subprocess.TimeoutExpired:
@@ -391,12 +393,49 @@ def split_modules(modules, jobs):
     return [c for c in (modules[i::jobs] for i in range(jobs)) if c]
 
 
+# OURS: measured wall seconds per step-5b layer module (2026-11-11, JIS laptop, 4 parallel, one module per process); modules not listed
+# cost LAYER_DEFAULT_S. Only used to balance chunks (longest-processing-time first), never to skip or reorder what runs.
+LAYER_COST_S = {
+    "MyTradingSys.backtest.layers.promotion.test_promote": 84.0,
+    "MyTradingSys.backtest.layers.alerts.test_lookahead_forcing_wlow_session": 72.0,
+    "MyTradingSys.backtest.layers.test_run_bracket_grid": 50.0,
+    "MyTradingSys.backtest.layers.promotion.test_promote_spec": 28.0,
+    "MyTradingSys.backtest.layers.alerts.test_live_levels_confluence": 15.0,
+    "MyTradingSys.backtest.layers.krown.test_krown_live": 14.0,
+    "MyTradingSys.backtest.layers.alerts.test_lookahead_forcing_fabio_v3": 9.0,
+    "MyTradingSys.backtest.layers.cryptocred.test_cc_htf_count": 9.0,
+    "MyTradingSys.backtest.layers.alerts.test_live_runner_cli": 5.0,
+    "MyTradingSys.backtest.layers.krown.test_krown_context": 5.0,
+}
+LAYER_DEFAULT_S = 1.5   # OURS
+
+
+def balance_modules(modules, jobs, costs=None):
+    """Longest-processing-time-first split of `modules` into at most `jobs` non-empty chunks by cost (deterministic: ties by name,
+    each chunk keeps the input order). Union of the chunks is exactly `modules`, each once; a lost or duplicated module raises."""
+    costs = LAYER_COST_S if costs is None else costs
+    modules = list(modules)
+    if not modules:
+        return []   # nothing to run: no process (a bare `unittest` would discover the whole repo)
+    n = max(1, min(jobs, len(modules)))
+    bins = [[0.0, i, []] for i in range(n)]
+    for m in sorted(modules, key=lambda m: (-costs.get(m, LAYER_DEFAULT_S), m)):
+        b = min(bins, key=lambda b: (b[0], b[1]))
+        b[0] += costs.get(m, LAYER_DEFAULT_S)
+        b[2].append(m)
+    pos = {m: i for i, m in enumerate(modules)}
+    chunks = [sorted(b[2], key=lambda m: pos[m]) for b in bins if b[2]]
+    if sorted(m for c in chunks for m in c) != sorted(modules):
+        raise RuntimeError("balance_modules lost or duplicated a module")
+    return chunks
+
+
 def exec_layer_chunks(modules, jobs):
     """Run every layer module in `jobs` concurrent unittest processes. Returns (ok, output); fails if any chunk fails, and then
     the output is the last lines of each failing chunk."""
-    chunks = split_modules(modules, jobs)
+    chunks = balance_modules(modules, jobs)
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace") for c in chunks]
+                              stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
     def passed(p, o):
@@ -429,7 +468,7 @@ def exec_unittest_shards(script, jobs, part=None):
     chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                              text=True, encoding="utf-8", errors="replace", env=env) for c in chunks]
+                              text=True, encoding="utf-8", errors="replace", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
     outs = [p.communicate()[0] for p in procs]
     ok = all(p.returncode == 0 for p in procs)
     def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
@@ -492,7 +531,7 @@ def run_mvn():
     """Maven, or (None, reason) when mvn is not installed."""
     mvn = shutil.which("mvn") or shutil.which("mvn.cmd") or "mvn"  # Windows: mvn.cmd
     try:
-        if subprocess.run([mvn, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace").returncode != 0:
+        if subprocess.run([mvn, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).returncode != 0:
             return None, "mvn not found"
     except FileNotFoundError:
         return None, "mvn not found"
@@ -560,7 +599,7 @@ def build_plan(quick):
     add("3rc", "Red CI task card tests (one card per red run)", [sys.executable, "scripts/dev/test_ci_red_card.py"], "Step 3rc: Red CI card tests")
     add("3sg", "Stop guard tests (a session cannot end holding unshipped work)", [sys.executable, "scripts/dev/test_stop_guard.py"], "Step 3sg: Stop guard tests")
     add("3cxp", "Codex status parser tests", [sys.executable, "scripts/dev/test_codex_status_parse.py"], "Step 3cxp: Codex status parser tests")
-    add("3sig", "Signals between logins (mts_signal.py)", [sys.executable, "scripts/dev/test_mts_signal.py"], "Step 3sig: Signals tests")
+    plan.append(Step("3sig", "Signals between logins (mts_signal.py)", "Step 3sig: Signals tests", run=lambda: exec_unittest_shards("scripts/dev/test_mts_signal.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_mts_signal.py, 2 shards)", tail=None))   # 63 tests ~85 s: two concurrent processes, same tests (GATE_SLOW_STEPS.md)
     add("3suh", "User-level signal hook (signal_user_hook.py)", [sys.executable, "scripts/dev/test_signal_user_hook.py"], "Step 3suh: User signal hook tests")
     add("3e", "DSA browser worker + queue lane tests", [sys.executable, "scripts/worker/test_dsa_worker.py"], "Step 3e: DSA worker tests")
     add("3sh", "Screenshot intake tests (save, classify, read, close gates)", [sys.executable, "scripts/dev/test_shot.py"], "Step 3sh: Screenshot intake tests")
@@ -678,14 +717,15 @@ def build_plan(quick):
 NOT_RUN = {}   # step num -> why it did not run (fail-fast / precheck failed); results[num] is None for these
 
 
-def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None, precheck_slot=None):
+def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, reused=None):
     """Run the plan and print each step's block as it finishes. Independent steps run `jobs` at a time, slowest first; SERIAL_STEPS
     follow one by one; jobs == 1 runs everything in definition order. Returns {step num: True|False|None}.
     GATE_SPEED (sync.py ship only; CI, auto_deploy and a bare run pass none of these):
-      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time, holding precheck_slot when provided;
+      precheck   CHEAP_STEPS and the targeted step run first, PRECHECK_JOBS at a time (inside the one slot, when there is one);
                  any failure there and the rest is NOT RUN (the whole precheck still runs, so every cheap failure shows at once)
       fail_fast  in the main phase, after the first failed step the steps not yet started are NOT RUN; started ones finish
-      slot       zero-argument context manager (the gate slot) held around the main phase only
+      slot       zero-argument context manager (the gate slot): taken ONCE, around the precheck and the main phase (ARCH_REVIEW row 3:
+                 one queue per machine, one wait per ship); not taken when there is nothing to run
       reused     {num: note} of steps the pass record shows passing on this exact tree: PASS without running"""
     out = out or sys.stdout
     results = {}
@@ -746,24 +786,31 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     if precheck:
         pre = [s for s in todo if s.num in CHEAP_STEPS or s.num == TARGET_STEP]
         main_steps = [s for s in todo if s not in pre]
-        slot_msg = "with precheck slot" if precheck_slot else "no gate slot"
-        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time, {slot_msg}"
+        print(f"Gate: {len(todo)} steps; precheck {len(pre)} cheap steps, {min(jobs, PRECHECK_JOBS)} at a time"
               + (f"; {len(reused)} reused from the pass record" if reused else ""), file=out, flush=True)
-        with (precheck_slot() if precheck_slot else contextlib.nullcontext()):
+        with (slot() if slot and todo else contextlib.nullcontext()):   # one slot for the whole ship; a precheck failure frees it at once
             run_steps(pre, min(jobs, PRECHECK_JOBS), False)
-        if failed_first:
-            for s in main_steps:
-                not_run(s, f"precheck failed: step {failed_first[0]}")
-            return results
-        print(f"Precheck passed in {time.monotonic() - t_start:.0f}s; main {len(main_steps)} steps, {jobs} at a time", file=out, flush=True)
-    else:
-        main_steps = todo
-        print(f"Gate: {len(todo)} steps, {jobs} at a time" + (f"; {len(reused)} reused from the pass record" if reused else ""),
-              file=out, flush=True)
-    if main_steps:
+            if failed_first:
+                for s in main_steps:
+                    not_run(s, f"precheck failed: step {failed_first[0]}")
+                return results
+            print(f"Precheck passed in {time.monotonic() - t_start:.0f}s; main {len(main_steps)} steps, {jobs} at a time", file=out, flush=True)
+            if main_steps:
+                run_steps(main_steps, jobs, fail_fast)
+        return results
+    print(f"Gate: {len(todo)} steps, {jobs} at a time" + (f"; {len(reused)} reused from the pass record" if reused else ""),
+          file=out, flush=True)
+    if todo:
         with (slot() if slot else contextlib.nullcontext()):
-            run_steps(main_steps, jobs, fail_fast)
+            run_steps(todo, jobs, fail_fast)
     return results
+
+
+def gate_slot_factory(mode):
+    """ARCH_REVIEW row 3: the zero-argument gate-slot context manager of EVERY gate mode (fast, full, deploy): one pool, GATE_SLOTS wide.
+    `mode` only labels the line in wait.log."""
+    import sync
+    return lambda: sync.gate_slot(REPO, slots=sync.GATE_SLOTS, name=sync.GATE_POOL, mode=mode)
 
 
 def step_timeout_for(mode):
@@ -805,7 +852,6 @@ def targeted_tests(files, root=REPO):
 
 
 FAST_JOBS_MAX = 6
-FAST_SLOTS = 2
 FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
 LOOKAHEAD_MUST = "3la"   # picked by gate_select.LOOKAHEAD_RE; in a fast ship it is must-pass (NO_DEFER_CMDS)
 FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
@@ -1158,7 +1204,7 @@ def apply_selection(plan, args):
 
 
 def _git_out(root, *args):
-    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
+    r = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0:
         raise RuntimeError(r.stderr.strip())
     return r.stdout
@@ -1410,16 +1456,10 @@ def main(argv=None):
         if use_record:
             reused = {**load_input_reused(plan), **reused}
     slot = None
-    precheck_slot = None
     if "--slot" in args and mode not in ("docs", "none"):
-        import sync
-        if fast_applied:   # own pool: a fast gate never queues behind the 9-minute full gates
-            slot = lambda: sync.gate_slot(REPO, slots=FAST_SLOTS, name="gate-slots-fast")   # noqa: E731
-        else:
-            slot = lambda: sync.gate_slot(REPO)   # noqa: E731 - the slot is taken after the precheck, released when the main phase ends
-            precheck_slot = lambda: sync.gate_slot(REPO, slots=sync.GATE_PRECHECK_SLOTS, name="gate-slots-precheck")   # noqa: E731
+        slot = gate_slot_factory("fast" if fast_applied else "full")   # one pool for every mode (ARCH_REVIEW row 3)
     results = run_plan(plan, fast_jobs() if fast_applied else gate_jobs(), fail_fast="--fail-fast" in args,
-                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused, precheck_slot=precheck_slot)
+                       precheck="--precheck" in args and not fast_applied, slot=slot, reused=reused)
     if use_record:
         save_record(plan, results, start_tree=start_tree, deferred=fast_info.get("deferred") if fast_applied else None)
         save_input_record(plan, results, reused=reused, start_tree=start_tree)

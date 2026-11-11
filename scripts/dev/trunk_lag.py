@@ -45,7 +45,7 @@ def git_timeout():
 def git(repo, *args, timeout=None):
     timeout = git_timeout() if timeout is None else timeout
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=timeout,
-                          env={**os.environ, **GIT_NOPROMPT})
+                          env={**os.environ, **GIT_NOPROMPT}, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def message(behind, oldest_age_s):
@@ -94,7 +94,7 @@ def _spawn_pages_refresh(repo, cache):
                      cwd=str(repo), stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=flags)
 
 
-def pages_line(repo, now=None, login=None, spawn=None):
+def pages_line(repo, now=None, login=None, spawn=None, sid=None):
     """`PAGES STALE n: slugs` for a session on a publisher login (registry publishers) when a page's repo build differs from its last
     publish; '' for any other login, when nothing is stale, or while the cache is still being built (operator 2026-11-07)."""
     repo, now = Path(repo), now or time.time()
@@ -124,6 +124,14 @@ def pages_line(repo, now=None, login=None, spawn=None):
         return ""
     if not slugs:
         return ""
+    if sid:         # at most once per session id; an unwritable marker prints (fail open to the line)
+        try:
+            seen = Path(gd) / ("mts_pages_seen_" + "".join(ch for ch in str(sid) if ch.isalnum() or ch in "-_")[:60])
+            if seen.exists():
+                return ""
+            seen.write_text(str(now), encoding="utf-8")
+        except Exception:
+            pass
     return (f"PAGES STALE {len(slugs)}: {', '.join(slugs)}. A page's repo build differs from what is published: build and publish over its url "
             f"(`python scripts/dev/artifacts.py republish`, then `publish-record --slug <slug>`; SUPER_SESSION.md Every wake step 3b).")
 
@@ -306,6 +314,14 @@ def catch_up(repo=None, fetch=True):
     return " ".join(notes)
 
 
+def payload_sid(raw):
+    try:
+        sid = json.loads(raw).get("session_id")
+    except (ValueError, AttributeError):
+        return None
+    return sid if isinstance(sid, str) and sid else None
+
+
 def payload_cwd(raw):
     """The session's own folder from the hook's stdin JSON; None (-> os.getcwd()) when absent. The hook process runs from the main checkout."""
     try:
@@ -328,10 +344,11 @@ def main(argv):
         return 0
     if argv[:1] in (["hook"], ["check"]):
         try:
-            cwd = payload_cwd(sys.stdin.read()) if argv[:1] == ["hook"] else None
+            raw = sys.stdin.read() if argv[:1] == ["hook"] else ""
+            cwd, sid = (payload_cwd(raw), payload_sid(raw)) if raw else (None, None)
             text = check(cwd)
             if ".mts_live" not in Path(cwd or os.getcwd()).resolve().parts:
-                text = chr(10).join(x for x in (text, pages_line(cwd or os.getcwd())) if x)
+                text = chr(10).join(x for x in (text, pages_line(cwd or os.getcwd(), sid=sid)) if x)
         except Exception:
             return 0
         if text:

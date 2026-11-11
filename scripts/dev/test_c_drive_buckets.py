@@ -48,11 +48,12 @@ class BucketTest(unittest.TestCase):
         return {Path(p).relative_to(self.root).as_posix() for _, p, _, _ in rows}
 
     def test_rescue_cache_pruned_rescued_work_kept(self):
+        # age_d=1: an mtime equal to the cutoff (same coarse clock tick on a Windows CI runner) is not stale (CI red bb59029e)
         r = "repo/main/Dumps/wt_rescue/t1/"
-        make(self.root, r + BARS + "/BTCUSDT-1mv-2023-01.npy", size=2000)
-        make(self.root, "repo/main/Dumps/wt_rescue/t0/files/" + BARS + "/old.npy", size=3000)   # older rescue layout
-        make(self.root, r + "MyTradingSys/research/sim_desk/cache/results/a.json")
-        make(self.root, r + "uncommitted.patch")
+        make(self.root, r + BARS + "/BTCUSDT-1mv-2023-01.npy", size=2000, age_d=1)
+        make(self.root, "repo/main/Dumps/wt_rescue/t0/files/" + BARS + "/old.npy", size=3000, age_d=1)   # older rescue layout
+        make(self.root, r + "MyTradingSys/research/sim_desk/cache/results/a.json", age_d=1)
+        make(self.root, r + "uncommitted.patch", age_d=1)
         rows = g.rescue_cache_rows(g.MAIN)
         self.assertEqual(self.paths(rows), {r + BARS, "repo/main/Dumps/wt_rescue/t0/files/" + BARS})
         self.assertEqual(sum(s for _, _, s, _ in rows), 5000)

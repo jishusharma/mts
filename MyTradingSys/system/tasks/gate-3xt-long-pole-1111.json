@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 24,
+    "folded": "2026-11-11T09:49:43Z",
+    "misses": 37,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_planted_error_trial.py"
+    ],
+    "session": "agent-a4ab10c795df71d95"
+  },
+  "created": "2026-11-11T07:51:06Z",
+  "depends_on": [],
+  "done_when": "Two full gates in runtime_data/gate_timing.jsonl after the change show ship_wall 300 s or less with every step ok, and test_run_all_tests.py plus test_run_extra_tests.py pass",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Full gate on JIS-NUC (12 CPU) at 5 min or less wall (PLAN_24H T4), same steps and same pass/fail as now",
+  "id": "gate-3xt-long-pole-1111",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/nowin-hooks-1111",
+      "ref": "68da2fc39253",
+      "utc": "2026-11-11T04:53:07Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Filed by lead B from f77fa069 gate: wall 529 s, 3xt 362 s, 5b 201 s, 4g 194 s, 4f 142 s, 3cr 120 s, 3sig 112 s | 2026-11-11 08:52Z lead B on JIS-NUC: MTS_GATE_JOBS=8 full gate = 600 s wall, ALL PASS, slower than 4 workers (529 s at f77fa069): shards 4b-4h 306-517 s vs 90-195 s, 3xt 477 s vs 362 s. The box saturates (CPU/disk); more workers is not the lever. Next try: cut work, not add workers - batch 3xt files per dir into one pytest process (270 python starts today), and find the slowest extra files from per-file durations. | 09:10Z lead B: 3xt run alone on JIS-NUC = 242 s wall for 399 files (not 270; 4 jobs), pytest-reported test time sums to 1070 s; 289 files take under 1 s each; top 10 files = 413 s (39 %): test_planted_error_trial.py 93 s (one test), context_factors_2026-10-16/test_context_asof.py 54 s, live_aid/test_live_aid.py 48 s, test_live_aid_replay.py 46 s, test_refresh_main_checkout.py 34 s, context_factors_pit/test_context_asof.py 33 s, fractals phase_tag 29 s, context_null 27 s, test_lab_query.py 27 s, test_station_disk_report.py 24 s. In the full gate 3xt took 362 s (contention). Levers: submit the slowest files first inside run_extra_tests (93 s file must not start last), speed up the top 10, and merge the 289 sub-second files into a few pytest processes per dir. | 10:35Z lead B on JIS-NUC after A's grouping (4bbf186b): full gate 610 s ALL PASS (3xt 376 s, 5b 223 s, 3k 221 s); 3xt alone 225 s (was 242 s). Grouping gains about 7 %; the gate is CPU-bound, so the remaining lever is less CPU work: the slowest files (test_planted_error_trial 93 s, context_asof 54 s, live_aid 48+46 s). | 11:25Z lead B on JIS-NUC after A's slow-test fixes (067a68b7, 274b6e3a): full gate 586 s ALL PASS, 3xt 329 s. Step times sum to 2224 s over 4 workers = 556 s, so the gate is throughput-bound: 300 s needs about 1200 s of total step time. Next biggest: 5b layer tests 216 s, 3k sync.py tests 210 s, pytest shards 150-155 s each. | 13:00Z lead B correction: the 586/610/575 s runs were plain run_all_tests.py (includes LOCAL_SKIP 3k, 4, 3dk, 3ad, 3bk, which the ship gate leaves to CI). The ship gate command (run_all_tests.py --quick --precheck --fail-fast, no --record) on JIS-NUC at f458d978: 470 s ALL PASS vs the 529 s baseline; long poles 3xt 302 s, shard 4g 182 s, 5b 147 s, 4f 135 s, 3sig 116 s.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T09:28:07Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/run_all_tests.py (SLOWEST_FIRST order, worker count default min(4, cpu) at line ~382)",
+    "scripts/dev/run_extra_tests.py (inner MTS_GATE_JOBS, one pytest process per file)"
+  ],
+  "scope_out": [
+    "no ci.yml edit; no test removed or skipped; no live tree"
+  ],
+  "scope_sha": "68da2fc39253",
+  "size": "M",
+  "sources": [
+    "lead B, T4 re-measure 2026-11-11"
+  ],
+  "state": "ready",
+  "steps": [
+    "Measure: 3xt starts about 150 s into the gate because the 4-worker pool is taken by pytest shards 4-4h first; it then runs 270 files 4 at a time (362 s)",
+    "Try: worker default from cpu count (e.g. cpu-4, cap 8) for the pool and 3xt; submit 3xt first; check per-file seconds (run_all_tests parses durations) for the slowest extra files",
+    "Run two full gates on JIS-NUC and record ship_wall"
+  ],
+  "taken": "2026-11-11T08:35:37Z",
+  "tests": "scripts/dev/test_run_all_tests.py scripts/dev/test_run_extra_tests.py",
+  "title": "T4 gate time: cut step 3xt (extra tests, 362 of 529 s full gate on JIS-NUC) so the full gate is 5 min or less",
+  "weight": "",
+  "worker": "session"
+}

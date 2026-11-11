@@ -347,7 +347,7 @@ def _win_shells(sleepers_only: bool = True) -> list[dict]:
     ps = ("Get-CimInstance Win32_Process | Where-Object { $_.Name -in 'bash.exe','sh.exe' } | ForEach-Object { "
           "[string]$_.ProcessId + [char]9 + $_.CreationDate.ToUniversalTime().ToString('o') + [char]9 + $_.CommandLine }")
     r = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", ps], capture_output=True, text=True,
-                       encoding="utf-8", errors="replace", timeout=20)
+                       encoding="utf-8", errors="replace", timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     rows = []
     for line in r.stdout.splitlines():
         parts = line.split("\t", 2)

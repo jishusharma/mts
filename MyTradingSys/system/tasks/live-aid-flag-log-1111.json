@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-10T21:04:44Z",
+  "depends_on": [],
+  "done_when": "live_aid.html has a flag log under key mts_flag_log (capped 2000 rows, storage in try/catch) and a Download button; a test in test_live_aid.py drives two banners and reads two rows with all six fields; it fails on current code.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Live Aid logs every banner it flashes (time, kind, side, level, evidence, price) to localStorage with a Download CSV button, following the premarket log pattern (PMK.log).",
+  "id": "live-aid-flag-log-1111",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Live Aid: level names anchored (yesterday's low was shown as Today low), weekly high/low l",
+      "ref": "74c91b0bd1eb",
+      "utc": "2026-11-10T14:09:45Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:52:13Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/live_aid.html (PMK.log pattern ~800)",
+    "MyTradingSys/tools/live_aid/test_live_aid.py"
+  ],
+  "scope_out": [
+    "no network call, no live tree, no change to banner logic"
+  ],
+  "scope_sha": "74c91b0bd1eb",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/live_aid_review_2026-11-11/RESULT.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Copy the PMK.log load/save pattern into a flag log",
+    "Hook the banner render path and add the Download button",
+    "Write the test; run test_live_aid.py"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid.py::test_flag_log_records_each_banner (fails first: no mts_flag_log)",
+  "title": "Live Aid keeps no record of what it flashed: log every banner (time, kind, side, level, evidence, price) to localStorage with a download button, so the next review scores the real output and not a replay with rebuilt levels",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

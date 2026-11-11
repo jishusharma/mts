@@ -60,6 +60,7 @@ account names, secrets, order or runtime data in one. Sender id = <host>/<MTS_AC
 Env: MTS_SIGNALS=off disables; MTS_SIGNALS_HOME (clone dir, default ~/.claude/mts-signals), MTS_SIGNALS_ORIGIN (default:
 origin of the current repo), MTS_SIGNALS_HOST (override host name, tests), MTS_SIGNALS_SYNC=1 (send in the foreground, tests).
 """
+import contextlib
 import hashlib
 import json
 import os
@@ -102,6 +103,56 @@ def home():
 
 def state_dir():
     return home().parent / "mts-signals-state"
+
+
+HUB_LOCK_WAIT = 60      # OURS: seconds a session waits for the hub clone before it goes on without the lock (a stuck holder must not stall a hook)
+HUB_LOCK_STALE = 90     # OURS: a lock file older than this belongs to a crashed holder (every git call has a 20 s timeout) and is taken over
+
+
+def hub_lock_path(h):
+    return Path(h).parent / (Path(h).name + ".lock")     # beside the clone: git never sees it
+
+
+@contextlib.contextmanager
+def hub_lock(h, wait=None, stale=None):
+    """Cross-process lock on the shared signals clone (audit 2026-11-11: index.lock / FETCH_HEAD races between sessions). Yields True when held,
+    False when `wait` seconds passed without getting it (the caller goes on: signals are best effort and fail open)."""
+    wait = HUB_LOCK_WAIT if wait is None else wait
+    stale = HUB_LOCK_STALE if stale is None else stale
+    lock = hub_lock_path(h)
+    deadline = time.time() + wait
+    held = False
+    try:
+        lock.parent.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
+    while True:
+        try:
+            fd = os.open(str(lock), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            os.write(fd, str(os.getpid()).encode())
+            os.close(fd)
+            held = True
+            break
+        except FileExistsError:
+            try:
+                if time.time() - lock.stat().st_mtime > stale:
+                    lock.unlink()
+                    continue
+            except OSError:
+                continue
+        except OSError:
+            break          # no writable folder: no lock, no wait
+        if time.time() >= deadline:
+            break
+        time.sleep(0.1)
+    try:
+        yield held
+    finally:
+        if held:
+            try:
+                lock.unlink()
+            except OSError:
+                pass
 
 
 def host():
@@ -242,8 +293,14 @@ def origin_url(cwd=None):
 
 
 def ensure(cwd=None):
-    """The local clone of the signals branch; created (and the orphan branch pushed) on first use. None if impossible."""
+    """The local clone of the signals branch; created (and the orphan branch pushed) on first use. None if impossible.
+    Everything that writes the shared clone (init, config, fetch, checkout) runs under hub_lock: sessions on one machine share it."""
     h = home()
+    with hub_lock(h):
+        return _ensure_locked(h, cwd)
+
+
+def _ensure_locked(h, cwd=None):
     if (h / ".git").exists() and git(h, "rev-parse", "--git-dir", check=False).returncode != 0:
         # the clone's .git is unreadable (HEAD zeroed after a power loss, seen on JIS-NUC 2026-10-27): move the broken
         # hub aside and fall through to a fresh init/clone below, instead of every later git call (send()'s `git add -A`)
@@ -264,8 +321,8 @@ def ensure(cwd=None):
         git(h, "config", "core.autocrlf", "false")
     git(h, "config", "user.name", "mts-signals")      # also on an existing hub: a clone made before the identity was set must still commit (D5)
     git(h, "config", "user.email", "signals@mts.invalid")
-    if git(h, "fetch", "-q", "origin", BRANCH, check=False).returncode == 0:
-        git(h, "checkout", "-q", "-B", BRANCH, "FETCH_HEAD")
+    if _fetch_hub(h):
+        git(h, "checkout", "-q", "-B", BRANCH, TRACK_REF)
         mark_synced()
         return h
     # the branch does not exist yet on origin: start it
@@ -274,8 +331,17 @@ def ensure(cwd=None):
     git(h, "add", "-A")
     git(h, "commit", "-q", "-m", "signals: start")
     git(h, "push", "-q", "origin", f"HEAD:refs/heads/{BRANCH}", check=False)
-    git(h, "fetch", "-q", "origin", BRANCH, check=False)
+    _fetch_hub(h)
     return h
+
+
+TRACK_REF = "refs/remotes/origin/" + BRANCH
+
+
+def _fetch_hub(h):
+    """Fetch the signals branch into its own tracking ref: FETCH_HEAD is one file shared by every session's fetch, so a concurrent fetch
+    changed what `checkout -B ... FETCH_HEAD` meant (audit 2026-11-11)."""
+    return git(h, "fetch", "-q", "origin", "+refs/heads/%s:%s" % (BRANCH, TRACK_REF), check=False).returncode == 0
 
 
 def mark_synced():
@@ -341,16 +407,17 @@ def send(text, to="all", kind="note", cwd=None, sid="", extra=None):
         return True
     # microseconds right after the 16-char second stamp: two signals in one second sort in send order, not by the random tail
     name = "%s%06d-%s-%04x.json" % (rec["t"], dt.microsecond, re.sub(r"[^a-z0-9]+", "", host())[:12], random.randrange(1 << 16))
-    for _ in range(4):
-        (h / name).write_text(json.dumps(rec, ensure_ascii=False), encoding="utf-8", newline="\n")
-        prune(h)
-        git(h, "add", "-A")
-        git(h, "commit", "-q", "-m", "signal " + name, check=False)
-        if git(h, "push", "-q", "origin", f"HEAD:refs/heads/{BRANCH}", check=False).returncode == 0:
-            mark_synced()
-            return True
-        git(h, "fetch", "-q", "origin", BRANCH, check=False)       # lost a race: rebuild on the new head and retry
-        git(h, "reset", "-q", "--hard", "FETCH_HEAD", check=False)
+    with hub_lock(h):       # one session at a time on the shared clone (audit 2026-11-11: index.lock races)
+        for _ in range(4):
+            (h / name).write_text(json.dumps(rec, ensure_ascii=False), encoding="utf-8", newline="\n")
+            prune(h)
+            git(h, "add", "-A")
+            git(h, "commit", "-q", "-m", "signal " + name, check=False)
+            if git(h, "push", "-q", "origin", f"HEAD:refs/heads/{BRANCH}", check=False).returncode == 0:
+                mark_synced()
+                return True
+            if _fetch_hub(h):       # lost a race (another machine pushed): rebuild on the new head and retry
+                git(h, "reset", "-q", "--hard", TRACK_REF, check=False)
     return False
 
 
@@ -528,12 +595,15 @@ def auto_send_text(payload):
 def sender_note(text):
     """What the sending session is told: a broadcast is pull-only (operator 2026-10-22: "nothing was flashing, it did not
     work"). Other sessions see it only when they next take a turn; the sender wakes the ones it can reach."""
-    cut = len(" ".join(str(text).split())) - len(clean(text))
+    full = clean(text, limit=10 ** 9)           # redaction applied, no length limit: a [cut] swap is not a truncation
+    cut = max(0, len(full) - TEXT_MAX)
     lines = ["[MTS BROADCAST SENT] Other sessions see it only on their next turn: nothing wakes an idle session or flashes.",
              "Now: list this login's running sessions (mcp__ccd_session_mgmt__list_sessions) and send_message each one the",
              "text; tell the operator which machines/logins have no session you reached (he prompts one there)."]
     if cut > 0:
         lines.append("Cut to %d characters (%d lost): put the full text in that message." % (TEXT_MAX, cut))
+    if "[cut]" in full[:TEXT_MAX]:
+        lines.append("Note: a token-like string was redacted ([cut]): put it in the message to the session yourself.")
     return "\n".join(lines)
 
 
@@ -847,8 +917,24 @@ def ask_rows(rows, at=None):
              "esc": ",".join(escalated_to(rows, a["id"])), "text": a.get("text", "")} for a in asks_open(rows)]
 
 
-def ask_block(rows, ev, at=None):
-    """For the target: an unseen ask is loud on every prompt; a told one only at SessionStart or once overdue."""
+def ask_owner_ok(qid, sid):
+    """True when this session owns the ask on this machine (the first session that saw it claims it); an overdue ask is
+    loud for all. Unreadable owner state fails closed: print the ask."""
+    try:
+        f = state_dir() / ("ask-owner-%s.txt" % "".join(c for c in str(qid) if c.isalnum() or c in "-_")[:60])
+        f.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with open(f, "x", encoding="utf-8") as fh:
+                fh.write(str(sid))
+            return True
+        except FileExistsError:
+            return f.read_text(encoding="utf-8").strip() == str(sid)
+    except Exception:
+        return True
+
+
+def ask_block(rows, ev, at=None, sid=None):
+    """For the target: an unseen ask is loud on every prompt of ONE owner session per machine; a told one only at SessionStart or once overdue."""
     at = at or now()
     if is_worker_env():
         return ""
@@ -858,6 +944,8 @@ def ask_block(rows, ev, at=None):
             continue
         st, late = ask_state(rows, a["id"]), at > ask_due(a)
         if st == "told" and not late and ev != "SessionStart":
+            continue
+        if sid and not late and not ask_owner_ok(a["id"], sid):
             continue
         tag = "OVERDUE %d min" % ((at - ask_due(a)).total_seconds() // 60) if late else "answer by %s" % ask_due(a).strftime("%H%MZ")
         out.append("[MTS ASK %s %s from %s at %s %s %s %s] %s" % (DOT, a["id"], a.get("from", "?"), a["t"][9:13] + "Z", DOT, st, tag, a.get("text", "")))
@@ -998,7 +1086,7 @@ def _handle_rows(payload, sid, ev, auto):
     out = []
     if ev in ("UserPromptSubmit", "SessionStart"):
         out.append(action_block(rows, ev))
-        out.append(ask_block(rows, ev))
+        out.append(ask_block(rows, ev, sid=sid))
         try:
             escalate(rows)
         except Exception:

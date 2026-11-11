@@ -32,7 +32,10 @@
 
   // One timeframe: votes RSI (above 50 up, below 50 down), WaveTrend (wt1 vs wt2), CVD (net taker flow of the last 10 bars);
   // divergences (last 15 bars vs the 15 before, LiveAid.divergence) of price vs RSI, wt1 and cumulative delta count double.
-  function read(k, ms) {
+  // now > 0 drops the bar still forming (close time >= now; a folded 2m/7m/10m bucket still filling counts as forming), so the
+  // grid, the lanes and the indicator card read the same closed bars. No now = every row (replays and old callers).
+  function read(k, ms, now) {
+    if (k && now > 0) k = k.filter(function (r) { return +r[6] < now; });
     if (!k || k.length < P.minBars) return null;
     var t = [], h = [], l = [], c = [], cum = [], s = 0, okCvd = true;
     k.forEach(function (r) {
@@ -50,8 +53,8 @@
   }
 
   // Whole grid + weighted lean in [-1, 1] (each row's score / 7, the most one row can reach, weighted 1 / 2 / 3 low to high).
-  function grid(TFK) {
-    var rows = GRID.map(function (tf) { var r = read(rowsFor(TFK, tf), tf[1]); return { tf: tf[0], ms: tf[1], r: r }; });
+  function grid(TFK, now) {
+    var rows = GRID.map(function (tf) { var r = read(rowsFor(TFK, tf), tf[1], now); return { tf: tf[0], ms: tf[1], r: r }; });
     var num = 0, den = 0, hiNum = 0, hiDen = 0;
     rows.forEach(function (x) {
       if (!x.r) return; var wt = P.w[x.tf], sc = Math.max(-7, Math.min(7, x.r.score)) / 7;

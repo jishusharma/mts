@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T08:03:07Z",
+    "misses": 8,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/tests/test_aibridge_probe_noise.py"
+    ],
+    "session": "agent-ab146e395631e4fc8"
+  },
+  "created": "2026-11-10T19:47:54Z",
+  "depends_on": [],
+  "done_when": "test_wiring_tom_fabio_habib.py has no '== 270'; test_one_row_per_tom_quote_id asserts ids unique and non-empty; the file passes, also with one extra Tom row appended to a tmp copy of the CSV.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Replace the exact row-count assertion over live research output (== 270 Tom quote ids in the wiring audit CSV) with a unique-id and schema check, so a new result row cannot break the ship gate; fixture-built counts stay.",
+  "id": "arch-row2-count-tests-1110",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "wiring audit: Tom, Fabio, Habib sourced rules vs layer code (446 rows)",
+      "ref": "bcfd46cfc42f",
+      "utc": "2026-10-28T12:47:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:52:08Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/wiring_audit_2026-10/test_wiring_tom_fabio_habib.py"
+  ],
+  "scope_out": [
+    "no change to the CSV, no trial-ledger test, no tmp-fixture counts, no live path"
+  ],
+  "scope_sha": "bcfd46cfc42f",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/ARCH_REVIEW_2026-11-10.md row 2"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep research tests for len(...) == <3-digit> over live output, not tmp fixtures",
+    "Write the failing append-a-row test first",
+    "Turn the count into a unique-id check; run the file"
+  ],
+  "tests": "MyTradingSys/research/wiring_audit_2026-10/test_wiring_tom_fabio_habib.py: new test appends a Tom row to a tmp CSV copy; fails on the pre-change code (271 != 270)",
+  "title": "ARCH_REVIEW row 2: research exact-count tests (rows == 337) become set-based or frozen fixture; keep the trial ledger",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

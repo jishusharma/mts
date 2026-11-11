@@ -1,0 +1,71 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T06:26:11Z",
+  "commands": [],
+  "created": "2026-11-11T02:48:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-mts-signal-budget.md line 1 has counts MATCH/DIFF/NOT_IN_DATA and one row per flag or clause.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of budget_line and budget_cmd in mts_signal.py against CLAUDE.md boot step 5b: flags --login A|B|C, --five, --week, --reset are parsed and recorded as the rule says.",
+  "id": "gemini-blind-read-mts-signal-budget-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH=6 DIFF=2 NOT_IN_DATA=1 (MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-bl",
+      "ref": "a8c04f386",
+      "utc": "2026-11-11T06:26:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX signal hub: one cross-process lock on the shared clone, fetch into a named ref instead",
+      "ref": "1dc45606c2ae",
+      "utc": "2026-11-11T00:02:31Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: gq single-card worker complete",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a2-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T02:48:36Z",
+  "refs": [],
+  "result": "MATCH=6 DIFF=2 NOT_IN_DATA=1 (MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-mts-signal-budget.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/mts_signal.py lines 1313-1400 and CLAUDE.md step 5b (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-mts-signal-budget.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "scope_sha": "1dc45606c2ae",
+  "size": "S",
+  "sources": [
+    "CLAUDE.md step 5b"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "Read budget_line and budget_cmd, list each flag and recorded field, mark MATCH/DIFF/NOT_IN_DATA vs step 5b",
+    "Write the table with counts on line 1 and quote file:line for each row"
+  ],
+  "taken": "2026-11-11T06:26:11Z",
+  "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
+  "title": "[GEMINI] blind read of mts_signal.py budget command vs CLAUDE.md step 5b",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

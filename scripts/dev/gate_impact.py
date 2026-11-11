@@ -82,7 +82,7 @@ def ref_stems(text):
 
 
 def tracked_py(root=REPO):
-    r = subprocess.run(["git", "-C", str(root), "ls-files", "-z"], capture_output=True, text=True, errors="replace", timeout=60)
+    r = subprocess.run(["git", "-C", str(root), "ls-files", "-z"], capture_output=True, text=True, errors="replace", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if r.returncode != 0:
         raise RuntimeError("git ls-files failed: " + r.stderr.strip())
     return [f for f in r.stdout.split("\0") if f.endswith(".py") and (Path(root) / f).is_file()]
@@ -217,7 +217,7 @@ def active_deselects(rows, today=None):
 
 def trunk_quarantine(root=REPO, ref="origin/fast-track"):
     """The quarantine rows as committed on the trunk (a ship cannot quarantine its own failing test); [] when unreadable."""
-    r = subprocess.run(["git", "-C", str(root), "show", f"{ref}:{QUARANTINE}"], capture_output=True, text=True, errors="replace", timeout=30)
+    r = subprocess.run(["git", "-C", str(root), "show", f"{ref}:{QUARANTINE}"], capture_output=True, text=True, errors="replace", timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return quarantine_rows(r.stdout) if r.returncode == 0 else []
 
 

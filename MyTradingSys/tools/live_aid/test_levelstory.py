@@ -191,8 +191,28 @@ def _flash_kinds(ideas):
     return json.loads(out.stdout)
 
 
-def test_opposite_ideas_at_two_levels_raise_no_flash():
-    # operator 2026-11-10 screenshot: LONG idea at 74,816 and SHORT idea at 74,950 at the same moment = noise
+def test_ideas_raise_no_flash_banner():
+    # card live-aid-board-render-1111: IDEA banners are gone from the flash bar (the board card shows both sides instead)
     assert _flash_kinds(["LONG", "SHORT"]) == []
-    # operator 2026-11-10 (later): two SHORT banners for 74,816 and 74,850 were clutter; one banner, for the first (nearest) level
-    assert _flash_kinds(["SHORT", "SHORT"]) == ["idea"]
+    assert _flash_kinds(["SHORT", "SHORT"]) == []
+
+
+def _flash_seq(steps):
+    """home.flashes called once per step with an injected idea and setup; returns the [kind, cls] list shown after the last step."""
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    js = ("const H=require(process.argv[1]);const md={px:100,zones:[],lad:{above:[],below:[{price:99.9,name:'Yesterday low'}],at:null},dir:'WAIT'};"
+          "H._FL.list=[];H._FL.seen={};let out=[];JSON.parse(process.argv[2]).forEach((s,i)=>{"
+          "const v=s.idea?[{price:99.9,state:'ACCEPTED',idea:s.idea,why:'w',valid:'v',ev:[]}]:[];"
+          "const su=s.setup?{side:s.setup,level:99.9,name:'Yesterday low',why:['at Yesterday low']}:null;"
+          "out=H.flashes({now:1e12+i*60000,k15:[1],setup:su,_st:{md:md,v:v}},md);});console.log(JSON.stringify(out.map(f=>[f.kind,f.cls,f.text])))")
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js"), json.dumps(steps)], capture_output=True, text=True, encoding="utf-8", timeout=120)
+    assert out.returncode == 0, out.stderr[-1500:]
+    return json.loads(out.stdout)
+
+
+def test_no_setup_or_both_sides_banner_ever():
+    # operator 2026-11-11: LONG SETUP / LONG IDEA / SHORT SETUP banners and the BOTH SIDES line are replaced by the board card
+    for steps in ([{"setup": "LONG"}, {"idea": "LONG"}, {"setup": "SHORT"}], [{"setup": "LONG"}, {"idea": "LONG"}]):
+        assert _flash_seq(steps) == [], steps

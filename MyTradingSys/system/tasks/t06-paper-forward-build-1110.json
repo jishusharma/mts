@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T01:10:50Z",
+    "misses": 14,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_run_all_tests.py",
+      "scripts/dev/tasks.py"
+    ],
+    "session": "agent-ad25e8e3ced1b587f"
+  },
+  "created": "2026-11-10T19:35:15Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py + test exist; events() for the newest closed 4h bar only; journal row kinds match malkan_level_short_live.py; parity test batch == one-bar feed passes; source tag layer:rsi:rsi_ma_cross; no order, no auto_trader path, no deploy",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "T06 (best leftover, +0.048 R n=1322) needs a context-only paper forward so the weekly readout can judge it.",
+  "id": "t06-paper-forward-build-1110",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "deploy-malkan-level-short-forward-1109"
+  ],
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-10T19:35:32Z",
+  "refs": [],
+  "result": "",
+  "scope": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_ma_cross_live.py"
+  ],
+  "scope_in": [
+    "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py",
+    "MyTradingSys/backtest/layers/rsi/test_rsi_ma_cross_live.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "Lead B"
+  ],
+  "state": "ready",
+  "steps": [
+    "read malkan_level_short_live.py and rsi_ma_cross.py",
+    "write the live adapter importing rsi_ma_cross, not copying",
+    "parity test and journal row test",
+    "ship"
+  ],
+  "tests": [
+    "test_rsi_ma_cross_live.py::test_batch_equals_one_bar_feed (fail first)"
+  ],
+  "title": "T06 paper forward: rsi_ma_cross_live.py context-only adapter (pattern of malkan_level_short_live.py: no order, no auto_trader path, same journal row kinds), runner wiring stub + parity test batch == one-bar feed; build only, no deploy",
+  "weight": "",
+  "worker": "agent"
+}

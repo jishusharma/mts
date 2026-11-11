@@ -136,7 +136,7 @@ def run_rule(rule, paths, root, timeout=120):
     env = dict(os.environ, MTS_GATE_CHANGED_FILES=chr(10).join(paths))
     for cmd in rule[2](root, paths):
         try:
-            r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace", env=env)
+            r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
             fails.append(f"{' '.join(cmd[1:])}: timed out after {timeout} s")
             continue
@@ -145,6 +145,40 @@ def run_rule(rule, paths, root, timeout=120):
             out = [x for x in lines if re.search(r"FAIL|Error|assert|STALE|missing|over|>", x)] or lines
             fails.append(f"{' '.join(c for c in cmd[1:] if c not in ('-m', '-q', '-x'))}: " + " | ".join(x.strip()[:220] for x in out[-3:]))
     return fails
+
+
+def copy_cap_test(src_root, dst_root):
+    """Copy CAP_TEST and the non-test .py files beside it (helpers it imports, conftest) from src_root into dst_root. Test fixtures that
+    run the real cap test in a scratch repo use this: copying the one file broke when test_integrity began importing doc_drift.py
+    (42d8b197a, CI 42892614113)."""
+    import shutil
+    src = Path(src_root) / CAP_TEST
+    dst = Path(dst_root) / CAP_TEST
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, dst)
+    for p in src.parent.glob("*.py"):
+        if not p.name.startswith("test_"):
+            shutil.copyfile(p, dst.parent / p.name)
+
+
+MARKERS_RULE = ("conflict markers", lambda p: True, None, True,
+                "resolve the merge: delete the marker lines and keep the right text",
+                "3dad1aece shipped `<<<<<<< ours` in a task card by a docs ship; CI 42891528302/42891857913 red")
+
+
+def marker_failures(root, paths):
+    """Merge-conflict marker lines in the shipped `paths` (conflict_marker_lint's own scan, in process, milliseconds)."""
+    import conflict_marker_lint
+    out = []
+    for p in paths:
+        if p in conflict_marker_lint.SKIP:
+            continue
+        try:
+            data = (Path(root) / p).read_bytes()
+        except OSError:
+            continue   # deleted in this ship, or a directory
+        out += [f"{p}:{n}: {t[:80]}" for n, t in conflict_marker_lint.scan_bytes(data)]
+    return out
 
 
 def cap_failures(root, paths):
@@ -163,9 +197,10 @@ DOCS_SHIP_RULES = ("doc size cap", "role files", "task cards", "bug group map")
 def docs_ship_failures(root, paths):
     """-> [(rule, failure texts)] of the DOCS_SHIP_RULES the paths reach; sync.py runs it on a docs-only ship.
     A rule whose checker script is not in `root` is not run (a repo without it: test_sync's scratch repos), as cap_failures did."""
-    out = []
+    marks = marker_failures(root, paths)   # a docs ship runs no step 3cm (gate_select docs mode)
+    out = [(MARKERS_RULE, marks)] if marks else []
     for rule, ps in rules_for(paths):
-        scripts = [a for cmd in rule[2](root, ps) for a in cmd[1:] if a.endswith(".py")]
+        scripts =[a for cmd in rule[2](root, ps) for a in cmd[1:] if a.endswith(".py")]
         if rule[0] in DOCS_SHIP_RULES and all((Path(root) / s).exists() for s in scripts):
             fails = run_rule(rule, ps, root)
             if fails:
@@ -178,12 +213,12 @@ def report(results):
 
 
 def toplevel(cwd):
-    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=cwd, capture_output=True, text=True)
+    r = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=cwd, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout.strip() if r.returncode == 0 else None
 
 
 def git_lines(root, *args):
-    r = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True)
+    r = subprocess.run(["git", *args], cwd=root, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return [x for x in r.stdout.splitlines() if x.strip()] if r.returncode == 0 else []
 
 
@@ -252,6 +287,8 @@ def hook_ship(data, cmd):
         tp = own if os.path.isfile(own) else tp
     if not root or not tp or not os.path.isfile(tp):
         return "unfolded (no tree or transcript)"
+    if (Path(root) / ".git").is_dir() and sum(1 for l in git_lines(root, "worktree", "list", "--porcelain") if l.startswith("worktree ")) > 1:
+        return "unfolded (shared main checkout)"    # many sessions share it: a card edit there dirties every session's tree (audit 2026-11-11)
     br = git_lines(root, "branch", "--show-current")
     if not br or br[0] in ("master", "main", "fast-track"):
         return "unfolded (trunk branch)"
@@ -329,7 +366,7 @@ def reach_commit_failures(root):
         files = git_lines(root, "diff-tree", "--no-commit-id", "--name-only", "-r", sha)
         if any(_reach_path(f) for f in files):
             body = subprocess.run(["git", "show", "-s", "--format=%B", sha], cwd=root, capture_output=True, text=True,
-                                  encoding="utf-8", errors="replace").stdout
+                                  encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
             if not reach_text_ok(body):
                 bad.append(f"{sha[:9]} {body.strip().splitlines()[0][:70] if body.strip() else ''}")
     return bad

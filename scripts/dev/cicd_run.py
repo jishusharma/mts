@@ -101,7 +101,7 @@ def default_run(cmd, cwd=None, env=None):
     t0 = time.time()
     try:
         p = subprocess.run(cmd, cwd=str(cwd) if cwd else None, env=e, capture_output=True,
-                           text=True, encoding="utf-8", errors="replace")
+                           text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except (FileNotFoundError, OSError) as ex:
         return None, "tool not found: %s (%s)" % (cmd[0], ex), round(time.time() - t0, 2)
     return p.returncode, (p.stdout or "") + (p.stderr or ""), round(time.time() - t0, 2)

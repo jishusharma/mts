@@ -73,7 +73,7 @@ def free_gb(drive):
 
 def procs(windows):
     try:
-        out = subprocess.run(proc_command(windows), capture_output=True, text=True, timeout=30).stdout
+        out = subprocess.run(proc_command(windows), capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
     except (OSError, subprocess.SubprocessError):
         return "procs=n/a"
     return count_procs(out)

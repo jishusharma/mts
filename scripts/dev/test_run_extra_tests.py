@@ -98,3 +98,99 @@ def test_a_child_that_dies_with_no_output_is_run_once_more(tmp_path, monkeypatch
     ok, tail = rx.run_one("test_ok.py", tmp_path / "bt")
     assert ok and "1 passed" in tail
 
+
+
+def test_slowest_first_keeps_every_file_once_and_leads_with_the_slow_ones():
+    rels = ["a.py", "scripts/dev/test_lab_query.py", "b.py", "scripts/dev/test_planted_error_trial.py"]
+    out = rx.slowest_first(rels)
+    assert sorted(out) == sorted(rels)
+    assert out[:2] == ["scripts/dev/test_planted_error_trial.py", "scripts/dev/test_lab_query.py"]
+    assert out[2:] == ["a.py", "b.py"]
+
+
+def test_every_slow_first_file_is_a_registered_extra_test():
+    assert set(rx.SLOW_FIRST) <= set(rx.EXTRA)
+
+
+def test_default_jobs_never_below_the_old_four_and_capped(monkeypatch):
+    monkeypatch.delenv("MTS_GATE_JOBS", raising=False)
+    assert [rx.jobs(c) for c in (1, 2, 4, 8, 12, 32)] == [1, 2, 4, 4, 6, 8]
+    monkeypatch.setenv("MTS_GATE_JOBS", "3")
+    assert rx.jobs(12) == 3
+
+
+def _mk(tmp_path, name, body):
+    (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
+    (tmp_path / name).write_text(body + NL, encoding="utf-8", newline=NL)
+
+
+def test_plan_units_groups_fast_files_per_dir_and_keeps_slow_ones_single(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    for r in ("a/test_1.py", "a/test_2.py", "b/test_3.py", "a/test_4.py"):
+        _mk(tmp_path, r, "def test_x(): pass")
+    slow = "scripts/dev/test_planted_error_trial.py"
+    rels = ["a/test_1.py", slow, "a/test_2.py", "b/test_3.py", "a/test_4.py"]
+    units = rx.plan_units(rels, group_max=2)
+    assert units[0] == ("one", slow)
+    assert ("group", "a", ["a/test_1.py", "a/test_2.py"]) in units
+    assert ("one", "a/test_4.py") in units and ("one", "b/test_3.py") in units
+    assert sorted(r for u in units for r in ([u[1]] if u[0] == "one" else u[2])) == sorted(rels)
+
+
+def test_run_group_green_files_run_in_one_process(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    for n in ("t1", "t2", "t3"):
+        _mk(tmp_path, f"d/test_{n}.py", "def test_a():\n    pass")
+    calls = []
+    real = rx.subprocess.run
+    monkeypatch.setattr(rx.subprocess, "run", lambda *a, **k: (calls.append(a[0]), real(*a, **k))[1])
+    res = rx.run_group([f"d/test_{n}.py" for n in ("t1", "t2", "t3")], tmp_path / "bt")
+    assert len(calls) == 1 and all(ok for ok, _ in res.values()), res
+
+
+def test_run_group_reports_the_failing_file_by_name_and_keeps_the_others_green(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    _mk(tmp_path, "d/test_good.py", "def test_a():\n    pass")
+    _mk(tmp_path, "d/test_bad.py", "def test_b():\n    assert 0")
+    bad = rx.run_files(["d/test_good.py", "d/test_bad.py"], 2, tmp=str(tmp_path / "bt"), many=rx.run_group)
+    assert bad == ["d/test_bad.py"]
+
+
+def test_run_group_a_file_with_no_tests_fails_like_alone(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    _mk(tmp_path, "d/test_ok.py", "def test_a():\n    pass")
+    _mk(tmp_path, "d/test_empty.py", "X = 1")
+    bad = rx.run_files(["d/test_ok.py", "d/test_empty.py"], 2, tmp=str(tmp_path / "bt"), many=rx.run_group)
+    assert bad == ["d/test_empty.py"]
+
+
+def test_run_group_timeout_falls_back_to_per_file_with_the_same_ceiling(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    _mk(tmp_path, "d/test_fast.py", "def test_a():\n    pass")
+    _mk(tmp_path, "d/test_hang.py", "import time\ndef test_h():\n    time.sleep(60)")
+    res = rx.run_group(["d/test_fast.py", "d/test_hang.py"], tmp_path / "bt", timeout=4)
+    assert res["d/test_fast.py"][0] and not res["d/test_hang.py"][0] and "timed out after 4s" in res["d/test_hang.py"][1]
+
+
+def test_a_crashing_group_runner_falls_back_to_the_per_file_run(tmp_path):
+    def boom(rels, bt):
+        raise RuntimeError("x")
+    seen = []
+    bad = rx.run_files(["d/test_1.py", "d/test_2.py"], 2, one=lambda rel, bt: (seen.append(rel) or rel.endswith("1.py"), "t"),
+                       tmp=str(tmp_path), many=boom)
+    assert sorted(seen) == ["d/test_1.py", "d/test_2.py"] and bad == ["d/test_2.py"]
+
+
+def test_files_writing_shared_interpreter_state_stay_single(tmp_path, monkeypatch):
+    monkeypatch.setattr(rx, "REPO", tmp_path)
+    ok = "def test_x(): pass"
+    bodies = {"d/test_clean1.py": ok, "d/test_clean2.py": ok,
+              "d/test_cd.py": "import os" + NL + "def test_x(): os.chdir('.')",
+              "d/test_mod.py": "import sys" + NL + "sys.modules['m'] = object()" + NL + ok,
+              "d/test_env.py": "import os" + NL + "os.environ['A'] = '1'" + NL + ok}
+    for r, b in bodies.items():
+        _mk(tmp_path, r, b)
+    units = rx.plan_units(list(bodies))
+    assert ("group", "d", ["d/test_clean1.py", "d/test_clean2.py"]) in units
+    assert {u[1] for u in units if u[0] == "one"} == {"d/test_cd.py", "d/test_mod.py", "d/test_env.py"}
+    assert rx.shares_state("d/missing.py")

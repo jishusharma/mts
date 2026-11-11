@@ -52,7 +52,7 @@ IDENTITY = {'GIT_AUTHOR_NAME': 'gemini-queue', 'GIT_AUTHOR_EMAIL': 'gemini-queue
 def sh(cmd, cwd=REPO, timeout=120):
     """subprocess.run with NOPROMPT in the env and a timeout; a timeout comes back as rc 124 with the reason in stderr."""
     try:
-        return subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, env={**os.environ, **NOPROMPT, **IDENTITY})
+        return subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, env={**os.environ, **NOPROMPT, **IDENTITY}, creationflags=(0x08000000 if sys.platform == 'win32' else 0))
     except subprocess.TimeoutExpired as e:
         return subprocess.CompletedProcess(cmd, 124, '', f'timeout after {timeout}s: {" ".join(map(str, cmd))} {e}')
 
@@ -234,7 +234,7 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
         stop = threading.Event()
         threading.Thread(target=keep_lease, args=(wt, sync.slugify(card), stop), daemon=True).start()   # claim lease: refreshed while the run lasts
         try:
-            p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT, **IDENTITY})
+            p = subprocess.run(cmd, cwd=wt, stdout=f, stderr=subprocess.STDOUT, text=True, env={**child_env(card, brief), **NOPROMPT, **IDENTITY}, creationflags=(0x08000000 if sys.platform == 'win32' else 0))
         finally:
             stop.set()
         f.write(f'\nEXIT {p.returncode} after {int(time.time() - t0)}s\n')
