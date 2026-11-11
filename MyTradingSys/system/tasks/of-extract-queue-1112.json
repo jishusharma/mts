@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T20:20:39Z",
   "commands": [
     "python MyTradingSys/research/extraction_ledger_2026-10/rank_queue.py",
     "python -m pytest MyTradingSys/research/extraction_ledger_2026-10/test_rank_queue.py -q"
@@ -15,17 +16,30 @@
   "goal": "Rank the extraction backlog so order-flow content is read first: tag each id of GAPS.md (71 transcripts without extract, 63 priority ids without transcript) by analyst, title and order-flow keywords (delta, absorption, forced, liquidation, auction, footprint).",
   "id": "of-extract-queue-1112",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "rank_queue.py, test, ORDERFLOW_QUEUE.md shipped (cee5a6f8)",
+      "ref": "cee5a6f86",
+      "utc": "2026-11-11T20:20:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "of-extract-ondisk-1112",
   "note": "T0 card. Counts are as of the 2026-10-28 ledger; run build_ledger.py first if GAPS.md is older.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T20:01:22Z",
   "refs": [],
-  "result": "",
+  "result": "rank_queue.py, test, ORDERFLOW_QUEUE.md shipped (cee5a6f8)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/extraction_ledger_2026-10/rank_queue.py (new)",
     "MyTradingSys/research/extraction_ledger_2026-10/test_rank_queue.py (new)",
@@ -42,12 +56,13 @@
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
     "MyTradingSys/research/extraction_ledger_2026-10/GAPS.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read GAPS.md id lists and the headers of raw_transcripts_canonical/<id>_raw.txt (title, analyst); no fetch",
     "Score = count of order-flow keywords in title and first 200 lines (keyword list OURS, written in the file); ties: Tom and Fabio first",
     "Write ORDERFLOW_QUEUE.md; ids without header go to a NO_TITLE section, never guessed"
   ],
+  "taken": "2026-11-11T20:20:39Z",
   "tests": "test_rank_queue.py: fixture with two ids, one titled \"absorption delta\", must rank it first and keep the total row count; fails before rank_queue.py exists.",
   "title": "Extraction backlog 1/3: rank order-flow ids from GAPS.md",
   "weight": "",
