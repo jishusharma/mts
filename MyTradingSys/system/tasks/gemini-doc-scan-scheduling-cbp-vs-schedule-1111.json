@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T18:29:18Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-scheduling-cbp-vs-schedule-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per rule) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of the CBP block of SCHEDULING_POLICY.md (run times per weekday, Saturday, Sunday, UTC) against cbp_schedule.py and test_cbp_schedule.py; report every time that differs.",
+  "id": "gemini-doc-scan-scheduling-cbp-vs-schedule-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d3570f13b657 Retire headless successor wake as handover default; claude -p ok preflight; v",
+      "ref": "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "utc": "2026-10-30T08:40:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T18:29:21Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "MyTradingSys/system/SCHEDULING_POLICY.md (read)",
+    "scripts/dev/cbp_schedule.py (read)",
+    "scripts/dev/test_cbp_schedule.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-scheduling-cbp-vs-schedule-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: one per run time or rule in the CBP block, each with the code line; MATCH, DIFF when the time differs, NOT_IN_DATA when absent from code",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: SCHEDULING_POLICY.md CBP block vs cbp_schedule.py",
+  "weight": "ROUTINE",
+  "worker": ""
+}

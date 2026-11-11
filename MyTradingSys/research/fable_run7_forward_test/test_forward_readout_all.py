@@ -70,3 +70,13 @@ def test_cli_missing_paths_never_crash(capsys, tmp_path):
     assert fa.main(["--ledger", str(tmp_path / "a"), "--malkan", str(tmp_path / "b"),
                     "--t06", str(tmp_path / "c"), "--c30", str(tmp_path / "d")]) == 0
     assert sum(1 for l in capsys.readouterr().out.splitlines() if l.startswith("| ")) == 5  # header + four slots
+
+
+def test_analyst_call_slot_line(tmp_path):
+    import json
+    j = tmp_path / "calls.jsonl"
+    j.write_text("".join(json.dumps({"arm": a, "kind": "outcome", "status": "closed", "net_r": r}) + "\n"
+                         for a, r in (("setup", 0.5), ("setup", -0.1), ("placebo_a", -0.3))))
+    txt = fa.render(fa.combined(*(tmp_path / x for x in "abcd")), j)
+    assert "setup n 2, net R 0.200; level only n 1, net R -0.300; trigger only n 0, net R -. State: RUNNING." in txt
+    assert "Analyst-call slot" in fa.render(fa.combined(*(tmp_path / x for x in "abcd")), tmp_path / "missing")
