@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """run_extra_tests.py - run the tracked test files that live outside the dirs the main gate collects (B150).
 
-Each file runs in its own pytest process with the file's directory as cwd (the way each was written to run), so same-named
+Each slow file (SLOW_FIRST) runs in its own pytest process; the fast files of a directory share one (run_group; a red group is re-run per file). Each process runs with the file's directory as cwd (the way each was written to run), so same-named
 helper modules in different dirs cannot collide. Files run MTS_GATE_JOBS at a time (default min(4, cpu count); 1 = one after
 the other), each with its own --basetemp, and print their line when they finish. Exit 1 if any file fails. The list is checked by
 MyTradingSys/tests/test_gate_discovery_b150.py: a new tracked test file must be gated, listed here, or skipped with a reason.
@@ -114,8 +114,53 @@ def failure_detail(stdout, stderr, n=30):
     return "".join(chr(10) + "        | " + ln[:300] for ln in lines)
 
 
-def run_files(rels, n_jobs, one=run_one, tmp=None):
-    """Run every file `n_jobs` at a time and print one flushed line per file as it finishes. Returns the failures in list order."""
+GROUP_MAX = 12   # OURS 2026-11-11: files per merged pytest process; keeps several groups per dir so the pool stays busy
+
+
+def plan_units(rels, group_max=GROUP_MAX):
+    """Split `rels` into run units: ("one", rel) for a SLOW_FIRST file (its time is known to be large) and ("group", dir, [rels])
+    for the other files of one directory, at most `group_max` per group (most of the ~400 files take under 1 s, so their wall is
+    pytest start-up; one process per group pays it once). A group of one is a plain "one". Same files, each exactly once;
+    slow singles lead (slowest first), then the groups in list order. Anything unexpected -> the caller runs per file."""
+    units, by_dir = [], {}
+    for rel in slowest_first(rels):
+        if rel in SLOW_FIRST:
+            units.append(("one", rel))
+        else:
+            by_dir.setdefault(str(Path(rel).parent), []).append(rel)
+    for d, files in by_dir.items():
+        for i in range(0, len(files), group_max):
+            chunk = files[i:i + group_max]
+            units.append(("group", d, chunk) if len(chunk) > 1 else ("one", chunk[0]))
+    return units
+
+
+_REPORTED = {"PASSED", "SKIPPED", "XFAIL", "XPASS"}   # -rA short-summary words; a file with none of them collected no test
+
+
+def run_group(rels, basetemp, timeout=None):
+    """{rel: (ok, line)} for files of ONE directory run in one pytest process (cwd = that dir, one start-up). Only an all-green
+    group (exit 0, output present) is accepted as it stands; any failure, timeout, crash or missing file makes the group
+    undecidable and every file is re-run alone with run_one, so a failure is still reported by file name with its own detail and
+    the per-file timeout is unchanged (the group gets one ceiling for the lot; past it, each file gets its own)."""
+    paths = [REPO / r for r in rels]
+    if all(p.exists() for p in paths) and len({p.parent for p in paths}) == 1:
+        try:
+            r = subprocess.run([sys.executable, "-m", "pytest", *[p.name for p in paths], "-q", "-rA", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
+                               cwd=paths[0].parent, capture_output=True, text=True, errors="replace", env=child_env(),
+                               timeout=timeout or FILE_TIMEOUT_S, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            seen = {ln.split("::")[0].split()[-1] for ln in (r.stdout or "").splitlines() if "::" in ln and ln.split(None, 1)[0] in _REPORTED}
+            if r.returncode == 0 and (r.stdout or "").strip() and all(p.name in seen for p in paths):   # a file with no test (exit 5 alone) must not hide in a green group
+                tail = (r.stdout.strip().splitlines() or [""])[-1]
+                return {rel: (True, f"{tail} (grouped x{len(rels)})") for rel in rels}
+        except subprocess.TimeoutExpired:
+            pass
+    return {rel: run_one(rel, Path(basetemp) / f"f{i}", timeout) for i, rel in enumerate(rels)}
+
+
+def run_files(rels, n_jobs, one=run_one, tmp=None, many=None):
+    """Run every file `n_jobs` at a time and print one flushed line per file as it finishes. Returns the failures in list order.
+    `many` (run_group in main) merges the fast files of a directory into one process; None = one process per file."""
     # Own basetemp per file: pytest's default %TEMP%/pytest-of-<user>/pytest-current cleanup raises PermissionError
     # (exit 1 after all tests pass) when another account left that link behind (JIS-NB 2026-10-14); it is also what lets
     # the files run beside each other.
@@ -123,15 +168,26 @@ def run_files(rels, n_jobs, one=run_one, tmp=None):
     lock = threading.Lock()
     done = {}
 
-    def work(item):
-        i, rel = item
-        ok, tail = one(rel, tmp / str(i))
+    def report(rel, ok, tail):
         with lock:
             print(f"{'ok  ' if ok else 'FAIL'} {rel}: {tail}", flush=True)
         done[rel] = (ok, tail)
 
+    def work(item):
+        i, unit = item
+        if unit[0] == "group":
+            try:
+                res = many(unit[2], tmp / str(i))
+            except Exception:   # fail closed: undecidable grouping -> the per-file run
+                res = {rel: one(rel, tmp / f"{i}_{j}") for j, rel in enumerate(unit[2])}
+            for rel in unit[2]:
+                report(rel, *res[rel])
+        else:
+            report(unit[1], *one(unit[1], tmp / str(i)))
+
+    units = plan_units(rels) if many else [("one", r) for r in slowest_first(rels)]
     with ThreadPoolExecutor(max_workers=max(1, n_jobs)) as pool:
-        list(pool.map(work, enumerate(slowest_first(rels))))
+        list(pool.map(work, enumerate(units)))
     return [f"{rel}: missing" if done[rel][1] == "missing" else rel for rel in rels if not done[rel][0]]
 
 
@@ -156,7 +212,7 @@ def main(argv=None):
     tests = pick(argv, all_tests())
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
     try:
-        bad = run_files(tests, jobs(), tmp=tmp)
+        bad = run_files(tests, jobs(), tmp=tmp, many=run_group)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print(f"extra tests ({len(tests)} files): " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
