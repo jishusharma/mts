@@ -1,0 +1,3 @@
+Read-only diff review (no code changes, no commits, no live tree, no secrets, no running processes).
+Review commit f29d454e2 (feed-watchdog path fix and hung writer restart) with 'git show f29d454e2'. Look for: restart/reset state bugs, non-trade balance moves, unhandled API or file errors, checks that fail open instead of closed, Windows path or encoding issues, missing tests.
+Write one report file MyTradingSys/research/layer_lab/reports/2026-11-11_review-review-feed-watchdog.md: line 1 "FINDINGS=<n>", then a table: file:line | problem | severity (HIGH/MED/LOW) | suggested fix. Quote the exact line for each finding. Stop after writing the report.

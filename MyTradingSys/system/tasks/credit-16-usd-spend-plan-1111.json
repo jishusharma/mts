@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T14:41:59Z",
   "commands": [],
   "created": "2026-11-11T00:04:01Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "5 Haiku jobs listed (caps 14 USD) + prompt files; each launch --dry-run exit 0; none launc",
+      "ref": "2b7314a56",
+      "utc": "2026-11-11T14:41:59Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: awaiting operator spend go-ahead",
   "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T02:53:41Z",
   "refs": [],
-  "result": "",
+  "result": "5 Haiku jobs listed (caps 14 USD) + prompt files; each launch --dry-run exit 0; none launched",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/API_CREDIT_SPEND_LIST.md (new)",
     "MyTradingSys/system/api_prompts/ (new)",
@@ -44,12 +57,13 @@
   "sources": [
     "opus-audit-sonnet-health-1111 (credit about 16 USD, expires 2026-11-17)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read api_job.py MODEL_NAMES and launch args",
     "Pick 5 ready cards (gpt-rederive-*, recent ships) that need only reading and recounting",
     "Write the prompt files and list, run each with --dry-run"
   ],
+  "taken": "2026-11-11T14:41:59Z",
   "tests": "no code; each launch command runs with --dry-run and exits 0 (recorded in the result)",
   "title": "API credit (about 16 USD left, expires 2026-11-17; 0 ready cards route to api_job.py --engine api): write the spend list now: the 5 best Haiku review/recount jobs (live-path diff reviews, gpt-rederive recounts) as ready cards that api_job can run; done when 5 cards exist with commands and api_job.py plan shows them",
   "weight": "ROUTINE",
