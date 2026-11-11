@@ -9,7 +9,7 @@
   "created": "2026-11-11T20:29:10Z",
   "depends_on": [],
   "done_when": "a PREREG.md without a ## Context line is an offender (new test fails on old code); the lint passes on trunk after the 6 existing PREREG.md files get a Context line or an allowlist row; both test and lint run clean",
-  "est_turns": 10,
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
@@ -34,7 +34,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T20:29:10Z",
+  "refreshed": "2026-11-11T20:29:32Z",
   "refs": [],
   "result": "",
   "result_receipt": {},
@@ -60,8 +60,10 @@
     "Run the test and the lint; ship"
   ],
   "taken": "",
-  "tests": "",
+  "tests": [
+    "scripts/dev/test_prereg_context_lint.py::test_plain_prereg_md_without_context_is_an_offender"
+  ],
   "title": "prereg_context_lint.py also lints files named PREREG*.md (no underscore)",
   "weight": "ROUTINE",
-  "worker": ""
+  "worker": "agent"
 }
