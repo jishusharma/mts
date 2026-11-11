@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T05:06:27Z",
+    "misses": 66,
+    "reads": [
+      "MyTradingSys/tools/live_aid/indread.js",
+      "MyTradingSys/tools/live_aid/pulse.js"
+    ],
+    "session": "agent-aaa6f43a31b58dc15"
+  },
   "created": "2026-11-11T02:53:31Z",
   "depends_on": [],
   "done_when": "test_live_aid.py has a test that renders the board from a fixture and finds both cards, the n and rate text, and no 'BOTH SIDES' string in live_aid.html; it fails on current code; test_live_aid.py and test_live_aid_layout.py pass.",
