@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T13:35:14Z",
   "commands": [],
   "created": "2026-11-11T13:19:25Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-run-extra-plan-units-",
+      "ref": "848ee7635",
+      "utc": "2026-11-11T13:35:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: 3xt never groups an extra file that writes shared interpreter state (sys.modules, ",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind read completed",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T13:19:26Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-run-extra-plan-units-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_extra_tests.py (plan_units, shares_state, run_group, run_files; read)",
     "scripts/dev/test_run_extra_tests.py (read)",
@@ -45,12 +58,13 @@
   "sources": [
     "Session_Planner planner-c-feed-lanes-1111"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: grouped per directory, slow stays single, shared-state writer never grouped, unreadable = single, red group re-run per file",
     "Mark each MATCH/DIFF/NOT_IN_DATA (or CONSISTENT/CONTRADICTION) with file:line, write the table with counts on line 1, quote file:line per row"
   ],
+  "taken": "2026-11-11T13:35:14Z",
   "tests": "",
   "title": "[GEMINI] blind read of run_extra_tests.py plan_units / shares_state grouping guard",
   "weight": "ROUTINE",
