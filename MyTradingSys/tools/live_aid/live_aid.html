@@ -120,7 +120,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
-<nav id="tabs"><a href="#home">Home</a><a href="#money">Money</a><a href="#news">News</a><a href="#usopen">US open</a><a href="#intrade">In trade</a><a href="#now" title="Every reading in one table; click a row for its page (Map, Levels, Momentum, Liquidations, Funding, Macro, Coil)">All readings</a></nav>
+<nav id="tabs"><a href="#home">Home</a><a href="#money">Money</a><a href="#news">News</a><a href="#usopen">US open</a><a href="#intrade">In trade</a><a href="#now" title="Every reading in one table; click a row for its page (Map, Levels, Momentum, Liquidations, Funding, Macro, Coil)">All readings</a><button type="button" id="flag-dl" title="Download every banner Live Aid flashed (kept in this browser, last 2000) as CSV" style="margin-left:auto">Download flag log</button></nav>
 <div id="flash"></div>
 <section id="p-home"></section>
 <style>
@@ -827,6 +827,17 @@ main>#p-pos:not(.off){flex:0 0 auto}
   }
 
   // ---------- pre-US-open risk flag (card premarket-risk-flag-1105) ----------
+  // Flag log (card live-aid-flag-log-1111): every banner flashed (time, kind, side, level, evidence, price), kept in localStorage like PMK.log.
+  var FLAGLOG = { key: 'mts_flag_log', cap: 2000, rows: [] };
+  try { FLAGLOG.rows = JSON.parse(localStorage.getItem('mts_flag_log') || '[]'); if (!Array.isArray(FLAGLOG.rows)) FLAGLOG.rows = []; } catch (e) { FLAGLOG.rows = []; }
+  function flagAdd(row) {
+    FLAGLOG.rows = window.LAHOME.flagLogAdd(FLAGLOG.rows, row, FLAGLOG.cap);
+    try { localStorage.setItem('mts_flag_log', JSON.stringify(FLAGLOG.rows)); } catch (e) { /* storage blocked: log stays in memory */ }
+  }
+  $('flag-dl').addEventListener('click', function () {
+    var u = URL.createObjectURL(new Blob([window.LAHOME.flagCsv(FLAGLOG.rows)], { type: 'text/csv' })), a = document.createElement('a');
+    a.href = u; a.download = 'mts_flag_log.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 1000);
+  });
   var PMK = { q: null, t: 0, err: '', log: [] };
   try { PMK.log = JSON.parse(localStorage.getItem('mts_premarket_log') || '[]'); } catch (e) { PMK.log = []; }
   function loadPremarket() {
@@ -1085,8 +1096,8 @@ main>#p-pos:not(.off){flex:0 0 auto}
       PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60, now); } catch (e) { PULSE.lanes[tf] = null; } });
     }
     var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
-    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
-    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], liq: liq, money: S.moneyHead || null, news: news,
+    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, onFlag: flagAdd, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], liq: liq, onFlag: flagAdd, money: S.moneyHead || null, news: news,
       ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 
