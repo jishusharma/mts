@@ -6,10 +6,10 @@ COUNTS: CONSISTENT=18 CONTRADICTION=0 NOT_IN_DATA=0
 - **Date**: 2026-11-11 UTC
 - **Auditor**: Gemini 3.8 Flash (Low)
 - **Scope In**:
-  - [`CLAUDE.md`](file:///F:/MTS/gq/gemini-doc-scan-claude-md-vs-runbooks-1111/CLAUDE.md)
-  - [`MyTradingSys/system/PARALLEL.md`](file:///F:/MTS/gq/gemini-doc-scan-claude-md-vs-runbooks-1111/MyTradingSys/system/PARALLEL.md)
-  - [`MyTradingSys/system/DEPLOY_RUNBOOK.md`](file:///F:/MTS/gq/gemini-doc-scan-claude-md-vs-runbooks-1111/MyTradingSys/system/DEPLOY_RUNBOOK.md)
-  - [`MyTradingSys/system/SCHEDULING_POLICY.md`](file:///F:/MTS/gq/gemini-doc-scan-claude-md-vs-runbooks-1111/MyTradingSys/system/SCHEDULING_POLICY.md)
+  - [`CLAUDE.md`](../../../../CLAUDE.md)
+  - [`MyTradingSys/system/PARALLEL.md`](../../../../MyTradingSys/system/PARALLEL.md)
+  - [`MyTradingSys/system/DEPLOY_RUNBOOK.md`](../../../../MyTradingSys/system/DEPLOY_RUNBOOK.md)
+  - [`MyTradingSys/system/SCHEDULING_POLICY.md`](../../../../MyTradingSys/system/SCHEDULING_POLICY.md)
 - **Scope Out**: No edits to source files, no live-tree edit, no deploy, no `.secrets` or `.env` read. Read-only audit.
 
 ---
