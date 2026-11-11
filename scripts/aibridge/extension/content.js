@@ -234,6 +234,9 @@
   // 0.7.12 version drift: a mismatch is shown in the panel, put in every receipt (DSA sees it), and a stale extension reloads
   // itself when nothing is running; a page whose extension was reloaded under it re-attaches by reloading itself (idle, once per 10 min).
   var vstate = { level: 'ok', text: '' }, lastVer = 0;
+  var hiddenSince = 0, hiddenTotal = 0;
+  try { document.addEventListener('visibilitychange', function () { if (document.hidden) hiddenSince = Date.now(); else if (hiddenSince) { hiddenTotal += Date.now() - hiddenSince; hiddenSince = 0; } }); if (document.hidden) hiddenSince = Date.now(); } catch (e) {}
+  function hiddenMs() { return hiddenTotal + (hiddenSince ? Date.now() - hiddenSince : 0); }
   function idleNow() { return !inRun && !working && !(pending && pending.length); }
   // 0.7.22 (Argon #3): a reload or F5 drops the armed state and a chain in flight. Self-update only when hands-free is OFF; while armed the
   // red label says what to do and the update waits for the chain to end.
@@ -433,7 +436,8 @@
     var t0 = Date.now(), lim = maxMs || CFG.aibridge_wait_ms;
     while (true) {
       if (myToken !== token) return false;
-      if (Date.now() - t0 > lim) { lastPostErr = 'the chat never became idle (or an operator draft sits in the input)'; return false; }
+      if (document.hidden) { t0 += 400; }   // 0.7.36: a hidden tab does not render or settle; hidden time does not count toward the limit
+      if (Date.now() - t0 > lim) { lastPostErr = 'the chat never became idle (or an operator draft sits in the input)' + (hiddenMs() ? ' [tab was hidden ' + Math.round(hiddenMs() / 1000) + ' s]' : ''); return false; }
       var el = findInput();
       var idle = !!el && textQuiet() >= CFG.aibridge_quiet_ms;
       if (L.postGate({ idle: idle, draft: el ? inputText(el) : '', waitedMs: Date.now() - t0, maxMs: lim }) === 'send_keep_draft') break;
@@ -639,8 +643,11 @@
     // so a pause in the stream never runs a half-written command.
     var bodyless = blocks.filter(function (b) { return !blockCmd(b) && !L.parseMarker(btext(b)).task; });
     if (bodyless.length) {
-      if (!emptyFirst) { emptyFirst = Date.now(); auditEvent('block body not rendered yet, waiting (' + bodyless.length + ' of ' + blocks.length + ')'); }
-      if (Date.now() - emptyFirst < 30000) { setStatus('a block has no body yet; waiting for the page to finish rendering it'); return; }
+      // 0.7.36: a hidden or covered tab does not render (2026-11-11 05:13Z: block #5 ran empty after 30 s, its body drawn later);
+      // only time with the tab visible counts, and the wait is 90 s
+      if (document.hidden) { if (emptyFirst) emptyFirst = Date.now(); setStatus('a block has no body yet and this tab is hidden: DeepSeek draws it when the tab is visible'); return; }
+      if (!emptyFirst) { emptyFirst = Date.now(); auditEvent('block body not rendered yet, waiting (' + bodyless.length + ' of ' + blocks.length + ')' + (document.hidden ? ' [tab hidden]' : '')); }
+      if (Date.now() - emptyFirst < 90000) { setStatus('a block has no body yet; waiting for the page to finish rendering it'); return; }
     } else emptyFirst = 0;
     var snap = blocks.map(btext).join('\u0001');
     await sleep(1200);
