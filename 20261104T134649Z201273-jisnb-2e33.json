@@ -1,1 +1,0 @@
-{"t": "20261104T134649Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "Login B: on each wake run codex_run.py tick (19 GPT cards, lab stalled 116h) + gemini_queue.py run [GEMINI] cards flash/argon. API credit: nominate cards to login C.", "login": "C"}
