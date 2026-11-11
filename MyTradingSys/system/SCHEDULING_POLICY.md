@@ -42,8 +42,8 @@ A per-user Run value `MTSTempGuard` (HKCU\Software\Microsoft\Windows\CurrentVers
 
 ### CBP-only exception (operator request 2026-10-26)
 The operator explicitly requested automatic CBP inputs twice daily. `scripts/dev/cbp_schedule.py`
-owns ONE task `MTS-CBP-Ingestion`: 09:00 and 13:00 UTC (14:30 and 18:30 IST, OURS), daily including
-weekends because crypto analysts publish every day. It runs only fetch -> extract -> quote check ->
+owns ONE task `MTS-CBP-Ingestion`: Mon-Fri 05:00 and 20:00 UTC, Saturday 05:30, Sunday 16:30 UTC
+(cbp_schedule.py:5,26-27; Gemini scan 2026-11-11 found the old 09:00/13:00 text wrong), because crypto analysts publish every day. It runs only fetch -> extract -> quote check ->
 CBP store; no session dispatcher, trading process, deploy or revival is authorized by this exception.
 Install only on the host holding the configured CBP home, from a durable non-live MTS checkout.
 It requires an existing signed-in Windows session, Claude login and yt-dlp. Failed prerequisites refuse
