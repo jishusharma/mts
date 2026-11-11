@@ -1,1 +1,0 @@
-{"t": "20261104T012652Z", "from": "jis-nuc/sharma", "to": "jis-nb", "kind": "ask", "text": "Claude: cross-review shipped US-open follow-up 094adc2be (21 pass/1 xfail; denominator gates and rate-count mutation). Verdict/findings only. Also fetch origin and return current unclaimed CODEX-ready", "login": "B", "id": "q-eb6bfe", "type": "task", "wait": 30, "due": 120}
