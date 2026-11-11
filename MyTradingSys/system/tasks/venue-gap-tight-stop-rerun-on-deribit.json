@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T14:07:22Z",
   "commands": [
     "python MyTradingSys/research/critical_test_wave2_2026-10-30/item6_venue_gap_tight.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "DSA-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tight stops 0.10/0.15% turn both venues negative (mean R -0.99/-0.60 Binance, -0.60/-0.52 ",
+      "ref": "1b2c725d5",
+      "utc": "2026-11-11T14:07:22Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "critical test wave 2 items 6-8: venue gap, funding census, MinBTL trial budget",
@@ -28,13 +35,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: DEV-month result only; a holdout rerun is a new card if the wick-touch gain is worth chasing",
   "note": "REVIEWED:2026-11-09 ACCEPT (batch review, 1 FIX applied by session-planner-a-1108). DECISION (OURS): layer list = rsi_levels x {0.10%, 0.15%, wick-touch} pre-registered here; DeepSeek bridges closed so run as Sonnet on the item6 host (F:/MTS/data).",
   "prio": 3,
   "refine_tries": 2,
   "refined_by": "",
   "refreshed": "2026-11-08T18:56:15Z",
   "refs": [],
-  "result": "",
+  "result": "tight stops 0.10/0.15% turn both venues negative (mean R -0.99/-0.60 Binance, -0.60/-0.52 Deribit); wick-touch 1% best on both (+0.147/+0.102); sim_desk/results/venue-gap-tight-stop-deribit.json",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/critical_test_wave2_2026-10-30/item6_venue_gap.py (read)",
     "MyTradingSys/research/critical_test_wave2_2026-10-30/item6_venue_gap_tight.py (new)",
@@ -46,12 +59,13 @@
   "scope_sha": "773aadfc3b86",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Copy item6_venue_gap.py to item6_venue_gap_tight.py; add stop_pct and wick_touch parameters (variants: 0.10, 0.15, wick-touch at 1%)",
     "Run on host with F:/MTS/data/deribit/BTC-PERPETUAL-1m-2024-05.csv; export the JSON",
     "Write RESULT line: net R per variant per venue, with the gap used"
   ],
+  "taken": "2026-11-11T14:07:22Z",
   "tests": "new test_item6_venue_gap_tight.py: tight-stop variant n at stop 1% equals item6 n (52 Binance / 55 Deribit); fails before the script exists",
   "title": "Venue gap: rerun tight-stop and wick-touch layers on Deribit 1m (p50 6 bps, p95 13.6 bps gap, 2024-05)",
   "weight": "IMPORTANT",
