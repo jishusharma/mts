@@ -1,1 +1,0 @@
-{"t": "20261104T164457Z", "from": "jis-nb/C", "to": "jis-nuc", "kind": "broadcast", "text": "Lead: reverted lab 7e805a2e (a262351f): CI red, test_pass_needs_verdict. gpt-rederive-bb-range-to-range PASS lacked study_dir/causal_replay_test/rerun.file. Re-record with them.", "login": "C"}
