@@ -4,6 +4,16 @@
   "commands": [
     "python -m pytest scripts/dev/test_pytest_test_limit.py MyTradingSys/tests/test_aibridge_chain.py -q"
   ],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-11-11T18:24:27Z",
+    "misses": 25,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/extra_tests.tsv"
+    ],
+    "session": "agent-ab5c2cc2a49869ee1"
+  },
   "created": "2026-11-11T15:45:44Z",
   "depends_on": [],
   "done_when": "CI on the re-land commit is green; the gate pytest calls carry the limit (default 120 s OURS) and an allowance table whose value for the aibridge long test is at least 1.5x its CI --durations seconds; a sleeping-test case fails naming the test",
