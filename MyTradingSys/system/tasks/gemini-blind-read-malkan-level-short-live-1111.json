@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T14:41:26Z",
   "commands": [],
   "created": "2026-11-11T14:23:24Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-level-short-li",
+      "ref": "02f230914",
+      "utc": "2026-11-11T14:41:26Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "malkan-level-short-testnet-forward-1109: context-only live Malkan level short (div 3-10 cl",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: task complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T14:23:27Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-malkan-level-short-live-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/rsi/malkan_level_short_live.py (read)",
     "MyTradingSys/backtest/layers/rsi/test_malkan_level_short_live.py (read)",
@@ -45,12 +58,13 @@
   "sources": [
     "Session_Planner planner-c-gemini-feed-1111b"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 6 docstring clauses (newest closed 4h bar only; synthetic fill bar; no side key; five journal kinds; kill rule; no order/exchange/auto_trader import)",
     "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
   ],
+  "taken": "2026-11-11T14:41:26Z",
   "tests": "",
   "title": "[GEMINI] blind read of malkan_level_short_live.py against its own docstring",
   "weight": "ROUTINE",
