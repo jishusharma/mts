@@ -48,11 +48,6 @@
    "disp": "REPRO",
    "why": "Generates MarketDataSnapshot.java.archive_mode.new for the Tom core historical backtest; tom_bt_report.py:143 hashes it and :221 cites it in TOM_CORE_BT.md; L1_SLICE1_STATUS.md:76."
   },
-  "MyTradingSys/backtest/layers/adx/adx.py": {
-   "disp": "WIRE",
-   "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py",
-   "ref": "adx-di-tradingview-crosscheck-1107"
-  },
   "MyTradingSys/backtest/layers/alerts/live_validation.py": {
    "disp": "PARKED",
    "ref": "live-validation-store-signal-chart-hook",
@@ -79,14 +74,6 @@
   "MyTradingSys/backtest/layers/fabio/of_backfill.py": {
    "disp": "TOOL",
    "why": "TF3 collection-only backfill of finished days into orderflow_live, run by hand (ran 09-29..10-02): MyTradingSys/runtime/BUILD_PIPELINE.md:44, system/sessions/MTS-2026-10-03-1329Z-CLI-BLD-tf3-fabio-v3-live.md:10."
-  },
-  "MyTradingSys/backtest/layers/fabio/rescore.py": {
-   "disp": "TOOL",
-   "why": "Fee-net R maths (fees.py costs) for the fee/stop re-score, card fee-stop-rescore-fabio-habib-1106; used by rescore_fabio.py, rescore_habib.py and test_rescore.py."
-  },
-  "MyTradingSys/backtest/layers/fabio/rescore_fabio.py": {
-   "disp": "REPRO",
-   "why": "Re-score driver for fabio_of 09-30 with plan stops; run by hand, writes RESCORE.md figures (card fee-stop-rescore-fabio-habib-1106)."
   },
   "MyTradingSys/backtest/layers/krown/krown_context.py": {
    "disp": "TOOL",
@@ -130,11 +117,6 @@
    "ref": "T087",
    "why": "Offline research script that regenerates research/t087_session_levels_2026-10-09/ (RESULT.md, summary.json); run by hand, no live process imports it."
   },
-  "MyTradingSys/backtest/layers/squeeze/squeeze.py": {
-   "disp": "WIRE",
-   "why": "Squeeze Momentum (LazyBear) context engine (SPEC_ENGINES.md A); imported by research/tv_favorites_2026-11/squeeze_state.py through sys.path, which the scanner cannot follow, and by test_squeeze.py",
-   "ref": "squeeze-momentum-engine-1107"
-  },
   "MyTradingSys/backtest/layers/tick/build_tiers.py": {
    "disp": "TOOL",
    "why": "T040 Q6 offline tier-table builder (writes tiers.json), run by hand; sourced rows K01-K03 in MyTradingSys/research/LAYER_PROVENANCE_AUDIT.md:165-167."
@@ -162,11 +144,6 @@
    "disp": "WIRE",
    "ref": "trendline-count-only",
    "why": "Causal trend-line detector built and tested (test_trendline_core.py, TRENDLINE_CONTRACT.md v1); nothing runs it yet: the count-only card (DEV counts, no backtest) is the first caller."
-  },
-  "MyTradingSys/backtest/layers/vfi/vfi.py": {
-   "disp": "WIRE",
-   "why": "Volume Flow Indicator (LazyBear/Katsanos) context engine (SPEC_ENGINES.md B); imported by research/tv_favorites_2026-11/vfi_state.py through sys.path, which the scanner cannot follow, and by test_vfi.py",
-   "ref": "vfi-engine-1107"
   },
   "MyTradingSys/backtest/layers/wavetrend/make_golden.py": {
    "disp": "REPRO",
@@ -521,10 +498,6 @@
   "MyTradingSys/research/imbalance_qriptal_2026-10-16/imb.py": {
    "disp": "REPRO",
    "why": "Qriptal-style volume-anomaly imbalance: label check against labels.json and fee-net fade test on Binance BTCUSDT (verify-labels | fetch | parity | label-check | backtest); writes LABEL_CHECK.md, BACKTEST.md; holdout outcomes not read; run by hand, named in README.md."
-  },
-  "MyTradingSys/research/imbalance_qriptal_2026-10-16/rescore_habib.py": {
-   "disp": "REPRO",
-   "why": "Re-score driver for the Habib imbalance fade with plan stops; run by hand, writes RESCORE_tables.json (card fee-stop-rescore-fabio-habib-1106)."
   },
   "MyTradingSys/research/krown_capture_2026-10-16/check_quotes.py": {
    "disp": "REPRO",
@@ -976,11 +949,6 @@
    "disp": "TOOL",
    "why": "OI-delta 4-state backtest over archived snapshots, hand-run; cited as implemented in MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md:48 and items/T063_stop_run_oi_flush_signature.md:18 (misplaced in runtime/ per items/T057_simplify_declutter.md:14)."
   },
-  "MyTradingSys/runtime/doh_http.py": {
-   "disp": "TOOL",
-   "ref": "live-aid-oi-poller-all-venues-1110",
-   "why": "Host-agnostic DoH + pinned-IP HTTPS GET imported lazily by oi_poller.py (a by-hand tool); binance_doh.py stays unchanged for the live runner."
-  },
   "MyTradingSys/runtime/log_decision.py": {
    "disp": "TOOL",
    "why": "One-line decision logger documented for hand use in COMMANDS.md:51."
@@ -988,19 +956,6 @@
   "MyTradingSys/system/artifacts/_gen_live_onepage_mock.py": {
    "disp": "TOOL",
    "why": "Builds the one-page live feed mock LIVE_ONEPAGE_MOCK_2026-11-04.html from the orderflow CSV; run by hand (d-sim-ux-1104), mock only."
-  },
-  "MyTradingSys/system/check_dsa_review.py": {
-   "disp": "REPRO",
-   "ref": "dsa-bridge-fix-review-opus-1108",
-   "why": "Structure check of MyTradingSys/system/DSA_BLOCK_REVIEW.md (bug table, repeat classes, DeepSeek rules, behaviours, prompt replacements, ranked fix list); run by hand, named in the review and its card."
-  },
-  "MyTradingSys/tools/live_aid/base_rates.py": {
-   "disp": "TOOL",
-   "why": "Builds base_rates.js (the BASE_RATES registry the live aid panels read) and BASE_RATES.md from the study outputs; run by hand after a study re-run: python MyTradingSys/tools/live_aid/base_rates.py build, named in tools/live_aid/STEPS.md."
-  },
-  "MyTradingSys/tools/live_aid/build_cycle_flag.py": {
-   "disp": "TOOL",
-   "why": "Writes cycle_flag_data.js (the cycle-bottom flag line shown in live_aid.html); run by hand once a day, named in tools/live_aid/STEPS.md."
   },
   "MyTradingSys/tools/live_aid/events_wire.py": {
    "disp": "TOOL",
@@ -1011,10 +966,13 @@
    "ref": "news-weight-bias-flash-1108",
    "why": "Prints the 15 m and 60 m BTC move after each of the 20 saved Tree News items per class on public Binance 1m klines (counts only, no edge claim); run by hand: python MyTradingSys/tools/live_aid/news_study.py, named in tools/live_aid/REQUIREMENTS.md (News weight section)."
   },
-  "MyTradingSys/tools/live_aid/oi_poller.py": {
+  "MyTradingSys/tools/live_aid/build_cycle_flag.py": {
    "disp": "TOOL",
-   "ref": "live-aid-oi-poller-all-venues-1110",
-   "why": "Live Aid open-interest poller: operator runs it by hand (python MyTradingSys/tools/live_aid/oi_poller.py); writes the gitignored runtime_data/live_aid/oi_snapshot.js that live_aid.html reloads every 30 s. No scheduler by policy."
+   "why": "Writes cycle_flag_data.js (the cycle-bottom flag line shown in live_aid.html); run by hand once a day, named in tools/live_aid/STEPS.md."
+  },
+  "MyTradingSys/tools/live_aid/base_rates.py": {
+   "disp": "TOOL",
+   "why": "Builds base_rates.js (the BASE_RATES registry the live aid panels read) and BASE_RATES.md from the study outputs; run by hand after a study re-run: python MyTradingSys/tools/live_aid/base_rates.py build, named in tools/live_aid/STEPS.md."
   },
   "MyTradingSys/tools/us_open_alert.py": {
    "disp": "WIRE",
@@ -1044,6 +1002,38 @@
   "scripts/tools/divergence_monitor.py": {
    "disp": "TOOL",
    "why": "Diagnostic divergence reader, \"tooling, left as is\": MyTradingSys/items/B063_divergence.md:70."
+  },
+  "MyTradingSys/backtest/layers/fabio/rescore.py": {
+   "disp": "TOOL",
+   "why": "Fee-net R maths (fees.py costs) for the fee/stop re-score, card fee-stop-rescore-fabio-habib-1106; used by rescore_fabio.py, rescore_habib.py and test_rescore.py."
+  },
+  "MyTradingSys/backtest/layers/fabio/rescore_fabio.py": {
+   "disp": "REPRO",
+   "why": "Re-score driver for fabio_of 09-30 with plan stops; run by hand, writes RESCORE.md figures (card fee-stop-rescore-fabio-habib-1106)."
+  },
+  "MyTradingSys/research/imbalance_qriptal_2026-10-16/rescore_habib.py": {
+   "disp": "REPRO",
+   "why": "Re-score driver for the Habib imbalance fade with plan stops; run by hand, writes RESCORE_tables.json (card fee-stop-rescore-fabio-habib-1106)."
+  },
+  "MyTradingSys/backtest/layers/squeeze/squeeze.py": {
+   "disp": "WIRE",
+   "why": "Squeeze Momentum (LazyBear) context engine (SPEC_ENGINES.md A); imported by research/tv_favorites_2026-11/squeeze_state.py through sys.path, which the scanner cannot follow, and by test_squeeze.py",
+   "ref": "squeeze-momentum-engine-1107"
+  },
+  "MyTradingSys/backtest/layers/vfi/vfi.py": {
+   "disp": "WIRE",
+   "why": "Volume Flow Indicator (LazyBear/Katsanos) context engine (SPEC_ENGINES.md B); imported by research/tv_favorites_2026-11/vfi_state.py through sys.path, which the scanner cannot follow, and by test_vfi.py",
+   "ref": "vfi-engine-1107"
+  },
+  "MyTradingSys/backtest/layers/adx/adx.py": {
+   "disp": "WIRE",
+   "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py",
+   "ref": "adx-di-tradingview-crosscheck-1107"
+  },
+  "MyTradingSys/system/check_dsa_review.py": {
+   "disp": "REPRO",
+   "ref": "dsa-bridge-fix-review-opus-1108",
+   "why": "Structure check of MyTradingSys/system/DSA_BLOCK_REVIEW.md (bug table, repeat classes, DeepSeek rules, behaviours, prompt replacements, ranked fix list); run by hand, named in the review and its card."
   },
   "src/main/java/datafeed/DohSmoke.java": {
    "disp": "TOOL",
