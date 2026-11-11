@@ -439,6 +439,18 @@
   var UO = { windowMs: 7200000, orMs: 900000, buckets: [['0-0.25', 0, 0.0025], ['0.25-0.5', 0.0025, 0.005], ['0.5-1', 0.005, 0.01], ['1-2', 0.01, 0.02], ['2+', 0.02, 9]],
              names: { dayH: 'day high so far', dayL: 'day low so far', pdh: 'prev day high', pdl: 'prev day low', d3h: '3-day high', d3l: '3-day low', d7h: '7-day high', d7l: '7-day low', orH: 'opening range high', orL: 'opening range low' } };
   function uoBucket(x) { for (var i = 0; i < UO.buckets.length; i++) if (x >= UO.buckets[i][1] && x < UO.buckets[i][2]) return UO.buckets[i][0]; return null; }
+  // First 1-3 minutes after the open (research/us_open_first3m_2026-11-11; operator 2026-11-11). t = BASE_RATES.us_open_first3m.table.
+  // One plain line: size is measured, direction is not readable. Returns '' when the table is missing or incomplete (fail closed, no invented number).
+  function first3Line(t) {
+    try {
+      var s = t.size.m3, f = t.follow, m = t.meta, p = function (x) { return (100 * x).toFixed(2) + '%'; };
+      var fr = function (v) { return v[0] + ' of ' + v[1] + ' (' + Math.round(100 * v[0] / v[1]) + '%)'; };
+      if (![s.p50, s.p75, t.vol_ratio_p50].every(isFinite) || !(f.m3_f60[1] > 0) || !(f.pre30_m3[1] > 0) || !(f.last60_m3_f60[1] > 0)) return '';
+      return 'First 3 min after the open: median move ' + p(s.p50) + ', top quarter above ' + p(s.p75) + ', volume ' + (+t.vol_ratio_p50).toFixed(1) + 'x the 3 min before. ' +
+        'Direction gives no read: it carried on over the next 57 min on ' + fr(f.m3_f60) + ' opens, last 60 opens ' + fr(f.last60_m3_f60) +
+        '; the 30 min drift before the open matched it on ' + fr(f.pre30_m3) + '. Size, not direction. ' + m.range[0] + '..' + m.range[1] + ', fee-free, context only.';
+    } catch (e) { return ''; }
+  }
   // rows5m: 5m bars; daily: utcDays rows; open: the US open ms (last one if within 2 h, else the next); px: mark; rates: {kind: {bucket: {n, touch, nt, held}}}
   function usOpen(rows5m, daily, open, now, px, rates) {
     var phase = now < open ? 'before' : now - open <= UO.windowMs ? 'in' : 'after', d0 = Math.floor(open / DAY) * DAY;
@@ -857,7 +869,7 @@
   var api = { oiSnapFresh: oiSnapFresh, VA: VA, valueArea: valueArea, vaPriorDay: vaPriorDay, vaAcceptance: vaAcceptance, LA: LA, levelApproach: levelApproach, approachAlerts: approachAlerts, AM_TEXT: AM_TEXT, anticipation: anticipation, bigCandle: bigCandle, bcTopTraders: bcTopTraders, bcClass: bcClass, bcBand: bcBand, bcStreak: bcStreak, bcBig: bcBig, OM: OM, oiState: oiState, oiWindow: oiWindow, oiNet: oiNet, oiDisagree: oiDisagree, oiBars: oiBars, oiEvents: oiEvents, oiLastEvent: oiLastEvent, oiPath: oiPath, oiTrap: oiTrap, oiEventText: oiEventText, C24: C24, oiExpect: oiExpect,
     AV: AV, rosterRead: rosterRead, analystVote: analystVote, levelWatch: levelWatch, zones: zones, lean: lean, actions: actions, NW: NW, newsTags: newsTags, newsRead: newsRead, newsMerge: newsMerge, newsPulse: newsPulse, foldBars: foldBars, FD: FD, fundRead: fundRead, premium: premium, bybitTick: bybitTick, LQ: LQ, liqDeribit: liqDeribit, liqBybit: liqBybit, liqBinance: liqBinance, liqSum: liqSum, CP: CP, coilPierce: coilPierce, IT: IT, divergence: divergence, flow: flow, flowLive: flowLive, squeeze: squeeze, dom: dom, supports: supports, vwapTest: vwapTest,
     flagDiv: flagDiv, flagSqueeze: flagSqueeze, flagFlow: flagFlow, flagDom: flagDom, flagVwap: flagVwap, confidence: confidence, rma: rma, sma: sma, rsi: rsi, bollinger: bollinger, atr: atr, dayVwap: dayVwap, utcDays: utcDays, wavetrend: wavetrend,
-    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, nextHighEvent: nextHighEvent };
+    inversePnlBtc: inversePnlBtc, closedPnlBtc: closedPnlBtc, columns: columns, UO: UO, usOpen: usOpen, first3Line: first3Line, nextHighEvent: nextHighEvent };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.LiveAid = api;
 })(typeof self !== 'undefined' ? self : this);

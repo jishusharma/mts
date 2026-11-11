@@ -9,7 +9,7 @@ import pytest
 HERE = Path(__file__).resolve().parent
 RES = HERE.parents[1] / "research"
 REG_JS = HERE / "base_rates.js"
-IDS = {"us_open_levels", "anticipation_oi_delta", "level_approach_prior_day", "bigcandle_story", "setup_board_mix", "candle_flip_cells"}
+IDS = {"us_open_levels", "us_open_first3m", "anticipation_oi_delta", "level_approach_prior_day", "bigcandle_story", "setup_board_mix", "candle_flip_cells"}
 FIELDS = {"id", "event", "condition", "outcome", "horizon", "n", "units", "window", "regime_mix", "fee_status", "source", "built_utc", "table"}
 
 
@@ -36,6 +36,81 @@ def test_us_open_table_equals_results_json():
     r = registry()["us_open_levels"]
     assert r["table"] == ref and r["n"] == ref["meta"]["days"]
     assert r["window"] == "%s..%s" % tuple(ref["meta"]["range"])
+
+
+def _first3_study():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("first3_study", RES / "us_open_first3m_2026-11-11" / "study.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_us_open_first3m_table_equals_results_json():
+    ref = json.loads((RES / "us_open_first3m_2026-11-11" / "results.json").read_text(encoding="utf-8"))
+    r = registry()["us_open_first3m"]
+    assert r["table"] == ref and r["n"] == ref["meta"]["days"] >= 1000
+    assert r["window"] == "%s..%s" % tuple(ref["meta"]["range"])
+    assert "base_rates_input" in (RES / "us_open_first3m_2026-11-11" / "study.py").read_text(encoding="utf-8")
+
+
+def _bars(p0, c1, c3, c30, c60, pre_open=100.0, pre_close=100.0, taker=0.5):
+    """121 flat bars with hand-set prices: bar 30 opens at pre_open, bar 59 closes at pre_close, bar 60 opens at p0."""
+    k = [[100.0, 100.0, 100.0, 100.0, 10.0, 10.0 * taker] for _ in range(121)]
+    k[30][0], k[59][3] = pre_open, pre_close
+    k[60][0], k[60][3], k[62][3], k[89][3], k[119][3] = p0, c1, c3, c30, c60
+    for i in (60, 61, 62):
+        k[i][4] = 30.0
+    return k
+
+
+def test_us_open_first3m_row_hand_case():
+    st = _first3_study()
+    # open 100, minute 1 closes 101, minute 3 closes 102, +30 min 99.96, +60 min 104.04; drift before the open 100 -> 99
+    r = st.row_from_bars("2026-11-10", _bars(100.0, 101.0, 102.0, 99.96, 104.04, pre_close=99.0, taker=0.4))
+    assert r["open_utc"] == "14:30Z"                      # 09:30 New York in winter time
+    assert r["m1"] == pytest.approx(0.01) and r["m3"] == pytest.approx(0.02)
+    assert r["f30"] == pytest.approx(-0.02) and r["f60"] == pytest.approx(0.02)   # from the minute-3 close, 102
+    assert r["pre30"] == pytest.approx(-0.01) and r["taker"] == pytest.approx(0.4)
+    assert r["vol_ratio"] == pytest.approx(3.0)           # 3 x 30 over 3 x 10
+    assert st.row_from_bars("2026-07-01", _bars(100, 100, 100, 100, 100))["open_utc"] == "13:30Z"   # summer time
+
+
+def test_us_open_first3m_summary_hand_case():
+    st = _first3_study()
+    mk = lambda d, m3, f60, pre30: dict(day=d, open_utc="14:30Z", p0=100.0, pre30=pre30, pre5=pre30, taker=0.5, m1=m3, m3=m3, f30=f60, f60=f60, vol_ratio=2.0)  # noqa: E731
+    rows = [mk("2026-01-05", 0.01, 0.02, -0.01), mk("2026-01-06", 0.02, -0.01, 0.01), mk("2026-01-07", -0.03, -0.01, 0.01), mk("2026-01-08", 0.04, 0.0, -0.02)]
+    t = st.summarize(rows, skipped=2)
+    assert t["meta"]["days"] == 4 and t["meta"]["skipped"] == 2 and t["meta"]["range"] == ["2026-01-05", "2026-01-08"]
+    assert t["follow"]["m3_f60"] == [2, 3]                # day 4 has a zero follow move: left out of both counts
+    assert t["follow"]["pre30_m3"] == [1, 4]              # only 01-06 has the drift and the first 3 min on the same side
+    assert t["size"]["m3"]["up"] == 3 and t["size"]["m3"]["down"] == 1
+    assert t["size"]["m3"]["p50"] == 0.02                 # sorted abs [0.01, 0.02, 0.03, 0.04], index int(0.5 * 3) = 1
+    assert t["follow"]["big_cut"] == 0.04 and t["follow"]["big_m3_f60"] == [0, 0]   # 4 // 4 = 1 day, its follow move is zero
+
+
+def test_live_aid_shows_the_first3_line_from_the_registry():
+    import os
+    import shutil
+    import subprocess
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    t = registry()["us_open_first3m"]["table"]
+    runner = ("const A=require(process.argv[1]);let j='';process.stdin.on('data',d=>j+=d).on('end',()=>{j=JSON.parse(j);"
+              "console.log(JSON.stringify([A.first3Line(j.t),A.first3Line(j.bad),A.first3Line(null)]))})")
+    bad = json.loads(json.dumps(t))
+    bad["follow"]["m3_f60"] = [0, 0]
+    out = subprocess.run([node, "-e", runner, str(HERE / "live_aid_indicators.js")], input=json.dumps({"t": t, "bad": bad}),
+                         capture_output=True, text=True, timeout=60, env=os.environ.copy())
+    assert out.returncode == 0, out.stderr
+    line, bad_line, none_line = json.loads(out.stdout)
+    f = t["follow"]
+    assert "%d of %d (%d%%)" % (f["m3_f60"][0], f["m3_f60"][1], round(100 * f["m3_f60"][0] / f["m3_f60"][1])) in line
+    assert "%.2f%%" % (100 * t["size"]["m3"]["p50"]) in line and "Size, not direction" in line and t["meta"]["range"][1] in line
+    assert bad_line == "" and none_line == ""            # fail closed: no table, no line
+    html = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    assert 'id="uo-first3"' in html and "A.first3Line(brRow('us_open_first3m').table)" in html
 
 
 def test_flip_table_equals_cells_csv():
