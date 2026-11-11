@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T14:37:51Z",
   "commands": [],
   "created": "2026-11-11T14:22:14Z",
   "depends_on": [],
@@ -16,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-host-health-toolchain",
+      "ref": "dc6523cb1",
+      "utc": "2026-11-11T14:37:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "host_health: report a broken Java/Maven/node toolchain on every ship; gate re-measure 476 ",
@@ -26,15 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: blind read completed",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T14:23:26Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-host-health-toolchain-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/host_health.py (JDK_MAJOR, java_major, _java_version, check_toolchain, run; read)",
     "scripts/dev/test_host_health.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: (1) JAVA_HOME set with bin/java present but java not on PATH -> one line naming %JAVA_HOME%\bin, (2) PATH java differing from JAVA_HOME's java -> a warning, (3) java -version major != 17 (incl. legacy 1.8 parsing) -> a warning, (4) a version probe exception becomes a line and never raises, (5) run() includes toolchain lines and they never change the ship verdict",
