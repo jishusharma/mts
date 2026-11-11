@@ -146,7 +146,7 @@ def tick():
         return emit("autogo", "OK", "skip: every slot already launched in the last %dh" % STALE_H, ["skip-done"])
     rid = todo[0]["id"]
     try:
-        child = subprocess.Popen([sys.executable, str(HERE / "go.py"), "--id", rid, "--headless"], cwd=ROOT)
+        child = subprocess.Popen([sys.executable, str(HERE / "go.py"), "--id", rid, "--headless"], cwd=ROOT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except OSError as e:
         log("launch_error", now, id=rid, error=str(e))
         return emit("autogo", "RED", "cannot start go.py for %s: %s" % (rid, e), ["launch-error", rid])
