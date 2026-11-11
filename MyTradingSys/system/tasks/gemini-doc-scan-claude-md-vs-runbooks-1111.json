@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T13:45:05Z",
   "commands": [],
   "created": "2026-11-11T13:19:36Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-claude-md-vs-runbooks-1",
+      "ref": "6004f0a69",
+      "utc": "2026-11-11T13:45:05Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T13:19:39Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-claude-md-vs-runbooks-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "CLAUDE.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/DEPLOY_RUNBOOK.md, MyTradingSys/system/SCHEDULING_POLICY.md (read)",
     "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-claude-md-vs-runbooks-1111.md (new)"
@@ -51,12 +64,13 @@
   "sources": [
     "Session_Planner planner-c-feed-lanes-1111"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 4 topics: deploy authority, ship path and gates, scheduling ban, live-tree change rule; compare each across the 4 files",
     "Mark each MATCH/DIFF/NOT_IN_DATA (or CONSISTENT/CONTRADICTION) with file:line, write the table with counts on line 1, quote file:line per row"
   ],
+  "taken": "2026-11-11T13:45:05Z",
   "tests": "",
   "title": "[GEMINI] doc contradiction scan: CLAUDE.md vs PARALLEL.md, DEPLOY_RUNBOOK.md and SCHEDULING_POLICY.md",
   "weight": "ROUTINE",

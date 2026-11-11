@@ -198,7 +198,7 @@ def test_prompt_carries_the_bridge_0_7_4_rules():
         "Write AIRUN fences only in your final answer, never while thinking.",
         "the bridge ignores fences inside the thinking panel",
         'NOT RUN: duplicate of block K',
-        "add a `# again` line",
+        "append a `Write-Output 'again'` line",
         "The bridge is a queue.",
         "your next input is their [AIRUN RESULT] (or BATCH) message",
         "Never send a status-check block while a task runs; never put two gate or ship tasks in one reply",
@@ -237,7 +237,7 @@ def test_prompt_top_holds_sections_a_to_f_and_the_ship_block():
                           ("E", "TRUNK CI RED IS NOT YOUR TREE"), ("F", "THE OPERATOR ASKS MID-TASK")):
         assert "\n%s. %s" % (letter, title) in first, letter
     assert "# AIRUN task=inline timeout=1200\n" + SHIP_BLOCK in first
-    for needle in ("python scripts/dev/ci_fail.py", "mts_signal.py read", "--fix-ci", "TASK: <id> | STEP: <n> | NEXT: <next action>",
+    for needle in ("python scripts/dev/ci_fail.py", "mts_signal.py read", "--fix-ci", "TASK: <id> | SLUG: <claim slug> | WT: <worktree> | STEP: <n> | NEXT: <next action>",
                    "NEVER run run_all_tests.py, task=mts-gate or task=mts-ship yourself", "Up to 6 blocks per reply"):
         assert needle in first, needle
 
@@ -319,8 +319,8 @@ def test_inline_plan_in_prompt_is_multiline_short_valid_json_with_doubled_backsl
 
 def test_5a_closes_the_source_before_the_one_ship():
     s = " ".join(text(PROMPT).split())
-    a, b = s.index("8. Close the source BEFORE the ship"), s.index("9. The inline ship block")
-    assert a < b and "A second ship within 10 minutes is allowed" in s and "ships itself" in s
+    a, c, b = s.index("7. Close the source BEFORE the ship"), s.index("8. `python scripts/dev/dsa.py commit"), s.index("9. The inline ship block")
+    assert a < c < b and "--files <exact paths> <card file>" in s and '--next "<card-id | stage | END: reason>"' in s and "A second ship within 10 minutes is allowed" in s and "ships itself" in s
 
 
 def test_prompt_boots_then_waits_for_the_order():
@@ -332,3 +332,86 @@ def test_prompt_boots_then_waits_for_the_order():
     assert "Pick the first task by section 5 and start" not in s
     assert "0.9 BRIDGE KNOW-HOW" in s and s.index("0.9 BRIDGE KNOW-HOW") < s.index("## 1. ROLE")
     assert "dsa.py start, paste the seed" in s                 # section 12 names the new start
+
+
+# ------------------------------------------------------------------ self-consistency (operator 2026-11-11: "check everything")
+# The prompt broke its own rules: 0b said line 2 of every block is the UTF-8 line while every example lacked it, two
+# sections gave opposite ship-frequency rules, and boot step 4 parked a JAVA_HOME-only fix. These keep it consistent.
+UTF8 = "$env:PYTHONUTF8='1'; $env:PYTHONIOENCODING='utf-8'"
+
+
+def _plain_blocks(s):
+    out = []
+    for m in re.finditer(r"```powershell\n(.*?)\n```", s, re.S):
+        lines = m.group(1).split("\n")
+        if lines[0].startswith("# AIRUN cwd="):
+            out.append(lines)
+    return out
+
+
+def test_every_plain_block_in_the_prompt_follows_its_own_9a_order():
+    blocks = _plain_blocks(text(PROMPT))
+    assert len(blocks) >= 3
+    for lines in blocks:
+        cwd = re.match(r"# AIRUN cwd=(\S+)", lines[0]).group(1)
+        body = lines[1:]
+        if body and body[0] == "$ErrorActionPreference='Stop'":
+            body = body[1:]
+        assert body[0] == UTF8, lines
+        assert body[1] == "Set-Location '%s'" % cwd, lines
+        assert not any(ln.startswith("#") for ln in lines[1:]), lines
+        assert all(len(ln) < 200 for ln in lines), lines
+
+
+def test_prompt_states_each_contested_rule_once():
+    s = " ".join(text(PROMPT).split())
+    assert s.count("10 minutes") == 1, "ship frequency must be stated once (0b rule 4)"
+    assert "once per 10 minutes" not in s
+    assert "Take work only through" not in s           # 0b defers to the section 5 queue order
+
+
+def test_prompt_boot_claims_match_the_seed():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("dsa_for_prompt", ROOT / "scripts" / "dev" / "dsa.py")
+    dsa = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(dsa)
+    seed = dsa.seed_text("HOST")
+    boot = text(PROMPT)
+    boot = boot[boot.index("## 3. BOOT PROCEDURE"):boot.index("## 4. READING LARGE FILES")]
+    assert "made the worktree, printed this file and ran `dsa.py boot`" in boot
+    for needle in ("git worktree add", "Get-Content DSA_SESSION_PROMPT.md", "python scripts/dev/dsa.py boot"):
+        assert needle in seed, needle
+    if UTF8.replace("'", "") not in seed.replace("'", "").replace(" ", "").replace(";", "; "):
+        assert "the seed's boot block, may lack line 3" in " ".join(text(PROMPT).split())
+
+
+def test_prompt_fixes_java_from_java_home_instead_of_parking_it():
+    boot = text(PROMPT)
+    boot = " ".join(boot[boot.index("## 3. BOOT PROCEDURE"):boot.index("## 4. READING LARGE FILES")].split())
+    assert r'$env:Path = "$env:JAVA_HOME\bin;" + $env:Path' in boot
+    assert r'Test-Path "$env:JAVA_HOME\bin\java.exe"' in boot
+
+
+def test_prompt_says_how_deepseek_thinking_works():
+    s = " ".join(text(PROMPT).split())
+    assert "Your thinking is NOT carried into the next turn" in s
+    assert "Keep DeepThink on" in s and "think step by step" in s     # named as scaffolding not to add
+
+
+def test_prompt_size_and_no_stale_state():
+    raw = PROMPT.read_bytes()
+    assert 20_000 <= len(raw) <= 50_000, len(raw)      # operator 2026-11-11: 25-50 KB is fine; rules first
+    s = text(PROMPT)
+    assert "Last DSA boot" not in s and "not yet recorded" not in s
+    assert raw.decode("ascii")                          # ASCII only (PowerShell 5.1 pipes)
+
+
+def test_review_fixes_1111_hold():
+    # Haiku + Sonnet review of 47b513a2: hash line vs 9a, session end order, H vs the PATH post, flake defined
+    s = " ".join(text(PROMPT).split())
+    assert "add a `# again` line" not in s
+    assert s.index("NEXT_SESSION.md overwritten and shipped (5e D) from your worktree") < s.index("Last, `python scripts/dev/dsa.py end`")
+    assert "a fix outside the roots (a user PATH, an install)" in s
+    assert "a failing test your change does not touch" in s and "is no flake" in s
+    assert "the first line after Set-Location: `$OutputEncoding" in s
+    assert "## 14. KEEP IN VIEW" in s

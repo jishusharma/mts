@@ -43,7 +43,7 @@ class ParallelSeed(unittest.TestCase):
     def test_prompt_has_the_parallel_sessions_section(self):
         s = (HERE.parent.parent / "DSA_SESSION_PROMPT.md").read_text(encoding="utf-8")
         sec = s[s.index("## 0b. PARALLEL SESSIONS"):s.index("## 1. ROLE")]
-        for needle in ("tasks.py take", "A refused take", "One card at a time", "mts-dsa-<chat>", "once per 10 minutes",
+        for needle in ("tasks.py take", "A refused take", "One card at a time", "mts-dsa-<chat>", "A second ship within 10 minutes",
                        "wait 3 minutes", "tasks.py tried", "sync.py release", "PYTHONUTF8", "PYTHONIOENCODING", "dsa_seed.py"):
             self.assertIn(needle, sec, needle)
 

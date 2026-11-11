@@ -13,10 +13,10 @@
   },
   {
    "path": "DSA_SESSION_PROMPT.md",
-   "blob": "be1528882b98aa82e0826d0554e3e8628b2b78de",
-   "sha256_8": "58f186b4",
-   "eol": "LF",
-   "approved_by": "operator order 2026-11-03: fix DSA prompt - AI Bridge use, test flow, task context (dsa-prompt-flow-1103)",
+   "blob": "383c4fe489ba1e21df7d6e7b4db25f434d3db97a",
+   "sha256_8": "918acd27",
+   "eol": "CRLF",
+   "approved_by": "operator in chat 2026-11-11 (JIS-NUC lead B): rewrite the DSA prompt per the DeepSeek audit, 25-50 KB ok; then get it reviewed with Haiku and Sonnet (confirmed findings fixed)",
    "approved_commit": "pending"
   },
   {

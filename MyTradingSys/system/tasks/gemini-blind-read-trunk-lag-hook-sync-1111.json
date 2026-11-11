@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T13:39:07Z",
   "commands": [],
   "created": "2026-11-11T13:19:28Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MATCH: 4, DIFF: 0, NOT_IN_DATA: 0",
+      "ref": "ef132076f",
+      "utc": "2026-11-11T13:39:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: ask loud for one owner session per machine; PAGES STALE once per session id (tests",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: read-only audit complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T13:19:31Z",
   "refs": [],
-  "result": "",
+  "result": "MATCH: 4, DIFF: 0, NOT_IN_DATA: 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/trunk_lag.py (_hook_state, _ours, sync_hook_files, release_synced, main_checkout, catch_up; read)",
     "scripts/dev/test_trunk_lag.py (read, if present)",
@@ -45,12 +58,13 @@
   "sources": [
     "Session_Planner planner-c-feed-lanes-1111"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 4 clauses: (1) a dirty hook file not written by the sync is left alone, (2) a file the sync wrote is refreshed when trunk changes, (3) release_synced drops a record only when the working bytes equal HEAD, (4) git failure or timeout leaves the tree unchanged",
     "Mark each MATCH/DIFF/NOT_IN_DATA (or CONSISTENT/CONTRADICTION) with file:line, write the table with counts on line 1, quote file:line per row"
   ],
+  "taken": "2026-11-11T13:39:07Z",
   "tests": "",
   "title": "[GEMINI] blind read of trunk_lag.py sync_hook_files / release_synced / catch_up",
   "weight": "ROUTINE",
