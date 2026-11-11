@@ -1,36 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_sync.py scripts/dev/test_ship_time_guard.py -q"
+  ],
   "created": "2026-11-11T15:45:45Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A live-path ship on the desktop finishes under 5 min; CI log shows every test still ran; red-CI revert rule unchanged; diff-only review Agent verdict is in the commit note.",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Cut desktop live-path ship from 17-48 min to under 5 min: local ship runs changed-file tests plus smoke; the full suite runs once on CI, which already gates deploys (green-only). DECISION (OURS): target 5 min.",
   "id": "ship-full-gate-moves-to-ci-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: sync.py health prints NOTE OLD-SHELL for any bash/sh over 30 min (extends bg_watch",
+      "ref": "f6824b1ef8a7",
+      "utc": "2026-11-11T09:15:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "c637bfa4e167 row3: one gate pool per machine, one slot per ship, wait.log",
+      "ref": "MyTradingSys/system/GATE_SPEED.md",
+      "utc": "2026-11-10T21:20:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Changes the gate (Gates outrank orders): the diff-only review Agent is mandatory before ship. Build after ship-gate-per-test-timeout-1111 is merged (built, in review).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T15:57:07Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/sync.py",
+    "scripts/dev/gate_select.py",
+    "scripts/dev/test_ship_time_guard.py",
+    "MyTradingSys/system/GATE_SPEED.md"
+  ],
+  "scope_out": [
+    "CI workflow or deploy gate (must keep running every test)",
+    "live tree",
+    "revert rule wording"
+  ],
+  "scope_sha": "f6824b1ef8a7",
+  "size": "M",
   "sources": [
     "operator 2026-11-11 16:20Z: ship has been a problem"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Desktop full-gate ships take 17-48 min (6 of 24 ships on 11-11, 3 failed; 5 pytest shards of 10-16 min each) against a 5 min target. Local ship runs only the tests of the changed files plus smoke; the full suite runs once, on CI, which already gates deploys (green-only). Done when a live-path ship on the desktop finishes under 5 min, CI still runs every test, and a red CI still triggers the revert rule; diff-only review Agent before ship",
+  "state": "ready",
+  "steps": [
+    "Read GATE_SPEED.md and gate_select.py; list which steps a live-path ship runs today (live path = all --quick steps)",
+    "Change live-path selection to changed-file tests + smoke; keep `ship --full` as the escape to run all",
+    "Confirm CI still runs the full suite and a red CI still triggers the CLAUDE.md revert rule; update GATE_SPEED.md",
+    "Spawn a diff-only review Agent (sees only git diff) BEFORE ship; fix its findings",
+    "Time one live-path ship on the desktop"
+  ],
+  "tests": "New test in scripts/dev/test_sync.py: a live-path changed file selects only changed-file tests + smoke (fails on old code, which selects all --quick steps); ship --full still selects all",
+  "title": "Local ship runs changed-file tests + smoke only; full suite runs once on CI",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

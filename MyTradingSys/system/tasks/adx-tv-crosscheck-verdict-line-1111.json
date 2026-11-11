@@ -1,36 +1,68 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/adx_di_2026-11/census.py",
+    "python -m pytest MyTradingSys/research/adx_di_2026-11/test_census.py -q"
+  ],
   "created": "2026-11-11T15:40:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "PARTIAL appears in TV_CROSSCHECK.md only as the relabelled raw note; CENSUS.md median lead cells read as days with no percent sign; the CENSUS.md diff touches only those cells.",
+  "est_turns": 6,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "TV_CROSSCHECK.md line 3 says VERIFIED-TV, line 31 (a worker raw note) says PARTIAL 7/9; CENSUS.md prints median lead (days) as 400.0% 850.0% 1300.0%. Make each file state one verdict and days.",
   "id": "adx-tv-crosscheck-verdict-line-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.01); last csv ",
+      "ref": "25e12c01a904",
+      "utc": "2026-11-07T14:14:40Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "25e12c01a904 adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.0",
+      "ref": "MyTradingSys/research/adx_di_2026-11/TV_CROSSCHECK.md",
+      "utc": "2026-11-07T14:14:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "If regenerating changes other numbers, edit only the three cells by hand.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T15:57:17Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/adx_di_2026-11/TV_CROSSCHECK.md",
+    "MyTradingSys/research/adx_di_2026-11/CENSUS.md",
+    "MyTradingSys/research/adx_di_2026-11/census.py",
+    "MyTradingSys/research/adx_di_2026-11/test_census.py"
+  ],
+  "scope_out": [
+    "FORMULAS.md VERIFIED-TV marks",
+    "census numbers themselves (formatting only)"
+  ],
+  "scope_sha": "25e12c01a904",
+  "size": "S",
   "sources": [
     "four-model review 2026-11-11"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "adx_di_2026-11/TV_CROSSCHECK.md says VERIFIED-TV in line 3 and PARTIAL 7/9 in line 31, and CENSUS.md prints median lead days as percent. Done when both files state one verdict and days",
+  "state": "ready",
+  "steps": [
+    "census.py line ~177 passes the median through a percent formatter; print it as days and regenerate CENSUS.md without changing other numbers",
+    "TV_CROSSCHECK.md: keep the line-3 verdict VERIFIED-TV (closed bars match; last bar was a partial csv; FORMULAS.md agrees) and relabel line 31 as the worker raw note: 7/9 cells, both failures on the partial 2026-11-06 bar (DECISION OURS)"
+  ],
+  "tests": "New test in test_census.py: the cascade table median lead cell has no percent sign (fails on old code); existing census tests unchanged",
+  "title": "ADX/DI cross-check: one verdict, census lead in days",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

@@ -260,6 +260,14 @@ class FastGateRules(unittest.TestCase):
         for f in ("auto_deploy", "live_mirror", "cloud_setup"):
             self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "full", f)
 
+    def test_sim_desk_result_json_is_smoke_not_full(self):
+        # dsa-research-ship-full-gate-timeout-1111: matched no rule -> fail-closed full gate (1100 s)
+        self.assertEqual(self.sel("sim_desk/results/habib-plan-hit-rate-1104.json")[0], "smoke")
+        # no loosening: code under sim_desk, nested paths and live paths stay full
+        self.assertEqual(self.sel("sim_desk/results/run.py")[0], "full")
+        self.assertEqual(self.sel("sim_desk/results/sub/x.json")[0], "full")
+        self.assertEqual(self.sel("MyTradingSys/execution/x.json")[0], "full")
+
     def test_an_ordinary_dev_script_is_still_smoke(self):
         self.assertEqual(self.sel("scripts/dev/example_tool.py")[0], "smoke")
 
