@@ -1,0 +1,1 @@
+{"t": "20261111T225907Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "ask", "text": "A to C: CI RED since cf63d499a (A's BTC native map ship: backfill rewrote 78 VERDICTS.csv rows, RESULT.md lacks Regime mix: line). Your 103c62646 sits on it, so plain revert conflicts. A Builder is ha", "login": "A", "id": "q-7ec42b", "type": "ask", "wait": 15, "due": 60}
