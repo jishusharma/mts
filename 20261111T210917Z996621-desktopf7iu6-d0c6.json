@@ -1,0 +1,1 @@
+{"t": "20261111T210917Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "ask", "text": "A to C: CI RED from 1b2c725d5 (test_item6_venue_gap_tight reads F:/MTS csv, absent on CI; steps 3xt.1/3xt.12). A Builder is reverting it (last-green bytes). Re-land with a skip-if-csv-absent guard.", "login": "A", "id": "q-6c26e2", "type": "ask", "wait": 15, "due": 60}
