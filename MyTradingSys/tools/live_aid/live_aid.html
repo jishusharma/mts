@@ -581,7 +581,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   // which writes runtime_data/live_aid/oi_snapshot.js (window.LIVEAID_OI_SNAP). Reloaded every 30 s as a script tag (no CORS needed).
   // A venue is used only when its own t is under 60 s old (A.oiSnapFresh); stale or missing = NOT_IN_DATA with the reason, never a guess.
   var SNAP_VENUES = ['BINANCE', 'OKX', 'BITGET', 'BITMEX', 'KRAKEN', 'BINGX', 'HTX', 'MEXC'];
-  function applySnap() {
+  function applyOiSnap() {
     var snap = window.LIVEAID_OI_SNAP, now = Date.now(), f = A.oiSnapFresh(snap, now, 60000);
     SNAP_VENUES.forEach(function (v) {
       var st = S.om[v], x = f[v], L = st.live, own = L.length && now - L[L.length - 1].t < 20000 && L[L.length - 1].snapT == null;
@@ -591,11 +591,11 @@ main>#p-pos:not(.off){flex:0 0 auto}
       if (!(own || (L.length && now - L[L.length - 1].t < A.OM.staleMs))) st.err = 'poller: ' + st.snapErr;
     });
   }
-  function loadSnap() {
+  function loadOiSnap() {
     var s2 = document.createElement('script');
     s2.src = '../../../runtime_data/live_aid/oi_snapshot.js?_=' + Date.now();
-    s2.onload = function () { applySnap(); s2.remove(); };
-    s2.onerror = function () { window.LIVEAID_OI_SNAP = null; applySnap(); s2.remove(); };
+    s2.onload = function () { applyOiSnap(); s2.remove(); };
+    s2.onerror = function () { window.LIVEAID_OI_SNAP = null; applyOiSnap(); s2.remove(); };
     document.head.appendChild(s2);
   }
   function loadBinanceOi(hist) {
@@ -1728,7 +1728,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   loadMaFast(); setInterval(loadMaFast, 15000); loadMaMid(); setInterval(loadMaMid, 60000); loadMaSlow(); setInterval(loadMaSlow, 300000);
   setInterval(omSample, 10000); loadBybitOi(); setInterval(loadBybitOi, 60000);
   loadTopTraders(); setInterval(loadTopTraders, 300000); loadPhase(); setInterval(loadPhase, 3600000); loadPriorDay(); setInterval(loadPriorDay, 3600000);
-  loadSnap(); setInterval(loadSnap, 30000); loadGateOi(); setInterval(loadGateOi, 30000); loadHlOi(); setInterval(loadHlOi, 30000);
+  loadOiSnap(); setInterval(loadOiSnap, 30000); loadGateOi(); setInterval(loadGateOi, 30000); loadHlOi(); setInterval(loadHlOi, 30000);
   loadBinanceOi(true); setInterval(function () { loadBinanceOi(false); }, 30000); setInterval(function () { loadBinanceOi(true); }, 300000);
   loadCal();
   route();

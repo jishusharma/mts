@@ -178,3 +178,11 @@ def test_binance_doh_public_api_is_unchanged():
     for n in ("resolve", "urlopen", "is_binance_host", "clear_cache", "parse_dns_json", "DohError", "DohHTTPSConnection"):
         assert hasattr(B, n), n
     assert B.is_binance_host("fapi.binance.com") and not B.is_binance_host("www.okx.com")
+
+
+def test_page_has_no_duplicate_function_names():
+    # The poller's loadSnap() once silently replaced the calendar's loadSnap() (hoisting: last wins), breaking the calendar.
+    import collections, re
+    src = (Path(__file__).parent / "live_aid.html").read_text(encoding="utf-8")
+    names = collections.Counter(re.findall(r"^  function (\w+)\(", src, re.M))
+    assert {n: c for n, c in names.items() if c > 1} == {}
