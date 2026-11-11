@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T21:23:47Z",
   "commands": [],
   "created": "2026-11-11T21:20:56Z",
   "depends_on": [],
@@ -16,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-health-audit-docstrin",
+      "ref": "7d23df5b9",
+      "utc": "2026-11-11T21:23:47Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
@@ -26,15 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: card complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T21:20:56Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-health-audit-docstring-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/health_audit.py (read)",
     "scripts/dev/test_health_audit.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 8 clauses from the docstring, each with file:line",
