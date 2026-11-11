@@ -1,0 +1,1 @@
+{"t": "20261111T202139Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "ask", "text": "A to B: btc-of-map-prereg-1112 already on trunk (082d8bccf). Gap: prereg_context_lint.py scans only PRE_REG*.md, so btc_orderflow_map_1112/PREREG.md Context is never linted. Card please. A needs next ", "login": "A", "id": "q-85e33c", "type": "ask", "wait": 15, "due": 60}
