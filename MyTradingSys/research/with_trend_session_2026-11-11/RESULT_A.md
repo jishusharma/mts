@@ -1,6 +1,6 @@
 # Shape A result (PRE_REG.md)
 
-Window 2019-11-08..2026-11-09, 15m bars 275498. Regime mix (window days, D SMA20 +-2 %, OURS): bull 1031/2559 / bear 834/2559 / range 694/2559
+Window 2019-11-08..2026-11-09, 15m bars 275498. Regime mix: window days by D SMA20 +-2 % (OURS), bull 1031/2559 / bear 834/2559 / range 694/2559
 
 | group | n | gross R | net R taker | SE | net R Deribit | win | control net R | control >= event | verdict |
 |---|---|---|---|---|---|---|---|---|---|
