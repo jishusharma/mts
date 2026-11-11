@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T15:03:55Z",
   "commands": [],
   "created": "2026-11-11T14:22:14Z",
   "depends_on": [],
@@ -16,18 +16,24 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-dsa-prompt-vs-dsa-py-11",
+      "ref": "7ad542dad",
+      "utc": "2026-11-11T15:03:55Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
-      "line": "DSA prompt rewrite: settle 5 contradictions, fix Java from JAVA_HOME, DeepSeek thinking ru",
-      "ref": "47b513a29faa",
-      "utc": "2026-11-11T14:13:02Z"
+      "line": "DSA prompt: fix 11 findings from the Haiku + Sonnet review of 47b513a2",
+      "ref": "cf4a350f3477",
+      "utc": "2026-11-11T14:27:21Z"
     },
     {
       "auto": true,
       "kind": "report",
-      "line": "47b513a29faa DSA prompt rewrite: settle 5 contradictions, fix Java from JAVA_HOME, DeepSee",
+      "line": "cf4a350f3477 DSA prompt: fix 11 findings from the Haiku + Sonnet review of 47b513a2",
       "ref": "DSA_SESSION_PROMPT.md",
-      "utc": "2026-11-11T14:13:02Z"
+      "utc": "2026-11-11T14:27:21Z"
     }
   ],
   "layers": [],
@@ -38,10 +44,14 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T14:23:27Z",
+  "refreshed": "2026-11-11T14:51:00Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-dsa-prompt-vs-dsa-py-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "DSA_SESSION_PROMPT.md (sections G, 0b, 3, 9a; read)",
     "scripts/dev/dsa.py (cmd_boot, seed_text, cmd_start; read)",
@@ -51,12 +61,12 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
   ],
-  "scope_sha": "47b513a29faa",
+  "scope_sha": "cf4a350f3477",
   "size": "S",
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Claims: list every sentence in sections G, 0b, 3 and 9a that states what the seed, the boot or a command block does or must contain (at least 8)",

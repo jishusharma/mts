@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T14:59:35Z",
   "commands": [],
   "created": "2026-11-11T14:23:52Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-wavetrend-pa",
+      "ref": "17ad9f61f",
+      "utc": "2026-11-11T14:59:35Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T14:23:54Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-wavetrend-params-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tv_favorites_2026-11/USAGE_wavetrend.md (read)",
     "MyTradingSys/backtest/layers/wavetrend/wavetrend.py (read)",
@@ -52,12 +65,13 @@
   "sources": [
     "Session_Planner planner-c-gemini-feed-1111b"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: list every numeric parameter and the cross definition in the note; find the matching default or line in wavetrend.py; mark CONSISTENT or CONTRADICTION or NOT_IN_CODE",
     "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
   ],
+  "taken": "2026-11-11T14:59:35Z",
   "tests": "",
   "title": "[GEMINI] scan USAGE_wavetrend.md parameters against wavetrend.py defaults",
   "weight": "ROUTINE",
