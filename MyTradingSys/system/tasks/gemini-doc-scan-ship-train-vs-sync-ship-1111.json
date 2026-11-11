@@ -1,0 +1,70 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T17:21:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-ship-train-vs-sync-ship-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per claim) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of every testable claim in SHIP_TRAIN.md (queued ships batch, no-ci-wait, gate, push rules) against scripts/dev/sync.py ship and its tests; list up to 10 claims.",
+  "id": "gemini-doc-scan-ship-train-vs-sync-ship-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: sync.py health prints NOTE OLD-SHELL for any bash/sh over 30 min (extends bg_watch",
+      "ref": "f6824b1ef8a7",
+      "utc": "2026-11-11T09:15:39Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d541f010adec SHIP_TRAIN: section 6 shadow-week measurement (not runnable yet), trunk basel",
+      "ref": "MyTradingSys/system/SHIP_TRAIN.md",
+      "utc": "2026-11-06T17:43:51Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T17:21:26Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "MyTradingSys/system/SHIP_TRAIN.md (read)",
+    "scripts/dev/sync.py (ship path; read)",
+    "scripts/dev/test_sync.py or the sync tests (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-ship-train-vs-sync-ship-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "f6824b1ef8a7",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 79fec021)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 10 testable claims from SHIP_TRAIN.md, each with the sync.py line that implements it; MATCH, DIFF when contradicted, NOT_IN_DATA when the code has no such behaviour",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: SHIP_TRAIN.md vs sync.py ship behaviour",
+  "weight": "ROUTINE",
+  "worker": ""
+}
