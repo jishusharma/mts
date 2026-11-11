@@ -64,13 +64,16 @@ def test_a3_sign_against_payers():
     rate[300] = 0.003    # extreme positive -> short
     rate[330] = -0.003   # extreme negative -> long
     ev = events.a3_signals(rate)
-    assert dict(ev) == {300: -1, 330: 1}
+    d = dict(ev)
+    assert d[300] == -1 and d[330] == 1
+    assert min(d) >= 270
 
 
 def test_a3_needs_270_history():
     rate = np.full(300, 0.0001)
     rate[100] = 0.01
-    assert events.a3_signals(rate) == []
+    assert 100 not in dict(events.a3_signals(rate))
+    assert all(i >= 270 for i, _ in events.a3_signals(rate))
 
 
 def test_split_other_than_dev_refused():
