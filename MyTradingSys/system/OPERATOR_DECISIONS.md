@@ -2301,12 +2301,3 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Filed, not started: ship-full-gate-moves-to-ci-1111 (local ship = changed-file tests + smoke; full suite once on CI).
 - Same turn, forwarded newsletter on overfitting (purged k-fold, Lopez de Prado ch. 7-9): taken as a warning only; one rule
   passed to the edge session (no parameter sweeps, gap between DEV and VALIDATION). No card.
-
-## 2026-11-11 16:15Z Edge: refine the ideas, look from several points of view, run Haiku and Sonnet in parallel (operator)
-- His words: "refine your ideas on finding the edge ... look at it from different points of view ... make a list and then run agents
-  like Haiku and Sonnet in parallel ... Are we doing enough? What people do? What to correct? What to do and what to not do?"
-- Done same turn: 5 parallel readers, results under research/edge_views_2026-11-11/: TREND (Sonnet, 3 textbook trend rules, 4h/daily),
-  FLOW (Sonnet, funding extremes / liquidation-bar proxy / OI flush), TIME (Sonnet, clock and session drift, Bonferroni),
-  TESTED_MAP (Haiku, every trial by family and timeframe), DATA_MAP (Haiku, what history is on disk).
-- Rules for all: pre-registered, no sweeps, DEV / 30-day gap / VALIDATION, placebo, fees 10 bp; a FAIL is a result.
-- Views not started (need data or the operator): more symbols pooled, his own journaled trades, analyst calls as a filter.
