@@ -30,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "CBP run 2026-11-11 05:00Z added 0 rows: all 7 analysts DEFERRED because the 150-requests-per-24h YouTube budget of the shared proxy IP was already used by other work (ingestion.log line 1447). Done when: the two daily CBP runs have a reserved share of the budget (other callers stop before it), a run that adds 0 rows because of DEFERRED sends one mts_signal ask instead of exit 0 silence, and a test fails on pre-change code. Also fix SCHEDULING_POLICY.md CBP block: real times are Mon-Fri 05:00 and 20:00 UTC, Sat 05:30, Sun 16:30, installed on JIS-NB",
+  "title": "CBP 2026-11-11 05:00Z added 0 rows: 7 analysts DEFERRED, shared 150-per-24h YouTube budget spent by other callers",
   "weight": "",
   "worker": ""
 }

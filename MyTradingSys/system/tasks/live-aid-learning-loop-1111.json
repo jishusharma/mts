@@ -30,7 +30,7 @@
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "Live Aid learning loop: each day one model run scores what Live Aid flagged (real flag log from card live-aid-flag-log-1111; until that ships, replay.js of research/live_aid_review_2026-11-11) against what price did, compares with past days, and writes a point-wise change list (what worked, what did not, proposed change, evidence count). Changes with evidence (count and hit rate stated, test fails on pre-change code) are implemented directly; the rest go to the operator as a short list. Done when: one script produces the daily list at zero operator input, the first list is on trunk, and SUPER_SESSION.md US-prep P4 step names it",
+  "title": "Live Aid learning loop: a daily model run scores what Live Aid flagged against what price did and writes a point-wise change list",
   "weight": "",
   "worker": ""
 }
