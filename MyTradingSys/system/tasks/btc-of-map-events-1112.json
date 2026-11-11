@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T22:41:15Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "A2 n=170 INSUFFICIENT_N, A3 n=819 net negative; shipped ba97261ab",
+      "ref": "b7ca7601e",
+      "utc": "2026-11-11T22:41:15Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: clocks.py lookahead-lint clean (no index-forward hits), same table Next: btc-of-ma",
@@ -43,13 +50,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "btc-native-orderflow-map-1112",
   "note": "planner-a-1112 2026-11-12: refined from raw. Split A2 here (klines, full DEV) vs prints card (A1/A2 from aggTrades on 60 sampled days): not twins. DECISION (OURS): VALIDATION stays unopened until a cell clears DEV (PREREG). Independent of prints/clocks, no dependency. 2026-11-12 planner-close-1112c: events.py + test_events.py already shipped (bc4b2b304, 02045dd8a); remaining work = the DEV RUN on a machine with F:/MTS data (JIS-NB), EVENTS.md table, verdicts.py backfill. Dev-only cells: A2 bar-delta and A3 funding; n floor 180 per cell is frozen in PREREG.md. PRINTS.md already shows A2 absorption at n=15 on 60 sampled days, so full-DEV A2 may still fall below 180: if so the card MUST report INSUFFICIENT_N for that cell, never loosen the floor, threshold, or window. DECISION (OURS): btc-native-orderflow-map-1112 stays blocked (depends_on prints + clocks; it also reads events result) until this card is done.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T21:25:15Z",
   "refs": [],
-  "result": "",
+  "result": "A2 n=170 INSUFFICIENT_N, A3 n=819 net negative; shipped ba97261ab",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/btc_orderflow_map_1112/events.py (new)",
     "MyTradingSys/research/btc_orderflow_map_1112/test_events.py (new)",
@@ -68,12 +81,13 @@
   "sources": [
     "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (frozen)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PREREG.md Events, De-clustering, Outcomes, Placebo; write test_events.py first and see it fail",
     "Implement events.py: refuse any split but dev; A2 from clocks.load_dev klines (5m delta5, 30-day trailing 98th pct, move<0.1 %); A3 from F:/MTS/Dumps/backtest/raw/fundingRate BTCUSDT files (90-day trailing 90th pct of |rate|); 60-min de-clustering; fwd 15m/60m minus 10 bp",
     "Placebo 1,000 draws seed 1112 per cell; write EVENTS.md copying the PREREG mark table; cells with DEV n<180 are INSUFFICIENT_N; run verdicts.py backfill"
   ],
+  "taken": "2026-11-11T22:41:15Z",
   "tests": "MyTradingSys/research/btc_orderflow_map_1112/test_events.py (new, fail-first before events.py exists): synthetic bars flag an A2 event only when delta5 is in the top 2 % AND the bar moves < 0.1 %; a second event inside 60 min is dropped; A3 shorts when the rate is positive and longs when negative; a split other than dev is refused.",
   "title": "BTC order-flow map: A2 bar-delta and A3 funding event cells on DEV (PREREG.md, 6 cells, n floor 180)",
   "weight": "ROUTINE",
