@@ -26,6 +26,9 @@ DATA_SUFFIXES = (".json", ".csv", ".html", ".jsonl", ".tsv", ".gz", ".err", ".lo
 # .claude/settings.json also gets its JSON parse step (3js). .gitattributes, .github/, mts.ps1, scripts/core|sched stay full.
 CONFIG_FILES = (".gitignore", ".aiexclude", ".claude/settings.json")
 DEV_DATA_SUFFIXES = (".tsv", ".json", ".csv", ".html")   # scripts/dev/<x>.tsv (lookahead allowlist), *.tpl.html: read by their tests
+# 2026-11-11 (dsa-research-ship-full-gate-timeout-1111): research result JSON at the root sim_desk/results/ is data, not code; it matched
+# no rule and failed closed to the 1100 s full gate. Only .json directly in that folder; code paths and FULL_RE are untouched.
+RESULT_DATA_RE = re.compile(r"^sim_desk/results/[^/]+\.json$")
 JSON_STEP = "3js"
 WIRING_REGISTRY = "MyTradingSys/system/wiring_registry.json"
 
@@ -89,6 +92,8 @@ def _is_doc(f):
 
 def _is_config(f):
     """GATE_SPEED D5: config/data files that are not code; smoke runs ALWAYS + the steps whose tests name them."""
+    if RESULT_DATA_RE.match(f) and not FULL_RE.match(f):
+        return True
     return f in CONFIG_FILES or (f.startswith("scripts/dev/") and f.count("/") == 2 and f.endswith(DEV_DATA_SUFFIXES))
 
 

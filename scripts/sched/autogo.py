@@ -64,7 +64,7 @@ def pid_alive(pid):
     if not pid:
         return False
     if os.name == "nt":  # os.kill(pid, 0) would terminate on Windows
-        out = subprocess.run(["tasklist", "/FI", "PID eq %d" % pid, "/NH"], capture_output=True, text=True).stdout
+        out = subprocess.run(["tasklist", "/FI", "PID eq %d" % pid, "/NH"], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
         return str(pid) in out.split()
     try:
         os.kill(pid, 0)
@@ -94,7 +94,7 @@ def canary_red():
     cmd = os.environ.get("MTS_AUTOGO_CANARY")
     argv = shlex.split(cmd) if cmd else [sys.executable, str(HERE.parent / "dev" / "testnet_canary.py")]
     try:
-        p = subprocess.run(argv, cwd=ROOT, capture_output=True, text=True, timeout=100)
+        p = subprocess.run(argv, cwd=ROOT, capture_output=True, text=True, timeout=100, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except (OSError, subprocess.TimeoutExpired):
         return True  # fail closed
     return p.returncode not in (0, 1)
@@ -146,7 +146,7 @@ def tick():
         return emit("autogo", "OK", "skip: every slot already launched in the last %dh" % STALE_H, ["skip-done"])
     rid = todo[0]["id"]
     try:
-        child = subprocess.Popen([sys.executable, str(HERE / "go.py"), "--id", rid, "--headless"], cwd=ROOT)
+        child = subprocess.Popen([sys.executable, str(HERE / "go.py"), "--id", rid, "--headless"], cwd=ROOT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except OSError as e:
         log("launch_error", now, id=rid, error=str(e))
         return emit("autogo", "RED", "cannot start go.py for %s: %s" % (rid, e), ["launch-error", rid])

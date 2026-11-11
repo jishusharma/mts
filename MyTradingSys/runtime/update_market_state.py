@@ -37,7 +37,7 @@ def fetch_levels(timeout=LEVELS_TIMEOUT_S):
     """Run analyst_levels.py --json; return the parsed dict or None on any error/timeout/bad output."""
     try:
         r = subprocess.run([sys.executable, str(LEVELS_SCRIPT), "--json"], capture_output=True,
-                           text=True, timeout=timeout, encoding="utf-8")
+                           text=True, timeout=timeout, encoding="utf-8", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if r.returncode != 0:
             return None
         data = json.loads(r.stdout)

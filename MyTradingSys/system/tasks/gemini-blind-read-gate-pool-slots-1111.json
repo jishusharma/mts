@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T15:30:05Z",
   "commands": [],
   "created": "2026-11-11T15:07:20Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-pool-slots-1111.",
+      "ref": "089cbbdc2",
+      "utc": "2026-11-11T15:30:05Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,8 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T15:07:24Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-gate-pool-slots-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py (host_gate_slots_dir, gate_slot_factory, _log_wait and callers; read)",
     "scripts/dev/run_all_tests.py (run_plan slot argument; read)",
@@ -57,7 +67,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 15:10Z (NUC queue empty, no ready GEMINI cards)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: (1) the slots dir is per machine, not per worktree, (2) one ship holds one slot for its whole gate, (3) a waiting ship appends to wait.log, (4) a slot held by a dead process is reclaimed, (5) GATE_SPEED.md describes the same behaviour",

@@ -29,7 +29,7 @@ Optional card fields `latest` (list of `{kind: ship|report|audit|decision|signal
 - `tasks.py brief <id>` ends with `STATE <tag>` and the newest 3 `LATEST` lines: the last commit over the card's scope paths (ship), the newest .md naming the card or its refs, the newest .md inside scope (audit if its name says so), plus manual ones. Read these before grepping anything.
 - Tag (derived, never trusted from the file): `READY`, `ACTIVE@<host>`, `SHIPPED@<sha>` (last commit touching the card JSON), `STALE:<why>` (scope changed after the last refresh, or all refs closed), else the state.
 - `tasks.py tag <id> [--refresh] [--add kind:ref --line ".."]` records a pointer (a decision, a signal); `tasks.py check` promotion refreshes, `tasks.py done` adds the ship entry, `tasks.py take` does not (a stale card shows STALE in its brief).
-- `tasks.py stale [--refresh]` lists ready/active cards whose scope paths changed since `refreshed` (refresh only after re-reading the card against the change). `lint` fails a ready card never refreshed, or stale longer than 24 h (the refiner refreshes on its hourly line; a fresher lag only shows as STALE).
+- `tasks.py stale [--refresh]` lists ready/active cards whose scope paths changed since `refreshed` (refresh only after re-reading the card against the change). `lint` warns (never fails: it feeds every ship gate and trunk CI) on a ready card never refreshed, or stale longer than 24 h (the refiner refreshes on its hourly line; a fresher lag only shows as STALE).
 
 ## Definition of Ready (`tasks.py check`, fail closed; also in the offline gate as `tasks.py lint`)
 A card is `ready` only if all hold, and the tool names every miss:

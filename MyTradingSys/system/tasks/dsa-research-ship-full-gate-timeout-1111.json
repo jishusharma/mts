@@ -1,36 +1,76 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_gate_select.py"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T15:32:03Z",
+    "misses": 46,
+    "reads": [
+      "scripts/dev/gate_select.py",
+      "scripts/dev/test_gate_select.py",
+      "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "scripts/dev/test_fetch_captions_timed.py",
+      "scripts/dev/test_cbp_run.py",
+      "MyTradingSys/research/tv_favorites_2026-11/USAGE_adx.md",
+      "MyTradingSys/research/tv_favorites_2026-11/USAGE_vfi.md",
+      "MyTradingSys/backtest/layers/vfi/vfi.py"
+    ],
+    "session": "agent-a7a1a99a032ab5af0"
+  },
   "created": "2026-11-11T15:13:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "gate_select.explain([research .py, sim_desk/results/x.json], steps) returns mode smoke (new test in scripts/dev/test_gate_select.py, red on current code); ship output names the file that forces full",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "A DSA ship of a research script, its test and a root sim_desk/results json ran mode=full and hit the 1100 s bridge timeout. Cause (reproduced, gate_select.explain): sim_desk/results/<x>.json is not under DATA_DIRS, so it matches no rule and fails closed to full. Make it smoke.",
   "id": "dsa-research-ship-full-gate-timeout-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Sonnet health audit fixes: docs-helper gate hole, docs-ship conflict markers, gateway tree",
+      "ref": "06e8d5ce566a",
+      "utc": "2026-11-10T21:22:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS) Session_Planner: smoke for root sim_desk/results json is the narrowest fix; the 3 unshipped commits in mts-dsa-jis-nb-1111-1354 ship after this lands (that tree also lags trunk: 74 files differ).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T15:29:55Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "Supervisor C 2026-11-11 15:20Z"
+  "scope_in": [
+    "scripts/dev/gate_select.py (_is_doc, DATA_DIRS: add the root sim_desk/results/ json as data)",
+    "scripts/dev/test_gate_select.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "DSA research-only ship runs the FULL gate and dies at the bridge step timeout: venue-gap-tight-stop-rerun-on-deribit (research script + test + sim_desk/results json + card) ran mode=full 1100 s and was killed (F:/AIBridge/run/tasks/13f987ba.log exit=-1 ms=1100349); 3 commits unshipped in mts-dsa-jis-nb-1111-1354. Done when: sync.py prints why it chose full for that file set, a research/results-only DSA ship takes the smoke gate (test fails on pre-change code), and the same ship finishes inside the DSA ship step timeout on JIS-NB",
-  "weight": "",
-  "worker": ""
+  "scope_out": [
+    "FULL_RE live-path list stays; no change to the bridge step timeout, run_all_tests.py or any other path rule; no live-tree edit"
+  ],
+  "scope_sha": "06e8d5ce566a",
+  "size": "S",
+  "sources": [
+    "F:/AIBridge/run/tasks/13f987ba.log line 1 (step 1 ship exit=-1 ms=1100349)",
+    "scripts/dev/gate_select.py:12-17 (DATA_DIRS lists only MyTradingSys paths), :309 (fail-closed full)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Reproduce: python -c explain() with the venue-gap file pair (log: F:/AIBridge/run/tasks/13f987ba.log line 'step 1 ship exit=-1 ms=1100349')",
+    "Write the fail-first test in test_gate_select.py for the root sim_desk/results json, then add the folder to the data rule (json only, keep fail-closed for other root paths)",
+    "Check the full-mode reason is printed by sync ship (gate_reason in run_all_tests.py:1164); add one line to the ship output if it is not shown",
+    "Run scripts/dev/test_gate_select.py, then sync.py ship; commit message names the saved gate time"
+  ],
+  "tests": "scripts/dev/test_gate_select.py: new test, the pair [MyTradingSys/research/<study>/x.py, sim_desk/results/x.json] selects smoke; fails today with 'full: sim_desk/results/x.json matches no rule'",
+  "title": "DSA research-only ship runs the FULL gate and dies at the bridge step timeout (venue-gap-tight-stop-rerun-on-deribit, 1100 s)",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

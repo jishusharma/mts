@@ -224,8 +224,8 @@ def header_from_git(spec):
     """(state, reason, depth, id) from `REF:PATH` via git show (the dispatcher runs in the live tree, which lags origin)."""
     import subprocess
     ref = spec.split(":", 1)[0]
-    subprocess.run(["git", "fetch", "-q", "origin", ref.split("/", 1)[-1]], capture_output=True, timeout=120)
-    r = subprocess.run(["git", "show", spec], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    subprocess.run(["git", "fetch", "-q", "origin", ref.split("/", 1)[-1]], capture_output=True, timeout=120, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    r = subprocess.run(["git", "show", spec], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     m = HDR.search(r.stdout) if r.returncode == 0 else None
     return (m.group(1), (m.group(2) or "").strip(), int(m.group(3)), m.group(4)) if m else None
 
@@ -233,7 +233,7 @@ def header_from_git(spec):
 def text_from_git(spec):
     """Handoff text from `REF:PATH` (header_from_git has just fetched it); None when git cannot show it."""
     import subprocess
-    r = subprocess.run(["git", "show", spec], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    r = subprocess.run(["git", "show", spec], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout if r.returncode == 0 else None
 
 
@@ -248,7 +248,7 @@ def handoff_owner(a, hid):
         text = p.read_text(encoding="utf-8") if p.exists() else ""
     else:
         ref, path = a.git_ref.split(":", 1)
-        r = subprocess.run(["git", "show", "%s:%s/%s" % (ref, path.rsplit("/", 1)[0], RUNS_NAME)], capture_output=True, text=True, encoding="utf-8", timeout=60)
+        r = subprocess.run(["git", "show", "%s:%s/%s" % (ref, path.rsplit("/", 1)[0], RUNS_NAME)], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         text = r.stdout if r.returncode == 0 else ""
     for d in reversed(parse_runs(text)):
         if d.get("id") == hid:
@@ -256,7 +256,7 @@ def handoff_owner(a, hid):
     if a.file:
         return "unknown", None
     ref, path = a.git_ref.split(":", 1)
-    r = subprocess.run(["git", "log", "-1", "--format=%ct", ref, "--", path], capture_output=True, text=True, timeout=60)
+    r = subprocess.run(["git", "log", "-1", "--format=%ct", ref, "--", path], capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     try:
         return "unknown", datetime.fromtimestamp(int(r.stdout.strip()), timezone.utc)
     except ValueError:
@@ -379,10 +379,10 @@ def lane_rows(root, ref=None):
     texts = []
     if ref:
         r = subprocess.run(["git", "-C", str(root), "grep", "-l", '"relay_key"', ref, "--", DESK_DIR, CARD_DIR],
-                           capture_output=True, text=True, encoding="utf-8", timeout=60)
+                           capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         for ln in r.stdout.splitlines():
             n = ln.split(":", 1)[1] if ":" in ln else ""
-            s = subprocess.run(["git", "-C", str(root), "show", "%s:%s" % (ref, n)], capture_output=True, text=True, encoding="utf-8", timeout=60)
+            s = subprocess.run(["git", "-C", str(root), "show", "%s:%s" % (ref, n)], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             texts.append((n, s.stdout))
     else:
         for d in (DESK_DIR, CARD_DIR):
@@ -411,7 +411,7 @@ def codex_look(root):
     if not script.is_file() or not (Path(os.environ.get("CODEX_HOME") or "F:/codex_home") / "lab_runs").is_dir():
         return 0
     try:
-        r = subprocess.run([sys.executable, str(script), "status"], capture_output=True, text=True, encoding="utf-8", timeout=30, cwd=str(root))
+        r = subprocess.run([sys.executable, str(script), "status"], capture_output=True, text=True, encoding="utf-8", timeout=30, cwd=str(root), creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     except (OSError, subprocess.SubprocessError):
         return 0
     n, on = 0, False
@@ -565,7 +565,7 @@ def cmd_brief(a):
 
 
 def _sh(argv, cwd):
-    r = subprocess.run(argv, cwd=str(cwd), capture_output=True, text=True)
+    r = subprocess.run(argv, cwd=str(cwd), capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
 
 
@@ -766,7 +766,7 @@ def prompt_drift(root, prompt_file=None):
         if prompt_file:
             repo_text = Path(prompt_file).read_text(encoding="utf-8")
         else:
-            r = subprocess.run(["git", "-C", str(root), "show", PROMPT_REF], capture_output=True, text=True, encoding="utf-8", timeout=60)
+            r = subprocess.run(["git", "-C", str(root), "show", PROMPT_REF], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             repo_text = r.stdout if r.returncode == 0 else None
     except (OSError, subprocess.SubprocessError, UnicodeError):
         return ""
@@ -862,7 +862,7 @@ def cmd_tick(a):
         if a.session_file:
             text = Path(a.session_file).read_text(encoding="utf-8")
         else:
-            r = subprocess.run(["git", "-C", str(root), "show", SESSION_REF], capture_output=True, text=True, encoding="utf-8", timeout=60)
+            r = subprocess.run(["git", "-C", str(root), "show", SESSION_REF], capture_output=True, text=True, encoding="utf-8", timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             text = r.stdout if r.returncode == 0 else None
             if text is None and (Path(__file__).resolve().parent / "relay_prompts" / "relay_session.md").is_file():
                 text = (Path(__file__).resolve().parent / "relay_prompts" / "relay_session.md").read_text(encoding="utf-8")

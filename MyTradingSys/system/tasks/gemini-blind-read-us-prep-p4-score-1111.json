@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T17:40:02Z",
+  "commands": [],
+  "created": "2026-11-11T17:21:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-us-prep-p4-score-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of the P4 branch in scripts/dev/us_prep.py: what it scores, the window and hit rule, the output file written, and that P4 does not rebuild the playbook; check docstring claims against the code and tests.",
+  "id": "gemini-blind-read-us-prep-p4-score-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "5 MATCH, 0 DIFF; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-us-p",
+      "ref": "e86355a13",
+      "utc": "2026-11-11T17:40:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: us_prep.py P1-P3 now rebuild the Live Aid playbook and copy playbook_data.js to th",
+      "ref": "33d9eaf0c25a",
+      "utc": "2026-11-11T14:39:58Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T17:21:27Z",
+  "refs": [],
+  "result": "5 MATCH, 0 DIFF; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-us-prep-p4-score-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/us_prep.py (docstring, PHASE_UTC, P4 scoring, render_p4_md; read)",
+    "scripts/dev/test_us_prep.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-us-prep-p4-score-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "33d9eaf0c25a",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 79fec021)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: (1) P4 runs at its PHASE_UTC time, (2) it scores the phase calls against what price did afterwards as the docstring states, (3) the hit rule matches the docstring, (4) render_p4_md output goes to OUTDIR, (5) P4 never calls build_playbook",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of us_prep.py P4 scoring against its docstring",
+  "weight": "ROUTINE",
+  "worker": ""
+}
