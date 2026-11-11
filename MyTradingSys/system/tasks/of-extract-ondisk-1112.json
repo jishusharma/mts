@@ -1,36 +1,52 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/orderflow_extracts_1112/extract_<id>.md"
+  ],
   "created": "2026-11-11T19:59:37Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "of-extract-queue-1112"
+  ],
+  "done_when": "MyTradingSys/research/orderflow_extracts_1112/has 10 files extract_<id>.md and verify_extract_quotes.py exits 0 on each, or the file says NOT_IN_DATA with the reason; ORDERFLOW_RULES_DRAFT.md lists the rules with quote and id.",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Extract the top 10 order-flow transcripts already on disk (no network) into verified extracts with SOURCED quotes: who is forced, where size trades, absorption, auction.",
   "id": "of-extract-ondisk-1112",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Videos with no caption text go to the Gemini lane (gemini_queue.py), never ASR here. DECISION (OURS): 10 per session.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/orderflow_extracts_1112/extract_<id>.md and ORDERFLOW_RULES_DRAFT.md (new)",
+    "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md (read)"
+  ],
+  "scope_out": [
+    "YouTube network fetches",
+    "EXTRACTION_LEDGER.csv (rebuilt by the parent card)",
+    "index-futures clocks as BTC rules"
+  ],
+  "size": "M",
   "sources": [
-    "planner-edge-cards-1112"
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
+    "MyTradingSys/research/tom_swing_2026-11-09/extract_M7ompiwv5co.md"
   ],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Take the top 10 ON_DISK ids from ORDERFLOW_QUEUE.md; read the transcript in raw_transcripts_canonical/",
+    "Per video write extract_<id>.md in the format of tom_swing_2026-11-09/extract_M7ompiwv5co.md: rule, verbatim quote with timestamp, label SOURCED",
+    "Run verify_extract_quotes.py until exit 0 (fix the quote, never the checker); collect rules in ORDERFLOW_RULES_DRAFT.md"
+  ],
+  "tests": "verify_extract_quotes.py on a deliberately altered quote must exit nonzero first; then exit 0 on the real extract.",
   "title": "Extraction backlog 2/3: extract top order-flow transcripts already on disk",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
