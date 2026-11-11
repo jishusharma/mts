@@ -4,17 +4,16 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-09T15:57:35Z",
-    "misses": 17,
+    "folded": "2026-11-11T09:17:52Z",
+    "misses": 24,
     "reads": [
-      "scripts/dev/bg_watch.py",
-      "MyTradingSys/tests/docs/test_integrity.py",
-      "MyTradingSys/system/WORKERS.md",
       "scripts/dev/test_bg_watch.py",
-      "scripts/dev/test_mts_signal.py",
-      "MyTradingSys/system/SUPERVISOR.md"
+      "scripts/dev/host_health.py",
+      "MyTradingSys/system/OPS_CHANGE_CHECK.md",
+      "MyTradingSys/tests/docs/test_integrity.py",
+      "scripts/dev/mts_doctor.py"
     ],
-    "session": "agent-a6fee7faefea15b60"
+    "session": "agent-af9a27b5231639476"
   },
   "created": "2026-11-09T07:57:34Z",
   "depends_on": [],
@@ -54,7 +53,7 @@
   "refined_by": "",
   "refreshed": "2026-11-11T09:11:24Z",
   "refs": [],
-  "result": "",
+  "result": "Repro: a cat heredoc as a background shell exits at once here (exit 0); the 12 h hang was a harness shell that never exited, not reproducible from the command. Root cause of 'unnoticed': bg_watch (STALLED-BG/GHOST-BG/OLD-SHELL, shells --kill) and the WORKERS.md 30-min rule already existed (4498f4672) but nothing in boot/health showed live old shells; supervisor.py plan only runs for coordinators. Extended, not duplicated: sync.py health now prints NOTE OLD-SHELL from bg_watch.live_shells (test_old_shell_health.py, registered in extra_tests.tsv; test_bg_watch covers the lister).",
   "scope_in": [
     "scripts/dev/",
     "tests/",
