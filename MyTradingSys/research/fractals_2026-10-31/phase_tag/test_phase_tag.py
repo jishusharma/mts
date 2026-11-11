@@ -255,3 +255,18 @@ def test_no_injection_stays_null():
 def test_default_is_1000_shifts():
     import inspect
     assert inspect.signature(harness.shift_null_test).parameters["n_shifts"].default == 1000
+
+
+def test_fast_null_max_equals_naive_roll_loop():
+    """The FFT shortcut in harness._null_max must give the same null maxima as the plain roll-per-shift loop."""
+    for seed, empty in ((0, False), (1, True), (2, False)):
+        rng = np.random.default_rng(seed)
+        n = 2500
+        lab = harness.block_labels(n, 4, 60, rng)
+        if empty:
+            lab[lab == 2] = 3
+        y = rng.normal(0, 1, n) + 0.2 * (lab == 1)
+        fast = harness._null_max(y, lab, 4, 200, np.random.default_rng(77))
+        slow = harness._null_max_loop(y, lab, 4, 200, np.random.default_rng(77))
+        assert np.allclose(fast, slow, rtol=0, atol=1e-12)
+        assert fast.max() > 0.0
