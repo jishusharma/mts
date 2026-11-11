@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T17:23:54Z",
   "commands": [],
   "created": "2026-11-11T17:21:22Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "7 MATCH, 0 DIFF; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-auto",
+      "ref": "0210a895f",
+      "utc": "2026-11-11T17:23:54Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,8 +39,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T17:21:46Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "7 MATCH, 0 DIFF; MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-autogo-docstring-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/sched/autogo.py (read)",
     "MyTradingSys/tests/test_autogo.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 79fec021)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List 7 clauses from the autogo.py docstring: brake files, canary RED, no pickable slot and all-slots-stale each disable and log; skips (inside Claude Code, live run, recent launch) keep the flag; one launch per tick via go.py --id --headless; --enable needs --words and logs them",

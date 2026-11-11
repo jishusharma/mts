@@ -2301,3 +2301,10 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Filed, not started: ship-full-gate-moves-to-ci-1111 (local ship = changed-file tests + smoke; full suite once on CI).
 - Same turn, forwarded newsletter on overfitting (purged k-fold, Lopez de Prado ch. 7-9): taken as a warning only; one rule
   passed to the edge session (no parameter sweeps, gap between DEV and VALIDATION). No card.
+
+## 2026-11-11 16:15Z Edge: refine the ideas, look from several points of view, run Haiku and Sonnet in parallel (operator)
+- Asked: what are the ideas, are we doing enough, what do people do, what to do and not do, what to correct.
+- Done: five readers in parallel (TREND, FLOW, TIME on Sonnet; TESTED_MAP, DATA_MAP on Haiku), each with a PREREG before results. Folder research/edge_views_2026-11-11/ (README.md compares).
+- Result: trend, clock and funding views fail on BTC alone. One lead: long after a 1h drop of 3 % or more on 3x volume (+0.58 % DEV, +1.34 % VALIDATION, n 17: too few). 4h Donchian 55/20 positive in both periods, t under 2.
+- Corrections recorded: about 100 studies were run, not 15; forced flows were looked at 7 times before, never as a trade rule with fees.
+- Next: card forced-selloff-long-pooled-10-coins-1111 (same frozen rules on ten coins, events counted per day). DECISION (OURS): no new rule family before that pooled result.

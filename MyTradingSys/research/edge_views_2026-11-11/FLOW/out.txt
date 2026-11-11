@@ -1,0 +1,32 @@
+funding ts jitter ms: [0, 1, 2, 3, 4]
+span 2020-01-01 00:00:00 2026-10-31 23:00:00 bars 59904
+
+### a_funding
+| split | side | n | win% | mean_net% | t | placebo_pct | mean_net_incl_funding% |
+|---|---|---|---|---|---|---|---|
+| DEV | long | 55 | 63.636 | 1.328 | 1.749 | 94.5 | 1.328 |
+| DEV | short | 111 | 45.946 | -0.485 | -0.852 | 47.0 | -0.262 |
+| DEV | both | 166 | 51.807 | 0.116 | 0.252 | nan | 0.265 |
+| VAL | long | 58 | 44.828 | -0.337 | -0.631 | 20.5 | -0.337 |
+| VAL | short | 27 | 59.259 | -0.181 | -0.192 | 52.5 | -0.113 |
+| VAL | both | 85 | 49.412 | -0.288 | -0.614 | nan | -0.266 |
+
+### b_cascade
+| split | side | n | win% | mean_net% | t | placebo_pct | mean_net_incl_funding% |
+|---|---|---|---|---|---|---|---|
+| DEV | long | 75 | 52.0 | 0.581 | 0.844 | 89.5 | 0.563 |
+| DEV | short | 59 | 40.678 | -0.353 | -0.525 | 49.5 | -0.285 |
+| DEV | both | 134 | 47.015 | 0.17 | 0.349 | nan | 0.189 |
+| VAL | long | 17 | 47.059 | 1.344 | 1.693 | 100.0 | 1.331 |
+| VAL | short | 11 | 81.818 | 1.274 | 1.473 | 98.5 | 1.3 |
+| VAL | both | 28 | 60.714 | 1.317 | 2.273 | nan | 1.319 |
+
+### c_oi_flush
+| split | side | n | win% | mean_net% | t | placebo_pct | mean_net_incl_funding% |
+|---|---|---|---|---|---|---|---|
+| DEV | long | 75 | 54.667 | -0.106 | -0.259 | 39.0 | -0.124 |
+| DEV | short | 0 | nan | nan | nan | nan | nan |
+| DEV | both | 75 | 54.667 | -0.106 | -0.259 | nan | -0.124 |
+| VAL | long | 18 | 55.556 | 0.669 | 1.106 | 90.5 | 0.651 |
+| VAL | short | 0 | nan | nan | nan | nan | nan |
+| VAL | both | 18 | 55.556 | 0.669 | 1.106 | nan | 0.651 |
