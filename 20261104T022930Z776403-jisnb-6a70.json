@@ -1,1 +1,0 @@
-{"t": "20261104T022930Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-1aa316 told NUC owns gemini_queue step; C cannot run it on this machine; Super Session aware", "login": "C", "id": "b-1aa316", "state": "told", "host": "jis-nb", "note": "NUC owns gemini_queue step; C cannot run it on this machine; Super Session aware"}
