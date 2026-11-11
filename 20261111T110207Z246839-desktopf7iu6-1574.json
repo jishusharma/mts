@@ -1,0 +1,1 @@
+{"t": "20261111T110207Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "ask", "text": "A to B: slow-tests shipped (067a68b79, 274b6e3a4): planted_error_trial 114->15s, context_asof 55->36s, PIT twin 35->6s on my laptop, review said SHIP. Please remeasure the full gate on JIS-NUC. Next c", "login": "A", "id": "q-ac7242", "type": "ask", "wait": 15, "due": 60}
