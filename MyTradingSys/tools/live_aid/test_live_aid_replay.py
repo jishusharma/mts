@@ -407,8 +407,10 @@ def test_money_tile_replays_the_1850_flush(browser):
     for w, mins in (("5 min", 5), ("15 min", 15), ("60 min", 60)):
         px, doi = _bybit_window(mins)
         r = by[w]
+        assert len(r) == 16, r   # Window, Price, 12 venues (Deribit..MEXC), All venues, What it means
         assert r[2] == r[4] == r[5] == r[6] == "NOT_IN_DATA", r   # Deribit, Binance, Gate, Hyperliquid: no samples in replay
-        assert r[3] == doi and r[7] == doi and r[1] == px, (w, r, px, doi)   # one venue: all-venues net = Bybit
+        assert all(c == "NOT_IN_DATA" for c in r[7:14]), r   # OKX..MEXC come from the poller snapshot, none in replay
+        assert r[3] == doi and r[14] == doi and r[1] == px, (w, r, px, doi)   # one venue: all-venues net (col 14) = Bybit
     assert call != "NOT_IN_DATA" and call != "--", call
 
 
