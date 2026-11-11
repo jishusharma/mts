@@ -1,0 +1,30 @@
+{
+  "$comment": "Operator discretionary trade journal row. Data lives OUTSIDE the repo (env MTS_TRADE_JOURNAL). readings = the six of home.js READINGS, each +1/-1/0.",
+  "type": "object",
+  "required": ["id", "utc_entry", "symbol", "side", "entry", "stop", "reason_text", "readings_entry"],
+  "properties": {
+    "id": {"type": "string"},
+    "utc_entry": {"type": "string"},
+    "utc_exit": {"type": ["string", "null"]},
+    "symbol": {"type": "string"},
+    "side": {"enum": ["LONG", "SHORT"]},
+    "entry": {"type": "number"},
+    "stop": {"type": "number"},
+    "exit": {"type": ["number", "null"]},
+    "reason_text": {"type": "string"},
+    "readings_entry": {"$ref": "#/definitions/readings"},
+    "readings_exit": {"anyOf": [{"$ref": "#/definitions/readings"}, {"type": "null"}]},
+    "notes": {"type": "string"},
+    "example": {"type": "boolean"}
+  },
+  "definitions": {
+    "readings": {
+      "type": "object",
+      "required": ["home", "grid", "adx15", "adx1h", "vfi15", "wt30"],
+      "properties": {
+        "home": {"enum": [-1, 0, 1]}, "grid": {"enum": [-1, 0, 1]}, "adx15": {"enum": [-1, 0, 1]},
+        "adx1h": {"enum": [-1, 0, 1]}, "vfi15": {"enum": [-1, 0, 1]}, "wt30": {"enum": [-1, 0, 1]}
+      }
+    }
+  }
+}

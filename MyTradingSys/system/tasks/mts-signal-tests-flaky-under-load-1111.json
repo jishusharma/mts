@@ -1,35 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_mts_signal.py -k six_sessions -q",
+    "python -m pytest scripts/dev/test_mts_signal_git_timeout.py -q"
+  ],
   "created": "2026-11-11T18:50:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "test_six_sessions_sending_at_once_all_arrive passes 5 of 5 with two other gates running; test_mts_signal_git_timeout.py has the env test and passes; the hook default timeout stays 20 s.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Stop test_mts_signal.py failing under machine load: the 20 s git timeout in mts_signal.git loses a note in the six-sessions test.",
   "id": "mts-signal-tests-flaky-under-load-1111",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: sender_note says Cut to 200 only on real truncation; redaction gets its own line N",
+      "ref": "71d5cbd545b7",
+      "utc": "2026-11-11T09:01:09Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS 2026-11-12): fix the timeout knob, do not move the test to CI. Refined by planner-raw-1112b.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T21:00:46Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/mts_signal.py (git(): timeout default from env MTS_SIGNAL_GIT_TIMEOUT_S, fallback 20)",
+    "scripts/dev/test_mts_signal.py (test_six_sessions_sending_at_once_all_arrive)",
+    "scripts/dev/test_mts_signal_git_timeout.py"
+  ],
+  "scope_out": [
+    "sync.py and the ship gate",
+    "hook behaviour and signal format"
+  ],
+  "scope_sha": "71d5cbd545b7",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Reproduce: run test_six_sessions_sending_at_once_all_arrive 5 times with two run_all_tests gates running; note the TimeoutExpired line",
+    "Add MTS_SIGNAL_GIT_TIMEOUT_S (OURS, default stays 20 for the live hook) and set it to 120 in the test setUp via mock.patch.dict(os.environ)",
+    "Add a test in test_mts_signal_git_timeout.py that the env value is honoured; rerun 5 of 5 under load"
+  ],
+  "tests": "New test in test_mts_signal_git_timeout.py: with the env set to 7 the git() call passes timeout 7; it fails before the change because the default is hard-coded.",
   "title": "test_mts_signal.py fails under machine load (git fetch 20 s timeout; 'six sessions sending at once' loses a note): five ships of one study refused on 2026-11-11. Done when: both tests pass 5 of 5 with two other gates running, or are moved out of the local ship gate to CI",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }

@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T21:01:21Z",
   "commands": [],
   "created": "2026-11-11T20:50:43Z",
   "depends_on": [],
@@ -16,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-prereg-context-lint-d",
+      "ref": "456c9c8aa",
+      "utc": "2026-11-11T21:01:21Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "CI fix: sim card rows for the 4 rsi-deep results; PRE_REG context lint (gate step 3pc); le",
@@ -26,15 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: blind read audit report complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T20:50:46Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-prereg-context-lint-docstring-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/prereg_context_lint.py (read)",
     "scripts/dev/test_prereg_context_lint.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 8 clauses from the docstring, each with file:line",

@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PARKED (planner-raw-1112b 2026-11-12): lane JIS-NB is a live-host desk task and the card adds loggers to the coordinator deploy list, a live-tree decision (CLAUDE.md: live tree changes only by manual/coordinator deploy). Not refinable by a builder. Only sub-step 1 is safe now: python MyTradingSys/research/analyst_call_slot_2026-11-11/call_paper_log.py --once each session (no scheduler); calls.jsonl has 1 call (HABIB-2026-11-10-L72.5). Deploy-list edit and weekly forward_readout_all.py read go to the coordinator. DECISION (OURS).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",

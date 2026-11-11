@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T20:50:34Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_prereg_context_lint.py",
     "python scripts/dev/prereg_context_lint.py"
@@ -19,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "lint scans PREREG*.md; fail-first test; 5 frozen 11-11 PREREGs allowlisted",
+      "ref": "b3cfaeddf",
+      "utc": "2026-11-11T20:50:34Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "CI: allowlist level_approach PRE_REG (frozen before the context gate existed)",
@@ -29,15 +35,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: lint and test clean",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T20:29:32Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "lint scans PREREG*.md; fail-first test; 5 frozen 11-11 PREREGs allowlisted",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/prereg_context_lint.py",
     "scripts/dev/test_prereg_context_lint.py",
@@ -51,7 +61,7 @@
   "sources": [
     "A ask q-85e33c 2026-11-11T20:21Z (A to B)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read prereg_context_lint.py lines 30-60 and its test",
     "Write the fail-first test: a tmp PREREG.md with no Context is an offender",

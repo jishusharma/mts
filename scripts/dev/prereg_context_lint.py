@@ -6,7 +6,7 @@
 Operator 2026-11-04 (d-context-retest-1104): 10 of 33 backtests tested a bare trigger in every regime, and only 4 of 33 reports say
 what regime their window was (CONTEXT_FILTER_REVIEW_2026-11-04.md). This is a GATE (exit 1 on an offender), not a report:
 
-* A `PRE_REG*.md` under MyTradingSys/research that is not in the allowlist (the studies frozen before this rule) must carry a
+* A `PRE_REG*.md` or `PREREG*.md` under MyTradingSys/research that is not in the allowlist (the studies frozen before this rule) must carry a
   `## Context` section with four lines `Regime:`, `Phase:`, `Session:`, `Entry:`; each line names the gate used, or says
   `none, because ...`. Writing "none" is allowed; forgetting to decide is not.
 * A `RESULT*.md` or `DEV_CHECK*.md` in the same folder as such a PRE_REG must carry a `Regime mix:` line (bull / bear / range share of
@@ -31,7 +31,8 @@ def prereg_files(root):
     base = root / SCAN
     if not base.is_dir():
         return []
-    return sorted(p for p in base.rglob("PRE_REG*.md") if "_archive" not in p.relative_to(root).parts)
+    found = {p for pat in ("PRE_REG*.md", "PREREG*.md") for p in base.rglob(pat)}
+    return sorted(p for p in found if "_archive" not in p.relative_to(root).parts)
 
 
 def context_missing(text):
