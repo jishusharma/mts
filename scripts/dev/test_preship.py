@@ -311,7 +311,8 @@ class ContextFoldSharedCheckoutTest(unittest.TestCase):
         self.d = tempfile.TemporaryDirectory()
         self.main = Path(self.d.name) / "main"
         self.main.mkdir()
-        git(self.main, "init", "-q", "-b", "jis-nb-trunk")
+        git(self.main, "init", "-q")
+        git(self.main, "symbolic-ref", "HEAD", "refs/heads/jis-nb-trunk")  # git < 2.28 (JIS-NUC 2.24) has no init -b
         git(self.main, "config", "user.email", "t@t")
         git(self.main, "config", "user.name", "t")
         (self.main / "a.txt").write_text("a\n")
