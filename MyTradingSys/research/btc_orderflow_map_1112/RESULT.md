@@ -1,5 +1,7 @@
 # RESULT: BTC order-flow map, assembled (cards btc-native-orderflow-map-1112 + btc-of-level-auction B1), DEV only
 
+Regime mix: clocks 851 DEV days bull 35% / bear 16% / range 42% / n/a 7%; A3 funding 819 events bull 283 / bear 127 / range 344 / n/a 65; A2 170 events bull 51 / bear 10 / range 103 / n/a 6; B1 at level 524 events bull 135 / bear 31 / range 344 / n/a 14 (regime cuts differ by family, OURS; copied from CLOCKS.md, EVENTS.md, B1.md). No per-regime cell passes the fee, so no verdict depends on regime.
+
 DEV = 2022-02-01 .. 2024-05-31. VALIDATION/GAP/RESERVE/HOLDOUT never opened. Fee 10 bp round trip (fees.py). Nothing re-run: every number is copied from CLOCKS.md, PRINTS.md, EVENTS.md and ../btc_of_level_auction_1112/B1.md (full per-bucket tables live there). Net bp = net % x 100.
 
 ## Verdict table (60m horizon unless stated)
