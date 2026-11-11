@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T17:36:11Z",
   "commands": [],
   "created": "2026-11-11T17:21:22Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-ship-train-vs-sync-ship",
+      "ref": "bdadfcc7a",
+      "utc": "2026-11-11T17:36:11Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,8 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T17:21:26Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-ship-train-vs-sync-ship-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/SHIP_TRAIN.md (read)",
     "scripts/dev/sync.py (ship path; read)",
@@ -56,7 +66,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 79fec021)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 10 testable claims from SHIP_TRAIN.md, each with the sync.py line that implements it; MATCH, DIFF when contradicted, NOT_IN_DATA when the code has no such behaviour",
