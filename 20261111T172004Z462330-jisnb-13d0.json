@@ -1,0 +1,1 @@
+{"t": "20261111T172004Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship ci-revert-c-1111 Result: CI red cause removed: research files of 95f5f9bbd, a1195d8cc, 28f3dfb60 reverted; card kept; both cost tests pass locally (10 passed)", "login": "C", "sid": "a665f56bda"}
