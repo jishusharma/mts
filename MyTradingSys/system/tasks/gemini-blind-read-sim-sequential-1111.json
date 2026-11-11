@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T14:23:39Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-sim-sequential-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 6) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of sim_sequential.py against its docstring rule: E+ is a lambda-grid mean of prod(1 + lambda*(x - mu0)) with mu0 = 0, E- is a grid mean of prod(1 - lambda*(x - delta)), PROMOTE at E+ >= 1/alpha after n_min_promote, KILL at E- >= 1/beta after n_min_kill, RETIRE at n_max, lambda ranges respect the bounds.",
+  "id": "gemini-blind-read-sim-sequential-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "eh-f1: testnet edge-vs-noise design (anytime-valid e-values) and testnet order",
+      "ref": "925342aa5723",
+      "utc": "2026-11-09T05:59:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/sim_sequential.py (read)",
+    "MyTradingSys/research/edge_hunt_2026-11-09/results/eh-f1-testnet-design/test_sim_sequential.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-sim-sequential-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "925342aa5723",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-gemini-feed-1111b"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 6 clauses (E+ formula; E- formula; lambda upper bounds; promote threshold and n_min; kill threshold and n_min; retire at n_max)",
+    "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "tests": "",
+  "title": "[GEMINI] blind read of sim_sequential.py promote/kill rule against its docstring",
+  "weight": "ROUTINE",
+  "worker": ""
+}
