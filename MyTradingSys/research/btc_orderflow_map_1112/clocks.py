@@ -1,201 +1,208 @@
-"""Card btc-of-map-clocks-1112: BTC own clocks from 1m taker delta, DEV only (PREREG.md split table).
-
-    python clocks.py --split dev [--dir <klines dir>] [--draws 300]
-
-Binance USD-M BTCUSDT 1m klines (monthly BTCUSDT-1m-YYYY-MM.csv or .zip; F:/MTS/data/tom_raw/klines on the desktop, else
-data.binance.vision). DEV = 2022-02-01 .. 2024-05-31 (PREREG.md frozen split). Files and rows outside the split are never read:
-VALIDATION / HOLDOUT are refused here (card 2 reads DEV only; VALIDATION only for cells that clear DEV, PREREG.md).
-Definitions (OURS unless noted):
-- delta per 1m bar = 2 * taker_buy_volume - volume (as fabio_cvd_2026-10-30/cvd_u7_u8.py, SOURCED).
-- buckets: 24 UTC hours; 3 funding windows = bars within -30..+29 min of 00Z / 08Z / 16Z (the rest = 'other'); 7 weekdays (Mon=0).
-- per bucket: n bars, delta share = sum delta / sum volume, mean abs 1m return bp, forward net bp = sign(bar delta) *
-  (close[i+h] / open[i+1] - 1) * 1e4 - 10 (h = 15 and 60 min; 10 bp round trip, SOURCED 0.05 % per side taker, repo fee).
-  Entries overlap (every minute is an entry), so n is bars, not independent trades: no t-stat is claimed; the placebo z is.
-- placebo (seed 1112): each UTC day gets a random hour offset (hour and funding labels) and the weekday labels are permuted across
-  days; z = (observed - placebo mean) / placebo sd per bucket and statistic. |z| < 2 is marked noise.
+"""Card 2/4 btc-of-map-clocks-1112: BTC own clocks from 1m taker delta. DEV ONLY (PREREG.md frozen).
+Definitions (SOURCED = PREREG/card, OURS = chosen here):
+- Data: Binance USD-M BTCUSDT 1m klines, DEV = 2022-02-01 .. 2024-05-31 UTC (PREREG Splits; SOURCED). VALIDATION, GAP, RESERVE,
+  HOLDOUT files are never opened: the loader only takes months 2022-01 .. 2024-05 and refuses any other split.
+  2022-01 is read for the regime trailing window only (PREREG warm-up).
+- delta = 2 * taker_buy_volume - volume per 1m bar (SOURCED cvd_u7_u8.py).
+- Instance = one clock entry. Hour/weekday tables: one entry per (UTC day, hour) at the hour's first 1m open (OURS), 60 min hold,
+  so instances never overlap. Funding table: one entry per settlement 00/08/16Z at the open of the 1m bar one minute after
+  the timestamp (SOURCED PREREG A3 entry); the concentration window is the 8h block centred on the settlement
+  (20-04, 04-12, 12-20Z = nearest settlement; SOURCED PREREG funding clock).
+- Per instance: delta share = sum(delta)/sum(volume) over the block, mean |1m return| bp over the block, forward return in bp
+  from entry open to the close of the 1m bar 15 / 60 min later (close[e+h-1]/open[e]-1). Net = gross - 10 bp round trip
+  (SOURCED PREREG fee); long net = gross-10, short net = -gross-10.
+- Placebo (SOURCED card; label draw OURS): 1,000 permutations (seed 1112) of the bucket labels over instances; z = (observed
+  bucket mean - placebo mean) / placebo sd. Cells with |z| < 2 are marked noise (~).
+- Regime mix (OURS, PREREG asks for it): trailing 90 daily-close return > +20 % bull, < -20 % bear, else range; first 90 days n/a.
 """
 import argparse
 import csv
 import glob
-import io
 import json
 import os
-import sys
-import zipfile
-from pathlib import Path
 
 import numpy as np
 
-DEV_START_MS = 1643673600000  # 2022-02-01T00:00Z
-DEV_END_MS = 1717200000000    # 2024-06-01T00:00Z (exclusive)
-DEV_FIRST, DEV_LAST = "2022-02", "2024-05"
-FEE_BP = 10.0
-HORIZONS = (15, 60)
-SEED = 1112
-FUND_HALF = 30
-STATS = ("delta_share", "absret", "fwd15", "fwd60")
+HERE = os.path.dirname(os.path.abspath(__file__))
+KLINES = 'F:/MTS/data/tom_raw/klines/BTCUSDT-1m-*.csv'
+DEV_START = '2022-02-01'
+DEV_END = '2024-05-31'
+FIRST_MONTH, LAST_MONTH = '2022-01', '2024-05'
+FEE_BP, SEED, NPERM, ZNOISE = 10.0, 1112, 1000, 2.0
+DAY_MIN = 1440
 
 
-def month_files(folder):
-    out = []
-    for f in sorted(glob.glob(os.path.join(folder, "BTCUSDT-1m-????-??.*"))):
-        if not f.endswith((".csv", ".zip")):
-            continue
-        tag = os.path.basename(f)[len("BTCUSDT-1m-"):][:7]
-        if DEV_FIRST <= tag <= DEV_LAST:
-            out.append(f)
-    return out
+def _ts_ms(x):
+    x = int(x)
+    return x // 1000 if x > 10 ** 14 else x
 
 
-def _open(f):
-    if f.endswith(".zip"):
-        z = zipfile.ZipFile(f)
-        return io.TextIOWrapper(z.open(z.namelist()[0]), "utf-8")
-    return open(f, newline="", encoding="utf-8")
-
-
-def load_dev(folder):
-    """Arrays t_ms, open, close, volume, taker_buy for DEV rows only (rows outside the DEV window are dropped)."""
-    cols = [[] for _ in range(5)]
-    for f in month_files(folder):
-        with _open(f) as fh:
+def load_dev(pattern=KLINES, last_month=LAST_MONTH):
+    """Return (t0_ms, o, c, v, taker_buy) on a 1m grid from 2022-01-01 to the last DEV minute; missing bars = NaN."""
+    files = []
+    for f in sorted(glob.glob(pattern)):
+        tag = os.path.basename(f)[len('BTCUSDT-1m-'):-4][:7]
+        if FIRST_MONTH <= tag <= last_month:
+            files.append(f)
+    rows = []
+    for f in files:
+        with open(f) as fh:
             for r in csv.reader(fh):
-                if r[0] == "open_time":
+                if r[0] == 'open_time':
                     continue
-                t = int(r[0])
-                if t > 10 ** 14:
-                    t //= 1000
-                if not DEV_START_MS <= t < DEV_END_MS:
-                    continue
-                for c, v in zip(cols, (t, r[1], r[4], r[5], r[9])):
-                    c.append(v)
-    t = np.array(cols[0], dtype=np.int64)
-    o, c, v, tb = (np.array(x, dtype=float) for x in cols[1:])
-    order = np.argsort(t)
-    return t[order], o[order], c[order], v[order], tb[order]
+                rows.append((_ts_ms(r[0]), float(r[1]), float(r[4]), float(r[5]), float(r[9])))
+    a = np.array(rows, dtype=float)
+    t0 = int(np.datetime64('2022-01-01T00:00', 'ms').astype('int64'))
+    tend = int(np.datetime64(DEV_END + 'T23:59', 'ms').astype('int64'))
+    a = a[(a[:, 0] >= t0) & (a[:, 0] <= tend)]
+    n = (tend - t0) // 60000 + 1
+    out = np.full((4, n), np.nan)
+    idx = ((a[:, 0] - t0) // 60000).astype(int)
+    for k, col in enumerate(a[:, 1:5].T):
+        out[k, idx] = col
+    return t0, out[0], out[1], out[2], out[3]
 
 
-def features(t, o, c, v, tb):
-    """Per-bar arrays: delta, volume, abs 1m return bp, signed forward net bp per horizon (NaN where not contiguous)."""
-    delta = 2 * tb - v
-    absret = np.abs(c / o - 1) * 1e4
-    sign = np.sign(delta)
-    n = len(t)
-    fwd = {}
-    for h in HORIZONS:
-        f = np.full(n, np.nan)
-        if n > h + 1:
-            m = n - h
-            ok = (t[h:] - t[:m] == h * 60000) & (t[1:m + 1] - t[:m] == 60000)
-            val = sign[:m] * (c[h:] / o[1:m + 1] - 1) * 1e4 - FEE_BP
-            val[~ok | (sign[:m] == 0)] = np.nan
-            f[:m] = val
-        fwd[h] = f
-    return {"delta": delta, "vol": v, "absret": absret, "fwd": fwd}
+def build_instances(o, c, v, tb, start_min, n_days):
+    """start_min = grid index of the first DEV midnight. Returns {'hour','fund'} -> array rows
+    (label, day_index, delta_share, absret_bp, fwd15_bp, fwd60_bp)."""
+    d = 2 * tb - v
+    ret = np.abs(c / o - 1) * 1e4
+
+    def block(e0, e1):
+        if e0 < 0 or e1 > len(o):
+            return None
+        vv = v[e0:e1]
+        if np.isnan(vv).any() or np.isnan(ret[e0:e1]).any():
+            return None
+        return d[e0:e1].sum() / vv.sum(), ret[e0:e1].mean()
+
+    def fwd(e, h):
+        j = e + h - 1
+        if e < 0 or j >= len(o) or np.isnan(o[e]) or np.isnan(c[j]):
+            return None
+        return (c[j] / o[e] - 1) * 1e4
+
+    res = {'hour': [], 'fund': []}
+    for day in range(n_days):
+        base = start_min + day * DAY_MIN
+        for h in range(24):
+            e = base + h * 60
+            b = block(e, e + 60)
+            f15, f60 = fwd(e, 15), fwd(e, 60)
+            if b is None or f15 is None or f60 is None:
+                continue
+            res['hour'].append((h, day, b[0], b[1], f15, f60))
+        for k, s in enumerate((0, 8, 16)):
+            sm = base + s * 60
+            b = block(sm - 240, sm + 240)
+            e = sm + 1
+            f15, f60 = fwd(e, 15), fwd(e, 60)
+            if b is None or f15 is None or f60 is None:
+                continue
+            res['fund'].append((k, day, b[0], b[1], f15, f60))
+    return {k: np.array(x, dtype=float).reshape(-1, 6) for k, x in res.items()}
 
 
-def labels(t, hour_off=None, wd_perm=None):
-    """(hour, funding id 0..2 or 3 = other, weekday) per bar; offsets / permutation implement the day-label placebo."""
-    day = t // 86400000
-    d0 = day - day.min()
-    mod = (t // 60000) % 1440
-    if hour_off is not None:
-        mod = (mod + 60 * hour_off[d0]) % 1440
-    hour = mod // 60
-    fund = np.full(len(t), 3)
-    for k, centre in enumerate((0, 480, 960)):
-        d = (mod - centre + 720) % 1440 - 720
-        fund[(d >= -FUND_HALF) & (d < FUND_HALF)] = k
-    wd = (day + 3) % 7  # 1970-01-01 was a Thursday; Mon = 0
-    if wd_perm is not None:
-        wd = wd_perm[d0]
-    return hour, fund, wd
+def bucket_means(labels, vals, nb):
+    cnt = np.bincount(labels, minlength=nb).astype(float)
+    out = np.empty((nb, vals.shape[1]))
+    for j in range(vals.shape[1]):
+        out[:, j] = np.bincount(labels, weights=vals[:, j], minlength=nb) / np.maximum(cnt, 1)
+    return cnt, out
 
 
-def bucket_stats(feat, lab, nb):
-    out = {"n": np.bincount(lab, minlength=nb).astype(float)}
-    sd = np.bincount(lab, weights=feat["delta"], minlength=nb)
-    sv = np.bincount(lab, weights=feat["vol"], minlength=nb)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        out["delta_share"] = sd / sv
-        out["absret"] = np.bincount(lab, weights=feat["absret"], minlength=nb) / out["n"]
-        for h in HORIZONS:
-            f = feat["fwd"][h]
-            ok = ~np.isnan(f)
-            cnt = np.bincount(lab[ok], minlength=nb)
-            out[f"fwd{h}"] = np.bincount(lab[ok], weights=f[ok], minlength=nb) / cnt
-    return out
-
-
-def run(t, feat, draws=300, seed=SEED):
-    """Observed stats and placebo z per clock: {clock: {labels, n, stat, stat_z}}."""
-    day0 = int(t.min() // 86400000)
-    ndays = int(t.max() // 86400000) - day0 + 1
+def placebo_z(labels, vals, nb, nperm=NPERM, seed=SEED, shuffle_obs=False):
+    """Observed bucket means and z vs label-permutation placebo; shuffle_obs shuffles the labels once first (null check)."""
     rng = np.random.default_rng(seed)
-    clocks = {"hour": (0, 24), "funding": (1, 4), "weekday": (2, 7)}
-    obs_lab = labels(t)
-    obs = {k: bucket_stats(feat, obs_lab[i], nb) for k, (i, nb) in clocks.items()}
-    plc = {k: {s: [] for s in STATS} for k in clocks}
-    day_wd = (np.arange(ndays) + day0 + 3) % 7
-    for _ in range(draws):
-        lab = labels(t, hour_off=rng.integers(0, 24, ndays), wd_perm=rng.permutation(day_wd))
-        for k, (i, nb) in clocks.items():
-            st = bucket_stats(feat, lab[i], nb)
-            for s in STATS:
-                plc[k][s].append(st[s])
-    names = {"hour": [f"{h:02d}Z" for h in range(24)], "funding": ["00Z", "08Z", "16Z", "other"],
-             "weekday": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-    res = {}
-    for k in clocks:
-        r = {"labels": names[k], "n": obs[k]["n"].tolist()}
-        for s in STATS:
-            arr = np.array(plc[k][s])
-            mu, sd = np.nanmean(arr, axis=0), np.nanstd(arr, axis=0)
-            r[s] = obs[k][s].tolist()
-            r[s + "_z"] = ((obs[k][s] - mu) / sd).tolist()
-        res[k] = r
-    return res
+    lab = labels.copy()
+    if shuffle_obs:
+        rng.shuffle(lab)
+    cnt, obs = bucket_means(lab, vals, nb)
+    sims = np.empty((nperm, nb, vals.shape[1]))
+    for i in range(nperm):
+        sims[i] = bucket_means(rng.permutation(lab), vals, nb)[1]
+    z = (obs - sims.mean(0)) / np.maximum(sims.std(0), 1e-12)
+    return cnt, obs, z
 
 
-def table_md(res):
-    lines = []
-    for k, r in res.items():
-        lines += [f"### Clock: {k}", "",
-                  "| bucket | n bars | delta share | z | mean abs ret bp | z | fwd 15m net bp | z | fwd 60m net bp | z | mark |",
-                  "|---|---|---|---|---|---|---|---|---|---|---|"]
-        for i, name in enumerate(r["labels"]):
-            zs = [r[s + "_z"][i] for s in STATS]
-            mark = "noise" if all(abs(z) < 2 for z in zs) else ""
-            lines.append(f"| {name} | {int(r['n'][i])} | {r['delta_share'][i]:+.4f} | {zs[0]:+.1f} | {r['absret'][i]:.2f} | {zs[1]:+.1f} | "
-                         f"{r['fwd15'][i]:+.2f} | {zs[2]:+.1f} | {r['fwd60'][i]:+.2f} | {zs[3]:+.1f} | {mark} |")
-        lines.append("")
-    return "\n".join(lines)
+def fmt_cell(x, z, fmt):
+    return (fmt % x) + ('~' if abs(z) < ZNOISE else '')
+
+
+def render(inst, wd0):
+    wn = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    groups = [('hour', 24, ['h%02d' % i for i in range(24)]),
+              ('fund', 3, ['fund 00Z (20-04)', 'fund 08Z (04-12)', 'fund 16Z (12-20)']),
+              ('wday', 7, wn)]
+    lines = ['| Bucket | n | delta share | abs ret bp | fwd15 gross bp | fwd60 gross bp | long net60 bp | short net60 bp |',
+             '|---|---|---|---|---|---|---|---|']
+    js = {}
+    for key, nb, names in groups:
+        if key == 'wday':
+            arr = inst['hour'].copy()
+            arr[:, 0] = (arr[:, 1] + wd0) % 7
+        else:
+            arr = inst[key]
+        cnt, obs, z = placebo_z(arr[:, 0].astype(int), arr[:, 2:], nb)
+        for i in range(nb):
+            ds, ab, f15, f60 = obs[i]
+            zd, za, z15, z60 = z[i]
+            lines.append('| %s | %d | %s | %s | %s | %s | %s | %s |' % (
+                names[i], cnt[i], fmt_cell(ds, zd, '%+.4f'), fmt_cell(ab, za, '%.2f'), fmt_cell(f15, z15, '%+.2f'),
+                fmt_cell(f60, z60, '%+.2f'), fmt_cell(f60 - FEE_BP, z60, '%+.2f'), fmt_cell(-f60 - FEE_BP, z60, '%+.2f')))
+            js['%s:%s' % (key, names[i])] = dict(
+                n=int(cnt[i]), delta_share=ds, z_delta=zd, abs_ret_bp=ab, z_abs=za, fwd15_bp=f15, z_fwd15=z15,
+                fwd60_bp=f60, z_fwd60=z60, long_net60_bp=f60 - FEE_BP, short_net60_bp=-f60 - FEE_BP)
+    return '\n'.join(lines), js
+
+
+def regime_mix(c, n_days):
+    cnt = {'bull': 0, 'bear': 0, 'range': 0, 'n/a': 0}
+    for d in range(31, 31 + n_days):  # DEV day 0 = 2022-02-01 = grid day 31
+        j, j0 = d * DAY_MIN + DAY_MIN - 1, (d - 90) * DAY_MIN + DAY_MIN - 1
+        if j0 < 0 or j >= len(c) or np.isnan(c[j]) or np.isnan(c[j0]):
+            cnt['n/a'] += 1
+            continue
+        r = c[j] / c[j0] - 1
+        cnt['bull' if r > .2 else 'bear' if r < -.2 else 'range'] += 1
+    return cnt, max(sum(cnt.values()), 1)
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--split", default="dev")
-    ap.add_argument("--dir", default=os.environ.get("BTC_KLINES_DIR", "F:/MTS/data/tom_raw/klines"))
-    ap.add_argument("--draws", type=int, default=300)
-    ap.add_argument("--out", default=str(Path(__file__).resolve().parent))
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--split', required=True)
+    ap.add_argument('--pattern', default=KLINES)
     a = ap.parse_args(argv)
-    if a.split != "dev":
-        print("refused: card 2 reads DEV only (PREREG.md); VALIDATION is read once, later, for cells that clear DEV")
-        return 2
-    t, o, c, v, tb = load_dev(a.dir)
-    if len(t) == 0:
-        print(f"no DEV klines under {a.dir}")
-        return 1
-    feat = features(t, o, c, v, tb)
-    res = run(t, feat, a.draws)
-    expected = (DEV_END_MS - DEV_START_MS) // 60000
-    meta = {"split": "DEV 2022-02-01..2024-05-31", "bars": int(len(t)), "expected_bars": int(expected),
-            "missing_bars": int(expected - len(t)), "fee_bp_round_trip": FEE_BP, "draws": a.draws, "seed": SEED}
-    Path(a.out, "results_clocks.json").write_text(json.dumps({"meta": meta, "clocks": res}, indent=1), encoding="utf-8", newline="\n")
-    print(json.dumps(meta))
-    print(table_md(res))
-    return 0
+    if a.split != 'dev':
+        raise SystemExit('only --split dev is allowed (PREREG: VALIDATION/HOLDOUT not opened by this card)')
+    t0, o, c, v, tb = load_dev(a.pattern)
+    n_days = int((np.datetime64(DEV_END) - np.datetime64(DEV_START)).astype(int)) + 1
+    start_min = 31 * DAY_MIN
+    wd0 = int((np.datetime64(DEV_START).astype('datetime64[D]').astype(int) + 3) % 7)  # 1970-01-01 = Thu; Mon = 0
+    inst = build_instances(o, c, v, tb, start_min, n_days)
+    dev_bars = int(np.isfinite(v[start_min:]).sum())
+    missing = n_days * DAY_MIN - dev_bars
+    table, js = render(inst, wd0)
+    rc, tot = regime_mix(c, n_days)
+    regime = 'Regime mix: ' + ', '.join('%s %.0f%%' % (k, 100 * x / tot) for k, x in rc.items()) + ' of %d DEV days' % tot
+    md = ['# CLOCKS: BTC own clocks from 1m taker delta (card btc-of-map-clocks-1112), DEV only', '',
+          'DEV = %s .. %s UTC (PREREG split), %d days, %d 1m bars present, %d missing (reported, not filled). Fee 10 bp round trip.'
+          % (DEV_START, DEV_END, n_days, dev_bars, missing),
+          'Instances: hour/weekday = one entry per (day, hour) open, 60 min hold; fund = one per settlement at +1 min, window = 8h block centred on it.',
+          'delta share = sum(2*taker_buy-volume)/sum(volume); `~` = |z| < 2 vs 1,000 label-shuffle placebos (seed 1112) = noise. '
+          'fwd/net in bp; long net = gross-10, short net = -gross-10.',
+          '', table, '', regime, '',
+          'VALIDATION: NOT RUN (instruction for this card: DEV only, no VALIDATION or HOLDOUT file opened). Second table pending.']
+    with open(os.path.join(HERE, 'CLOCKS.md'), 'w') as fh:
+        fh.write('\n'.join(md) + '\n')
+    with open(os.path.join(HERE, 'results_clocks.json'), 'w') as fh:
+        json.dump(dict(split='dev', start=DEV_START, end=DEV_END, bars_present=dev_bars, bars_missing=missing,
+                       regime=rc, cells=js), fh, indent=1)
+    print(table)
+    print(regime)
+    print('missing bars', missing)
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == '__main__':
+    main()

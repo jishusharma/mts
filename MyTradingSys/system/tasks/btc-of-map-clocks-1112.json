@@ -6,6 +6,16 @@
     "python MyTradingSys/research/btc_orderflow_map_1112/clocks.py --split dev",
     "python -m pytest MyTradingSys/research/btc_orderflow_map_1112/test_clocks.py -q"
   ],
+  "context": {
+    "calls_to_edit": 5,
+    "folded": "2026-11-11T20:28:25Z",
+    "misses": 12,
+    "reads": [
+      "MyTradingSys/research/btc_orderflow_map_1112/DATA_INVENTORY.md",
+      "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py"
+    ],
+    "session": "agent-a4183a9f8a372bfe3"
+  },
   "created": "2026-11-11T19:59:33Z",
   "depends_on": [
     "btc-of-map-prereg-1112"
