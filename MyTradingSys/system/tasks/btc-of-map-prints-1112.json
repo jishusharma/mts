@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/btc_orderflow_map_1112/prints.py --days MyTradingSys/research/btc_orderflow_map_1112/days.txt",
+    "python -m pytest MyTradingSys/research/btc_orderflow_map_1112/test_prints.py -q",
+    "python -c \"import shutil;print(shutil.disk_usage('F:/').free/1e9)\""
+  ],
+  "created": "2026-11-11T19:59:34Z",
+  "depends_on": [
+    "btc-of-map-prereg-1112"
+  ],
+  "done_when": "MyTradingSys/research/btc_orderflow_map_1112/prints.py and test_prints.py exist and pytest passes; MyTradingSys/research/btc_orderflow_map_1112/PRINTS.md has a table (event, n, fwd 15m and 60m net bp, matched-control mean, z) over at least 60 DEV days listed in days.txt; or NOT_IN_DATA.md names the days that could not be fetched.",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find where BTC size trades and what follows: large prints and absorption (heavy delta, little price move) from aggTrades on a bounded DEV sample, fee-net vs matched controls.",
+  "id": "btc-of-map-prints-1112",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "aggTrades is FETCHABLE only (DATA_INVENTORY.md; F:/MTS/Dumps/backtest/raw/aggTrades/ empty); liquidations NOT_IN_DATA. DRIVE AND CAP (OURS, 2026-11-12): fetch to F: only (F: about 48 GB free; C: about 16 GB, never used). Before the first fetch check F: free >= 20 GB, else stop and write NOT_IN_DATA.md. Scratch cap 2 GB at once: fetch one day, reduce to per-minute stats, delete, next; 60 days at 0.1-0.3 GB/day = 6-18 GB total traffic, never stored. Local F:/MTS/data/orderflow_1m covers VALIDATION only (2024-12-02..), not DEV.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_orderflow_map_1112/prints.py (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/test_prints.py (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/PRINTS.md (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/days.txt (new)",
+    "MyTradingSys/research/btc_orderflow_map_1112/NOT_IN_DATA.md (new, only if needed)",
+    "F:/MTS/Dumps/backtest/raw/aggTrades/ (scratch only, emptied per day, never committed)"
+  ],
+  "scope_out": [
+    "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md (frozen)",
+    "committing raw aggTrades (public repo, size)",
+    "HOLDOUT",
+    "liquidation feeds (no public history)"
+  ],
+  "size": "M",
+  "sources": [
+    "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
+    "MyTradingSys/backtest/layers/fabio/of_backfill.py",
+    "MyTradingSys/research/btc_orderflow_map_1112/DATA_INVENTORY.md"
+  ],
+  "state": "raw",
+  "steps": [
+    "Pick 60+ DEV days over 2022-01..2024-06 (every 15th day, OURS) into days.txt; fetch aggTrades via fetch_binance_archive.py --datasets aggTrades to scratch, delete after reducing to per-minute stats",
+    "Per day mark prints in the top 0.1% of trade size and absorption minutes per PREREG definition; forward 15m/60m return minus 10 bp fee",
+    "Controls: same count of random minutes with matched volume; report mean difference and z; nothing tuned after the first run"
+  ],
+  "tests": "test_prints.py: synthetic trades with one 50 BTC print followed by +30 bp must flag exactly that print; a day without prints flags none; fails before prints.py exists.",
+  "title": "BTC order-flow map 3/4: large prints and absorption from aggTrades (sample days)",
+  "weight": "",
+  "worker": "session"
+}

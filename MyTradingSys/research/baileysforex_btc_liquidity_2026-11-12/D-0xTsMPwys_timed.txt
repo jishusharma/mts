@@ -1,0 +1,601 @@
+# Video ID: D-0xTsMPwys
+# Title: Backtesting Bitcoin | Easy Liquidity Strategy
+# Published: 2024-11-22
+# Source: youtube_transcript_api (auto, en); uploader: Baileysforex
+# Analyst: Bailey (Baileysforex)
+# Word count: 3870
+# ---
+[0:00] in this video we're going to be back
+[0:01] testing Bitcoin on FX replay using a
+[0:04] simple price action strategy I'm going
+[0:06] to be walking you through the analysis
+[0:08] behind each trade and at the end we will
+[0:10] go through the analytics as well to see
+[0:12] if the strategy was profitable or not so
+[0:14] let's jump right into it okay guys so
+[0:16] starting off on the daily time frame
+[0:18] here we can see price was very clearly
+[0:21] bullish so we're looking for buys
+[0:24] only at this point in time and by the
+[0:27] way I forgot to mention we're going to
+[0:28] be starting from
+[0:30] January uh 2024 all the way up until the
+[0:33] present date we'll see if we get through
+[0:36] all of it during this video or not so as
+[0:39] of right now like I said price was very
+[0:41] clearly bullish on The Daily time frame
+[0:44] and the first liquidity Target that I'll
+[0:46] be looking for price to come up into
+[0:49] will be this high right here so that's
+[0:52] the first Target we're looking for at
+[0:55] the moment it looks like price is in
+[0:57] this
+[0:58] quite range bound
+[1:00] conditions it's consolidating a lot um
+[1:04] but if we jump down onto the 1 hour to
+[1:06] see some of the more refined
+[1:10] structure what we can see is that price
+[1:13] kind of took out this area to the left
+[1:16] we grabbed these
+[1:18] lows price then flipped back bullish on
+[1:21] the 1 hour just there we had this sort
+[1:24] of pullback price then broke this
+[1:28] structure once again
+[1:31] this one did not break that high to the
+[1:33] left so this is not um a main structure
+[1:37] point this would just be sort of an
+[1:38] internal structure price then pulled
+[1:41] back so we're looking somewhere between
+[1:43] this low and this high for a potential U
+[1:47] buy an opportunity up into that
+[1:48] liquidity level what we can see
+[1:51] currently as well is that price has
+[1:53] reacted
+[1:55] from this sort of
+[1:57] Demand right here we've had a wh into
+[2:00] that level price took out that low to
+[2:03] the left and at this point in time I
+[2:06] think the lower time frames would be
+[2:08] bullish but let's just go back out for a
+[2:12] second so what I'm basically
+[2:14] anticipating from here is that either
+[2:16] price continues straight up into these
+[2:19] highs or we come back down regrab these
+[2:23] lows and then we can look for the buys
+[2:25] instead either way though I am only
+[2:28] interested in buying but since since
+[2:30] price has tapped into this demand Zone
+[2:32] let's have a look at what the 15 minute
+[2:35] uh did in this zone so very clearly we
+[2:39] had a grab of those two lows right there
+[2:42] 15 minute then actually flipped
+[2:45] bullish just there we've had a 15minute
+[2:49] pullback and then a pushup another
+[2:51] breaker structure as
+[2:53] well just there so what I would look at
+[2:57] now is a potential buying opportunity
+[2:59] Within this
+[3:01] range
+[3:03] um so let's see what price can do I'm
+[3:08] basically seeing right now two zones
+[3:11] where we could look to enter from so we
+[3:14] have this area of demand but we could
+[3:18] also see buys from where price currently
+[3:19] is because it has grabbed those lows
+[3:22] right
+[3:25] there so yeah let's see let's see what
+[3:28] happens here
+[3:33] I'm using the five minute for entries by
+[3:35] the way so we've had a sweep of these
+[3:38] lows like I said we could see buys from
+[3:40] here or Price could come lower into that
+[3:42] demand Zone that we have just marked for
+[3:45] this trade to be confirmed I'd want to
+[3:46] see this structure taken out
+[3:50] first um I think price just gapped up
+[3:54] yeah so there we go looks like we're not
+[3:56] getting the buying opportunity there
+[3:58] analysis was very good there
+[4:00] pretty much
+[4:01] sparm uh this was probably a weekend Gap
+[4:04] I imagine yeah so that was the Sunday
+[4:07] market
+[4:07] open so price hasn't yet taken out this
+[4:11] liquidity level though so we are still
+[4:13] looking to capitalize on buys up to that
+[4:15] level this however now is going to be
+[4:18] slightly difficult to trade because you
+[4:20] have had that big gap up and yeah there
+[4:23] we go so price just broke the
+[4:28] structure uh without giving given any
+[4:30] real pullbacks obviously when you have a
+[4:32] big gap like that and price doesn't pull
+[4:34] back at all it's not very tradable at
+[4:36] least for this strategy that we're using
+[4:38] in this video so now we have had that
+[4:41] higher time frame breaker structure
+[4:43] zooming back out to the Daily we can see
+[4:46] that price is very clearly still bullish
+[4:48] and I think this was the alltime high
+[4:50] maybe oh no at this point in time it
+[4:53] wasn't the alltime high uh this up here
+[4:56] was so
+[5:00] yeah I'm still looking to buy up into
+[5:02] some of these previous liquidity
+[5:04] levels so what we want to do now is
+[5:06] basically be waiting for a pullback
+[5:08] somewhere into this daily range and then
+[5:11] we'll look to continue buying where
+[5:13] could we see the buys
+[5:16] maybe okay so I'm basically seeing two
+[5:18] levels we have this sort of demand Zone
+[5:22] which is the sort of you can see this
+[5:25] region of consolidation before we had
+[5:27] all of this volume step into the market
+[5:29] GE when the Sunday market open but you
+[5:32] also have this liquidity level which is
+[5:36] sort of the last low before this Gap
+[5:38] that we had so that would also be a
+[5:41] valid area for
+[5:43] myself so let's see if price can pull
+[5:45] back or what it wants to do
+[6:06] there we go so we did
+[6:08] have price come slightly lower than that
+[6:11] demand
+[6:12] Zone but overall it still is holding
+[6:15] within this range so between the low and
+[6:17] the high that is the current trading
+[6:19] range you want to be looking at because
+[6:20] that is the current Trend that we're
+[6:22] looking to trade what I like now we have
+[6:25] had a grab of this
+[6:27] low price s of ret tested into this
+[6:30] demand and we've had this very obvious
+[6:33] rejection from that level so what we can
+[6:35] do now is have a look at some of the
+[6:38] lower time frame
+[6:41] structure in this case this is going to
+[6:43] be quite hard to trade because we don't
+[6:45] have any
+[6:46] structure price just sold off with all
+[6:48] of this momentum and as we can see here
+[6:52] there is literally no structure for it
+[6:53] to break on the lower time frame so this
+[6:56] doesn't look valid um for me unless
+[7:00] price can come down regrab these lows
+[7:05] potentially um or if it continues higher
+[7:08] and creates some more structure then
+[7:09] I'll potentially look to get in
+[7:41] okay so on the lower time frame you
+[7:44] could consider this um obviously the
+[7:47] structure is not very obvious in this
+[7:49] case but this was technically the last 5
+[7:51] minute pullback price has now pushed
+[7:54] above that
+[7:56] so what I'm looking for now because we
+[7:59] have grabbed these lows price is still
+[8:02] holding that um higher time frame Trend
+[8:05] and overall the target is now this
+[8:08] High I am going to try and look for some
+[8:11] buys maybe if price can come down and
+[8:14] take out these lows or maybe come down
+[8:19] into the demand Zone just below let's
+[8:21] react to price see what it
+[8:26] does um there we
+[8:28] go so obviously we didn't react from
+[8:31] that
+[8:33] zone once again though it has just swept
+[8:36] all of these lows so this would be an
+[8:39] optimal place to look for the Buys in my
+[8:41] opinion if we can get some lower time
+[8:43] frame
+[8:53] confirmations I'm just going to get rid
+[8:55] of that
+[8:56] quickly so we can see as well price sort
+[8:59] of reacted from that demand
+[9:02] there hasn't yet broken any
+[9:12] structure so there we go you could
+[9:14] technically consider that a change of
+[9:20] character price is still overall
+[9:24] bullish one thing I've noticed so far on
+[9:27] bitcoin is that it doesn't really tend
+[9:30] to create any lower time frame structure
+[9:32] it just makes these impulsive moves
+[9:34] quite similar to
+[9:36] Gold where you just have uh an impulsive
+[9:38] move it looks like it's going to reverse
+[9:40] but then it will hold demand uh and just
+[9:43] take out previous lows and then it will
+[9:44] continue
+[9:46] up um let's see if we can get a pullback
+[9:49] here for a potential entry
+[10:04] could look
+[10:06] at this level but I'd want more
+[10:08] confirmation in that region to be
+[10:18] honest we go so price grabbed those lows
+[10:35] still looking to buy up into that
+[10:39] hype let's have a look what happens
+[10:46] here here we go I'm going to place a buy
+[10:50] just here stops cover in the low and
+[10:54] we're going to mechanically Target a one
+[10:56] to three
+[11:05] there we go why am I entering this we
+[11:08] had reaction from this demand price
+[11:11] broke structure pulled back took out all
+[11:13] of the lows in the range and now the 5
+[11:15] minute has flipped back
+[11:18] bullish so I'm just waiting for a small
+[11:20] pullback into demand and then we can
+[11:23] look to potentially
+[11:26] buy there we go so we are tagged in
+[11:30] and I'm going to actually Target this
+[11:33] High the next liquidity
+[11:40] level let's see how it
+[11:47] goes what did this run
+[11:50] to 2.4
+[11:59] by the way I don't ever make any of my
+[12:01] trades break even I Target normally
+[12:03] between 1 to 3 and 1 to four and just
+[12:06] simply let them run to stop loss or take
+[12:08] profit because based on past data that's
+[12:10] what I found is most profitable for
+[12:13] me let's play this on the higher time
+[12:15] frame so it's a bit
+[12:22] quicker and there we go so first trade
+[12:26] actually ended up being a win 1 to 3.66
+[12:29] rist or W this would have been quite a
+[12:32] difficult hold if you were trading it
+[12:34] live because price did come back and tap
+[12:36] into your entry multiple times but like
+[12:39] I said I don't ever make the trades
+[12:40] break even for that
+[12:43] reason um because I found that over a
+[12:45] sample of Trades doing so actually
+[12:48] detriments your results rather than
+[12:50] protecting you from any losses so yeah
+[12:54] let's move on to the next trade now next
+[12:56] trade I'm looking to buy up into these
+[13:00] highs right
+[13:19] here yeah so price just wants to break
+[13:23] the high without giving any pullbacks
+[13:25] that's
+[13:26] fine so now we've had another break of
+[13:28] structure
+[13:30] again price is still very
+[13:32] bullish so we can look for more buys or
+[13:35] more buying
+[13:37] opportunities some point we could see
+[13:40] price come down and take out all of
+[13:41] these
+[13:42] lows just being cautious of that so if
+[13:46] we go back on the
+[13:47] weekly two liquidity levels that I would
+[13:50] watch out for for a potential
+[13:52] reversal this one
+[13:56] and this one right here which leads into
+[13:58] that inbalance
+[14:00] above so I'm going to be cautious of
+[14:02] these two levels because weekly time
+[14:04] frame you have sort of had um like a
+[14:07] shif in Trend you've had breaker
+[14:09] structure here price then created a
+[14:10] lower low taking up that Weekly
+[14:12] structure so it could potentially this
+[14:15] could just be a pullback for
+[14:17] continuations into new lows or it could
+[14:19] be another pushup retracement after a
+[14:22] sweep of the liquidity and then a push
+[14:25] up into all-time highs that's how I
+[14:27] would be reading this
+[14:30] um so let's see how price reacts to
+[14:32] these two
+[14:35] levels we can also look to buy out to
+[14:37] them now as
+[14:47] well Okay so we've had a reaction from
+[14:49] this sort of
+[14:54] demand see what price does in this
+[14:56] region
+[15:19] there you go so you sort of had a sweep
+[15:21] of that
+[15:22] demand 15minute breaker structure you've
+[15:25] then got this demand there so if we can
+[15:29] get a retest into this area I'd be happy
+[15:32] to buy up
+[15:36] into this High to the
+[15:39] left slightly smaller stop just to make
+[15:41] it a 1 to
+[15:53] three that was unfortunate so we had a
+[15:56] stop loss price then rallied
+[15:59] and probably is going to hit take profit
+[16:01] as well yeah there we go
+[16:04] so very annoying that one price actually
+[16:07] tagged us out by a pip then flew to take
+[16:10] profit um onto the next trade I
+[16:14] guess analysis was spot on though so
+[16:18] we've had now another breaker structure
+[16:21] but price has just taken out our
+[16:23] liquidity level so we could maybe see a
+[16:25] reversal here or just a you know a
+[16:28] bigger pull back back to come into these
+[16:30] lows like I said price may
+[16:37] do okay so let's monitor these zones and
+[16:40] see what price
+[16:47] does there we go so we've started to see
+[16:49] that
+[16:51] reversal this line being that liquidity
+[16:53] level by the way um still though price
+[16:56] is technically bullish Until It Breaks
+[16:58] this low
+[17:07] there we go so I think we can now get
+[17:08] some short shorter term cells into the
+[17:11] next liquidity level so we've had that
+[17:14] shif in trend on the 1 hour liquidity
+[17:17] level I'm going to look to
+[17:19] Target for these sort of sells before
+[17:22] the overall uptrend continues is this
+[17:25] low right here the reason I'm targeting
+[17:28] this is because you've sort of had this
+[17:30] consolidation lots of liquidity left
+[17:32] below these lows lots of previous buyers
+[17:34] in the market and then you've got that
+[17:36] imbalanced area just below it as well
+[17:39] overall the trend is still bullish as we
+[17:41] can see but I think you will get some
+[17:43] sells into those lows so that's what I'm
+[17:46] going to be looking
+[17:47] for not really any structure to look at
+[17:50] at the moment but let's see what price
+[17:52] does
+[18:01] um so you've sort of
+[18:03] got this area where you could see price
+[18:07] come to I think
+[18:09] it I already tapped that zone if it can
+[18:12] come back up that would be
+[18:22] nice so I want to see a sweep of these
+[18:24] highs first of all
+[18:34] one thing I've also noticed is that this
+[18:35] pair kind of tends to consolidate a lot
+[18:38] and then after the consolidation you'll
+[18:40] get one big
+[18:51] move just going to play this on higher
+[18:53] time frame
+[18:59] there we go so all of those previous
+[19:01] Highs are swept price is still still
+[19:03] within that Supply zone so we could even
+[19:06] see sells from here but I'd also
+[19:08] consider selling if that high gets taken
+[19:12] out
+[19:14] instead just checking 4 Hour as
+[19:20] well so yeah let's see how price reacts
+[19:25] here that Supply is still holding don't
+[19:29] really have any 5 minute structure
+[19:31] though
+[19:33] so technically we need to see this low
+[19:36] taken out unless price can regrab the
+[19:46] highs looks like it's going to regrab
+[19:48] the highs
+[19:54] instead there we go so we've had regrab
+[19:57] of that high still within that Supply
+[20:00] Zone see what it does here
+[20:34] okay so you've now had a 15minute
+[20:37] breaker structure there we sort of
+[20:41] left this imbalanced Supply you've got
+[20:44] some liquidity below it so this is now a
+[20:46] valid setup for me I'm going to take it
+[20:49] stops above that
+[20:52] high and the reason this is still valid
+[20:54] by the way it took out that the top of
+[20:57] that Supply Zone broke structure
+[20:59] created in Balance so I'm going to be
+[21:01] targeting these
+[21:03] lows
+[21:05] and going to see if it tags Us in or
+[21:11] not no okay
+[21:13] so great analysis price just missed the
+[21:17] Zone quite annoying but shows our
+[21:21] analysis is
+[21:22] working let's see where price reacted
+[21:24] from
+[21:25] instead so yeah there wasn't really any
+[21:28] entry opportunities for me
+[21:33] anyway so what we can see now price has
+[21:36] broke that structure
+[21:38] again it is getting very close to that
+[21:40] liquidity level though and that is where
+[21:42] we want to be looking for bullish
+[21:45] continuations if price can give us a
+[21:47] pullback before then we could look to
+[21:49] potentially sell into
+[21:51] it
+[21:52] maybe from this 4H hour Supply
+[21:59] being cautious though because it has
+[22:01] taken out some of these daily
+[22:03] lows I still see this one going though
+[22:07] so let's have a look if it can give us a
+[22:10] pullback below this Zone there's not
+[22:12] really anything for it to react from so
+[22:15] I wouldn't sell below
+[22:22] that see if we can get a push into that
+[22:24] Zoom
+[22:32] okay now so price has now taken that
+[22:35] daily liquidity level so here we can
+[22:38] look for some
+[22:40] buys let's how let's see how price
+[22:42] reacts here on the lower time
+[22:46] frame I'm just going to mark that on as
+[22:49] well that we've
+[22:51] had we can now get rid of this structure
+[22:54] because that was the sort of internal
+[22:56] structure we were following but now
+[22:58] price has has taken out that external
+[23:00] low just
+[23:03] there right and let's have a look how
+[23:07] lower time frame
+[23:21] reacts there we go so we've started to
+[23:24] see that shift bullish
+[23:30] we have this sort of demand
+[23:35] area right I'm going to enter there
+[23:38] stops slightly Below in case price wants
+[23:40] to regrab those lows and for this I'm
+[23:43] going to be
+[23:50] targeting to be honest there's not
+[23:51] really a clear Target so I'm just going
+[23:53] to go for a one to three let's see if
+[23:55] price tags us in
+[24:00] there we go so we are now tagged
+[24:09] in could see a re-entry
+[24:17] here by the way I didn't really explain
+[24:20] that entry so the reason I entered there
+[24:22] and not on the demand was because if we
+[24:25] look at the 15 minute
+[24:29] that actually it was based on 30 minute
+[24:32] that low right there was the last bit of
+[24:35] liquidity before you had this imbalance
+[24:37] and normally I'll set a limit on that
+[24:40] rather than trying to get like a really
+[24:42] really precise entry on the demand it's
+[24:44] not really worth it for the sake of you
+[24:46] know 0.5 extra risk to W or whatever the
+[24:50] case may be
+[24:59] again Bitcoin consolidating after these
+[25:02] big moves and then I would anticipate
+[25:05] after it does this consolidation it will
+[25:07] make another impulsive move this is sort
+[25:10] of a common theme I've noticed with this
+[25:14] pair yeah so there you go big
+[25:16] consolidation impulsive move up we could
+[25:19] have got a re-entry there after this low
+[25:21] was grabbed but because I was already in
+[25:23] that original position I didn't really
+[25:25] want to look for another one
+[25:29] there was quite a nice entry there as
+[25:32] well uh but yeah on to the next trade
+[25:35] expecting price now to just continue
+[25:38] bullish because it has grabbed those
+[25:41] daily
+[25:42] lows as we can see just
+[25:52] there just there as we can
+[25:55] see expecting price to maybe at at least
+[25:58] continue up into this High which is the
+[26:01] sort of opposing
+[26:05] liquidity and let's see if we can
+[26:07] capitalize on a move up to
+[26:09] there so I'm just going to mark on the
+[26:12] hourly structure we've had that change
+[26:15] of character right there price pulled
+[26:18] back broke this
+[26:20] high so that's just sort of hourly
+[26:23] structure we're still in January we're
+[26:26] currently up 5.7% which is quite a good
+[26:33] going okay so let's see if we can pull
+[26:36] back
+[26:38] into this demand and then I would have a
+[26:41] look at some Buys in
+[26:46] there could also see price come lower
+[26:48] take out this low which I'm going to be
+[26:51] mindful of
+[27:10] okay let's see how price reacts in this
+[27:22] region there you go so there's your
+[27:25] change of character
+[27:37] I'm going to look to enter in this
+[27:42] region Target this
+[27:45] High slightly lower entry actually just
+[27:48] so it is a 1 to three
+[28:06] y so there we go good analysis again no
+[28:08] pull back into our
+[28:11] Zone and price looks like it's going to
+[28:13] take the
+[28:17] high there we
+[28:22] go again just looking to follow this
+[28:25] hourly Trend now
+[28:31] one thing I'm not really liking about
+[28:33] Bitcoin so far as well is that it
+[28:35] doesn't tend to give good entries it
+[28:37] just sort of impulsively moves up after
+[28:39] tapping into your points of
+[28:41] interest I'm just going to mark on that
+[28:44] liquidity level as well that's an area I
+[28:46] want to be mindful
+[28:55] of see where could it react from
+[29:05] okay we could see a regrab with those
+[29:06] lows
+[29:28] okay so can see why it reacted there but
+[29:31] that wasn't really a valid point of
+[29:33] interest for
+[29:39] me okay so we've now had a rebre of that
+[29:42] structure price is approaching that
+[29:44] liquidity
+[29:46] level there we go so the liquidity level
+[29:49] was taken I'm not looking to short here
+[29:51] I'm just being mindful that we could see
+[29:53] a bigger correction at this level
+[29:56] overall my main idea is just keep buying
+[29:59] price up into these highs to be
+[30:11] honest so let's see what it wants to do
+[30:25] here right this is a valid point of
+[30:29] Interest price took out all of these
+[30:31] lows to the
+[30:34] left and is overall still
+[30:41] bullish so yeah I'm interested in what
+[30:43] price does
+[30:48] here see the lower time
+[30:52] frame again not really any structure
+[30:55] created unless price regrab s these lows
+[30:59] and then breaks this
+[31:20] high no looks like it wants to continue
+[31:22] lower
+[31:41] looks like it just wants to continue
+[31:43] straight up so we did have sweep of that
+[31:45] demand which was still valid but you
+[31:48] just had that impulsive move up with no
+[31:51] real pullbacks
+[32:09] okay so now we can see it come
+[32:13] lower have sort of reacted
+[32:16] from this demand so I'd be interested in
+[32:20] seeing what happens here more likely it
+[32:23] will sweep this demand before any buys
+[32:26] continue if this one fails then the next
+[32:29] buying region is this low if price can
+[32:33] take that
+[32:34] out but let's see how it reacts here
+[32:50] first you go you sort of had that
+[32:53] breaker structure but no nothing for
+[32:55] price to pull back into yet
+[33:07] maybe we can look at this demand
+[33:39] quite messy I'm not really seeing
+[33:41] anything clean
+[33:58] there you go so that point of Interest
+[34:01] was very
+[34:03] accurate again though Bitcoin not really
+[34:06] presenting any nice entries all it does
+[34:08] is really just consolidate quite a messy
+[34:10] consolidation and then an impulsive move
+[34:13] similar to sort of how gold moves during
+[34:16] war time or geopolitical
+[34:19] events uh but yeah let's we have just
+[34:22] finished January so let's have a look at
+[34:23] the analytics so
+[34:26] far so so far around 2/3 of the trades
+[34:30] one we had a 5.7%
+[34:34] gain pretty good going and keep in mind
+[34:37] this was only in one month we only
+[34:40] took um was it three trades or
+[34:43] two then we took three trades and two of
+[34:46] them won so for one month three trades
+[34:49] very decent and we had a 5.7% game again
+[34:52] very decent that is a good average
+[34:55] return so
+[34:58] so yeah I'm not going to go through all
+[34:59] of these because this video is already
+[35:01] quite long but if you guys did enjoy
+[35:02] this video and you want to see a part
+[35:04] two make sure to comment below and we
+[35:06] will go through a few of the other
+[35:08] months on bitcoin all the way up until
+[35:10] the present date also let me know if you
+[35:12] want to you want me to back test a
+[35:14] different pair instead and we can go
+[35:16] through that instead of Bitcoin um so
+[35:19] yeah I hope you guys found the video
+[35:20] useful make sure to like And subscribe
+[35:22] and I'll see you in the next one
