@@ -332,3 +332,76 @@ def test_prompt_boots_then_waits_for_the_order():
     assert "Pick the first task by section 5 and start" not in s
     assert "0.9 BRIDGE KNOW-HOW" in s and s.index("0.9 BRIDGE KNOW-HOW") < s.index("## 1. ROLE")
     assert "dsa.py start, paste the seed" in s                 # section 12 names the new start
+
+
+# ------------------------------------------------------------------ self-consistency (operator 2026-11-11: "check everything")
+# The prompt broke its own rules: 0b said line 2 of every block is the UTF-8 line while every example lacked it, two
+# sections gave opposite ship-frequency rules, and boot step 4 parked a JAVA_HOME-only fix. These keep it consistent.
+UTF8 = "$env:PYTHONUTF8='1'; $env:PYTHONIOENCODING='utf-8'"
+
+
+def _plain_blocks(s):
+    out = []
+    for m in re.finditer(r"```powershell\n(.*?)\n```", s, re.S):
+        lines = m.group(1).split("\n")
+        if lines[0].startswith("# AIRUN cwd="):
+            out.append(lines)
+    return out
+
+
+def test_every_plain_block_in_the_prompt_follows_its_own_9a_order():
+    blocks = _plain_blocks(text(PROMPT))
+    assert len(blocks) >= 3
+    for lines in blocks:
+        cwd = re.match(r"# AIRUN cwd=(\S+)", lines[0]).group(1)
+        body = lines[1:]
+        if body and body[0] == "$ErrorActionPreference='Stop'":
+            body = body[1:]
+        assert body[0] == UTF8, lines
+        assert body[1] == "Set-Location '%s'" % cwd, lines
+        assert not any(ln.startswith("#") for ln in lines[1:]), lines
+        assert all(len(ln) < 200 for ln in lines), lines
+
+
+def test_prompt_states_each_contested_rule_once():
+    s = " ".join(text(PROMPT).split())
+    assert s.count("10 minutes") == 1, "ship frequency must be stated once (0b rule 4)"
+    assert "once per 10 minutes" not in s
+    assert "Take work only through" not in s           # 0b defers to the section 5 queue order
+
+
+def test_prompt_boot_claims_match_the_seed():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("dsa_for_prompt", ROOT / "scripts" / "dev" / "dsa.py")
+    dsa = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(dsa)
+    seed = dsa.seed_text("HOST")
+    boot = text(PROMPT)
+    boot = boot[boot.index("## 3. BOOT PROCEDURE"):boot.index("## 4. READING LARGE FILES")]
+    assert "made the worktree, printed this file and ran `dsa.py boot`" in boot
+    for needle in ("git worktree add", "Get-Content DSA_SESSION_PROMPT.md", "python scripts/dev/dsa.py boot"):
+        assert needle in seed, needle
+    if UTF8.replace("'", "") not in seed.replace("'", "").replace(" ", "").replace(";", "; "):
+        assert "the seed's boot block, may lack line 3" in " ".join(text(PROMPT).split())
+
+
+def test_prompt_fixes_java_from_java_home_instead_of_parking_it():
+    boot = text(PROMPT)
+    boot = " ".join(boot[boot.index("## 3. BOOT PROCEDURE"):boot.index("## 4. READING LARGE FILES")].split())
+    assert r'$env:Path = "$env:JAVA_HOME\bin;" + $env:Path' in boot
+    assert r'Test-Path "$env:JAVA_HOME\bin\java.exe"' in boot
+
+
+def test_prompt_says_how_deepseek_thinking_works():
+    s = " ".join(text(PROMPT).split())
+    assert "Your thinking is NOT carried into the next turn" in s
+    assert "Keep DeepThink on" in s and "think step by step" in s     # named as scaffolding not to add
+
+
+def test_prompt_size_and_no_stale_state():
+    raw = PROMPT.read_bytes()
+    assert 20_000 <= len(raw) <= 50_000, len(raw)      # operator 2026-11-11: 25-50 KB is fine; rules first
+    s = text(PROMPT)
+    assert "Last DSA boot" not in s and "not yet recorded" not in s
+    assert raw.decode("ascii")                          # ASCII only (PowerShell 5.1 pipes)
+
