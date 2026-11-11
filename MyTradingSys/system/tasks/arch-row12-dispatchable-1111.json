@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T02:52:07Z",
   "commands": [],
   "created": "2026-11-11T00:04:04Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "meta card; row 1 landed (eea67f56e), row 2 and 4 refined ready by planner-a2-1111",
+  "pinned": false,
   "prio": 2,
+  "reason": "meta card; row 1 landed (eea67f56e), row 2 and 4 refined ready by planner-a2-1111",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "opus-audit-sonnet-health-1111"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "ARCH_REVIEW rows 1 and 2 cards (arch-row1-doc-wording-tests-1110, arch-row2-count-tests-1110) are still state raw: the PLAN_24H L2 link cannot dispatch raw cards; refine both (scope_in/out, done_when, tests) so a Supervisor can start them; row 1 doc_drift landed on trunk 21:30Z",

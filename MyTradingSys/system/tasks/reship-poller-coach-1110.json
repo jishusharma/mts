@@ -13,32 +13,46 @@
   },
   "created": "2026-11-10T13:14:18Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "git merge-base --is-ancestor <sha> origin/fast-track exits 0 for 61be0d9cc and both OI poller commits, or the card result names the failing gate line.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Check whether the OI poller tree commits and Live Aid coach commit 61be0d9cc are on trunk, then ship each missing one with sync.py ship, one at a time.",
   "id": "reship-poller-coach-1110",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T02:52:17Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "git history of origin/fast-track",
+    "tree mts-jis-nb-live-aid-oi-poller-all-venues-1110"
+  ],
+  "scope_out": [
+    "no code edit beyond merging own commits; no force-push, no rebase; no live tree"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "13:15Z note on the card"
+  ],
+  "state": "ready",
+  "steps": [
+    "git merge-base --is-ancestor <sha> origin/fast-track per commit; stop if all exit 0",
+    "Else merge the branch into a worktree branch and run sync.py ship --release <slug>",
+    "Record the sha on origin in the card result"
+  ],
+  "tests": "no new code; evidence is merge-base --is-ancestor exit 0 per sha, recorded in the result",
   "title": "Re-ship OI poller (tree mts-jis-nb-live-aid-oi-poller-all-venues-1110, 2 commits) and Live Aid coach 61be0d9cc (branch claude/jovial-easley-efb700); no ship running at 13:15Z, neither on trunk; one ship at a time",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

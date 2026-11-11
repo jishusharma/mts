@@ -4,34 +4,57 @@
   "commands": [],
   "created": "2026-11-10T21:05:17Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "research/event_sweep_squeeze_2026-11/PRE_REG.md (Context first, verdicts.py check output pasted) and RESULT.md exist; run.py count prints n per leg and writes counts.json; a test on a 3-day synthetic 1m fixture hits each leg once and fails before run.py exists; rates go to base_rates_input/event_sweep_rates.js with n and window.",
+  "est_turns": 28,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Descriptive count over all past scheduled-event days before the US open: how often the event sweeps a prior-day low (or high), then price squeezes the other way through the 13:30 to 14:30 UTC window, then takes the swept side; sizes in ATR, timing in minutes, n per leg. Counts only, no returns column, no entry rule.",
   "id": "event-sweep-squeeze-sequence-study-1111",
   "kind": "run",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect catalogue v2: verified flag, controls, analyst events, PPI fix",
+      "ref": "c686699d229c",
+      "utc": "2026-11-08T03:53:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T02:53:38Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/event_sweep_squeeze_2026-11/ (new)",
+    "MyTradingSys/research/news_effects_2026-11/calendar_cache.json (read)",
+    "MyTradingSys/research/pre_us_failed_break_10sym_2026-11/run_10sym.py (read, 1m loader pattern)",
+    "MyTradingSys/tools/live_aid/base_rates.py"
+  ],
+  "scope_out": [
+    "no returns or PnL column, no entry rule, no live tree, no new threshold (swept = prior UTC day extreme crossed; window and ATR period quoted from existing studies, labelled OURS)"
+  ],
+  "scope_sha": "c686699d229c",
+  "size": "M",
   "sources": [
     "operator 2026-11-11 chat; 2026-11-10 13:30Z to 16:00Z"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/verdicts.py check on the family words and paste the output into PRE_REG.md",
+    "Write PRE_REG.md with Context first and each parameter SOURCED or OURS",
+    "Write the failing synthetic test, then run.py count",
+    "Run on the 1m data in F:/MTS/data/tom_raw (BTCUSDT) and write RESULT.md and the base_rates_input row"
+  ],
+  "tests": "MyTradingSys/research/event_sweep_squeeze_2026-11/test_run.py (3-day synthetic fixture, hand counts 1 sweep, 1 squeeze, 1 take; fails first: no run.py)",
   "title": "Study his sequence: scheduled event before the US open sweeps a prior-day low (or high), price squeezes the other way through the open, then takes the swept side. Count over all past event days: how often each leg follows, sizes, timing. PRE_REG with Context first; rates go to base_rates_input so Live Aid can show the stage",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

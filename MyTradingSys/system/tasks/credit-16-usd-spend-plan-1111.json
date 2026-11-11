@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-11T00:04:01Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/system/API_CREDIT_SPEND_LIST.md has 5 rows, each with a card id, a prompt file path under MyTradingSys/system/api_prompts/ and the command 'python scripts/dev/api_job.py launch <slug> --card <id> --prompt-file <path> --model claude-haiku-4-5 --max-usd <cap>' (sum of caps <= 14 USD); api_job.py launch --dry-run exits 0 for each.",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Write the list of 5 Haiku jobs for the promotional API credit (about 16 USD, expires 2026-11-17): recounts of the gpt-rederive cards and diff reviews of recent live-path commits, each as a prompt file plus an api_job.py launch command with a max-usd cap.",
   "id": "credit-16-usd-spend-plan-1111",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T02:53:41Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "opus-audit-sonnet-health-1111"
+  "scope_in": [
+    "MyTradingSys/system/API_CREDIT_SPEND_LIST.md (new)",
+    "MyTradingSys/system/api_prompts/ (new)",
+    "scripts/dev/api_job.py (read)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no real launch, no spend, no live tree; read-only review prompts only; no secrets read"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
+  "sources": [
+    "opus-audit-sonnet-health-1111 (credit about 16 USD, expires 2026-11-17)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read api_job.py MODEL_NAMES and launch args",
+    "Pick 5 ready cards (gpt-rederive-*, recent ships) that need only reading and recounting",
+    "Write the prompt files and list, run each with --dry-run"
+  ],
+  "tests": "no code; each launch command runs with --dry-run and exits 0 (recorded in the result)",
   "title": "API credit (about 16 USD left, expires 2026-11-17; 0 ready cards route to api_job.py --engine api): write the spend list now: the 5 best Haiku review/recount jobs (live-path diff reviews, gpt-rederive recounts) as ready cards that api_job can run; done when 5 cards exist with commands and api_job.py plan shows them",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
