@@ -9,7 +9,7 @@ import pytest
 HERE = Path(__file__).resolve().parent
 RES = HERE.parents[1] / "research"
 REG_JS = HERE / "base_rates.js"
-IDS = {"us_open_levels", "anticipation_oi_delta", "level_approach_prior_day", "bigcandle_story", "candle_flip_cells"}
+IDS = {"us_open_levels", "anticipation_oi_delta", "level_approach_prior_day", "bigcandle_story", "setup_board_mix", "candle_flip_cells"}
 FIELDS = {"id", "event", "condition", "outcome", "horizon", "n", "units", "window", "regime_mix", "fee_status", "source", "built_utc", "table"}
 
 
