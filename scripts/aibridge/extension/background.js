@@ -44,7 +44,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       .then(m => sendResponse({ loaded: loaded, disk: m.version }), () => sendResponse({ loaded: loaded, disk: null }));
     return true;
   }
-  if (msg && msg.type === 'reload') { sendResponse({ ok: true }); setTimeout(() => chrome.runtime.reload(), 200); return; }
+  // 0.7.37: a reload restarts every tab's content script, so an idle tab's self-update dropped hands-free in the armed tab
+  // (2026-11-11 05:2xZ). Refuse while any tab of this profile is armed (registry beat within 90 s); the armed tab updates when it ends.
+  if (msg && msg.type === 'reload') {
+    chrome.storage.local.get(['aibridge_armed'], r => {
+      const reg = (r && r.aibridge_armed) || {}, now = Date.now();
+      const armed = Object.keys(reg).some(k => typeof reg[k] === 'number' && now - reg[k] <= 90000);
+      sendResponse({ ok: !armed, reason: armed ? 'armed_tab' : '' });
+      if (!armed) setTimeout(() => chrome.runtime.reload(), 200);
+    });
+    return true;
+  }
   if (msg && msg.type === 'seed') {
     // 0.7.30: the "Start DSA bridge" seed. The token stays here in the worker; the page only gets the text back.
     pickMachine(msg.host).then(mc => {
