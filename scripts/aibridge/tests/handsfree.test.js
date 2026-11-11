@@ -235,6 +235,29 @@ t('stop_on_warning: a warning starts a 24 h cooldown for the profile; arming is 
   assert.strictEqual(L.cooldownLeft(undefined, 5), 0);
   assert.ok(/24 h|hours/i.test(L.cooldownText(until, 1000)));
 });
+// 0.7.35 hold instead of stop: a captcha or busy notice holds posts until it clears; only suspended/unusual keep the 24 h cooldown
+t('hold: a captcha frame holds posts, then resumes with a quiet gap when it clears by itself', () => {
+  const cap = { warn: 'captcha: frame', kind: 'captcha' }, none = { warn: '', kind: '' };
+  let st = L.holdStep(null, cap, 0);
+  assert.strictEqual(st.act, 'hold'); assert.strictEqual(st.hold.since, 0);
+  st = L.holdStep(st.hold, cap, 60000); assert.strictEqual(st.act, 'hold'); assert.strictEqual(st.hold.since, 0);
+  st = L.holdStep(st.hold, none, 90000);
+  assert.strictEqual(st.act, 'run'); assert.strictEqual(st.hold, null); assert.strictEqual(st.quietMs, L.AFTER_HOLD_QUIET_MS.captcha); assert.ok(/cleared/.test(st.text));
+});
+t('hold: a captcha that stays past the cap stops hands-free without a cooldown; a busy notice waits longer', () => {
+  const cap = { warn: 'captcha: frame', kind: 'captcha' };
+  const st = L.holdStep({ kind: 'captcha', since: 0 }, cap, L.HOLD_MS.captcha);
+  assert.strictEqual(st.act, 'stop'); assert.ok(/by hand/.test(st.text) && /no cooldown/.test(st.text));
+  assert.strictEqual(L.needsCooldown(cap), false);
+  assert.strictEqual(L.holdStep({ kind: 'busy', since: 0 }, { warn: 'busy', kind: 'busy' }, L.HOLD_MS.captcha).act, 'hold');
+});
+t('hold: suspended, unusual and logout stop at once; only suspended and unusual set the 24 h cooldown', () => {
+  ['suspended', 'unusual', 'logout'].forEach((k) => assert.strictEqual(L.holdStep(null, { warn: k, kind: k }, 0).act, 'stop'));
+  assert.strictEqual(L.needsCooldown({ kind: 'suspended' }), true);
+  assert.strictEqual(L.needsCooldown({ kind: 'unusual' }), true);
+  assert.strictEqual(L.needsCooldown({ kind: 'logout' }), false);
+  assert.strictEqual(L.holdStep(null, { warn: '', kind: '' }, 0).act, 'run');
+});
 t('stop_on_warning: the stop reason says no retry and which warning', () => {
   const m = L.warnStopText({ warn: 'suspended: Due to violation', kind: 'suspended' });
   assert.ok(/suspended/.test(m) && /no retry/i.test(m));

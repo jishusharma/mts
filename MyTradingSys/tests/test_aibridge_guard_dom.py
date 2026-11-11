@@ -57,7 +57,7 @@ def test_second_armed_tab_is_refused():
 
 @needs_browser
 def test_cooldown_blocks_arming():
-    r = run("window.store = { aibridge_cooldown_until: Date.now() + 3600000 };\n")
+    r = run("window.store = { aibridge_cooldown_v2: Date.now() + 3600000 };\n")
     assert r["dbg"]["autoRun"] is False, r
     assert "cooldown" in (r["status"] or ""), r["status"]
 
@@ -66,22 +66,19 @@ def test_cooldown_blocks_arming():
 def test_warning_page_blocks_arming_and_starts_the_cooldown():
     r = run("var d = document.createElement('div'); d.setAttribute('role', 'dialog'); d.textContent = 'Due to violation of user policies, your account has been suspended until 2026-11-11 10:22'; document.body.appendChild(d);\n")
     assert r["dbg"]["autoRun"] is False, r
-    assert "aibridge_cooldown_until" in (r["saved"] or {}), r["saved"]
+    assert "aibridge_cooldown_v2" in (r["saved"] or {}), r["saved"]
 
 
 @needs_browser
-def test_stop_on_warning_while_armed_no_retry_audit_row_and_cooldown():
+def test_captcha_while_armed_holds_without_cooldown():
+    # 0.7.35: a captcha (Cloudflare Turnstile usually clears by itself) holds posts; it does not stop hands-free or set the 24 h cooldown
     js = ("setTimeout(function () { var d = document.createElement('div'); d.setAttribute('role', 'alert'); "
-          "d.textContent = 'Verify you are human to continue'; document.body.appendChild(d); }, 2000);\n"
-          "setTimeout(function () { window.dsaReply('go', ['# AIRUN cwd=C:\\\\x\\nWrite-Output late']); }, 3000);\n")
+          "d.textContent = 'Verify you are human to continue'; document.body.appendChild(d); }, 2000);\n")
     r = run(js)
-    assert r["dbg"]["autoRun"] is False, r
-    assert any(e.startswith("WARNING captcha") for e in events(r)), events(r)
-    assert "aibridge_cooldown_until" in (r["saved"] or {}), r["saved"]
-    assert "no retry" in (r["banner"] or "").lower(), r["banner"]
-    ran = [c for c in r["calls"] if c["type"] == "airun" and not c.get("dry") and c.get("cmd")]
-    assert not ran, ran     # the block that arrived after the warning never ran
-    assert any(e.startswith("LEASE_RELEASE ") for e in events(r)), events(r)
+    assert r["dbg"]["autoRun"] is True, r
+    assert any(e.startswith("HOLD captcha") for e in events(r)), events(r)
+    assert "aibridge_cooldown_v2" not in (r["saved"] or {}), r["saved"]
+    assert not any(e.startswith("WARNING") for e in events(r)), events(r)
 
 
 @needs_browser
