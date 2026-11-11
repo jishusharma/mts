@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T20:05:48Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-tasks-usage-vs-code-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (one row per clause) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini scan of the usage text at the top of scripts/dev/tasks.py (new, tag, lint, twins, list and their flags) against the argparse definitions and test_tasks.py; up to 10 claims.",
+  "id": "gemini-doc-scan-tasks-usage-vs-code-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "desk finish: commit body carries Next: END line",
+      "ref": "7cf6fdea53bb",
+      "utc": "2026-11-09T19:47:37Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:05:50Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "scripts/dev/tasks.py (read)",
+    "scripts/dev/test_tasks.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-tasks-usage-vs-code-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "7cf6fdea53bb",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: Rows: up to 10 usage claims, each with the code line; MATCH, DIFF when code differs, NOT_IN_DATA when the command or flag does not exist",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] doc scan: tasks.py usage block vs its commands",
+  "weight": "ROUTINE",
+  "worker": ""
+}
