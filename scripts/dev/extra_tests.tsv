@@ -147,6 +147,7 @@ scripts/dev/test_refresh_main_checkout.py
 MyTradingSys/tools/live_aid/test_live_aid.py
 MyTradingSys/tools/live_aid/test_build_analyst_data.py
 MyTradingSys/tools/live_aid/test_oi_money.py
+MyTradingSys/tools/live_aid/test_setup_board.py
 MyTradingSys/tools/live_aid/test_base_rates.py
 MyTradingSys/tools/live_aid/test_live_aid_replay.py
 MyTradingSys/tools/live_aid/test_live_aid_map.py
