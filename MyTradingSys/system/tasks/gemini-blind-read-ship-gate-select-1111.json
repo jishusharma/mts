@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
-      "ref": "8b71721d87ad",
-      "utc": "2026-11-10T21:33:05Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/arch-row3-1110",
+      "ref": "bef9f1e75083",
+      "utc": "2026-11-11T04:18:11Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T02:48:40Z",
+  "refreshed": "2026-11-11T06:37:44Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -39,7 +39,7 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "8b71721d87ad",
+  "scope_sha": "bef9f1e75083",
   "size": "S",
   "sources": [
     "CLAUDE.md Gates"
