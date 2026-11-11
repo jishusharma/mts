@@ -255,6 +255,7 @@ MyTradingSys/research/tom_fabio_course_correction_2026-11-07/runtime/
 MyTradingSys/runtime/live_aid_toasts.jsonl
 MyTradingSys/runtime/live_aid_toasts.js
 MyTradingSys/runtime/level_touch_state.json
+*.private.jsonl
 
 # Live Aid OI poller snapshot (runtime data, never committed)
 runtime_data/live_aid/
