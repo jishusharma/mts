@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T06:41:33Z",
   "commands": [],
   "created": "2026-11-11T02:48:37Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MATCH: 3, DIFF: 0, NOT_IN_DATA: 3 (MyTradingSys/research/layer_lab/reports/2026-11-11_gemi",
+      "ref": "85e15f08a",
+      "utc": "2026-11-11T06:41:33Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/arch-row3-1110",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a2-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T06:37:44Z",
   "refs": [],
-  "result": "",
+  "result": "MATCH: 3, DIFF: 0, NOT_IN_DATA: 3 (MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ship-gate.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/sync.py (needs_gate, run_gate) and CLAUDE.md Gates section (read)",
     "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ship-gate.md (new)"
@@ -44,12 +57,13 @@
   "sources": [
     "CLAUDE.md Gates"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "Read needs_gate and run_gate, list each Gates clause, mark MATCH/DIFF/NOT_IN_DATA with file:line",
     "Write the table with counts on line 1 and quote file:line for each row"
   ],
+  "taken": "2026-11-11T06:41:33Z",
   "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of sync.py run_gate/needs_gate vs CLAUDE.md Gates",
   "weight": "ROUTINE",
