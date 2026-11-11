@@ -23,7 +23,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T14:22:14Z",
+  "refreshed": "2026-11-11T14:23:30Z",
   "refs": [],
   "result": "",
   "result_receipt": {},
@@ -35,7 +35,7 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
   ],
-  "scope_sha": "6de670166181",
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"

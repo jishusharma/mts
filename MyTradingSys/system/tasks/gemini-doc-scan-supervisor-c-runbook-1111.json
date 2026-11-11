@@ -14,7 +14,22 @@
   "id": "gemini-doc-scan-supervisor-c-runbook-1111",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Supervisor C 24 h runbook for the Sonnet model switch",
+      "ref": "577bf052c7fa",
+      "utc": "2026-11-11T14:18:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "577bf052c7fa Supervisor C 24 h runbook for the Sonnet model switch",
+      "ref": "MyTradingSys/system/handover/SUPERVISOR_C_RUNBOOK_2026-11-11.md",
+      "utc": "2026-11-11T14:18:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T14:22:14Z",
+  "refreshed": "2026-11-11T14:23:28Z",
   "refs": [],
   "result": "",
   "result_receipt": {},
@@ -36,7 +51,7 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
   ],
-  "scope_sha": "6de670166181",
+  "scope_sha": "577bf052c7fa",
   "size": "S",
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"

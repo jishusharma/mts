@@ -14,7 +14,22 @@
   "id": "gemini-doc-scan-dsa-prompt-vs-dsa-py-1111",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "DSA prompt rewrite: settle 5 contradictions, fix Java from JAVA_HOME, DeepSeek thinking ru",
+      "ref": "47b513a29faa",
+      "utc": "2026-11-11T14:13:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "47b513a29faa DSA prompt rewrite: settle 5 contradictions, fix Java from JAVA_HOME, DeepSee",
+      "ref": "DSA_SESSION_PROMPT.md",
+      "utc": "2026-11-11T14:13:02Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T14:22:14Z",
+  "refreshed": "2026-11-11T14:23:27Z",
   "refs": [],
   "result": "",
   "result_receipt": {},
@@ -36,7 +51,7 @@
   "scope_out": [
     "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
   ],
-  "scope_sha": "6de670166181",
+  "scope_sha": "47b513a29faa",
   "size": "S",
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (C queue empty 30 min)"
