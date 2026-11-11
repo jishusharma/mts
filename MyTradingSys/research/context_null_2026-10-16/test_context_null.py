@@ -3,6 +3,7 @@
 Every test has a deliberately broken counterpart that the same check must reject; expected numbers come from the plant
 arithmetic written in each test, never from the code under test.
 """
+import functools
 import sys
 from pathlib import Path
 
@@ -114,9 +115,15 @@ def check_trigger_recovered(res):
     assert abs(res["trigger_effect"] - X_PCT) < 2 * res["trigger_se"], (res["trigger_effect"], res["trigger_se"])
 
 
-def test_trigger_effect_recovered():
+@functools.lru_cache(maxsize=None)
+def _trigger_run():
+    """One real run on the trigger fixture, shared by the two tests that read it (run() does not mutate its inputs)."""
     C, ev, cfg = trigger_fixture()
-    res = CN.run(C, ev, h=H, d=D, cfg=cfg)
+    return C, ev, cfg, CN.run(C, ev, h=H, d=D, cfg=cfg)
+
+
+def test_trigger_effect_recovered():
+    C, ev, cfg, res = _trigger_run()
     print(CN.format_report(res))
     check_trigger_recovered(res)
     assert abs(res["context_effect"]) < 3 * res["context_se"] + 1e-9      # no planted context -> none reported
@@ -186,6 +193,17 @@ def test_lookahead_vol_detected_by_truncation_check():
 
 
 # ---------------------------------------------------------------- extras
+def test_terciles_equal_np_quantile_bitwise():
+    """vol_bucket's fast tercile cut points must equal np.quantile exactly (ties and tiny windows included)."""
+    r = np.random.default_rng(0)
+    for i in range(600):
+        w = r.normal(0, 1, int(r.integers(2, 400)))
+        if i % 3 == 0:
+            w = np.round(w, 1)
+        want = np.quantile(w, [1.0 / 3.0, 2.0 / 3.0])
+        assert CN._terciles(w) == (want[0], want[1])
+
+
 def test_trend_tag_is_tom_bt_causal_tag():
     """ret30 here equals tom_bt.regime_features' ret30 and the tag comes from tom_bt.trend_tag."""
     rng = np.random.default_rng(9)
@@ -241,8 +259,7 @@ def test_early_events_unmatched_and_dev_guard():
 
 def test_controls_avoid_event_windows():
     """No chosen control may sit inside any event window: plant a huge move in event windows, controls must not see it."""
-    C, ev, cfg = trigger_fixture()
-    res = CN.run(C, ev, h=H, d=D, cfg=cfg)
+    C, ev, cfg, res = _trigger_run()
     assert abs(res["control_mean"]) < 0.01, res["control_mean"]        # event windows carry +0.1 %; controls ~ 0
 
 

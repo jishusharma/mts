@@ -105,8 +105,25 @@ def vol_bucket(rv, t, cut_win):
     w = w[~np.isnan(w)]
     if len(w) < cut_win // 2 or np.isnan(rv[t]):
         return None
-    c1, c2 = np.quantile(w, [1.0 / 3.0, 2.0 / 3.0])
+    c1, c2 = _terciles(w)
     return int(rv[t] > c1) + int(rv[t] > c2)
+
+
+def _terciles(w):
+    """== np.quantile(w, [1/3, 2/3]) (linear method, numpy's own lerp formula) with one 4-point partition instead of
+    np.quantile's per-call overhead; this runs once per candidate control bar, so it dominates run()."""
+    n = len(w)
+    v = (n - 1) * np.array([1.0 / 3.0, 2.0 / 3.0])
+    lo = np.floor(v).astype(int)
+    hi = np.minimum(lo + 1, n - 1)
+    p = np.partition(w, np.unique(np.concatenate([lo, hi])))
+    a, b = p[lo], p[hi]
+    g = v - lo
+    diff = b - a
+    out = a + diff * g
+    flip = g >= 0.5
+    out[flip] = (b - diff * (1 - g))[flip]
+    return out[0], out[1]
 
 
 def ret_trailing(C, t, n_back):

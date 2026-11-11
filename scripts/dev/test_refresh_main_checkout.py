@@ -1,4 +1,5 @@
 """refresh_main_checkout.py: temp repos only (never the real checkout)."""
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -23,26 +24,45 @@ def commit(repo, name, text=None):
     g(repo, "commit", "-q", "-m", name)
 
 
+def _build_template(base):
+    """origin + clone + up exactly as the old per-test setUp made them (built once, copied per test)."""
+    origin, clone, up = base / "origin.git", base / "clone", base / "up"
+    g(base, "init", "-q", "--bare", str(origin))
+    g(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
+    g(base, "clone", "-q", str(origin), str(clone))
+    g(clone, "checkout", "-q", "-B", "fast-track")
+    # the script under test runs bare `git merge`/`git stash` (no -c identity): give the clone its own
+    # identity so the test does not depend on a global user.name/email (absent on some hosts).
+    g(clone, "config", "user.name", "t")
+    g(clone, "config", "user.email", "t@t")
+    g(clone, "config", "commit.gpgsign", "false")
+    commit(clone, "a.txt")
+    g(clone, "push", "-q", "origin", "fast-track")
+    g(base, "clone", "-q", str(origin), str(up))
+    for n in ("b.txt", "c.txt"):
+        commit(up, n)
+    g(up, "push", "-q", "origin", "fast-track")
+
+
+_TPL = tempfile.TemporaryDirectory()
+
+
+def setUpModule():
+    _build_template(Path(_TPL.name))
+
+
+def tearDownModule():
+    _TPL.cleanup()
+
+
 class T(unittest.TestCase):
     def setUp(self):
         self.td = tempfile.TemporaryDirectory()
         base = Path(self.td.name)
+        shutil.copytree(_TPL.name, base, dirs_exist_ok=True)
         self.origin, self.clone, self.up = base / "origin.git", base / "clone", base / "up"
-        g(base, "init", "-q", "--bare", str(self.origin))
-        g(self.origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")  # git < 2.28 has no init -b
-        g(base, "clone", "-q", str(self.origin), str(self.clone))
-        g(self.clone, "checkout", "-q", "-B", "fast-track")
-        # the script under test runs bare `git merge`/`git stash` (no -c identity): give the clone its own
-        # identity so the test does not depend on a global user.name/email (absent on some hosts).
-        g(self.clone, "config", "user.name", "t")
-        g(self.clone, "config", "user.email", "t@t")
-        g(self.clone, "config", "commit.gpgsign", "false")
-        commit(self.clone, "a.txt")
-        g(self.clone, "push", "-q", "origin", "fast-track")
-        g(base, "clone", "-q", str(self.origin), str(self.up))
-        for n in ("b.txt", "c.txt"):
-            commit(self.up, n)
-        g(self.up, "push", "-q", "origin", "fast-track")
+        for w in (self.clone, self.up):          # the copies still point at the template's origin
+            g(w, "remote", "set-url", "origin", str(self.origin))
         self.out = []
 
     def tearDown(self):
