@@ -50,7 +50,11 @@
   // ---------- flash (state kept on root so it survives redraws) ----------
   var FL = { seen: {}, list: [] };
   function flashes(ctx, md) {
-    var now = ctx.now, add = function (k, kind, cls, text) { if (FL.seen[k]) return; FL.seen[k] = now; FL.list.push({ k: k, kind: kind, cls: cls, text: text, t: now }); };
+    var now = ctx.now, add = function (k, kind, cls, text, lvl) {
+      if (FL.seen[k]) return; FL.seen[k] = now; FL.list.push({ k: k, kind: kind, cls: cls, text: text, t: now });
+      // flag log (card live-aid-flag-log-1111): one row per banner flashed, handed to the page, which keeps it in localStorage
+      if (typeof ctx.onFlag === 'function') { try { ctx.onFlag({ t: now, kind: kind, side: cls === 'up' ? 'UP' : cls === 'down' ? 'DOWN' : 'NEUTRAL', level: lvl || '', evidence: text, price: md.px > 0 ? md.px : '' }); } catch (e) { /* logging must never break the banner */ } }
+    };
     (ctx.news || []).forEach(function (x) {
       if (x.score >= NEWS_HI && now - x.t <= NEWS_FRESH) add('n' + x.id, 'news', x.tag === 'POSITIVE' ? 'up' : x.tag === 'NEGATIVE' ? 'down' : 'amber', 'NEWS ' + x.score.toFixed(0) + '/10: ' + x.head);
     });
@@ -61,7 +65,7 @@
     if (l.m1 && l.m1.long + l.m1.short >= BURST_1M) add('b' + Math.floor(now / 60000), 'liq', l.m1.long >= l.m1.short ? 'down' : 'up', 'LIQUIDATION BURST: ' + usd(l.m1.long + l.m1.short) + ' in 1 min, mostly ' + (l.m1.long >= l.m1.short ? 'longs' : 'shorts'));
     // IDEA / SETUP banners and the both-sides line are gone (card live-aid-board-render-1111): the two-sided board card shows both sides at once.
     if (md.px > 0) md.zones.forEach(function (z) {
-      if (Math.abs(md.px / z.price - 1) <= TOUCH) add('t' + Math.round(z.price) + Math.floor(now / 900000), 'touch', 'amber', 'TOUCHING ' + z.name + ' ' + n0(z.price));
+      if (Math.abs(md.px / z.price - 1) <= TOUCH) add('t' + Math.round(z.price) + Math.floor(now / 900000), 'touch', 'amber', 'TOUCHING ' + z.name + ' ' + n0(z.price), z.name + ' ' + z.price);
     });
     FL.list = FL.list.filter(function (f) { return now - f.t <= FLASH_MS[f.kind]; });
     var shown = FL.list;
@@ -439,6 +443,13 @@
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
-  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _boardCard: boardCard };
+  // Flag log helpers (pure, tested in node): append with cap, and CSV for the Download button.
+  var FLAG_COLS = ['t', 'kind', 'side', 'level', 'evidence', 'price'];
+  function flagLogAdd(log, row, cap) { var out = (log || []).concat([row]); return out.length > cap ? out.slice(out.length - cap) : out; }
+  function flagCsv(log) {
+    var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
+  }
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

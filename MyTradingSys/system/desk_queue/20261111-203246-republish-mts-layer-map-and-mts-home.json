@@ -1,0 +1,10 @@
+{
+  "done_when": "artifacts.py publish-record --slug mts_layer_map and --slug mts_home run and the stale warning clears on the next ship",
+  "from": "JIS-NB",
+  "id": "20261111-203246-republish-mts-layer-map-and-mts-home",
+  "need": "ship be8b2c95 flagged both pages stale (repo build differs from last publish); DSA cannot publish",
+  "posted": "2026-11-11T20:32:46Z",
+  "status": "pending",
+  "target": "CLAUDE",
+  "title": "republish mts_layer_map and mts_home"
+}
