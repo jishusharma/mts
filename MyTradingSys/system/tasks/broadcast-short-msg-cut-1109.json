@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "signal-hook-every-session-1109: signals reach sessions outside a clone",
-      "ref": "f56d163dc0f2",
-      "utc": "2026-11-09T14:16:32Z"
+      "line": "Result: ask loud for one owner session per machine; PAGES STALE once per session id (tests",
+      "ref": "6de670166181",
+      "utc": "2026-11-11T07:18:34Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T19:34:04Z",
+  "refreshed": "2026-11-11T08:55:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
     "hook wiring",
     "live tree"
   ],
-  "scope_sha": "f56d163dc0f2",
+  "scope_sha": "6de670166181",
   "size": "S",
   "sources": [
     "Lead C 11-09: 40-char broadcasts reported 'Cut to 200 (29 lost)' and A received literal [cut] with no card id (b-8065e4, b-02f9c3)"

@@ -1008,5 +1008,22 @@ for _n in dir(SignalTest):      # reuse SignalTest's fixture only: its own tests
         setattr(HubLockTest, _n, None)
 
 
+class SenderNoteCutTest(unittest.TestCase):
+    def test_redaction_is_not_a_length_cut(self):
+        n = S.sender_note("x " + "a1" * 20 + " y")
+        self.assertNotIn("Cut to", n)
+        self.assertIn("a token-like string was redacted", n)
+
+    def test_long_text_still_says_cut(self):
+        n = S.sender_note("w " * 150)
+        self.assertIn("Cut to %d characters" % S.TEXT_MAX, n)
+        self.assertNotIn("redacted", n)
+
+    def test_plain_short_text_has_neither(self):
+        n = S.sender_note("hello there")
+        self.assertNotIn("Cut to", n)
+        self.assertNotIn("redacted", n)
+
+
 if __name__ == "__main__":
     unittest.main()

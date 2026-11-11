@@ -595,12 +595,15 @@ def auto_send_text(payload):
 def sender_note(text):
     """What the sending session is told: a broadcast is pull-only (operator 2026-10-22: "nothing was flashing, it did not
     work"). Other sessions see it only when they next take a turn; the sender wakes the ones it can reach."""
-    cut = len(" ".join(str(text).split())) - len(clean(text))
+    full = clean(text, limit=10 ** 9)           # redaction applied, no length limit: a [cut] swap is not a truncation
+    cut = max(0, len(full) - TEXT_MAX)
     lines = ["[MTS BROADCAST SENT] Other sessions see it only on their next turn: nothing wakes an idle session or flashes.",
              "Now: list this login's running sessions (mcp__ccd_session_mgmt__list_sessions) and send_message each one the",
              "text; tell the operator which machines/logins have no session you reached (he prompts one there)."]
     if cut > 0:
         lines.append("Cut to %d characters (%d lost): put the full text in that message." % (TEXT_MAX, cut))
+    if "[cut]" in full[:TEXT_MAX]:
+        lines.append("Note: a token-like string was redacted ([cut]): put it in the message to the session yourself.")
     return "\n".join(lines)
 
 
