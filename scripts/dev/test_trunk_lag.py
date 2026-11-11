@@ -246,6 +246,14 @@ class PagesStaleLine(unittest.TestCase):
             self.assertEqual(T.pages_line(repo, now=1100.0, login="A", spawn=lambda *a: None), "")
             self.assertEqual(T.pages_line(repo, now=1100.0, login="", spawn=lambda *a: None), "")
 
+    def test_line_prints_once_per_session_id(self):
+        with tempfile.TemporaryDirectory() as d:
+            repo = self._repo(d)
+            kw = dict(now=1100.0, login="C", spawn=lambda *a: None)
+            self.assertTrue(T.pages_line(repo, sid="s1", **kw).startswith("PAGES STALE"))
+            self.assertEqual(T.pages_line(repo, sid="s1", **kw), "")
+            self.assertTrue(T.pages_line(repo, sid="s2", **kw).startswith("PAGES STALE"))
+
     def test_old_cache_is_refreshed_in_the_background_and_empty_is_silent(self):
         with tempfile.TemporaryDirectory() as d:
             repo = self._repo(d, slugs=())

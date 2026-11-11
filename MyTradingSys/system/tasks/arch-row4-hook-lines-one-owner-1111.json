@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T07:18:33Z",
+    "misses": 6,
+    "reads": [
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/trunk_lag.py",
+      "MyTradingSys/system/OPS_CHANGE_CHECK.md"
+    ],
+    "session": "agent-aa6c5d89a456cf137"
+  },
   "created": "2026-11-11T00:03:59Z",
   "depends_on": [],
   "done_when": "A test makes two sessions on one machine see the same ask: it shows in the first prompt-hook output and not the second; pages_line prints once per session id; both tests fail on the pre-change code; test_mts_signal.py and test_trunk_lag.py pass.",

@@ -914,8 +914,24 @@ def ask_rows(rows, at=None):
              "esc": ",".join(escalated_to(rows, a["id"])), "text": a.get("text", "")} for a in asks_open(rows)]
 
 
-def ask_block(rows, ev, at=None):
-    """For the target: an unseen ask is loud on every prompt; a told one only at SessionStart or once overdue."""
+def ask_owner_ok(qid, sid):
+    """True when this session owns the ask on this machine (the first session that saw it claims it); an overdue ask is
+    loud for all. Unreadable owner state fails closed: print the ask."""
+    try:
+        f = state_dir() / ("ask-owner-%s.txt" % "".join(c for c in str(qid) if c.isalnum() or c in "-_")[:60])
+        f.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with open(f, "x", encoding="utf-8") as fh:
+                fh.write(str(sid))
+            return True
+        except FileExistsError:
+            return f.read_text(encoding="utf-8").strip() == str(sid)
+    except Exception:
+        return True
+
+
+def ask_block(rows, ev, at=None, sid=None):
+    """For the target: an unseen ask is loud on every prompt of ONE owner session per machine; a told one only at SessionStart or once overdue."""
     at = at or now()
     if is_worker_env():
         return ""
@@ -925,6 +941,8 @@ def ask_block(rows, ev, at=None):
             continue
         st, late = ask_state(rows, a["id"]), at > ask_due(a)
         if st == "told" and not late and ev != "SessionStart":
+            continue
+        if sid and not late and not ask_owner_ok(a["id"], sid):
             continue
         tag = "OVERDUE %d min" % ((at - ask_due(a)).total_seconds() // 60) if late else "answer by %s" % ask_due(a).strftime("%H%MZ")
         out.append("[MTS ASK %s %s from %s at %s %s %s %s] %s" % (DOT, a["id"], a.get("from", "?"), a["t"][9:13] + "Z", DOT, st, tag, a.get("text", "")))
@@ -1065,7 +1083,7 @@ def _handle_rows(payload, sid, ev, auto):
     out = []
     if ev in ("UserPromptSubmit", "SessionStart"):
         out.append(action_block(rows, ev))
-        out.append(ask_block(rows, ev))
+        out.append(ask_block(rows, ev, sid=sid))
         try:
             escalate(rows)
         except Exception:

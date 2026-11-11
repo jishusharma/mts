@@ -767,6 +767,18 @@ class AskTest(unittest.TestCase):
         self.machine("other", "x")
         self.assertEqual(S.ask_block(S.load(S.ensure()), "UserPromptSubmit"), "")   # not addressed to this host
 
+    def test_ask_is_loud_for_one_session_per_machine(self):
+        qid = self.ask()["id"]
+        self.machine("jis-nb", "pro")
+        first = S.handle(self.payload("UserPromptSubmit", sid="s1"))
+        self.assertIn(qid, first)
+        self.assertNotIn(qid, S.handle(self.payload("UserPromptSubmit", sid="s2")))     # second session: not the owner
+        self.assertIn(qid, S.handle(self.payload("UserPromptSubmit", sid="s1")))        # the owner hears it every prompt
+        for f in S.state_dir().glob("ask-owner-*"):                                     # unreadable owner state: fail closed, print it
+            f.unlink()
+            f.mkdir()
+        self.assertIn(qid, S.handle(self.payload("UserPromptSubmit", sid="s2")))
+
     def test_reask_inside_min_wait_refused_after_it_allowed(self):
         a = self.ask()
         self.assertEqual(S.new_ask("Resend  the budget file", to="jis-nb")[0], a["id"])     # same text, collapsed
