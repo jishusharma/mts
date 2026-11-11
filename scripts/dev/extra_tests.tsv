@@ -271,3 +271,4 @@ scripts/dev/test_buy_crypto.py
 scripts/dev/test_old_shell_health.py
 MyTradingSys/tools/live_aid/test_oi_poller.py
 scripts/dev/test_live_aid_learn.py
+scripts/dev/test_pytest_test_limit.py

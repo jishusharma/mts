@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T18:26:51Z",
   "commands": [],
   "created": "2026-11-11T18:06:21Z",
   "depends_on": [],
@@ -16,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MATCH=9 DIFF=1 NOT_IN_DATA=0 across 10 claims",
+      "ref": "dad41d0c5",
+      "utc": "2026-11-11T18:26:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "AIBridge 0.7.39: release the arm on pagehide, cap one result at 60000 chars, desk post/tak",
@@ -26,15 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: card complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T18:06:32Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MATCH=9 DIFF=1 NOT_IN_DATA=0 across 10 claims",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/desk.py (read)",
     "scripts/dev/test_desk.py (read)",
@@ -48,7 +58,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 4a7f327b)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 10 usage claims (one per command or flag), each with the code line that implements it; MATCH, DIFF when the code differs, NOT_IN_DATA when the command or flag does not exist",
