@@ -33,7 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Changes the gate (Gates outrank orders): the diff-only review Agent is mandatory before ship. Build after ship-gate-per-test-timeout-1111 is merged (built, in review).",
+  "note": "Changes the gate (Gates outrank orders): the diff-only review Agent is mandatory before ship. Build after ship-gate-per-test-timeout-1111 is merged (built, in review). LESSON 11-11: research scripts can pass the local ship and fail CI-only tests (MyTradingSys/backtest/test_no_own_costs.py, own fee constant); a revert ship was refused twice (Next card deleted by the revert; CI RED needs --fix-ci).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
