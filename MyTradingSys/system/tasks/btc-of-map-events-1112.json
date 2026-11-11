@@ -4,11 +4,11 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T22:07:46Z",
-    "misses": 7,
+    "folded": "2026-11-11T22:08:30Z",
+    "misses": 9,
     "reads": [
-      "scripts/dev/verdicts.py",
       "MyTradingSys/research/VERDICTS.csv",
+      "scripts/dev/verdicts.py",
       "MyTradingSys/research/btc_orderflow_map_1112/EVENTS.md"
     ],
     "session": "agent-a105a1632c097ae4e"
