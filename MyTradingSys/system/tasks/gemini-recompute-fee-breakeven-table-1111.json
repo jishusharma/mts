@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T15:54:38Z",
   "commands": [],
   "created": "2026-11-11T15:46:22Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-fee-breakeven-table-11",
+      "ref": "0a3860a94",
+      "utc": "2026-11-11T15:54:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,15 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: task complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T15:46:43Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-fee-breakeven-table-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/four_model_review_2026-11-11/COMPARE.md (s4; read)",
     "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md (a; read)",
@@ -56,7 +66,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 11 clauses: the 5 market-order cells and 5 limit-order cells (each recomputed, rounded to a whole percent, same in both documents), plus (11) fees.py says taker 0.0005 per side = 10 bp round trip; state the BTC price at which 10 bp = 70 USD",
