@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T09:01:09Z",
   "commands": [
     "python scripts/dev/test_mts_signal.py"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "sender_note: Cut to 200 only on real truncation, redaction line separate; 3 new tests (fir",
+      "ref": "71d5cbd54",
+      "utc": "2026-11-11T09:01:09Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: ask loud for one owner session per machine; PAGES STALE once per session id (tests",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "Planner 2026-11-10: the [cut]-on-card-id half shipped in 4a9a5c29a (slug exemption); only the false 'Cut to 200' sender note remains. ROUTINE: no stamp needed.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T08:55:49Z",
   "refs": [],
-  "result": "",
+  "result": "sender_note: Cut to 200 only on real truncation, redaction line separate; 3 new tests (first red on old code)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/test_mts_signal.py"
@@ -48,13 +61,14 @@
   "sources": [
     "Lead C 11-09: 40-char broadcasts reported 'Cut to 200 (29 lost)' and A received literal [cut] with no card id (b-8065e4, b-02f9c3)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce: sender_note('x '+'a1'*20+' y') returns 'Cut to 200 (N lost)' because cut = normalised len - len(clean) counts the [cut] swap (mts_signal.py:521)",
     "Write the failing test first",
     "Count truncation as max(0, len(normalised)-TEXT_MAX); if clean() output contains '[cut]' add a redaction line",
     "Run python scripts/dev/test_mts_signal.py"
   ],
+  "taken": "2026-11-11T09:01:09Z",
   "tests": "scripts/dev/test_mts_signal.py: new case on sender_note, 40-char text with a hex key (fails on current code)",
   "title": "mts_signal broadcast cuts short messages and drops the body",
   "weight": "ROUTINE",

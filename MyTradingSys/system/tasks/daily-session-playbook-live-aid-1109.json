@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T09:01:10Z",
   "commands": [
     "python -m pytest -q MyTradingSys/tools/live_aid/test_daily_playbook.py"
   ],
@@ -21,6 +22,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already in tree (364f5e945): daily_playbook.py, Playbook/Map tab, build_artifact --playboo",
+      "ref": "71d5cbd54",
+      "utc": "2026-11-11T09:01:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Live Aid setup board rates generated on JIS-NUC (node replay, 28 days)",
@@ -31,6 +38,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "MyTradingSys/tools/live_aid/test_daily_playbook.py",
+  "next": "END: already shipped, closed with evidence",
   "note": "Display only, no trade gate, no live tree change (deploy later per DEPLOY_RUNBOOK). Scenarios are context with counts, never signals. Design per the dense-symbols artifact memo: one bold line, tables, short cells. Binance REST is DNS-blocked on JIS-NB until the DoH fix lands: use data-api.binance.vision or archives.",
   "prio": 1,
   "refine_tries": 0,
@@ -42,7 +50,12 @@
     "MyTradingSys/tools/live_aid/REQUIREMENTS.md",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py"
   ],
-  "result": "",
+  "result": "Already in tree (364f5e945): daily_playbook.py, Playbook/Map tab, build_artifact --playbook; test_daily_playbook.py 29 pass 5 skip (node)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/",
     "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py"
@@ -52,13 +65,14 @@
   "sources": [
     "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
   ],
-  "state": "ready",
+  "state": "done",
   "status": "ready",
   "steps": [
     "write test_daily_playbook.py with fixture bars; run it red",
     "build daily_playbook.py on monday_clocks.py logic; ledger rows per scenario",
     "add the Live Aid Playbook tab and artifact page; run tests --quick; ship"
   ],
+  "taken": "2026-11-11T09:01:10Z",
   "tests": "MyTradingSys/tools/live_aid/test_daily_playbook.py fails on pre-change code",
   "title": "Daily session playbook (Asia, Europe, US) on Live Aid and on the operator's screen, rebuilt every day",
   "weight": "",
