@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-11T18:14:21Z",
+  "commands": [],
+  "created": "2026-11-11T18:06:21Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-dispatch-gate-docstring-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 6) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of dispatch_gate.py: NOOP costs nothing, KICK launches one headless relay session with the tick output as prompt, REFINE_NEEDED launches a session, exit codes 0/1/2, one log line per run, test hooks.",
+  "id": "gemini-blind-read-dispatch-gate-docstring-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-dispatch-gate-docstri",
+      "ref": "ea304b7c5",
+      "utc": "2026-11-11T18:14:21Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "no-window flag on 35 unattended subprocess calls outside scripts/dev (q-5aeda0)",
+      "ref": "c0354cca92cf",
+      "utc": "2026-11-11T15:37:17Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T18:06:29Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-dispatch-gate-docstring-1111.md: MATCH=6 DIFF=0 NOT_IN_DATA=0 (sum 6)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/sched/dispatch_gate.py (read)",
+    "MyTradingSys/tests/test_dispatch_gate.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-dispatch-gate-docstring-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "c0354cca92cf",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 4a7f327b)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 6 clauses from the docstring: (1) TICK NOOP launches nothing, (2) TICK KICK launches ONE headless relay session with the tick output on stdin, (3) REFINE_NEEDED launches a session, (4) exit 1 on an unparsable tick, (5) exit 2 when the launcher binary is missing, (6) one log line per run in ~/.claude/mts-dispatch-gate.log",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] blind read of scripts/sched/dispatch_gate.py against its docstring",
+  "weight": "ROUTINE",
+  "worker": ""
+}
