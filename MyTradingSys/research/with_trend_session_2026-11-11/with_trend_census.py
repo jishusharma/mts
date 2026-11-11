@@ -206,7 +206,7 @@ def main(cache, out_dir=HERE):
     events, skipped = run(b15, ladder, start, end)
     json.dump([{k: v for k, v in e.items() if k != "ctrl"} for e in events], open(Path(out_dir) / "result_a.json", "w"))
     mix = csl.regime_mix(ladder, start, end)
-    text = (f"# Shape A result (PRE_REG.md)\n\nWindow {start}..{end}, 15m bars {len(b15)}. "
+    text = (f"# Shape A result (PRE_REG.md)\n\nWindow {start}..{end}, 15m bars {len(b15)}.\n\n"
             f"Regime mix: window days by D SMA20 +-2 % (OURS), {mix}\n\n" + report(events, skipped))
     (Path(out_dir) / "RESULT_A.md").write_text(text, encoding="utf-8")
     print(text)
