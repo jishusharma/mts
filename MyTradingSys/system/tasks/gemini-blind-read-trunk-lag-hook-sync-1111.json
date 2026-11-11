@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T13:19:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-trunk-lag-hook-sync-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 4) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of sync_hook_files, release_synced, main_checkout and catch_up in scripts/dev/trunk_lag.py: the main checkout gets the hook files from trunk, never overwrites a file the operator or another session has dirty, and the sync record is released only when bytes match HEAD.",
+  "id": "gemini-blind-read-trunk-lag-hook-sync-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: ask loud for one owner session per machine; PAGES STALE once per session id (tests",
+      "ref": "6de670166181",
+      "utc": "2026-11-11T07:18:34Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T13:19:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/trunk_lag.py (_hook_state, _ours, sync_hook_files, release_synced, main_checkout, catch_up; read)",
+    "scripts/dev/test_trunk_lag.py (read, if present)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-trunk-lag-hook-sync-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "6de670166181",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-feed-lanes-1111"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 4 clauses: (1) a dirty hook file not written by the sync is left alone, (2) a file the sync wrote is refreshed when trunk changes, (3) release_synced drops a record only when the working bytes equal HEAD, (4) git failure or timeout leaves the tree unchanged",
+    "Mark each MATCH/DIFF/NOT_IN_DATA (or CONSISTENT/CONTRADICTION) with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "tests": "",
+  "title": "[GEMINI] blind read of trunk_lag.py sync_hook_files / release_synced / catch_up",
+  "weight": "ROUTINE",
+  "worker": ""
+}
