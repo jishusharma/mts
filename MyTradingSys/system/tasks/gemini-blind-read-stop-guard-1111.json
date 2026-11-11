@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T06:23:53Z",
   "commands": [],
   "created": "2026-11-11T02:48:28Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-stop-guard.md",
+      "ref": "04b52ddc3",
+      "utc": "2026-11-11T06:23:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/opus-audit-guards",
@@ -25,13 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: task finished on throwaway worktree",
   "note": "REVIEWED:2026-11-11 T0-ONLY (D11 s6 Gemini floor, planner-a2-1111). Gemini queue, load as <card>:low. Blind read: use only the files named.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T02:48:32Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-stop-guard.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/stop_guard.py (read)",
     "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-stop-guard.md (new)"
@@ -44,12 +57,13 @@
   "sources": [
     "scripts/dev/stop_guard.py docstring"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List each docstring promise, mark MATCH/DIFF/NOT_IN_DATA against the code path that implements it",
     "Write the table with counts on line 1 and quote file:line for each row"
   ],
+  "taken": "2026-11-11T06:23:53Z",
   "tests": "audit card; the report file is the test; git diff of repo files other than the report is empty",
   "title": "[GEMINI] blind read of stop_guard.py vs its docstring contract",
   "weight": "ROUTINE",
