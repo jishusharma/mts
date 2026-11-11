@@ -5,6 +5,18 @@
     "python scripts/dev/verdicts.py check \"btc order flow clock absorption forced flow\"",
     "python scripts/dev/prereg_context_lint.py MyTradingSys/research/btc_orderflow_map_1112/PREREG.md"
   ],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-11-11T20:12:03Z",
+    "misses": 32,
+    "reads": [
+      "scripts/dev/prereg_gate.py",
+      "scripts/dev/prereg_context_lint.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/backtest/fetch_binance_archive.py"
+    ],
+    "session": "agent-a387eb4d850c4aa27"
+  },
   "created": "2026-11-11T19:59:31Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/btc_orderflow_map_1112/PREREG.md has sections Context, Events, Clocks (BTC own: funding 00/08/16Z, UTC hour, weekday, Asia/EU/US sessions), Splits (DEV to 2024-06-30, VALIDATION 2024-07-01..2025-06-30, HOLDOUT sealed), Fee 0.05%/side; prereg_gate.py and prereg_context_lint.py exit 0; DATA_INVENTORY.md has one row per feed marked LOCAL, FETCHABLE or NOT_IN_DATA.",
