@@ -517,3 +517,29 @@ def test_liq_tape_catches_broken_liqsum(browser):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", *sys.argv[1:]]))
+
+
+def test_liquidation_history_survives_reload(browser):
+    """R08: a liquidation seen before a page reload is still in the Home liquidation card after it (localStorage, last 4 h), the
+    columns stay faded only from when the history began, and an event older than 4 h is dropped."""
+    ctx = browser.new_context(offline=True, viewport={"width": 1400, "height": 900})
+    page = ctx.new_page()
+    try:
+        page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + ";")
+        page.clock.set_fixed_time(datetime.datetime.fromtimestamp(NOW_MS / 1000, tz=datetime.timezone.utc))
+        url = PAGE.resolve().as_uri() + "?replay=fixture#home"
+        page.goto(url, wait_until="load", timeout=30000)
+        ev = [{"t": NOW_MS - 120_000, "venue": "BYBIT", "side": "long", "usd": 250000, "px": 77777.5},
+              {"t": NOW_MS - 5 * 3600_000, "venue": "BYBIT", "side": "short", "usd": 111000, "px": 55555.5}]
+        page.evaluate("v => localStorage.setItem('liveaid.liq.v1', v)", json.dumps({"t0": NOW_MS - 3600_000, "ev": ev}))
+        page.reload(wait_until="load")
+        page.wait_for_timeout(1300)
+        titles = page.eval_on_selector_all("#p-home .hm-lc", "cs => cs.map(c => c.title)")
+        assert titles, "no liquidation card on Home"
+        t5 = [t for t in titles if t.startswith("5m:")][0]
+        t4h = [t for t in titles if t.startswith("4h:")][0]
+        assert "longs $250" in t5 or "longs 250" in t5.replace("$", ""), t5      # the 2-minute-old long print is in the 5m window
+        assert "250" in t4h and "111" not in t4h, t4h                                # the 5 h old short print is dropped
+        assert "only since this page opened" not in t5 and "only since this page opened" in t4h, (t5, t4h)   # history began 1 h ago
+    finally:
+        ctx.close()

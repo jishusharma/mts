@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T02:52:29Z",
+    "misses": 69,
+    "reads": [
+      "MyTradingSys/tools/live_aid/test_live_aid.py",
+      "MyTradingSys/tools/live_aid/live_aid.html"
+    ],
+    "session": "agent-a4584d66623bafef9"
+  },
   "created": "2026-11-10T14:17:58Z",
   "depends_on": [],
   "done_when": "home.js renders one Bias line placed above the rail gauge; test in MyTradingSys/tools/live_aid/test_live_aid.py asserts the line text for a SHORT 5/5 gauge with LONG-lean pulse fixture and a liquidation list restored after reload; test fails on current home.js",
