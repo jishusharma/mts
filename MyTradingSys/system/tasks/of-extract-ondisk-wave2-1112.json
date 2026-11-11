@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T22:01:55Z",
   "commands": [
     "python MyTradingSys/research/extraction_ledger_2026-10/build_ledger.py"
   ],
@@ -15,6 +16,12 @@
   "id": "of-extract-ondisk-wave2-1112",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "f6c88f92: 10 extracts verified, 110 SOURCED rules",
+      "ref": "0f8e03875",
+      "utc": "2026-11-11T22:01:55Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,6 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "of-extract-fetch-1112",
   "not_twin_of": [
     "of-extract-ondisk-1112"
   ],
@@ -42,7 +50,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T20:53:45Z",
   "refs": [],
-  "result": "",
+  "result": "f6c88f92: 10 extracts verified, 110 SOURCED rules",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/orderflow_extracts_1112/extract_<id>.md (new)",
     "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES_DRAFT.md (append)"
@@ -56,12 +69,13 @@
   "sources": [
     "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read each transcript in raw_transcripts_canonical/",
     "Write extract_<id>.md: rule, verbatim quote, Source GPS third, SOURCED; index-futures clocks marked not-BTC",
     "Run verify_extract_quotes.py and build_ledger.py; fix any third the ledger marks FAIL"
   ],
+  "taken": "2026-11-11T22:01:55Z",
   "tests": "verify exit nonzero on an altered copy first; ledger PASS per id",
   "title": "Order-flow extraction wave 2: ORDERFLOW_QUEUE.md ON_DISK ranks 11-20 (Tom Vorwald EN channel titles; no network)",
   "weight": "",
