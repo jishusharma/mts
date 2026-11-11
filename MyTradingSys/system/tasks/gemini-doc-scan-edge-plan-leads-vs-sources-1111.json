@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T16:04:34Z",
   "commands": [],
   "created": "2026-11-11T15:46:22Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-leads-vs-sour",
+      "ref": "4db18ea5e",
+      "utc": "2026-11-11T16:04:34Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,8 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T15:46:45Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-edge-plan-leads-vs-sources-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md (b, c; read)",
     "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py (read)",
@@ -56,7 +66,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 4 clauses, one per lead (T06L, MLK, KS8, C30): (1) the frozen rule file named exists, (2) the rule text matches the plan row, (3) every number in the Evidence column is found in the cited file at the cited line; write one row per number",

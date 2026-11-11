@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T15:51:35Z",
   "commands": [],
   "created": "2026-11-11T15:46:22Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MATCH=6 DIFF=0 NOT_IN_DATA=0",
+      "ref": "8690b6eed",
+      "utc": "2026-11-11T15:51:35Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,15 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: task complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T15:46:58Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MATCH=6 DIFF=0 NOT_IN_DATA=0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/live_aid_learn.py (read)",
     "scripts/dev/test_live_aid_learn.py (read)",
@@ -56,7 +66,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List 6 clauses: (1) hit = r1h > 0, (2) r1h None/empty skipped, (3) test only if n >= 30 and |hit-50| >= 10, (4) else NOT-ENOUGH-EVIDENCE + reason, (5) input --log, else events.json, else tables.md, (6) writes live_aid_learning/<date>.md; check 2026-11-11.md rows",
