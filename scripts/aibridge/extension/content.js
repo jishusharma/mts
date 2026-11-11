@@ -22,6 +22,16 @@
   var lastMut = Date.now();
   var baseline = true;           // true during the first scan: existing blocks are history, never auto-run
   var ranKeys = {};              // fnv(cmd)@occurrence of blocks already run or skipped
+  // 0.7.38: a reload or F5 forgot ranKeys, and blocks the virtual list drew later were run again on the next arm
+  // (2026-11-11 05:35Z: a finished 'git worktree remove' ran twice). Keep them per chat in sessionStorage (this tab only).
+  var RAN_STORE = 'aibridge_ran:' + location.pathname, ranSaved = 0;
+  try { var rs = JSON.parse(sessionStorage.getItem(RAN_STORE) || '{}'); Object.keys(rs).forEach(function (k) { ranKeys[k] = true; }); } catch (e) {}
+  setInterval(function () {
+    var path = 'aibridge_ran:' + location.pathname, n = Object.keys(ranKeys).length;
+    if (path !== RAN_STORE) { RAN_STORE = path; ranSaved = -1; }
+    if (n === ranSaved) return;
+    try { sessionStorage.setItem(RAN_STORE, JSON.stringify(ranKeys)); ranSaved = n; } catch (e) {}
+  }, 2000);
   var pending = [];              // {block, since}
   var seen = new WeakSet();
   var working = false;
