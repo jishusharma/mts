@@ -131,6 +131,13 @@ class TestParallelLayerGate(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("no_such_module_xyz", out)
 
+    def test_empty_module_list_spawns_nothing_and_passes(self):
+        from unittest import mock
+        with mock.patch.object(rat.subprocess, "Popen", side_effect=AssertionError("spawned")):
+            self.assertEqual(rat.balance_modules([], 4), [])
+            ok, _ = rat.exec_layer_chunks([], 4)
+        self.assertTrue(ok)
+
     def test_chunk_with_only_testless_modules_passes(self):
         ok, out = rat.exec_layer_chunks(["MyTradingSys.backtest.layers.alerts.test_live_toc_tfs"], 1)
         self.assertTrue(ok, out)

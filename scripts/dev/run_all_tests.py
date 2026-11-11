@@ -416,7 +416,7 @@ def balance_modules(modules, jobs, costs=None):
     costs = LAYER_COST_S if costs is None else costs
     modules = list(modules)
     if not modules:
-        return [modules]
+        return []   # nothing to run: no process (a bare `unittest` would discover the whole repo)
     n = max(1, min(jobs, len(modules)))
     bins = [[0.0, i, []] for i in range(n)]
     for m in sorted(modules, key=lambda m: (-costs.get(m, LAYER_DEFAULT_S), m)):
