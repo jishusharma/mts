@@ -1,36 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/test_fetch_captions_timed.py",
+    "python scripts/dev/test_cbp_run.py"
+  ],
   "created": "2026-11-11T15:24:15Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "A non-CBP caller of spend() is refused once used >= 150 minus the CBP reserve (OURS: 70, two runs of ~35); a cbp_run.py run that adds 0 rows with any analyst DEFERRED calls mts_signal.new_ask; SCHEDULING_POLICY.md names Mon-Fri 05:00/20:00, Sat 05:30, Sun 16:30 UTC; 2 new tests fail on current code",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "CBP run 2026-11-11 05:00Z added 0 rows: all 7 analysts DEFERRED, the shared 150-per-24h YouTube budget was spent by other callers (ingestion.log line 1447). Reserve a share for CBP, make a 0-row DEFERRED run send a signal ask instead of a silent exit 0, and correct the CBP block of SCHEDULING_POLICY.md.",
   "id": "cbp-yt-budget-starved-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: rebuild_dashboard prints and returns non-zero fetch_board_data exit (test fails on",
+      "ref": "0846ae4a1ca6",
+      "utc": "2026-11-11T08:06:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d3570f13b657 Retire headless successor wake as handover default; claude -p ok preflight; v",
+      "ref": "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "utc": "2026-10-30T08:40:10Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECISION (OURS) Session_Planner: reserve 70 of 150 (two ~35-request runs); other callers stop at 80. Number is OURS, to be checked against the next week of ingestion.log use.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T15:31:09Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "Supervisor C 2026-11-11"
+  "scope_in": [
+    "scripts/dev/fetch_captions_timed.py (spend, budget_used, daily_budget, lines 70-72 and 359-392: add caller + CBP_RESERVE)",
+    "scripts/dev/cbp_run.py (main, fetch_new: ask when added == 0 and a fetch was DEFERRED)",
+    "scripts/dev/test_fetch_captions_timed.py",
+    "scripts/dev/test_cbp_run.py (or the existing cbp_run test file)",
+    "MyTradingSys/system/SCHEDULING_POLICY.md (CBP block lines 43-53 times; stay under its size cap)"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "No schtasks change, no install; no read of F:/CryptoScrapper data beyond ingestion.log line 1447; the 401 board step is card cbp-board-401-and-bob-timeout-1108; no live-tree edit"
+  ],
+  "scope_sha": "0846ae4a1ca6",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md 2026-11-11 15:25Z (task installed, 05:00Z run added 0)",
+    "scripts/dev/fetch_captions_timed.py:70-72 (DAILY_BUDGET_PROXY 150, one CBP run ~35 requests)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read fetch_captions_timed.py 70-72, 359-392 and cbp_run.py main; list who calls spend() (yt_vpn_fetch.py, fetch_captions.py)",
+    "Write the two fail-first tests, then add a caller argument: CBP callers use the full budget, all others stop at daily_budget() minus CBP_RESERVE (env override, label OURS)",
+    "In cbp_run.main: when added == 0 and any analyst fetch printed DEFERRED, call mts_signal.new_ask with the reason and the budget used; keep exit 0 for a normal empty window",
+    "Fix the SCHEDULING_POLICY.md CBP times from cbp_schedule.py:5,26-27; run both test files; ship"
+  ],
+  "tests": "scripts/dev/test_fetch_captions_timed.py: spend(caller='other') raises BudgetExceeded at used=80 of 150 while caller='cbp' passes; scripts/dev/test_cbp_run.py: 0 rows + DEFERRED calls the ask hook once; both fail today",
   "title": "CBP 2026-11-11 05:00Z added 0 rows: 7 analysts DEFERRED, shared 150-per-24h YouTube budget spent by other callers",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

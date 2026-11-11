@@ -6,17 +6,17 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T15:29:32Z",
-    "misses": 31,
+    "folded": "2026-11-11T15:32:03Z",
+    "misses": 46,
     "reads": [
       "scripts/dev/gate_select.py",
       "scripts/dev/test_gate_select.py",
+      "MyTradingSys/system/SCHEDULING_POLICY.md",
+      "scripts/dev/test_fetch_captions_timed.py",
+      "scripts/dev/test_cbp_run.py",
       "MyTradingSys/research/tv_favorites_2026-11/USAGE_adx.md",
       "MyTradingSys/research/tv_favorites_2026-11/USAGE_vfi.md",
-      "MyTradingSys/backtest/layers/vfi/vfi.py",
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/desk.py",
-      "MyTradingSys/backtest/layers/adx/adx.py"
+      "MyTradingSys/backtest/layers/vfi/vfi.py"
     ],
     "session": "agent-a7a1a99a032ab5af0"
   },
