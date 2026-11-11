@@ -1,0 +1,56 @@
+{
+ "study": "preopen",
+ "n": 1313280,
+ "cuts": 5,
+ "secs": 1.7,
+ "n_full": 308,
+ "verdict": "PASS",
+ "errs": 0,
+ "max_late": 207,
+ "first": [
+  {
+   "k": 454581,
+   "full": 308,
+   "trunc": 101,
+   "late": 207,
+   "repaint": 0
+  },
+  {
+   "k": 543561,
+   "full": 308,
+   "trunc": 123,
+   "late": 185,
+   "repaint": 0
+  },
+  {
+   "k": 732008,
+   "full": 308,
+   "trunc": 172,
+   "late": 136,
+   "repaint": 0
+  }
+ ],
+ "last": [
+  {
+   "k": 732008,
+   "full": 308,
+   "trunc": 172,
+   "late": 136,
+   "repaint": 0
+  },
+  {
+   "k": 943834,
+   "full": 308,
+   "trunc": 224,
+   "late": 84,
+   "repaint": 0
+  },
+  {
+   "k": 1231759,
+   "full": 308,
+   "trunc": 289,
+   "late": 19,
+   "repaint": 0
+  }
+ ]
+}
