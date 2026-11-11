@@ -67,7 +67,7 @@ def run(test, src):
     (d / "auto_trader.py").write_text(src, encoding="utf-8", newline="\n")
     shutil.copy(HERE / f"{T}.py", d / f"{T}.py")
     env = {**os.environ, "MTS_REPO_ROOT": str(HERE.parents[1])}
-    r = subprocess.run([sys.executable, str(d / f"{T}.py"), test], capture_output=True, text=True, env=env, cwd=str(d))
+    r = subprocess.run([sys.executable, str(d / f"{T}.py"), test], capture_output=True, text=True, env=env, cwd=str(d), creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     shutil.rmtree(d.parents[1], ignore_errors=True)
     return r.returncode
 
