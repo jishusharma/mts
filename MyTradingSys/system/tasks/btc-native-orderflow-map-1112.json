@@ -6,19 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T20:02:31Z",
-    "misses": 31,
+    "folded": "2026-11-11T22:48:50Z",
+    "misses": 2,
     "reads": [
-      "scripts/dev/fetch_captions_timed.py",
-      "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py",
-      "scripts/dev/verdicts.py",
-      "MyTradingSys/backtest/fetch_binance_archive.py",
-      "MyTradingSys/backtest/layers/fabio/of_backfill.py",
-      "MyTradingSys/system/ROUTING.md",
-      "scripts/dev/gemini_queue.py",
-      "scripts/dev/fetch_captions.py"
+      "MyTradingSys/research/VERDICTS.csv"
     ],
-    "session": "agent-afe593fcda67d0261"
+    "session": "agent-ab94b81082deb0108"
   },
   "created": "2026-11-11T19:46:46Z",
   "depends_on": [
