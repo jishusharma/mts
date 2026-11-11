@@ -1,7 +1,7 @@
 // loop.js - pure helpers for the auto-loop. No DOM, no chrome.* so node can test them.
 (function (root) {
   var L = {};
-  L.VERSION = '0.7.34';
+  L.VERSION = '0.7.35';
 
   // 0.7.30: typing exactly "Start DSA bridge" as a whole message boots DSA: the extension swaps it for the seed from the agent's POST /seed.
   // Case-insensitive; one trailing . or ! allowed; a longer sentence, a second line or a second message is an ordinary message (no swap).
@@ -414,6 +414,26 @@
       }
     }
     return { warn: '', kind: '' };
+  };
+  // 0.7.35: hold instead of stop. DeepSeek runs Cloudflare Turnstile; its check usually clears by itself in a real browser.
+  // 0.7.34 stopped within 1 s of the frame and locked the profile 24 h (2026-11-10 22:15Z: no captcha was shown to the operator).
+  // captcha / busy -> no posts while the warning is on the page; resume when it clears; stop (no cooldown) after the wait cap.
+  // Only suspended / unusual keep the 24 h cooldown. The bridge never touches the captcha: a person solves one that stays.
+  L.HOLD_MS = { captcha: 180000, busy: 600000 };
+  L.AFTER_HOLD_QUIET_MS = { captcha: 30000, busy: 120000 };
+  L.COOLDOWN_KINDS = { suspended: true, unusual: true };
+  L.needsCooldown = function (w) { return !!(w && L.COOLDOWN_KINDS[w.kind]); };
+  // hold: {kind, since} or null; w = warnState now -> {act:'run'|'hold'|'stop', hold, quietMs, text}
+  L.holdStep = function (hold, w, now) {
+    var k = w && w.kind;
+    if (k && L.HOLD_MS[k]) {
+      var h = (hold && hold.kind === k) ? hold : { kind: k, since: now };
+      if (now - h.since >= L.HOLD_MS[k]) return { act: 'stop', hold: null, text: (k === 'captcha' ? 'a captcha stayed on the page for ' + Math.round(L.HOLD_MS[k] / 60000) + ' min: solve it by hand, then tick hands-free again (no cooldown)' : 'DeepSeek kept saying busy for ' + Math.round(L.HOLD_MS[k] / 60000) + ' min: tick hands-free again later (no cooldown)') };
+      return { act: 'hold', hold: h, text: 'holding: ' + k + ' on the page for ' + Math.round((now - h.since) / 1000) + ' s; no posts until it clears' };
+    }
+    if (k) return { act: 'stop', hold: null, text: '' };
+    if (hold) return { act: 'run', hold: null, quietMs: L.AFTER_HOLD_QUIET_MS[hold.kind] || 0, text: hold.kind + ' cleared after ' + Math.round((now - hold.since) / 1000) + ' s; resuming' };
+    return { act: 'run', hold: null, quietMs: 0, text: '' };
   };
   L.COOLDOWN_MS = 24 * 3600 * 1000;
   L.cooldownUntil = function (now) { return now + L.COOLDOWN_MS; };
