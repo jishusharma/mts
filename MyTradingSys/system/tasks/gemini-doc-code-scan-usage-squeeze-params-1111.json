@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T14:23:47Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-squeeze-params-1111.md line 1 has counts CONSISTENT/CONTRADICTION (sum 5) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gemini scan for contradictions between the parameters stated in USAGE_squeeze.md (BB length 20 and 2.0 sd, Keltner length 20 and 1.5 multiplier, TR vs ATR, squeeze-on definition, 6 dots) and the defaults and logic in squeeze.py.",
+  "id": "gemini-doc-code-scan-usage-squeeze-params-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "squeeze: reproduce LazyBear BB-dev quirk (BB half-width = kc_mult*sd) as default; textbook",
+      "ref": "f12c86c02044",
+      "utc": "2026-11-07T17:57:17Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8ba80c2b91a8 research: Squeeze Momentum indicator usage and crypto filter (card tvfav-usag",
+      "ref": "MyTradingSys/research/tv_favorites_2026-11/USAGE_squeeze.md",
+      "utc": "2026-11-07T16:02:13Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T14:23:49Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tv_favorites_2026-11/USAGE_squeeze.md (read)",
+    "MyTradingSys/backtest/layers/squeeze/squeeze.py (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-squeeze-params-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "f12c86c02044",
+  "size": "S",
+  "sources": [
+    "Session_Planner planner-c-gemini-feed-1111b"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: list every numeric parameter and the squeeze-on definition in the note; find the matching default or line in squeeze.py; mark CONSISTENT or CONTRADICTION or NOT_IN_CODE",
+    "Mark each CONSISTENT/CONTRADICTION/NOT_IN_DATA with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
+  ],
+  "tests": "",
+  "title": "[GEMINI] scan USAGE_squeeze.md parameters against squeeze.py defaults",
+  "weight": "ROUTINE",
+  "worker": ""
+}
