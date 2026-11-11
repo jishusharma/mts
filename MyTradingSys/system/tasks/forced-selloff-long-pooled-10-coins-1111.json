@@ -1,36 +1,86 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/verdicts.py check forced selloff cascade long pooled",
+    "python -m pytest MyTradingSys/backtest/test_no_own_costs.py -q"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T18:07:44Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/supervisor.py",
+      "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_supervisor.py",
+      "scripts/dev/station_disk_report.py",
+      "scripts/dev/extra_tests.tsv",
+      "MyTradingSys/research/edge_views_2026-11-11/DATA_MAP.md",
+      "MyTradingSys/backtest/fees.py"
+    ],
+    "session": "agent-a6c3eb523142e7a59"
+  },
   "created": "2026-11-11T16:20:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "edge_views_2026-11-11/POOLED/RESULT.md has DEV and VALIDATION rows, placebo percentile and per-coin rows for both rules; PASS only if VALIDATION per-day t >= 2.5, mean net > 0, above placebo 95th pct; exports sim_desk/results/forced-selloff-long-pooled-10-coins-1111.json",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Pooled test of the FROZEN FLOW cascade-long rule on 10 coins (BTC, ETH, ADA, AVAX, BNB, DOGE, LINK, LTC, SOL, XRP): long at next 1h open after a 1h drop of 3 % or more on 3x volume (30d median), held 24 h; also the frozen TREND 4h Donchian 55/20. Events counted per UTC day, not per coin. Rules and fees are not changed.",
   "id": "forced-selloff-long-pooled-10-coins-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge origin/fast-track; edge views re-land with fees.py import",
+      "ref": "7fddba40a43b",
+      "utc": "2026-11-11T17:31:50Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "7fddba40a43b Merge origin/fast-track; edge views re-land with fees.py import",
+      "ref": "MyTradingSys/research/edge_views_2026-11-11/FLOW/PREREG.md",
+      "utc": "2026-11-11T17:31:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Frozen rules (OURS, from FLOW/PREREG.md b and TREND/PREREG.md); a Builder agent is already running this card, refined text only. Twin check: none (no other pooled forced-flow card).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T18:04:44Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "operator 2026-11-11 16:15Z edge views"
+  "scope_in": [
+    "MyTradingSys/research/edge_views_2026-11-11/POOLED/",
+    "MyTradingSys/research/edge_views_2026-11-11/FLOW/PREREG.md",
+    "MyTradingSys/research/edge_views_2026-11-11/TREND/PREREG.md"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "any change to FLOW/TREND rules, fees or thresholds",
+    "new rule families (OPERATOR_DECISIONS 16:15Z)",
+    "live tree"
+  ],
+  "scope_sha": "7fddba40a43b",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-11 16:15Z edge views; OPERATOR_DECISIONS 16:15Z"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FLOW/PREREG.md event (b), TREND/PREREG.md and DATA_MAP.md (1m paths: tom_raw klines, klines_eth, klines_<sym>, 2022-01..2024-06); resample 1m to 1h and 4h",
+    "Write POOLED/PREREG.md first: frozen rules copied, per-day counting, DEV 60 % / 30 d gap / VALIDATION, placebo 200 draws seed 11; label every parameter OURS",
+    "Run both rules on the 10 coins; fees via backtest/fees.py; one position per coin; aggregate net by UTC day; per-day t",
+    "Write RESULT.md (DEV, VALIDATION, placebo, per-coin) and the sim_desk json; verdicts.py backfill"
+  ],
+  "tests": "MyTradingSys/backtest/test_no_own_costs.py passes (fees import from backtest/fees.py, no own constant) plus a new pooled_test check that the day count equals distinct UTC days (fails on a per-coin count)",
   "title": "Pooled test on 10 coins (1m data on disk per edge_views_2026-11-11/DATA_MAP.md): frozen rules from FLOW/PREREG.md (long after 1h drop >=3% on 3x volume, 24h) and TREND/PREREG.md (4h Donchian 55/20); events counted per day not per coin; done when RESULT.md has DEV/VALIDATION, placebo and per-coin rows",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

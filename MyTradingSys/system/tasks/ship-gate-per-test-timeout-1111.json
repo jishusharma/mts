@@ -1,36 +1,62 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest scripts/dev/test_pytest_test_limit.py MyTradingSys/tests/test_aibridge_chain.py -q"
+  ],
   "created": "2026-11-11T15:45:44Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "CI on the re-land commit is green; the gate pytest calls carry the limit (default 120 s OURS) and an allowance table whose value for the aibridge long test is at least 1.5x its CI --durations seconds; a sleeping-test case fails naming the test",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Re-land the per-test limit on the gate pytest calls (shipped 6b3d0cd27, reverted c2771d345 because MyTradingSys/tests/test_aibridge_chain.py::test_long_unattended_chain_hidden_tab_with_failure_timeout_and_dropped_reply runs longer than 120 s on GitHub CI): a hung test fails with its name, with a per-test allowance for that test taken from CI timing, not local.",
   "id": "ship-gate-per-test-timeout-1111",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: reverted 6b3d0cd27 (per-test 120 s limit broke CI step 4.9, test_aibridge_chain lo",
+      "ref": "c2771d345e91",
+      "utc": "2026-11-11T16:32:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Gate change (Gates outrank orders): diff-only review Agent before ship. Twins: cicd-run-per-test-limit-1111 (same limit in cicd_run.py, depends on this mechanism, keep), dsa-research-ship-full-gate-timeout-1111 (different symptom: bridge step), ship-full-gate-moves-to-ci-1111 (builds after this).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T18:05:14Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "operator 2026-11-11 16:20Z: ship has been a problem"
+  "scope_in": [
+    "scripts/dev/run_all_tests.py",
+    "scripts/dev/pytest_test_limit.py",
+    "scripts/dev/test_pytest_test_limit.py",
+    "scripts/dev/extra_tests.tsv"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "CI workflow",
+    "live tree",
+    "cicd_run.py (card cicd-run-per-test-limit-1111)"
+  ],
+  "scope_sha": "c2771d345e91",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-11 16:20Z: ship has been a problem; revert c2771d345"
+  ],
+  "state": "ready",
+  "steps": [
+    "git show 6b3d0cd27 for the plugin; read the CI log of the failing run: gh run view <id> --log, take the seconds of the aibridge long test (and the next 5 slowest) from --durations",
+    "Re-add the plugin plus an allowance table (test id -> seconds, each >= 1.5x CI seconds, OURS); no pytest-timeout dependency",
+    "Fail-first test; run the full gate locally, then ship and confirm CI green before release; if CI red, revert at once"
+  ],
+  "tests": "scripts/dev/test_pytest_test_limit.py: a test sleeping past a short limit fails by name, a test listed in the allowance table with a longer limit passes (fails on old code: no limit)",
   "title": "Full gate has no per-test time limit: a hung test (test_aibridge shard, 50 min on 11-11) holds a ship until the 30 min cap kills it with no test name. Done when every gate pytest call has a per-test timeout (120 s, OURS), a hung test fails with its name, and a test proves it on a sleeping test",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }

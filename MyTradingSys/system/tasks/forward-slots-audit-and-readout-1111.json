@@ -1,34 +1,63 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py",
+    "python -m pytest MyTradingSys/research/fable_run7_forward_test/test_forward_readout_all.py MyTradingSys/research/c30_forward_2026-11-11/test_c30_paper_log.py -q"
+  ],
   "created": "2026-11-11T15:44:06Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "MyTradingSys/research/edge_plan_2026-11-11/FORWARD_AUDIT.md has one row per slot (logger file, journal path, readout column present Y/N) and the pasted output of forward_readout_all.py with 4 rows; the test for any missing C30 row passes",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Audit the four forward slots (Krown S8, Malkan level short, T06L, C30) per EDGE_PLAN_2026-11-11 s(b): confirm each logger is wired to the combined readout and run the readout once, with n and net R per slot (all n 0 expected today).",
   "id": "forward-slots-audit-and-readout-1111",
-  "lane": "",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Forward readout (4 slots), C30 paper logger, with-trend session census (Shape A FAIL, Shap",
+      "ref": "8601c65fb228",
+      "utc": "2026-11-11T15:59:06Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Twins: forward-readout-paper-journals-1110 (forward_readout.py Malkan journal, not the _all file; keep both), krown-s8-forward-weekly-readout (Krown only). Do depend on neither. Live fetch of C30 needs a JIS-NB deploy, out of scope.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-11T18:06:42Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/research/edge_plan_2026-11-11/FORWARD_AUDIT.md",
+    "MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py",
+    "MyTradingSys/research/fable_run7_forward_test/test_forward_readout_all.py",
+    "MyTradingSys/research/c30_forward_2026-11-11/c30_paper_log.py"
+  ],
+  "scope_out": [
+    "deploying or restarting any logger (JIS-NB lane)",
+    "live tree",
+    "judging an edge"
+  ],
+  "scope_sha": "8601c65fb228",
+  "size": "S",
+  "sources": [
+    "EDGE_PLAN.md s(b), PLAN_24H_2026-11-10 T1"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read EDGE_PLAN.md lines 17-37 and forward_readout_all.py; list each slot's journal path",
+    "Run python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py and paste it; run c30_paper_log.py only with --once against a temp journal to prove the logger parses",
+    "Add the C30 row test if missing; write FORWARD_AUDIT.md"
+  ],
+  "tests": "MyTradingSys/research/fable_run7_forward_test/test_forward_readout_all.py: new case, C30 paper journal rows give a fourth row n and net R (fails if the C30 row is missing)",
   "title": "Forward slots: C30 logger, combined readout, four rows",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
