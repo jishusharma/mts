@@ -39,7 +39,7 @@ def audit(settings, root="", skip_bash=False):
 
 def _git(*a):
     try:
-        return subprocess.run(["git", *a], capture_output=True, text=True, timeout=20).stdout.strip()
+        return subprocess.run(["git", *a], capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.strip()
     except Exception:
         return ""
 

@@ -33,7 +33,7 @@ OOS_SPLITS = ("VALIDATION", "HOLDOUT")
 def run_cmd(cmd, cwd=None):
     """Run shell command and return stdout."""
     try:
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd)
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return result.stdout.strip()
     except Exception as e:
         return f"Error: {e}"
@@ -65,7 +65,7 @@ def get_handoff_freshness(text=None, newer=None, root="."):
             return ["(NEXT_SESSION.md unreadable: check the disk, do not guess)"]
     if newer is None:
         def newer(paths, since):
-            r = subprocess.run(["git", "log", "--since=" + since + " 00:00", "--oneline", TRUNK, "--", *paths], capture_output=True, text=True, cwd=root)
+            r = subprocess.run(["git", "log", "--since=" + since + " 00:00", "--oneline", TRUNK, "--", *paths], capture_output=True, text=True, cwd=root, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             return [x for x in r.stdout.splitlines() if x]
     lines = []
     for head, body in handoff_blocks(text):
@@ -94,7 +94,7 @@ def get_trunk_log(n=TRUNK_COMMITS, cwd=None):
 def get_screenshot_status():
     """One line from the screenshot store plus any overdue shots; never fails the status build."""
     try:
-        r = subprocess.run([sys.executable, "scripts/dev/shot.py", "status"], capture_output=True, text=True, timeout=30)
+        r = subprocess.run([sys.executable, "scripts/dev/shot.py", "status"], capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return (r.stdout or r.stderr).strip() or "(no screenshot store on this machine)"
     except Exception as e:
         return f"(screenshot status unavailable: {e})"
@@ -103,7 +103,7 @@ def get_screenshot_status():
 def get_lab_status():
     """Codex layer lab in plain words (scripts/dev/codex_run.py status); never fails the status build."""
     try:
-        r = subprocess.run([sys.executable, "scripts/dev/codex_run.py", "status", "--brief"], capture_output=True, text=True, timeout=60)
+        r = subprocess.run([sys.executable, "scripts/dev/codex_run.py", "status", "--brief"], capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return (r.stdout or r.stderr).strip() or "(no lab status)"
     except Exception as e:
         return f"(lab status unavailable: {e})"
@@ -138,7 +138,7 @@ def get_stale_pages():
 def get_group_line():
     """Open / HIGH / closed registry rows per project group; never fails the status build."""
     try:
-        r = subprocess.run([sys.executable, "scripts/dev/make_groups.py", "--line"], capture_output=True, text=True, timeout=30)
+        r = subprocess.run([sys.executable, "scripts/dev/make_groups.py", "--line"], capture_output=True, text=True, timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return (r.stdout or r.stderr).strip() or "(no group line)"
     except Exception as e:
         return f"(group line unavailable: {e})"
@@ -382,7 +382,7 @@ def get_open_findings():
 def _git(args, cwd=None):
     """git stdout as text, "" on any error (list form: no shell quoting of paths)."""
     try:
-        r = subprocess.run(["git", *args], capture_output=True, text=True, cwd=cwd)
+        r = subprocess.run(["git", *args], capture_output=True, text=True, cwd=cwd, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         return r.stdout.strip() if r.returncode == 0 else ""
     except Exception:
         return ""

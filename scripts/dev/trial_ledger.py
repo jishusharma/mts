@@ -30,6 +30,7 @@ def find_registry_files(repo_root: Path = REPO_ROOT):
             capture_output=True,
             text=True,
             check=True,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
         lines = [line.strip() for line in res.stdout.splitlines() if line.strip()]
         files = [repo_root / line for line in lines]

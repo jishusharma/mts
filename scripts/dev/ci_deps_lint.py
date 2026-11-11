@@ -130,7 +130,7 @@ class Repo:
     def _list(self):
         try:
             r = subprocess.run(["git", "-C", str(self.root), "ls-files", "--cached", "--others", "--exclude-standard"],
-                               capture_output=True, text=True, timeout=60)
+                               capture_output=True, text=True, timeout=60, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if r.returncode == 0 and r.stdout.strip():
                 return [p for p in r.stdout.splitlines()
                         if p and not p.startswith(".claude/worktrees/") and (self.root / p).is_file()]   # other sessions' work trees are not this checkout

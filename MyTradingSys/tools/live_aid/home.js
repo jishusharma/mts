@@ -71,8 +71,20 @@
       if (Math.abs(md.px / z.price - 1) <= TOUCH) add('t' + Math.round(z.price) + Math.floor(now / 900000), 'touch', 'amber', 'TOUCHING ' + z.name + ' ' + n0(z.price));
     });
     FL.list = FL.list.filter(function (f) { return now - f.t <= FLASH_MS[f.kind]; });
-    var out = FL.list.slice(-3).reverse(), fb = root.document && root.document.getElementById('flash');
-    if (fb) { fb.innerHTML = out.map(function (f) { return '<div class="fl ' + f.cls + '">' + esc(f.text) + '</div>'; }).join(''); fb.classList.toggle('on', out.length > 0); }
+    // one call or none (operator 11-11, screenshot: LONG SETUP + LONG IDEA + SHORT SETUP at the same level at once): when the direction
+    // flashes still on screen point both ways, show one amber NO CALL line instead of them. Review 2026-11-11: 58 % of these flags were
+    // followed by an opposite one within 30 min and they were right 47-51 % of the time (research/live_aid_review_2026-11-11).
+    var isDir = function (f) { return f.kind === 'idea' || f.kind === 'setup'; }, dirs = FL.list.filter(isDir);
+    var both = dirs.some(function (f) { return f.cls === 'up'; }) && dirs.some(function (f) { return f.cls === 'down'; });
+    var nz = md.lad && (md.lad.at || [md.lad.above[0], md.lad.below[0]].filter(Boolean).sort(function (a, b) { return Math.abs(md.px - a.price) - Math.abs(md.px - b.price); })[0]);
+    // nothing is dropped (operator 11-11: "make sure I do not miss any long setup"): the one line carries the LONG case and the SHORT case, newest of each
+    var caseOf = function (cls) { var f = dirs.filter(function (x) { return x.cls === cls; }).pop(); return f ? f.text.replace(/^[A-Z ]+(\(coin flip so far\))?: /, '').replace(/ \(your call\)$/, '') : ''; };
+    var lc = caseOf('up'), sc = caseOf('down'), at = nz ? ' at ' + nz.name + ' ' + n0(nz.price) : '';
+    var shown = !both ? FL.list : FL.list.filter(function (f) { return !isDir(f); }).concat([{ k: 'mixed', kind: 'mixed', cls: 'amber', t: now,
+      text: 'BOTH SIDES' + at + ', no call yet. LONG case: ' + lc + ' | SHORT case: ' + sc + ' | a 15m close away from the level decides',
+      html: '<b>BOTH SIDES' + esc(at) + ', no call yet</b> <span class="fl-c up">▲ LONG case: ' + esc(lc) + '</span> <span class="fl-c down">▼ SHORT case: ' + esc(sc) + '</span> <i>a 15m close away from the level decides</i>' }]);
+    var out = shown.slice(-3).reverse(), fb = root.document && root.document.getElementById('flash');
+    if (fb) { fb.innerHTML = out.map(function (f) { return '<div class="fl ' + f.cls + '">' + (f.html || esc(f.text)) + '</div>'; }).join(''); fb.classList.toggle('on', out.length > 0); }
     return out;
   }
 
@@ -307,6 +319,26 @@
     var id2 = v.filter(function (st) { return st && st.idea; }), mx = id2.length > 1 && id2.some(function (st) { return st.idea !== id2[0].idea; });
     return '<div class="hm-card"><div class="hm-h">At the level ' + (mx ? '<b class="amber" style="font-size:13px">MIXED: levels disagree, no idea</b>' : '') + '<span class="hm-sub" title="Read on 15m closes. Green chip = evidence for a turn, red = for going through. Measured over 180 days: ideas right 49 % (n 2,852), a coin flip, not an edge (research/level_story_1110).">15m closes · measured 49 % right: a coin flip</span></div>' + (rows || '<div class="hm-nid">no level near</div>') + '</div>';
   }
+  // One Bias line (operator 11-10: gauge SHORT 5 of 5 while two LONG SETUP banners said "big picture up" and the level card said MIXED).
+  // Names the three clocks, which one wins (OURS: the shortest clock governs the next 15m close, the 1h-4h lean is the backdrop; the level
+  // card only breaks a tie), then the two 15m-close lines. Observation only: no order, size or entry wording.
+  function biasLine(ctx, md) {
+    var g = ctx.pulse, hi = g && isFinite(g.hi) ? g.hi : NaN, W = { 1: 'UP', '-1': 'DOWN', 0: 'MIXED' };
+    var pw = !isFinite(hi) ? 'NO DATA' : hi >= 0.25 ? 'UP' : hi <= -0.25 ? 'DOWN' : 'MIXED';
+    var st = (ctx.k15 && md.lad) ? (stories(ctx, md) || []).filter(function (x) { return x && x.idea; }) : [];
+    var lw = !st.length ? 'MIXED' : st.some(function (x) { return x.idea !== st[0].idea; }) ? 'MIXED' : (st[0].idea === 'LONG' ? 'UP' : 'DOWN');
+    var gw = md.dir === 'LONG' ? 'UP' : md.dir === 'SHORT' ? 'DOWN' : 'WAIT';
+    var c = function (w) { return w === 'UP' ? 'up' : w === 'DOWN' ? 'down' : 'dim'; };
+    var win = gw !== 'WAIT' ? gw : pw !== 'NO DATA' && pw !== 'MIXED' ? pw : lw, agree = gw === pw && pw === lw || (gw === 'WAIT' && pw === lw);
+    var cl = '<span class="' + c(gw) + '">gauge ' + md.dir + ' ' + Math.max(md.bull, md.bear) + '/' + md.n + '</span> | <span class="' + c(pw) + '">1h-4h pulse ' + pw + '</span> | <span class="' + c(lw) + '">level card ' + lw + '</span>';
+    var a = md.lad && md.lad.above[0], b = md.lad && md.lad.below[0];
+    var dec = (a ? '<span class="up">15m close above ' + n0(a.price) + ' (' + esc(a.name) + '): buyers took the level</span>' : '') + (a && b ? ' ' : '') +
+      (b ? '<span class="down">15m close below ' + n0(b.price) + ' (' + esc(b.name) + '): sellers took the level</span>' : '');
+    var why = agree ? 'All clocks agree.' : (gw !== 'WAIT' ? 'Clocks disagree: the live gauge (minutes) leads the next 15m, the 1h-4h lean is the backdrop.' : (pw === 'UP' || pw === 'DOWN' ? 'Gauge is waiting: the 1h-4h lean leads.' : 'No clock leads yet: gauge waiting, 1h-4h not clear.'));
+    var txt = 'Bias ' + (win === 'WAIT' ? 'none yet' : win) + ': ' + cl.replace(/<[^>]*>/g, '') + '. ' + why + ' ' + dec.replace(/<[^>]*>/g, '');
+    return '<div class="hm-card hm-bias ' + c(win) + '" title="' + esc(txt) + '"><div class="hm-h">Bias <b class="' + c(win) + '">' + (win === 'WAIT' ? 'none yet' : win) + '</b><span class="hm-sub">rules OURS, not backtested; observation only</span></div>' +
+      '<div class="hm-say">' + cl + '</div><div class="hm-say">' + esc(why) + '</div><div class="hm-say">' + dec + '</div></div>';
+  }
   function render(el, ctx) {
     if (!el) return;
     var md = model(ctx), fl = flashes(ctx, md);
@@ -317,7 +349,7 @@
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
     var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
     ctx._tm = timingOf(ctx, md);
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + timingStrip(ctx._tm) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + timingStrip(ctx._tm) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + biasLine(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -327,7 +359,7 @@
     '.hm-lv{stroke-width:1;stroke-dasharray:5 4;opacity:.75}.hm-lv.multi{stroke-width:2;stroke-dasharray:none;opacity:.6}.hm-lv.up{stroke:var(--up)}.hm-lv.down{stroke:var(--down)}' +
     '.hm-sc{stroke-width:3;opacity:.9}.hm-sc.up{stroke:var(--up)}.hm-sc.down{stroke:var(--down)}.hm-sct{font:700 12px system-ui}.hm-sct.up{fill:var(--up)}.hm-sct.down{fill:var(--down)}.hm-lead{stroke:var(--dim);stroke-width:.5}.hm-lt{font:12px system-ui;fill:var(--fg)}.hm-lt.up .hm-lp{fill:var(--up)}.hm-lt.down .hm-lp{fill:var(--down)}.hm-lp{font:700 12px var(--mono,monospace)}' +
     '.hm-uo{stroke:#60a5fa;stroke-width:2}.hm-uot{fill:#60a5fa;font:700 12px system-ui}.hm-now{stroke:var(--amber);stroke-width:1;stroke-dasharray:2 3}.hm-tag{fill:var(--amber)}.hm-tagt{fill:#111;font:700 12px var(--mono,monospace)}' +
-    '.hm-rail{display:grid;grid-template-rows:auto auto auto auto auto 1fr;gap:6px;min-height:0;overflow:hidden}.hm-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:0;overflow:hidden}' +
+    '.hm-rail{display:grid;grid-template-rows:auto auto auto auto auto auto 1fr;gap:6px;min-height:0;overflow:hidden}.hm-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:0;overflow:hidden}' +
     '.hm-h{display:flex;gap:8px;align-items:baseline;font:600 13px system-ui;flex-wrap:wrap}.hm-h b{font:700 20px var(--mono,monospace)}.hm-sub{font:11px system-ui;color:var(--dim)}.up{color:var(--up)}.down{color:var(--down)}.dim{color:var(--dim)}' +
     '.hm-g{width:100%;max-height:78px}.hm-arc{fill:none;stroke-width:14}.hm-arc.up{stroke:var(--up)}.hm-arc.down{stroke:var(--down)}.hm-arc.dim{stroke:var(--line)}.hm-needle{stroke:var(--fg);stroke-width:3;stroke-linecap:round}.hm-hub{fill:var(--fg)}.hm-gl{font:700 12px system-ui}.hm-gl.up{fill:var(--up)}.hm-gl.down{fill:var(--down)}' +
     '.hm-vcs{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px}.hm-vc i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;background:var(--dim)}.hm-vc.up i{background:var(--up)}.hm-vc.down i{background:var(--down)}.hm-vc.nid i{background:transparent;border:1px dashed var(--dim)}.hm-vc{color:var(--fg)}' +
@@ -346,6 +378,7 @@
     '.hm-nid{color:var(--dim);font-size:12px;padding:6px 0}' +
     '.hm-st{border-top:1px solid var(--line);padding:3px 0}.hm-st1{display:flex;gap:6px;align-items:baseline;font-size:12px}.hm-stp{font:700 13px var(--mono,monospace)}.hm-stn{color:var(--fg);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:40%}' +
     '.hm-sts{margin-left:auto;font:700 11px system-ui;padding:0 6px;border-radius:8px;border:1px solid}.hm-sts.turn{color:#22c55e}.hm-sts.thru{color:#ef4444}.hm-sts.amber{color:var(--amber)}.hm-sts.dim{color:var(--dim)}' +
+    '.fl-c{display:inline-block;margin:0 6px;padding:0 6px;border-radius:4px;color:#111}.fl-c.up{background:var(--up)}.fl-c.down{background:var(--down);color:#fff}' +
     '.hm-idea{font:700 12px system-ui!important;padding:0 6px;border-radius:4px;color:#111}.hm-idea.down{background:var(--down);color:#fff}.hm-idea.up{background:var(--up)}' +
     '.hm-ecs{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;align-items:center}.hm-ec{font:700 10px system-ui;padding:0 5px;border-radius:3px;background:var(--line);color:var(--fg)}.hm-ec.turn{background:#166534;color:#dcfce7}.hm-ec.thru{background:#7f1d1d;color:#fee2e2}.hm-sc2{margin-left:auto;color:var(--dim);font-size:10px}.hm-ecs em{color:var(--dim);font-size:11px}' +
     '.hm-stv{font-size:11px;color:var(--fg);margin-top:2px}.amber{color:var(--amber)}' +
@@ -361,8 +394,9 @@
     '.hm-tl.up{background:var(--up)}.hm-tl.down{background:var(--down);color:#fff}.hm-tl.amber{background:var(--amber)}.hm-tl.dim{color:var(--fg)}.hm-tl.tln{opacity:.4}.hm-tl.tly{outline:2px solid var(--fg);outline-offset:-2px}' +
     '.hm-wtw{font:12px system-ui;fill:var(--fg)}.hm-wtw.up{fill:var(--up)}.hm-wtw.down{fill:var(--down)}.hm-wtn{font:700 12px var(--mono,monospace)}' +
     '#flash{display:none;gap:6px;flex-direction:column}#flash.on{display:flex}#flash .fl{padding:6px 12px;border-radius:6px;font:700 15px system-ui;color:#111;animation:hmfl 1s ease-in-out 6}#flash .fl.up{background:var(--up)}#flash .fl.down{background:var(--down);color:#fff}#flash .fl.amber{background:var(--amber)}' +
+    '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
-  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel };
+  var api = { model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

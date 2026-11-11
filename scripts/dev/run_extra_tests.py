@@ -32,7 +32,7 @@ def discovered(repo=None):
     """Tracked test_*.py under a study folder that EXTRA does not list and run_all_tests.py does not name: they run
     without a hand-kept entry (2026-10-17 audit: the two-list registration cost ~100 commits and several red gates in 72 h)."""
     repo = Path(repo or REPO)
-    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True).stdout.splitlines()
+    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
     gate_py = repo / "scripts" / "dev" / "run_all_tests.py"
     gate = gate_py.read_text(encoding="utf-8") if gate_py.exists() else ""
     return sorted(p for p in out if p.endswith(".py") and Path(p).name.startswith("test_") and "archive" not in p.lower()
@@ -82,7 +82,7 @@ def child_env(repo=None):
     return env
 
 
-FILE_TIMEOUT_S = 300   # OURS: ceiling per extra test file (all take < 60 s); a file still running at it = hung, it fails and frees its slot
+FILE_TIMEOUT_S = 600   # OURS: ceiling per extra test file; a file still running at it = hung, it fails and frees its slot. Was 300 (all took < 60 s): under 3 gates at once test_planted_error_trial ran 212 s and failed 3xt on 2 ships 2026-11-11 (audit)
 
 
 def run_one(rel, basetemp, timeout=None):
@@ -96,7 +96,7 @@ def run_one(rel, basetemp, timeout=None):
     for attempt in (1, 2):
         try:
             r = subprocess.run([sys.executable, "-m", "pytest", p.name, "-q", "-p", "no:cacheprovider", f"--basetemp={basetemp}"],
-                               cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env(), timeout=limit)
+                               cwd=p.parent, capture_output=True, text=True, errors="replace", env=child_env(), timeout=limit, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         except subprocess.TimeoutExpired:
             return False, f"timed out after {limit}s (hung; killed)"
         if r.returncode == 0 or (r.stdout or "").strip() or attempt == 2:

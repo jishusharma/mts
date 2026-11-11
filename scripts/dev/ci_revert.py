@@ -21,7 +21,7 @@ SHIP_CMD = [sys.executable, "scripts/dev/sync.py", "ship", "--fix-ci"]   # pure 
 
 
 def _git(repo, *args):
-    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
+    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def refusal(repo, sha):

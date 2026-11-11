@@ -2,6 +2,17 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-11T01:10:50Z",
+    "misses": 14,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_run_all_tests.py",
+      "scripts/dev/tasks.py"
+    ],
+    "session": "agent-ad25e8e3ced1b587f"
+  },
   "created": "2026-11-10T19:35:15Z",
   "depends_on": [],
   "done_when": "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py + test exist; events() for the newest closed 4h bar only; journal row kinds match malkan_level_short_live.py; parity test batch == one-bar feed passes; source tag layer:rsi:rsi_ma_cross; no order, no auto_trader path, no deploy",

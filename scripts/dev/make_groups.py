@@ -73,7 +73,7 @@ def owner_of(path, cfg):
 
 
 def tracked_files():
-    r = subprocess.run(["git", "ls-files"], cwd=REPO, capture_output=True, text=True)
+    r = subprocess.run(["git", "ls-files"], cwd=REPO, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return [f for f in r.stdout.splitlines() if f]
 
 

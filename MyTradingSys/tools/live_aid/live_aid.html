@@ -472,9 +472,18 @@ main>#p-pos:not(.off){flex:0 0 auto}
   }
 
   // Liquidation streams. Prints are sparse, so a venue counts as live while its socket answers pings (A.LQ.liveMs).
+  // R08: the liquidation history survives a page reload (this browser only, last A.LQ.keepMs). LIQ_T0 = when this history began, so
+  // the faded "page not open that long" columns stay honest after a reload. Storage blocked: memory only, as before.
+  var LIQKEY = 'liveaid.liq.v1', LIQ_T0 = Date.now();
+  try {
+    var lj = JSON.parse(localStorage.getItem(LIQKEY) || 'null'), lcut = Date.now() - A.LQ.keepMs;
+    if (lj && Array.isArray(lj.ev) && isFinite(lj.t0)) { S.liq = lj.ev.filter(function (e) { return e && isFinite(e.t) && e.t >= lcut; }); LIQ_T0 = Math.max(lj.t0, lcut); }
+  } catch (e) {}
+  function saveLiq() { try { localStorage.setItem(LIQKEY, JSON.stringify({ t0: LIQ_T0, ev: S.liq })); } catch (e) {} }
   function addLiq(ev) {
     S.liq = S.liq.concat(ev); var cut = Date.now() - A.LQ.keepMs;
     while (S.liq.length && S.liq[0].t < cut) S.liq.shift();
+    saveLiq();
   }
   function bybitLiqWs() {
     var ws, ping, st = S.lq.BYBIT;
@@ -1045,7 +1054,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var mm = mapModel(now, px, L), M = window.LAMAP, pd = window.PLAYBOOK_DATA;
     var votes = mm.votes.slice(); if (M && pd) votes[5] = M.playbookVote(pd, now);
     var ev = M && pd ? M.nextEvent(pd, now) : null;
-    var liq = { m1: A.liqSum(S.liq, now, 60000), win: {}, since: PAGE_T0, last: S.liq.slice(-20) };
+    var liq = { m1: A.liqSum(S.liq, now, 60000), win: {}, since: LIQ_T0, last: S.liq.slice(-20) };
     [['1m', 1], ['2m', 2], ['3m', 3], ['5m', 5], ['7m', 7], ['10m', 10], ['15m', 15], ['30m', 30], ['1h', 60], ['2h', 120], ['4h', 240]].forEach(function (w) { liq.win[w[0]] = A.liqSum(S.liq, now, w[1] * 60000); });
     var PU = window.LAPULSE, pkey = (TF.t['1m'] || 0) + '|' + (TF.t['30m'] || 0);   // Binance spot klines (tf strip loader); recompute only on a new fetch
     if (PU && pkey !== PULSE.key) {

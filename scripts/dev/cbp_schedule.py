@@ -86,7 +86,7 @@ def preflight(home):
         raise ValueError("no enabled analysts")
     if not shutil.which("claude"):
         raise ValueError("claude executable unavailable to this user")
-    subprocess.run([sys.executable, "-c", "import yt_dlp"], check=True, capture_output=True)
+    subprocess.run([sys.executable, "-c", "import yt_dlp"], check=True, capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def main(argv=None):
@@ -123,7 +123,7 @@ def main(argv=None):
     # Append stderr as well as stdout; the task's LastTaskResult retains the failure code.
     with (state / "ingestion.log").open("a", encoding="utf-8") as log:
         return subprocess.run([sys.executable, str(ROOT / "scripts/dev/cbp_run.py"), "--force"],
-                              env=env, stdout=log, stderr=subprocess.STDOUT, cwd=ROOT).returncode
+                              env=env, stdout=log, stderr=subprocess.STDOUT, cwd=ROOT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).returncode
 
 
 if __name__ == "__main__":

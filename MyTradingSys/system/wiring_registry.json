@@ -1067,6 +1067,11 @@
   "MyTradingSys/research/dsa_backtest_audit_2026-10-16/scripts/T01/resample_cross.py": {
    "disp": "REPRO",
    "why": "Reproduces the 1m->1d resample vs raw_1d mismatch count (result #48) for finding T01-F5; DEV only; no live imports."
+  },
+  "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py": {
+   "disp": "WIRE",
+   "ref": "t06-paper-forward-build-1110",
+   "why": "T06 paper forward adapter; built, not yet wired into live_runner_cli.py (make_layer stub); a separate builder card wires it, the operator deploys."
   }
  }
 }

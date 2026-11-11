@@ -934,3 +934,25 @@ def test_acceptance_ignores_bad_rows_and_is_stateless_across_restart():
     junk = [[day1 + 3 * M30 - 60000, None, None, None, None, None], ["x", 1, 1, 1, 1, 1], None]
     assert _la("vaAcceptance", va, segs + junk, now)["flag"] == "below"
     assert _la("vaAcceptance", va, [], now)["flag"] is None                           # empty feed: no flag
+
+
+def test_home_bias_line_names_the_clock_that_wins():
+    """Operator 2026-11-10: gauge SHORT 5 of 5, pulse 1h-4h leaning UP, level card MIXED -> one Bias line says which clock wins and
+    gives the two 15m-close lines. Expected text is written by hand from the rule in home.js biasLine (not computed by it)."""
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    js = ("const H=require(process.argv[1]);const md={px:73800,zones:[],dir:'SHORT',bull:0,bear:5,n:5,"
+          "lad:{at:null,above:[{price:74000,name:'Today high'}],below:[{price:73666,name:'Yesterday low'}]}};"
+          "console.log(H._biasLine({pulse:{hi:0.3},k15:null},md))")
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=30)
+    assert out.returncode == 0, out.stderr[-1500:]
+    html = out.stdout
+    import re
+    text = re.sub(r"<[^>]*>", "", html)
+    assert "Bias DOWN" in text
+    assert "gauge SHORT 5/5 | 1h-4h pulse UP | level card MIXED" in text
+    assert "the live gauge (minutes) leads the next 15m, the 1h-4h lean is the backdrop" in text
+    assert "15m close above 74,000 (Today high)" in text and "15m close below 73,666 (Yesterday low)" in text
+    assert 'class="up">15m close above' in html and 'class="down">15m close below' in html     # in colour
+    assert not re.search(r"\b(buy|sell|enter|entry|stop|size)\b", text, re.I)                   # observation only

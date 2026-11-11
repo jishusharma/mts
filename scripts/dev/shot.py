@@ -62,7 +62,7 @@ class ShotError(ValueError):
 
 # ---------------------------------------------------------------- locations
 def git(*args, cwd=None):
-    r = subprocess.run(["git", *args], cwd=cwd or REPO, capture_output=True, text=True)
+    r = subprocess.run(["git", *args], cwd=cwd or REPO, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout if r.returncode == 0 else ""
 
 

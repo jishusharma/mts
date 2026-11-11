@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
+  ],
+  "created": "2026-11-09T07:25:33Z",
+  "depends_on": [],
+  "done_when": "A check in check_catalogue.py derives verified/total from news_events.csv and passes only if REPORT.md lines 9, 33 and 163 quote those numbers, with OURS and SOURCED counted apart; python check_catalogue.py exits 0",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "REPORT.md verified counts (142 of 191; OURS 15 of 64) match news_events.csv; the CSV today gives exactly those, so reconcile with commit 8ce5a1c28 saying 19 (15 OURS + 4 PROTOCOL?) and state the basis in the text",
+  "id": "news-effect-report-md-stale-counts-says-",
+  "kind": "build",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 123 surprise ro",
+      "ref": "8ce5a1c28081",
+      "utc": "2026-11-08T09:13:10Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8ce5a1c28081 news-effect: 19 own-grouping rows primary-sourced, 49 marked UNFIT, 120 of 12",
+      "ref": "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+      "utc": "2026-11-08T09:13:10Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T01:53:38Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md",
+    "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
+    "MyTradingSys/research/news_effects_2026-11/news_events.csv"
+  ],
+  "scope_out": [
+    "news_events.csv rows and the _b study; no re-verification of events"
+  ],
+  "scope_sha": "8ce5a1c28081",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/news_effects_2026-11/REPORT.md lines 9, 33, 163",
+    "git show 8ce5a1c28 (message: 19 own-grouping rows)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Count verified Y per class_label (OURS, SOURCED) from news_events.csv with a small script",
+    "Compare with REPORT.md lines 9, 33, 163; explain the 19 in 8ce5a1c28 (15 OURS + 4 PROTOCOL if so) in line 163",
+    "Add the CSV-derived check to check_catalogue.py; show it failing on a doctored copy"
+  ],
+  "tests": "In check_catalogue.py add the REPORT-vs-CSV count check; run it first against a copy of REPORT.md with 15 changed to 19 and see it fail, then against the real file",
+  "title": "news-effect REPORT.md stale counts: says 15 of 64 OURS rows verified but CSV has 19; recheck the 142 of 191 count at lines 9 and 163",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

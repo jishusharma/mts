@@ -557,7 +557,7 @@ def pid_alive(pid):
     try:
         pid = int(pid)
         if os.name == "nt":   # os.kill(pid, 0) would TERMINATE the process on Windows
-            out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, timeout=20).stdout
+            out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
             return str(pid) in out.split()
         os.kill(pid, 0)
         return True
@@ -596,7 +596,7 @@ def acquire(lock, now=None, stale=LOCK_STALE_S, alive=pid_alive):
 
 
 def git(wt, *args, check=True):
-    return subprocess.run(["git", "-C", str(wt), *args], capture_output=True, text=True, check=check)
+    return subprocess.run(["git", "-C", str(wt), *args], capture_output=True, text=True, check=check, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def changed_files(wt):
@@ -710,7 +710,7 @@ def commit_message(card, outcome, result, when):
 
 
 def sh(wt, *args):
-    return subprocess.run([sys.executable, *args], cwd=str(wt), capture_output=True, text=True)
+    return subprocess.run([sys.executable, *args], cwd=str(wt), capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 # a lab run is always its own change: the 10-minute second-ship guard is for sessions that should batch, and it refused
@@ -723,13 +723,13 @@ def boxed(cmd, cwd, timeout_s):
     only the parent would leave communicate() waiting) and the result has returncode 124 and a TIMEOUT line on stderr."""
     nt = os.name == "nt"
     p = subprocess.Popen(cmd, cwd=str(cwd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace",
-                         start_new_session=not nt)
+                         start_new_session=not nt, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     try:
         out, err = p.communicate(timeout=timeout_s)
         return subprocess.CompletedProcess(cmd, p.returncode, out, err)
     except subprocess.TimeoutExpired:
         if nt:
-            subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True)   # only the PID started here
+            subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))   # only the PID started here
         else:
             os.killpg(p.pid, 9)
         try:
@@ -799,12 +799,12 @@ def execute(cmd, text, log, timeout_s, env):
     """Run Codex with the prompt on stdin, all output into `log`. Returns (exit code or 'TIMEOUT', seconds)."""
     t0 = time.time()
     with open(log, "w", encoding="utf-8", newline="\n") as f:
-        p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=f, stderr=subprocess.STDOUT, text=True, encoding="utf-8", env=env)
+        p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=f, stderr=subprocess.STDOUT, text=True, encoding="utf-8", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         try:
             p.communicate(text, timeout=timeout_s)
             code = p.returncode
         except subprocess.TimeoutExpired:
-            subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True)   # only the PID started here
+            subprocess.run(["taskkill", "/PID", str(p.pid), "/T", "/F"], capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))   # only the PID started here
             code = "TIMEOUT"
     return code, int(time.time() - t0)
 
@@ -971,7 +971,7 @@ def cmd_tick(a):
     try:
         refresh(wt)
         run_sweep(wt, runs, "--apply", "--ship", "--beat")   # failing or hung: the tick goes on to `next`
-        r = subprocess.run([sys.executable, str(wt / "scripts/dev/codex_run.py"), "next"], cwd=str(wt), capture_output=True, text=True)
+        r = subprocess.run([sys.executable, str(wt / "scripts/dev/codex_run.py"), "next"], cwd=str(wt), capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         code, line = r.returncode, (r.stdout.strip().splitlines() or [r.stderr.strip()[-300:] or "no output"])[-1]
         if "lane marked down" in line:   # next just found the window spent: reroute now, not at the next tick
             run_sweep(wt, runs, "--apply", "--ship")

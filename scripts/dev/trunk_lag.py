@@ -45,7 +45,7 @@ def git_timeout():
 def git(repo, *args, timeout=None):
     timeout = git_timeout() if timeout is None else timeout
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=timeout,
-                          env={**os.environ, **GIT_NOPROMPT})
+                          env={**os.environ, **GIT_NOPROMPT}, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 
 
 def message(behind, oldest_age_s):

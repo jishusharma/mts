@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-11T02:50:08Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,8 +26,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "coordinator plan edit, not a builder card; PLAN_24H_2026-11-10.md is the owner (planner-a2-1111)",
+  "pinned": false,
   "prio": 3,
+  "reason": "coordinator plan edit, not a builder card; PLAN_24H_2026-11-10.md is the owner (planner-a2-1111)",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -35,7 +38,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Fold the architecture-review order into PLAN_24H after logins A and B answer q-def2f8 and q-4501f0; then start the cheap workers for items 2-3 after the 20Z reset",

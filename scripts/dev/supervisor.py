@@ -54,6 +54,7 @@ def fetch_origin(repo: Path = REPO) -> None:
         capture_output=True,
         text=True,
         timeout=30,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
     if r.returncode != 0:
         raise RuntimeError(f"git fetch origin failed (rc={r.returncode}): {(r.stderr or r.stdout).strip()}")
@@ -68,6 +69,7 @@ def is_ancestor(repo: Path, sha: str, ref: str) -> bool:
         capture_output=True,
         text=True,
         timeout=15,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     )
     if r.returncode == 0:
         return True
@@ -106,6 +108,7 @@ def _load_cards_fetched(repo: Path) -> list[dict]:
             text=True,
             timeout=5,
             check=False,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
         if ls.returncode != 0 or not ls.stdout.strip():
             return sorted(local_cards.values(), key=lambda c: c["id"])
@@ -122,6 +125,7 @@ def _load_cards_fetched(repo: Path) -> list[dict]:
             capture_output=True,
             timeout=10,
             check=False,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
         if cat.returncode == 0 and cat.stdout:
             buf = cat.stdout
@@ -1367,7 +1371,7 @@ def _local_bridge(host: str) -> str | None:
 
 def _git_show(repo: Path, rel: str) -> str | None:
     r = subprocess.run(["git", "-C", str(repo), "show", f"{TRUNK_REF}:{rel}"], capture_output=True, text=True, encoding="utf-8",
-                       errors="replace", timeout=30)
+                       errors="replace", timeout=30, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     return r.stdout if r.returncode == 0 else None
 
 
@@ -1872,7 +1876,7 @@ def run_check(repo: Path, claim: str, check_field: str, result: str) -> tuple[st
     for c in cmds:
         head, *tail = [x.strip() for x in c.split("|")]
         try:
-            r = subprocess.run(shlex.split(head), cwd=str(repo), capture_output=True, text=True, timeout=VERIFY_TIMEOUT)
+            r = subprocess.run(shlex.split(head), cwd=str(repo), capture_output=True, text=True, timeout=VERIFY_TIMEOUT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             out_text, rc = r.stdout, r.returncode
             for t in tail:      # the only pipe stages we emulate (no shell, no bash needed): wc -l and grep -c <word>
                 ln = out_text.splitlines()

@@ -1,0 +1,60 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py -q"
+  ],
+  "created": "2026-11-09T14:59:00Z",
+  "depends_on": [],
+  "done_when": "Three new tests in test_sister_signals.py pass (hang over 120 s gives one DEGRADED line; pending/pending_n reset after a degraded pass; save_state leaves no partial file when replace fails) and pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py is green",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "sister_signals.poll: a fetch thread busy over 120 s emits one SISTER DEGRADED line, a degraded pass drops pending flip state, and save_state writes via temp file + replace",
+  "id": "sister-signals-hardening-followups-1109",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sister_signals: fix 6 review defects (save-before-emit, 2-confirm flip, last-2-lows STOP, ",
+      "ref": "9bd153f55b37",
+      "utc": "2026-11-09T14:57:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T01:53:48Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/sister_signals.py",
+    "MyTradingSys/backtest/layers/alerts/test_sister_signals.py"
+  ],
+  "scope_out": [
+    "live_runner_cli.py wiring, the live tree, thresholds and sister/aunt state rules"
+  ],
+  "scope_sha": "9bd153f55b37",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/backtest/layers/alerts/sister_signals.py lines 56-82, 212-310",
+    "card sister-signals-fix-review-defects-1109 (prior fix)"
+  ],
+  "state": "ready",
+  "steps": [
+    "BackgroundFetch records kick time; poll emits ONE SISTER DEGRADED line (st degraded flag) when busy longer than 120 s, no flip",
+    "On any degraded pass set pending None and pending_n 0 (stale pending must not count toward the 2-in-a-row confirm)",
+    "save_state: write to path.tmp then os.replace; test a replace failure leaves the old file intact"
+  ],
+  "tests": "Write the 3 tests first in test_sister_signals.py; each must fail on current sister_signals.py (BackgroundFetch has no age, poll keeps pending across degraded, save_state uses write_text), then fix",
+  "title": "sister_signals: DEGRADED line if fetch thread hangs >120s; drop stale pending flip state across degraded passes; atomic save_state (temp+replace)",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

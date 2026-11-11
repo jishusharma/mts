@@ -224,6 +224,10 @@ class TestShardedPytest(unittest.TestCase):
     def test_quick_parts_partition_every_step_once_and_stay_under_cap(self):
         """--quick in QUICK_PARTS parts: every runnable step runs in exactly one part, and the largest part by the committed est table is
         within QUICK_PART_MAX_S on this platform. No 'smallest N' claim: the est table is per platform (Linux CI is far lower than Windows)."""
+        import os
+        _old = os.environ.get("MTS_GATE_JOBS")
+        os.environ["MTS_GATE_JOBS"] = "4"   # DECISION (OURS) 2026-11-11: the est table is for the default 4 workers; a lower MTS_GATE_JOBS divides est less and tripped the cap
+        self.addCleanup(lambda: os.environ.pop("MTS_GATE_JOBS", None) if _old is None else os.environ.__setitem__("MTS_GATE_JOBS", _old))
         n = rat.QUICK_PARTS
         self.assertGreater(n, 1)
         want = sorted((s.num, s.desc) for s in rat.split_for_shards(rat.build_plan(True), n) if not s.skip)
