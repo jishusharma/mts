@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/prereg_gate.py --help"
+  ],
+  "created": "2026-11-11T20:53:54Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/btc_of_level_auction_1112/PREREG.md written before any result, with prereg_gate.py output pasted, events defined on aggTrades/klines with trailing percentiles, same splits as btc_orderflow_map_1112/PREREG.md; that PREREG is not edited.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Turn the two transferable ideas not in the frozen map into one pre-registered family on BTC clocks.",
+  "id": "of-family-level-and-auction-prereg-1112",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "btc-native-orderflow-map-1112"
+  ],
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:53:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_of_level_auction_1112/PREREG.md (new)"
+  ],
+  "scope_out": [
+    "btc_orderflow_map_1112/* (frozen)",
+    "any result before PREREG commit"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Wait for btc_orderflow_map_1112/RESULT.md",
+    "Define B1 (A2 absorption at prior-day high/low or value-area edge) and B2 (bid and ask volume both present in the top/bottom price bucket of a 15m bar) with fee 0.10% RT",
+    "Run prereg_gate.py with the repo-wide m; paste output"
+  ],
+  "tests": "prereg lint passes; grep shows no edit to btc_orderflow_map_1112/PREREG.md",
+  "title": "Pre-register a new BTC order-flow family from Tom/Fabio ideas T3 (flow only at a level) and T7 (unfinished auction at a high/low), after btc-native-orderflow-map-1112 RESULT",
+  "weight": "",
+  "worker": "agent"
+}

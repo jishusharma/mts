@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-11T21:24:26Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-12_gemini-blind-read-us-open-first3m-result-1112.md line 1 has counts MATCH/DIFF/NOT_IN_DATA with one row per checked table row quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini blind read of MyTradingSys/research/us_open_first3m_2026-11-11/RESULT.md: recompute each headline table row from the stated rule and data note and flag any row whose number or label the text does not support; read only.",
+  "id": "gemini-blind-read-us-open-first3m-result-1112",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: US open first-3-min study saved (1006 weekday opens 2023-01-02..2026-11-10: median",
+      "ref": "6bd8eb5ca34d",
+      "utc": "2026-11-11T14:51:02Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6bd8eb5ca34d Result: US open first-3-min study saved (1006 weekday opens 2023-01-02..2026-",
+      "ref": "MyTradingSys/research/us_open_first3m_2026-11-11/RESULT.md",
+      "utc": "2026-11-11T14:51:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T21:24:27Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/us_open_first3m_2026-11-11/RESULT.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-12_gemini-blind-read-us-open-first3m-result-1112.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the study files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "6bd8eb5ca34d",
+  "size": "S",
+  "sources": [
+    "D11_PROGRAMME.md section 6 (blind read of every new research RESULT)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "Pick up to 8 table rows, recompute or cross-check each against the stated rule and quote file:line",
+    "Write the report with counts on line 1, one row per check"
+  ],
+  "tests": "",
+  "title": "[GEMINI] blind read of us_open_first3m RESULT.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

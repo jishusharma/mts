@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-11T21:04:46Z",
   "commands": [],
   "created": "2026-11-11T20:50:43Z",
   "depends_on": [],
@@ -15,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-mts-doctor-flags-vs-cod",
+      "ref": "8b5daff4f",
+      "utc": "2026-11-11T21:04:46Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -40,8 +46,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T20:50:47Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-scan-mts-doctor-flags-vs-code-1111.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/MTS_DOCTOR.md (read)",
     "scripts/dev/mts_doctor.py (read)",
@@ -56,7 +66,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H 2026-11-11 operator asks: Gemini on YouTube, CBP and AI health"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: Rows: up to 10 claims, each with the code line; MATCH, DIFF when code differs, NOT_IN_DATA when no code implements it",

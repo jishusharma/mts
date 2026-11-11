@@ -5,7 +5,7 @@ AI health (is the guidance the sessions read correct, short, non-duplicated) and
 Goal: less dev time and fewer tokens per shipped task. Security is not a goal here; live-money safety rules stay.
 
 ## Run
-`python scripts/dev/mts_doctor.py [--hours 72]` writes `MyTradingSys/research/mts_doctor/REPORT_<utc date>.md`.
+`python scripts/dev/mts_doctor.py [--hours 72] [--memory] [--out] [--heal] [--apply]` writes `MyTradingSys/research/mts_doctor/REPORT_<utc date>.md`.
 `--no-process` = AI health only (no network). `python scripts/dev/health_audit.py 24` = the process part alone (day-over-day check).
 Cadence: once per day by the pinned doctor session, and whenever CI is red or a buster ships. Do not rebuild these numbers by hand.
 
@@ -15,11 +15,12 @@ Line 1 is `HEALTH: GREEN` or `HEALTH: <n> WARN: <names>`. Each check is OK / WAR
 |---|---|
 | SIZE-HEADROOM | CLAUDE.md and each role file keep 3% under their cap (caps read from the tests) |
 | CI-REVERT | red runs on fast-track went green within 10 min; trunk is not red now (red now: `python scripts/dev/ci_revert.py` prints the revert plan, `--apply` reverts in your worktree and ships) |
-| SHIP-TIME | ship and gate wall time, 72 h, max under 15 min (`runtime_data/gate_timing.jsonl`) |
+| SHIP-TIME | WARN when the median or p90 of ship_wall rows (24 h) is over 120 s (mts_doctor.py SHIP_MAX_S) (`runtime_data/gate_timing.jsonl`) |
 | HOOK-REG | main checkout registers role_loader and ci_watch and is under 50 commits behind trunk |
 | DISK | 15 GB free on the repo drive |
 | STALE-CLAIMS | at most 5 open claims over 24 h old (reports 10-23..25: 18, 18, 22) |
 | SCRATCH-TRACKED | no tracked `_scratch*` or `*ship.log` file (public repo; PILOT3 logs, f97ecc125) |
+| more | the code has 16 checks (`CHECK_NAMES` in mts_doctor.py): also CONTEXT-GAP, WAITING-ON-OPERATOR, BROADCAST, CONFLICT-OPEN, ASK-GAPS, SUPERVISOR-IDLE, OF-RESTARTS, OF-STALE, GIT-HUNG |
 
 Cadence: the main session runs it in its first message each day and shows the HEALTH line.
 

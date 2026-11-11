@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/extraction_ledger_2026-10/build_ledger.py"
+  ],
+  "created": "2026-11-11T20:53:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/orderflow_extracts_1112/ has extract_<id>.md for 3JqMyzE8jIQ Vd83oo_geMk YopZ5ZDmMFw usho6UVLqkE 9VN9y2DVtGQ AtR_c-B0jw8 ODdF0Bn_KSc VOiy8mAALWA uk4PZV59nYw RwQBdF9TSvc, each verify exit 0 AND quotes_verified=PASS in EXTRACTION_LEDGER.csv after build_ledger.py (thirds checked); rules appended to ORDERFLOW_RULES_DRAFT.md.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Extract the next 10 on-disk order-flow transcripts into verified extracts, idea only, same format as wave 1.",
+  "id": "of-extract-ondisk-wave2-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: 10 order-flow extracts verified (exit 0 each), 83 SOURCED rules in ORDERFLOW_RULES",
+      "ref": "d9b74c5a1ee1",
+      "utc": "2026-11-11T20:39:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d9b74c5a1ee1 Result: 10 order-flow extracts verified (exit 0 each), 83 SOURCED rules in OR",
+      "ref": "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES_DRAFT.md",
+      "utc": "2026-11-11T20:39:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "of-extract-ondisk-1112"
+  ],
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:53:45Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/orderflow_extracts_1112/extract_<id>.md (new)",
+    "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES_DRAFT.md (append)"
+  ],
+  "scope_out": [
+    "YouTube fetches",
+    "btc_orderflow_map_1112 files"
+  ],
+  "scope_sha": "d9b74c5a1ee1",
+  "size": "S",
+  "sources": [
+    "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read each transcript in raw_transcripts_canonical/",
+    "Write extract_<id>.md: rule, verbatim quote, Source GPS third, SOURCED; index-futures clocks marked not-BTC",
+    "Run verify_extract_quotes.py and build_ledger.py; fix any third the ledger marks FAIL"
+  ],
+  "tests": "verify exit nonzero on an altered copy first; ledger PASS per id",
+  "title": "Order-flow extraction wave 2: ORDERFLOW_QUEUE.md ON_DISK ranks 11-20 (Tom Vorwald EN channel titles; no network)",
+  "weight": "",
+  "worker": "agent"
+}

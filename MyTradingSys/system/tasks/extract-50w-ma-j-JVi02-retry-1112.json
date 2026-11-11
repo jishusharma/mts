@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst LongShort --status",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/btc_50w_ma_j-JVi02_1112/EXTRACT.md"
+  ],
+  "created": "2026-11-11T20:53:39Z",
+  "depends_on": [],
+  "done_when": "After 2026-11-12T02:42Z: research/btc_50w_ma_j-JVi02_1112/EXTRACT.md exists and verify_extract_quotes.py exits 0, CHECK.md gains a claims-vs-data table; FETCH rows for all 3 ids (OK/BLOCKED/NO_CAPTIONS) in NOT_IN_DATA.md; or the new block time.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Close the 429 block from 2026-11-11T20:42Z: captions for 3 ids, extract the 50W MA video and compare its claims with CHECK.md.",
+  "id": "extract-50w-ma-j-JVi02-retry-1112",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:53:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_50w_ma_j-JVi02_1112/"
+  ],
+  "scope_out": [
+    "proxy, VPN, cookies, --fallback",
+    "ASR (no captions goes to the Gemini lane list)"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
+  ],
+  "state": "ready",
+  "steps": [
+    "fetch_captions_timed.py --analyst LongShort --status; if BLOCKED write the time and stop",
+    "fetch_captions_timed.py --analyst LongShort --max-videos 1 j-JVi02_C88, then --analyst Tom --max-videos 2 BB3c8visnkI e83njGZFrPw",
+    "Write EXTRACT.md (format of backtest_howto_K31xH_1112/EXTRACT.md); add a claim | our data (CHECK.md rows) | agrees? table to CHECK.md"
+  ],
+  "tests": "verify_extract_quotes.py exits nonzero on a copy with one altered quote, then 0 on EXTRACT.md",
+  "title": "Guarded re-fetch after the 429: j-JVi02_C88 (50W MA) plus Tom BB3c8visnkI and e83njGZFrPw (extracts with no transcript); extract j-JVi02 with verified quotes",
+  "weight": "",
+  "worker": "agent"
+}

@@ -1,0 +1,61 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-11T20:53:58Z",
+  "depends_on": [],
+  "done_when": "A helper in MyTradingSys/backtest/ prints the last 5 trades with entry/exit bar and the matching 1m kline open/close and fails on a mismatch (test fails on a shifted fill first); RESULT template gains per-year and long/short rows; one existing study re-printed as the example.",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Adopt the two cheap checks the backtest video does and we skip.",
+  "id": "backtest-log-sanity-and-year-lines-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: docstring no longer carries a cost-like literal; T06 cost inventory test passes Ne",
+      "ref": "e6c5ba837a3f",
+      "utc": "2026-11-11T01:11:44Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "extract-backtest-howto-K31xH-6g9Vc-1112"
+  ],
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T20:54:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/ (one new helper + test)"
+  ],
+  "scope_out": [
+    "live tree",
+    "frozen PREREGs"
+  ],
+  "scope_sha": "e6c5ba837a3f",
+  "size": "S",
+  "sources": [
+    "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read research/backtest_howto_K31xH_1112/GAP_TABLE.md S5, S6, S8",
+    "Write the helper and its failing test",
+    "Add the rows to the RESULT template"
+  ],
+  "tests": "new test fails on a deliberately shifted fill",
+  "title": "From video K31xH-6g9Vc GAP_TABLE: add a trade-log sanity print (5 latest trades vs 1m klines) and per-year plus long/short lines to backtest RESULT tables",
+  "weight": "",
+  "worker": "agent"
+}

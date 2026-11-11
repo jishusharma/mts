@@ -9,12 +9,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T21:43:23Z",
-    "misses": 40,
+    "folded": "2026-11-11T21:43:46Z",
+    "misses": 42,
     "reads": [
+      "scripts/dev/lookahead_allowlist.tsv",
       "MyTradingSys/backtest/fetch_binance_archive.py",
       "MyTradingSys/research/btc_orderflow_map_1112/clocks.py",
-      "scripts/dev/lookahead_allowlist.tsv",
       "MyTradingSys/research/btc_orderflow_map_1112/DATA_INVENTORY.md",
       "scripts/dev/lookahead_lint.py"
     ],
