@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 Eagle_Eyes chat (\"they must say all cool stuff abt OI and how to use it\")",
   "asks": "",
+  "closed": "2026-11-11T15:31:14Z",
   "commands": [
     "python scripts/dev/gemini_queue.py run oi-usage-sweep:low"
   ],
@@ -16,6 +17,12 @@
   "lane": "DSA-NUC",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/oi_side_2026-10-30/OI_CONCEPTS.md: 12 OI concept rows with SOURCED q",
+      "ref": "4f35e9ba1",
+      "utc": "2026-11-11T15:31:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "research: OI side by cycle (year, 20-day mean) per operator \"cycles\" point",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 2,
@@ -33,7 +41,12 @@
   "refined_by": "",
   "refreshed": "2026-11-07T17:18:40Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/oi_side_2026-10-30/OI_CONCEPTS.md: 12 OI concept rows with SOURCED quotes, OURS meaning, Binance-metrics mapping; verify_extract_quotes.py PASS 0 problems on 12 quotes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/oi_side_2026-10-30/",
     "raw_transcripts_canonical/"
@@ -45,13 +58,14 @@
     "MyTradingSys/research/oi_side_2026-10-30/RESULT.md",
     "MyTradingSys/research/krown_ta101_2026-10-13/KROWN_CONSOLIDATED.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Start from Krown P3rDSh187TE (KR-LQC01-04) and the Fabio guest list in CVD_CONCEPTS.md 3c (HijoTrades, Cimi, IQCapital) for OI passages",
     "YouTube search: BTC open interest + funding + CVD order-flow teaching; rank by ROI, fetch captions",
     "Write OI_CONCEPTS.md rows; map each to a measurement on F:/MTS/data/binance_metrics",
     "verify_extract_quotes.py OI_CONCEPTS.md until exit 0"
   ],
+  "taken": "2026-11-11T15:31:14Z",
   "tests": "n/a (extraction lane: verify_extract_quotes.py exit 0)",
   "title": "OI usage sweep: every passage on how to read open interest for BTC (Krown ep7 done; Fabio channel has none): crypto order-flow channels via Gemini, verified quotes",
   "weight": "",
