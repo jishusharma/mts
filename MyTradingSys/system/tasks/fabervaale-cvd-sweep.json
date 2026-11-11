@@ -1,6 +1,7 @@
 {
   "approved_by": "operator 2026-10-30 via Eagle_Eyes (\"find out everything fabio and his channel mates tell abt using CVD ... use Gemini\")",
   "asks": "",
+  "closed": "2026-11-11T14:14:19Z",
   "commands": [
     "git -C <repo> pull --ff-only origin fast-track",
     "python scripts/dev/gemini_queue.py run fabervaale-cvd-sweep:low"
@@ -17,6 +18,12 @@
   "lane": "DSA-NUC",
   "latest": [
     {
+      "kind": "ship",
+      "line": "CHANNEL_SWEEP.md (13 uploads, 13 shorts, 4 guest videos, read y/n) + CVD_CONCEPTS.md s5 F-",
+      "ref": "39a83e4a8",
+      "utc": "2026-11-11T14:14:19Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "cvd U7/U8: Fabio CVD coil and absorption measured on BTC DEV",
@@ -27,6 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "oi-usage-sweep",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 1,
@@ -34,7 +42,12 @@
   "refined_by": "",
   "refreshed": "2026-11-07T17:18:36Z",
   "refs": [],
-  "result": "",
+  "result": "CHANNEL_SWEEP.md (13 uploads, 13 shorts, 4 guest videos, read y/n) + CVD_CONCEPTS.md s5 F-CVD17..F-CVD32; verify_extract_quotes.py PASS 0 problems on 17 quotes; guest videos and shorts blocked by the YouTube guard (level 3, until 2026-11-13T13:58:11Z)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fabio_cvd_2026-10-30/",
     "raw_transcripts_canonical/"
@@ -43,7 +56,7 @@
   "scope_sha": "98223ee41a84",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Queue: python scripts/dev/gemini_queue.py run fabervaale-cvd-sweep:low (NUC)",
     "yt-dlp --flat-playlist https://www.youtube.com/@FabervaaleENG/videos for the list",
@@ -51,6 +64,7 @@
     "extract passages, verify_extract_quotes until exit 0",
     "Claude reviews branch gemini-q/fabervaale-cvd-sweep and ships"
   ],
+  "taken": "2026-11-11T14:14:19Z",
   "tests": "n/a (extraction lane: verify_extract_quotes.py exit 0)",
   "title": "Fabervaale ENG channel sweep: every CVD/delta/absorption passage from Fabio and guests (Cimi etc.), verbatim, BTC mentions flagged; extends fabio_cvd_2026-10-30/CVD_CONCEPTS.md",
   "weight": "",

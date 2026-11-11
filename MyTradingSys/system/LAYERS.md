@@ -184,8 +184,10 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-board-core-1111` ready p1 SONNET: Live Aid setup board core: pure function returning LONG and SHORT evidence lists and a strength score from exi
   - `live-aid-board-rates-1111` ready p1 SONNET: Live Aid setup board hit rate per evidence mix from replay.js, printed with n
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
+  - `live-aid-flag-log-1111` ready p1 SONNET: Live Aid keeps no record of what it flashed: log every banner (time, kind, side, level, evidence, price) to lo
+  - `live-aid-learning-loop-1111` ready p1 SONNET: Live Aid learning loop: a daily model run scores what Live Aid flagged against what price did and writes a poi
   - `live-mirror-follow-live-host-move` refined p1 DSA: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
-  - `live-aid-flag-log-1111` ready p2 SONNET: Live Aid keeps no record of what it flashed: log every banner (time, kind, side, level, evidence, price) to lo
+  - `live-aid-board-value-area-not-wired-1111` raw p2 SONNET: Live Aid setup board never receives the value area: home.js boardInputs passes only vfi, sqz, adx, and two def
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
   - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave

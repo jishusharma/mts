@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [],
+  "created": "2026-11-11T15:46:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-edge-plan-decision-date-1111.md line 1 has counts MATCH/DIFF/NOT_IN_DATA (sum 6) and one row per clause quoting file:line",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent Gemini recompute of EDGE_PLAN.md (c, d): trades per slot by 2026-12-31 from the trades/yr estimates in (b), the date T06L reaches 30 trades, and the claim 'SD 1.4 R: detectable effect about 0.5 R at n 30'. State the formula used and any DIFF.",
+  "id": "gemini-recompute-edge-plan-decision-date-1111",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Edge plan 2026-11-11: fee table, size rule, four leads, 30-trade stop, decision date",
+      "ref": "0d79f9e8e4f8",
+      "utc": "2026-11-11T15:43:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "0d79f9e8e4f8 Edge plan 2026-11-11: fee table, size rule, four leads, 30-trade stop, decisi",
+      "ref": "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md",
+      "utc": "2026-11-11T15:43:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: read-only audit complete",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T15:46:46Z",
+  "refs": [],
+  "result": "",
+  "result_receipt": {},
+  "scope_in": [
+    "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md (b, c, d; read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-recompute-edge-plan-decision-date-1111.md (new)"
+  ],
+  "scope_out": [
+    "no edit to the source files; no live-tree edit, no deploy, no .secrets or .env read; read-only audit"
+  ],
+  "scope_sha": "0d79f9e8e4f8",
+  "size": "S",
+  "sources": [
+    "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after c4ba63ff)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files named in scope_in",
+    "List the clauses: 5 clauses: (1) T06L about 40 trades by 12-31, (2) T06L reaches 30 trades about 2026-12-25, (3) MLK about 7, (4) KS8 about 8, (5) C30 about 3, plus (6) the detectable effect for SD 1.4 R at n 30 (one-sided 5 percent, 80 percent power), state the number",
+    "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
+  ],
+  "taken": "",
+  "tests": "",
+  "title": "[GEMINI] recompute EDGE_PLAN decision-date arithmetic (d) and the 0.5 R claim",
+  "weight": "ROUTINE",
+  "worker": ""
+}
