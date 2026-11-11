@@ -38,7 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T15:46:42Z",
+  "refreshed": "2026-11-11T15:46:58Z",
   "refs": [],
   "result": "",
   "result_receipt": {},
@@ -59,7 +59,7 @@
   "state": "ready",
   "steps": [
     "Read only the files named in scope_in",
-    "List the clauses: 6 clauses: (1) a hit is r1h > 0, (2) events with r1h None or empty are skipped, (3) verdict is test only when n >= 30 and |hit - 50| >= 10, (4) below that the verdict says NOT-ENOUGH-EVIDENCE with the reason, (5) input is --log, else review events.json, else tables.md, (6) the report is written to research/live_aid_learning/<date>.md; also check the 2026-11-11.md rows against the rule",
+    "List 6 clauses: (1) hit = r1h > 0, (2) r1h None/empty skipped, (3) test only if n >= 30 and |hit-50| >= 10, (4) else NOT-ENOUGH-EVIDENCE + reason, (5) input --log, else events.json, else tables.md, (6) writes live_aid_learning/<date>.md; check 2026-11-11.md rows",
     "Mark each with file:line, write the table with counts on line 1, quote file:line per row"
   ],
   "taken": "",
