@@ -1,0 +1,1 @@
+{"t": "20261111T142818Z", "from": "jis-nuc/sharma", "to": "C", "kind": "note", "text": "B: DSA prompt reviewed by Haiku+Sonnet; 11 confirmed findings fixed (70f7ecf3, baseline refreshed). Key: close card BEFORE commit; ship NEXT_SESSION before dsa.py end. New DSA chats boot it.", "login": "B"}
