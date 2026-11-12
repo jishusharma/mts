@@ -180,12 +180,17 @@ def refuse_shared_main(repo):
 NEVER_STAGE_NAMES = {"HALT", "AUTO_PAUSE"}
 NEVER_STAGE_RUNTIME_SUFFIXES = (".csv", ".jsonl", ".log", ".parquet")
 NEVER_STAGE_SCRATCH_NAMES = {"run.out", "gate.log"}   # gate-select-unknown-paths-1112: stray scratch output forced the full gate (21-132 min)
+NEVER_STAGE_ROOT_SUFFIXES = (".log", ".out")          # change 5 (SHIP_ARCH_REVIEW_2026-11-12): any *.log / *.out directly in the repo root is scratch
 
 
 def never_stage(path):
     p = path.replace(chr(92), "/")
     name = p.rsplit("/", 1)[-1]
-    return name in NEVER_STAGE_NAMES or name.lower() in NEVER_STAGE_SCRATCH_NAMES or ("runtime/" in p and name.lower().endswith(NEVER_STAGE_RUNTIME_SUFFIXES))
+    low = name.lower()
+    return (name in NEVER_STAGE_NAMES or low in NEVER_STAGE_SCRATCH_NAMES
+            or ("/" not in p and low.endswith(NEVER_STAGE_ROOT_SUFFIXES))
+            or (low.startswith("ship") and low.endswith(".log"))
+            or ("runtime/" in p and low.endswith(NEVER_STAGE_RUNTIME_SUFFIXES)))
 
 
 def was_deleted_on_trunk(repo, path):
@@ -868,7 +873,7 @@ def commit_pending(repo, result, subject=None, nxt=None):
         raise SyncError("ship refused: HEAD does not resolve (unborn or unreadable ref, e.g. during git auto-gc); a commit now would be an orphan initial commit")
     if result is None:
         if nxt:
-            git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
+            add_route_tag(repo, nxt, tail)
         return 0
     if not result.strip():
         raise SyncError("ship --result needs the text of the Result line")
@@ -900,6 +905,35 @@ def commit_pending(repo, result, subject=None, nxt=None):
 NEXT_FIX = 'rerun with --next "<card-id | stage | END: reason>"'
 
 
+def add_route_tag(repo, nxt, tail):
+    """Change 7 (SHIP_ARCH_REVIEW_2026-11-12): the `Next:` tag rides in a commit the ship already carries; no empty admin commit.
+    Nothing outgoing = nothing to tag (no commit, so nothing to push). A commit already carrying the same tag = done. An own plain
+    unpushed HEAD gets the line amended in. Only a merge or already-pushed HEAD gets the old empty `route tag` commit."""
+    try:
+        if not outgoing_files(repo):
+            print("--next: nothing changed vs origin; no route tag commit")
+            return
+    except Exception:
+        pass    # no origin ref (scratch repo): fall through to a real commit
+    want = nxt.strip().removeprefix("Next:").strip()
+    try:
+        import route_audit as RA
+        cs = RA.commits(repo, f"origin/{TRUNK}..HEAD")
+        if any(want == t.strip() for c in cs for t in RA.next_tags(c["body"])):
+            print("--next: an outgoing commit already carries this Next line")
+            return
+    except BaseException as e:      # SystemExit from route_audit.git too
+        if isinstance(e, KeyboardInterrupt):
+            raise
+    plain = (git(repo, "rev-parse", "--verify", "-q", "HEAD^2", check=False).returncode != 0
+             and git(repo, "merge-base", "--is-ancestor", "HEAD", f"origin/{TRUNK}", check=False).returncode == 1)
+    if plain:
+        body = git(repo, "log", "-1", "--format=%B").stdout.rstrip()
+        if git(repo, "commit", "--quiet", "--amend", "-m", body + tail, check=False).returncode == 0:
+            return
+    git(repo, "commit", "--quiet", "--allow-empty", "-m", "route tag" + chr(10) * 2 + "Result: routes the commits of this ship" + tail)
+
+
 def check_route_tags(repo):
     """d-route-tag-every-session-1104: the commits a ship carries name where the work goes next, `Next: <card-id | stage | END: reason>`
     (route_audit.py grammar; tool bookkeeping and reverts are exempt). A card id must exist in the shipped tree. Fails closed."""
@@ -919,7 +953,8 @@ def check_route_tags(repo):
         if kind is None:
             raise SyncError(f"ship refused: {val}; {NEXT_FIX}")
         if kind == "card" and val not in ids:
-            raise SyncError(f'ship refused: Next card {val} does not exist; file it (tasks.py new "<title>" --id {val}) or {NEXT_FIX}')
+            # change 3 (SHIP_ARCH_REVIEW_2026-11-12): the `Next:` line is required (operator 11-04); a card name that does not exist only warns
+            print(f'WARN: Next card {val} does not exist; file it (tasks.py new "<title>" --id {val}) or name a stage / END: reason next time')
 
 
 def ci_verb(repo, argv):
@@ -1274,7 +1309,7 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
-def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None, gate_reason=""):
+def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None, gate_reason="", gate_mode="", phases=None):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
     (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
     try:
@@ -1297,6 +1332,8 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
             "ok": bool(ok),
             "failed_steps": [str(x) for x in (failed_steps or [])],
             "gate_reason": str(gate_reason or "")[:300],
+            "gate_mode": str(gate_mode or ""),      # change 6: why a ship was fast / live / full is in the row, not in a temp log
+            "phases": {str(k): round(float(v), 2) for k, v in (phases or {}).items()},   # per ship step: merge_s, gate_s, push_s ...
             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "sha": short_sha,
         }
@@ -1333,6 +1370,24 @@ def gate_log_info(repo, offset=0, path=None):
     except Exception:
         pass
     return wait, reason
+
+
+def gate_log_mode(repo, offset=0, path=None):
+    """The `mode` of the last `gate_info` row after byte `offset` of gate_timing.jsonl (smoke, live, full, docs ...); "" when none. Never raises."""
+    mode = ""
+    try:
+        with open(Path(path) if path else _timing_path(repo), "rb") as fh:
+            fh.seek(offset)
+            for ln in fh.read().decode("utf-8", "ignore").splitlines():
+                try:
+                    r = json.loads(ln)
+                    if r.get("step") == "gate_info":
+                        mode = str(r.get("mode") or mode)
+                except (ValueError, TypeError, AttributeError):
+                    continue
+    except Exception:
+        pass
+    return mode
 
 
 def failed_step_ids(repo, offset=0, path=None):
@@ -1432,6 +1487,7 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     wait_s = 0.0
     run_s = 0.0
     retry_s = 0.0
+    phases = {"merge_s": 0.0, "push_s": 0.0}
     if after_slug:
         t_wait_0 = time.monotonic()
         res = wait_after(repo, after_slug)
@@ -1446,7 +1502,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     try:
         for attempt in range(1, SHIP_PUSH_TRIES + 1):
             before = git(repo, "rev-parse", "HEAD").stdout.strip()
+            t_phase = time.monotonic()
             merge_trunk(repo)
+            phases["merge_s"] += time.monotonic() - t_phase
             shipped_before, files = files, outgoing_files(repo)
             if not files:
                 if release_slug:
@@ -1486,7 +1544,9 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                 released = True
             pages = StalePages(repo)       # overlaps the push
             dest = push_ref or TRUNK
+            t_phase = time.monotonic()
             r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{dest}", check=False)
+            phases["push_s"] += time.monotonic() - t_phase
             if r.returncode == 0:
                 ok = True
                 write_ship_stamp(repo)
@@ -1509,7 +1569,10 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
         if files:
             failed = [] if ok else failed_step_ids(repo, log_off)
             slot_wait, reason = gate_log_info(repo, log_off)
-            record_ship_timing(repo, wait_s=wait_s + slot_wait, run_s=run_s, retry_s=retry_s, ok=ok, failed_steps=failed, gate_reason=reason)
+            phases["gate_s"] = run_s
+            phases["slot_wait_s"] = slot_wait
+            record_ship_timing(repo, wait_s=wait_s + slot_wait, run_s=run_s, retry_s=retry_s, ok=ok, failed_steps=failed, gate_reason=reason,
+                               gate_mode=gate_log_mode(repo, log_off), phases=phases)
             record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok, failed_steps=failed)
 
 

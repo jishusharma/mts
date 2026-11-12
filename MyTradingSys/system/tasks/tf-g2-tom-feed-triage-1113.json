@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/tf_extract_1113/tf-g2-tom-feed-triage-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T18:55:13Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/tf_extract_1113/tf-g2-tom-feed-triage-1113/ANSWERS.md answers Q1 Q14 Q5 Q6 with a Verdict per question (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), each quote tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md in the same folder names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "After caption unlock list Tom's newest 60 uploads, write TRIAGE.md ranking them by the rubric in PLAN.md section 3, fetch at most 12 HIGH ids, answer the gap questions from their captions; run via gemini_queue.py run tf-g2-tom-feed-triage-1113:low.",
+  "id": "tf-g2-tom-feed-triage-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:59:03Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/tf_extract_1113/tf-g2-tom-feed-triage-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tf-extract-plan 2026-11-13 (operator order 11-13)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/PLAN.md section 1 (questions Q1 Q14 Q5 Q6); read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Real captions only: run the guarded fetcher status first; after unlock fetch each id once (max 1 per id), first 429 stops the batch and is logged; never watch-the-video notes. Write TRIAGE.md in the output folder before fetching; stop at 12 ids",
+    "Write MyTradingSys/research/layer_lab/tf_extract_1113/tf-g2-tom-feed-triage-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[GEMINI] Tom newest-60 feed: title triage then fetch top 12, gap answers",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

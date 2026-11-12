@@ -10,7 +10,7 @@ import gate_select as gs
 import run_all_tests as rat
 import sync
 
-STEPS = [("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3cm", "x"), ("4", "pytest MyTradingSys/tests/a")]
+STEPS = [("3w", "x"), ("3x", "x"), ("3dl", "x"), ("3cm", "x"), ("4", "pytest MyTradingSys/tests/a")]
 
 
 class PathClass(unittest.TestCase):
@@ -25,14 +25,41 @@ class PathClass(unittest.TestCase):
         for f in ("run.out", "gate.log", "scripts/dev/run.out", "notes.txt"):
             self.assertEqual(self.mode(f), "docs", f)
 
-    def test_unknown_code_still_fails_closed(self):
+    def test_unknown_code_is_the_fast_gate(self):
         for f in ("tools/foo.py", "other/x.java", "foo.js"):
-            self.assertEqual(self.mode(f), "full", f)
+            self.assertEqual(self.mode(f), "smoke", f)   # change 1: an unknown path off the live list no longer fails closed to the full gate
 
-    def test_live_path_file_still_full(self):
+    def test_live_path_file_is_live_mode(self):
         for f in ("MyTradingSys/execution/risk_guard.py", "src/main/java/A.java", "MyTradingSys/runtime/state.log", "MyTradingSys/runtime/x.out",
                   "MyTradingSys/execution/ui.js"):
-            self.assertEqual(self.mode(f), "full", f)
+            self.assertEqual(self.mode(f), "live", f)   # change 2: execution tests + static suite, full suite in CI
+
+
+class PlanShape(unittest.TestCase):
+    """changes 3 and 4 (SHIP_ARCH_REVIEW_2026-11-12): the card lint warns, the hand-kept test-list check is gone."""
+
+    def test_card_lint_step_is_warn_only_and_3gd_is_gone(self):
+        plan = {s.num: s for s in rat.build_plan(True)}
+        self.assertIn("--warn", plan["3tl"].cmd)
+        self.assertNotIn("3gd", plan)
+        self.assertNotIn("3gd", gs.ALWAYS)
+        self.assertNotIn("3gd", rat.CHEAP_STEPS)
+        for keep in ("3pc", "3vd", "3la", "3x", "3w"):   # these stay blocking steps of the plan
+            self.assertIn(keep, plan)
+
+    def test_gate_slots_stay_two(self):
+        self.assertEqual(sync.GATE_SLOTS, 2)
+
+
+class CoordinatorTiming(unittest.TestCase):
+    """change 8: one row per plan run, outside the repo; nothing is cut."""
+
+    def test_plan_timing_row_is_written(self):
+        import supervisor
+        with tempfile.TemporaryDirectory() as d:
+            self.assertTrue(supervisor.record_plan_timing("C", 3.456, n_lines=12, context_tokens=90000, running=2, home=d))
+            row = json.loads((Path(d) / "C-plan-timing.jsonl").read_text().splitlines()[-1])
+            self.assertEqual((row["login"], row["wall_s"], row["lines"], row["context_tokens"], row["running"]), ("C", 3.46, 12, 90000, 2))
 
 
 class Staging(unittest.TestCase):
@@ -40,6 +67,13 @@ class Staging(unittest.TestCase):
         self.assertTrue(sync.never_stage("run.out"))
         self.assertTrue(sync.never_stage("sub/gate.log"))
         self.assertFalse(sync.never_stage("scripts/dev/gate_select.py"))
+
+    def test_root_junk_is_never_staged(self):
+        # change 5 (SHIP_ARCH_REVIEW_2026-11-12): any *.log / *.out in the repo root, and ship*.log anywhere
+        for f in ("build.log", "ship_out.out", "ship-20261112.log", "sub/ship.log", "nohup.out"):
+            self.assertTrue(sync.never_stage(f), f)
+        for f in ("notes.md", "scripts/dev/x.out.py", "docs/build.log.md"):
+            self.assertFalse(sync.never_stage(f), f)
 
 
 class Timing(unittest.TestCase):
@@ -54,6 +88,16 @@ class Timing(unittest.TestCase):
             row = json.loads(p.read_text().splitlines()[-1])
             self.assertEqual((row["wait_s"], row["gate_reason"]), (12.5, "full: x is on the live path"))
             self.assertEqual(sync.failed_step_ids(d, 0, path=p), [])
+
+    def test_gate_mode_and_phases_flow_into_ship_row(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "t.jsonl"
+            rat.record_gate_row("gate_info", path=p, gate_reason="live: x", mode="live")
+            self.assertEqual(sync.gate_log_mode(d, 0, path=p), "live")
+            sync.record_ship_timing(d, wait_s=1, run_s=2, retry_s=0, path=p, sha="abc", gate_mode="live", phases={"merge_s": 1.234, "push_s": 0.5})
+            row = json.loads(p.read_text().splitlines()[-1])
+            self.assertEqual(row["gate_mode"], "live")
+            self.assertEqual(row["phases"], {"merge_s": 1.23, "push_s": 0.5})
 
     def test_slot_wrapper_records_wait(self):
         with tempfile.TemporaryDirectory() as d:
