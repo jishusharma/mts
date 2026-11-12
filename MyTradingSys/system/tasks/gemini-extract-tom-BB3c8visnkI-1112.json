@@ -16,7 +16,22 @@
   "id": "gemini-extract-tom-BB3c8visnkI-1112",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Three Gemini extraction cards (50W MA, Tom BB3c8visnkI, Tom e83njGZFrPw) plus shared brief",
+      "ref": "64707c5077a0",
+      "utc": "2026-11-12T02:56:42Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "64707c5077a0 Three Gemini extraction cards (50W MA, Tom BB3c8visnkI, Tom e83njGZFrPw) plus",
+      "ref": "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md",
+      "utc": "2026-11-12T02:56:42Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T02:56:26Z",
+  "refreshed": "2026-11-12T02:59:46Z",
   "refs": [
     "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md"
   ],
@@ -41,7 +56,7 @@
     "proxy, VPN, cookies or any path around a 429",
     "no edit to scripts/dev/fetch_captions*.py or verify_extract_quotes.py; no live tree, no .secrets/.env"
   ],
-  "scope_sha": "",
+  "scope_sha": "64707c5077a0",
   "size": "S",
   "sources": [
     "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md",
