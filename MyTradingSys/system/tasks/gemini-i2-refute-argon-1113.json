@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-12T20:57:12Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/refute/argon.md"
   ],
@@ -16,11 +16,18 @@
   "id": "gemini-i2-refute-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "25 verbatim counter-example rows across 14 ITERATION_2 gaps; verify_extract_quotes exit 0",
+      "ref": "3d6b9ba23",
+      "utc": "2026-11-12T20:57:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "gemini-other-layers-gap-hunt-argon-1113",
   "note": "Run as gemini_queue.py run gemini-i2-refute-argon-1113:low:argon. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply.",
   "prio": 1,
   "refine_tries": 0,
@@ -31,7 +38,7 @@
     "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "25 verbatim counter-example rows across 14 ITERATION_2 gaps; verify_extract_quotes exit 0",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -49,7 +56,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "For each gap row in ITERATION_2.md search for counter-evidence",
