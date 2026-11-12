@@ -260,3 +260,17 @@ def test_main_stamps_when_fetch_complete(tmp_path, monkeypatch):
         now, fetch=lambda c, k: [], extract=lambda v, b: {}, store=tmp_path / "rows.json"))
     assert cbp_run.main(["--force"], now=datetime(2026, 11, 3, 5, 0, tzinfo=timezone.utc)) == 0
     assert (tmp_path / "stamp.json").exists()
+
+
+def test_no_fetch_never_calls_the_fetcher_and_withholds_stamp(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    monkeypatch.setenv("CBP_STAMP", str(tmp_path / "stamp.json"))
+    monkeypatch.setattr(cbp_run, "rebuild_dashboard", lambda: None)
+    monkeypatch.setattr(cbp_run, "TRANSCRIPTS", tmp_path)
+    monkeypatch.setattr(cbp_run, "fetch_new", lambda *a, **k: (_ for _ in ()).throw(AssertionError("fetched")))
+    orig = cbp_run.run_once
+    monkeypatch.setattr(cbp_run, "run_once", lambda now, fetch=cbp_run.fetch_new: orig(
+        now, fetch=fetch, extract=lambda v, b: {}, store=tmp_path / "rows.json"))
+    assert cbp_run.main(["--force", "--no-fetch"], now=datetime(2026, 11, 3, 5, 0, tzinfo=timezone.utc)) == 0
+    assert (tmp_path / "rows.json").exists()
+    assert not (tmp_path / "stamp.json").exists()

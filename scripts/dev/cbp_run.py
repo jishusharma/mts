@@ -2,6 +2,7 @@
 
     python scripts/dev/cbp_run.py --due     # only if a UTC window is open and not yet done in it
     python scripts/dev/cbp_run.py --force   # whenever the operator asks
+    python scripts/dev/cbp_run.py --force --no-fetch   # YouTube locked: extract cached (browser-panel) transcripts only
 
 Windows (UTC, OURS): EU 04:00-12:00, pre-US 12:00-midnight. Scheduled starts: 05:00 and 20:00 (Sat 05:30, Sun 16:30);
 windows stay open for retries and catch-up. A coordinator may also call --due on each wake;
@@ -333,6 +334,8 @@ def main(argv=None, now=None):
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--due", action="store_true")
     g.add_argument("--force", action="store_true")
+    ap.add_argument("--no-fetch", action="store_true",
+                    help="skip the caption fetch; extract only transcripts already cached (browser-panel path, YT_PROXY.md); stamp withheld")
     a = ap.parse_args(argv)
     now = now or datetime.now(timezone.utc)
     window = None
@@ -344,13 +347,13 @@ def main(argv=None, now=None):
     partial = []
     try:
         try:
-            added, total, rejected = run_once(now)
+            added, total, rejected = run_once(now, fetch=lambda c, k: []) if a.no_fetch else run_once(now)
         except FetchIncomplete as e:  # rows and verdicts are saved; only the stamp is withheld
             (added, total, rejected), partial = e.result, e.analysts
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as e:
         print("cbp: FAILED (%s); window not marked complete" % type(e).__name__, file=sys.stderr)
         return 1
-    if not partial:
+    if not partial and not a.no_fetch:  # a no-fetch run has not covered the window: the normal run still owes the fetch
         write_stamp(now, window or open_window(now))
     rebuild_dashboard()
     end = now.astimezone(timezone.utc).date().isoformat()  # window = the 5 days up to today
