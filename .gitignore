@@ -260,3 +260,7 @@ MyTradingSys/runtime/level_touch_state.json
 
 # Live Aid OI poller snapshot (runtime data, never committed)
 runtime_data/live_aid/
+
+# Live Aid cross-exchange liquidation feed (runtime output, never committed; card live-aid-xliq-1113)
+MyTradingSys/tools/live_aid/xliq_feed.js
+MyTradingSys/tools/live_aid/xliq_feed.js.tmp
