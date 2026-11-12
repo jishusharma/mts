@@ -43,6 +43,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | 2HcJ3NeZmEQ Malkan | extracts/processed/malkan/extract_2HcJ3NeZmEQ.md | repo | Malkan | ledger: method=captions, quotes=PASS/6, used_by=none |
 | 2xnNPIyHGQ4  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 2xnNPIyHGQ4_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | 326kGNFr8tM  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
+| 3JqMyzE8jIQ Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/11, used_by=none |
 | 3JqMyzE8jIQ Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_3JqMyzE8jIQ.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/11, used_by=none |
 | 3o1VVsfBmmU Tom | extracts/v2/tom/3o1VVsfBmmU_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/39, used_by=none |
 | 3o1VVsfBmmU Tom | extracts/v2/tom/CATALOG_DELTA_v1batch1.md | repo | Tom | ledger: method=captions, quotes=PASS/6, used_by=none |
@@ -52,6 +53,7 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | 4kpH94Hb0GQ  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/3, used_by=none |
 | 4MoNjEQ2Dd8 Tom | MyTradingSys/research/fast_track_2026-09-27/EXTRACTION_METHOD_V2.md | repo | Tom | ledger: method=captions, quotes=PASS/1, used_by=none |
 | 4MoNjEQ2Dd8 Tom | extracts/v2/tom/4MoNjEQ2Dd8_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/21, used_by=none |
+| 4P5WAxyPCis Serge Hoffmann (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Serge Hoffmann (Trade the Traders) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | 4P5WAxyPCis Serge Hoffmann (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_4P5WAxyPCis.md | repo | Serge Hoffmann (Trade the Traders) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | 4VXpUjhKG2U  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 4VXpUjhKG2U_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | 4zazKDSXlh8  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
@@ -78,7 +80,9 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | 96iPFDpXEcU Tom | extracts/processed/tom/new_selected_10/extract_96iPFDpXEcU.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
 | 9ba0p8ZPL4c  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | 9eHZMVXilgc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript 9eHZMVXilgc_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| 9IliXww64uM Fabio Valentini | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Fabio Valentini | ledger: method=captions, quotes=PASS/14, used_by=none |
 | 9IliXww64uM Fabio Valentini | MyTradingSys/research/orderflow_extracts_1112/extract_9IliXww64uM.md | repo | Fabio Valentini | ledger: method=captions, quotes=PASS/14, used_by=none |
+| 9VN9y2DVtGQ Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/11, used_by=none |
 | 9VN9y2DVtGQ Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_9VN9y2DVtGQ.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/11, used_by=none |
 | <id> Malkan | MyTradingSys/research/malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md | repo | Malkan | ledger: method=none, quotes=FAIL/1, used_by=none |
 | _JoJbu_Ug-A Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract__JoJbu_Ug-A.md | repo | Krown | ledger: method=none, quotes=FAIL/11, used_by=none |
@@ -89,16 +93,19 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | A-CQiV_UFB4 Malkan | MyTradingSys/research/malkan_extract_2026-10-15/extracts/extract_A-CQiV_UFB4.md | repo | Malkan | ledger: method=captions, quotes=PASS/63, used_by=rsi:malkan_divergence_default.json |
 | a0sy0EW_nSA  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/3, used_by=none |
 | a5tvBwyCddA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| ACb0Qtt3DSQ Serge Hoffmann (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Serge Hoffmann (Trade the Traders) | ledger: method=captions, quotes=PASS/8, used_by=none |
 | ACb0Qtt3DSQ Serge Hoffmann (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_ACb0Qtt3DSQ.md | repo | Serge Hoffmann (Trade the Traders) | ledger: method=captions, quotes=PASS/8, used_by=none |
 | am0m_KZLN2M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | AQR6zIgCx7I  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript AQR6zIgCx7I_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | aTMFouI9mF4  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md | repo |  | ledger: method=none, quotes=FAIL/4, used_by=none |
+| AtR_c-B0jw8 Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | AtR_c-B0jw8 Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_AtR_c-B0jw8.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | aursfDVYzUk  | extracts/gemini_out/aursfDVYzUk_gemini.md | repo |  | ledger: method=captions, quotes=PASS/12, used_by=*:FORMULAS.md |
 | aursfDVYzUk Tom | extracts/processed/tom/new_selected_10/extract_aursfDVYzUk.md | repo | Tom | ledger: method=captions, quotes=PASS/10, used_by=*:FORMULAS.md |
 | avCqX8ephOU  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | Aysdt7PBETQ Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_Aysdt7PBETQ.md | repo | Krown | ledger: method=captions, quotes=PASS/39, used_by=none |
 | b0ha9ubd1q8  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| BB3c8visnkI Tom | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom | ledger: method=captions, quotes=PASS/9, used_by=*:FORMULAS.md |
 | BB3c8visnkI Tom | MyTradingSys/research/orderflow_extracts_1112/extract_BB3c8visnkI.md | repo | Tom | ledger: method=captions, quotes=PASS/9, used_by=*:FORMULAS.md |
 | BB3c8visnkI Tom | extracts/processed/tom/extract_BB3c8visnkI.md | repo | Tom | ledger: method=captions, quotes=PASS/19, used_by=*:FORMULAS.md |
 | bekghgecip8  | extracts/processed/cowen/extract_bekghgecip8.md | repo |  | ledger: method=none, quotes=FAIL/40, used_by=none |
@@ -120,9 +127,12 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | D-0xTsMPwys  | MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md | repo |  | ledger: method=none, quotes=FAIL/12, used_by=none |
 | DD73wDVvObI Fabio | extracts/gemini_out/fabio/DD73wDVvObI_note.md | repo | Fabio | ledger: method=none, quotes=FAIL/2, used_by=none |
 | dh-ysRR8f-M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript dh-ysRR8f-M_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| DVZVE9rXGtU Trade the Traders (mixed speakers) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Trade the Traders (mixed speakers) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | DVZVE9rXGtU Trade the Traders (mixed speakers) | MyTradingSys/research/orderflow_extracts_1112/extract_DVZVE9rXGtU.md | repo | Trade the Traders (mixed speakers) | ledger: method=captions, quotes=PASS/10, used_by=none |
+| DyS79Eb92Ug Fabio Valentini | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Fabio Valentini | ledger: method=captions, quotes=PASS/23, used_by=none |
 | DyS79Eb92Ug Fabio Valentini | MyTradingSys/research/orderflow_extracts_1112/extract_DyS79Eb92Ug.md | repo | Fabio Valentini | ledger: method=captions, quotes=PASS/23, used_by=none |
 | e6Gm1n2h05M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript e6Gm1n2h05M_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| e83njGZFrPw Tom | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
 | e83njGZFrPw Tom | MyTradingSys/research/orderflow_extracts_1112/extract_e83njGZFrPw.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
 | e83njGZFrPw Tom | MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md | repo | Tom | ledger: method=captions, quotes=PASS/6, used_by=none |
 | E_AP5kudK5Y  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
@@ -661,7 +671,9 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | NkQeOVDTAec Tom | extracts/v2/tom/NkQeOVDTAec_v2.md | repo | Tom | ledger: method=captions, quotes=FAIL/43, used_by=none |
 | o-w5Gxss6T0 Fabio | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Fabio | ledger: method=captions, quotes=PASS/3, used_by=none |
 | o-w5Gxss6T0 Fabio | extracts/v2/fabio/o-w5Gxss6T0_v2.md | repo | Fabio | ledger: method=captions, quotes=PASS/9, used_by=none |
+| oa8kxSLLkAo Trade the Traders (speaker unnamed) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Trade the Traders (speaker unnamed) | ledger: method=captions, quotes=PASS/7, used_by=none |
 | oa8kxSLLkAo Trade the Traders (speaker unnamed) | MyTradingSys/research/orderflow_extracts_1112/extract_oa8kxSLLkAo.md | repo | Trade the Traders (speaker unnamed) | ledger: method=captions, quotes=PASS/7, used_by=none |
+| ODdF0Bn_KSc Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | ODdF0Bn_KSc Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_ODdF0Bn_KSc.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | Of_wlv3xaZo Tom | MyTradingSys/research/setup_catalog_2026-10-15/EXTRACTION_CRITICAL_GAPS_2026-10-18.md | repo | Tom | ledger: method=captions, quotes=PASS/2, used_by=none |
 | Of_wlv3xaZo Tom | extracts/v2/tom/Of_wlv3xaZo_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/18, used_by=none |
@@ -690,11 +702,14 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | quoII9t08Qc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | RCq5pfzA4oo  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
 | rCTrQ4fkL1Y Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript rCTrQ4fkL1Y_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
+| rFPCtOcfUMI Trade the Traders (mixed speakers) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Trade the Traders (mixed speakers) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | rFPCtOcfUMI Trade the Traders (mixed speakers) | MyTradingSys/research/orderflow_extracts_1112/extract_rFPCtOcfUMI.md | repo | Trade the Traders (mixed speakers) | ledger: method=captions, quotes=PASS/9, used_by=none |
+| ridY2Z0hSQA Trade the Traders (speaker unnamed) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Trade the Traders (speaker unnamed) | ledger: method=captions, quotes=PASS/8, used_by=none |
 | ridY2Z0hSQA Trade the Traders (speaker unnamed) | MyTradingSys/research/orderflow_extracts_1112/extract_ridY2Z0hSQA.md | repo | Trade the Traders (speaker unnamed) | ledger: method=captions, quotes=PASS/8, used_by=none |
 | RPmxr3c8mso  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | rrHj24GSR6M  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript rrHj24GSR6M_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | RUKGEMdVNYA  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| RwQBdF9TSvc Trade the Traders (mixed speakers) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Trade the Traders (mixed speakers) | ledger: method=captions, quotes=PASS/13, used_by=none |
 | RwQBdF9TSvc Trade the Traders (mixed speakers) | MyTradingSys/research/orderflow_extracts_1112/extract_RwQBdF9TSvc.md | repo | Trade the Traders (mixed speakers) | ledger: method=captions, quotes=PASS/13, used_by=none |
 | RxQDKvTI1iw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | sCLLZKY_r8g Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_sCLLZKY_r8g.md | repo | Krown | ledger: method=none, quotes=FAIL/2, used_by=none |
@@ -993,22 +1008,28 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | UHY740h3e-Y Krown | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) | Krown | ledger: method=none, quotes=-/-, used_by=none |
 | ujedEcmvBMk Tom | extracts/v2/tom/CATALOG_DELTA_v1batch1.md | repo | Tom | ledger: method=captions, quotes=PASS/3, used_by=none |
 | ujedEcmvBMk Tom | extracts/v2/tom/ujedEcmvBMk_v2.md | repo | Tom | ledger: method=captions, quotes=FAIL/46, used_by=none |
+| uk4PZV59nYw Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | uk4PZV59nYw Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_uk4PZV59nYw.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | ukCnj8MxLGM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | UOBgXV20yCM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript UOBgXV20yCM_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | UqAvU1loT_k Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_UqAvU1loT_k.md | repo | Krown | ledger: method=captions, quotes=PASS/58, used_by=none |
 | UrZ4vpHJ97g Tom | extracts/v2/tom/UrZ4vpHJ97g_v2.md | repo | Tom | ledger: method=captions, quotes=PASS/8, used_by=none |
+| usho6UVLqkE Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/11, used_by=none |
 | usho6UVLqkE Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_usho6UVLqkE.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/11, used_by=none |
 | V0gjxlaW2Qk Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_V0gjxlaW2Qk.md | repo | Krown | ledger: method=none, quotes=FAIL/3, used_by=none |
 | v5EuDl9c0iI  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript v5EuDl9c0iI_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | v8pCR_bA0_0  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| Vd83oo_geMk Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
 | Vd83oo_geMk Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_Vd83oo_geMk.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/10, used_by=none |
+| viT_VzF5Fsw Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | viT_VzF5Fsw Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_viT_VzF5Fsw.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | vjzy_KxJ_y8 Krown | MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_vjzy_KxJ_y8.md | repo | Krown | ledger: method=captions, quotes=PASS/93, used_by=none |
 | vk0mkNPuhDc  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript vk0mkNPuhDc_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
 | vl01TiVTuoQ  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript vl01TiVTuoQ_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| VOiy8mAALWA Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/12, used_by=none |
 | VOiy8mAALWA Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_VOiy8mAALWA.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/12, used_by=none |
 | VumVuGnCcFM  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript VumVuGnCcFM_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
+| VxN5IxTwpbE  | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo |  | ledger: method=captions, quotes=PASS/6, used_by=none |
 | VxN5IxTwpbE  | MyTradingSys/research/orderflow_extracts_1112/extract_VxN5IxTwpbE.md | repo |  | ledger: method=captions, quotes=PASS/6, used_by=none |
 | W1HrDl70Lhk Malkan | MyTradingSys/research/malkan_extract_2026-10-15/COMPARE.md | repo | Malkan | ledger: method=captions, quotes=PASS/14, used_by=none |
 | W1HrDl70Lhk Malkan | MyTradingSys/research/malkan_extract_2026-10-15/SETUP_SUMMARY.md | repo | Malkan | ledger: method=captions, quotes=PASS/23, used_by=none |
@@ -1029,10 +1050,13 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | XNfOIzPYChA Kurisko | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript XNfOIzPYChA_raw.txt on the host that fetched it) | Kurisko | ledger: method=captions, quotes=-/-, used_by=none |
 | xtN0U-j_4Jc  | MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md | repo |  | ledger: method=none, quotes=FAIL/5, used_by=none |
 | y0gP2Ih6jwE  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/2, used_by=none |
+| y67l86cSqb8 Trade the Traders (speaker unnamed) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Trade the Traders (speaker unnamed) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | y67l86cSqb8 Trade the Traders (speaker unnamed) | MyTradingSys/research/orderflow_extracts_1112/extract_y67l86cSqb8.md | repo | Trade the Traders (speaker unnamed) | ledger: method=captions, quotes=PASS/9, used_by=none |
 | YC1VwJJCALw  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
+| YkclL6xgu-s Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/8, used_by=none |
 | YkclL6xgu-s Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_YkclL6xgu-s.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/8, used_by=none |
 | YmygDgtoxO8 Tom | extracts/v2/tom/YmygDgtoxO8_v2.md | repo | Tom | ledger: method=captions, quotes=FAIL/38, used_by=none |
+| YopZ5ZDmMFw Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/12, used_by=none |
 | YopZ5ZDmMFw Tom Vorwald (Trade the Traders) | MyTradingSys/research/orderflow_extracts_1112/extract_YopZ5ZDmMFw.md | repo | Tom Vorwald (Trade the Traders) | ledger: method=captions, quotes=PASS/12, used_by=none |
 | yp8rHZw8Ro0  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript none on the host that fetched it) |  | ledger: method=none, quotes=-/-, used_by=none |
 | yRvMW6lgN1o  | MyTradingSys/research/extraction_ledger_2026-10/EXTRACTION_LEDGER.csv | ledger row only (transcript yRvMW6lgN1o_raw.txt on the host that fetched it) |  | ledger: method=captions, quotes=-/-, used_by=none |
@@ -1048,4 +1072,4 @@ Search: `python scripts/dev/where_is.py <topic>`. Search here before saying some
 | zQTbdEweG3c Tom | MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md | repo | Tom | ledger: method=captions, quotes=PASS/3, used_by=none |
 | ZYrKqu8TxHo  | MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md | repo |  | ledger: method=none, quotes=FAIL/1, used_by=none |
 
-Rows: 1043. Sources: ledger, wiring audits, layer_index. Per-machine operator material is searched locally only.
+Rows: 1067. Sources: ledger, wiring audits, layer_index. Per-machine operator material is searched locally only.
