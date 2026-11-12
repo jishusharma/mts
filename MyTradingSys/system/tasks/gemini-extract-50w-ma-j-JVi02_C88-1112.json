@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst LongShort --status",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88/EXTRACT.md"
+  ],
+  "created": "2026-11-12T02:55:57Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88/EXTRACT.md exists with verbatim quotes (verifier exit 0, see tests), or MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88/NOT_IN_DATA.md names the blocker; MyTradingSys/research/layer_lab/reports/2026-11-12_gemini-extract-50w-ma-j-JVi02_C88-1112.md line 1 = quotes PASS count.",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Extract video j-JVi02_C88 (Bitcoin Falls Below the 50W Moving Average (The Long & The Short)) into verbatim timed quotes with the speaker's own words; verify_extract_quotes.py must exit 0; anything unverifiable is dropped.",
+  "id": "gemini-extract-50w-ma-j-JVi02_C88-1112",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Three Gemini extraction cards (50W MA, Tom BB3c8visnkI, Tom e83njGZFrPw) plus shared brief",
+      "ref": "64707c5077a0",
+      "utc": "2026-11-12T02:56:42Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "64707c5077a0 Three Gemini extraction cards (50W MA, Tom BB3c8visnkI, Tom e83njGZFrPw) plus",
+      "ref": "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md",
+      "utc": "2026-11-12T02:56:42Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS) 2026-11-12: Gemini lane, effort low (load as gemini-extract-50w-ma-j-JVi02_C88-1112:low); DSA/AIBridge parked. Captions locked until 2026-11-13T02:53Z; never evaded.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T02:59:45Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88/EXTRACT.md (new)",
+    "MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88/gemini_transcript_j-JVi02_C88.txt (new, only if no real captions)",
+    "MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88/NOT_IN_DATA.md (new, only if blocked)",
+    "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md (read)",
+    "MyTradingSys/research/layer_lab/reports/2026-11-12_gemini-extract-50w-ma-j-JVi02_C88-1112.md (new)"
+  ],
+  "scope_out": [
+    "any YouTube request through yt-dlp/fetch_captions*.py while 'fetch_captions_timed.py --status' says BLOCKED",
+    "proxy, VPN, cookies or any path around a 429",
+    "no edit to scripts/dev/fetch_captions*.py or verify_extract_quotes.py; no live tree, no .secrets/.env"
+  ],
+  "scope_sha": "64707c5077a0",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md",
+    "scripts/dev/gemini_queue.py"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md and follow it for video j-JVi02_C88 (analyst tag LongShort, out dir MyTradingSys/research/layer_lab/video_extracts_1112/j-JVi02_C88).",
+    "Real captions first (guard --status), else Gemini transcript file; quotes verbatim only; unverifiable quotes dropped.",
+    "Write EXTRACT.md, run verify_extract_quotes.py until exit 0, write the one-line report, commit on your branch."
+  ],
+  "tests": "verify_extract_quotes.py on EXTRACT.md with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[GEMINI] Bitcoin Falls Below the 50W Moving Average (LongShort)",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
