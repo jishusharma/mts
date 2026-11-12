@@ -1,0 +1,78 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_cbp_build_row.py scripts/dev/test_cbp_run.py -q"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T15:15:11Z",
+    "misses": 49,
+    "reads": [
+      "scripts/dev/tasks.py",
+      "scripts/dev/cbp_run.py",
+      "scripts/dev/test_cbp_run.py",
+      "scripts/dev/test_cbp_build_row.py",
+      "scripts/dev/footprint_12h.py",
+      "MyTradingSys/research/cbp/ALT_PICKS_2026-11-03.md",
+      "scripts/dev/cbp_scorecard.py",
+      "MyTradingSys/research/cbp/archive/SISTER_NOTE_2026-11-03.md"
+    ],
+    "session": "agent-aaa03b4506791dd87"
+  },
+  "created": "2026-11-12T15:10:24Z",
+  "depends_on": [],
+  "done_when": "pytest scripts/dev/test_cbp_build_row.py green with >=3 new tests that failed on the old code; build_row on the Krown 7oTGS8m-94s fixture returns flags stop_wrong_side and bias_contradicts_trades; Michaal ETH 2360 fixture returns entry_far_from_spot",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "cbp_run.build_row rejects or flags impossible extractor output: stop on wrong side of entry (LONG stop >= entry; SHORT stop <= entry), entry >5% from spot at publish, row bias contradicting its trades",
+  "id": "cbp-extract-errors-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: footprint_12h builder + 8 tests (sign-flip mutation fails 6) Next: footprint-12h-d",
+      "ref": "28a028b524db",
+      "utc": "2026-11-12T13:08:57Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-12 T0-ONLY Flags are an optional new row field; validate_row must accept it. Krown 73,895 LONG also has no stop (not an error here).",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T15:10:51Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/test_cbp_build_row.py",
+    "scripts/dev/extra_tests.tsv",
+    "MyTradingSys/cbp/__init__.py"
+  ],
+  "scope_out": [
+    "rows.json data (outside repo); extractor PROMPT wording; live tree"
+  ],
+  "scope_sha": "28a028b524db",
+  "size": "M",
+  "sources": [
+    "F:/CryptoScrapper/cbp_store/rows.json rows 4IwClJva4B4, 7oTGS8m-94s; threshold 5% is OURS (chosen, unchecked)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read cbp_run.build_row (line 239) and test_cbp_build_row.py; parse the first number in entry/invalidation strings (strip commas, k suffix); skip a check when no number parses",
+    "Stop-side check: LONG needs stop < entry, SHORT needs stop > entry, else blank that trade's invalidation and add row flag stop_wrong_side (row kept)",
+    "Spot check: build_row takes an injectable spot(asset, date) -> price|None; default = Binance public spot 1d kline close for ASSETUSDT on the publish date (public data, no key); None = skip. Entry >5% (OURS) off spot adds flag entry_far_from_spot, entry kept as stated",
+    "Bias check: BEARISH row with a LONG trade, or BULLISH row with a SHORT trade, adds flag bias_contradicts_trades",
+    "Tests first in test_cbp_build_row.py (already registered in extra_tests.tsv:236), spot injected so tests are offline: Krown 7oTGS8m-94s LONG 74573 stop 82,000 BEARISH; Michaal 4IwClJva4B4 ETH 2360 vs spot 2100; run on old code, see them fail; then implement"
+  ],
+  "tests": "scripts/dev/test_cbp_build_row.py: new cases for wrong-side stop, far entry, bias contradiction; must fail on pre-change build_row",
+  "title": "CBP extractor stores impossible trades: stop on wrong side, entry far from spot, bias contradicts trades",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

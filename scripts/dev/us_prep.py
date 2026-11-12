@@ -307,6 +307,23 @@ def build_playbook(root=ROOT, run=subprocess.run, main_root=None):
         return f"PLAYBOOK FAILED: {type(exc).__name__}: {str(exc)[:200]}"
 
 
+def build_footprint(root=ROOT, main_root=None):
+    """12h footprint record + bias line (card footprint-12h-daily-us-bias-1112): footprint_12h.ensure() rebuilds only missing or
+    partial bars, then footprint_bias_data.js (git-ignored) is copied to the main checkout. One status line; never raises."""
+    try:
+        spec = importlib.util.spec_from_file_location("footprint_12h", Path(root) / "scripts" / "dev" / "footprint_12h.py")
+        fp = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(fp)
+        msg = fp.build_footprint(log=lambda *_: None)
+        js = Path(root) / PLAYBOOK_REL / "footprint_bias_data.js"
+        main_root = main_root if main_root is not None else main_checkout(root)
+        if main_root is not None and js.exists() and (Path(main_root) / PLAYBOOK_REL / js.name).resolve() != js.resolve():
+            shutil.copyfile(js, Path(main_root) / PLAYBOOK_REL / js.name)
+        return msg
+    except Exception as exc:  # noqa: BLE001
+        return f"FOOTPRINT FAILED: {type(exc).__name__}: {str(exc)[:200]}"
+
+
 # ---------- P4 scorer ----------
 def _ledger():
     spec = importlib.util.spec_from_file_location("scenario_ledger", LEDGER_PY)
@@ -372,6 +389,7 @@ def main(argv=None):
         print(render_p4_md(res))
     else:
         print(build_playbook())
+        print(build_footprint())
     print("wrote", p)
 
 
