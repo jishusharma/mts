@@ -5,7 +5,7 @@
   python scripts/dev/artifacts.py plan --account jishu.sharma   # what a session on that account must publish / pin / record
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
   python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
-  python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD]   # after an Artifact publish: store published_sha + the publish date (default today)
+  python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD] [--ship]   # --ship commits+ships registry.json itself; after an Artifact publish: store published_sha + the publish date (default today)
   python scripts/dev/artifacts.py stamp --file page.html   # put "Updated <UTC>" first on a built page (build does it for generated pages)
   python scripts/dev/artifacts.py republish                 # REPUBLISH <slug> <html> <url> for each stale page (publisher login only; --all: any login)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
@@ -371,6 +371,20 @@ def publish_record(reg, slug, today=None, repo=REPO, now=None):
     return pg.get("published_sha") or "(feed page, no sha)"
 
 
+def ship_records(slugs, run=subprocess.run, repo=REPO):
+    """Commit and ship ONLY registry.json after publish-record, so a publish record never sits uncommitted in a scratch tree
+    (2026-11-13: stale kept listing pages that were already republished). Returns the ship exit code."""
+    reg = str(REG.relative_to(repo)) if REG.is_absolute() else str(REG)
+    msg = "Pages republished: publish records for " + ", ".join(slugs) + chr(10)*2 + "Result: registry publish records current" + chr(10) + "Next: END: records only"
+    git = lambda *a: run(["git", "-C", str(repo), *a], capture_output=True, text=True)
+    git("add", "--", reg)
+    if git("diff", "--cached", "--quiet", "--", reg).returncode == 0:
+        return 0
+    if git("commit", "-m", msg, "--", reg).returncode != 0:
+        return 1
+    return run([sys.executable, str(Path(repo) / "scripts" / "dev" / "sync.py"), "ship"], cwd=str(repo)).returncode
+
+
 def cmd_build(reg):
     for pg in reg["pages"]:
         g = pg.get("generator") or ""
@@ -560,6 +574,7 @@ def main(argv=None):
     ap.add_argument("--all", action="store_true", help="republish: print for any login, not only a publisher login")
     ap.add_argument("--file", help="banner / stamp: html to update in place (default: the page's repo html)")
     ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
+    ap.add_argument("--ship", action="store_true", help="publish-record: commit and ship registry.json at once (no record left uncommitted)")
     a = ap.parse_args(argv)
     reg = load()
     if a.cmd == "audit-links":
@@ -609,7 +624,7 @@ def main(argv=None):
         sha = publish_record(reg, a.slug, today=a.date)
         REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         print(f"publish-record: {a.slug} published_sha={sha[:12] if len(sha) == 64 else sha}")
-        return 0
+        return ship_records([a.slug]) if a.ship else 0
     if a.cmd == "stale":
         lines = stale_lines(reg)
         print("\n".join(lines) if lines else f"artifacts: no stale pages ({len(tracked(reg))} checked)")

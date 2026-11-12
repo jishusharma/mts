@@ -496,3 +496,27 @@ class FeedStaleTests(unittest.TestCase):
         for slug in ("cbp_analyst_desk", "buy_crypto", "live_feed_onepage_mock", "research_map"):
             self.assertTrue(by[slug].get("max_age_h"), slug)
         self.assertIn("cbp", by["buy_crypto"]["producer"])
+
+
+class ShipRecordsTests(unittest.TestCase):
+    def test_ship_records_commits_only_registry_then_ships(self):
+        calls = []
+
+        class R:
+            def __init__(self, rc=0): self.returncode = rc
+
+        def run(cmd, **kw):
+            calls.append(cmd)
+            return R(1 if "--quiet" in cmd else 0)      # diff --quiet rc 1 = there is a change
+        self.assertEqual(af.ship_records(["mts_home"], run=run), 0)
+        flat = [" ".join(map(str, c)) for c in calls]
+        self.assertTrue(any(" commit " in c and "registry.json" in c for c in flat))
+        self.assertIn("sync.py", flat[-1])
+        self.assertTrue(flat[-1].endswith("ship"))
+
+    def test_ship_records_noop_when_registry_unchanged(self):
+        class R:
+            returncode = 0
+        calls = []
+        self.assertEqual(af.ship_records(["x"], run=lambda c, **k: calls.append(c) or R()), 0)
+        self.assertFalse(any("sync.py" in " ".join(map(str, c)) for c in calls))
