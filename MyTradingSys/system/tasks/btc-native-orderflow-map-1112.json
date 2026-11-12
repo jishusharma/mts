@@ -6,12 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T22:48:50Z",
-    "misses": 2,
+    "folded": "2026-11-12T09:06:35Z",
+    "misses": 17,
     "reads": [
-      "MyTradingSys/research/VERDICTS.csv"
+      "MyTradingSys/research/btc_orderflow_map_1112/results_clocks.json"
     ],
-    "session": "agent-ab94b81082deb0108"
+    "session": "agent-ab8b9320c2eb4f221"
   },
   "created": "2026-11-11T19:46:46Z",
   "depends_on": [
