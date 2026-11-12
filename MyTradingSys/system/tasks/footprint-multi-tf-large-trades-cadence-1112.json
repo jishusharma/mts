@@ -1,64 +1,36 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [
-    "python -m pytest scripts/dev/test_footprint_12h.py MyTradingSys/tools/live_aid/test_live_aid_layout.py -q",
-    "python scripts/dev/footprint_12h.py --tf 15m --days 1 --js"
-  ],
+  "commands": [],
   "created": "2026-11-12T13:16:03Z",
   "depends_on": [],
-  "done_when": "pytest scripts/dev/test_footprint_12h.py green with >=4 new tests that failed first; footprint_12h.py --tf 1h --days 1 writes D:/MTS_data/footprint_1h/ files with a large_trades list; live_aid.html contains the 60 s reload and a 15m/1h line",
-  "est_turns": 30,
+  "done_when": "",
+  "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "footprint_12h.py builds bars for --tf 15m|1h|2h|12h (default 12h), records large trades (qty >= p99.9 of the bar's aggTrades), and Live Aid shows a 15m/1h footprint line and re-reads the data file on a page timer",
+  "goal": "",
   "id": "footprint-multi-tf-large-trades-cadence-1112",
   "lane": "JIS-NB",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "Result: 12h footprint record 61 bars on D:, bias line live; Legend check pending (no MTS C",
-      "ref": "52f0c1bd4666",
-      "utc": "2026-11-12T13:16:05Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-12 T0-ONLY. Needs D: and public Binance data, so run on JIS-NB (desktop). Legend cross-check stays in research/footprint_12h_1112/CHECK.md, pending a chart profile.",
+  "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T15:11:55Z",
   "refs": [],
   "result": "",
-  "scope_in": [
-    "scripts/dev/footprint_12h.py",
-    "scripts/dev/test_footprint_12h.py",
-    "MyTradingSys/tools/live_aid/live_aid.html",
-    "MyTradingSys/tools/live_aid/test_live_aid_layout.py",
-    "scripts/dev/us_prep.py"
-  ],
-  "scope_out": [
-    "live tree, deploys, schedulers (SCHEDULING_POLICY.md), Chrome; footprint data under D:/MTS_data stays uncommitted (repo is public)"
-  ],
-  "scope_sha": "52f0c1bd4666",
-  "size": "M",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
   "sources": [
-    "operator 2026-11-12 13:05Z via coordinator; shipped base 52f0c1bd4; p99.9 and 60 s are OURS (chosen, unchecked)"
+    "operator 13:05Z via coordinator"
   ],
-  "state": "ready",
-  "steps": [
-    "Read footprint_12h.py (HALF_MS line 68, bar_path 192, bar_record 173, ensure 353, main 494) and its test file",
-    "Add --tf (15m,1h,2h,12h): bar length from tf, bar_start_of(tf), files D:/MTS_data/footprint_<tf>/ so the 12h record is untouched; large trades = aggTrade qty >= p99.9 of that bar (OURS), stored as list [ts, price, qty, side], capped 50 per bar",
-    "bias_line gets a short 15m/1h line (delta, POC vs price, largest print); write_js adds tf keys beside the 12h ones",
-    "live_aid.html: setInterval (in-page, not a scheduler) re-injects footprint_bias_data.js every 60 s and re-renders uo-fp; shows the 15m/1h line; stale file shows the one command",
-    "Tests first (fail on old code): tf bar boundaries per tf, p99.9 pick on a fixed synthetic trade list, 12h output unchanged, timer reload hook present in live_aid.html; then implement"
-  ],
-  "tests": "scripts/dev/test_footprint_12h.py: new tf-boundary, p99.9 large-trade and 12h-unchanged cases, failing on the pre-change file",
+  "state": "raw",
+  "steps": [],
+  "tests": "",
   "title": "Footprint builder: --tf 15m|1h|2h|12h, large trades (p99.9), Live Aid refresh cadence timer, 15m/1h line",
-  "weight": "ROUTINE",
-  "worker": "session"
+  "weight": "",
+  "worker": ""
 }

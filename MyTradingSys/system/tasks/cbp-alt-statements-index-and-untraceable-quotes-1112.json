@@ -1,68 +1,36 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [
-    "python -m pytest scripts/dev/test_cbp_run.py -q"
-  ],
+  "commands": [],
   "created": "2026-11-12T08:03:14Z",
   "depends_on": [],
-  "done_when": "pytest scripts/dev/test_cbp_run.py green with the new test failing first; alt_index.jsonl gets one line per verdict alt in a tmp-store test; ALT_PICKS lines 54 and 95 carry NOT_IN_DATA or a transcript id; SISTER_NOTE 11-03 has no Michael label on a van de Poppe view",
-  "est_turns": 18,
+  "done_when": "",
+  "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Alt statements outlive the 5-day row window: run_once appends each verdict alt (coin, stance, quote, analyst, published) to an append-only alt_index.jsonl; ALT_PICKS 11-03 Pizzino lines and the SISTER_NOTE 11-03 Michael/van de Poppe labels corrected",
+  "goal": "",
   "id": "cbp-alt-statements-index-and-untraceable-quotes-1112",
   "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + waiting list docs",
-      "ref": "3b2276375840",
-      "utc": "2026-11-12T09:46:04Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "326e9912e4d2 CBP cleanup: archive 11 superseded files, README index of current files",
-      "ref": "MyTradingSys/research/cbp/archive/SISTER_NOTE_2026-11-03.md",
-      "utc": "2026-11-10T13:58:11Z"
-    }
-  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-12 T0-ONLY. Stamp item dropped from scope: not a defect.",
+  "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T15:14:00Z",
   "refs": [],
   "result": "",
-  "scope_in": [
-    "scripts/dev/cbp_run.py",
-    "scripts/dev/test_cbp_run.py",
-    "MyTradingSys/research/cbp/ALT_PICKS_2026-11-03.md",
-    "MyTradingSys/research/cbp/archive/SISTER_NOTE_2026-11-03.md"
-  ],
-  "scope_out": [
-    "stamp.json (withheld on --no-fetch by design, cbp_run.py:397); extractor PROMPT; the index file itself is never committed (public repo)"
-  ],
-  "scope_sha": "3b2276375840",
-  "size": "M",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
   "sources": [
-    "alt calls research 2026-11-12; verdicts.json holds alts 21 days (VERDICT_DAYS cbp_run.py:45)"
+    "alt calls research 2026-11-12"
   ],
-  "state": "ready",
-  "steps": [
-    "Read cbp_run.run_once (line 297) and build_verdict (268); index path = verdicts_path(store) sibling alt_index.jsonl; one line per (video_id, coin), skipped when already present (idempotent)",
-    "Test first in test_cbp_run.py (fails on old code): two run_once calls with a fake extractor give one index line per alt, and a row older than 5 days is gone from rows.json while its alt line stays",
-    "ALT_PICKS_2026-11-03.md lines 54 and 95 (Pizzino): add 'NOT_IN_DATA: no transcript in the store' where no cached caption carries the quote (grep raw_transcripts_canonical for 8.9 and the phrase)",
-    "archive/SISTER_NOTE_2026-11-03.md: where Michael is named for van de Poppe views, rename to van de Poppe; Jason Pizzino stays Pizzino; leave a one-line correction note"
-  ],
-  "tests": "scripts/dev/test_cbp_run.py: index append and idempotence, alt kept after row expiry; fails on pre-change run_once",
+  "state": "raw",
+  "steps": [],
+  "tests": "",
   "title": "CBP has no alt-statement index (rows expire in 5 d); ALT_PICKS Pizzino lines (ZEC early warning, 8.9%) not in any transcript; SISTER_NOTE 11-03 mixes Michael Pizzino with van de Poppe; stamp.json lags the real last fetch",
-  "weight": "ROUTINE",
-  "worker": "session"
+  "weight": "",
+  "worker": ""
 }
