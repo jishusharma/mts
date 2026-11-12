@@ -41,6 +41,10 @@
  ],
  "kpis": [
   {
+   "label": "Trades",
+   "value": "4892 (T1), 71 (T2)"
+  },
+  {
    "label": "T1 thin zone",
    "value": "n 4892, mean -9.71 bp, t -25.65",
    "tone": "bad"
@@ -63,5 +67,15 @@
   "MyTradingSys/research/btc_thin_zone_retest_1112/PREREG.md",
   "MyTradingSys/research/btc_thin_zone_retest_1112/rules.py"
  ],
- "commit": "this card"
+ "commit": "this card",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "Both FAIL on DEV: no fee-net edge",
+  "n": 4892,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL \u00b7 verdict as written: Both FAIL on DEV: no fee-net edge \u00b7 n=4892 \u00b7 net R after fees n/a \u00b7 try n/a \u00b7 fee break-even n/a"
+ }
 }
