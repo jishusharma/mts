@@ -236,7 +236,54 @@ def llm_extract(video, body, run=subprocess.run):
     return json.loads(m.group(0))
 
 
-def build_row(video, got, body):
+FAR_ENTRY_PCT = 5.0   # OURS (chosen, unchecked): entry further than this from the publish-day spot close is flagged
+
+
+def _num(text):
+    """First number in a trade-level string ('hold above 2,360', '74k'); None when none parses."""
+    m = re.search(r"(\d[\d,]*(?:\.\d+)?)\s*([kK])?", str(text or ""))
+    if not m:
+        return None
+    try:
+        v = float(m.group(1).replace(",", ""))
+    except ValueError:
+        return None
+    return v * 1000 if m.group(2) else v
+
+
+def binance_spot(asset, date):
+    """Binance public spot 1d close of ASSETUSDT on date (YYYY-MM-DD); None on any failure. No key."""
+    try:
+        import urllib.request
+        t0 = int(datetime.fromisoformat(date).replace(tzinfo=timezone.utc).timestamp() * 1000)
+        url = "https://api.binance.com/api/v3/klines?symbol=%sUSDT&interval=1d&startTime=%d&limit=1" % (asset.upper(), t0)
+        with urllib.request.urlopen(url, timeout=10) as r:
+            return float(json.loads(r.read())[0][4])
+    except Exception:
+        return None
+
+
+def _flag_trades(row, spot):
+    """Mark impossible extractor output on row (in place): wrong-side stop (blanked), entry far from spot, bias vs trades."""
+    flags = []
+    for t in row["trades"]:
+        entry, stop = _num(t["entry"]), _num(t["invalidation"])
+        if entry is not None and stop is not None and (
+                (t["direction"] == "LONG" and stop >= entry) or (t["direction"] == "SHORT" and stop <= entry)):
+            t["invalidation"] = ""
+            flags.append("stop_wrong_side")
+        if entry is not None and t["asset"].strip():
+            px = spot(t["asset"].strip().upper(), row["published"])
+            if px and abs(entry - px) / px * 100 > FAR_ENTRY_PCT:
+                flags.append("entry_far_from_spot")
+    dirs = {t["direction"] for t in row["trades"]}
+    if (row["bias"] == "BEARISH" and "LONG" in dirs) or (row["bias"] == "BULLISH" and "SHORT" in dirs):
+        flags.append("bias_contradicts_trades")
+    if flags:
+        row["flags"] = list(dict.fromkeys(flags))
+
+
+def build_row(video, got, body, spot=binance_spot):
     """Row from the extractor's object, or (None, reason). Every quote must occur in the transcript, checked with
     verify_extract_quotes (the one checker); one fabricated quote rejects the whole row."""
     vid, analyst, published = video[0], video[1], video[2]
@@ -257,6 +304,7 @@ def build_row(video, got, body):
            "pointers": [str(p) for p in got.get("pointers") or []],
            "quote_verified": True,
            "expires_at": (datetime.fromisoformat(published) + timedelta(days=cbp.WINDOW_DAYS)).strftime("%Y-%m-%dT00:00:00Z")}
+    _flag_trades(row, spot)
     errs = cbp.validate_row(row)
     return (None, "; ".join(errs)) if errs else (row, "")
 

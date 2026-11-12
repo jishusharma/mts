@@ -246,8 +246,10 @@ def test_main_runs_playbook_on_p1_to_p3_not_p4(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(up, "score_p4", lambda date: {})
     monkeypatch.setattr(up, "OUTDIR", tmp_path)
     monkeypatch.setattr(up, "build_playbook", lambda: seen.append(1) or "PLAYBOOK built: t")
+    fps = []
+    monkeypatch.setattr(up, "build_footprint", lambda: fps.append(1) or "FOOTPRINT ok: t")
     for ph in ("P1", "P2", "P3"):
         up.main(["--phase", ph, "--date", "2026-11-11"])
-    assert len(seen) == 3 and "PLAYBOOK built: t" in capsys.readouterr().out
+    assert len(seen) == 3 and len(fps) == 3 and "PLAYBOOK built: t" in capsys.readouterr().out
     up.main(["--phase", "P4", "--date", "2026-11-11"])
-    assert len(seen) == 3
+    assert len(seen) == 3 and len(fps) == 3
