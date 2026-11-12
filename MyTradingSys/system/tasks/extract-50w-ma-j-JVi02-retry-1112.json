@@ -7,12 +7,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T21:47:02Z",
-    "misses": 7,
+    "folded": "2026-11-12T02:53:44Z",
+    "misses": 6,
     "reads": [
       "MyTradingSys/research/btc_50w_ma_j-JVi02_1112/NOT_IN_DATA.md"
     ],
-    "session": "agent-a18a55f95f8fc27c7"
+    "session": "agent-a53ddc18edb7abe21"
   },
   "created": "2026-11-11T20:53:39Z",
   "depends_on": [],
