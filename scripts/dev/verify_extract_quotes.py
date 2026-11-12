@@ -16,6 +16,7 @@ Exit code 1 if any quote is missing or mis-positioned. Prints one line per quote
 """
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,10 +31,12 @@ FILLERS = {"uh", "um", "uhm", "er", "erm"}
 
 
 def norm(s: str) -> str:
-    """Lowercase alphanumerics; auto-captions keep spoken fillers (uh, um) and stutters ("is is"),
+    """Lowercase alphanumerics (Latin and Devanagari); auto-captions keep spoken fillers (uh, um) and stutters ("is is"),
     which a clean quote drops, so both sides lose fillers and immediate word repeats."""
     out = []
-    for w in re.sub(r"[^a-z0-9%]+", " ", s.lower()).split():
+    s = unicodedata.normalize("NFC", s).replace("‌", "").replace("‍", "")  # joiners are not speech
+    # Devanagari (U+0900-U+097F) is compared too, so pure-Hindi quotes can pass; the danda (U+0964/0965) is punctuation.
+    for w in re.sub(r"[^a-z0-9%ऀ-ॣ०-ॿ]+", " ", s.lower()).split():
         if w in FILLERS or (out and out[-1] == w):
             continue
         out.append(w)
