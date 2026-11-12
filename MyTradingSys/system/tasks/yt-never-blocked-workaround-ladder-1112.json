@@ -3,15 +3,6 @@
   "asks": "",
   "commands": [],
   "context": {
-<<<<<<< HEAD
-    "calls_to_edit": 21,
-    "folded": "2026-11-12T06:19:56Z",
-    "misses": 3,
-    "reads": [
-      "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/D-0xTsMPwys_timed.txt"
-    ],
-    "session": "agent-aad2960c0deb68519"
-=======
     "calls_to_edit": null,
     "folded": "2026-11-12T06:26:33Z",
     "misses": 19,
@@ -26,7 +17,6 @@
       "MyTradingSys/system/ROUTING.md"
     ],
     "session": "agent-ab8f9b424c297d659"
->>>>>>> origin/fast-track
   },
   "created": "2026-11-12T05:58:00Z",
   "depends_on": [],
