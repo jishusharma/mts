@@ -2,6 +2,16 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 8,
+    "folded": "2026-11-12T09:23:13Z",
+    "misses": 7,
+    "reads": [
+      "scripts/dev/prereg_context_lint.py",
+      "scripts/dev/prereg_gate.py"
+    ],
+    "session": "agent-a17a129f09bd59062"
+  },
   "created": "2026-11-12T09:17:26Z",
   "depends_on": [],
   "done_when": "",
