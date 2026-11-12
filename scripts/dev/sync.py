@@ -179,12 +179,13 @@ def refuse_shared_main(repo):
 # Never committed by `ship --result`: live switches and runtime data other processes own (ebdf4dc6b swept them in).
 NEVER_STAGE_NAMES = {"HALT", "AUTO_PAUSE"}
 NEVER_STAGE_RUNTIME_SUFFIXES = (".csv", ".jsonl", ".log", ".parquet")
+NEVER_STAGE_SCRATCH_NAMES = {"run.out", "gate.log"}   # gate-select-unknown-paths-1112: stray scratch output forced the full gate (21-132 min)
 
 
 def never_stage(path):
     p = path.replace(chr(92), "/")
     name = p.rsplit("/", 1)[-1]
-    return name in NEVER_STAGE_NAMES or ("runtime/" in p and name.lower().endswith(NEVER_STAGE_RUNTIME_SUFFIXES))
+    return name in NEVER_STAGE_NAMES or name.lower() in NEVER_STAGE_SCRATCH_NAMES or ("runtime/" in p and name.lower().endswith(NEVER_STAGE_RUNTIME_SUFFIXES))
 
 
 def was_deleted_on_trunk(repo, path):
@@ -1273,7 +1274,7 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
-def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None):
+def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None, gate_reason=""):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
     (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
     try:
@@ -1295,6 +1296,7 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
             "secs": round(float(wait_s + run_s + retry_s), 2),
             "ok": bool(ok),
             "failed_steps": [str(x) for x in (failed_steps or [])],
+            "gate_reason": str(gate_reason or "")[:300],
             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "sha": short_sha,
         }
@@ -1309,6 +1311,28 @@ SHIP_SLOW_S = 120   # OURS: the operator's "ship in 2 minutes"; over it, ship pr
 
 def _timing_path(repo):
     return Path(os.environ.get("MTS_GATE_TIMING") or (Path(repo) / "runtime_data" / "gate_timing.jsonl"))
+
+
+def gate_log_info(repo, offset=0, path=None):
+    """(slot wait seconds, last gate reason) from the `gate_info` / `gate_slot` rows run_all_tests wrote after byte `offset` of
+    gate_timing.jsonl. Never raises: (0.0, "")."""
+    wait, reason = 0.0, ""
+    try:
+        p = Path(path) if path else _timing_path(repo)
+        with open(p, "rb") as fh:
+            fh.seek(offset)
+            for ln in fh.read().decode("utf-8", "ignore").splitlines():
+                try:
+                    r = json.loads(ln)
+                    if r.get("step") == "gate_slot":
+                        wait += float(r.get("wait_s") or 0)
+                    elif r.get("step") == "gate_info":
+                        reason = str(r.get("gate_reason") or reason)
+                except (ValueError, TypeError, AttributeError):
+                    continue
+    except Exception:
+        pass
+    return wait, reason
 
 
 def failed_step_ids(repo, offset=0, path=None):
@@ -1484,7 +1508,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     finally:
         if files:
             failed = [] if ok else failed_step_ids(repo, log_off)
-            record_ship_timing(repo, wait_s=wait_s, run_s=run_s, retry_s=retry_s, ok=ok, failed_steps=failed)
+            slot_wait, reason = gate_log_info(repo, log_off)
+            record_ship_timing(repo, wait_s=wait_s + slot_wait, run_s=run_s, retry_s=retry_s, ok=ok, failed_steps=failed, gate_reason=reason)
             record_ship_wall(repo, time.monotonic() - t_ship_0, offset=log_off, ok=ok, failed_steps=failed)
 
 

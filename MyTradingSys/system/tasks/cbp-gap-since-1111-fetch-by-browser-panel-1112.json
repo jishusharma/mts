@@ -2,8 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "python scripts/dev/cache_panel_transcript.py raw_transcripts_canonical/<id>_timed.txt",
-    "python scripts/dev/cbp_run.py --force --no-fetch"
+    "python scripts/dev/verify_extract_quotes.py <EXTRACT.md>"
   ],
   "context": {
     "calls_to_edit": null,
@@ -29,53 +28,37 @@
   "from_inbox": "",
   "goal": "Land CBP rows for the analysts still behind (2026-11-12 16:29Z store: Michaal newest row 11-08, Jala 11-10, Qriptal 11-10) WITHOUT Chrome: after the caption lock ends (11-13 02:53Z) run scripts/dev/cbp_run.py --force; any video still blocked goes to the Gemini lane (ROUTING.md 'Gemini access', captions verified with verify_extract_quotes)",
   "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
-  "lane": "SONNET",
-  "latest": [
-    {
-      "auto": true,
-      "kind": "ship",
-      "line": "Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + waiting list docs",
-      "ref": "3b2276375840",
-      "utc": "2026-11-12T09:46:04Z"
-    },
-    {
-      "auto": true,
-      "kind": "report",
-      "line": "3b2276375840 Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + wait",
-      "ref": "MyTradingSys/system/YT_PROXY.md",
-      "utc": "2026-11-12T09:46:04Z"
-    }
-  ],
+  "lane": "CODEX",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-12 T0-ONLY Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. CHROME IS OFF (OPERATOR_DECISIONS 2026-11-12 13:45Z): no Chrome tool of any kind until he names a deviceId himself; the Browser 2 panel path is withdrawn.",
+  "note": "REVIEWED:2026-11-12 T0-ONLY Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. CHROME IS OFF (OPERATOR_DECISIONS 2026-11-12 13:45Z): no Chrome tool of any kind until he names a deviceId himself; the Browser 2 panel path is withdrawn. | 2026-11-12 ~17Z operator order: all YouTube work on the Gemini lane; re-laned from SONNET (Browser 2 panel path withdrawn, Chrome OFF).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T15:12:41Z",
+  "refreshed": "2026-11-12T17:00:52Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/system/YT_PROXY.md",
-    "scripts/dev/cache_panel_transcript.py",
-    "scripts/dev/cbp_run.py"
+    "MyTradingSys/research/cbp_gap_1112/"
   ],
   "scope_out": [
     "any YouTube request by script while the caption lock lasts (until 11-13 02:53Z); Browser 1; product code; committing transcripts (git-ignored cache)"
   ],
-  "scope_sha": "3b2276375840",
+  "scope_sha": "",
   "size": "M",
   "sources": [
     "operator 2026-11-12 08Z; store state read 2026-11-12 16:29Z; YT_PROXY.md Path 3 worked for 3 videos 11-12"
   ],
   "state": "ready",
   "steps": [
-    "Run cbp_run.py --force --no-fetch (extraction on cached files only, no YouTube request); read the added and rejected counts it prints",
-    "Report per analyst: new video ids cached, rows added or rejected with reason, no-new-upload cases; on a sign-in wall stop and report"
+    "Find the newest uploads of Michaal, Jala and Qriptal since 2026-11-11 (guard fetch_captions_timed.py --status first; while locked write the unlock time and use Gemini search/transcript output saved to a file)",
+    "Per video write an EXTRACT.md of calls (level, direction, date, verbatim quote) under MyTradingSys/research/cbp_gap_1112/<id>/; run verify_extract_quotes.py until exit 0; unverifiable quotes dropped; no outcomes read",
+    "One-line report per analyst: video ids, calls extracted, or no new upload; commit on your branch"
   ],
   "tests": "run card, no code change; transcripts stay untracked",
-  "title": "CBP rows lag for Michaal/Jala/Qriptal: after the caption lock ends 11-13 02:53Z run cbp_run --force; leftovers via the Gemini lane (no Chrome)",
+  "title": "[GEMINI] CBP gap: newest Michaal, Jala, Qriptal videos since 11-11 (Gemini lane, no Chrome)",
   "weight": "ROUTINE",
-  "worker": "session"
+  "worker": "gemini"
 }

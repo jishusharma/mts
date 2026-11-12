@@ -96,6 +96,12 @@ class NucLabTest(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertIn("gemini_queue.py run some-card:medium other-card:low", out)
 
+    def test_gemini_task_registers_one_shot_it_task_as_user(self):
+        sc = nuc_lab.build_script("gemini-task", ["c1:low"])
+        for need in ("schtasks /Create", "/RU e-ngineers /IT", "schtasks /Run", "Start-Transcript", "--ff-only", "gemini_queue.py run c1:low", "Python314"):
+            self.assertIn(need, sc)
+        self.assertNotIn("ps-bg", sc)
+
     def test_gemini_with_no_spec_is_a_usage_error(self):
         self._with_key()
         with self.assertRaises(SystemExit):

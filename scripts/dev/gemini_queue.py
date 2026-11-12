@@ -205,6 +205,7 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
     ok, why = card_gate(card)
     if not ok:
         log.write_text(f'SKIP {card}: {why}'+chr(10), encoding='utf-8', newline=chr(10))
+        print(f'SKIP {card}: {why}')   # never a silent exit 0 (JIS-DESKTOP 2026-11-12: a STALE card printed nothing)
         return
     held = claim_holder(card, sync.open_claims(REPO))
     if held and held.lower() != socket.gethostname().lower():   # own host = crash-stranded claim; claim_with_retry treats own host as ok
@@ -253,6 +254,10 @@ def main(argv: list[str]) -> int:
             lines = lg.read_text(encoding='utf-8', errors='replace').strip().splitlines()
             print(lg.stem, '|', lines[-1][:120] if lines else '')
         return 0
+    if not AGY.is_file():   # no local agy (JIS-DESKTOP): the NUC runs it as a one-shot /IT task over the SSH gate (ROUTING.md Gemini access)
+        import nuc_lab
+        print(f'no local agy at {AGY}: dispatching {argv[1:]} to the NUC (nuc_lab gemini-task)')
+        return nuc_lab.run('gemini-task', argv[1:])
     for spec in argv[1:]:
         parts = spec.split(':')
         if len(parts) > 3:

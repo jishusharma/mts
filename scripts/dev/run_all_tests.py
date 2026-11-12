@@ -826,11 +826,40 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     return results
 
 
+def record_gate_row(step, path=None, **fields):
+    """One untracked gate_timing.jsonl row {step: gate_info|gate_slot, ...} that sync.ship reads back (gate_reason, real slot wait). Never raises."""
+    try:
+        path = Path(path or os.environ.get("MTS_GATE_TIMING") or REPO / TIMING_FILE)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        row = {"step": step, "name": step, "secs": 0, "ok": True, **fields, "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "sha": _short_sha()}
+        with open(path, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(row) + "\n")
+    except Exception:
+        pass
+
+
+class _RecordedSlot:
+    """Wraps sync.gate_slot: after the slot is taken, logs the real wait (gate-select-unknown-paths-1112: ship's wait_s was always 0.0)."""
+    def __init__(self, inner, mode):
+        self.inner, self.mode = inner, mode
+
+    def __getattr__(self, name):   # name, slots, wait_s ... of the wrapped slot
+        return getattr(self.inner, name)
+
+    def __enter__(self):
+        self.inner.__enter__()
+        record_gate_row("gate_slot", wait_s=round(getattr(self.inner, "wait_s", 0.0), 2), mode=self.mode)
+        return self
+
+    def __exit__(self, *exc):
+        return self.inner.__exit__(*exc)
+
+
 def gate_slot_factory(mode):
     """ARCH_REVIEW row 3: the zero-argument gate-slot context manager of EVERY gate mode (fast, full, deploy): one pool, GATE_SLOTS wide.
     `mode` only labels the line in wait.log."""
     import sync
-    return lambda: sync.gate_slot(REPO, slots=sync.GATE_SLOTS, name=sync.GATE_POOL, mode=mode)
+    return lambda: _RecordedSlot(sync.gate_slot(REPO, slots=sync.GATE_SLOTS, name=sync.GATE_POOL, mode=mode), mode)
 
 
 def step_timeout_for(mode):
@@ -1450,6 +1479,7 @@ def main(argv=None):
     if mode:
         print(f"Gate mode: {mode} ({sum(1 for s in plan if not s.skip)} steps); CI runs the full suite behind the push", flush=True)
         print(f"Gate reason: {gate_reason}", flush=True)
+        record_gate_row("gate_info", gate_reason=str(gate_reason)[:300], mode=mode)
     global STEP_TIMEOUT_S, TIMEOUT_DEFERS, GATE_DEADLINE
     STEP_TIMEOUT_S = step_timeout_for(mode)
     if fast_applied:
