@@ -5,11 +5,16 @@ Functions return trade dicts: side (+1/-1), entry_idx, exit_idx, entry_px, exit_
 SHIFT is a test hook only: a non-zero SHIFT feeds the rule bars from the future (a deliberately wrong, look-ahead version).
 """
 import math
+import os
+import sys
 
 import numpy as np
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'backtest'))
+import fees  # noqa: E402
+
 DAY = 1440
-FEE_BP = 10.0
+FEE_BP = fees.BINANCE_TAKER * 2 * 1e4   # 10 bp round trip, from backtest/fees.py
 W = 0.0005                      # bucket width of the log grid (0.05 %)
 LNW = math.log(1.0 + W)
 THIN_FRAC, NODE_FRAC, SEARCH = 0.25, 0.75, 100
