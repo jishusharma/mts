@@ -24,3 +24,5 @@ Verdict: FIX
 Exact lines to fix:
 1. Q8 verdict: replace "30-minute TPO block as the profile unit" with "30-minute blocks as the profile unit" (the cited 1utS quotes do not say TPO), or add the K8qtT2 "TPO time price opportunity" quote to the block.
 2. Q3 block: delete the quote "as long as the market remains above the 325 level based on the closing price." (0CrkbfuIhkc), or keep it only with the verdict stating it is an unnamed level, not an acceptance form.
+
+Fixes applied 2026-11-13 by extractor; re-check by tf-r1.

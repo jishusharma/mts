@@ -30,3 +30,5 @@ Exact lines to fix:
 5. Q12 block: add the quote "Typical breakout trading riskreward ratio of 1.1." (UrZ4vpHJ97g) or delete "R about 1.1".
 6. Q12 verdict: replace "day trading 50% at R 1.8" with "a hypothetical 50% at R 1.8 (\"I'll claim we have a win rate of 50%\")".
 7. Header line "Speaker: Tom Vorwald (channel Tom Vorwald EN) in every file": replace with "Speaker: Tom in every file (intro names differ across files, ASR; same-voice not checked)".
+
+Fixes applied 2026-11-13 by extractor; re-check by tf-r1.

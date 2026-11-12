@@ -31,3 +31,5 @@ Exact lines to fix:
 4. Q6 verdict: either add the Is1HvdfQm5c 1:07:34 quote (partial at 1.5) to the block or delete "Partials at the sensitive level".
 5. Q5 verdict: delete "10 contracts" unless a quote from 8CWKfoSJu3c with "10 contracts" is added; replace "NQ" with "NASDAQ".
 6. Q9 table row "big-trade filter (NQ)": change to "big-trade filter (product not named in the quote; ASR)".
+
+Fixes applied 2026-11-13 by extractor; re-check by tf-r1.

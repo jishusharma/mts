@@ -27,3 +27,5 @@ Exact lines to fix:
 4. Q11 block: delete the quote "I have prepared a nice combination with NASDAQ and also with Nvidia." (OUM9LYwL8eA).
 5. Q11 verdict: replace "the phrase \"many, many parameters\" was not found in these ten files" with "the phrase \"many, many parameters\" is not in these nine Tom files; it appears in zQTbdEweG3c (no count)".
 6. Q4 verdict: delete "and not left to gut feel".
+
+Fixes applied 2026-11-13 by extractor; re-check by tf-r1.

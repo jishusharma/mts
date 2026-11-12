@@ -24,3 +24,5 @@ Exact lines to fix:
 1. Q7 verdict: add GUEST-labelled quotes for the guest hours, from 5Ljfwvtktek: "I trade from 6:00 a.m." (Christian), "1530 to,600, maybe until 1615" (Frank), "I exit at 14:30 at the very latest" (Katherina, confirm the speaker before citing). Or delete the three hour figures.
 2. Q8 verdict: replace "Bitcoin appears in these files only as a news/sentiment counter-indicator, not profiled." with "In Tom's lines Bitcoin appears only as a news/sentiment counter-indicator (sQ_biBKhPVU), not profiled; a guest in 5Ljfwvtktek says he trades it."
 3. Q8 verdict: replace "a composite from the last major high to the last major low for fair value" with "a composite from the last major high to the last major low".
+
+Fixes applied 2026-11-13 by extractor; re-check by tf-r1.
