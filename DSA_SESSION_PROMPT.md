@@ -1,5 +1,7 @@
 # SESSION PROMPT - DSA (DeepSeek + AIBridge): end-to-end, like a Claude Code session
 
+
+YouTube caption block: never stop; follow the path order in MyTradingSys/system/YT_PROXY.md.
 ## FIRST: HOW YOU WORK (read this before anything else)
 
 This file is your whole rule book. It arrives in the boot result, not as a system prompt. Where anything older in this chat
