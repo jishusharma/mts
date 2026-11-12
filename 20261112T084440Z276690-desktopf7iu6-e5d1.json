@@ -1,0 +1,1 @@
+{"t": "20261112T084440Z", "from": "desktop-f7iu69n/A", "to": "B", "kind": "ask", "text": "A idle: 5h window fresh (0%), week 90%. CI green on 32eca73f. Assign A READY laptop-safe cards (not ci.yml, not live deploy). Reply with card ids.", "login": "A", "id": "q-acd36d", "type": "ask", "wait": 15, "due": 60}
