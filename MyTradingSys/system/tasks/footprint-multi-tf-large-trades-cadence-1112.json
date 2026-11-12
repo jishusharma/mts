@@ -7,14 +7,17 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-12T15:55:21Z",
-    "misses": 44,
+    "folded": "2026-11-12T17:15:16Z",
+    "misses": 50,
     "reads": [
       "MyTradingSys/tools/live_aid/live_aid.html",
       "MyTradingSys/tools/live_aid/test_live_aid_layout.py",
+      "scripts/dev/run_all_tests.py",
       "scripts/dev/test_footprint_12h.py",
+      "scripts/dev/bg_watch.py",
       "scripts/dev/us_prep.py",
-      "MyTradingSys/tools/live_aid/live_aid_indicators.js"
+      "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+      "MyTradingSys/system/gate_board.json"
     ],
     "session": "agent-a382735f6aa75ae9b"
   },
