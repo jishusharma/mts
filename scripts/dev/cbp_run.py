@@ -263,18 +263,25 @@ def binance_spot(asset, date):
         return None
 
 
-def _flag_trades(row, spot):
-    """Mark impossible extractor output on row (in place): wrong-side stop (blanked), entry far from spot, bias vs trades."""
+def _flag_trades(row, spot, blank=True):
+    """Mark impossible extractor output on row (in place): wrong-side stop, entry far from spot, bias vs trades.
+    blank=True (a new row): the wrong-side stop is blanked. blank=False (--recheck of a stored row): nothing is deleted,
+    the trade gets t["flag"] and cbp.is_tradable skips it."""
     flags = []
     for t in row["trades"]:
         entry, stop = _num(t["entry"]), _num(t["invalidation"])
         if entry is not None and stop is not None and (
                 (t["direction"] == "LONG" and stop >= entry) or (t["direction"] == "SHORT" and stop <= entry)):
-            t["invalidation"] = ""
+            if blank:
+                t["invalidation"] = ""
+            else:
+                t["flag"] = "stop_wrong_side"
             flags.append("stop_wrong_side")
         if entry is not None and t["asset"].strip():
             px = spot(t["asset"].strip().upper(), row["published"])
             if px and abs(entry - px) / px * 100 > FAR_ENTRY_PCT:
+                if not blank:
+                    t["flag"] = (t["flag"] + "," if t.get("flag") else "") + "entry_far_from_spot"
                 flags.append("entry_far_from_spot")
     dirs = {t["direction"] for t in row["trades"]}
     if (row["bias"] == "BEARISH" and "LONG" in dirs) or (row["bias"] == "BULLISH" and "SHORT" in dirs):
@@ -307,6 +314,61 @@ def build_row(video, got, body, spot=binance_spot):
     _flag_trades(row, spot)
     errs = cbp.validate_row(row)
     return (None, "; ".join(errs)) if errs else (row, "")
+
+
+def recheck(store=None, spot=binance_spot):
+    """--recheck: the build_row checks on every STORED row (build_row only runs them on new rows). Bad trades are marked
+    (t["flag"], row["flags"]), never deleted; the stored text stays. Returns [(analyst, video_id, flags)] of flagged rows."""
+    data = cbp.load(store)
+    out = []
+    for r in data["rows"]:
+        if not isinstance(r, dict) or not isinstance(r.get("trades"), list):
+            continue
+        for t in r["trades"]:
+            t.pop("flag", None)
+        r.pop("flags", None)
+        _flag_trades(r, spot, blank=False)
+        if r.get("flags"):
+            out.append((r.get("analyst"), r.get("video_id"), r["flags"]))
+    cbp.save(data, store)
+    return out
+
+
+NEW_TTL_MIN = 15   # OURS: a wake-time check reuses the last answer for this long (one cheap listing per analyst per 15 min)
+
+
+def new_state_path():
+    return stamp_path().with_name("newcheck.json")
+
+
+def quick_new(now, store=None, lister=sites.list_channel, state=None):
+    """--quick-new: newest uploads per analyst channel (public transcript-site listing: no YouTube request, no caption call,
+    no guard spend) against the store, rejected list, cached transcripts and the waiting list. Returns [(analyst, video_id)] not known,
+    published within the row window. Reuses the last answer for NEW_TTL_MIN minutes."""
+    cutoff = (now - timedelta(days=cbp.WINDOW_DAYS)).date().isoformat()
+    data = cbp.load(store)
+    known = {r["video_id"] for r in data["rows"]} | {x[0] for x in data["rejected"]}
+    known |= {v[0] for v in local_videos(cutoff)}
+    state_path = Path(state) if state else new_state_path()
+    try:
+        st = json.loads(state_path.read_text(encoding="utf-8"))
+        at = datetime.fromisoformat(st["at"])
+        if now - at < timedelta(minutes=NEW_TTL_MIN):
+            return [(a, v) for a, v in st["new"] if v not in known]
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    cfg, ans = analysts()
+    exc = re.compile(cfg["exclude_regex"]) if cfg.get("exclude_regex") else None
+    inc = re.compile(cfg["include_regex"]) if cfg.get("include_regex") else None
+    new = []
+    for an in ans:
+        for vid, title, d in lister(an["channel"], 3):
+            if (d and d < cutoff) or vid in known or (exc and exc.search(title)) or (an.get("topic_filter") and inc and not inc.search(title)):
+                continue
+            new.append((an["short"], vid))
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps({"at": now.isoformat(), "new": new}), encoding="utf-8", newline="\n")
+    return new
 
 
 def verdicts_path(store=None):
@@ -441,14 +503,37 @@ def main(argv=None, now=None):
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--due", action="store_true")
     g.add_argument("--force", action="store_true")
+    g.add_argument("--recheck", action="store_true", help="apply the build_row checks to every stored row, mark bad trades, rebuild the board")
+    g.add_argument("--new-check", action="store_true", help="print CBP NEW <analyst> <video_id> for uploads not in the store (no captions, no YouTube request)")
+    ap.add_argument("--quick-new", action="store_true",
+                    help="with --due: also run the new-upload check; a new video fetches even when the window is already done (stamp untouched)")
     ap.add_argument("--no-fetch", action="store_true",
                     help="skip the caption fetch; extract only transcripts already cached (browser-panel path, YT_PROXY.md); stamp withheld")
     a = ap.parse_args(argv)
     now = now or datetime.now(timezone.utc)
     window = None
+    if a.recheck:
+        flagged = recheck()
+        for an, vid, fl in flagged:
+            print("CBP FLAGGED %s %s %s" % (an, vid, ",".join(fl)))
+        rebuild_dashboard()
+        print("cbp: recheck, %d row(s) flagged" % len(flagged))
+        return 0
+    if a.new_check or a.quick_new:
+        try:
+            new = quick_new(now)
+        except (OSError, ValueError, KeyError) as e:
+            print("cbp: new-upload check failed (%s)" % type(e).__name__)
+            new = []
+        for an, vid in new:
+            print("CBP NEW %s %s" % (an, vid))
+        if a.new_check:
+            return 0
+    else:
+        new = []
     if a.due:
         window = is_due(now, read_stamp())
-        if not window:
+        if not window and not new:
             print("cbp: not due")
             return 0
     partial = []
@@ -460,7 +545,7 @@ def main(argv=None, now=None):
     except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as e:
         print("cbp: FAILED (%s); window not marked complete" % type(e).__name__, file=sys.stderr)
         return 1
-    if not partial and not a.no_fetch:  # a no-fetch run has not covered the window: the normal run still owes the fetch
+    if not partial and not a.no_fetch and (window or not a.due):  # a no-fetch run has not covered the window: the normal run still owes the fetch
         write_stamp(now, window or open_window(now))
     rebuild_dashboard()
     end = now.astimezone(timezone.utc).date().isoformat()  # window = the 5 days up to today

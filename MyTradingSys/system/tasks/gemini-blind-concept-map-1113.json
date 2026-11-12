@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T19:49:11Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/gap_hunt_1113/gemini_blind_map.md"
   ],
@@ -14,17 +15,30 @@
   "id": "gemini-blind-concept-map-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "gemini_blind_map.md 97 quotes verify exit 0 (re-run here)",
+      "ref": "283abe663",
+      "utc": "2026-11-12T19:49:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: map delivered",
   "note": "Gemini lane effort low. Ids: 43JaKHRvxHk, 9eHZMVXilgc, BVpYGKz9PBU, C9n_d91Uitc, Fj4FDZQxw0I, KEe_CWHyuSg, Kg6sYKgtkrY, Ld1dhjGdTCA, NkQeOVDTAec, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, VumVuGnCcFM, YmygDgtoxO8, dh-ysRR8f-M, e6Gm1n2h05M, kKZCJui4S9U, l8RZrBfzvp4, qLnQan0KGmQ, rrHj24GSR6M, sQ_biBKhPVU, ujedEcmvBMk, v5EuDl9c0iI, vk0mkNPuhDc, vl01TiVTuoQ, wPMiyJXL0zU, yRvMW6lgN1o, zQTbdEweG3c",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T19:27:05Z",
   "refs": [],
-  "result": "",
+  "result": "gemini_blind_map.md 97 quotes verify exit 0 (re-run here)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gap_hunt_1113/"
   ],
@@ -38,12 +52,13 @@
   "sources": [
     "Supervisor C 2026-11-13 gap hunt; HAVE_LIST RELEVANT-NOW (28 ids with transcripts)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read ONLY raw_transcripts_canonical/<id>_raw.txt for the ids in note (text, no video); do NOT open any other file under MyTradingSys/research, extracts/ or docs: the view must stay unbiased",
     "Write MyTradingSys/research/layer_lab/gap_hunt_1113/gemini_blind_map.md: a table of concepts, decision steps (entry, stop, target, timeframe, filters, management, no-trade) and every stated number; each row has an exact > \"quote\", [mm:ss], **Source GPS: <id> | BEGIN|MIDDLE|END**; mark a number SOURCED only if he says it, else do not invent one",
     "Run verify_extract_quotes.py until exit 0 (fix the quote or tag, never the checker); commit on your branch"
   ],
+  "taken": "2026-11-12T19:49:11Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Blind independent concept map of Tom/Fabio from 28 transcripts (text only)",
   "weight": "ROUTINE",

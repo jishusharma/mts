@@ -2424,3 +2424,13 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Stopping rule fired: market profile (time-based, TPO) is named in 23 Tom/Fabio videos and was never coded (Haiku V1), a pattern-2 hole (10+ videos, no code). Decision: run iteration 3 after ITERATION_2 ships. Gaps ranked first are those two or more hunters found: context layer (balance read by profile shape, weekly value migration, NY-session profile instead of 24h), post-fill management (41 of 104 steps, 4 run), Fabio not using order flow on BTC.
 - Corrections carried: the "116 videos" closing-price figure is 24 of 122; audit root cause 4 (VAH ct_short, short below VAL) was fixed by 36513c888 and e6f378bf3; the DAX 0/7 recall was run with DAX fees too.
 - Raw cards filed: fix-auction-context-maker-fee-roundtrip-1113, fix-fabio-v3-default-mgmt-dist-vs-event-1113.
+
+## 2026-11-13: learn NK StockTalk concepts (Hilega Milega, Bollinger Bands, SRP, Nifty use)
+- Operator (relayed by Supervisor C): new analyst Nitish Kumar, https://www.youtube.com/@NKStockTalk/videos, Hindi. Learn his concepts: Hilega Milega (RSI with moving averages of RSI, and the volume-weighted one), how he uses Bollinger Bands, "SRP" (meaning to be read from the titles), and how he applies them to Nifty.
+- Decision: all of it runs on the Gemini lane at low effort, like Tom/Fabio. Catalog first (`nk_stocktalk_1113/CATALOG.md`), then a short extract-now set (`SELECTED.md`) with the first or definitive video per concept.
+- Hindi rule: quote the caption text exactly (Devanagari or romanised as the caption has it) plus an English line labelled TRANSLATION; `verify_extract_quotes.py` runs against the Hindi caption file, never a translation. Videos without captions are listed only. Every number he states is SOURCED, anything unstated is NOT_SEEN, never filled with our numbers.
+- Caption locks respected (desktop to 2026-11-13T02:53Z, NUC to 13:58Z); no fetch before then.
+
+## 2026-11-13: use both Gemini models on NK StockTalk and iteration-3 Tom/Fabio jobs
+- Operator (relayed by Supervisor C): "use both gemini models". The queue's two Gemini models are `flash` (gemini-3.8-flash) and `argon` (Gemini 4 Argon); the other queue models (opus, sonnet, gpt) are not Gemini.
+- Decision: NK StockTalk selected extracts and iteration-3 Tom/Fabio Gemini jobs run on both, effort low, as separate cards per model. Comparison per video in `nk_stocktalk_1113/MODEL_COMPARE.md` (Tom/Fabio: beside each batch): AGREED = a rule or number both models give that passes `verify_extract_quotes.py`; SINGLE = only one model gives it, checked by a Claude session against the caption text; CONFLICT = the models disagree, both quotes recorded.

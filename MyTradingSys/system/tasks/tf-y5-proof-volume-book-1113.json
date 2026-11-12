@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-y5-proof-volume-book-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T19:45:52Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y5-proof-volume-book-1113/ANSWERS.md answers Q29 Q30 (ITERATION_2.md section 7) with a Verdict each (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), quotes tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From Tom's and Fabio's words: what counts as proof before entry (sequence length, volume rising or falling, level weaker per test, delta never alone) and what Tom reads in the book while in a trade. Do not quote video descriptions. Missing numbers are NOT_SEEN.",
+  "id": "tf-y5-proof-volume-book-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read from iteration 2, not a video summary. Answer the Q-ids only; mark the speaker CONTESTED for 9IliXww64uM and GUEST for guests.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T19:46:41Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y5-proof-volume-book-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN; no YouTube fetch"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "gap-hunt iteration 2 2026-11-13"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md sections 3 and 7 for the gaps and questions of this card; read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: kXhIAug0Gh8 HySZZSjMxF8 Is1HvdfQm5c rFPCtOcfUMI 3o1VVsfBmmU 3oqxklw9zuU 9IliXww64uM qLnQan0KGmQ Sy-x5AQ9-Pk 4P5WAxyPCis Ly62G168MkQ VxN5IxTwpbE (descriptions are not speech: quote only spoken text)",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-y5-proof-volume-book-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[SONNET] Tom/Fabio proof sequence, volume shape and book reading from held transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
