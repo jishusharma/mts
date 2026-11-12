@@ -5,6 +5,15 @@
     "python MyTradingSys/research/adx_di_2026-11/census.py",
     "python -m pytest MyTradingSys/research/adx_di_2026-11/test_census.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T09:09:12Z",
+    "misses": 2,
+    "reads": [
+      "MyTradingSys/system/GEMINI_START.md"
+    ],
+    "session": "agent-a5773d491a8be62a7"
+  },
   "created": "2026-11-11T15:40:49Z",
   "depends_on": [],
   "done_when": "PARTIAL appears in TV_CROSSCHECK.md only as the relabelled raw note; CENSUS.md median lead cells read as days with no percent sign; the CENSUS.md diff touches only those cells.",

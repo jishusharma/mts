@@ -990,3 +990,17 @@ Rules: 247.
 - `y67l86cSqb8` R9. Selling pressure easing. SOURCED
 > "That shows me the pressure is easing."
 **Source GPS: y67l86cSqb8 | MIDDLE**
+
+## Not yet tested on BTC
+
+Rule ids that are mechanical enough to test and are not in `research/edge_views_2026-11-11/TESTED_MAP.md` or the edge_views folders (OURS selection; thresholds to be frozen in a PRE_REG, none taken from the videos). Already failed or running elsewhere: sweep-fade, Baileys with-trend sweep, B1 absorption at level, B2 unfinished auction, clocks, large prints, funding extremes, thin-zone pass-through, accepted-breakdown retest.
+
+- `BB3c8visnkI` R4. Acceptance of a new range: measure whether N bars spent above/below the old edge make that edge hold on retest (hold share vs placebo).
+- `BB3c8visnkI` R5. Return to liquidity after leaving a range: share of range exits that revisit the high-volume node within N bars, and fee-net return of fading back to it.
+- `VOiy8mAALWA` R6. Daily POC shift rule: after two consecutive same-direction daily POC shifts, next-day and 3-day return versus placebo days.
+- `YkclL6xgu-s` R5. Thin close pulls price back to POC: when the session closes in a thin-volume part of its profile, share of next sessions that touch the POC and net return of that move.
+- `ODdF0Bn_KSc` R6. Naked POC: weekly POCs not yet revisited; touch rate within N weeks and reaction size at the touch, fee-net.
+- `9IliXww64uM` R5. Start inside value means range expected: when the day opens inside the prior value area, share of days that stay inside it and edge-fade net return.
+- `9IliXww64uM` R10. Failed breakout back inside: close back inside prior value area after a break, net return to the other side (value-area edge, not the sweep-fade levels).
+- `9IliXww64uM` R11. Continuation needs volume to persist: breakouts split by volume persisting versus fading in the next N bars, continuation return of each group.
+- `y67l86cSqb8` R8. Trend continues until delta extreme: in a trend, forward return after rolling taker delta reaches its own percentile extreme versus before it.

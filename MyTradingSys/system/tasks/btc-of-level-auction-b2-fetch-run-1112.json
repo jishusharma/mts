@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T08:38:58Z",
   "commands": [
     "python MyTradingSys/research/btc_of_level_auction_1112/fetch_b2.py",
     "python MyTradingSys/research/btc_of_level_auction_1112/b2.py --split dev",
@@ -39,8 +40,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done: B2 FAIL on DEV, on trunk 0d652dda, CI green",
+  "pinned": false,
   "prio": 2,
+  "reason": "done: B2 FAIL on DEV, on trunk 0d652dda, CI green",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T07:13:08Z",
@@ -53,7 +56,7 @@
   "scope_sha": "c77c2c78659e",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "file card",
     "b2.py + test_b2.py, commit",
