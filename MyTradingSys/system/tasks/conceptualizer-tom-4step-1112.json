@@ -1,0 +1,41 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T18:21:28Z",
+  "depends_on": [
+    "gemini-concept-extract-tom-O5s9zWI0n2s-1112"
+  ],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "conceptualizer-tom-4step-1112",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "conceptualizer-1112"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Conceptualizer: add Tom 4-Step Framework concept row when O5s9zWI0n2s EXTRACT.md lands (tom_fabio_rebuild_2026-11-09/tom_O5s9zWI0n2s), rebuild + republish",
+  "weight": "",
+  "worker": "",
+  "not_twin_of": [
+    "gemini-concept-extract-tom-O5s9zWI0n2s-1112"
+  ]
+}

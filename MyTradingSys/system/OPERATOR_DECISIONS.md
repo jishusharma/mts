@@ -2438,3 +2438,7 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Decision: all of it runs on the Gemini lane at low effort, like Tom/Fabio. Catalog first (`nk_stocktalk_1113/CATALOG.md`), then a short extract-now set (`SELECTED.md`) with the first or definitive video per concept.
 - Hindi rule: quote the caption text exactly (Devanagari or romanised as the caption has it) plus an English line labelled TRANSLATION; `verify_extract_quotes.py` runs against the Hindi caption file, never a translation. Videos without captions are listed only. Every number he states is SOURCED, anything unstated is NOT_SEEN, never filled with our numbers.
 - Caption locks respected (desktop to 2026-11-13T02:53Z, NUC to 13:58Z); no fetch before then.
+
+## 2026-11-13: use both Gemini models on NK StockTalk and iteration-3 Tom/Fabio jobs
+- Operator (relayed by Supervisor C): "use both gemini models". The queue's two Gemini models are `flash` (gemini-3.8-flash) and `argon` (Gemini 4 Argon); the other queue models (opus, sonnet, gpt) are not Gemini.
+- Decision: NK StockTalk selected extracts and iteration-3 Tom/Fabio Gemini jobs run on both, effort low, as separate cards per model. Comparison per video in `nk_stocktalk_1113/MODEL_COMPARE.md` (Tom/Fabio: beside each batch): AGREED = a rule or number both models give that passes `verify_extract_quotes.py`; SINGLE = only one model gives it, checked by a Claude session against the caption text; CONFLICT = the models disagree, both quotes recorded.
