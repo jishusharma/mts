@@ -167,8 +167,9 @@ def fetch_new(cutoff, store, run=subprocess.run, sleep=None, recent=None):
     cookies = CBP_HOME / "cookies_utube_1.txt"
     incomplete = []
     for n, an in enumerate(ans):
-        if recent() >= HOURLY_REQUEST_CAP:
-            print("cbp: %s not fetched from YouTube: %d requests in the last hour (cap %d); path 4" % (an["short"], recent(), HOURLY_REQUEST_CAP))
+        used = recent()
+        if used >= HOURLY_REQUEST_CAP:
+            print("cbp: %s not fetched from YouTube: %d requests in the last hour (cap %d); path 4" % (an["short"], used, HOURLY_REQUEST_CAP))
             catch_up(an, cfg, cutoff, "ytdlp:hourly-cap")
             incomplete.append(an["short"])
             continue

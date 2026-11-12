@@ -34,11 +34,22 @@ def instances():
     return tuple(h.strip() for h in env.split(",") if h.strip()) if env else INSTANCES
 
 
+def _ssl_context():
+    """Verified TLS. certifi's bundle when installed (the Windows store of some Pythons lacks a root a public instance's
+    chain needs: 'certificate has expired'); verification is never turned off."""
+    import ssl
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
 def http_get(url):
     """(status, text) of one GET with a generic User-Agent and nothing else; (0, "") when unreachable. Tests patch this."""
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
     try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT_S) as r:
+        with urllib.request.urlopen(req, timeout=TIMEOUT_S, context=_ssl_context()) as r:
             return r.status, r.read().decode("utf-8", "replace")
     except urllib.error.HTTPError as e:
         return e.code, ""

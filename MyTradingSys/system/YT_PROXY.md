@@ -29,10 +29,32 @@ turn and report only the result. The guard still rules the scripted path: no scr
 1. Guarded fetcher through WARP: `fetch_captions_timed.py` (above). Exit 3 / 429 = locked, go to 2.
 2. A fleet machine whose address is not locked: `mts_signal.py ask --to <login> --type task` (general rule: only a machine whose own guard record is not locked; the laptop's was locked until 2026-11-13T13:58Z, so it is not an option today). Ask for the video ids; files come back through the repo.
 3. The video's transcript panel in Chrome profile "Browser 2" (steps below). Never "Browser 1".
-4. A transcript site opened in the same browser tab or by WebFetch: video id only, no account, no personal data.
+4. A public transcript site, now SCRIPTED (2026-11-12): `fetch_captions_timed.py` switches to it by itself on a lock, a 429 or an
+   unfetched id (`scripts/dev/yt_transcript_sites.py`, a public Invidious instance; video id or channel handle only, no account, no
+   cookies, generic User-Agent, 4 s pauses (OURS), never a YouTube request from this address). Same cache files, header `# Source: public
+   transcript site <host>`. Instances come and go and some sit behind a bot check (never worked around): env `YT_SITE_INSTANCES`
+   overrides the list. Worked 2026-11-12 on a locked address (yt.chocolatemoo53.com; yewtu.be, kome.ai, youtubetotranscript.com sit
+   behind a bot check, tactiq needs an app token, other Invidious/Piped hosts were down).
 5. Audio plus local Whisper on the desktop: `scripts/dev/asr_transcribe.py` (ROUTING.md, local ASR on JIS-NB), then `asr_to_canonical.py`.
 6. Another exit: phone hotspot or a laptop on another network (one request, paced, guard rules apply there too).
 7. Only then one line to the operator asking for a paste.
+
+Waiting list: a video no scripted path got is appended (id, channel, time, paths tried) to `~/.mts/yt_waiting.json` (git-ignored,
+next to the block record; env `YT_WAITING_FILE`). `python scripts/dev/fetch_captions_timed.py --waiting` prints it (entries already
+cached are hidden). `cbp_run.py` records its skipped videos there and prints a count line, so a run never ends with "+0 rows" and no
+reason. A Claude desktop session drains it by path 3, then `cache_panel_transcript.py` clears the entry.
+
+Which path each model kind can run:
+
+| Model kind | Paths it can run |
+|---|---|
+| Claude desktop session (has Chrome) | all: 1 to 7, and it drains the waiting list by path 3 |
+| Claude background worker without Chrome | 1 and 4 (scripted, automatic), 5 if on the desktop, waiting list, fleet ask (2) |
+| Gemini, Codex, DeepSeek chat | 1 and 4 (scripted, automatic), waiting list, fleet ask (2); never "watch the video" |
+
+CBP pacing (OURS): the 2026-11-12 02:53Z lock followed one CBP run of 65 YouTube requests in one hour. `cbp_run.py` now pauses 30 s between
+analysts, fetches at most 3 videos per analyst and starts no new analyst once 30 requests went out in the last hour (the skipped ones
+go through path 4).
 
 Rules for every path: fetch once, cache, share through the repo so no machine fetches a video twice; spread fetches over
 machines and pace them, never push one address. Gemini "watch the video" is never a quote source. Quotes pass
@@ -41,7 +63,8 @@ machines and pace them, never push one address. Gemini "watch the video" is neve
 ### Path 3 steps (worked 2026-11-12 for three videos, no sign-in wall; a Haiku can repeat it)
 1. One ToolSearch loads the Chrome tools; call `select_browser` for the device named "Browser 2" first; `tabs_context_mcp` with createIfEmpty.
 2. `navigate` a new tab to `https://www.youtube.com/watch?v=<id>`. One video at a time. MUTED AND PAUSED (operator hears the audio): right after every navigate run `javascript_tool` `document.querySelectorAll('video').forEach(v=>{v.muted=true;v.pause()})` (repeat once after the page settles, the player may autoplay); never let a video play with sound.
-3. `javascript_tool`: click `#expand` (description), wait 1 s, click the button whose text is "Show transcript", wait 3 s. Check `document.querySelectorAll('transcript-segment-view-model').length` is above 0 (each cue: `H:MM` line, a "N seconds" line, then the text).
+3. Copy note: a clipboard copy of the transcript works only after a click inside the transcript panel (the page ignores copy before that); `get_page_text` below needs no clipboard.
+3b. `javascript_tool`: click `#expand` (description), wait 1 s, click the button whose text is "Show transcript", wait 3 s. Check `document.querySelectorAll('transcript-segment-view-model').length` is above 0 (each cue: `H:MM` line, a "N seconds" line, then the text).
 4. `get_page_text` on the tab returns the whole transcript (timestamp line, seconds line, text) plus page noise; `javascript_tool` output is cut near 1000 characters, so do not use it to read the text. If a sign-in wall or block shows, stop this path (no second try) and go to path 4.
 5. Write `raw_transcripts_canonical/<id>_timed.txt`: header lines `# Video ID`, `# Title`, `# Published`, `# Source: browser transcript panel (auto); uploader: <channel>`, `# Analyst`, `# Duration_s`, `# Word count: 0`, `# ---`, then one `[HH:MM:SS] text` line per cue. Drop the "N seconds" lines and the related-video list.
 6. `python scripts/dev/cache_panel_transcript.py raw_transcripts_canonical/<id>_timed.txt` sets the word count and writes `<id>_raw.txt`. The cache folder is git-ignored (the fetcher's cache), so the files stay untracked.
