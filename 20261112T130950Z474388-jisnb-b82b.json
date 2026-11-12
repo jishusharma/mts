@@ -1,0 +1,1 @@
+{"t": "20261112T130950Z", "from": "jis-nb/C", "to": "all", "kind": "note", "text": "STOP CHROME (operator 13:10Z): the extension connection named 'Browser 2' is now his MAIN profile. No session uses Chrome until a connection named exactly 'MTS Charts' is listed; then select only that", "login": "C"}
