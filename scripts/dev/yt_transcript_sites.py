@@ -3,7 +3,7 @@
 The request goes to the instance, never to YouTube, from this address: video id (or channel handle) only, no account, no
 cookies, no personal data, a generic User-Agent, one request per step with a pause (OURS). The instance's own server talks to
 YouTube. Also holds the waiting list (~/.mts/yt_waiting.json, git-ignored, next to the block record): a video no scripted
-path could get, for a Claude desktop session to drain through the Browser 2 panel path.
+path could get, for later; the Chrome panel path is withdrawn until the operator names a device.
 
     python scripts/dev/yt_transcript_sites.py ID [ID ...] --analyst NAME   # same cache files as fetch_captions_timed.py
 """
@@ -157,7 +157,7 @@ def waiting_report(cache_dir=None):
     rows = pending(cache_dir)
     if not rows:
         return "WAITING: none"
-    lines = [f"WAITING: {len(rows)} video(s); drain by the Browser 2 panel path (YT_PROXY.md path 3), then cache_panel_transcript.py"]
+    lines = [f"WAITING: {len(rows)} video(s); Chrome panel path withdrawn until the operator names a device (YT_PROXY.md path 3)"]
     lines += [f"  {r.get('id')}  {r.get('channel') or '-'}  {r.get('time')}  tried: {', '.join(r.get('paths_tried') or []) or '-'}"
               for r in rows]
     return "\n".join(lines)

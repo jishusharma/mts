@@ -469,7 +469,7 @@ def main(argv=None, now=None):
         print("cbp: window not marked complete, fetch incomplete for: " + ", ".join(partial))
     waiting = sites.pending(TRANSCRIPTS)
     if waiting:
-        print("cbp: %d video(s) on the waiting list (no scripted path got them; Claude desktop drains by the Browser 2 panel, "
+        print("cbp: %d video(s) on the waiting list (no scripted path got them; Claude desktop path withdrawn: no Chrome until the operator names a device, "
               "YT_PROXY.md path 3): python scripts/dev/fetch_captions_timed.py --waiting" % len(waiting))
     return 0
 

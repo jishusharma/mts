@@ -15,7 +15,7 @@ Read this before you start, test, or babysit a DSA chat. DSA = DeepSeek working 
 1. from the repo root: fetch origin, then switch to a detached copy of origin/fast-track (a plain pull fails on a detached HEAD)
 2. `python scripts/dev/aibridge_health.py`: installed = running = trunk version. If not, stop and report; the operator installs.
 3. `python scripts/dev/dsa_watch.py`: baseline for pending / taken / STALLED per lane.
-4. Load the Chrome tools in ONE ToolSearch (tabs_context_mcp, navigate, computer, read_page, get_page_text, find, tabs_create_mcp, select_browser, list_connected_browsers). Select Browser 1 only.
+4. Load the Chrome tools in ONE ToolSearch (tabs_context_mcp, navigate, computer, read_page, get_page_text, find, tabs_create_mcp, select_browser, list_connected_browsers). WITHDRAWN 2026-11-12: no Chrome tool until the operator names a deviceId in chat; never select by label.
 
 ## 2. Booting DSA in a chat
 1. Open https://chat.deepseek.com in a NEW tab, start a NEW chat.

@@ -65,7 +65,7 @@ CI RED on trunk: the author reverts within 10 min; never forward-fix.
 |---|---|---|
 | 1 | Builder Agent a1aa09248a181caad re-shipping AIBridge 0.7.39 (DSA defects card dsa-live-test-defects-1110; OI poller backed out) from worktree `mts-jis-nb-builder-c-poller-dsa-1111` | sha on trunk, verified per section 4 |
 | 2 | Then install it on the desktop: merge the main checkout, `python scripts/dev/aibridge_install.py F:/AIBridge --restart-agent`, `python scripts/dev/aibridge_health.py` shows 0.7.39 everywhere; `python scripts/dev/mts_signal.py ack q-136c7a done` | health line all 0.7.39 |
-| 3 | Tell the operator once (YOU DO): Chrome "Browser 2", chrome://extensions, Reload AIBridge, F5 the DeepSeek chat, type `Start DSA bridge` | `dsa_watch.py` shows the chat armed; then `mts_signal.py ack b-ea3809 done` |
+| 3 | Tell the operator once (YOU DO): (withdrawn: no Chrome until the operator names a deviceId) chrome://extensions, Reload AIBridge, F5 the DeepSeek chat, type `Start DSA bridge` | `dsa_watch.py` shows the chat armed; then `mts_signal.py ack b-ea3809 done` |
 | 4 | Once DSA is armed: post 3-5 run-and-report cards to DSA | desk shows them taken |
 | 5 | Session_Planner Agent (sonnet): seed `[GEMINI]` cards to 4 or more ready, `[CODEX]` to 8 | `plan` no longer prints LANE LOW |
 | 6 | Republish stale pages mts_layer_map and mts_home with ONE Haiku Agent (Artifact read without `path` dumps the whole page: never do it in this session), then `python scripts/dev/artifacts.py publish-record --slug <slug>` and ship registry.json | `artifacts.py` status not STALE; note to B |
@@ -77,7 +77,7 @@ CI RED on trunk: the author reverts within 10 min; never forward-fix.
 Testnet only. Never read `.secrets/`, `.env`, keys; never print `F:\AIBridge\extension\background.js` or `F:\AIBridge\src\config.json`.
 Repo is public: no runtime, order or account data. No rebase, reset, force-push, stash. No schedulers except the one-shot `/IT`
 NUC task above. Never build, deploy, restart live processes, touch HALT or the live tree. Never the 61 execution tests.
-Chrome: profile "Browser 2" only. Ship only with `sync.py ship` and `Result:` / `Next:` lines (hook, role, start paths also `Reach: Q1-Q8`).
+Chrome: withdrawn until the operator names a deviceId. Ship only with `sync.py ship` and `Result:` / `Next:` lines (hook, role, start paths also `Reach: Q1-Q8`).
 
 ## 7. Replies to the operator
 Bold result first; a table for rows; `YOU DO` (max 3) only when he must act; under 8 lines; plain words; only what is new since

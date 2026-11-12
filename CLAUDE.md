@@ -38,7 +38,7 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 - Layers and numbers: no fixed core, fee-net out-of-sample results decide what trades; label each parameter SOURCED or OURS, never call OURS the trader's (MOVED_RULES.md).
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse, then count.
 - Noticed gaps: non-Agent sessions file a raw card the same turn; Agents end with `Noticed:`; chat decisions go to OPERATOR_DECISIONS.md (WORKERS.md rule 11).
-- Chrome: only profile "Browser 2" (`select_browser` first), never the operator's main "Browser 1".
+- Chrome: no Chrome tool until the operator names a deviceId in chat; never pick by label.
 
 ## Where to look (`MyTradingSys/system/`)
 | Need | Read |

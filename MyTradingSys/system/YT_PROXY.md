@@ -28,7 +28,7 @@ Operator 2026-11-12: a YouTube caption block must never stop a task. A block on 
 turn and report only the result. The guard still rules the scripted path: no scripted retry on a locked address.
 1. Guarded fetcher through WARP: `fetch_captions_timed.py` (above). Exit 3 / 429 = locked, go to 2.
 2. A fleet machine whose address is not locked: `mts_signal.py ask --to <login> --type task` (general rule: only a machine whose own guard record is not locked; the laptop's was locked until 2026-11-13T13:58Z, so it is not an option today). Ask for the video ids; files come back through the repo.
-3. The video's transcript panel in Chrome profile "Browser 2" (steps below). Never "Browser 1".
+3. WITHDRAWN (operator 2026-11-12 13:45Z): no Chrome tool from any session until the operator names a deviceId in chat; never select by the "Browser 1/2" label. Skip to path 4. Steps below are history.
 4. A public transcript site, now SCRIPTED (2026-11-12): `fetch_captions_timed.py` switches to it by itself on a lock, a 429 or an
    unfetched id (`scripts/dev/yt_transcript_sites.py`, a public Invidious instance; video id or channel handle only, no account, no
    cookies, generic User-Agent, 4 s pauses (OURS), never a YouTube request from this address). Same cache files, header `# Source: public
@@ -61,7 +61,7 @@ machines and pace them, never push one address. Gemini "watch the video" is neve
 `python scripts/dev/verify_extract_quotes.py <extract.md>` (exit 0) against the cached caption file.
 
 ### Path 3 steps (worked 2026-11-12 for three videos, no sign-in wall; a Haiku can repeat it)
-1. One ToolSearch loads the Chrome tools; call `select_browser` for the device named "Browser 2" first; `tabs_context_mcp` with createIfEmpty.
+1. One ToolSearch loads the Chrome tools; do NOT run until the operator names a deviceId (path withdrawn); then `select_browser` that deviceId; `tabs_context_mcp` with createIfEmpty.
 2. `navigate` a new tab to `https://www.youtube.com/watch?v=<id>`. One video at a time. MUTED AND PAUSED (operator hears the audio): right after every navigate run `javascript_tool` `document.querySelectorAll('video').forEach(v=>{v.muted=true;v.pause()})` (repeat once after the page settles, the player may autoplay); never let a video play with sound.
 3. Copy note: a clipboard copy of the transcript works only after a click inside the transcript panel (the page ignores copy before that); `get_page_text` below needs no clipboard.
 3b. `javascript_tool`: click `#expand` (description), wait 1 s, click the button whose text is "Show transcript", wait 3 s. Check `document.querySelectorAll('transcript-segment-view-model').length` is above 0 (each cue: `H:MM` line, a "N seconds" line, then the text).

@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T16:37:05Z",
+    "misses": 6,
+    "reads": [
+      "MyTradingSys/system/DSA_HAIKU_GUIDE.md"
+    ],
+    "session": "agent-a48ef6153c2329ef2"
+  },
   "created": "2026-11-12T13:09:05Z",
   "depends_on": [],
   "done_when": "CLAUDE.md line 41 says no Chrome tool until the operator names a deviceId, never pick by Browser 1/2 label, has no 'Browser 2' rule, is <= 7168 bytes, and test_integrity plus the new test pass.",
