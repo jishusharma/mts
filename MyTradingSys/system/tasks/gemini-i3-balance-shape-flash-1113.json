@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-12T20:56:34Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/balance-shape/flash.md"
   ],
@@ -16,11 +16,18 @@
   "id": "gemini-i3-balance-shape-flash-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "19 verbatim rows + 1 NOT_SEEN; verify_extract_quotes exit 0",
+      "ref": "ba85940da",
+      "utc": "2026-11-12T20:56:34Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "gemini-i3-ny-open-flash-1113",
   "note": "Run as gemini_queue.py run gemini-i3-balance-shape-flash-1113:low:flash. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply.",
   "prio": 1,
   "refine_tries": 0,
@@ -31,7 +38,7 @@
     "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "19 verbatim rows + 1 NOT_SEEN; verify_extract_quotes exit 0",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -49,7 +56,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Grep for balance, imbalance, bell, P shape, b shape, D shape, double distribution, value migration, closing price",
