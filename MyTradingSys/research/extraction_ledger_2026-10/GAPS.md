@@ -4,10 +4,10 @@ Ledger rows: 328; transcripts: 153. Counts:
 
 | Gap | Count |
 |---|---|
-| transcript but no extract | 58 |
+| transcript but no extract | 56 |
 | extract with FAIL or NA quotes | 57 |
-| extracted but used by no layer | 139 |
-| id seen in only one place | 144 |
+| extracted but used by no layer | 141 |
+| id seen in only one place | 142 |
 | priority-list id with no transcript | 56 |
 | extract file with no resolvable id | 0 |
 
@@ -15,7 +15,7 @@ Method notes: used_by is a text match of the id in layers params json and layer 
 layer file names the id (an extract may still feed a layer by rule text, not id). NA = extract file has no
 checkable quote for that id. Earlier inventories (linked, not replaced): MyTradingSys/research/transcript_inventory_2026-10-09/RESULT.md.
 
-## Transcript but no extract (58)
+## Transcript but no extract (56)
 
 - -2uZSqKKrFQ
 - 0CrkbfuIhkc
@@ -27,11 +27,9 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - 5MgOwizsnjk
 - 6BAzqewtPUk
 - 6rHybt-DfQ0
-- 9IliXww64uM
 - 9eHZMVXilgc
 - AQR6zIgCx7I
 - C9n_d91Uitc
-- DyS79Eb92Ug
 - Fj4FDZQxw0I
 - GbXnw_tNMtw
 - I0rxiH1jZwc
@@ -136,7 +134,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - y67l86cSqb8 FAIL MyTradingSys/research/orderflow_extracts_1112/extract_y67l86cSqb8.md
 - zAwEX_tRUfE FAIL extracts/gemini_out/zAwEX_tRUfE_gemini.md
 
-## Extracted, used by no layer (139)
+## Extracted, used by no layer (141)
 
 - -CBvFi40sIQ
 - -NXzJs5JRks
@@ -168,6 +166,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - 8MvxK_nxO-0
 - 8TvLQ87KrfU
 - 96iPFDpXEcU
+- 9IliXww64uM
 - 9VN9y2DVtGQ
 - 9ba0p8ZPL4c
 - <id>
@@ -180,6 +179,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - D-0xTsMPwys
 - DD73wDVvObI
 - DVZVE9rXGtU
+- DyS79Eb92Ug
 - E_AP5kudK5Y
 - EoQDQVblmMY
 - FPaXP3LE6c8
@@ -278,7 +278,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - zAwEX_tRUfE
 - zQTbdEweG3c
 
-## Id seen in only one place (144)
+## Id seen in only one place (142)
 
 - -9rAJNUpMsk
 - -sZa50NZo7o
@@ -304,7 +304,6 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - 7wl0C1lVfRE
 - 8LoMhydNhCM
 - 8TvLQ87KrfU
-- 9IliXww64uM
 - 9ba0p8ZPL4c
 - 9eHZMVXilgc
 - <id>
@@ -314,7 +313,6 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - CY7-W_b7UAU
 - D-0xTsMPwys
 - DD73wDVvObI
-- DyS79Eb92Ug
 - EQy4HouRMMk
 - E_AP5kudK5Y
 - EoQDQVblmMY

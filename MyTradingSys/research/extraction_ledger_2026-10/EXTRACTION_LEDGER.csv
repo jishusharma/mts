@@ -71,7 +71,7 @@ video_id,channel,language,method,transcript_file,extract_file,extract_source,quo
 8TvLQ87KrfU,,,,,MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md,claude_or_manual,2,FAIL,none
 96iPFDpXEcU,,en,captions,96iPFDpXEcU_raw.txt,extracts/gemini_out/96iPFDpXEcU_gemini.md,gemini,13,PASS,none
 96iPFDpXEcU,Tom,en,captions,96iPFDpXEcU_raw.txt,extracts/processed/tom/new_selected_10/extract_96iPFDpXEcU.md,claude_or_manual,8,PASS,none
-9IliXww64uM,Fabio Valentini,en,captions,9IliXww64uM_raw.txt,,,,,none
+9IliXww64uM,Fabio Valentini,en,captions,9IliXww64uM_raw.txt,MyTradingSys/research/orderflow_extracts_1112/extract_9IliXww64uM.md,claude_or_manual,14,PASS,none
 9VN9y2DVtGQ,,en,captions,9VN9y2DVtGQ_raw.txt,MyTradingSys/research/orderflow_extracts_1112/extract_9VN9y2DVtGQ.md,claude_or_manual,11,PASS,none
 9ba0p8ZPL4c,,,,,MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md,claude_or_manual,5,FAIL,none
 9eHZMVXilgc,,en,captions,9eHZMVXilgc_raw.txt,,,,,none
@@ -92,7 +92,7 @@ CY7-W_b7UAU,,,,,MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction
 D-0xTsMPwys,,,,,MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md,claude_or_manual,12,FAIL,none
 DD73wDVvObI,Fabio,,,,extracts/gemini_out/fabio/DD73wDVvObI_note.md,gemini,2,FAIL,none
 DVZVE9rXGtU,,en,captions,DVZVE9rXGtU_raw.txt,MyTradingSys/research/orderflow_extracts_1112/extract_DVZVE9rXGtU.md,claude_or_manual,10,PASS,none
-DyS79Eb92Ug,Fabio Valentini,en,captions,DyS79Eb92Ug_raw.txt,,,,,none
+DyS79Eb92Ug,Fabio Valentini,en,captions,DyS79Eb92Ug_raw.txt,MyTradingSys/research/orderflow_extracts_1112/extract_DyS79Eb92Ug.md,claude_or_manual,23,PASS,none
 EQy4HouRMMk,Cointelegraph,,,,,,,,none
 E_AP5kudK5Y,,,,,MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md,claude_or_manual,2,FAIL,none
 EoQDQVblmMY,,,,,MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md,claude_or_manual,5,FAIL,none
