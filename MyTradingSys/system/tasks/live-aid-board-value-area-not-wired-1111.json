@@ -18,33 +18,35 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Live Aid: OI poller for 8 more venues via DoH-pinned fetch, page reads snapshot\"",
-      "ref": "662314318f5e",
-      "utc": "2026-11-11T14:00:48Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into DESKTOP-F7IU69N/flag-log-readout-111",
+      "ref": "a479f7c268b1",
+      "utc": "2026-11-11T20:01:08Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Source: four-model review 2026-11-11. Observation only; no rate invented.",
+  "note": "Source: four-model review 2026-11-11. Observation only; no rate invented. planner-refine-1112 2026-11-12: scope_in now lists live_aid.html and test_spec_tf_strip.py (merged the rescope card).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T15:57:10Z",
+  "refreshed": "2026-11-12T06:22:36Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/tools/live_aid/home.js",
     "MyTradingSys/tools/live_aid/live_aid_indicators.js",
     "MyTradingSys/tools/live_aid/tf_strip.js",
-    "MyTradingSys/tools/live_aid/test_setup_board.py"
+    "MyTradingSys/tools/live_aid/test_setup_board.py",
+    "MyTradingSys/tools/live_aid/live_aid.html",
+    "MyTradingSys/tools/live_aid/test_spec_tf_strip.py"
   ],
   "scope_out": [
     "setup_board.js layer list",
     "BASE_RATES tables",
     "live tree"
   ],
-  "scope_sha": "662314318f5e",
+  "scope_sha": "a479f7c268b1",
   "size": "S",
   "sources": [
     "four-model review 2026-11-11"
@@ -52,8 +54,8 @@
   "state": "ready",
   "steps": [
     "Single definition: keep live_aid_indicators.js vaPriorDay (used by vaAcceptance); tf_strip.js Prior VAH/VAL/POC call it (DECISION OURS)",
-    "In boardInputs set o.va to below/above/inside from last close vs val/vah, only when vaPriorDay has no err",
-    "Add tests; run the live_aid test files"
+    "In boardInputs set o.va to below/above/inside from last close vs val/vah, only when vaPriorDay has no err; pass S.pv or vaPriorDay result in the LAHOME.render call (live_aid.html ~1102)",
+    "Add tests; run the live_aid test files incl. test_spec_tf_strip.py (it pins tf_strip Prior VAH/VAL/POC)"
   ],
   "tests": "New test in test_setup_board.py (node harness): home.js boardInputs with price below the prior-day value area yields va 'below' and the board lists value_area; fails on old code (no va key)",
   "title": "Live Aid setup board gets the value area from one definition",
