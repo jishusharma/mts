@@ -276,7 +276,7 @@
         "jishu.awgp": ""
       },
       "last_published": {
-        "jishusharma1985": "2026-11-06",
+        "jishusharma1985": "2026-11-12",
         "jishu.sharma": "never",
         "jishu.awgp": "never"
       },
@@ -291,11 +291,12 @@
       "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
       "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
       "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
-      "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d",
+      "published_sha": "50ec90ef1e201d264c1ee6ecab7e8d0b2a773532cfbad407e514adb35853a2ec",
       "feeds": [
         "MyTradingSys/research/STATUS.md"
       ],
-      "max_age_h": 72
+      "max_age_h": 72,
+      "published_at": "2026-11-12T22:39:37Z"
     },
     {
       "slug": "session_planner",
@@ -429,7 +430,7 @@
       "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
       "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
       "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": "bd521da5f4ae7d16b802e3a3b89b0efe36a50714fa881af8184e719338210af0",
+      "published_sha": "b207849cee57edbf585bbed63df69a67f0a4c36d4de52beaf337a28fc3e0ae47",
       "producer": [
         "live_onepage",
         "cbp"
@@ -438,7 +439,7 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 12,
-      "published_at": "2026-11-12T21:07:14Z"
+      "published_at": "2026-11-12T22:39:38Z"
     },
     {
       "slug": "buy_crypto",
