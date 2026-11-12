@@ -1,0 +1,1 @@
+{"t": "20261112T221042Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ack", "text": "ack b-041c92 told Supervisor A cannot ship the fix; login C must revert 945d5edb0 or fix the stamp", "login": "A", "id": "b-041c92", "state": "told", "host": "desktop-f7iu69n", "note": "Supervisor A cannot ship the fix; login C must revert 945d5edb0 or fix the stamp"}
