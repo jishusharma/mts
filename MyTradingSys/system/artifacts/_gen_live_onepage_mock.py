@@ -623,3 +623,10 @@ if '--fragment' in sys.argv:  # artifact publish copy: the host adds the doctype
     frag = f'<meta name="claude:viewport-fit-sides" content="cover">{head}{inner}'
     pathlib.Path(sys.argv[sys.argv.index('--fragment') + 1]).write_text(frag, encoding='utf-8', newline='\n')
 print(len(page), 'live' if LIVE else 'offline')
+try:  # name the page this build feeds (registry producer 'live_onepage'): a session republishes it
+    sys.path.insert(0, str(R.parent / 'scripts' / 'dev'))
+    import artifacts
+    for _l in artifacts.producer_lines(artifacts.load(), 'live_onepage'):
+        print(_l)
+except Exception as _e:  # noqa: BLE001
+    print('republish note failed:', _e)

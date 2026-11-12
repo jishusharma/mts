@@ -4,6 +4,14 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-pages-follow-data | decided 2026-11-13 | Supervisor C (relayed from the operator)
+```json
+{"id": "d-pages-follow-data", "order": 48, "date": "2026-11-13", "status": "DECIDED",
+ "question": "Pinned claude.ai pages (CBP desk, Live feed, MTS Home) showed 4-9 day old data for weeks despite rules. What must hold?",
+ "answer": "Every artifact must update whenever a session touches its data; the super session owns it. Buy Crypto (spot alt buying) updates after every CBP fetch. The fix is a mechanism that runs, not another rule. (operator, relayed by Supervisor C 2026-11-13)",
+ "done": "mechanism: registry.json per-page feeds/max_age_h/producer; artifacts.py stale flags a page whose feed is newer than its last publish or older than max_age_h; supervisor plan prints PLAN pages-stale + REPUBLISH lines; cbp_run.py, buy_crypto.py and the live-page generator print REPUBLISH for pages whose producer they are (Buy Crypto producer = cbp). Gap: research_map has no generator (hand-made), flagged stale until a super session edits it."}
+```
+
 ## d-restart-c-a-supervisors | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
 ```json
 {"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
