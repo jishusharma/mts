@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-12T20:56:55Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/code_vs_rulebook/argon.md"
   ],
@@ -16,11 +16,18 @@
   "id": "gemini-code-vs-rulebook-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "35 mismatch rows; verify_extract_quotes exit 0",
+      "ref": "47332aa33",
+      "utc": "2026-11-12T20:56:55Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "gemini-i3-market-profile-flash-1113",
   "note": "Run as gemini_queue.py run gemini-code-vs-rulebook-argon-1113:low:argon. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply.",
   "prio": 1,
   "refine_tries": 0,
@@ -32,7 +39,7 @@
     "MyTradingSys/backtest/layers/fabio/v3/models.py",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "35 mismatch rows; verify_extract_quotes exit 0",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -50,7 +57,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Read the code first, then RULEBOOK.md; one row per mismatch with file:line and rule id",
