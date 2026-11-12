@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T18:41:16Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py <EXTRACT.md>"
   ],
@@ -30,17 +31,30 @@
   "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Jala 2 videos extracted (5 calls, verify exit 0 on NUC); Michaal and Qriptal no new upload",
+      "ref": "bf475f9ab",
+      "utc": "2026-11-12T18:41:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: gap closed; Jala rows are in the NUC cbp store, not committed",
   "note": "REVIEWED:2026-11-12 T0-ONLY Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. CHROME IS OFF (OPERATOR_DECISIONS 2026-11-12 13:45Z): no Chrome tool of any kind until he names a deviceId himself; the Browser 2 panel path is withdrawn. | 2026-11-12 ~17Z operator order: all YouTube work on the Gemini lane; re-laned from SONNET (Browser 2 panel path withdrawn, Chrome OFF).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T17:00:52Z",
   "refs": [],
-  "result": "",
+  "result": "Jala 2 videos extracted (5 calls, verify exit 0 on NUC); Michaal and Qriptal no new upload since 11-11",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cbp_gap_1112/"
   ],
@@ -52,12 +66,13 @@
   "sources": [
     "operator 2026-11-12 08Z; store state read 2026-11-12 16:29Z; YT_PROXY.md Path 3 worked for 3 videos 11-12"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the newest uploads of Michaal, Jala and Qriptal since 2026-11-11 (guard fetch_captions_timed.py --status first; while locked write the unlock time and use Gemini search/transcript output saved to a file)",
     "Per video write an EXTRACT.md of calls (level, direction, date, verbatim quote) under MyTradingSys/research/cbp_gap_1112/<id>/; run verify_extract_quotes.py until exit 0; unverifiable quotes dropped; no outcomes read",
     "One-line report per analyst: video ids, calls extracted, or no new upload; commit on your branch"
   ],
+  "taken": "2026-11-12T18:41:16Z",
   "tests": "run card, no code change; transcripts stay untracked",
   "title": "[GEMINI] CBP gap: newest Michaal, Jala, Qriptal videos since 11-11 (Gemini lane, no Chrome)",
   "weight": "ROUTINE",
