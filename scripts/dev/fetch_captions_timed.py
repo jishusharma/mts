@@ -34,6 +34,11 @@ Fleet guard (2026-11-01; one public IP is shared by several machines, so a per-m
  - escalating lockout on consecutive blocks 6 h, 24 h, 72 h (OURS); a clean fetch resets the count (`ytclean` signal).
  - a yt-dlp 429 ends the video there: the transcript-api fallback (plus its metadata call) is OFF unless --fallback, and then
    each of its calls is counted against the budget.
+Never blocked (operator 2026-11-12, YT_PROXY.md path order): a locked address, a 429 or an unfetched id goes on by itself to
+path 4, a public Invidious instance (yt_transcript_sites.py: video id only, no account/cookies, generic User-Agent, never a
+YouTube request from this address, paced). It writes the same _timed/_raw files, `# Source: public transcript site <host>`. A
+video no scripted path could get is appended to ~/.mts/yt_waiting.json (env YT_WAITING_FILE); `--waiting` prints that list
+for a Claude desktop session to drain through the Browser 2 panel path. The guard's lockout itself is unchanged.
 YouTube-only proxy (operator 2026-11-02, home IP blocked): when env YT_PROXY is set (a socks5:// or http:// URL; "off" =
 none) or ~/.mts/ytproxy/wireproxy.conf exists (free Cloudflare WARP via the open-source wgcf + wireproxy, setup in
 MyTradingSys/system/YT_PROXY.md), EVERY YouTube call and the ipify check go through socks5://127.0.0.1:40000; nothing
@@ -59,6 +64,9 @@ try:
     import yt_dlp
 except ImportError:   # CI pip line lacks it; the fetcher is a desktop tool, tests inject a stub
     yt_dlp = None
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import yt_transcript_sites as sites  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 CBP_HOME = Path(os.environ["CBP_HOME"]) if os.environ.get("CBP_HOME") else None
@@ -622,6 +630,52 @@ def fetch(vid, analyst, langs, outdir, channel="", cookies=None):
         return f"ERROR {msg[:80]}"
 
 
+def site_fetch(vid, analyst, langs, outdir, channel=""):
+    """Path 4: captions of one video from a public transcript site (no YouTube request from this address)."""
+    if (outdir / f"{vid}_timed.txt").exists():
+        return "EXISTS"
+    got = sites.fetch_video(vid, langs)
+    if not got:
+        return "NOSITE"
+    return store(vid, analyst, outdir, channel, got["info"], "site", got["cues"], "public transcript site " + got["host"])
+
+
+def recover(vid, analyst, langs, outdir, channel, tried):
+    """A video the YouTube path could not give: try path 4, else the waiting list. Returns OK.../WAITING."""
+    r = site_fetch(vid, analyst, langs, outdir, channel)
+    if r.startswith(("OK", "EXISTS")):
+        sites.drop_waiting(vid)
+        return r
+    sites.add_waiting(vid, channel, list(tried) + ["site:" + r])
+    return "WAITING"
+
+
+def locked_run(a, outdir):
+    """Address locked: no YouTube request at all; ids (or the channel's newest uploads, listed by a site) go by path 4."""
+    print(NEXT_PATH + " (trying path 4 first)", flush=True)
+    langs = a.langs.split(",")
+    if a.channel:
+        rows = sites.list_channel(a.channel, a.scan)
+        if not rows:
+            print(f"{a.channel} LIST_FAILED (locked, site listing gave nothing)")
+            return EXIT_BLOCKED
+        inc, exc = re.compile(a.include) if a.include else None, re.compile(a.exclude) if a.exclude else None
+        picks = [vid for vid, title, d in rows if not (exc and exc.search(title)) and not (inc and not inc.search(title))
+                 and not (a.since and d and d < a.since)][:a.latest]
+    else:
+        picks = [m.group(1) for m in (ID_RE.search(v.strip()) for v in a.videos) if m]
+    bad = 0
+    for i, vid in enumerate(picks[:sites.SITE_VIDEOS_PER_RUN]):
+        if i:
+            time.sleep(sites.PAUSE_S)
+        r = recover(vid, a.analyst, langs, outdir, a.channel or "", ["ytdlp:locked"])
+        bad += not r.startswith(("OK", "EXISTS"))
+        print(f"{vid} {r}", flush=True)
+    if bad:
+        print("WAITING videos listed: python scripts/dev/fetch_captions_timed.py --waiting")
+    return EXIT_BLOCKED if bad else 0
+
+
 def fetch_channel(a):
     try:
         rows = list_channel(a.channel, a.scan, a.cookies)
@@ -679,6 +733,9 @@ def fetch_channel(a):
                 stopped = True
             elif r.startswith("OK"):
                 mark_clean()
+        if r in ("BLOCKED", "UNVERIFIED"):   # path 4 by itself, never another YouTube request
+            time.sleep(sites.PAUSE_S)
+            r = recover(vid, a.analyst, a.langs.split(","), outdir, a.channel, ["ytdlp:" + r.lower()])
         picked += r.startswith(("OK", "EXISTS"))
         failed |= not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
@@ -700,7 +757,7 @@ def main(argv):
 def _main(argv):
     global CANON, ALLOW_FALLBACK
     ap = argparse.ArgumentParser()
-    ap.add_argument("--analyst", required=True)
+    ap.add_argument("--analyst", default="")
     ap.add_argument("--out", default=str(CANON))
     ap.add_argument("--canonical-out", type=Path, help="shared raw transcript store (default: MTS canonical store)")
     ap.add_argument("--channel", help="@handle; fetch its newest --latest on-topic videos")
@@ -714,13 +771,23 @@ def _main(argv):
     ap.add_argument("--max-videos", type=int, default=5, help="network fetches per run; extra ids are DEFERRED")
     ap.add_argument("--status", action="store_true", help="print lockout level/until + 24 h budget used; no network")
     ap.add_argument("--fallback", action="store_true", help="after a yt-dlp 429 also try transcript-api (counted; off by default)")
+    ap.add_argument("--waiting", action="store_true", help="print the waiting list (videos no scripted path could get); no network")
     ap.add_argument("videos", nargs="*")
     a = ap.parse_args(argv)
+    if a.waiting:
+        print(sites.waiting_report(CANON))
+        return 0
+    if not a.analyst and not a.status:
+        ap.error("--analyst is required")
     if not a.status and not ensure_proxy():
         print(f"YT_PROXY DOWN: {proxy_url()} not reachable; no request made (never falls back to the home IP). "
               f"See MyTradingSys/system/YT_PROXY.md")
         return EXIT_PROXY_DOWN
     gate = guard_gate(a)
+    if gate == EXIT_BLOCKED and (a.channel or a.videos):
+        if a.canonical_out:
+            CANON = a.canonical_out
+        return locked_run(a, Path(a.out))
     if gate is not None:
         return gate
     ALLOW_FALLBACK = a.fallback
@@ -744,11 +811,17 @@ def _main(argv):
     outdir = Path(a.out)
     res = guarded_run([(i, outdir / f"{i}_timed.txt") for i in ids],
                       lambda i: fetch(i, a.analyst, a.langs.split(","), outdir), a.max_videos)
-    for vid, r in res:
+    after = []
+    for n, (vid, r) in enumerate(res):
+        if r in ("BLOCKED", "UNVERIFIED"):   # path 4 by itself; a miss goes to the waiting list
+            if n:
+                time.sleep(sites.PAUSE_S)
+            r = recover(vid, a.analyst, a.langs.split(","), outdir, "", ["ytdlp:" + r.lower()])
+        after.append((vid, r))
         bad += not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
-    if any(r in ('BLOCKED', 'UNVERIFIED') for _, r in res):
-        print(NEXT_PATH)
+    if any(r == "WAITING" for _, r in after):
+        print(NEXT_PATH + "; waiting list: python scripts/dev/fetch_captions_timed.py --waiting")
     return 1 if bad else 0
 
 
