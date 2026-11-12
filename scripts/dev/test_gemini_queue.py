@@ -147,7 +147,7 @@ class ModelTokenTest(unittest.TestCase):
     """Operator order 2026-10-31: every Antigravity model reachable from `run <card>[:effort][:model]`."""
 
     def _parse(self, spec):
-        with mock.patch.object(gq, "run_job") as rj:
+        with mock.patch.object(gq, "run_job") as rj, mock.patch.object(gq, "AGY", Path(__file__)):   # an existing file = agy "installed"
             rc = gq.main(["run", spec])
         return rc, rj.call_args
 
@@ -309,3 +309,24 @@ class LeaseKeepAliveTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NoLocalAgyTest(unittest.TestCase):
+    """JIS-DESKTOP 2026-11-12: no agy + a STALE card = exit 0 and an empty log. Now: SKIP is printed, and no agy hands off to the NUC."""
+
+    def test_no_agy_hands_specs_to_nuc_task(self):
+        import nuc_lab
+        with mock.patch.object(gq, "AGY", Path("Z:/none/agy.exe")), mock.patch.object(nuc_lab, "run", return_value=0) as run, \
+                mock.patch.object(gq, "run_job") as rj:
+            self.assertEqual(gq.main(["run", "c1:low"]), 0)
+        run.assert_called_once_with("gemini-task", ["c1:low"])
+        rj.assert_not_called()
+
+    def test_skip_is_printed_not_silent(self):
+        import io, contextlib
+        with tempfile.TemporaryDirectory() as t, mock.patch.dict("os.environ", {"MTS_GQ_ROOT": t}), \
+                mock.patch.object(gq, "git", return_value=cp(0)), mock.patch.object(gq, "card_gate", return_value=(False, "state ready/STALE:x")):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                gq.run_job("c1", "low")
+        self.assertIn("SKIP c1: state ready/STALE:x", buf.getvalue())

@@ -2406,3 +2406,10 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - The 13:42Z entry above is wrong. After `switch_browser`, I and the footprint worker each opened one legend.coinglass.com tab on device f0b63f88. He replied "Again the other profile was touched by you!!!". Both tabs were closed at once and nothing was read or clicked.
 - Both connected devices (f0b63f88, 84a11bf5) are his NON-chart profiles. The purple "j" 1985 CoinGlass Pro profile has no working connection. `switch_browser` returning does not show which window he clicked.
 - Decision: no Chrome tool on any session until he names a deviceId himself in chat as his chart profile. Legend cross-checks stay pending. Chart data comes from Binance trades and from screenshots he pastes.
+
+## 2026-11-12 ~17:00Z: ALL YouTube work goes to the Gemini lane, ordered from any Claude session
+- Operator: "do all the YouTube related work on the Gemini account; order it from right here". Gemini quota was about to expire and he had been running Gemini jobs by hand.
+- Decision: every YouTube/video card (caption fetch, extract, CBP gap, back-catalogue, Tom/Fabio rulebook) is lane CODEX with a `[GEMINI]` title and runs through `python scripts/dev/gemini_queue.py run <card>:low`, started by any Claude session on any machine. No Claude Agent and no Chrome for YouTube work (Chrome is OFF for every session, 13:45Z entry above).
+- Desktop path: no local `agy` here, so `gemini_queue.py run` hands the specs to the NUC as a one-shot /IT schtask over the SSH gate (`nuc_lab.py gemini-task`; poll with `nuc_lab.py gemini-status`). A skipped card now prints `SKIP <card>: <why>` instead of exiting 0 silent.
+- Every Gemini extract still needs `verify_extract_quotes.py` exit 0 (Gemini watching a video invents quotes); a Claude session reviews the `gemini-q/<id>` branch and ships it.
+- Cards moved: cbp-gap-since-1111-fetch-by-browser-panel-1112 (SONNET to CODEX, Chrome/panel steps removed), analyst-call-backcatalogue-extract-1112 (dropped DSA to ready CODEX), tom-fabio-rebuild-from-beginner-videos-1109 (scope fixed).

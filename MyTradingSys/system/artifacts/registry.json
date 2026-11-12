@@ -441,6 +441,54 @@
       "notes_go_to": "BUY_CRYPTO_PAGE.md",
       "note": "Private page; his position lives only in its db, never in the repo.",
       "published_sha": "981d84ba744d7ac2f5c0a90bd79e474d8409d804c4678d12169ced6f350fb458"
+    },
+    {
+      "slug": "concept_deck_tom_fabio",
+      "title": "Concept deck: Tom & Fabio",
+      "status": "canonical",
+      "pinned": false,
+      "generator": null,
+      "html": null,
+      "single_owner": "jishusharma1985",
+      "owner_app": "opus-concept-decks-1112 (C)",
+      "refresh": "re-run the card MyTradingSys/research/concept_decks_1112",
+      "db": [],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/L4A2SBrnC2JrK1iutL18XV"
+      },
+      "last_published": {
+        "jishusharma1985": "2026-11-12"
+      },
+      "purpose": "Slides deck of the concept layer with cited fact sheets (context, not trade advice).",
+      "notes_go_to": "MyTradingSys/research/concept_decks_1112/README.md",
+      "note": "Registered 2026-11-12 by lead B to fix CI Step 3af; published by login C.",
+      "published_sha": ""
+    },
+    {
+      "slug": "concept_deck_malkan_rsi",
+      "title": "Concept deck: Malkan RSI",
+      "status": "canonical",
+      "pinned": false,
+      "generator": null,
+      "html": null,
+      "single_owner": "jishusharma1985",
+      "owner_app": "opus-concept-decks-1112 (C)",
+      "refresh": "re-run the card MyTradingSys/research/concept_decks_1112",
+      "db": [],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP"
+      },
+      "last_published": {
+        "jishusharma1985": "2026-11-12"
+      },
+      "purpose": "Slides deck of the concept layer with cited fact sheets (context, not trade advice).",
+      "notes_go_to": "MyTradingSys/research/concept_decks_1112/README.md",
+      "note": "Registered 2026-11-12 by lead B to fix CI Step 3af; published by login C.",
+      "published_sha": ""
     }
   ],
   "unpinned_old": {
