@@ -295,6 +295,9 @@ FAIL_LOG_DIR = REPO / "runtime_data" / "gate_fail_logs"   # gitignored (runtime_
 FAIL_LOG_LINES = 200
 
 
+FAIL_LOG_PATHS = {}   # step num -> its fail-log path (this run); the closing FAILED list repeats it so the cause is the last thing a ship prints
+
+
 def write_fail_log(num, output):
     """Keep a failed step's last FAIL_LOG_LINES output lines in a per-run log (the console shows only 15). Returns the path, or None.
     Diagnostics only: any error here never changes the step's verdict."""
@@ -302,6 +305,7 @@ def write_fail_log(num, output):
         FAIL_LOG_DIR.mkdir(parents=True, exist_ok=True)
         path = FAIL_LOG_DIR / (time.strftime("%Y%m%dT%H%M%S") + f"_{os.getpid()}_step-{re.sub(r'[^A-Za-z0-9_.-]', '_', str(num))}.log")
         path.write_text(chr(10).join((output or "").splitlines()[-FAIL_LOG_LINES:]) + chr(10), encoding="utf-8", newline=chr(10))
+        FAIL_LOG_PATHS[str(num)] = path
         return path
     except Exception:
         return None
@@ -766,6 +770,8 @@ def run_plan(plan, jobs, out=None, fail_fast=False, precheck=False, slot=None, r
     def run_one(s, stop_on_fail):
         if stop_on_fail and failed_first:
             return not_run(s, f"fail-fast: step {failed_first[0]} failed")
+        with _LOCK:   # one line when a step starts: a long step (3xt under load) is visible while it runs, not only after it ends
+            print(f"[gate] START step {s.num}: {s.desc}", file=out, flush=True)
         t0 = time.monotonic()
         try:
             ok, output = s.run()
@@ -1503,7 +1509,8 @@ def main(argv=None):
     if failed:
         print(f"FAILED: {len(failed)} step(s)")
         for f in failed:
-            print(f"  - {f}")
+            log = next((FAIL_LOG_PATHS[str(s.num)] for s in plan if s.label == f and str(s.num) in FAIL_LOG_PATHS), None)
+            print(f"  - {f}" + (f" (log: {log})" if log else ""))
         if os.environ.get("GITHUB_ACTIONS"):   # one line that names every failed step, whatever the per-step annotations were (cap: 10 per step)
             print(f"::error title=Gate FAIL::{len(failed)} step(s) failed: " + "; ".join(failed).replace("%", "%25"))
         return 1

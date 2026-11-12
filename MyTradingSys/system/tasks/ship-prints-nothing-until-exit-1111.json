@@ -5,6 +5,16 @@
     "python -m pytest scripts/dev/test_sync.py -k ship_stage -q",
     "python scripts/dev/test_bg_watch.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T12:13:31Z",
+    "misses": 2,
+    "reads": [
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_run_all_tests.py"
+    ],
+    "session": "agent-aa51d6578eb4a47d0"
+  },
   "created": "2026-11-11T18:45:44Z",
   "depends_on": [],
   "done_when": "With a gate that runs 70 s, the ship output shows 'ship stage: gate' at once and a 'still running' line by 60 s; test_sync.py passes; bg_watch no longer flags the output as STALLED-BG during the gate.",

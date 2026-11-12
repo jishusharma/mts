@@ -860,5 +860,28 @@ class TestFakeStepsLeaveRealFailLogsAlone(unittest.TestCase):
         self.assertEqual(count(), before)
 
 
+class TestShipGateOutputNamesCause(unittest.TestCase):
+    """Card ship-prints-nothing-until-exit-1111: a step announces itself when it starts, and a failed gate ends by naming the step and its log."""
+    def test_each_step_prints_a_start_marker_before_its_block(self):
+        plan = [rat.Step("4h", "slow step", "Step 4h: l", run=lambda: (True, "ok" + chr(10)), cmd_text="fake")]
+        buf = io.StringIO()
+        rat.run_plan(plan, 1, out=buf)
+        text = buf.getvalue()
+        self.assertIn("[gate] START step 4h: slow step", text)
+        self.assertLess(text.index("[gate] START step 4h"), text.index("Step 4h: PASS"))
+
+    def test_failed_gate_closing_list_names_step_and_log_path(self):
+        plan = [rat.Step("3xt", "extra tests", "Step 3xt: extra", run=lambda: (False, "boom" + chr(10)), cmd_text="fake")]
+        buf = io.StringIO()
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(rat, "FAIL_LOG_DIR", Path(d)),                 mock.patch.object(rat, "build_plan", return_value=plan), mock.patch.object(rat, "lower_priority"),                 mock.patch.object(rat, "isolate_pytest_tmp"), contextlib.redirect_stdout(buf):
+            rc = rat.main(["--quick"])
+            logs = list(Path(d).glob("*.log"))
+        self.assertEqual(rc, 1)
+        self.assertEqual(len(logs), 1)
+        tail = buf.getvalue().split("FAILED: 1 step(s)")[1]
+        self.assertIn("Step 3xt: extra", tail)
+        self.assertIn(str(logs[0]), tail)
+
+
 if __name__ == "__main__":
     unittest.main()
