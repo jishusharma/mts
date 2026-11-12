@@ -74,7 +74,7 @@ class Registry(unittest.TestCase):
         self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
                                                       "Test Simulator", "CBP Analyst Desk", "Live feed one page",
                                                       "Tom and Fabio Setup Review", "Buy Crypto",
-                                                      "Concept deck: Tom & Fabio", "Concept deck: Malkan RSI"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
+                                                      "Concept deck: Tom & Fabio", "Concept deck: Malkan RSI", "Conceptualizer"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
