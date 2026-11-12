@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:22:39Z",
   "commands": [
     "python scripts/dev/tasks.py brief live-aid-board-value-area-not-wired-1111",
     "python scripts/dev/tasks.py check live-aid-board-value-area-not-wired-1111"
@@ -19,8 +20,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "DECISION (OURS 2026-11-12): value-area wiring is live-aid tooling, not the edge work; low prio 3. Premise lines come from the raw title, re-verify at the file before editing. BLOCKED (check): the cited card live-aid-board-value-area-not-wired-1111 carries a result with trust UNCHECKED (needs class C0+); a trust stamp on that result clears it, then rerun tasks.py check.",
+  "note": "done in place: live-aid-board-value-area-not-wired-1111 scope_in now lists live_aid.html and test_spec_tf_strip.py, check READY",
+  "pinned": false,
   "prio": 3,
+  "reason": "done in place: live-aid-board-value-area-not-wired-1111 scope_in now lists live_aid.html and test_spec_tf_strip.py, check READY",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -34,7 +37,7 @@
   ],
   "size": "S",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [
     "Open the card; read home.js:315-327, setup_board.js:31, live_aid.html near the LAHOME.render call (about line 1089), live_aid_indicators.js:793/810, tf_strip.js:62/103",
     "Add MyTradingSys/tools/live_aid/live_aid.html and test_spec_tf_strip.py to scope_in; steps: pass S.pv or vaPriorDay at the render call, one yesterday-value-area definition",
