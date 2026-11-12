@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T19:25:21Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/v2/tom/9eHZMVXilgc_v2.md"
   ],
@@ -14,10 +15,18 @@
   "id": "gemini-tom-v1fresh-to-v2-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "V2 extracts verify exit 0 with >=1 quote each (re-run here)",
+      "ref": "d2931c96c",
+      "utc": "2026-11-12T19:25:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: batch delivered",
   "note": "Gemini lane effort low (operator 2026-11-12). Ids: 9eHZMVXilgc, C9n_d91Uitc, Fj4FDZQxw0I, KEe_CWHyuSg, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, VumVuGnCcFM, dh-ysRR8f-M, e6Gm1n2h05M, l8RZrBfzvp4, rrHj24GSR6M, sQ_biBKhPVU, v5EuDl9c0iI, vk0mkNPuhDc, vl01TiVTuoQ, wPMiyJXL0zU, yRvMW6lgN1o, zQTbdEweG3c",
   "prio": 2,
   "refine_tries": 0,
@@ -26,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md"
   ],
-  "result": "",
+  "result": "V2 extracts verify exit 0 with >=1 quote each (re-run here)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/v2/tom/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "Supervisor C census 2026-11-12 (tom_fabio_census_1112.md); operator order: all YouTube work on Gemini"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md and follow it",
     "Ids: 9eHZMVXilgc, C9n_d91Uitc, Fj4FDZQxw0I, KEe_CWHyuSg, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, VumVuGnCcFM, dh-ysRR8f-M, e6Gm1n2h05M, l8RZrBfzvp4, rrHj24GSR6M, sQ_biBKhPVU, v5EuDl9c0iI, vk0mkNPuhDc, vl01TiVTuoQ, wPMiyJXL0zU, yRvMW6lgN1o, zQTbdEweG3c",
     "Verify each file until exit 0 with >=1 quote; commit on your branch"
   ],
+  "taken": "2026-11-12T19:25:21Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Re-extract 19 Tom ids from V1-fresh to V2 format (transcripts on disk)",
   "weight": "ROUTINE",
