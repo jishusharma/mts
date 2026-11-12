@@ -20,4 +20,4 @@ Login C on the desktop runs PLAN_24H_2026-11-10.md section 8 as rolling Sonnet l
 - Ship from your own worktree, never the main checkout. `--next` must be a card id, a stage or `END: reason`.
 - Three ship gates at once time out; the test_pulse live_aid node timeout is a known flake (B fixing).
 - Lane trees never removed: mts-app, mts-relay, BinanceDataFeed.registry, mts-push, mts-refiner, mts-codex-lab, mts-codex, mts-dsa, mts-control-room.
-- Operator replies: bold result line, table, under 8 lines, only what is new; record every operator decision in OPERATOR_DECISIONS.md the same turn. Chrome only Browser 2.
+- Operator replies: bold result line, table, under 8 lines, only what is new; record every operator decision in OPERATOR_DECISIONS.md the same turn. Chrome: none until the operator names a deviceId.

@@ -1,37 +1,59 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/analyst_call_slot_2026-11-11/call_paper_log.py --once",
+    "python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py"
+  ],
   "created": "2026-11-11T19:40:49Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "Report names the call_paper_log.py --once output line and the four-row forward_readout_all.py table (trades, net R, state, stop rule); nothing written outside git-ignored runtime_data/.",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Poll the analyst-call paper slot once and read the combined forward readout, so the Habib 72.5 long call accrues a paper row; paper only, no order, no scheduler.",
   "id": "analyst-call-slot-poll-and-deploy-1112",
   "kind": "run",
-  "lane": "JIS-NB",
+  "lane": "DSA",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Analyst-call paper slot: logger with two placebos, Habib 72-73k long seeded, line in the c",
+      "ref": "574d83b8e80e",
+      "utc": "2026-11-11T18:32:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED (planner-raw-1112b 2026-11-12): lane JIS-NB is a live-host desk task and the card adds loggers to the coordinator deploy list, a live-tree decision (CLAUDE.md: live tree changes only by manual/coordinator deploy). Not refinable by a builder. Only sub-step 1 is safe now: python MyTradingSys/research/analyst_call_slot_2026-11-11/call_paper_log.py --once each session (no scheduler); calls.jsonl has 1 call (HABIB-2026-11-10-L72.5). Deploy-list edit and weekly forward_readout_all.py read go to the coordinator. DECISION (OURS).",
+  "note": "Deploy-list half stays with the coordinator (post as a desk note, not this card).\nREVIEWED:2026-11-12 T0-ONLY",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T16:23:20Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/analyst_call_slot_2026-11-11/call_paper_log.py",
+    "MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py"
+  ],
+  "scope_out": [
+    "Coordinator deploy list for the call-slot, Malkan and T06 loggers (live-tree decision, coordinator); any scheduler or loop"
+  ],
+  "scope_sha": "574d83b8e80e",
+  "size": "S",
   "sources": [
     "Edge lead 1111"
   ],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "Run the poll command once (public Binance data only).",
+    "Run the readout; report trades per slot and any KILL or E- state."
+  ],
   "tests": "",
   "title": "Run call_paper_log.py --once each session (no scheduler) and add the call slot, Malkan and T06 loggers to the coordinator deploy list; read forward_readout_all.py weekly and report trades and stop rule",
-  "weight": "",
+  "weight": "ROUTINE",
   "worker": ""
 }

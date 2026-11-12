@@ -38,7 +38,7 @@ Never blocked (operator 2026-11-12, YT_PROXY.md path order): a locked address, a
 path 4, a public Invidious instance (yt_transcript_sites.py: video id only, no account/cookies, generic User-Agent, never a
 YouTube request from this address, paced). It writes the same _timed/_raw files, `# Source: public transcript site <host>`. A
 video no scripted path could get is appended to ~/.mts/yt_waiting.json (env YT_WAITING_FILE); `--waiting` prints that list
-for a Claude desktop session to drain through the Browser 2 panel path. The guard's lockout itself is unchanged.
+for later; the Chrome panel path is withdrawn until the operator names a device. The guard's lockout itself is unchanged.
 YouTube-only proxy (operator 2026-11-02, home IP blocked): when env YT_PROXY is set (a socks5:// or http:// URL; "off" =
 none) or ~/.mts/ytproxy/wireproxy.conf exists (free Cloudflare WARP via the open-source wgcf + wireproxy, setup in
 MyTradingSys/system/YT_PROXY.md), EVERY YouTube call and the ipify check go through socks5://127.0.0.1:40000; nothing
@@ -81,7 +81,7 @@ DAILY_BUDGET_PROXY = 150       # OURS: same, on the shared WARP exit (one CBP ru
 ALLOW_FALLBACK = False         # transcript-api fallback after a 429 is a second network path: off by default
 BLOCK_MARKS = ("429", "Too Many Requests", "Sign in to confirm")
 EXIT_BLOCKED = 3
-NEXT_PATH = "next path: Browser 2 transcript panel, see YT_PROXY.md"   # message only: a block never ends a YouTube task
+NEXT_PATH = "next path: transcript panel withdrawn until operator names a device, see YT_PROXY.md"   # message only: a block never ends a YouTube task
 EXIT_PROXY_DOWN = 2
 PROXY_ADDR = ("127.0.0.1", 40000)   # OURS: wireproxy BindAddress in ~/.mts/ytproxy/wireproxy.conf
 _proxy_proc = []

@@ -107,6 +107,7 @@
     for (var g = Math.ceil(lo / gs) * gs; g <= hi; g += gs) s += '<line x1="' + L + '" x2="' + R + '" y1="' + y(g) + '" y2="' + y(g) + '" class="hm-grid"/><text x="' + (R + 4) + '" y="' + (y(g) + 4) + '" class="hm-ax">' + n0(g) + '</text>';
     // time axis every 2h
     rows.forEach(function (r) { var t = +r[0]; if (t % 7200000 === 0) s += '<text x="' + x(t) + '" y="' + (B + 18) + '" class="hm-ax" text-anchor="middle">' + new Date(t).toISOString().slice(11, 16) + '</text>'; });
+    s += '<text x="' + (R + 4) + '" y="' + (T - 8) + '" class="hm-ax">Price (USD)</text><text x="' + R + '" y="' + (B + 18) + '" text-anchor="end" class="hm-ax">Time (UTC)</text>';
     // US cash open line 14:30Z today
     var uo = Math.floor(ctx.now / 86400000) * 86400000 + 14.5 * 3600000, ux = x(uo);
     if (ux > L && ux < R) s += '<line x1="' + ux + '" x2="' + ux + '" y1="' + T + '" y2="' + B + '" class="hm-uo"/><text x="' + (ux + 4) + '" y="' + (B - 6) + '" class="hm-uot">US open 14:30Z</text>';
@@ -159,6 +160,8 @@
     s += '<rect x="' + (R + 2) + '" y="' + (py - 12) + '" width="64" height="24" rx="4" class="hm-tag"/><text x="' + (R + 34) + '" y="' + (py + 5) + '" text-anchor="middle" class="hm-tagt">' + n0(md.px) + '</text>';
     return s + '</svg>';
   }
+  // A level is only named in the header when the chart reaches it (within 2 % of price; chart() fits those): no off-frame level (operator 11-12).
+  function inFrame(md, z) { return md.px > 0 && Math.abs(z.price / md.px - 1) <= 0.02; }
   function gauge(md) {
     var ang = Math.PI * (1 - (md.score + 1) / 2), cx = 110, cy = 96, r = 80, nx = cx + r * 0.85 * Math.cos(ang), ny = cy - r * 0.85 * Math.sin(ang);
     var arc = function (a0, a1, c) { var x0 = cx + r * Math.cos(a0), y0 = cy - r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy - r * Math.sin(a1); return '<path d="M' + x0 + ' ' + y0 + ' A' + r + ' ' + r + ' 0 0 1 ' + x1 + ' ' + y1 + '" class="hm-arc ' + c + '"/>'; };
@@ -166,34 +169,35 @@
     var s = '<svg viewBox="0 0 220 112" class="hm-g">' + arc(Math.PI, Math.PI * 0.62, 'down') + arc(Math.PI * 0.62, Math.PI * 0.38, 'dim') + arc(Math.PI * 0.38, 0, 'up') +
       '<line x1="' + cx + '" y1="' + cy + '" x2="' + nx + '" y2="' + ny + '" class="hm-needle"/><circle cx="' + cx + '" cy="' + cy + '" r="6" class="hm-hub"/>' +
       '<text x="14" y="110" class="hm-gl down">SHORT</text><text x="206" y="110" text-anchor="end" class="hm-gl up">LONG</text></svg>';
-    var chips = md.votes.map(function (v, i) {
-      var c = v === 1 ? 'up' : v === -1 ? 'down' : v === 0 ? 'dim' : 'nid';
-      return '<span class="hm-vc ' + c + '"><i></i>' + VOTE_NAMES[i] + '</span>';
-    }).join('');
-    return '<div class="hm-card"><div class="hm-h">Direction <b class="' + dirc + '">' + md.dir + '</b><span class="hm-sub">' + md.bear + ' say down, ' + md.bull + ' say up, of ' + md.n + '</span></div>' + s + '<div class="hm-vcs">' + chips + '</div></div>';
+    return '<div class="hm-card"><div class="hm-h">Direction <b class="' + dirc + '">' + md.dir + '</b><span class="hm-sub">' + md.bear + ' say down, ' + md.bull + ' say up, of ' + md.n + '</span></div>' + s + soWhat(md.dir === 'LONG' ? 1 : md.dir === 'SHORT' ? -1 : 0, md) + '</div>';
   }
-  // Pulse grid: one row per timeframe; cells coloured green (buyers) / red (sellers) / grey; divergence words in the row.
-  // Indicator read (operator 11-10: the 11-row grid was clutter; he wants what Volume Flow, Squeeze, ADX say). indread.js builds it:
-  // one row per indicator, one cell per timeframe (15m frame, 1h bias, 4h context), then up to 3 plain sentences.
-  function indCard(ctx) {
-    var T = ctx.ind, sub = '<span class="hm-sub" title="Closed Binance spot bars. Volume Flow, Squeeze Momentum, WaveTrend: LazyBear defaults; ADX/DI 14: Wilder. Green = up, red = down, grey = neutral, amber = coiled. The sentences are our rules, not backtested as a set.">closed bars · rules ours, not backtested</span>';
-    if (!T) return '<div class="hm-card"><div class="hm-h">What the indicators say</div><div class="hm-nid">Binance candles NOT_IN_DATA (indread.js or feed missing)</div></div>';
-    var cc = function (v) { return v === 1 ? 'up' : v === -1 ? 'down' : v === 0 ? 'dim' : 'nid'; };
-    var head = '<div class="hm-ir hm-ih"><b></b>' + T.tfs.map(function (x) { return '<span><b>' + x[0] + '</b> ' + x[2] + '</span>'; }).join('') + '</div>';
-    var rows = T.rows.map(function (r) {
-      return '<div class="hm-ir"><b>' + r[1] + '</b>' + T.tfs.map(function (x) { var R = T.r[x[0]], c = R ? R.cells[r[0]] : null;
-        return '<span class="hm-pc ' + (c ? cc(c.v) + (c.on ? ' coil' : '') : 'nid') + '">' + esc(c ? c.txt : 'no candles') + '</span>'; }).join('') + '</div>';
+  // "So what for a trade" (operator 11-12: "I need more guidance on how to trade whatever I am seeing"). One plain line per panel:
+  // long / short / wait plus the level that decides. OURS, not backtested; context only, never an order.
+  function soWhat(side, md) {
+    var a = md && md.lad && md.lad.above[0], b = md && md.lad && md.lad.below[0], lv = function (z) { return n0(z.price) + ' (' + esc(z.name) + ')'; };
+    if (side > 0) return '<div class="hm-sw up"><b>So what:</b> long side only' + (b ? ' while price holds above ' + lv(b) + '; a 15m close under it = wait' : '') + '</div>';
+    if (side < 0) return '<div class="hm-sw down"><b>So what:</b> short side only' + (a ? ' while price stays under ' + lv(a) + '; a 15m close above it = wait' : '') + '</div>';
+    return '<div class="hm-sw dim"><b>So what:</b> wait, nobody leads' + (a && b ? '. Act only at ' + lv(b) + ' or ' + lv(a) : '') + '</div>';
+  }
+  // Indicator read: ONE verdict row per timeframe in plain words (indread.js verdict()), then the so-what line.
+  function indCard(ctx, md) {
+    var T = ctx.ind, sub = '<span class="hm-sub" title="Six closed-bar readings per timeframe (Volume Flow, Squeeze, ADX/DI, WaveTrend, RSI, buy-vs-sell volume) counted; a lead of 2 or more wins. Our rule, not backtested.">closed bars, 6 readings counted</span>';
+    if (!T) return '<div class="hm-card"><div class="hm-h">Who is winning</div><div class="hm-nid">Binance candles NOT_IN_DATA (indread.js or feed missing)</div></div>';
+    var V = T.ver || {}, coil = false;
+    var rows = (T.tfs || []).map(function (x) {
+      var v = V[x[0]];
+      if (!v) return '<div class="hm-vr dim"><b>' + x[0] + '</b><span>no candles</span></div>';
+      if (v.coiled) coil = true;
+      return '<div class="hm-vr ' + (v.side > 0 ? 'up' : v.side < 0 ? 'down' : 'dim') + '"><b>' + x[0] + '</b><span>' + esc(v.word) + '</span><small>' + (v.side < 0 ? v.dn : v.up) + ' of ' + v.n + (v.coiled ? ' <em>COILED</em>' : '') + '</small></div>';
     }).join('');
-    var tally = '<div class="hm-ir hm-it"><b>Agree</b>' + T.tfs.map(function (x) { var R = T.r[x[0]];
-      return '<span class="' + (!R ? 'dim' : R.dn > R.up ? 'down' : R.up > R.dn ? 'up' : 'dim') + '">' + (R ? R.dn + ' down · ' + R.up + ' up' : '--') + '</span>'; }).join('') + '</div>';
-    var says = (T.says || []).map(function (s) { return '<div class="hm-is ' + s.cls + '">' + esc(s.t) + '</div>'; }).join('');
-    // feed stalled: the cells are old bars, say so before the reader trusts them (e2e test 11-10)
-    if (T.stale) says = '<div class="hm-is amber">STALE: last 15m candle closed ' + Math.round(T.age / 60000) + ' min ago (feed stalled?) - these readings are old</div>' + says;
-    return '<div class="hm-card"><div class="hm-h">What the indicators say' + sub + '</div>' + head + rows + tally + says + '</div>';
+    var s15 = V['15m'] ? V['15m'].side : 0, s1 = V['1h'] ? V['1h'].side : 0, side = s15 && s1 && s15 !== s1 ? 0 : (s1 || s15);
+    var legend = coil ? '<div class="hm-lg">COILED = quiet before a move; direction unknown.</div>' : '';
+    var stale = T.stale ? '<div class="hm-is amber">STALE: last 15m candle closed ' + Math.round(T.age / 60000) + ' min ago (feed stalled?) - these readings are old</div>' : '';
+    return '<div class="hm-card"><div class="hm-h">Who is winning' + sub + '</div>' + stale + rows + legend + soWhat(side, md) + '</div>';
   }
   // Liquidations: one column per window; red part = longs forced out, green part = shorts; height = share, total under it.
   var LIQ_WIN = [['1m', 60000], ['2m', 120000], ['3m', 180000], ['5m', 300000], ['7m', 420000], ['10m', 600000], ['15m', 900000], ['30m', 1800000], ['1h', 3600000], ['2h', 7200000], ['4h', 14400000]];
-  function liqCard(ctx) {
+  function liqCard(ctx, md) {
     var l = ctx.liq; if (!l || !l.win) return '<div class="hm-card"><div class="hm-h">Liquidations</div><div class="hm-nid">no feed</div></div>';
     var cols = LIQ_WIN.map(function (w) {
       var s = l.win[w[0]] || { long: 0, short: 0 }, tot = s.long + s.short, pl = tot ? s.long / tot * 100 : 0, part = l.since && ctx.now - l.since < w[1];
@@ -201,8 +205,9 @@
         '<div class="hm-lcb' + (tot ? '' : ' empty') + '"><span class="up" style="height:' + (tot ? 100 - pl : 0) + '%"></span><span class="down" style="height:' + pl + '%"></span></div>' +
         '<b>' + w[0] + '</b><small>' + (tot ? usd(tot) : '0') + '</small></div>';
     }).join('');
-    var w15 = l.win['15m'] || { long: 0, short: 0 }, word = !(w15.long + w15.short) ? '15 min quiet' : w15.long >= 2 * w15.short ? '15 min: longs forced out (selling fuel spent if price sits on a floor)' : w15.short >= 2 * w15.long ? '15 min: shorts forced out (buying fuel spent if price sits on a ceiling)' : '15 min: both sides';
-    return '<div class="hm-card"><div class="hm-h">Liquidations <span class="hm-sub">red = longs forced out, green = shorts; faded = page not open that long</span></div><div class="hm-lcs">' + cols + '</div><div class="hm-say">' + esc(word) + '</div></div>';
+    var w15 = l.win['15m'] || { long: 0, short: 0 }, a = md && md.lad && md.lad.above[0], b = md && md.lad && md.lad.below[0], lvl = function (z) { return z ? ' at ' + n0(z.price) + ' (' + esc(z.name) + ')' : ''; };
+    var sw = !(w15.long + w15.short) ? 'quiet, ignore' : w15.long >= 2 * w15.short ? 'longs were forced out, selling fuel is spent: a long idea only if price holds the floor' + lvl(b) : w15.short >= 2 * w15.long ? 'shorts were forced out, buying fuel is spent: a short idea only if price holds the ceiling' + lvl(a) : 'both sides hit, no lean: wait';
+    return '<div class="hm-card"><div class="hm-h">Forced selling and buying <span class="hm-sub">red = longs forced out, green = shorts; last 15 min</span></div><div class="hm-lcs">' + cols + '</div><div class="hm-sw"><b>So what:</b> ' + sw + '</div></div>';
   }
   // Venues that answered this cycle with their share of the open positions in BTC: "Bybit 38% + Hyperliquid 27% + ..." (operator 11-10)
   function venueWords(m) {
@@ -276,6 +281,15 @@
       s += '<text x="' + (R + 8) + '" y="' + (mid + 4) + '" class="hm-wtw ' + c + '">' + (Lz && isFinite(Lz.wt1) ? '<tspan class="hm-wtn">' + Math.round(Lz.wt1) + '</tspan> ' : '') + esc(words) + '</text>';
     });
     return s + '</svg>';
+  }
+  // One line under the chart for the WaveTrend lanes (operator 11-12: "what do they mean for a trade?"). Frame = 15m + 30m agree;
+  // timing = a fresh big dot on 1m / 2m / 3m in the frame's direction. OURS, not backtested; context only.
+  function wtSoWhat(ctx, md) {
+    var L = ctx.lanes || {}, a = L['15m'], b = L['30m'], sd = function (z) { return z && z.side != null ? z.side : null; };
+    var fr = sd(a) !== null && sd(a) === sd(b) ? sd(a) : 0, dot = ['1m', '2m', '3m'].some(function (tf) { var z = L[tf]; return z && z.bars && fr && z.bars.slice(-4).some(function (x) { return x.x === fr && x.strong; }); });
+    var t = !a && !b ? 'no WaveTrend data' : fr > 0 ? '15m + 30m both rising: long side only' + (dot ? '; a big green dot just fired on 1m-3m, that is the timing' : '; wait for a big green dot on 1m-3m') :
+      fr < 0 ? '15m + 30m both falling: short side only' + (dot ? '; a big red dot just fired on 1m-3m, that is the timing' : '; wait for a big red dot on 1m-3m') : '15m and 30m disagree: wait';
+    return '<div class="hm-sw ' + (fr > 0 ? 'up' : fr < 0 ? 'down' : 'dim') + '"><b>WaveTrend, so what:</b> ' + esc(t) + ' <small>(15m + 30m = the big picture, 1m-3m = the timing)</small></div>';
   }
   function WTH(PU) { return PU && PU.WT_HOT || 53; }
   // Level story: nearest level above and below (or the one price sits at), read on completed 15m Binance closes (levelstory.js).
@@ -373,26 +387,35 @@
     var gw = md.dir === 'LONG' ? 'UP' : md.dir === 'SHORT' ? 'DOWN' : 'WAIT';
     var c = function (w) { return w === 'UP' ? 'up' : w === 'DOWN' ? 'down' : 'dim'; };
     var win = gw !== 'WAIT' ? gw : pw !== 'NO DATA' && pw !== 'MIXED' ? pw : lw, agree = gw === pw && pw === lw || (gw === 'WAIT' && pw === lw);
+    var a = md.lad && md.lad.above[0], b = md.lad && md.lad.below[0], lvl = function (z) { return n0(z.price) + ' (' + esc(z.name) + ')'; };
+    // Conflict (operator 11-12, default A): a directional idea against the opposite big picture = ONE line, stand aside until a 15m close decides.
+    var idea = lw !== 'MIXED' ? lw : gw !== 'WAIT' ? gw : 'MIXED', conflict = idea !== 'MIXED' && (pw === 'UP' || pw === 'DOWN') && idea !== pw;
+    if (conflict) {
+      var iz = lw !== 'MIXED' && st.length ? { price: st[0].price, name: st[0].name } : (idea === 'UP' ? b : a), nm = function (w) { return w === 'UP' ? 'long' : 'short'; };
+      var ctxt = 'conflict: ' + nm(idea) + ' idea' + (iz ? ' at ' + lvl(iz) : '') + ' vs ' + nm(pw) + ' big picture, stand aside until a 15m close decides';
+      var cdec = (a ? ' Close above ' + lvl(a) + ' = long, ' : ' ') + (b ? (a ? 'below ' : 'Close below ') + lvl(b) + ' = short.' : '');
+      return '<div class="hm-card hm-bias conflict" title="' + esc(ctxt + '.' + cdec.replace(/<[^>]*>/g, '')) + '"><div class="hm-h">Bias <b class="amber">STAND ASIDE</b></div><div class="hm-say amber">' + esc(ctxt) + '.' + cdec + '</div></div>';
+    }
     var cl = '<span class="' + c(gw) + '">gauge ' + md.dir + ' ' + Math.max(md.bull, md.bear) + '/' + md.n + '</span> | <span class="' + c(pw) + '">1h-4h pulse ' + pw + '</span> | <span class="' + c(lw) + '">level card ' + lw + '</span>';
-    var a = md.lad && md.lad.above[0], b = md.lad && md.lad.below[0];
-    var dec = (a ? '<span class="up">15m close above ' + n0(a.price) + ' (' + esc(a.name) + '): buyers took the level</span>' : '') + (a && b ? ' ' : '') +
-      (b ? '<span class="down">15m close below ' + n0(b.price) + ' (' + esc(b.name) + '): sellers took the level</span>' : '');
-    var why = agree ? 'All clocks agree.' : (gw !== 'WAIT' ? 'Clocks disagree: the live gauge (minutes) leads the next 15m, the 1h-4h lean is the backdrop.' : (pw === 'UP' || pw === 'DOWN' ? 'Gauge is waiting: the 1h-4h lean leads.' : 'No clock leads yet: gauge waiting, 1h-4h not clear.'));
+    var dec = (a ? '<span class="up">15m close above ' + n0(a.price) + ' (' + esc(a.name) + '): long confirmed</span>' : '') + (a && b ? ' ' : '') +
+      (b ? '<span class="down">15m close below ' + n0(b.price) + ' (' + esc(b.name) + '): short confirmed</span>' : '');
+    var why = agree ? 'All clocks agree.' : (gw !== 'WAIT' ? 'The live gauge (minutes) leads, 1h-4h is the backdrop.' : (pw === 'UP' || pw === 'DOWN' ? 'Gauge is waiting: the 1h-4h lean leads.' : 'No clock leads yet.'));
     var txt = 'Bias ' + (win === 'WAIT' ? 'none yet' : win) + ': ' + cl.replace(/<[^>]*>/g, '') + '. ' + why + ' ' + dec.replace(/<[^>]*>/g, '');
-    return '<div class="hm-card hm-bias ' + c(win) + '" title="' + esc(txt) + '"><div class="hm-h">Bias <b class="' + c(win) + '">' + (win === 'WAIT' ? 'none yet' : win) + '</b><span class="hm-sub">rules OURS, not backtested; observation only</span></div>' +
-      '<div class="hm-say">' + cl + '</div><div class="hm-say">' + esc(why) + '</div><div class="hm-say">' + dec + '</div></div>';
+    return '<div class="hm-card hm-bias ' + c(win) + '" title="' + esc(txt) + '"><div class="hm-h">Bias <b class="' + c(win) + '">' + (win === 'WAIT' ? 'none yet' : win) + '</b><span class="hm-sub">' + esc(why) + '</span></div>' +
+      '<div class="hm-say">' + dec + '</div></div>';
   }
   function render(el, ctx) {
     if (!el) return;
     var md = model(ctx), fl = flashes(ctx, md);
     var box = el.getBoundingClientRect(), W = Math.max(600, Math.round(box.width * 0.70)), H = Math.max(360, Math.round(box.height - 8));
     var head = '<div class="hm-top"><b class="hm-px">' + (md.px > 0 ? n0(md.px) : 'Price NOT_IN_DATA') + '</b>' +
-      (md.lad.above[0] ? '<span class="hm-nx down">▲ ' + n0(md.lad.above[0].price) + ' <small>' + esc(md.lad.above[0].name) + ', ' + ((md.lad.above[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
-      (md.lad.below[0] ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
+      '<span class="hm-nx dim">5-minute candles, last 12 h</span>' +
+      (md.lad.above[0] && inFrame(md, md.lad.above[0]) ? '<span class="hm-nx down">▲ ' + n0(md.lad.above[0].price) + ' <small>' + esc(md.lad.above[0].name) + ', ' + ((md.lad.above[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
+      (md.lad.below[0] && inFrame(md, md.lad.below[0]) ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
     var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
-    ctx._tm = timingOf(ctx, md);
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + timingStrip(ctx._tm) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx) + liqCard(ctx) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    ctx._tm = null;   // trigger row removed 11-12 (he could not select or read it); timingStrip/timingOf stay for tests
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + wtSoWhat(ctx, md) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -441,6 +464,9 @@
     '.hm-bbar{height:8px;border-radius:4px;background:var(--line);margin:3px 0}.hm-bbar span{display:block;height:100%;border-radius:4px}.hm-bbar.up span{background:var(--up)}.hm-bbar.down span{background:var(--down)}' +
     '.hm-bl2{margin:0;padding-left:14px;font-size:11px;max-height:64px;overflow:hidden}.hm-brate{font-size:11px;margin-top:3px}.hm-brate small{color:var(--dim);font-size:10px}' +
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
+    '.hm-vr{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;font-size:13px;margin-top:3px;padding-left:6px;border-left:4px solid var(--dim)}.hm-vr.up{border-left-color:var(--up)}.hm-vr.down{border-left-color:var(--down)}.hm-vr b{font:700 13px var(--mono,monospace);color:var(--fg)}.hm-vr.up span{color:var(--up)}.hm-vr.down span{color:var(--down)}.hm-vr small{color:var(--dim);font-size:11px}.hm-vr em{font-style:normal;font-weight:700;color:var(--amber)}' +
+    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}div.hm-sw{flex:none}' +
+    '.hm-bias.conflict{border-color:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
   // Flag log helpers (pure, tested in node): append with cap, and CSV for the Download button.
@@ -450,6 +476,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _boardCard: boardCard };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _soWhat: soWhat, _chart: chart, _inFrame: inFrame, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);
