@@ -52,6 +52,10 @@
    "disp": "REPRO",
    "why": "Generates MarketDataSnapshot.java.archive_mode.new for the Tom core historical backtest; tom_bt_report.py:143 hashes it and :221 cites it in TOM_CORE_BT.md; L1_SLICE1_STATUS.md:76."
   },
+  "MyTradingSys/backtest/trade_sanity.py": {
+   "disp": "TOOL",
+   "why": "Backtest RESULT helper (log sanity: last-5 fills vs 1m klines, per-year and long/short lines); imported by a study script on demand, e.g. research/gross_effect_screen_2026-10-15/log_sanity_example.py; tested by test_trade_sanity.py; PRE_REG_TEMPLATE.md RESULT rows."
+  },
   "MyTradingSys/backtest/layers/adx/adx.py": {
    "disp": "WIRE",
    "why": "ADX/DI Wilder engine (M1, PLAN_ADX_DI_VOLUME_2026-11-07.md); imported by research/adx_di_2026-11/census.py through sys.path, which the scanner cannot follow, and by test_adx.py",

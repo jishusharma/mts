@@ -92,3 +92,9 @@ Reuse `backtest/research_kit.py` context tags (card context-harness-research-kit
 Answer: TODO
 Evidence (file:line): TODO
 
+## RESULT.md rows every backtest carries (card backtest-log-sanity-and-year-lines-1112; video K31xH GAP_TABLE S5, S6, S8)
+
+- Log sanity (before any metric): the 5 latest trades with entry/exit bar, price and the matching 1m kline open/close; any mismatch stops the run. Helper: `backtest/trade_sanity.py` `log_sanity`.
+- Per-year rows: n, mean, sum for each calendar year of entry, next to the pooled number (one bad year can hide in a pooled mean). Helper: `year_side_lines`.
+- Long/short rows: n, mean, sum for the long side and the short side (descriptive only). Helper: `year_side_lines`.
+
