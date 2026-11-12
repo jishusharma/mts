@@ -7173,6 +7173,399 @@
           "question": "Does the combination beat its parts on BTC fee-net?"
         }
       ]
+    },
+    {
+      "id": "nk-stocktalk",
+      "name": "NK StockTalk (Nitish Kumar)",
+      "traders": "Nitish Kumar, NK StockTalk (Hindi)",
+      "their_market": "Nifty, Sensex index options; Indian stocks",
+      "our_market": "BTC perp (OURS mapping; options parts need Deribit testnet)",
+      "kpis": [
+        [
+          "60",
+          "videos catalogued (feed cap)"
+        ],
+        [
+          "5",
+          "selected for extract"
+        ],
+        [
+          "0",
+          "captions fetched"
+        ],
+        [
+          "0",
+          "concepts tested"
+        ]
+      ],
+      "deck": "",
+      "facts": "MyTradingSys/research/nk_stocktalk_1113/SELECTED.md",
+      "tests": [],
+      "market_tiles": [
+        [
+          "Hindi",
+          "caption language"
+        ],
+        [
+          "2 models",
+          "flash + argon extracts"
+        ],
+        [
+          "13:58Z",
+          "NUC caption lock ends 11-13"
+        ]
+      ],
+      "ideas": {
+        "failed": [],
+        "promising": []
+      },
+      "gaps": [
+        "Every rule is from titles only; no caption read",
+        "SRP meaning unknown",
+        "Options setups have no BTC twin"
+      ],
+      "concepts": [
+        {
+          "id": "hilega-milega",
+          "name": "Hilega Milega (RSI + RSI averages)",
+          "who": "Nitish Kumar (NK StockTalk)",
+          "status": "untested",
+          "diagram": "",
+          "quote": {
+            "text": "",
+            "src": "pending caption JLcDdrHkB5M",
+            "check": "none"
+          },
+          "rule": "RSI with a moving average and a volume-weighted average of RSI (operator's description).",
+          "ours": "Not built; waiting for his stated lengths",
+          "params": [
+            [
+              "RSI length",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Fast average of RSI (type, length)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Volume-weighted average of RSI (length)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Timeframe",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Entry trigger (cross / level)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Port Nifty to BTC perp",
+              "same rules, BTC 24/7 bars",
+              "OURS: our market mapping"
+            ]
+          ],
+          "code": "none",
+          "fidelity": [
+            "untested",
+            "Skeleton from titles only; video JLcDdrHkB5M"
+          ],
+          "support": [
+            [
+              "Malkan RSI layer",
+              "same oscillator family",
+              "research"
+            ],
+            [
+              "WaveTrend layer",
+              "oscillator cross",
+              "research"
+            ]
+          ],
+          "test": {
+            "study": "none yet",
+            "n": "0 captions",
+            "net": "—",
+            "verdict": "NONE",
+            "lesson": "captions not fetched yet"
+          },
+          "sim": {
+            "where": "none",
+            "path": "no study for this on the sim desk",
+            "status": "not on sim"
+          },
+          "ideas": {
+            "failed": [],
+            "promising": []
+          },
+          "question": "Are the lengths 9/3/21 (Gemini's unverified guess) or something else?"
+        },
+        {
+          "id": "bollinger",
+          "name": "Bollinger Bands breakout vs fakeout",
+          "who": "Nitish Kumar (NK StockTalk)",
+          "status": "untested",
+          "diagram": "",
+          "quote": {
+            "text": "",
+            "src": "pending caption wrEEf8o9n9E",
+            "check": "none"
+          },
+          "rule": "Tell a real breakout from a fakeout at the bands (title).",
+          "ours": "Not built; BB 15m mechanical test exists for another trader",
+          "params": [
+            [
+              "BB length",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "BB width (std dev)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Fakeout test (close back inside?)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Timeframe",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ]
+          ],
+          "code": "none",
+          "fidelity": [
+            "untested",
+            "Skeleton from titles only; video wrEEf8o9n9E"
+          ],
+          "support": [
+            [
+              "Bollinger range-to-range study",
+              "same indicator",
+              "research"
+            ]
+          ],
+          "test": {
+            "study": "none yet",
+            "n": "0 captions",
+            "net": "—",
+            "verdict": "NONE",
+            "lesson": "captions not fetched yet"
+          },
+          "sim": {
+            "where": "none",
+            "path": "no study for this on the sim desk",
+            "status": "not on sim"
+          },
+          "ideas": {
+            "failed": [],
+            "promising": []
+          },
+          "question": "Does he use the bands at all in this video, or only price breakouts?"
+        },
+        {
+          "id": "srp",
+          "name": "SRP (meaning from captions)",
+          "who": "Nitish Kumar (NK StockTalk)",
+          "status": "untested",
+          "diagram": "",
+          "quote": {
+            "text": "",
+            "src": "pending caption 3EpXq8JC4jU",
+            "check": "none"
+          },
+          "rule": "Meaning not yet read; nearest title is Pivot Point Use.",
+          "ours": "Not built; meaning unconfirmed",
+          "params": [
+            [
+              "What SRP stands for",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Pivot formula (classic / Camarilla / Fib)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Pivot timeframe (day / week)",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ]
+          ],
+          "code": "none",
+          "fidelity": [
+            "untested",
+            "Skeleton from titles only; video 3EpXq8JC4jU"
+          ],
+          "support": [
+            [
+              "Session / timing layer",
+              "daily levels",
+              "research"
+            ]
+          ],
+          "test": {
+            "study": "none yet",
+            "n": "0 captions",
+            "net": "—",
+            "verdict": "NONE",
+            "lesson": "captions not fetched yet"
+          },
+          "sim": {
+            "where": "none",
+            "path": "no study for this on the sim desk",
+            "status": "not on sim"
+          },
+          "ideas": {
+            "failed": [],
+            "promising": []
+          },
+          "question": "Is SRP his own term, and is it pivots at all?"
+        },
+        {
+          "id": "nifty-h23",
+          "name": "Nifty Hedge 23 expiry setup",
+          "who": "Nitish Kumar (NK StockTalk)",
+          "status": "untested",
+          "diagram": "",
+          "quote": {
+            "text": "",
+            "src": "pending caption ZuVWAu_MR2Q",
+            "check": "none"
+          },
+          "rule": "Weekly-expiry Nifty option hedge under CAS rules (title).",
+          "ours": "Options structure; no BTC equivalent built",
+          "params": [
+            [
+              "Strike distance",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Entry time on expiry day",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Exit / stop",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Port to Deribit testnet options",
+              "possible later",
+              "OURS: only route for options"
+            ]
+          ],
+          "code": "none",
+          "fidelity": [
+            "untested",
+            "Skeleton from titles only; video ZuVWAu_MR2Q"
+          ],
+          "support": [
+            [
+              "Live engine",
+              "options not wired",
+              "none"
+            ]
+          ],
+          "test": {
+            "study": "none yet",
+            "n": "0 captions",
+            "net": "—",
+            "verdict": "NONE",
+            "lesson": "captions not fetched yet"
+          },
+          "sim": {
+            "where": "none",
+            "path": "no study for this on the sim desk",
+            "status": "not on sim"
+          },
+          "ideas": {
+            "failed": [],
+            "promising": []
+          },
+          "question": "Is any part directional, or is it pure premium hedging?"
+        },
+        {
+          "id": "nifty-gap-rsi",
+          "name": "Nifty gap prediction, 15-10-5 RSI",
+          "who": "Nitish Kumar (NK StockTalk)",
+          "status": "untested",
+          "diagram": "",
+          "quote": {
+            "text": "",
+            "src": "pending caption cmH38Uo4sYM",
+            "check": "none"
+          },
+          "rule": "Read RSI on 15, 10 and 5 min to call next open gap (title).",
+          "ours": "Not built; BTC has no session gap, needs a session-open proxy",
+          "params": [
+            [
+              "Timeframes",
+              "15, 10, 5 min",
+              "SOURCED: video title only"
+            ],
+            [
+              "RSI length",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "Gap threshold",
+              "NOT_SEEN",
+              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+            ],
+            [
+              "BTC gap proxy",
+              "session open (Asia/London/NY)",
+              "OURS: BTC trades 24/7"
+            ]
+          ],
+          "code": "none",
+          "fidelity": [
+            "untested",
+            "Skeleton from titles only; video cmH38Uo4sYM"
+          ],
+          "support": [
+            [
+              "Session / timing layer",
+              "session opens",
+              "research"
+            ],
+            [
+              "Malkan RSI layer",
+              "RSI",
+              "research"
+            ]
+          ],
+          "test": {
+            "study": "none yet",
+            "n": "0 captions",
+            "net": "—",
+            "verdict": "NONE",
+            "lesson": "captions not fetched yet"
+          },
+          "sim": {
+            "where": "none",
+            "path": "no study for this on the sim desk",
+            "status": "not on sim"
+          },
+          "ideas": {
+            "failed": [],
+            "promising": []
+          },
+          "question": "Which RSI reading at close predicts the gap side?"
+        }
+      ]
     }
   ]
 }

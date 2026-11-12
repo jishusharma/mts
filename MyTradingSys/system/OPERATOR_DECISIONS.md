@@ -2450,3 +2450,7 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - (d) A stuck test must name itself: per-test limit of 300 s on CI and 900 s per shard (958130902).
 - (e) Cleanup is a standing super-session duty: merged, clean worktrees are removed, with their ignored data moved to `C:/Users/E-ngineers/Dumps/wt_rescue`, not deleted.
 - Cards copied from the main checkout to trunk (were untracked there): bug-conflict-ca369de3a4, extract-btc-50w-ma-video-j-JVi02_C88-1112. The other 8 on the supervisor's list were already on trunk.
+
+## 2026-11-13: make sure we build concepts from Nitish Kumar (NK StockTalk)
+- Operator decision: NK is not extract-only. After the NK extracts land, a Conceptualizer NK layer must ship. Owner: opus-concept-decks (local_91880c0a).
+- Card: nk-conceptualizer-layer-after-extracts-1113 (raw; the owner refines it once the NK extracts exist).
