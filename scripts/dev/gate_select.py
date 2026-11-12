@@ -83,15 +83,29 @@ SHARD_PREFIX = "4"                    # every pytest shard is numbered 4, 4b, 4c
 def _is_doc(f):
     if f.endswith(".md"):
         return True
-    if f.endswith(".txt"):
-        return not FULL_RE.match(f)   # a .txt on the live path (resources, run lists) is read by live code: not a doc
+    if f.endswith((".txt", ".out")):
+        return not FULL_RE.match(f)   # a .txt on the live path (resources, run lists) is read by live code: not a doc; .out = scratch output
+    if f.endswith(".log") and not FULL_RE.match(f):
+        return True   # 2026-11-12 (gate-select-unknown-paths-1112): a stray gate.log / run.out fell to the 21-132 min full gate; scratch output is data
     if f.startswith(DATA_DIRS) and PurePosixPath(f).name == ".gitignore":
         return True   # a nested ignore only hides untracked files; no test reads it (repo-root .gitignore stays CONFIG_FILES)
     return f.endswith(DATA_SUFFIXES) and f.startswith(DATA_DIRS)
 
 
+PAGE_DIR = "MyTradingSys/tools/"
+PAGE_SUFFIXES = (".html", ".js", ".css")
+
+
+def _is_page(f):
+    """2026-11-12 (gate-select-unknown-paths-1112): operator pages under MyTradingSys/tools/ (live_aid home.js, live_aid.html) are not live-path code;
+    smoke runs ALWAYS + the steps whose tests name the file (they used to fail closed to the full gate)."""
+    return f.startswith(PAGE_DIR) and f.endswith(PAGE_SUFFIXES) and not FULL_RE.match(f)
+
+
 def _is_config(f):
     """GATE_SPEED D5: config/data files that are not code; smoke runs ALWAYS + the steps whose tests name them."""
+    if _is_page(f):
+        return True
     if RESULT_DATA_RE.match(f) and not FULL_RE.match(f):
         return True
     return f in CONFIG_FILES or (f.startswith("scripts/dev/") and f.count("/") == 2 and f.endswith(DEV_DATA_SUFFIXES))
