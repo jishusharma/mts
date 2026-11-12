@@ -2,6 +2,15 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-11-12T06:19:56Z",
+    "misses": 3,
+    "reads": [
+      "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/D-0xTsMPwys_timed.txt"
+    ],
+    "session": "agent-aad2960c0deb68519"
+  },
   "created": "2026-11-12T05:58:00Z",
   "depends_on": [],
   "done_when": "",
