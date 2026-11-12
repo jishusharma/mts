@@ -1,7 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/analyst_call_slot_2026-11-11/backcatalogue_extract/EXTRACT.md"
+  ],
   "created": "2026-11-11T19:40:48Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/analyst_call_slot_2026-11-11/backcatalogue_extract/EXTRACT.md lists each call with video id, date, level, direction and a verbatim caption quote; verify_extract_quotes.py exits 0; report counts calls per analyst",
@@ -31,7 +33,7 @@
   ],
   "scope_out": [],
   "scope_sha": "",
-  "size": "",
+  "size": "M",
   "sources": [
     "Edge lead 1111"
   ],
