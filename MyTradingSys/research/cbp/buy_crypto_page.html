@@ -57,25 +57,28 @@ a{color:var(--accent)}
 <div class="tabs" role="tablist" id="tabs">
 <button role="tab" data-t="now" aria-selected="true">Now</button>
 <button role="tab" data-t="coins" aria-selected="false">Coins</button>
+<button role="tab" data-t="forms" aria-selected="false">Formations</button>
 <button role="tab" data-t="pos" aria-selected="false">My position</button>
 <button role="tab" data-t="studies" aria-selected="false">Studies</button>
 </div>
 <main>
 <section id="t-now"></section>
 <section id="t-coins" hidden></section>
+<section id="t-forms" hidden></section>
 <section id="t-pos" hidden></section>
 <section id="t-studies" hidden></section>
 </main>
 </div>
 <script>
 const $=id=>document.getElementById(id);
-let M=null,P=null,I={},uid=null,dbh=null,view='moves',saveT=null;
+let M=null,P=null,F=null,A=null,I={},uid=null,dbh=null,view='moves',saveT=null;
 const BK={anchor:['Anchor','◆','Carry the portfolio through a lower low. Bought first. Later phases may be larger.'],
  leader:['Leader, pullback only','▲','Already ran. Bought only after a 40-50% retrace and dominance under 55%.'],
  darkhorse:['Dark horse','◇','Smallest equal slices. Expect half to go to zero. Wait below 72k.'],
  watch:['Watch only','○','No buy. Reviewed 11-10; added to the list.'],
+ asked:['You asked 11-12','?','Not in the plan. Measured for your question. No buy.'],
  avoid:['Avoid','✗','58-78% off high, unlocks or churn, no revenue story.']};
-const ORDER=['anchor','leader','darkhorse','watch','avoid'];
+const ORDER=['anchor','leader','darkhorse','watch','asked','avoid'];
 const num=(x,d=1)=>x==null||isNaN(x)?'–':(x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(d);
 const cl=x=>x==null?'mu':x>0.5?'up':x<-0.5?'dn':'mu';
 const px=v=>v==null?'–':v>=1000?Math.round(v).toLocaleString('en-US'):v>=10?v.toFixed(2):v>=1?v.toFixed(3):v.toFixed(4);
@@ -89,6 +92,7 @@ function gates(){ // the plan's own rules at the current BTC level (OURS, ALT_PI
 function mark(c,g){
   if(c.bucket==='avoid')return['✗','dn','Avoid'];
   if(c.bucket==='watch')return['○','mu','Watch only, no buy'];
+  if(c.bucket==='asked')return['?','mu','Not in the plan; see Formations'];
   if(g.paused)return['⏸','wa','Paused: stablecoin dominance over 11%'];
   if(c.bucket==='anchor')return['●','up','Open: anchors are bought first'];
   if(c.bucket==='darkhorse')return g.dhOpen?['●','up','Open: equal small slices']:['○','wa','Wait: BTC under 72k, decide at 60k'];
@@ -181,15 +185,41 @@ function renderStudies(){
   let w=WATCH.map(r=>`<tr><td class="c">${r[0]}</td><td class="w">${r[1]}</td><td class="w mu">${r[2]}</td></tr>`).join('');
   $('t-studies').innerHTML=`<div class="cols"><div><h2>Cycle drawdowns and rebounds</h2><div class="tw"><table>${c}</table></div><div class="legend">Binance daily closes, measured 11-04. Majors already fell as far as in 2022; BTC fell less (−53% vs −77%). Median rebound from a cycle low, about +450% over 440-950 days.</div></div>
 <div><h2>Survival and scam facts</h2><div class="tw"><table>${f}</table></div><div class="legend">✓ source opened and matched · ◐ partly confirmed. Sources: CoinGecko, The Block, Fortune, CryptoRank, Chainalysis; checked 11-10.</div></div>
-<div><h2>Review 11-10</h2><div class="tw"><table><tr class="grp"><td colspan="3">Dropped: GRASS (investors unlocked), AERO (new token), EIGEN (unlock)</td></tr><tr><th>Watch</th><th>Why</th><th>Fails if</th></tr>${w}</table></div><div class="legend">Watch only: no buy until a plan trigger opens it. Binance hack 10-29 and paused withdrawals: per the 11-10 review.</div></div></div>`;
+<div><h2>Review 11-10</h2><div class="tw"><table><tr class="grp"><td colspan="3">Dropped: GRASS (investors unlocked), AERO (new token), EIGEN (unlock). XRP and ALEO were never screened: see Formations.</td></tr><tr><th>Watch</th><th>Why</th><th>Fails if</th></tr>${w}</table></div><div class="legend">Watch only: no buy until a plan trigger opens it. Binance hack 10-29 and paused withdrawals: per the 11-10 review.</div></div></div>`;
 }
-function renderAll(){const e=M.coins&&M.btc;if(!e)return;renderNow();renderCoins();renderPos();renderStudies();
+const ASKED=[['XRP','Never screened; only in the cycle table','Anchor by size: $66B, rank 6','Below all 4 averages; 6% above its 2026 low'],
+ ['EIGEN','Was "hold small, do not add" 11-03; dropped 11-10 for monthly unlocks','None: FDV/cap 1.83, revenue not in data','Below all 4 averages; 79% off 1y high'],
+ ['ALEO','Never in the plan or scan; Jala named it 10-14 and 10-16','None: cap $49.8M, under the $50M floor','Double bottom confirmed; higher lows vs BTC; not on Binance']];
+function renderForms(){
+  const el=$('t-forms');if(!el)return;
+  if(!F||!F.rows){el.innerHTML='<div class="empty">No formation data yet. Ask Claude to load it.</div>';return}
+  const R=F.rows.filter(r=>r.struct&&r.sym[0]!=='_'&&r.sym!=='ETHBTC'),n=R.length;
+  const cnt=f=>R.filter(f).length,sc=x=>x==='Higher highs, higher lows'?'up':x==='Lower highs, lower lows'?'dn':'wa';
+  const yn=v=>v==null?'<td class="s mu">–</td>':`<td class="s ${v?'up':'mu'}">${v?'●':'○'}</td>`;
+  const dbc=v=>v==='yes'?'<td class="s up" title="confirmed">●</td>':v==='open'?'<td class="s wa" title="two lows, not confirmed">◐</td>':'<td class="s mu">–</td>';
+  const dtc=v=>v==='yes'?'<td class="s dn" title="confirmed">●</td>':v==='open'?'<td class="s wa" title="two highs, not confirmed">◐</td>':'<td class="s mu">–</td>';
+  const ord=['ref','anchor','leader','darkhorse','watch','query','avoid'],lab={ref:'Reference',query:'? You asked 11-12'};
+  let h=`<div class="kpis"><div class="kpi"><span>Lower highs and lows</span><b class="dn">${cnt(r=>r.struct==='Lower highs, lower lows')} of ${n}</b></div><div class="kpi"><span>Higher highs and lows</span><b class="up">${cnt(r=>r.struct==='Higher highs, higher lows')} of ${n}</b></div><div class="kpi"><span>Below all 4 averages</span><b class="dn">${cnt(r=>r.mas===0)} of ${n}</b></div><div class="kpi"><span>Higher lows against BTC</span><b>${cnt(r=>r.btcHL===true)} of ${n-1}</b></div><div class="kpi"><span>Double bottom confirmed</span><b>${cnt(r=>r.db==='yes')} of ${n}</b></div></div>`;
+  h+=`<h2>Your three coins</h2><div class="tw"><table><tr><th>Coin</th><th>Why it is not on the list</th><th>Bucket by the plan's own rules</th><th>Chart now</th></tr>${ASKED.map(r=>`<tr><td class="c">${r[0]}</td><td class="w">${r[1]}</td><td class="w">${r[2]}</td><td class="w mu">${r[3]}</td></tr>`).join('')}</table></div>`;
+  h+=`<h2>Formations, daily and weekly candles</h2><div class="tw"><table><tr><th>Coin</th><th>180 d structure</th><th>Above avgs</th><th>In 90 d range</th><th>Higher lows vs BTC</th><th>Double bottom</th><th>Double top</th><th>Off 1 y high</th><th>Above 2026 low</th><th>7 d</th><th>FDV / cap</th></tr>`;
+  for(const k of ord){const rs=R.filter(r=>r.bucket===k);if(!rs.length)continue;
+    h+=`<tr class="grp"><td colspan="11">${lab[k]||(BK[k]?BK[k][1]+' '+BK[k][0]:k)}</td></tr>`;
+    for(const r of rs)h+=`<tr><td class="c">${r.sym}${r.src==='CG'?' <span class="mu">*</span>':''}</td><td class="${sc(r.struct)}">${r.struct}</td><td class="n ${r.mas===0?'dn':r.mas===r.masN?'up':'mu'}">${r.mas==null?'–':r.mas+' / '+r.masN}</td><td class="n">${r.pos90==null?'–':Math.round(r.pos90)+'%'}</td>${yn(r.btcHL)}${dbc(r.db)}${dtc(r.dt)}<td class="n">${num(r.off365,0)}%</td><td class="n">${num(r.aboveLow,0)}%</td><td class="n ${cl(r.d7)}">${num(r.d7)}%</td><td class="n ${r.fdv>2?'wa':''}">${r.fdv==null?'–':r.fdv.toFixed(2)}</td></tr>`}
+  h+=`</table></div><div class="legend">Measured ${F.asof_utc} UTC. ${F.rules} In 90 d range: 0% = the low, 100% = the high. ● confirmed · ◐ two touches, not confirmed. * CoinGecko closes, not candle wicks. Descriptive, no forecast.</div>`;
+  h+=analystBlock();
+  el.innerHTML=h;
+}
+function analystBlock(){
+  if(!A||!A.rows||!A.rows.length)return`<h2>What the analysts said on alts</h2><div class="empty">${A&&A.note?A.note:'Being gathered. The call store held BTC rows only on 11-07.'}</div>`;
+  return`<h2>What the analysts said on alts</h2><div class="tw"><table><tr><th>Date</th><th>Who</th><th>On</th><th>Said</th><th>Formation named</th></tr>${A.rows.map(r=>`<tr><td class="n">${r.date||'–'}</td><td class="c">${r.who||''}</td><td>${r.on||''}</td><td class="w">${r.said||''}</td><td class="w mu">${r.form||'–'}</td></tr>`).join('')}</table></div><div class="legend">${A.note||''} Context, never signals.</div>`;
+}
+function renderAll(){const e=M.coins&&M.btc;if(!e)return;renderNow();renderCoins();renderForms();renderPos();renderStudies();
   $('stamp').textContent=`CoinGecko ${M.generated_utc} · 1 USD = ${M.usd_inr?M.usd_inr.toFixed(1):'–'} INR · research, not advice`}
-function empty(msg){for(const k of['now','coins','pos'])$('t-'+k).innerHTML=`<div class="empty">${msg}</div>`;renderStudies();}
+function empty(msg){renderForms();for(const k of['now','coins','pos'])$('t-'+k).innerHTML=`<div class="empty">${msg}</div>`;renderStudies();}
 const tabs=[...document.querySelectorAll('#tabs button')];
-function show(t){tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));['now','coins','pos','studies'].forEach(k=>$('t-'+k).hidden=k!==t);try{history.replaceState(null,'','#'+t)}catch(e){}}
+function show(t){tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));['now','coins','forms','pos','studies'].forEach(k=>$('t-'+k).hidden=k!==t);try{history.replaceState(null,'','#'+t)}catch(e){}}
 tabs.forEach(b=>b.onclick=()=>show(b.dataset.t));
-{const h=(location.hash||'').slice(1);if(['now','coins','pos','studies'].includes(h))show(h)}
+{const h=(location.hash||'').slice(1);if(['now','coins','forms','pos','studies'].includes(h))show(h)}
 empty('Loading market data…');
 (async()=>{
   let to=setTimeout(()=>{if(!M)empty('Market data cannot be reached yet. Studies still work.')},10000);
@@ -199,6 +229,8 @@ empty('Loading market data…');
     dbh=db;
     try{const u=await claude.use('user');uid=u&&u.id?await u.id():null}catch(e){}
     db.doc('market/latest').onSnapshot(s=>{clearTimeout(to);if(!s.exists){empty('No market data yet. Ask Claude to pull the page: one command, one db write.');return}M=s.data();renderAll()},e=>{clearTimeout(to);empty('Cannot read market data ('+(e&&e.code)+').')});
+    db.doc('market/forms').onSnapshot(s=>{F=s.exists?s.data():null;renderForms()},()=>{});
+    db.doc('market/analysts').onSnapshot(s=>{A=s.exists?s.data():null;renderForms()},()=>{});
     db.doc('position/btc').onSnapshot(s=>{P=s.exists?s.data():null;if(M)renderAll()},()=>{});
     if(uid)db.doc('data/users/'+uid+'/inputs').onSnapshot(s=>{if(s.exists&&!Object.keys(I).length){I={...s.data()};if(M)renderPos()}},()=>{});
   }catch(e){clearTimeout(to);empty('Database error. Studies still work.')}

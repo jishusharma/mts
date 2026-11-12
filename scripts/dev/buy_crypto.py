@@ -13,6 +13,8 @@ COINS = [
     ("GMX", "gmx", "darkhorse"), ("TAO", "bittensor", "darkhorse"), ("RENDER", "render-token", "darkhorse"),
     ("INJ", "injective-protocol", "watch"), ("JST", "just", "watch"), ("SKY", "sky", "watch"), ("GEOD", "geodnet", "watch"),
     ("VVV", "venice-token", "watch"), ("MORPHO", "morpho", "watch"), ("ETHFI", "ether-fi", "watch"), ("AKT", "akash-network", "watch"),
+    # operator asked 2026-11-12: measured on the page, not in the plan, no buy
+    ("XRP", "ripple", "asked"), ("EIGEN", "eigenlayer", "asked"), ("ALEO", "aleo", "asked"),
     ("OP", "optimism", "avoid"), ("TIA", "celestia", "avoid"), ("FET", "fetch-ai", "avoid"), ("ENA", "ethena", "avoid"), ("PLUME", "plume", "avoid"),
 ]
 # measured 2026-11-03 (ALT_PICKS section 1): (down-beta, up-beta); None = not measured
