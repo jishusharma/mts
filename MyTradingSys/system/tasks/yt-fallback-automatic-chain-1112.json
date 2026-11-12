@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T10:44:23Z",
   "commands": [],
   "context": {
     "calls_to_edit": 36,
@@ -27,8 +28,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done in fc328776: fetcher switches to a public transcript mirror by itself on a lock; Supervisor live test fetched j-JVi02_C88 during the lock, 3455 words, word-identical to the browser-panel copy; waiting list and CBP pacing in; 9 tests pass",
+  "pinned": false,
   "prio": 1,
+  "reason": "done in fc328776: fetcher switches to a public transcript mirror by itself on a lock; Supervisor live test fetched j-JVi02_C88 during the lock, 3455 words, word-identical to the browser-panel copy; waiting list and CBP pacing in; 9 tests pass",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -37,7 +40,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "YouTube never blocked, by mechanism: on a lock (exit 3) the guarded fetcher fetch_captions_timed.py tries the next scriptable path itself (transcript site by video id, then audio plus local Whisper where the audio can be had without the locked address), writes videos it could not get to a waiting list that any Claude desktop session drains by the Browser 2 panel path, cbp_run paces fetches so the lock is not triggered, the Gemini start doc gets the YT_PROXY pointer line. Done when one real video is fetched and cached during a live lock by a scripted path with quotes verifiable, a test fails on the old fetcher and passes on the new, and YT_PROXY.md names which path each model kind (Claude desktop, Claude worker, Gemini, Codex, DSA) can run",
