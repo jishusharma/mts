@@ -1,0 +1,37 @@
+## R1 value-area re-entry (net R)
+n 882, win rate 33.6 %, mean net R -0.2146, t -3.23, max drawdown 203.78 R (sum, peak to trough)
+gross mean R 0.0515; exits: stop 558, tp 265, cap 59; median risk 0.488 % of price, median target distance 1.199 %
+half 1 (before 2023-04-02): n 409 mean -0.1931 | half 2: n 473 mean -0.2331
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 327 | -0.1395 | -45.6254 |
+| year 2023 | 399 | -0.2140 | -85.3914 |
+| year 2024 | 156 | -0.3733 | -58.2340 |
+| long | 440 | -0.1265 | -55.6807 |
+| short | 442 | -0.3022 | -133.5700 |
+placebo (500 draws, seed 1): mean net R -0.2786, sd 0.0571, share of draws >= real mean 0.146
+VERDICT_MECH: FAIL
+## R2 two POC shifts, horizon 1 day(s) (net bp)
+n 421, win rate 44.2 %, mean net bp 4.4524, t 0.29, max drawdown 4845.71 bp (sum, peak to trough)
+half 1 (before 2023-04-02): n 218 mean 13.5721 | half 2: n 203 mean -5.3412
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 175 | 4.8657 | 851.5005 |
+| year 2023 | 168 | -7.8555 | -1319.7250 |
+| year 2024 | 78 | 30.0344 | 2342.6826 |
+| long | 229 | 16.7657 | 3839.3407 |
+| short | 192 | -10.2338 | -1964.8826 |
+placebo (500 draws, seed 1): mean net bp -9.0386, sd 14.0543, share of draws >= real mean 0.162
+VERDICT_MECH: INCONCLUSIVE
+## R2 two POC shifts, horizon 3 day(s) (net bp)
+n 215, win rate 46.0 %, mean net bp -2.2997, t -0.06, max drawdown 7640.31 bp (sum, peak to trough)
+half 1 (before 2023-04-02): n 110 mean 13.7159 | half 2: n 105 mean -19.0780
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 87 | -33.3290 | -2899.6197 |
+| year 2023 | 91 | -9.2906 | -845.4430 |
+| year 2024 | 37 | 87.8547 | 3250.6235 |
+| long | 108 | 49.4046 | 5335.6971 |
+| short | 107 | -54.4873 | -5830.1363 |
+placebo (500 draws, seed 1): mean net bp -8.1309, sd 33.6068, share of draws >= real mean 0.436
+VERDICT_MECH: FAIL
