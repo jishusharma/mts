@@ -489,6 +489,30 @@
       "notes_go_to": "MyTradingSys/research/concept_decks_1112/README.md",
       "note": "Registered 2026-11-12 by lead B to fix CI Step 3af; published by login C.",
       "published_sha": ""
+    },
+    {
+      "slug": "conceptualizer",
+      "title": "Conceptualizer",
+      "status": "canonical",
+      "pinned": false,
+      "generator": "scripts/dev/make_conceptualizer.py",
+      "html": "MyTradingSys/system/artifacts/conceptualizer.html",
+      "single_owner": "jishusharma1985",
+      "owner_app": "conceptualizer-1112 (C); data: MyTradingSys/research/conceptualizer/concepts.json",
+      "refresh": "add a concept row to concepts.json, run make_conceptualizer.py, republish over the url",
+      "db": [],
+      "urls": {
+        "jishu.sharma": "",
+        "jishu.awgp": "",
+        "jishusharma1985": "https://claude.ai/artifact/Y5YTBaMQcbfBZgigJyLhNL"
+      },
+      "last_published": {
+        "jishusharma1985": "2026-11-12"
+      },
+      "purpose": "One app for every layer's concepts: diagram, his rule vs ours (SOURCED/OURS), fidelity, support layers, tests, sim check, ideas, gaps. Replaces the two concept decks.",
+      "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
+      "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
+      "published_sha": "944e214f8ce636c921c57be89d8e9e80e1d6f4cf2e630282af50505ebaa0a09f"
     }
   ],
   "unpinned_old": {
