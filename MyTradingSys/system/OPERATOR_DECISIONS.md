@@ -2442,3 +2442,11 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13: use both Gemini models on NK StockTalk and iteration-3 Tom/Fabio jobs
 - Operator (relayed by Supervisor C): "use both gemini models". The queue's two Gemini models are `flash` (gemini-3.8-flash) and `argon` (Gemini 4 Argon); the other queue models (opus, sonnet, gpt) are not Gemini.
 - Decision: NK StockTalk selected extracts and iteration-3 Tom/Fabio Gemini jobs run on both, effort low, as separate cards per model. Comparison per video in `nk_stocktalk_1113/MODEL_COMPARE.md` (Tom/Fabio: beside each batch): AGREED = a rule or number both models give that passes `verify_extract_quotes.py`; SINGLE = only one model gives it, checked by a Claude session against the caption text; CONFLICT = the models disagree, both quotes recorded.
+
+## 2026-11-13: bookkeeping entries (recorded by Supervisor C's request)
+- (a) 2026-11-12: build the Conceptualizer as one app for all concept decks, and discuss concepts one by one. On trunk at 35e318ce.
+- (b) Revalidate the DSA root-cause note. Verdict: 4 confirmed, 2 partial. The 0/7 DAX recall was not caused by fees (it was run with DAX fees too). File: `gap_hunt_1113/dsa_revalidation_1113.md` (notes folder); corrections applied in AUDIT_AND_COURSE_CORRECTION.md.
+- (c) Discard useless tests to speed up shipping, following `test_value_audit_1113.md`. The cut list is being applied (card test-cut-1113). Keep the 61 execution and live-path tests.
+- (d) A stuck test must name itself: per-test limit of 300 s on CI and 900 s per shard (958130902).
+- (e) Cleanup is a standing super-session duty: merged, clean worktrees are removed, with their ignored data moved to `C:/Users/E-ngineers/Dumps/wt_rescue`, not deleted.
+- Cards copied from the main checkout to trunk (were untracked there): bug-conflict-ca369de3a4, extract-btc-50w-ma-video-j-JVi02_C88-1112. The other 8 on the supervisor's list were already on trunk.
