@@ -476,9 +476,10 @@ def rebuild_dashboard(run=subprocess.run):
 
 
 def announce_republish(out=print, ask=None, login=None, reg=None):
-    """After a rebuild: print the REPUBLISH line for the CBP Analyst Desk, and when this run is on a login that cannot publish
-    (registry publishers), ask the publisher login to do it (operator 2026-11-07: pages follow builds). Best effort; silent when
-    no board was built."""
+    """After a rebuild: print `REPUBLISH <slug> <file> <url>` for every page whose registry `producer` includes "cbp" (CBP Analyst Desk, Buy Crypto,
+    Live feed one page), and when this run is on a login that cannot publish (registry publishers), ask the publisher login to do it
+    (operator 2026-11-07: pages follow builds; 2026-11-13: producers name their pages through the registry, not a hard-coded slug).
+    Best effort; silent when no board was built."""
     try:
         board = CBP_HOME / "cbp_v2" / "cbp_board.html"
         if not board.is_file() or board.stat().st_size == 0:
@@ -486,14 +487,14 @@ def announce_republish(out=print, ask=None, login=None, reg=None):
         import artifacts
         import mts_signal
         reg = reg or artifacts.load()
-        pg = next(p for p in reg["pages"] if p["slug"] == "cbp_analyst_desk")
-        line = "REPUBLISH cbp_analyst_desk %s %s" % (board, pg["urls"][artifacts.owner(pg)])
-        out(line)
+        lines = artifacts.producer_lines(reg, "cbp")
+        for line in lines:
+            out(line)
         letter = login if login is not None else mts_signal.login()
-        if not artifacts.is_publisher(reg, letter):
-            text = ("CBP board rebuilt; a session on the publisher login (jishusharma1985) republishes it: "
-                    "artifacts.py stamp --file <board>, Artifact publish over the url, artifacts.py publish-record --slug cbp_analyst_desk. " + line)
-            (ask or mts_signal.new_ask)(text)
+        if lines and not artifacts.is_publisher(reg, letter):
+            text = ("CBP run finished; a session on the publisher login (jishusharma1985) rebuilds and republishes: "
+                    "build the page, Artifact publish over the url, artifacts.py publish-record --slug <slug>. " + " | ".join(lines))
+            (ask or mts_signal.new_ask)(text[:1500])
     except Exception as e:  # noqa: BLE001
         print("cbp: republish note failed: " + str(e))
 

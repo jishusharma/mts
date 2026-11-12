@@ -1,5 +1,5 @@
 {
-  "_doc": "ONE registry of every claude.ai artifact we keep (replaces manifest.json, 2026-10-12). Pages are published from the repo copy over the SAME url on each account, so the link stays current and the pin stays. A session cannot delete or unpin: retire/duplicate rows are the list Jis cleans by hand. Check: python scripts/dev/artifacts.py check. Procedure: artifacts/README.md.",
+  "_doc": "ONE registry of every claude.ai artifact we keep (replaces manifest.json, 2026-10-12). Pages are published from the repo copy over the SAME url on each account, so the link stays current and the pin stays. A session cannot delete or unpin: retire/duplicate rows are the list Jis cleans by hand. Check: python scripts/dev/artifacts.py check. Procedure: artifacts/README.md. 2026-11-13 feeds/max_age_h/producer/publish_file: a page may list `feeds` (input paths or globs; ~ and absolute ok; a feed absent on this machine is skipped), `max_age_h`, `producer` (the script that prints `REPUBLISH <slug>` when it finishes) and `publish_file` (built file outside the repo). artifacts.py stale flags a page whose feed is newer than its last publish (published_at) or older than max_age_h.",
   "accounts": {
     "jishu.sharma": "login A (jishu.sharma@gmail.com, GitHub jishusharma), JIS-NUC; owns the Control Room with the Inbox and decisions db (q21). Until 2026-10-15 these urls were filed under jishu.awgp: checked 2026-10-15: a session whose Claude login is jishu.sharma@gmail.com on JIS-NUC owns Ep6gA5 and the other pages filed until then under 'jishu.awgp' (Artifact list), and cannot read EoHi2q. Pins: Control Room, MTS Layers, Tom and Fabio, CBP Consensus Desk, CBP Monday Desk",
     "jishu.awgp": "the JIS-NB login that published the pages filed until 2026-10-15 under jishu.sharma (pins 2026-10-14: Control Room, MTS Layers, CBP Desk = consensus desk, CBP Monday Desk). Which login it is was inferred, not checked: a session on JIS-NB confirms with Artifact list",
@@ -59,12 +59,13 @@
       "last_published": {
         "jishu.sharma": "2026-10-13",
         "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-11-11"
+        "jishusharma1985": "2026-11-12"
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "10f39871f2d418f896055b969b4e754594fb84c9b73e398f6a171b93b3e18331"
+      "published_sha": "bd3120197140ef46d0e594f09987b3eb31307cacab1b895578a712e5a1f4812c",
+      "published_at": "2026-11-12T20:35:42Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -194,12 +195,13 @@
         "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-11"
+        "jishusharma1985": "2026-11-12"
       },
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
-      "published_sha": "64ecf5ff53808c9239415bc7056fd125c74c396d15ce8321f94425648962ce92"
+      "published_sha": "4cf19fa8f804b561a270f6f377a9b3da996a02bbc144e2db3f89b19b6430eeb6",
+      "published_at": "2026-11-12T19:52:35Z"
     },
     {
       "slug": "cbp_analyst_desk",
@@ -218,12 +220,21 @@
         "jishusharma1985": "https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-07"
+        "jishusharma1985": "2026-11-12"
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
       "note": "The only CBP page (context source, not signals). Live url BpADz (v5, 5 tabs). 2026-11-04: every CBP run now fetches prices and rebuilds cbp_v2/cbp_board.html; a session still republishes it to this url (artifact tool cannot run from a script). 2026-11-07: republished by Lead C from F:/CryptoScrapper/cbp_v2/cbp_board.html (built 15:02Z); only a session on the owner login (or a login given edit access) can publish: scripts and API jobs cannot.",
-      "published_sha": null
+      "published_sha": null,
+      "producer": [
+        "cbp"
+      ],
+      "feeds": [
+        "F:/CryptoScrapper/cbp_v2/cbp_board.html"
+      ],
+      "max_age_h": 36,
+      "publish_file": "F:/CryptoScrapper/cbp_v2/cbp_board.html",
+      "published_at": "2026-11-12T20:35:44Z"
     },
     {
       "slug": "mts_home",
@@ -239,7 +250,7 @@
       "last_published": {
         "jishu.sharma": "never",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-11-11"
+        "jishusharma1985": "2026-11-12"
       },
       "title": "MTS Home",
       "html": "MyTradingSys/system/artifacts/mts_home.html",
@@ -249,7 +260,9 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "8a688bff46e5410e2bdd0d01def39a2910187ce08253a63121f522706b4f8ae9"
+      "published_sha": "01559a9e1b797ea12745d5bbb99095e6218db37cfba9d7685d7ff7db496134ce",
+      "max_age_h": 24,
+      "published_at": "2026-11-12T20:35:43Z"
     },
     {
       "slug": "research_map",
@@ -278,7 +291,11 @@
       "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
       "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
       "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
-      "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d"
+      "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d",
+      "feeds": [
+        "MyTradingSys/research/STATUS.md"
+      ],
+      "max_age_h": 72
     },
     {
       "slug": "session_planner",
@@ -396,10 +413,10 @@
       "status": "canonical",
       "pinned": true,
       "generator": "hand-made (session live-onepage-c, branch claude/live-feed-onepage-1104)",
-      "html": null,
+      "html": "MyTradingSys/system/artifacts/LIVE_ONEPAGE_MOCK_2026-11-04.html",
       "single_owner": "jishusharma1985",
       "owner_app": "jishusharma1985",
-      "refresh": "mock: no refresh until the operator says wire or change",
+      "refresh": "rebuild with python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py (public Binance klines + CBP store at build), then republish; stale flags it after 12 h",
       "db": [],
       "urls": {
         "jishu.sharma": "",
@@ -407,12 +424,21 @@
         "jishusharma1985": "https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-04"
+        "jishusharma1985": "2026-11-12"
       },
       "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
       "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
       "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": null
+      "published_sha": "4042a50929950d630ccfc7e2901cd885c0b8a8593b04a8fe4a0860ceaeb85a1d",
+      "producer": [
+        "live_onepage",
+        "cbp"
+      ],
+      "feeds": [
+        "MyTradingSys/research/STATUS.md"
+      ],
+      "max_age_h": 12,
+      "published_at": "2026-11-12T19:52:37Z"
     },
     {
       "slug": "buy_crypto",
@@ -440,7 +466,17 @@
       "purpose": "Live crypto buying page: BTC phases, coins by bucket, his position and split, studies. Replaces Dark Horse Desk.",
       "notes_go_to": "BUY_CRYPTO_PAGE.md",
       "note": "Private page; his position lives only in its db, never in the repo.",
-      "published_sha": "981d84ba744d7ac2f5c0a90bd79e474d8409d804c4678d12169ced6f350fb458"
+      "published_sha": "981d84ba744d7ac2f5c0a90bd79e474d8409d804c4678d12169ced6f350fb458",
+      "producer": [
+        "buy_crypto",
+        "cbp"
+      ],
+      "feeds": [
+        "~/.mts_private/buy_crypto.json",
+        "~/.mts_private/buy_crypto_analysts.json"
+      ],
+      "max_age_h": 36,
+      "published_at": "2026-11-12T20:43:43Z"
     },
     {
       "slug": "concept_deck_tom_fabio",
@@ -512,7 +548,8 @@
       "purpose": "One app for every layer's concepts: diagram, his rule vs ours (SOURCED/OURS), fidelity, support layers, tests, sim check, ideas, gaps. Replaces the two concept decks.",
       "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
       "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
-      "published_sha": "944e214f8ce636c921c57be89d8e9e80e1d6f4cf2e630282af50505ebaa0a09f"
+      "published_sha": "577211764c13113c0b7575972263cda279a87ec05eb5d76b7c9aef69bea4ce3c",
+      "published_at": "2026-11-12T20:54:49Z"
     }
   ],
   "unpinned_old": {
