@@ -16,7 +16,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "PARKED (planner 2026-11-12): test-id half shipped in c4694472c (test_fetch_captions_channel isolated from ~/.mts/yt_waiting.json). Board 401 half: fetch_board_data.py is not in the repo (CBP_HOME/cbp_v2/tools, outside git), cbp_run.rebuild_dashboard only reports its exit code; no repo scope. Needs a DSA run on the CBP host to read the 401 body, then a card. DECISION (OURS).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
