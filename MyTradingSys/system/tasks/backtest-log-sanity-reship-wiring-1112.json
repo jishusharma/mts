@@ -1,0 +1,46 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 13,
+    "folded": "2026-11-12T06:54:31Z",
+    "misses": 6,
+    "reads": [
+      "scripts/dev/wiring_scan.py",
+      "MyTradingSys/backtest/layers/adx/adx.py"
+    ],
+    "session": "agent-ab5fa9ae45ef1ac81"
+  },
+  "created": "2026-11-12T06:25:35Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "backtest-log-sanity-reship-wiring-1112",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Supervisor C revert of 4987fd131/78c52d450 (CI red d0504cbf)"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Re-ship the trade_sanity helper (reverted: CI red, wiring check step 3x, trade_sanity.py referenced by tests only and not declared in wiring_registry.json). Cherry-pick 4987fd131 and 78c52d450, declare the file in wiring_registry.json, run the full quick gate before ship. Done when: on trunk and CI green",
+  "weight": "",
+  "worker": ""
+}

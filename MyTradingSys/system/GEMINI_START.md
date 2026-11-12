@@ -2,6 +2,8 @@
 
 The Gemini lane binary is `agy.exe` (`C:/Users/E-ngineers/.gemini/bin/agy.exe`, not on PATH), never a `gemini` CLI: test with `agy.exe models`; a missing `gemini` command never means "no Gemini on this host".
 
+YouTube caption block: never stop; follow the path order in MyTradingSys/system/YT_PROXY.md.
+
 Rules are not copied here: `GEMINI.md` -> `AGENTS.md` -> `CLAUDE.md` is the single source (Claude-only parts do not apply: screenshots, Control Room pages, DSA posting, relay hand-over); protocol is PARALLEL.md.
 Gemini is one more work-tree session, modelled on Codex. It meets Claude only through `origin/fast-track` (commits, claims, task cards, desk board).
 **Gemini takes lane `CODEX` cards only** (audits, backtest runs, doc work, spec-derived tests), and only cards the Codex lab has not claimed: the claim is the lock. Machines and logins: `HOW_MTS_RUNS.md`.

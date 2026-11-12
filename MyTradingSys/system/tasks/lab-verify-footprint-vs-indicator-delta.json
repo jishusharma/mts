@@ -28,7 +28,7 @@
   "from_inbox": "",
   "goal": "Settle which delta the CoinGlass Net Delta indicator, the Legend footprint and spot taker flow each measure, because Eagle_Eyes read the 13:30Z 2026-10-26 bar as selling (indicator) and the footprint showed +2.13K buying",
   "id": "lab-verify-footprint-vs-indicator-delta",
-  "lane": "DSA",
+  "lane": "SONNET",
   "latest": [
     {
       "auto": true,
@@ -46,7 +46,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-07T17:18:38Z",
+  "refreshed": "2026-11-12T06:21:05Z",
   "refs": [
     "MyTradingSys/research/live_reads/2026-10-17_live_market_1017/READ.md"
   ],
@@ -66,7 +66,7 @@
     "State units and bar-label alignment for each source",
     "Write the one-line quoting rule into MyTradingSys/methodology/screenshot_intake.md section on CoinGlass"
   ],
-  "tests": "",
+  "tests": "doc-only: per-bar table in the report; python scripts/dev/tasks.py lint passes",
   "title": "LAB-VERIFY: CoinGlass Net Delta indicator vs Legend footprint delta vs spot taker delta (units, bar alignment, sign agreement)",
   "weight": "",
   "worker": "agent"

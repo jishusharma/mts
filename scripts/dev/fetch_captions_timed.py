@@ -73,6 +73,7 @@ DAILY_BUDGET_PROXY = 150       # OURS: same, on the shared WARP exit (one CBP ru
 ALLOW_FALLBACK = False         # transcript-api fallback after a 429 is a second network path: off by default
 BLOCK_MARKS = ("429", "Too Many Requests", "Sign in to confirm")
 EXIT_BLOCKED = 3
+NEXT_PATH = "next path: Browser 2 transcript panel, see YT_PROXY.md"   # message only: a block never ends a YouTube task
 EXIT_PROXY_DOWN = 2
 PROXY_ADDR = ("127.0.0.1", 40000)   # OURS: wireproxy BindAddress in ~/.mts/ytproxy/wireproxy.conf
 _proxy_proc = []
@@ -481,6 +482,7 @@ def guard_gate(a):
     until = blocked_until()
     if until:
         print(f"YT_BLOCKED until {until.isoformat(timespec='seconds')}: no request made. {guard_status()}")
+        print(NEXT_PATH)
         return EXIT_BLOCKED
     return None
 
@@ -745,6 +747,8 @@ def _main(argv):
     for vid, r in res:
         bad += not r.startswith(("OK", "EXISTS"))
         print(f"{vid} {r}", flush=True)
+    if any(r in ('BLOCKED', 'UNVERIFIED') for _, r in res):
+        print(NEXT_PATH)
     return 1 if bad else 0
 
 

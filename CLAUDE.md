@@ -14,7 +14,7 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 
 ## Cost and routing
 - Interactive sessions and subagents: Sonnet, Opus only when the operator names it; Haiku for mechanical work; worker type + model: WORKERS.md. Wait on a queue with one background shell; spot-check a worker claim.
-- No "want me to?" offers for implied work: do it now, full depth. Public market data, YouTube: pre-approved.
+- No "want me to?" offers for implied work: do it now, full depth. Public market data, YouTube: pre-approved. YouTube caption block: never stop; follow the path order in MyTradingSys/system/YT_PROXY.md.
 - T0 script first, then by card lane (HOW_MTS_RUNS.md): run-and-report goes to DSA (`desk.py post ... --target DSA`; low on budget: post the rest to DSA, then hand over).
 - The operator dictates by voice: expect misheard words; take the reading that fits the project.
 - Never wait on a question. Ask who started you: an Agent ends its report with the question and its default; a session uses SendMessage. Only money, mainnet, going private, deleting data or a live-tree change reach the operator; work goes on at the safe default. Stuck on another machine's state: `mts_signal.py who`, then broadcast.

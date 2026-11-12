@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:19:30Z",
   "commands": [],
   "created": "2026-11-11T19:40:48Z",
   "depends_on": [],
@@ -16,8 +17,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PARKED (planner-raw-1112b 2026-11-12): lane DSA and DSA/AIBridge are parked, assign nothing to DSA. Re-lane to a Gemini-queue card (gemini_queue.py on NUC, YouTube work is Gemini-only, low effort, captions via fetch_captions_timed.py, verify_extract_quotes exit 0) when Habib's call videos are listed; no outcomes read before extraction. DECISION (OURS); card stays raw.",
+  "note": "DSA parked; YouTube work is Gemini-only and the home IP is YouTube-blocked until 2026-11-13T02:53Z. Planner will refile as a Gemini-queue card.",
+  "pinned": false,
   "prio": 2,
+  "reason": "DSA parked; YouTube work is Gemini-only and the home IP is YouTube-blocked until 2026-11-13T02:53Z. Planner will refile as a Gemini-queue card.",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -28,7 +31,7 @@
   "sources": [
     "Edge lead 1111"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Extract the back-catalogue of analyst calls with a level, a direction and a date (losers included) from captions into research/analyst_call_slot_2026-11-11/calls.jsonl format; Gemini lane, verify_extract_quotes exit 0; no outcomes read before extraction",

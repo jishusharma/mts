@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-12T06:22:20Z",
+  "commands": [
+    "python -m pytest MyTradingSys/research/sim_desk -q",
+    "git status --short MyTradingSys/research/sim_desk/results"
+  ],
+  "created": "2026-11-11T21:22:20Z",
+  "depends_on": [],
+  "done_when": "After python -m pytest MyTradingSys/research/sim_desk -q, git status --short MyTradingSys/research/sim_desk/results is empty and test_backfill.py passes; new test fails on old code.",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find which sim_desk test run rewrites tracked results/ files (suspect desk.refresh_catalogue on the real RESULTS dir) and make every test write to tmp_path only.",
+  "id": "sim-desk-test-backfill-rewrites-results-1112",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "sim hosted page: drawdown shading, Monte Carlo band, year-by-year stability flag",
+      "ref": "9e31182d4d34",
+      "utc": "2026-11-03T14:02:21Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "not reproducible on trunk 53bf009b9: test_backfill.py 7 passed, full sim_desk suite 283 passed 7 skipped, git status clean after both; refile with the gate log if it recurs",
+  "pinned": false,
+  "prio": 4,
+  "reason": "not reproducible on trunk 53bf009b9: test_backfill.py 7 passed, full sim_desk suite 283 passed 7 skipped, git status clean after both; refile with the gate log if it recurs",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T06:22:05Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/sim_desk/desk.py (refresh_catalogue, line ~454)",
+    "MyTradingSys/research/sim_desk/test_desk.py",
+    "MyTradingSys/research/sim_desk/test_backfill.py",
+    "MyTradingSys/research/sim_desk/test_build2.py"
+  ],
+  "scope_out": [
+    "results/*.json content",
+    "backfill_results.py logic",
+    "live tree"
+  ],
+  "scope_sha": "9e31182d4d34",
+  "size": "S",
+  "sources": [],
+  "state": "dropped",
+  "steps": [
+    "Run pytest on sim_desk, then git status; note which tracked results file changed and which test did it (single test runs bisect)",
+    "Point that test at tmp_path (desk.RESULTS monkeypatch or results_dir arg); backfill test stays read-only",
+    "Add a test: run the offender, assert git diff --quiet on results/ (fail-first on old code)"
+  ],
+  "tests": "New test in test_desk.py asserts results/ is byte-identical after the suite's saving tests; must fail on old code.",
+  "title": "research/sim_desk/test_backfill.py fails in a gate run and its run rewrites tracked result files in the worktree (reported by the trade-journal builder 2026-11-12). Done when: the test passes on trunk and a run leaves git status clean, with a test that fails on the old code.",
+  "weight": "",
+  "worker": "agent"
+}

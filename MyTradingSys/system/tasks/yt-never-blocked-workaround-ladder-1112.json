@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-12T06:51:34Z",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 21,
+    "folded": "2026-11-12T06:46:47Z",
+    "misses": 3,
+    "reads": [
+      "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/D-0xTsMPwys_timed.txt"
+    ],
+    "session": "agent-aad2960c0deb68519"
+  },
+  "created": "2026-11-12T05:58:00Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "yt-never-blocked-workaround-ladder-1112",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "done on trunk 59bf5c8b (rule in YT_PROXY.md and 4 start docs, 3 transcripts, extract verified); card was raw so done refused",
+  "pinned": false,
+  "prio": 1,
+  "reason": "done on trunk 59bf5c8b (rule in YT_PROXY.md and 4 start docs, 3 transcripts, extract verified); card was raw so done refused",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-12 06:05Z"
+  ],
+  "state": "dropped",
+  "steps": [],
+  "tests": "",
+  "title": "YouTube never blocks: workaround ladder in YT_PROXY.md, pointer line in every model start doc (CLAUDE.md, AGENTS.md, DSA_SESSION_PROMPT.md, GEMINI_START.md), fetch_captions_timed.py prints the next path on a block, and the three waiting videos (j-JVi02_C88, BB3c8visnkI, e83njGZFrPw) fetched by the Browser 2 transcript panel. Done when: the three transcripts are cached and the 50W MA extract passes verify_extract_quotes.py exit 0",
+  "weight": "",
+  "worker": ""
+}

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:19:29Z",
   "commands": [],
   "created": "2026-10-19T14:45:12Z",
   "depends_on": [
@@ -17,8 +18,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "PREREQ 2026-11-04 (Unblock C): engine episode_sim.py not built; chain is rsi-deep-prereg (SONNET S, ready after its 6 refined inputs) -> rsi-deep-engine (SONNET M) -> this card. Login B starts the chain on JIS-NUC as WIP=2 slot 2. Not restarted: never run, no failed arm. | PARKED 2026-10-26 Session_Planner: run lane needs copy-ready commands; episode_sim.py (card rsi-deep-engine) has no CLI yet; write the commands after the engine ships | Operator RSI deep-buy study 2026-10-19. Full design: MyTradingSys/research/rsi_deep_buy_2026-10-19/SPEC.md. Chain: depth-map -> prereg -> engine -> run-dev -> crossvendor review (Gemini) -> VALIDATION once. Raw: Session_Planner ref\nPARKED 2026-11-04 (Super Session): 4 prerequisite studies found no surviving cell (f4d14f093, 2869f863, af9dbfeeb, 7df5f6ee6); grid empty; reopen only with a new sourced hypothesis",
+  "note": "Prerequisite engine episode_sim.py never built (rsi-deep-engine); never run. DSA parked 2026-11-12. Refile on a SONNET lane after the engine ships.",
+  "pinned": false,
   "prio": 2,
+  "reason": "Prerequisite engine episode_sim.py never built (rsi-deep-engine); never run. DSA parked 2026-11-12. Refile on a SONNET lane after the engine ships.",
   "refine_tries": 1,
   "refined_by": "",
   "refs": [],
@@ -31,11 +34,10 @@
   "scope_out": [],
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "RSI deep-buy: run full grid on DEV with the engine, write grid_dev.csv",
   "weight": "",
-  "worker": "",
-  "pinned": false
+  "worker": ""
 }

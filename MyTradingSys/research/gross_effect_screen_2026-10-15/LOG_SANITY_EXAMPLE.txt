@@ -1,0 +1,15 @@
+arm T rows (F==1, not dropped): 40
+Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-27 16:21 px 70616.70 | kline o 70616.70 c 70484.60 | ok   exit 2024-05-27 17:21 px 70256.80 | kline o 70256.80 c 70240.50 | ok
+  OK   short entry 2024-06-07 12:32 px 71330.00 | kline o 71330.00 c 71391.60 | ok   exit 2024-06-07 13:32 px 71392.10 | kline o 71392.10 c 71341.30 | ok
+  OK   long  entry 2024-06-13 15:56 px 66523.60 | kline o 66523.60 c 66434.50 | ok   exit 2024-06-13 16:56 px 66848.00 | kline o 66848.00 c 66878.40 | ok
+  OK   long  entry 2024-06-17 01:04 px 66549.90 | kline o 66549.90 c 66570.40 | ok   exit 2024-06-17 02:04 px 66327.00 | kline o 66327.00 c 66364.00 | ok
+  OK   short entry 2024-06-27 14:17 px 62283.40 | kline o 62283.40 c 62305.90 | ok   exit 2024-06-27 15:17 px 61828.50 | kline o 61828.50 c 61812.50 | ok
+
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 16 | -0.1198 | -1.9162 |
+| year 2023 | 13 | -0.0828 | -1.0764 |
+| year 2024 | 11 | 0.0711 | 0.7816 |
+| long | 22 | 0.0082 | 0.1805 |
+| short | 18 | -0.1329 | -2.3915 |

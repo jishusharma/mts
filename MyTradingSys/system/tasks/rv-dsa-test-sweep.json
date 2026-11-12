@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C1",
+  "closed": "2026-11-12T06:19:28Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_sync.py",
     "python -m pytest -q scripts/dev/test_shot.py scripts/dev/test_tasks.py",
@@ -33,9 +34,10 @@
   ],
   "layers": [],
   "live_path": false,
-  "note": "[PLAN 2026-10-18 weight=ROUTINE lab-touch=yes class=C0 reviewer=machine checks + Flash low pass] PARKED: every ship already runs these tests (run_all_tests --quick); a second sweep adds no information. LAYER_REBUILD_PLAN_2026-10-15 s2 gate order; observer GPT queue 2026-10-15 (coordinator)\nREVIEWED:2026-10-18 T0-ONLY - refined by gemini-nuc (class=C1 weight=IMPORTANT); T0 mechanical checks passed, awaiting non-Gemini Lab_Guy review for C1+/IMPORTANT+ promotion.",
+  "note": "Redundant: every ship runs these tests in the gate (card note 2026-10-18 PARKED); DSA parked 2026-11-12.",
   "pinned": false,
   "prio": 2,
+  "reason": "Redundant: every ship runs these tests in the gate (card note 2026-10-18 PARKED); DSA parked 2026-11-12.",
   "refine_tries": 0,
   "refined_by": "gemini-nuc",
   "refreshed": "2026-10-18T05:12:41Z",
@@ -52,7 +54,7 @@
   "scope_sha": "d483ba862673",
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "Run the commands in order, each inside the 300 s bridge cap.",
     "Paste the output tail into the chat; if a command fails twice close the task --failed with the error text.",
@@ -60,6 +62,6 @@
   ],
   "tests": "",
   "title": "RV-DSA test sweep: run the 7 revalidation test files and report counts (host=JIS-NUC)",
-  "weight": "IMPORTANT",
-  "updated": "2026-10-18T10:00:00Z"
+  "updated": "2026-10-18T10:00:00Z",
+  "weight": "IMPORTANT"
 }
