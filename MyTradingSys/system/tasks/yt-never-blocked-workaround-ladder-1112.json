@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:51:34Z",
   "commands": [],
   "context": {
     "calls_to_edit": 21,
@@ -24,8 +25,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done on trunk 59bf5c8b (rule in YT_PROXY.md and 4 start docs, 3 transcripts, extract verified); card was raw so done refused",
+  "pinned": false,
   "prio": 1,
+  "reason": "done on trunk 59bf5c8b (rule in YT_PROXY.md and 4 start docs, 3 transcripts, extract verified); card was raw so done refused",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -36,7 +39,7 @@
   "sources": [
     "operator 2026-11-12 06:05Z"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "YouTube never blocks: workaround ladder in YT_PROXY.md, pointer line in every model start doc (CLAUDE.md, AGENTS.md, DSA_SESSION_PROMPT.md, GEMINI_START.md), fetch_captions_timed.py prints the next path on a block, and the three waiting videos (j-JVi02_C88, BB3c8visnkI, e83njGZFrPw) fetched by the Browser 2 transcript panel. Done when: the three transcripts are cached and the 50W MA extract passes verify_extract_quotes.py exit 0",
