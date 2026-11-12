@@ -511,3 +511,28 @@ MyTradingSys/research/btc_of_level_auction_1112/test_b1.py	fwd-index	tb[m:m + 5]
 MyTradingSys/research/btc_of_level_auction_1112/test_b1.py	fwd-index	h2[s:s + 1440] *= 1.5	reviewed: synthetic-series injection in the test, writes the test bar window only; test_b1.py::test_levels_are_point_in_time
 MyTradingSys/research/btc_of_level_auction_1112/test_b1.py	fwd-index	l2[s:s + 1440] *= 0.5	reviewed: synthetic-series injection in the test, writes the test bar window only; test_b1.py::test_levels_are_point_in_time
 MyTradingSys/research/btc_of_level_auction_1112/test_b1.py	fwd-index	v2[s:s + 1440] *= 7	reviewed: synthetic-series injection in the test, writes the test bar window only; test_b1.py::test_levels_are_point_in_time
+MyTradingSys/research/btc_thin_zone_retest_1112/rules.py	fwd-index	brk = hc[e] < rl and (hc[e + 1] < rl) and (hc[e + 2] < rl)	reviewed 2026-11-12: acceptance closes e+1,e+2 are known before the retest trigger; entry is the open after the trigger bar (test_rules look-ahead tests)
+MyTradingSys/research/btc_thin_zone_retest_1112/rules.py	fwd-index	brk = hc[e] > rh and (hc[e + 1] > rh) and (hc[e + 2] > rh)	reviewed 2026-11-12: acceptance closes e+1,e+2 are known before the retest trigger; entry is the open after the trigger bar (test_rules look-ahead tests)
+MyTradingSys/research/btc_thin_zone_retest_1112/run.py	fwd-index	out[k, idx] = a[:, 1 + k]	reviewed 2026-11-12: grid fill / placebo window index, no signal use; percentile of placebo draws, not a signal threshold
+MyTradingSys/research/btc_thin_zone_retest_1112/run.py	fwd-index	cand = cand[(cs[cand + hold] - cs[cand]) == 0]	reviewed 2026-11-12: grid fill / placebo window index, no signal use; percentile of placebo draws, not a signal threshold
+MyTradingSys/research/btc_thin_zone_retest_1112/run.py	fullsample-quantile	pb = dict(mean=float(pm.mean()), p1=float(np.percentile(pm, 1)), p99=float(np.percentile(pm, 99)))	reviewed 2026-11-12: grid fill / placebo window index, no signal use; percentile of placebo draws, not a signal threshold
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + m] = 100.0 + 0.05 * (m - 599)	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + m] = 0.01	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + 620:a + 1220] = 101.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + m] = 101.0 - 0.05 * (m - 1219)	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + m] = 0.01	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a:a + 300] = 100.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a:a + 300] = 10.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + m] = 100.0 + 0.05 * (m - 299)	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + m] = 0.01	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + 320:] = 101.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + 320:] = 10.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	o[a:a + 60] = c[a:a + 60] = 100.5	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	h[a:a + 60] = 101.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	l[a:a + 60] = 100.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	o[a], c[a + 59] = op, cl	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	o[a + 1:a + 60] = op	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	c[a:a + 59] = op	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	h[a:a + 60] = hi	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	l[a:a + 60] = lo	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a:a + 60] = vol / 60.0	reviewed 2026-11-12: synthetic data construction
