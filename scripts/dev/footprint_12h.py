@@ -1,6 +1,12 @@
 """Daily 12h BTC footprint record + US-session bias input (card footprint-12h-daily-us-bias-1112; operator 2026-11-12).
 
-  python scripts/dev/footprint_12h.py [--days 30] [--no-rest] [--line] [--js]
+  python scripts/dev/footprint_12h.py [--tf 15m|1h|2h|12h] [--days 30] [--no-rest] [--line] [--js]
+
+--tf (card footprint-multi-tf-large-trades-cadence-1112): bar length; 15m/1h/2h bars (UTC-aligned) go to D:/MTS_data/footprint_<tf>/ so the
+12h record is untouched, file BTCUSDT_<date>_<HHMM>.json. Those records add large_trades: aggTrades with qty >= p99.9 of that bar
+(LARGE_Q, OURS, chosen unchecked), max 50, [ts_ms, price, qty, taker side]. Short bars are rebuilt whole (exact threshold); a resumed
+12h bar merges per-chunk picks. footprint_bias_data.js gets "tf": {15m,1h,2h: {line,...}}; Live Aid re-reads that file on a 60 s
+in-page timer paced by footprint_cadence.js (no OS scheduler).
 
 WHAT: Binance USD-M BTCUSDT aggTrades (PUBLIC data only) folded into 12h footprint bars. Bars are UTC 00:00-12:00 and 12:00-24:00,
 which equals 05:30-17:30 and 17:30-05:30 IST: the same boundaries as Binance's own 12h klines. Whether CoinGlass Legend uses them
@@ -52,7 +58,8 @@ try:
 except ImportError:  # pragma: no cover
     _urlopen = urllib.request.urlopen
 
-OUTDIR = Path("D:/MTS_data/footprint_12h")
+DATA_ROOT = Path("D:/MTS_data")
+OUTDIR = DATA_ROOT / "footprint_12h"
 JS_OUT = ROOT / "MyTradingSys" / "tools" / "live_aid" / "footprint_bias_data.js"
 SYMBOL = "BTCUSDT"
 BUCKET_USD = 10.0      # OURS
@@ -66,6 +73,10 @@ BACKFILL_DAYS = 30
 MAX_PAGES = 1500       # ~1.5M trades; a 12h bar is ~0.6M
 REST_SLEEP = 0.25      # s between pages (fapi aggTrades weight 20, limit 2400/min: ~4 calls/s is ~80 %)
 HALF_MS = 12 * 3600 * 1000
+TF_MS = {"15m": 900000, "1h": 3600000, "2h": 7200000, "12h": HALF_MS}  # --tf choices; every one divides a UTC day
+TF_ORDER = ("15m", "1h", "2h", "12h")
+LARGE_Q = 99.9         # OURS (chosen, unchecked): a "large trade" = aggTrade qty >= this percentile of the bar's trades
+LARGE_CAP = 50         # per bar, largest first
 ARCHIVE = "https://data.binance.vision/data/futures/um/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-%s.zip"
 FAPI = "https://fapi.binance.com/fapi/v1/aggTrades"
 UNKNOWN = "UNKNOWN"
@@ -88,6 +99,23 @@ def fold(price, qty, ibm, bucket=BUCKET_USD):
     rows = {int(k): [float(b), float(s)] for k, b, s in zip(uk, buy, sell)}
     return {"rows": rows, "n": int(price.size), "open": float(price[0]), "close": float(price[-1]),
             "high": float(price.max()), "low": float(price.min())}
+
+
+def large_trades(price, qty, ibm, ts, q=LARGE_Q, cap=LARGE_CAP):
+    """Prints with qty >= the q-th percentile (linear) of this bar's trades -> [[ts, price, qty, 'buy'|'sell'], ...], largest first
+    (ties: earliest first), at most `cap`. Side is the taker: is_buyer_maker True = the taker sold."""
+    qty = np.asarray(qty, dtype="float64")
+    if qty.size == 0:
+        return []
+    thr = float(np.percentile(qty, q))
+    idx = np.nonzero(qty >= thr)[0]
+    price, ibm, ts = np.asarray(price, dtype="float64"), np.asarray(ibm, dtype=bool), np.asarray(ts)
+    idx = sorted(idx.tolist(), key=lambda i: (-qty[i], ts[i]))[:cap]
+    return [[int(ts[i]), float(price[i]), float(qty[i]), "sell" if ibm[i] else "buy"] for i in idx]
+
+
+def merge_large(a, b, cap=LARGE_CAP):
+    return sorted(a + b, key=lambda t: (-t[2], t[0]))[:cap]
 
 
 def merge_rows(a, b):
@@ -170,13 +198,13 @@ def absorptions(rows, bucket=BUCKET_USD, edge=EDGE_FRAC, top=TOP_ABS):
     return cand[:top]
 
 
-def bar_record(rows, ohlc, start_ms, partial, source, last_id, through_ms, trades, bucket=BUCKET_USD):
+def bar_record(rows, ohlc, start_ms, partial, source, last_id, through_ms, trades, bucket=BUCKET_USD, tf_ms=HALF_MS, large=None):
     buy = sum(r[0] for r in rows.values())
     sell = sum(r[1] for r in rows.values())
     pv = poc_va(rows, bucket) if rows else None
     st = dt.datetime.fromtimestamp(start_ms / 1000, dt.timezone.utc)
-    return {"symbol": SYMBOL, "venue": "binance_usdm_perp", "units": "BTC",
-            "bar_start_utc": st.strftime("%Y-%m-%dT%H:%MZ"), "bar_start_ms": start_ms, "bar_end_ms": start_ms + HALF_MS,
+    rec = {"symbol": SYMBOL, "venue": "binance_usdm_perp", "units": "BTC",
+            "bar_start_utc": st.strftime("%Y-%m-%dT%H:%MZ"), "bar_start_ms": start_ms, "bar_end_ms": start_ms + tf_ms,
             "slot": "%02d" % st.hour, "partial": bool(partial), "source": source, "through_ms": through_ms, "last_agg_id": last_id,
             "trades": trades, "bucket_usd": bucket,
             "params": {"va_frac": VA_FRAC, "imb_ratio": IMB_RATIO, "imb_min_vol_btc": IMB_MIN_VOL, "stack_rows": STACK_ROWS,
@@ -186,24 +214,35 @@ def bar_record(rows, ohlc, start_ms, partial, source, last_id, through_ms, trade
             "poc": pv and pv["poc"], "value_area": pv and {"pct": VA_FRAC, "low": pv["va_low"], "high": pv["va_high"], "share": pv["va_share"]},
             "stacks": stacked_imbalances(rows, bucket) if rows else [], "absorptions": absorptions(rows, bucket) if rows else [],
             "rows": [[k / 100.0, round(b, 3), round(s, 3), round(b - s, 3)] for k, (b, s) in sorted(rows.items())]}
+    if large is not None:  # a 12h record built without it stays byte-identical to the shipped shape
+        rec["tf"] = _tf_name(tf_ms)
+        rec["large_trades"] = large
+        rec["large_rule"] = "qty >= p%s of the bar's aggTrades (OURS), max %d, largest first; [ts_ms, price, qty_btc, taker side]" % (LARGE_Q, LARGE_CAP)
+    return rec
 
 
 # ---------- files ----------
-def bar_path(start_ms, outdir=None):
+def outdir_for(tf="12h"):
+    return OUTDIR if tf == "12h" else DATA_ROOT / ("footprint_" + tf)
+
+
+def bar_path(start_ms, outdir=None, tf="12h"):
     st = dt.datetime.fromtimestamp(start_ms / 1000, dt.timezone.utc)
-    return Path(outdir or OUTDIR) / ("%s_%s_%02d.json" % (SYMBOL, st.strftime("%Y-%m-%d"), st.hour))
+    name = "%s_%s_%02d.json" % (SYMBOL, st.strftime("%Y-%m-%d"), st.hour) if tf == "12h" \
+        else "%s_%s_%02d%02d.json" % (SYMBOL, st.strftime("%Y-%m-%d"), st.hour, st.minute)
+    return Path(outdir or outdir_for(tf)) / name
 
 
-def load_bar(start_ms, outdir=None):
-    p = bar_path(start_ms, outdir)
+def load_bar(start_ms, outdir=None, tf="12h"):
+    p = bar_path(start_ms, outdir, tf)
     try:
         return json.loads(p.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
 
 
-def save_bar(rec, outdir=None):
-    p = bar_path(rec["bar_start_ms"], outdir)
+def save_bar(rec, outdir=None, tf="12h"):
+    p = bar_path(rec["bar_start_ms"], outdir, tf)
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".tmp")
     tmp.write_text(json.dumps(rec, separators=(",", ":")), encoding="utf-8", newline="\n")
@@ -211,15 +250,19 @@ def save_bar(rec, outdir=None):
     return p
 
 
-def bar_start_of(ms):
-    return ms - ms % HALF_MS
+def bar_start_of(ms, tf_ms=HALF_MS):
+    return ms - ms % tf_ms
 
 
-def needs_build(start_ms, now_ms, outdir=None):
+def _tf_name(tf_ms):
+    return {v: k for k, v in TF_MS.items()}[tf_ms]
+
+
+def needs_build(start_ms, now_ms, outdir=None, tf_ms=HALF_MS):
     """True when the bar file is missing or still partial (and the bar has started)."""
     if start_ms > now_ms:
         return False
-    cur = load_bar(start_ms, outdir)
+    cur = load_bar(start_ms, outdir, _tf_name(tf_ms))
     return cur is None or bool(cur.get("partial"))
 
 
@@ -292,12 +335,13 @@ def rest_trades(start_ms, end_ms, from_id=None, max_pages=MAX_PAGES, sleep=REST_
 
 
 # ---------- build ----------
-def build_from_arrays(arr, start_ms, source, now_ms, complete_hint=True, prior=None, bucket=BUCKET_USD):
+def build_from_arrays(arr, start_ms, source, now_ms, complete_hint=True, prior=None, bucket=BUCKET_USD, tf_ms=HALF_MS):
     price, qty, ibm, ts, ids = arr
-    m = (ts >= start_ms) & (ts < start_ms + HALF_MS)
+    m = (ts >= start_ms) & (ts < start_ms + tf_ms)
     f = fold(price[m], qty[m], ibm[m], bucket)
     rows, trades = f["rows"], f["n"]
     ohlc = {k: f.get(k) for k in ("open", "high", "low", "close")}
+    large = large_trades(price[m], qty[m], ibm[m], ts[m])
     last_id = int(ids[m].max()) if m.any() else None
     through = int(ts[m].max()) if m.any() else None
     if prior and prior.get("rows"):  # resume: rows are additive
@@ -310,14 +354,16 @@ def build_from_arrays(arr, start_ms, source, now_ms, complete_hint=True, prior=N
         last_id = last_id or prior.get("last_agg_id")
         through = through or prior.get("through_ms")
         source = prior["source"] if prior["source"] == source else "mixed"
-    partial = (not complete_hint) or now_ms < start_ms + HALF_MS
-    return bar_record(rows, ohlc, start_ms, partial, source, last_id, through, trades, bucket)
+        large = merge_large(prior.get("large_trades") or [], large)  # resumed 12h bar: per-chunk percentile, merged (see docstring)
+    partial = (not complete_hint) or now_ms < start_ms + tf_ms
+    return bar_record(rows, ohlc, start_ms, partial, source, last_id, through, trades, bucket, tf_ms, large)
 
 
-def build_bar(start_ms, now_ms, outdir=None, day_cache=None, rest=True, log=print, max_pages=MAX_PAGES):
+def build_bar(start_ms, now_ms, outdir=None, day_cache=None, rest=True, log=print, max_pages=MAX_PAGES, tf_ms=HALF_MS):
     """Build/rebuild one bar and write it. Returns the record, or None when no source could supply it."""
     day = dt.datetime.fromtimestamp(start_ms / 1000, dt.timezone.utc).strftime("%Y-%m-%d")
-    end_ms = start_ms + HALF_MS
+    end_ms = start_ms + tf_ms
+    tf = _tf_name(tf_ms)
     day_start = start_ms - start_ms % (2 * HALF_MS)
     if now_ms >= day_start + 2 * HALF_MS:  # the UTC day is over: the archive zip may hold it (published after ~00:30Z)
         cache = day_cache if day_cache is not None else {}
@@ -328,14 +374,15 @@ def build_bar(start_ms, now_ms, outdir=None, day_cache=None, rest=True, log=prin
                 log("archive %s: %s" % (day, e))
                 cache[day] = None
         if cache[day] is not None:
-            rec = build_from_arrays(cache[day], start_ms, "archive", now_ms)
+            rec = build_from_arrays(cache[day], start_ms, "archive", now_ms, tf_ms=tf_ms)
             rec["partial"] = False
-            save_bar(rec, outdir)
+            save_bar(rec, outdir, tf)
             return rec
     if not rest:
         return None
-    prior = load_bar(start_ms, outdir)
-    prior = prior if prior and prior.get("partial") and prior.get("last_agg_id") and prior.get("source") != "archive" else None
+    prior = load_bar(start_ms, outdir, tf)
+    # intraday bars are small: rebuild them whole so the p99.9 threshold is exact; only the 12h bar resumes by agg id
+    prior = prior if tf_ms == HALF_MS and prior and prior.get("partial") and prior.get("last_agg_id") and prior.get("source") != "archive" else None
     try:
         arr, complete = rest_trades(start_ms, end_ms, prior and prior["last_agg_id"], max_pages=max_pages, log=log)
     except Exception as e:  # noqa: BLE001
@@ -343,27 +390,29 @@ def build_bar(start_ms, now_ms, outdir=None, day_cache=None, rest=True, log=prin
         return None
     if arr[0].size == 0 and not prior:
         return None
-    rec = build_from_arrays(arr, start_ms, "rest", now_ms, complete_hint=complete, prior=prior)
+    rec = build_from_arrays(arr, start_ms, "rest", now_ms, complete_hint=complete, prior=prior, tf_ms=tf_ms)
     if now_ms >= end_ms and not complete:
         rec["partial"] = True
-    save_bar(rec, outdir)
+    save_bar(rec, outdir, tf)
     return rec
 
 
-def ensure(now_ms=None, days=BACKFILL_DAYS, outdir=None, rest=True, log=print):
+def ensure(now_ms=None, days=BACKFILL_DAYS, outdir=None, rest=True, log=print, tf_ms=HALF_MS):
     """Rebuild only missing or partial bars of the last `days` days up to and including the forming bar. Returns {built, ok, gaps}."""
     now_ms = now_ms or int(time.time() * 1000)
-    first = bar_start_of(now_ms) - days * 2 * HALF_MS
+    cur = bar_start_of(now_ms, tf_ms)
+    first = cur - (days * 2 * HALF_MS) // tf_ms * tf_ms
     built, gaps, cache = [], [], {}
     s = first
-    while s <= bar_start_of(now_ms):
-        if needs_build(s, now_ms, outdir):
-            use_rest = rest and s >= bar_start_of(now_ms) - 3 * HALF_MS  # older archive gaps stay gaps (12 min of REST each)
-            rec = build_bar(s, now_ms, outdir, cache, use_rest, log)
+    rest_from = cur - min(3 * HALF_MS, 12 * tf_ms)  # older archive gaps stay gaps (12 min of REST each at 12h)
+    while s <= cur:
+        if needs_build(s, now_ms, outdir, tf_ms):
+            use_rest = rest and s >= rest_from
+            rec = build_bar(s, now_ms, outdir, cache, use_rest, log, tf_ms=tf_ms)
             (built if rec else gaps).append(s)
             if rec:
                 log("%s %s%s delta %+.1f" % (rec["bar_start_utc"], rec["source"], " PARTIAL" if rec["partial"] else "", rec["delta"]))
-        s += HALF_MS
+        s += tf_ms
         if s % (2 * HALF_MS) == 0:
             cache.clear()
     return {"built": built, "gaps": gaps}
@@ -461,6 +510,41 @@ def bias_line(inp):
     return "12h footprint: " + "; ".join(parts) + " [" + LABEL + "]"
 
 
+def tf_line(tf, bar, price=None):
+    """ONE short line for a 15m / 1h / 2h bar: delta, price vs POC, largest print. UNKNOWN when there is no bar."""
+    if not bar:
+        return "%s footprint: UNKNOWN (no bar on disk) [%s]" % (tf, LABEL)
+    parts = ["delta %s BTC" % ("%+.1f" % bar["delta"])]
+    ref = price if price is not None else bar.get("close")
+    if bar.get("poc") is not None and ref is not None:
+        parts.append("price %s POC %s" % ("above" if ref > bar["poc"] else "below" if ref < bar["poc"] else "at", "{:,.0f}".format(bar["poc"])))
+    else:
+        parts.append("price vs POC UNKNOWN")
+    lt = bar.get("large_trades") or []
+    if lt:
+        t = max(lt, key=lambda x: (x[2], -x[0]))
+        parts.append("largest print %.0f BTC %s @ %s" % (t[2], t[3], "{:,.0f}".format(t[1])))
+    else:
+        parts.append("no large print")
+    return "%s footprint%s: %s [%s]" % (tf, " (forming)" if bar.get("partial") else "", "; ".join(parts), LABEL)
+
+
+def tf_lines(now_ms=None, price=None, outdirs=None, tfs=("15m", "1h", "2h")):
+    """{tf: {line, bar_start_ms, partial}} from the newest bar on disk of each tf (the forming bar, else the one before)."""
+    now_ms = now_ms or int(time.time() * 1000)
+    out = {}
+    for tf in tfs:
+        ms, od = TF_MS[tf], (outdirs or {}).get(tf)
+        bar = None
+        for s in (bar_start_of(now_ms, ms), bar_start_of(now_ms, ms) - ms):
+            bar = load_bar(s, od, tf)
+            if bar:
+                break
+        out[tf] = {"line": tf_line(tf, bar, price), "bar_start_ms": bar["bar_start_ms"] if bar else None,
+                   "partial": bool(bar and bar.get("partial"))}
+    return out
+
+
 def live_price(fetch=None):
     try:
         j = json.loads(_get("https://fapi.binance.com/fapi/v1/ticker/price?symbol=" + SYMBOL, timeout=10).decode())
@@ -475,7 +559,8 @@ def write_js(path=None, now_ms=None, price=None, outdir=None):
     inp = us_bias_inputs(now_ms, price, outdir)
     last_done = bar_start_of(now_ms) - HALF_MS
     data = {"line": bias_line(inp), "built_ms": now_ms, "latest_completed_bar_ms": last_done, "label": LABEL,
-            "have_latest": bool(load_bar(last_done, outdir) and not load_bar(last_done, outdir).get("partial")), "inputs": inp}
+            "have_latest": bool(load_bar(last_done, outdir) and not load_bar(last_done, outdir).get("partial")), "inputs": inp,
+            "tf": tf_lines(now_ms, price)}
     p = Path(path or JS_OUT)
     p.write_text("window.FOOTPRINT_BIAS = " + json.dumps(data) + ";\n", encoding="utf-8", newline="\n")
     return p, data
@@ -485,6 +570,8 @@ def build_footprint(root=ROOT, log=print):
     """Called by us_prep.py: ensure the record, then write the Live Aid js. One status line; never raises."""
     try:
         r = ensure(log=log)
+        for tf in ("15m", "1h"):  # the forming bar only: the cadence timer in Live Aid re-reads it; deeper history = --tf ... --days
+            ensure(days=0, log=log, tf_ms=TF_MS[tf])
         p, d = write_js(price=live_price())
         return "FOOTPRINT ok: built %d, gaps %d; %s" % (len(r["built"]), len(r["gaps"]), d["line"])
     except Exception as e:  # noqa: BLE001
@@ -493,12 +580,14 @@ def build_footprint(root=ROOT, log=print):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--days", type=int, default=BACKFILL_DAYS)
+    ap.add_argument("--tf", choices=TF_ORDER, default="12h", help="bar length; files go to D:/MTS_data/footprint_<tf>/ (12h = the shipped record)")
+    ap.add_argument("--days", type=int, default=None, help="default 30 for 12h, 1 for the shorter bars")
     ap.add_argument("--no-rest", action="store_true")
     ap.add_argument("--line", action="store_true", help="print the bias line")
     ap.add_argument("--js", action="store_true", help="also write footprint_bias_data.js")
     a = ap.parse_args(argv)
-    r = ensure(days=a.days, rest=not a.no_rest)
+    days = a.days if a.days is not None else (BACKFILL_DAYS if a.tf == "12h" else 1)
+    r = ensure(days=days, rest=not a.no_rest, tf_ms=TF_MS[a.tf])
     print("built %d bars, %d gaps" % (len(r["built"]), len(r["gaps"])))
     px = live_price()
     if a.js:
