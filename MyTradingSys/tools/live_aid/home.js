@@ -209,17 +209,26 @@
     var sw = !(w15.long + w15.short) ? 'quiet, ignore' : w15.long >= 2 * w15.short ? 'longs were forced out, selling fuel is spent: a long idea only if price holds the floor' + lvl(b) : w15.short >= 2 * w15.long ? 'shorts were forced out, buying fuel is spent: a short idea only if price holds the ceiling' + lvl(a) : 'both sides hit, no lean: wait';
     return '<div class="hm-card"><div class="hm-h">Forced selling and buying <span class="hm-sub">red = longs forced out, green = shorts; last 15 min</span></div><div class="hm-lcs">' + cols + '</div><div class="hm-sw"><b>So what:</b> ' + sw + '</div></div>';
   }
-  // Venues that answered this cycle with their share of the open positions in BTC: "Bybit 38% + Hyperliquid 27% + ..." (operator 11-10)
+  // Venues that answered this cycle with their share of the open positions in BTC (shown as a footnote, it is a share, not a change): "Bybit 38% + Hyperliquid 27% + ..." (operator 11-10)
   function venueWords(m) {
     var v = (m.venues || []).slice().sort(function (a, b) { return b.btc - a.btc; });
     if (!v.length) return m.n + ' venue' + (m.n === 1 ? '' : 's');
     return v.map(function (x) { return x.name + (isFinite(x.share) && v.length > 1 ? ' ' + Math.round(x.share * 100) + '%' : ''); }).join(' + ');
   }
+  // Open positions vs price in one sentence (operator 11-13: the venue shares read like a change and two arrows hid the active one).
+  // Flat = under 0.1 % either way, the OI_COMMENTARY_SPEC threshold. The reading words per price/positions pair: OURS, not backtested.
+  var MONEY_READ = { 'up/up': 'new longs buying', 'down/up': 'new shorts selling', 'up/down': 'shorts covering, no new money', 'down/down': 'longs closing or forced out',
+    'flat/up': 'positions building, no move yet', 'flat/down': 'positions closing quietly', 'up/flat': 'the rise is not fed by new money', 'down/flat': 'the fall is not fed by new money', 'flat/flat': 'quiet' };
+  function moneyDir(x) { return x >= 0.001 ? 'up' : x <= -0.001 ? 'down' : 'flat'; }
+  function pct(x) { return (x >= 0 ? '+' : '') + (x * 100).toFixed(1) + '%'; }
   function moneyCard(ctx) {
     var m = ctx.money;
     if (!m) return '<div class="hm-card"><div class="hm-h">Positions</div><div class="hm-nid">waiting for open-interest samples</div></div>';
-    var ar = function (x, lab) { var c = x > 0.0005 ? 'up' : x < -0.0005 ? 'down' : 'dim'; return '<span class="hm-ar ' + c + '">' + (c === 'up' ? '▲' : c === 'down' ? '▼' : '◆') + '<small>' + lab + '</small></span>'; };
-    return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub" title="' + esc((m.missing && m.missing.length ? 'Not read: ' + m.missing.join('; ') : 'All venues read')) + '">change over the last ' + esc(m.label) + ' \u00b7 from ' + esc(venueWords(m)) + '</span></div><div class="hm-mon">' + ar(m.dp, 'price') + ar(m.doi, 'open positions') + '<span class="hm-say">' + esc(m.text) + '</span></div></div>';
+    var d = moneyDir(m.doi), pd = moneyDir(m.dp), c = d === 'up' ? 'up' : d === 'down' ? 'down' : 'dim';
+    var arrow = '<span class="hm-ar ' + c + '">' + (d === 'up' ? '▲' : d === 'down' ? '▼' : '◆') + '</span>';
+    var say = 'Open positions (' + m.n + ' venue' + (m.n === 1 ? '' : 's') + '): ' + pct(m.doi) + ' in ' + m.label + (d === 'flat' ? ' (flat)' : '') + ' while price ' + pct(m.dp) + (pd === 'flat' ? ' (flat)' : '') + ' -> ' + MONEY_READ[pd + '/' + d];
+    return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub" title="' + esc((m.missing && m.missing.length ? 'Not read: ' + m.missing.join('; ') : 'All venues read') + '. Reading words: our rule, not backtested.') + '">open positions vs price</span></div>' +
+      '<div class="hm-mon">' + arrow + '<span class="hm-say">' + esc(say) + '</span></div><div class="hm-from">from: ' + esc(venueWords(m)) + ' (each venue’s share of the total)</div></div>';
   }
   function newsCard(ctx) {
     var list = (ctx.news || []).filter(function (x) { return ctx.now - x.t <= 3600000; }).sort(function (a, b) { return b.score - a.score || b.t - a.t; }).slice(0, 4);
@@ -282,14 +291,23 @@
     });
     return s + '</svg>';
   }
-  // One line under the chart for the WaveTrend lanes (operator 11-12: "what do they mean for a trade?"). Frame = 15m + 30m agree;
-  // timing = a fresh big dot on 1m / 2m / 3m in the frame's direction. OURS, not backtested; context only.
+  // ONE line for the WaveTrend lanes (operator 11-13: six strips took the space and he could not use them). Timing = 1m 2m 3m, frame =
+  // 15m + 30m agree, 4h = the last CLOSED 4h bar (his TradingView shows the forming bar), backdrop only. OURS, not backtested.
+  var wtOpen = false;   // strips behind a click, collapsed by default; kept across the 1 s re-render
   function wtSoWhat(ctx, md) {
     var L = ctx.lanes || {}, a = L['15m'], b = L['30m'], sd = function (z) { return z && z.side != null ? z.side : null; };
-    var fr = sd(a) !== null && sd(a) === sd(b) ? sd(a) : 0, dot = ['1m', '2m', '3m'].some(function (tf) { var z = L[tf]; return z && z.bars && fr && z.bars.slice(-4).some(function (x) { return x.x === fr && x.strong; }); });
-    var t = !a && !b ? 'no WaveTrend data' : fr > 0 ? '15m + 30m both rising: long side only' + (dot ? '; a big green dot just fired on 1m-3m, that is the timing' : '; wait for a big green dot on 1m-3m') :
-      fr < 0 ? '15m + 30m both falling: short side only' + (dot ? '; a big red dot just fired on 1m-3m, that is the timing' : '; wait for a big red dot on 1m-3m') : '15m and 30m disagree: wait';
-    return '<div class="hm-sw ' + (fr > 0 ? 'up' : fr < 0 ? 'down' : 'dim') + '"><b>WaveTrend, so what:</b> ' + esc(t) + ' <small>(15m + 30m = the big picture, 1m-3m = the timing)</small></div>';
+    var fr = sd(a) !== null && sd(a) === sd(b) ? sd(a) : 0;
+    var dot = ['1m', '2m', '3m'].some(function (tf) { var z = L[tf]; return z && z.bars && fr && z.bars.slice(-4).some(function (x) { return x.x === fr && x.strong; }); });
+    var ts = ['1m', '2m', '3m'].map(function (tf) { return sd(L[tf]); }).filter(function (v) { return v !== null; });
+    var tim = !ts.length ? 'no data' : ts.every(function (v) { return v === 1; }) ? 'all crossed up (long side only)' : ts.every(function (v) { return v === -1; }) ? 'all crossed down (short side only)' : 'mixed (no timing)';
+    var zone = function (z, up) { return z && z.zone === 'cold' ? (up ? ' from oversold' : ', oversold') : z && z.zone === 'hot' ? (up ? ', overbought' : ' from overbought') : ''; };
+    var frame = !a && !b ? 'no data' : fr > 0 ? 'rising' + zone(a, true) : fr < 0 ? 'falling' + zone(a, false) : '15m and 30m disagree';
+    var h = L['4h'], h4 = h && isFinite(h.wt1) ? Math.round(h.wt1) + (h.zone === 'cold' ? ' oversold' : h.zone === 'hot' ? ' overbought' : '') : 'no data';
+    var lad = md && md.lad, up = lad && lad.above && lad.above[0], dn = lad && lad.below && lad.below[0];
+    var act = !a && !b ? 'wait' : fr > 0 ? (dot ? 'a big green dot just fired on 1m-3m, that is the timing; long side only' : 'wait for a big green dot on 1m-3m') + (up ? ', or a 15m close above ' + n0(up.price) : '') :
+      fr < 0 ? (dot ? 'a big red dot just fired on 1m-3m, that is the timing; short side only' : 'wait for a big red dot on 1m-3m') + (dn ? ', or a 15m close below ' + n0(dn.price) : '') : 'wait';
+    var txt = 'Timing 1-3m: ' + tim + ' · Frame 15m/30m: ' + frame + ' · 4h (last closed bar): ' + h4 + ' (backdrop, not a trigger) -> ' + act;
+    return '<div class="hm-sw hm-wsw ' + (fr > 0 ? 'up' : fr < 0 ? 'down' : 'dim') + '" data-wttoggle="1" role="button" tabindex="0" title="Click to ' + (wtOpen ? 'hide' : 'show') + ' the six WaveTrend strips"><b>WaveTrend:</b> ' + esc(txt) + ' <small>[' + (wtOpen ? 'hide' : 'show') + ' strips]</small></div>';
   }
   function WTH(PU) { return PU && PU.WT_HOT || 53; }
   // Level story: nearest level above and below (or the one price sits at), read on completed 15m Binance closes (levelstory.js).
@@ -413,9 +431,11 @@
       (md.lad.above[0] && inFrame(md, md.lad.above[0]) ? '<span class="hm-nx down">▲ ' + n0(md.lad.above[0].price) + ' <small>' + esc(md.lad.above[0].name) + ', ' + ((md.lad.above[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (md.lad.below[0] && inFrame(md, md.lad.below[0]) ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
-    var wh = Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32)));
+    var wh = wtOpen ? Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32))) : 0;
+    if (!el._wtl) { el._wtl = true; var tg = function (e) { if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; if (e.target.closest && e.target.closest('[data-wttoggle]')) { e.preventDefault(); wtOpen = !wtOpen; render(el, el._ctx); } }; el.addEventListener('click', tg); el.addEventListener('keydown', tg); }
+    el._ctx = ctx;
     ctx._tm = null;   // trigger row removed 11-12 (he could not select or read it); timingStrip/timingOf stay for tests
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 72 - wh) + wtSoWhat(ctx, md) + wtLanes(ctx, W, wh) + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 78 - wh) + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -439,7 +459,7 @@
     '.hm-leanw{display:flex;gap:6px;align-items:center;font:700 10px system-ui;margin:3px 0 4px}.hm-leanw .hm-lean{flex:1;margin:0}.hm-lean i{position:absolute;top:0;bottom:0;border-left:1px dashed var(--fg);opacity:.5}' +
     '.hm-lean{position:relative;height:8px;margin:3px 0 4px;border-radius:4px;background:linear-gradient(90deg,var(--down),var(--line) 40%,var(--line) 60%,var(--up))}.hm-lean span{position:absolute;top:-3px;width:4px;height:14px;margin-left:-2px;background:var(--fg);border-radius:2px}' +
     '.hm-lcs{display:flex;gap:3px}.hm-lc{flex:1;text-align:center;font-size:10px;min-width:0}.hm-lc.part{opacity:.45}.hm-lcb{height:44px;display:flex;flex-direction:column;border-radius:3px;overflow:hidden;background:var(--line)}.hm-lcb .up{background:var(--up)}.hm-lcb .down{background:var(--down)}.hm-lc b{display:block;font:700 10px var(--mono,monospace)}.hm-lc small{color:var(--dim);font-size:9px}' +
-    '.hm-mon{display:flex;gap:12px;align-items:center}.hm-ar{font-size:22px;text-align:center;line-height:1}.hm-ar small{display:block;font-size:10px;color:var(--dim)}' +
+    '.hm-mon{display:flex;gap:12px;align-items:center}.hm-ar{font-size:22px;text-align:center;line-height:1}.hm-from{font-size:10px;color:var(--dim);margin-top:2px}' +
     '.hm-nr{display:grid;grid-template-columns:16px 40px 1fr 30px;gap:6px;align-items:center;font-size:12px;padding:2px 0;border-top:1px solid var(--line)}.hm-ns{height:6px;background:var(--line);border-radius:3px;overflow:hidden}.hm-ns span{display:block;height:100%;background:var(--amber)}.hm-nh{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hm-na{color:var(--dim);text-align:right}.hm-ev{margin-left:auto;font:700 12px system-ui;color:var(--amber);border:1px solid var(--amber);border-radius:10px;padding:0 8px}' +
     '.hm-nid{color:var(--dim);font-size:12px;padding:6px 0}' +
     '.hm-st{border-top:1px solid var(--line);padding:3px 0}.hm-st1{display:flex;gap:6px;align-items:baseline;font-size:12px}.hm-stp{font:700 13px var(--mono,monospace)}.hm-stn{color:var(--fg);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:40%}' +
@@ -465,7 +485,7 @@
     '.hm-bl2{margin:0;padding-left:14px;font-size:11px;max-height:64px;overflow:hidden}.hm-brate{font-size:11px;margin-top:3px}.hm-brate small{color:var(--dim);font-size:10px}' +
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '.hm-vr{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;font-size:13px;margin-top:3px;padding-left:6px;border-left:4px solid var(--dim)}.hm-vr.up{border-left-color:var(--up)}.hm-vr.down{border-left-color:var(--down)}.hm-vr b{font:700 13px var(--mono,monospace);color:var(--fg)}.hm-vr.up span{color:var(--up)}.hm-vr.down span{color:var(--down)}.hm-vr small{color:var(--dim);font-size:11px}.hm-vr em{font-style:normal;font-weight:700;color:var(--amber)}' +
-    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}div.hm-sw{flex:none}' +
+    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
     '.hm-bias.conflict{border-color:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
@@ -476,6 +496,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _soWhat: soWhat, _chart: chart, _inFrame: inFrame, _boardCard: boardCard };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; }, _soWhat: soWhat, _chart: chart, _inFrame: inFrame, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

@@ -1,6 +1,7 @@
 """Live Aid guidance rework (operator 2026-11-12): every panel says what to do (long / short / wait + the level), one verdict row per
 timeframe, WaveTrend and liquidation panels with a so-what line, chart names its timeframe and axes. Expected texts are written by hand
 from the rules in the card, not computed by the code. Skips without node."""
+import html
 import json
 import re
 import shutil
@@ -61,16 +62,31 @@ def test_liquidation_panel_says_what_follows():
     assert "So what: quiet, ignore" in t
 
 
-def _lane(side, big=0):
-    return {"side": side, "bars": [{"x": big, "strong": bool(big)}]}
+def _lane(side, big=0, zone="mid", wt1=0):
+    return {"side": side, "zone": zone, "wt1": wt1, "bars": [{"x": big, "strong": bool(big)}]}
 
 
-def test_wavetrend_lanes_have_a_so_what_line():
-    f = lambda lanes: _txt(_run("H._wtSoWhat({lanes:j},{})", lanes))
-    up = f({"15m": _lane(1), "30m": _lane(1), "2m": _lane(1, 1)})
-    assert "15m + 30m both rising: long side only; a big green dot just fired on 1m-3m, that is the timing" in up
-    assert "wait for a big red dot on 1m-3m" in f({"15m": _lane(-1), "30m": _lane(-1)})
-    assert "15m and 30m disagree: wait" in f({"15m": _lane(1), "30m": _lane(-1)})
+def test_wavetrend_is_one_line_that_says_what_to_do():
+    # operator 2026-11-13: six strips collapse into ONE line; 4h is the last CLOSED bar; levels from the ladder (written by hand)
+    f = lambda lanes: html.unescape(_txt(_run("H._wtSoWhat({lanes:j},{lad:" + json.dumps(LAD) + "})", lanes)))
+    lanes = {"1m": _lane(1), "2m": _lane(1), "3m": _lane(1), "15m": _lane(1, zone="cold"), "30m": _lane(1, zone="cold"), "4h": _lane(1, zone="cold", wt1=-62.5)}
+    t = f(lanes)
+    assert ("Timing 1-3m: all crossed up (long side only) · Frame 15m/30m: rising from oversold · "
+            "4h (last closed bar): -62 oversold (backdrop, not a trigger) -> wait for a big green dot on 1m-3m, or a 15m close above 74,000") in t, t
+    assert t.count("WaveTrend:") == 1
+    dn = f({"1m": _lane(-1), "2m": _lane(-1), "3m": _lane(-1), "15m": _lane(-1), "30m": _lane(-1, 1), "4h": _lane(-1, wt1=10)})
+    assert "all crossed down (short side only)" in dn and "4h (last closed bar): 10 (backdrop" in dn and "a 15m close below 73,500" in dn
+    assert "Frame 15m/30m: 15m and 30m disagree" in f({"15m": _lane(1), "30m": _lane(-1)}) and f({"15m": _lane(1), "30m": _lane(-1)}).strip().endswith("-> wait [show strips]")
+
+
+def test_wavetrend_strips_are_collapsed_until_clicked():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    h = _run("H._wtSoWhat({lanes:{}},{})", {})
+    assert 'data-wttoggle="1"' in h and "[show strips]" in h
+    out = _run("(H._wtSetOpen(true),H._wtSoWhat({lanes:{}},{}))", {})
+    assert "[hide strips]" in out
 
 
 def test_chart_names_its_axes_and_off_frame_levels_are_not_listed():
