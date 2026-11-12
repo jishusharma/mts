@@ -950,11 +950,15 @@ def test_home_bias_line_names_the_clock_that_wins():
     html = out.stdout
     import re
     text = re.sub(r"<[^>]*>", "", html)
-    assert "Bias DOWN" in text
-    assert "gauge SHORT 5/5 | 1h-4h pulse UP | level card MIXED" in text
-    assert "the live gauge (minutes) leads the next 15m, the 1h-4h lean is the backdrop" in text
-    assert "15m close above 74,000 (Today high)" in text and "15m close below 73,666 (Yesterday low)" in text
-    assert 'class="up">15m close above' in html and 'class="down">15m close below' in html     # in colour
+    # operator 2026-11-12 (default A): a short idea against a long big picture is ONE conflict line, stand aside until a 15m close decides
+    assert "STAND ASIDE" in text and "conflict: short idea at 74,000 (Today high) vs long big picture, stand aside until a 15m close decides" in text
+    assert text.count("conflict:") == 1 and "gauge SHORT" not in text
+    assert "Close above 74,000 (Today high) = long" in text and "below 73,666 (Yesterday low) = short" in text
+    # no conflict (pulse agrees with the gauge): the old Bias line, in colour
+    out = subprocess.run([node, "-e", js.replace("hi:0.3", "hi:-0.3"), str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=30)
+    html = out.stdout; text = re.sub(r"<[^>]*>", "", html)
+    assert "Bias DOWN" in text and "conflict" not in text
+    assert 'class="up">15m close above' in html and 'class="down">15m close below' in html
     assert not re.search(r"\b(buy|sell|enter|entry|stop|size)\b", text, re.I)                   # observation only
 
 

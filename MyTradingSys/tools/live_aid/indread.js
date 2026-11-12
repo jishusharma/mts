@@ -117,13 +117,23 @@
     return out.slice(0, 3);
   }
 
+  // One plain verdict per timeframe (operator 11-12: the 6-row grid was unreadable). Counts the six cells already read:
+  // side = buyers / sellers / mixed (a lead of 2 or more cells wins; OURS), coiled = squeeze on (quiet before a move).
+  function verdict(R) {
+    if (!R) return null;
+    var lead = R.up - R.dn, side = lead >= 2 ? 1 : lead <= -2 ? -1 : 0;
+    return { side: side, up: R.up, dn: R.dn, n: R.n, coiled: !!(R.cells.sqz && R.cells.sqz.on),
+      word: side > 0 ? 'buyers winning' : side < 0 ? 'sellers winning' : 'mixed, no one winning' };
+  }
+
   function table(TFK, now) {
     var R = {};
     TFS.forEach(function (x) { try { R[x[0]] = read(TFK && TFK[x[0]], x[1], now); } catch (e) { R[x[0]] = null; } });
     var q = R['15m'], age = q && now > 0 ? now - (q.t + 900000) : NaN;   // ms since the last 15m bar closed
-    return { tfs: TFS, rows: ROWS, r: R, says: says(R), age: age, stale: isFinite(age) && age > P.staleMs };
+    var V = {}; TFS.forEach(function (x) { V[x[0]] = verdict(R[x[0]]); });
+    return { tfs: TFS, rows: ROWS, r: R, ver: V, says: says(R), age: age, stale: isFinite(age) && age > P.staleMs };
   }
 
-  var api = { P: P, TFS: TFS, ROWS: ROWS, adx: adx, squeeze: squeeze, vfi: vfi, read: read, says: says, table: table };
+  var api = { P: P, TFS: TFS, ROWS: ROWS, adx: adx, squeeze: squeeze, vfi: vfi, read: read, says: says, verdict: verdict, table: table };
   if (node) module.exports = api; else root.LAIND = api;
 })(typeof window !== 'undefined' ? window : this);
