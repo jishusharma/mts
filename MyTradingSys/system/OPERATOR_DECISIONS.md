@@ -2401,3 +2401,8 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Decision: Chrome work uses ONLY device `f0b63f88-d660-492a-afdd-76ef378e2b06` (the 1985 chart profile). Device `84a11bf5-9eee-4004-890c-f688a2509133` is his main profile: never select it. Never choose by the Browser 1/2 label. If f0b63f88 is missing, run `switch_browser` and he clicks Connect in the j window.
 - Correction to 13:16Z: the legend.coinglass.com root shows a marketing page to everyone, so that check did not prove a signed-out profile.
 - Chrome is unblocked for the footprint Legend cross-check (CHECK.md) and the Live Aid render check, both on this device only.
+
+## 2026-11-12 13:45Z CORRECTION: f0b63f88 is NOT his chart profile; Chrome is off
+- The 13:42Z entry above is wrong. After `switch_browser`, I and the footprint worker each opened one legend.coinglass.com tab on device f0b63f88. He replied "Again the other profile was touched by you!!!". Both tabs were closed at once and nothing was read or clicked.
+- Both connected devices (f0b63f88, 84a11bf5) are his NON-chart profiles. The purple "j" 1985 CoinGlass Pro profile has no working connection. `switch_browser` returning does not show which window he clicked.
+- Decision: no Chrome tool on any session until he names a deviceId himself in chat as his chart profile. Legend cross-checks stay pending. Chart data comes from Binance trades and from screenshots he pastes.
