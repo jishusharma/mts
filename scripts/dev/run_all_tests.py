@@ -55,6 +55,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_hosts.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_api_job.py",
+    "scripts/dev/test_make_conceptualizer.py",
     "scripts/dev/test_api_job_gpt.py",
     "scripts/dev/test_weekplan.py",
     "scripts/dev/test_route_audit.py",
