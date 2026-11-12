@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T07:16:57Z",
   "commands": [
     "python MyTradingSys/research/btc_thin_zone_retest_1112/run.py"
   ],
@@ -14,10 +15,18 @@
   "goal": "Frozen-rule DEV test on BTC of two untested order-flow ideas: thin-zone pass-through (5m) and accepted-breakdown retest (1h), fee 10 bp, placebo.",
   "id": "btc-thin-zone-and-breakdown-retest-prereg-1112",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "T1 n4892 mean -9.71bp t-25.7 FAIL; T2 n71 mean +3.68bp t0.35 FAIL",
+      "ref": "11e0acb32",
+      "utc": "2026-11-12T07:16:57Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no edge on DEV",
   "not_twin_of": [
     "forced-selloff-long-pooled-10-coins-1111"
   ],
@@ -27,7 +36,12 @@
   "refined_by": "",
   "refreshed": "2026-11-12T07:08:25Z",
   "refs": [],
-  "result": "",
+  "result": "T1 n4892 mean -9.71bp t-25.7 FAIL; T2 n71 mean +3.68bp t0.35 FAIL",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/btc_thin_zone_retest_1112"
   ],
@@ -40,12 +54,13 @@
     "extract_BB3c8visnkI.md idea 3",
     "extract_e83njGZFrPw.md idea 1"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write and commit PREREG.md",
     "Code rules + tests",
     "Run DEV, write RESULT.md"
   ],
+  "taken": "2026-11-12T07:16:57Z",
   "tests": "test_rules.py fails on a look-ahead-shifted rule version",
   "title": "Edge: PREREG then DEV run on BTC, thin-zone pass-through and accepted-breakdown retest (Tom extracts)",
   "weight": "",
