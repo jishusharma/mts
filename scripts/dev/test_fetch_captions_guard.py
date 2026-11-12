@@ -62,6 +62,20 @@ class T(unittest.TestCase):
         self.assertEqual(m.call_count, 0)
         self.assertEqual(code, f.EXIT_BLOCKED)
 
+    def test_block_message_names_next_path(self):   # a block ends the scripted path, never the task (YT_PROXY.md path order)
+        import contextlib
+        import io
+        want = "next path: Browser 2 transcript panel, see YT_PROXY.md"
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.run_main(IDS[:2], ["BLOCKED", "OK auto 5w"])      # a fresh 429 in this run
+        self.assertTrue(buf.getvalue().rstrip().endswith(want), buf.getvalue())
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            code, m = self.run_main(IDS[:2], lambda *a, **k: "OK auto 5w")   # now locked: exit 3, no request
+        self.assertEqual((code, m.call_count), (f.EXIT_BLOCKED, 0))
+        self.assertTrue(buf.getvalue().rstrip().endswith(want), buf.getvalue())
+
     def test_status_zero_calls(self):
         f.mark_blocked()
         with mock.patch.object(f, "yt_dlp", mock.Mock()) as y, mock.patch.object(f, "fetch") as m, \

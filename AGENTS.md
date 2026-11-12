@@ -9,3 +9,5 @@ Codex entry point and first-message prompt: `MyTradingSys/system/CODEX_START.md`
 Layer lab (lane `CODEX`, the Codex app project "MTS Layer Lab", unattended runs): `MyTradingSys/system/LAYER_LAB.md`.
 
 Gemini (Antigravity, JIS-NUC) has its own entry point: `GEMINI.md` -> `MyTradingSys/system/GEMINI_START.md`.
+
+YouTube caption block: never stop; follow the path order in MyTradingSys/system/YT_PROXY.md.

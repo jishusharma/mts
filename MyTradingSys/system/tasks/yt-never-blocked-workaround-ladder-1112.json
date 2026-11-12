@@ -1,22 +1,16 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:51:34Z",
   "commands": [],
   "context": {
-    "calls_to_edit": null,
-    "folded": "2026-11-12T06:26:33Z",
-    "misses": 19,
+    "calls_to_edit": 21,
+    "folded": "2026-11-12T06:46:47Z",
+    "misses": 3,
     "reads": [
-      "MyTradingSys/research/sim_desk/test_backfill.py",
-      "MyTradingSys/research/sim_desk/backfill_results.py",
-      "scripts/dev/run_all_tests.py",
-      "MyTradingSys/research/sim_desk/build_catalogue.py",
-      "MyTradingSys/research/sim_desk/test_build2.py",
-      "MyTradingSys/research/sim_desk/desk.py",
-      "MyTradingSys/research/sim_desk/export_trades.py",
-      "MyTradingSys/system/ROUTING.md"
+      "MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/D-0xTsMPwys_timed.txt"
     ],
-    "session": "agent-ab8f9b424c297d659"
+    "session": "agent-aad2960c0deb68519"
   },
   "created": "2026-11-12T05:58:00Z",
   "depends_on": [],
@@ -31,8 +25,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done on trunk 59bf5c8b (rule in YT_PROXY.md and 4 start docs, 3 transcripts, extract verified); card was raw so done refused",
+  "pinned": false,
   "prio": 1,
+  "reason": "done on trunk 59bf5c8b (rule in YT_PROXY.md and 4 start docs, 3 transcripts, extract verified); card was raw so done refused",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -43,7 +39,7 @@
   "sources": [
     "operator 2026-11-12 06:05Z"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "YouTube never blocks: workaround ladder in YT_PROXY.md, pointer line in every model start doc (CLAUDE.md, AGENTS.md, DSA_SESSION_PROMPT.md, GEMINI_START.md), fetch_captions_timed.py prints the next path on a block, and the three waiting videos (j-JVi02_C88, BB3c8visnkI, e83njGZFrPw) fetched by the Browser 2 transcript panel. Done when: the three transcripts are cached and the 50W MA extract passes verify_extract_quotes.py exit 0",
