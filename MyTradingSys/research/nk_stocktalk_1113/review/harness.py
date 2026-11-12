@@ -9,6 +9,7 @@ word is dropped (pure-Hindi quote = always MISSING; mixed quote = only its Latin
 This check keeps Unicode letters, marks and digits (NFC), so Hindi words are compared too.
 """
 import json
+from itertools import islice
 import re
 import sys
 import unicodedata
@@ -46,7 +47,7 @@ def quotes(model, vid):
         m = QUOTE.match(line.strip())
         if not m:
             continue
-        near = lines[i + 1:i + 6]
+        near = list(islice(lines, i + 1, i + 6))  # the 5 text lines under the quote
         gps = next((GPS.search(x).group(1) for x in near if GPS.search(x)), vid)
         tr = next((TRANS.match(x).group(1).strip() for x in near if TRANS.match(x)), "")
         out.append((i + 1, m.group(1), tr, gps))
