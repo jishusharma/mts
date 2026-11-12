@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-x5-tom-speed-proof-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T18:55:04Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-x5-tom-speed-proof-1113/ANSWERS.md answers Q4 Q9 Q11 with a Verdict per question (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), each quote tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md in the same folder names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Answer from Tom's own words what he measures as market speed, which footprint or delta evidence counts as proof, how many proofs he wants before entry, and any size or distance he gives for absorption; label guest speakers; mark every missing number NOT_SEEN.",
+  "id": "tf-x5-tom-speed-proof-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:58:56Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-x5-tom-speed-proof-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tf-extract-plan 2026-11-13 (operator order 11-13)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/PLAN.md section 1 (questions Q4 Q9 Q11); read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: -dMWA_bbm3o G0CiJcuXCRs 3o1VVsfBmmU y67l86cSqb8 oa8kxSLLkAo usho6UVLqkE vl01TiVTuoQ OUM9LYwL8eA k0zm5NYn0IQ 4P5WAxyPCis(GUEST) rFPCtOcfUMI(GUEST)",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-x5-tom-speed-proof-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[SONNET] Tom market speed, footprint proof and proof-count answers from held transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

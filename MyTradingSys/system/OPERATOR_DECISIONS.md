@@ -2413,3 +2413,8 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Desktop path: no local `agy` here, so `gemini_queue.py run` hands the specs to the NUC as a one-shot /IT schtask over the SSH gate (`nuc_lab.py gemini-task`; poll with `nuc_lab.py gemini-status`). A skipped card now prints `SKIP <card>: <why>` instead of exiting 0 silent.
 - Every Gemini extract still needs `verify_extract_quotes.py` exit 0 (Gemini watching a video invents quotes); a Claude session reviews the `gemini-q/<id>` branch and ships it.
 - Cards moved: cbp-gap-since-1111-fetch-by-browser-panel-1112 (SONNET to CODEX, Chrome/panel steps removed), analyst-call-backcatalogue-extract-1112 (dropped DSA to ready CODEX), tom-fabio-rebuild-from-beginner-videos-1109 (scope fixed).
+
+## 2026-11-12 ~18:10Z: Fable ship-architecture change list: yes, all 8
+- Operator, verbatim: "Apply the Fable change list? - yes all 8". Spec: SHIP_ARCH_REVIEW_2026-11-12.md section 7.
+- Decision: apply changes 1-8. Change 2 (live-path ships run the fast gate + execution tests + static suite locally; the full suite only on CI and on the live box before a deploy) explicitly REVERSES the 11-10 "must-not-cut" item (full local suite on live-path ships), with his approval.
+- Kept blocking: 3pc, 3vd, 3xm, 3la and the 2-slot gate pool. Card lint (3tl), review stamp and the `Next:` card-name check now warn. 3gd is gone (auto-discovery). The coordinator is measured (plan timing row), not cut.

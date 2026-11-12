@@ -119,13 +119,41 @@ class ShipGate(RepoCase):
         self.assertIn("--next", str(e.exception))
         self.assertEqual(len(str(e.exception).splitlines()), 1)
 
-    def test_refuses_missing_card_even_with_route_commit(self):
+    def test_missing_card_warns_but_does_not_refuse(self):
+        # change 3 (SHIP_ARCH_REVIEW_2026-11-12): the Next line is required, a card name that does not exist only warns
         commit(self.r, "work\n\nResult: x\nNext: ghost-card", {"a.py": "x = 1\n"})
+        import contextlib
+        import io
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            sync.check_route_tags(self.r)
+        self.assertIn("WARN", out.getvalue())
+        self.assertIn("ghost-card", out.getvalue())
+
+    def test_missing_next_line_still_refuses(self):
+        commit(self.r, "work\n\nResult: x", {"a.py": "x = 1\n"})
         with self.assertRaises(sync.SyncError):
             sync.check_route_tags(self.r)
-        sync.commit_pending(self.r, None, nxt="END: no edge, recorded")
-        with self.assertRaises(sync.SyncError):   # the ghost card still refuses
-            sync.check_route_tags(self.r)
+
+    def test_route_tag_alone_creates_no_empty_commit_when_nothing_changed(self):
+        # change 7: `ship --next` with nothing to ship used to add an empty "route tag" commit
+        before = sh(self.r, "rev-list", "--count", "HEAD")
+        sync.commit_pending(self.r, None, nxt="END: nothing changed")
+        self.assertEqual(sh(self.r, "rev-list", "--count", "HEAD"), before)
+
+    def test_route_tag_rides_in_the_ship_commit_instead_of_an_empty_one(self):
+        commit(self.r, "work\n\nResult: x", {"a.py": "x = 1\n"})
+        before = sh(self.r, "rev-list", "--count", "HEAD")
+        sync.commit_pending(self.r, None, nxt="END: rides along")
+        self.assertEqual(sh(self.r, "rev-list", "--count", "HEAD"), before)   # amended in, no extra commit
+        self.assertIn("Next: END: rides along", sh(self.r, "log", "-1", "--format=%B"))
+        sync.check_route_tags(self.r)
+
+    def test_same_next_line_already_on_a_commit_is_not_added_again(self):
+        commit(self.r, "work\n\nResult: x\nNext: END: once", {"a.py": "x = 1\n"})
+        head = sh(self.r, "rev-parse", "HEAD")
+        sync.commit_pending(self.r, None, nxt="END: once")
+        self.assertEqual(sh(self.r, "rev-parse", "HEAD"), head)
 
     def test_end_passes_and_chores_exempt(self):
         commit(self.r, "claim x\n\nResult: claim", {"MyTradingSys/system/claims/x.md": "c"})
