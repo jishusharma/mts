@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T15:11:34Z",
   "commands": [],
   "created": "2026-11-12T13:02:57Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "shipped 52f0c1bd4 (12h record + bias line, on fast-track); Legend cross-check still pending in research/footprint_12h_1112/CHECK.md, carried by the multi-tf card",
+  "pinned": false,
   "prio": 2,
+  "reason": "shipped 52f0c1bd4 (12h record + bias line, on fast-track); Legend cross-check still pending in research/footprint_12h_1112/CHECK.md, carried by the multi-tf card",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "operator 2026-11-12 13:00Z"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Daily 12h BTC footprint record + US-session bias line",
