@@ -75,7 +75,19 @@ def body_for(tdir, vid, trans, hindi):
     else:
         p = tdir / (trans[vid]["file"] if vid in trans else f"{vid}_raw.txt")
     text = p.read_text(encoding="utf-8", errors="replace")
-    return text.split("# ---", 1)[1] if "# ---" in text else text
+    body = text.split("# ---", 1)[1] if "# ---" in text else text
+    # same rule as verify_extract_quotes.transcript_body: a nested '# ' metadata block (and its closing '# ---') is not speech
+    lines = body.split(chr(10))
+    i = 0
+    while i < len(lines) and not lines[i].strip():
+        i += 1
+    if i < len(lines) and lines[i].startswith("# "):
+        while i < len(lines) and lines[i].startswith("# "):
+            i += 1
+        if i < len(lines) and lines[i].strip() == "# ---":
+            i += 1
+        body = chr(10).join(lines[i:])
+    return body
 
 
 def is_extract_path(rel, text):
@@ -153,10 +165,11 @@ def check_extract(root, tdir, trans, text):
         vid, pos = gps.groups()
         b = nbody(vid)
         q = vq.norm(m.group(1))
-        at = b.find(q) if b is not None and q else -1
-        if at < 0:
+        mw = re.search(rf"(?:^|\s){re.escape(q)}(?:\s|$)", b) if b is not None and q else None  # checker's word-boundary match
+        if not mw:
             rec(vid, 1)
         else:
+            at = mw.start() + (1 if b[mw.start()] == " " else 0)
             third = ("BEGIN", "MIDDLE", "END")[min(2, 3 * at // max(1, len(b)))]
             rec(vid, 0 if third == pos else 1)
     return res, hindi, (vm.group(1) if vm else "")
@@ -200,6 +213,15 @@ def priority_ids(root):
     return out
 
 
+def channel_map(root):
+    """channel_map.csv (video_id,channel,evidence): hand-checked labels for ids whose transcript header has no analyst."""
+    p = root / "MyTradingSys" / "research" / "extraction_ledger_2026-10" / "channel_map.csv"
+    if not p.exists():
+        return {}
+    with p.open(encoding="utf-8", newline="") as f:
+        return {r["video_id"]: r["channel"] for r in csv.DictReader(f) if r.get("video_id") and r.get("channel")}
+
+
 def channel_from_path(rel):
     low = rel.lower()
     for k, v in (("malkan", "Malkan"), ("fabio", "Fabio"), ("tom", "Tom"), ("krown", "Krown"), ("kurisko", "Kurisko"),
@@ -213,6 +235,7 @@ def build(root, out):
     tdir = root / "raw_transcripts_canonical"
     trans = read_transcripts(tdir)
     prio = priority_ids(root)
+    cmap = channel_map(root)
     usage = load_usage(root)
     rows, gaps = [], {"no_extract": [], "bad_quotes": [], "unused": [], "one_place": [], "extract_no_id": [],
                       "prio_no_transcript": []}
@@ -234,7 +257,7 @@ def build(root, out):
     for vid in all_ids:
         t = trans.get(vid)
         ub = used_by(vid, usage)
-        ch = (t["channel"] if t else "") or prio.get(vid, "")
+        ch = (t["channel"] if t else "") or cmap.get(vid, "") or prio.get(vid, "")
         exts = ext_ids.get(vid) or [("", "", 0, "")]
         for rel, src, n, status in exts:
             if not ch and rel:

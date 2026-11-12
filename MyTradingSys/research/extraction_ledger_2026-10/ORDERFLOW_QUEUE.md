@@ -2,149 +2,128 @@
 
 Keywords (OURS, count of occurrences): delta, absorption, forced, liquidation, auction, footprint. ON_DISK score = title + first 200 body lines; TO_FETCH score = title only. Ties: Tom and Fabio first, then id.
 
-## ON_DISK (69)
+## ON_DISK (56)
 
 | rank | id | analyst | title | score |
 |---|---|---|---|---|
-| 1 | y67l86cSqb8 | unknown | The BEST Trading Indicator? World Champions reveal the secret CVD Strategy. | 32 |
-| 2 | oa8kxSLLkAo | unknown | The ONLY Footprint-Trading-Video you will EVER need (Trading World Champion reveals) | 28 |
-| 3 | rFPCtOcfUMI | unknown | Wall Street Scalper reveals: How to spot trend reversals BEFORE they happen! | 20 |
-| 4 | ridY2Z0hSQA | unknown | THIS is the World Trading Champion’s Favorite Indicator! | 13 |
-| 5 | 4P5WAxyPCis | unknown | Wall street scalper reveals the BEST scalping strategy in 2025 | 11 |
-| 6 | YkclL6xgu-s | unknown | How powerful is Volume Trading REALLY? World Trading Champion reveals the TRUTH | 9 |
-| 7 | VxN5IxTwpbE | unknown | How I Would Start Trading in 2026 (Beginner's Blueprint) | 6 |
-| 8 | ACb0Qtt3DSQ | unknown | The SECRET trading strategy of BlackRock & Co. | 5 |
-| 9 | DVZVE9rXGtU | unknown | This is how Hedge Funds and Banks REALLY trade! (Wall Street scalper reveals) | 5 |
-| 10 | viT_VzF5Fsw | unknown | THIS Trading Strategy Delivers MAXIMUM Win Rates NOW! (World Champion Strategy) | 5 |
-| 11 | 3JqMyzE8jIQ | unknown | The ONLY Fair-Value-Gap-Video you will EVER need (Trading World Champion reveals) | 4 |
-| 12 | Vd83oo_geMk | unknown | THE TRUTH about Heatmap & Liquidity – This is how the World Champion REALLY trades! | 4 |
-| 13 | YopZ5ZDmMFw | unknown | Forget Candlesticks! The ONLY way to find perfect trade entries (Live explained) | 4 |
-| 14 | usho6UVLqkE | unknown | World Champion reveals the Orderflow System that 95% of Traders do NOT know! | 4 |
-| 15 | 9VN9y2DVtGQ | unknown | Forget Technical Analysis! THIS is the strategy of the World Trading Champion! | 3 |
-| 16 | AtR_c-B0jw8 | unknown | The Coach of Trading Champions: Tom Vorwald | 3 |
-| 17 | ODdF0Bn_KSc | unknown | Perfect trade entry: Trading World Champion reveals exact strategy! | 3 |
-| 18 | VOiy8mAALWA | unknown | The #1 Trading Indicator for 2026 - World Champions reveal the ONLY thing that matters! | 3 |
-| 19 | uk4PZV59nYw | unknown | The PERFECT trade entry: World Champion explains his EXACT breakout setup! | 3 |
-| 20 | 2xnNPIyHGQ4 | unknown | Trading World Champions show: THIS strategy wins EVERY time! | 2 |
-| 21 | 4VXpUjhKG2U | unknown | World Trading Champions Reveal: How to Always Win as a Trader! (3 Mistakes Every Trader Makes) | 2 |
-| 22 | RwQBdF9TSvc | unknown | Wall Street scalper reveals: The Truth about order flow Trading! (How to ALWAYS Beat the Market!) | 2 |
-| 23 | cw8LWQmec1E | unknown | Gold & Silver Bubble WARNING from the World Trading Champion! (URGENT!) | 2 |
-| 24 | lO-Iptd29t4 | unknown | The ONLY Newstrading-Video you´ll EVER need (Trading World Champion reveals) | 2 |
-| 25 | vl01TiVTuoQ | unknown | Master Orderflow Trading: The Ultimate Step-by-Step Guide 2026 | 2 |
-| 26 | yRvMW6lgN1o | unknown | I risk $250 to earn $1,212 trading… Here's HOW! | 2 |
-| 27 | 1utSjHs_Mq8 | unknown | The ONLY Market-Profile-Video you will EVER need (Trading World Champion reveals) | 1 |
-| 28 | 3oqxklw9zuU | unknown | Wallstreet Trader reveals: How Hedgefunds ACUTALLY trade! | 1 |
-| 29 | AQR6zIgCx7I | unknown | This Is How I Became a 2-Time World Trading Champion | 1 |
-| 30 | C9n_d91Uitc | unknown | Volatility explodes! Trading World Champion warns of a brutal market correction | 1 |
-| 31 | XNfOIzPYChA | Kurisko | The Quad Rotation will prevent you from over-trading. Most important rules in our trading business. | 1 |
-| 32 | cBkwYjn-6mM | unknown | Wall Street trader explains: #1 reason WHY traders lose! (and how you can ALWAYS win) | 1 |
-| 33 | e6Gm1n2h05M | unknown | 1,000 Trading strategies tested – THIS is the BEST one! | 1 |
-| 34 | f225iVdsrfg | unknown | A Day in the Life of a Full-Time Trader in Cyprus | 1 |
-| 35 | gFJBg8Bsw68 | unknown | Trading World Champion reveals the BEST breakout strategy in 2026! | 1 |
-| 36 | jXR1afMy-3o | unknown | PbD: The World’s BEST trading strategy (explained in detail) | 1 |
-| 37 | oYu9SBQved0 | unknown | Wall Street Scalper EXPOSES: Why 90% of Traders Lose Money (and How the 10% REALLY Win) | 1 |
-| 38 | rrHj24GSR6M | unknown | How to ACTUALLY Read Trading Charts (Without Indicators) | 1 |
-| 39 | sQ_biBKhPVU | unknown | The 3 Must-Have Indicators for 2026! (Revealed by Trading World Champions) | 1 |
-| 40 | 0CrkbfuIhkc | unknown | Crash or All-In? THIS is What Volume Profile Tells Us NOW! (World Champion Reveals) | 0 |
-| 41 | 15JoLK0PbMU | unknown | VIX Strategy revealed: A Trading World Champion shows the #1 Indicator for high volatility! | 0 |
-| 42 | 5MgOwizsnjk | Kurisko | Amazing Tip for trending markets look at the results with the  ThunderbirdV2 | 0 |
-| 43 | 6BAzqewtPUk | unknown | Forget newstrading! THIS is the strategy of the trading world champion! | 0 |
-| 44 | 6rHybt-DfQ0 | Kurisko | Three Trade Setups for Success / John Kurisko | 0 |
-| 45 | 9eHZMVXilgc | unknown | We won 5 World Trading Cups with ONLY 2 tools | 0 |
-| 46 | Fj4FDZQxw0I | unknown | The ONLY Fair Value Gap Video You Will EVER Need | 0 |
-| 47 | GbXnw_tNMtw | Malkan | Reverse Divergence - Positive & Negative Divergence! | 0 |
-| 48 | I0rxiH1jZwc | Kurisko | Another Epic Video from DayTradingRadio. Great tips to Make a Living and Market Radar | 0 |
-| 49 | K8qtT2_axPo | unknown | Market Profile: How Trading World Champions REALLY read the Market! | 0 |
-| 50 | KEe_CWHyuSg | unknown | I Tested 1,000 Trading Indicators – THIS One is the BEST! | 0 |
-| 51 | Kg6sYKgtkrY | unknown | The ONLY Trading Strategy you need for 2026 (World Champion explains the PbD Method) | 0 |
-| 52 | LD_LOEeKzMs | Kurisko | How to Set up the Quad Divergence Indicators and charts like DayTraderRockStar | 0 |
-| 53 | Ly62G168MkQ | unknown | The Simplest Day Trading Strategy for Beginners (PbD Method) | 0 |
-| 54 | OUM9LYwL8eA | unknown | $20,500 in 2 hours: How the World Champion ACTUALLY trades! | 0 |
-| 55 | PpysVy2NNQ4 | Kurisko | Scalping Strategy That Makes Him $1,000+/Day (Full Interview w/ John Kurisko) | 0 |
-| 56 | Sy-x5AQ9-Pk | unknown | The Only Technical Analysis Guide You'll Ever Need (Beginner to Pro) | 0 |
-| 57 | UOBgXV20yCM | unknown | The PERFECT Trade Exit with THIS Indicator! | 0 |
-| 58 | VumVuGnCcFM | unknown | The ONLY VWAP-Video you will EVER need (Trading World Champion reveals) | 0 |
-| 59 | YYYuaetck_0 | unknown | The #1 Trading Strategy for the Current Market (Trading World Champion reveals) | 0 |
-| 60 | _Uvb2RIjZvk | unknown | Trading World Champion Patrick Nill reveals his 200% strategy (for the first time) | 0 |
-| 61 | dh-ysRR8f-M | unknown | My biggest loss in over 20 years ... | 0 |
-| 62 | kKZCJui4S9U | unknown | THIS strategy puts you ahead of 99% of traders! | 0 |
-| 63 | l8RZrBfzvp4 | unknown | World champion LIVE Trading: #1 Indicator for volatile markets! | 0 |
-| 64 | m3IMdc7QwN4 | unknown | PbD: The BEST trading strategy for times of crisis, explained in detail! | 0 |
-| 65 | rCTrQ4fkL1Y | Kurisko | How to stop over trading with the DayTraderRockStar method. Important Video | 0 |
-| 66 | uFxYcpiaOpw | unknown | My Simplest Trading Strategy (80–90% Win Rate) | 0 |
-| 67 | v5EuDl9c0iI | unknown | The PERFECT leading indicator: How Trading World Champions SEE the market BEFORE it moves! | 0 |
-| 68 | vk0mkNPuhDc | unknown | My Simple 5-Minute Scalping Strategy (That I Use Daily) | 0 |
-| 69 | wPMiyJXL0zU | unknown | World Trading Champion breaks down his exact trades! (+full tutorial) | 0 |
+| 1 | 2xnNPIyHGQ4 | unknown | Trading World Champions show: THIS strategy wins EVERY time! | 2 |
+| 2 | 4VXpUjhKG2U | unknown | World Trading Champions Reveal: How to Always Win as a Trader! (3 Mistakes Every Trader Makes) | 2 |
+| 3 | cw8LWQmec1E | unknown | Gold & Silver Bubble WARNING from the World Trading Champion! (URGENT!) | 2 |
+| 4 | lO-Iptd29t4 | unknown | The ONLY Newstrading-Video you´ll EVER need (Trading World Champion reveals) | 2 |
+| 5 | vl01TiVTuoQ | unknown | Master Orderflow Trading: The Ultimate Step-by-Step Guide 2026 | 2 |
+| 6 | yRvMW6lgN1o | unknown | I risk $250 to earn $1,212 trading… Here's HOW! | 2 |
+| 7 | 1utSjHs_Mq8 | unknown | The ONLY Market-Profile-Video you will EVER need (Trading World Champion reveals) | 1 |
+| 8 | 3oqxklw9zuU | unknown | Wallstreet Trader reveals: How Hedgefunds ACUTALLY trade! | 1 |
+| 9 | AQR6zIgCx7I | unknown | This Is How I Became a 2-Time World Trading Champion | 1 |
+| 10 | C9n_d91Uitc | unknown | Volatility explodes! Trading World Champion warns of a brutal market correction | 1 |
+| 11 | XNfOIzPYChA | Kurisko | The Quad Rotation will prevent you from over-trading. Most important rules in our trading business. | 1 |
+| 12 | cBkwYjn-6mM | unknown | Wall Street trader explains: #1 reason WHY traders lose! (and how you can ALWAYS win) | 1 |
+| 13 | e6Gm1n2h05M | unknown | 1,000 Trading strategies tested – THIS is the BEST one! | 1 |
+| 14 | f225iVdsrfg | unknown | A Day in the Life of a Full-Time Trader in Cyprus | 1 |
+| 15 | gFJBg8Bsw68 | unknown | Trading World Champion reveals the BEST breakout strategy in 2026! | 1 |
+| 16 | jXR1afMy-3o | unknown | PbD: The World’s BEST trading strategy (explained in detail) | 1 |
+| 17 | oYu9SBQved0 | unknown | Wall Street Scalper EXPOSES: Why 90% of Traders Lose Money (and How the 10% REALLY Win) | 1 |
+| 18 | rrHj24GSR6M | unknown | How to ACTUALLY Read Trading Charts (Without Indicators) | 1 |
+| 19 | sQ_biBKhPVU | unknown | The 3 Must-Have Indicators for 2026! (Revealed by Trading World Champions) | 1 |
+| 20 | -2uZSqKKrFQ | Malkan | RSI 40–60 Strategy Explained / Grandfather-Father-Son Trading System / Vishal B Malkan | 0 |
+| 21 | 0CrkbfuIhkc | unknown | Crash or All-In? THIS is What Volume Profile Tells Us NOW! (World Champion Reveals) | 0 |
+| 22 | 15JoLK0PbMU | unknown | VIX Strategy revealed: A Trading World Champion shows the #1 Indicator for high volatility! | 0 |
+| 23 | 5MgOwizsnjk | Kurisko | Amazing Tip for trending markets look at the results with the  ThunderbirdV2 | 0 |
+| 24 | 6BAzqewtPUk | unknown | Forget newstrading! THIS is the strategy of the trading world champion! | 0 |
+| 25 | 6rHybt-DfQ0 | Kurisko | Three Trade Setups for Success / John Kurisko | 0 |
+| 26 | 9eHZMVXilgc | unknown | We won 5 World Trading Cups with ONLY 2 tools | 0 |
+| 27 | Fj4FDZQxw0I | unknown | The ONLY Fair Value Gap Video You Will EVER Need | 0 |
+| 28 | GbXnw_tNMtw | Malkan | Reverse Divergence - Positive & Negative Divergence! | 0 |
+| 29 | I0rxiH1jZwc | Kurisko | Another Epic Video from DayTradingRadio. Great tips to Make a Living and Market Radar | 0 |
+| 30 | K8qtT2_axPo | unknown | Market Profile: How Trading World Champions REALLY read the Market! | 0 |
+| 31 | KEe_CWHyuSg | unknown | I Tested 1,000 Trading Indicators – THIS One is the BEST! | 0 |
+| 32 | Kg6sYKgtkrY | unknown | The ONLY Trading Strategy you need for 2026 (World Champion explains the PbD Method) | 0 |
+| 33 | LD_LOEeKzMs | Kurisko | How to Set up the Quad Divergence Indicators and charts like DayTraderRockStar | 0 |
+| 34 | Ly62G168MkQ | unknown | The Simplest Day Trading Strategy for Beginners (PbD Method) | 0 |
+| 35 | OUM9LYwL8eA | unknown | $20,500 in 2 hours: How the World Champion ACTUALLY trades! | 0 |
+| 36 | PpysVy2NNQ4 | Kurisko | Scalping Strategy That Makes Him $1,000+/Day (Full Interview w/ John Kurisko) | 0 |
+| 37 | Sy-x5AQ9-Pk | unknown | The Only Technical Analysis Guide You'll Ever Need (Beginner to Pro) | 0 |
+| 38 | TO3pLafk7Us | Malkan | RSI Divergence करें के प्रकार  Class A/B/C I Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 39 | TrZQ4Xat_sQ | Malkan | RSI Divergence Trade करना सीखे / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 40 | UOBgXV20yCM | unknown | The PERFECT Trade Exit with THIS Indicator! | 0 |
+| 41 | VumVuGnCcFM | unknown | The ONLY VWAP-Video you will EVER need (Trading World Champion reveals) | 0 |
+| 42 | XFO49JlODxI | Malkan | Spinning Top 7 Star Setup - Tuesday Technical Talk | 0 |
+| 43 | YYYuaetck_0 | unknown | The #1 Trading Strategy for the Current Market (Trading World Champion reveals) | 0 |
+| 44 | _Uvb2RIjZvk | unknown | Trading World Champion Patrick Nill reveals his 200% strategy (for the first time) | 0 |
+| 45 | dh-ysRR8f-M | unknown | My biggest loss in over 20 years ... | 0 |
+| 46 | fgN6QBFY3Ss | Malkan | 11. Bollinger Bands Ka Father-Son Strategy / 3x3 Swing Trading /Vishal B Malkan | 0 |
+| 47 | kKZCJui4S9U | unknown | THIS strategy puts you ahead of 99% of traders! | 0 |
+| 48 | kVIvcn7T44o | Malkan | RSI का सबसे Powerful Strategy / Vishal B Malkan / Malkansview | 0 |
+| 49 | l8RZrBfzvp4 | unknown | World champion LIVE Trading: #1 Indicator for volatile markets! | 0 |
+| 50 | m3IMdc7QwN4 | unknown | PbD: The BEST trading strategy for times of crisis, explained in detail! | 0 |
+| 51 | rCTrQ4fkL1Y | Kurisko | How to stop over trading with the DayTraderRockStar method. Important Video | 0 |
+| 52 | sPu2SnAFEIY | Malkan | 5. RSI Ki Ye Strategy Koi Nahi Batayega I 3X3 Swing Trading I Vishal B Malkan | 0 |
+| 53 | uFxYcpiaOpw | unknown | My Simplest Trading Strategy (80–90% Win Rate) | 0 |
+| 54 | v5EuDl9c0iI | unknown | The PERFECT leading indicator: How Trading World Champions SEE the market BEFORE it moves! | 0 |
+| 55 | vk0mkNPuhDc | unknown | My Simple 5-Minute Scalping Strategy (That I Use Daily) | 0 |
+| 56 | wPMiyJXL0zU | unknown | World Trading Champion breaks down his exact trades! (+full tutorial) | 0 |
 
-## TO_FETCH (63)
+## TO_FETCH (56)
 
 | rank | id | analyst | title | score |
 |---|---|---|---|---|
-| 1 | -2uZSqKKrFQ | unknown | RSI 40–60 Strategy Explained / Grandfather-Father-Son Trading System / Vishal B Malkan | 0 |
-| 2 | -9rAJNUpMsk | Cointelegraph | How to Short Bitcoin Using Options / Interview with Krown's Crypto Cave | 0 |
-| 3 | -sZa50NZo7o | unknown | क्या GFS BankNifty को  ऊपर ले जाएगा ? I Tuesday Technical Talk I Vishal B Malkan | 0 |
-| 4 | 07aqVQ9GNh8 | unknown | Tuesday Technical Talk with Vishal B Malkan / Monster Move Strategy Explained | 0 |
-| 5 | 0bnF4IeIHgs | unknown | PRD / NRD Special / RSI Series | 0 |
-| 6 | 13QOxEJBG2w | unknown | GFS Magic on 3 Stocks 🔥 / 6 Powerful Setups Explained / Diwali Special / Tuesday Technical Talk | 0 |
-| 7 | 1Ghq_j5M6vU | unknown | Relative Strength Index (RSI) Range - Tuesday Technical Talk | 0 |
-| 8 | 2_6iIvo25CA | unknown | Perfect Exit Strategy / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 9 | 5Aoyw_sG_88 | unknown | RSI - Set up 1 - Targets | 0 |
-| 10 | 8LoMhydNhCM | unknown | Volume का खेल / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 11 | EQy4HouRMMk | Cointelegraph | What is the Next Bitcoin Buy Zone? / Eric Krown and Charlie Burton | 0 |
-| 12 | FHEoMmD6xKM | unknown | 2. Most Powerful Candle Patterns I 3X3 Swing Trading I Tuesday Technical Talk | 0 |
-| 13 | H1Mi5BFGqbQ | unknown | Market Breakdown या Reversal? / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 14 | Kch59nKMYeA | unknown | RSI Loud Moves | 0 |
-| 15 | LB3DRYxnA0A | Krown | Stop Strategy-Hopping — Build a System You'll Actually Follow. | 0 |
-| 16 | LJkYLhAputg | unknown | RSI + Bollinger Bands ज़बरदस्त Strategy / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 17 | M8Z3A6mcUmE | unknown | Types of Divergences / Class A/B/C / RSI Mastery Series / Vishal B Malkan | 0 |
-| 18 | N_l-fxQokqU | unknown | Scan Powerful Stocks in 1 Minute Using AI & GFS Strategy / Tuesday Technical Talk | 0 |
-| 19 | RPmxr3c8mso | unknown | How to read the trend with RSI? | 0 |
-| 20 | RUKGEMdVNYA | unknown | RSI Range Shift / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 21 | RxQDKvTI1iw | unknown | 7-स्टेप स्टार ट्रेडिंग प्रक्रिया | 0 |
-| 22 | SOaAP9vBgM4 | Krown | How Bitcoin Data Fools You: +60% Becomes +7% | 0 |
-| 23 | TO3pLafk7Us | unknown | Types of RSI divergence (Class A/B/C) | 0 |
-| 24 | TYB7GJODt-k | unknown | 10. Volatility Divergence Strategy / 3x3 Swing Trading / Vishal B Malkan | 0 |
-| 25 | TivMbkd5RvY | unknown | Tuesday Technical Talk / RSI Divergence | 0 |
-| 26 | TjikX8gJh8A | unknown | RSI Range Shift | 0 |
-| 27 | Towyg2kYA64 | unknown | RSI + intraday trading | 0 |
-| 28 | TrZQ4Xat_sQ | unknown | Learn to trade RSI divergence | 0 |
-| 29 | U12jz3LQhy0 | unknown | (7 STAR) perfect reversal pattern | 0 |
-| 30 | UHY740h3e-Y | Krown | I Was a Market Maker. This Is Why Option Buyers Lose. | 0 |
-| 31 | WBByyLBp8-c | unknown | 9. The Best Breakout Strategy / 3x3 Swing Trading / Vishal B Malkan | 0 |
-| 32 | X-BmZlmOueo | unknown | Tuesday Technical Talk / 5X Swing Trading Setup | 0 |
-| 33 | XFO49JlODxI | unknown | Spinning Top 7 Star Setup - Tuesday Technical Talk | 0 |
-| 34 | YC1VwJJCALw | unknown | ADX Turn से Market Reversal कैसे पढ़ें? / Tuesday Technical Talk / Vishal B Malan | 0 |
-| 35 | YSbEwdAAZnM | unknown | Swing trading's most tremendous strategy | 0 |
-| 36 | _JoJbu_Ug-A | Krown | Beginner Traders Keep Adding Indicators And Losing Money / Here's The Real Setup | 0 |
-| 37 | a5tvBwyCddA | unknown | 4. Master Key Reversal & Spinning Top – Detailed Guide for Traders! I 3X3 Swing Trading | 0 |
-| 38 | am0m_KZLN2M | unknown | How to Identify Market Reversals Using RSI / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 39 | b0ha9ubd1q8 | unknown | All I know about RSI in 46 minutes I Tuesday Technical Talk I Vishal B Malkan | 0 |
-| 40 | c8HJV1sqNHg | unknown | 7 Star Reversal Explained I Exclusive I Tuesday Technical Talk I Vishal B Malkan | 0 |
-| 41 | ctBtClaBdk0 | unknown | Exit Strategies / Tuesday Technical Talk / Vishal B Malkan | 0 |
-| 42 | fLt_t4qomeo | unknown | RSI's magic | 0 |
-| 43 | fMRvOt26xcA | Krown | You Don't Need to Learn Chart Patterns (You Need One Thing) | 0 |
-| 44 | fa0fPMnmLj0 | unknown | RSI's wonder (GFS special) | 0 |
-| 45 | fgN6QBFY3Ss | unknown | 11. Bollinger Bands' Father-Son strategy | 0 |
-| 46 | gV4CeXkLrOA | unknown | RSI Range Shift Case Study | 0 |
-| 47 | gfr5n6B5QJk | unknown | 6. RSI divergence I 3X3 Swing Trading I Vishal B Malkan | 0 |
-| 48 | gqPfaTB0vwU | unknown | Tuesday Technical Talk - RSI Range Shift | 0 |
-| 49 | hNfjyrJEytI | Krown | Most Traders Do Technical Analysis in the Wrong Order. Here's the Fix. | 0 |
-| 50 | kL7_ybtI_Fc | unknown | RSI - the first 5-star trade | 0 |
-| 51 | kVIvcn7T44o | unknown | RSI's most powerful strategy | 0 |
-| 52 | mQQEJFaJvN4 | unknown | Exit Strategies - Tuesday Technical Talk | 0 |
-| 53 | p5dywcojg1s | unknown | Double Bottom + Range Shift / Tuesday Technical Talk / Vishal Malkan | 0 |
-| 54 | qbx6lnPb4kA | unknown | How to catch entries with RSI? | 0 |
-| 55 | quoII9t08Qc | unknown | Tuesday Technical Talk - 7 Star Pattern | 0 |
-| 56 | sPu2SnAFEIY | unknown | 5. Nobody will tell you this RSI strategy | 0 |
-| 57 | sZwgzXLi8pU | unknown | 14. Volume Reversal I Volume Series Part 2 I Tuesday Technical Talk I Vishal B Malkan | 0 |
-| 58 | suXg3PvSDxg | unknown | What is volatility divergence | 0 |
-| 59 | ukCnj8MxLGM | unknown | 7. RSI ⁠Loud Move का Power / 3X3 Swing Trading / Vishal B Malkan | 0 |
-| 60 | v8pCR_bA0_0 | unknown | RSI - 5 Star Set Up #1 | 0 |
-| 61 | wH1dz2vxxrk | unknown | 1. A Premium Course FREE for You! 🎯📈 I 3x3 Swing Trader I Tuesday Technical Talk | 0 |
-| 62 | yp8rHZw8Ro0 | unknown | GFS free scanner | 0 |
-| 63 | z5l35nvsepA | unknown | 3. Doji Candlestick I 3X3 Swing Trading I Tuesday Technical Talk I Vishal B Malkan | 0 |
+| 1 | -9rAJNUpMsk | Cointelegraph | How to Short Bitcoin Using Options / Interview with Krown's Crypto Cave | 0 |
+| 2 | -sZa50NZo7o | unknown | क्या GFS BankNifty को  ऊपर ले जाएगा ? I Tuesday Technical Talk I Vishal B Malkan | 0 |
+| 3 | 07aqVQ9GNh8 | unknown | Tuesday Technical Talk with Vishal B Malkan / Monster Move Strategy Explained | 0 |
+| 4 | 0bnF4IeIHgs | unknown | PRD / NRD Special / RSI Series | 0 |
+| 5 | 13QOxEJBG2w | unknown | GFS Magic on 3 Stocks 🔥 / 6 Powerful Setups Explained / Diwali Special / Tuesday Technical Talk | 0 |
+| 6 | 1Ghq_j5M6vU | unknown | Relative Strength Index (RSI) Range - Tuesday Technical Talk | 0 |
+| 7 | 2_6iIvo25CA | unknown | Perfect Exit Strategy / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 8 | 5Aoyw_sG_88 | unknown | RSI - Set up 1 - Targets | 0 |
+| 9 | 8LoMhydNhCM | unknown | Volume का खेल / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 10 | EQy4HouRMMk | Cointelegraph | What is the Next Bitcoin Buy Zone? / Eric Krown and Charlie Burton | 0 |
+| 11 | FHEoMmD6xKM | unknown | 2. Most Powerful Candle Patterns I 3X3 Swing Trading I Tuesday Technical Talk | 0 |
+| 12 | H1Mi5BFGqbQ | unknown | Market Breakdown या Reversal? / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 13 | Kch59nKMYeA | unknown | RSI Loud Moves | 0 |
+| 14 | LB3DRYxnA0A | Krown | Stop Strategy-Hopping — Build a System You'll Actually Follow. | 0 |
+| 15 | LJkYLhAputg | unknown | RSI + Bollinger Bands ज़बरदस्त Strategy / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 16 | M8Z3A6mcUmE | unknown | Types of Divergences / Class A/B/C / RSI Mastery Series / Vishal B Malkan | 0 |
+| 17 | N_l-fxQokqU | unknown | Scan Powerful Stocks in 1 Minute Using AI & GFS Strategy / Tuesday Technical Talk | 0 |
+| 18 | RPmxr3c8mso | unknown | How to read the trend with RSI? | 0 |
+| 19 | RUKGEMdVNYA | unknown | RSI Range Shift / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 20 | RxQDKvTI1iw | unknown | 7-स्टेप स्टार ट्रेडिंग प्रक्रिया | 0 |
+| 21 | SOaAP9vBgM4 | Krown | How Bitcoin Data Fools You: +60% Becomes +7% | 0 |
+| 22 | TYB7GJODt-k | unknown | 10. Volatility Divergence Strategy / 3x3 Swing Trading / Vishal B Malkan | 0 |
+| 23 | TivMbkd5RvY | unknown | Tuesday Technical Talk / RSI Divergence | 0 |
+| 24 | TjikX8gJh8A | unknown | RSI Range Shift | 0 |
+| 25 | Towyg2kYA64 | unknown | RSI + intraday trading | 0 |
+| 26 | U12jz3LQhy0 | unknown | (7 STAR) perfect reversal pattern | 0 |
+| 27 | UHY740h3e-Y | Krown | I Was a Market Maker. This Is Why Option Buyers Lose. | 0 |
+| 28 | WBByyLBp8-c | unknown | 9. The Best Breakout Strategy / 3x3 Swing Trading / Vishal B Malkan | 0 |
+| 29 | X-BmZlmOueo | unknown | Tuesday Technical Talk / 5X Swing Trading Setup | 0 |
+| 30 | YC1VwJJCALw | unknown | ADX Turn से Market Reversal कैसे पढ़ें? / Tuesday Technical Talk / Vishal B Malan | 0 |
+| 31 | YSbEwdAAZnM | unknown | Swing trading's most tremendous strategy | 0 |
+| 32 | _JoJbu_Ug-A | Krown | Beginner Traders Keep Adding Indicators And Losing Money / Here's The Real Setup | 0 |
+| 33 | a5tvBwyCddA | unknown | 4. Master Key Reversal & Spinning Top – Detailed Guide for Traders! I 3X3 Swing Trading | 0 |
+| 34 | am0m_KZLN2M | unknown | How to Identify Market Reversals Using RSI / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 35 | b0ha9ubd1q8 | unknown | All I know about RSI in 46 minutes I Tuesday Technical Talk I Vishal B Malkan | 0 |
+| 36 | c8HJV1sqNHg | unknown | 7 Star Reversal Explained I Exclusive I Tuesday Technical Talk I Vishal B Malkan | 0 |
+| 37 | ctBtClaBdk0 | unknown | Exit Strategies / Tuesday Technical Talk / Vishal B Malkan | 0 |
+| 38 | fLt_t4qomeo | unknown | RSI's magic | 0 |
+| 39 | fMRvOt26xcA | Krown | You Don't Need to Learn Chart Patterns (You Need One Thing) | 0 |
+| 40 | fa0fPMnmLj0 | unknown | RSI's wonder (GFS special) | 0 |
+| 41 | gV4CeXkLrOA | unknown | RSI Range Shift Case Study | 0 |
+| 42 | gfr5n6B5QJk | unknown | 6. RSI divergence I 3X3 Swing Trading I Vishal B Malkan | 0 |
+| 43 | gqPfaTB0vwU | unknown | Tuesday Technical Talk - RSI Range Shift | 0 |
+| 44 | hNfjyrJEytI | Krown | Most Traders Do Technical Analysis in the Wrong Order. Here's the Fix. | 0 |
+| 45 | kL7_ybtI_Fc | unknown | RSI - the first 5-star trade | 0 |
+| 46 | mQQEJFaJvN4 | unknown | Exit Strategies - Tuesday Technical Talk | 0 |
+| 47 | p5dywcojg1s | unknown | Double Bottom + Range Shift / Tuesday Technical Talk / Vishal Malkan | 0 |
+| 48 | qbx6lnPb4kA | unknown | How to catch entries with RSI? | 0 |
+| 49 | quoII9t08Qc | unknown | Tuesday Technical Talk - 7 Star Pattern | 0 |
+| 50 | sZwgzXLi8pU | unknown | 14. Volume Reversal I Volume Series Part 2 I Tuesday Technical Talk I Vishal B Malkan | 0 |
+| 51 | suXg3PvSDxg | unknown | What is volatility divergence | 0 |
+| 52 | ukCnj8MxLGM | unknown | 7. RSI ⁠Loud Move का Power / 3X3 Swing Trading / Vishal B Malkan | 0 |
+| 53 | v8pCR_bA0_0 | unknown | RSI - 5 Star Set Up #1 | 0 |
+| 54 | wH1dz2vxxrk | unknown | 1. A Premium Course FREE for You! 🎯📈 I 3x3 Swing Trader I Tuesday Technical Talk | 0 |
+| 55 | yp8rHZw8Ro0 | unknown | GFS free scanner | 0 |
+| 56 | z5l35nvsepA | unknown | 3. Doji Candlestick I 3X3 Swing Trading I Tuesday Technical Talk I Vishal B Malkan | 0 |
 
-## NO_TITLE (2)
+## NO_TITLE (0)
 
-- 9IliXww64uM (ON_DISK)
-- DyS79Eb92Ug (ON_DISK)
+none

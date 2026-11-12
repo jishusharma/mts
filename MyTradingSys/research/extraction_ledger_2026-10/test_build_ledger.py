@@ -57,6 +57,37 @@ class LedgerTest(unittest.TestCase):
         self.assertEqual({r["video_id"]: r for r in rows}[CAP]["quotes_verified"], "FAIL")
         self.assertTrue(any(CAP in x for x in gaps["bad_quotes"]))
 
+    def test_nested_metadata_block_not_counted_in_thirds(self):
+        """Same position rule as verify_extract_quotes.transcript_body: the nested '# ' block after '# ---' is not speech."""
+        tmp = Path(tempfile.mkdtemp())
+        t = tmp / "raw_transcripts_canonical"
+        t.mkdir()
+        words = [f"w{i:03d}" for i in range(100)]
+        desc = "# Description: " + " ".join(f"d{i:03d}" for i in range(30))
+        (t / f"{CAP}_raw.txt").write_text(
+            "# Video ID: x\n# ---\n# Video ID: x\n" + desc + "\n# ---\n" + " ".join(words) + "\n", encoding="utf-8")
+        e = tmp / "extracts" / "fresh"
+        e.mkdir(parents=True)
+        q = " ".join(words[30:35])  # ~30% of the speech = BEGIN; with the block counted it would read MIDDLE
+        (e / f"extract_{CAP}_fresh.md").write_text(f'> "{q}"\n**Source GPS: {CAP} | BEGIN**\n', encoding="utf-8")
+        rows, _ = bl.build(tmp, tmp / "out")
+        self.assertEqual({r["video_id"]: r for r in rows}[CAP]["quotes_verified"], "PASS")
+
+    def test_channel_map_labels_blank_channel_only(self):
+        tmp = Path(tempfile.mkdtemp())
+        t = tmp / "raw_transcripts_canonical"
+        t.mkdir()
+        transcript(t / f"{CAP}_raw.txt", "Krown", "alpha beta")
+        (t / f"{ORP}_raw.txt").write_text("# Video ID: x\n# ---\nalpha beta\n", encoding="utf-8")
+        m = tmp / "MyTradingSys" / "research" / "extraction_ledger_2026-10"
+        m.mkdir(parents=True)
+        (m / "channel_map.csv").write_text(
+            f"video_id,channel,evidence\n{ORP},Tom Vorwald EN,hdr\n{CAP},Tom Vorwald EN,hdr\n", encoding="utf-8")
+        rows, _ = bl.build(tmp, tmp / "out")
+        by = {r["video_id"]: r for r in rows}
+        self.assertEqual(by[ORP]["channel"], "Tom Vorwald EN")
+        self.assertEqual(by[CAP]["channel"], "Krown")  # transcript header wins over the map
+
 
 if __name__ == "__main__":
     unittest.main()
