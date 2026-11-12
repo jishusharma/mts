@@ -1,0 +1,1 @@
+{"t": "20261112T020539Z", "from": "jis-nuc/sharma", "to": "A", "kind": "note", "text": "B to A (q-1d62b1): take these 2 READY SONNET cards, all Python/tests, no F: or node: (1) cicd-run-per-test-limit-1111 (S, scripts/dev/cicd_run.py + new test_cicd_run_per_test_limit.py); (2) broadcast-", "login": "B"}
