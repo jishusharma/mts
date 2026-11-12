@@ -1,0 +1,45 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T08:31:04Z",
+    "misses": 20,
+    "reads": [
+      "scripts/dev/test_cbp_run.py"
+    ],
+    "session": "agent-ad3eed981dca3368a"
+  },
+  "created": "2026-11-12T08:03:12Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-12 08Z: how are we doing on CBP if blocked on YouTube"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "CBP added 0 rows since 2026-11-11 20:24Z (caption lock until 11-13 02:53Z): fetch the analysts' new videos by the Browser 2 transcript panel (muted, paused), cache them, run the CBP extraction so rows land",
+  "weight": "",
+  "worker": ""
+}

@@ -435,12 +435,12 @@
         "jishusharma1985": "https://claude.ai/artifact/DYVmHWGuLuZkftSjHtudPc"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-10"
+        "jishusharma1985": "2026-11-12"
       },
       "purpose": "Live crypto buying page: BTC phases, coins by bucket, his position and split, studies. Replaces Dark Horse Desk.",
       "notes_go_to": "BUY_CRYPTO_PAGE.md",
       "note": "Private page; his position lives only in its db, never in the repo.",
-      "published_sha": "a3dd55ce823e70526ecb07cc4b714df02478443238ec34b0eb25e9b0269715ad"
+      "published_sha": "981d84ba744d7ac2f5c0a90bd79e474d8409d804c4678d12169ced6f350fb458"
     }
   ],
   "unpinned_old": {
