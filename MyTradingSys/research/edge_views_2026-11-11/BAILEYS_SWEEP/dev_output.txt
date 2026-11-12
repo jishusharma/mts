@@ -1,0 +1,13 @@
+n 321, win rate 23.7 %, mean net R -0.3236, mean net bp -21.8, t -3.38, max drawdown 111.36 R (sum of R, peak to trough)
+gross mean R -0.0582; exits: stop 244, tp 75, cap 2
+median risk 0.532 % of price
+half 1 (before 2023-04-02): n 178 mean -0.2411 | half 2: n 143 mean -0.4262
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 141 | -0.2091 | -29.4763 |
+| year 2023 | 138 | -0.4400 | -60.7203 |
+| year 2024 | 42 | -0.3256 | -13.6747 |
+| long | 164 | -0.3759 | -61.6531 |
+| short | 157 | -0.2689 | -42.2181 |
+placebo (500 draws, seed 1): mean net R -0.2814, sd 0.0947, share of draws >= real mean 0.676
+VERDICT_MECH: FAIL

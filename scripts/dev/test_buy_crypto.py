@@ -41,9 +41,12 @@ class T(unittest.TestCase):
     def test_coin_list_matches_the_plan(self):
         syms = [c[0] for c in b.COINS]
         self.assertEqual(len(syms), len(set(syms)))
-        self.assertEqual(len(syms), 25)
-        self.assertEqual({c[2] for c in b.COINS}, {"anchor", "leader", "darkhorse", "watch", "avoid"})
-        self.assertFalse({"GRASS", "AERO", "EIGEN"} & set(syms))
+        self.assertEqual(len(syms), 28)
+        self.assertEqual({c[2] for c in b.COINS}, {"anchor", "leader", "darkhorse", "watch", "asked", "avoid"})
+        # dropped 11-10: never back in a bucket the plan can open (EIGEN is shown as "asked", no buy)
+        buyable = {c[0] for c in b.COINS if c[2] in ("anchor", "leader", "darkhorse")}
+        self.assertFalse({"GRASS", "AERO", "EIGEN"} & buyable)
+        self.assertFalse({"GRASS", "AERO"} & set(syms))
 
 
 if __name__ == "__main__":

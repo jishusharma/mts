@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T07:23:58Z",
   "commands": [],
   "created": "2026-11-12T07:13:35Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done on trunk 0c6b8726, CI green; card was raw so done refused",
+  "pinned": false,
   "prio": 2,
+  "reason": "done on trunk 0c6b8726, CI green; card was raw so done refused",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "Supervisor C revert of 3a809238f (CI red 4044e7e9: test_where_is, ledger video j-JVi02_C88 has no WHERE_IS row)"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Re-ship the order-flow ledger rebuild and ORDERFLOW_RULES.md (247 SOURCED rules, ledger no-extract 71 to 56): cherry-pick 3a809238f, regenerate WHERE_IS with scripts/dev/where_is.py build, run scripts/dev/test_where_is.py and the extra tests before ship. Done when: on trunk and CI green",
