@@ -65,7 +65,7 @@
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
       "published_sha": "c4b0b1b058df66c49b111b69c3fcd4d046f11b2f836bdbebb7725b8932132ca4",
-      "published_at": "2026-11-12T21:15:36Z"
+      "published_at": "2026-11-12T22:33:18Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -262,7 +262,7 @@
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
       "published_sha": "3d756a3f172c469660536c3237280e963704556e29e4295752e8a67175726d64",
       "max_age_h": 24,
-      "published_at": "2026-11-12T21:07:13Z"
+      "published_at": "2026-11-12T22:33:22Z"
     },
     {
       "slug": "research_map",
