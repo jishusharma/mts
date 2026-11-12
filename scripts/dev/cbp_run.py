@@ -22,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import time as _time
 from datetime import datetime, time, timedelta, timezone
 from pathlib import Path
 
@@ -32,6 +33,8 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / "MyTradingSys"))
 import cbp  # noqa: E402
 import verify_extract_quotes as vq  # noqa: E402
+import fetch_captions_timed as fct  # noqa: E402
+import yt_transcript_sites as sites  # noqa: E402
 
 
 default_cbp_home = cbp.default_cbp_home
@@ -41,6 +44,12 @@ CBP_HOME = default_cbp_home()
 TRANSCRIPTS = Path(os.environ.get("CBP_TRANSCRIPTS", str(CBP_HOME / "raw_transcripts_canonical")))
 VERDICT_DAYS = 21  # a thesis analyst who posts every 2 weeks (Jala, Bob) must still have a latest vote
 WINDOWS = (("EU", time(4, 0), time(12, 0)), ("PRE_US", time(12, 0), None))  # holds the 05:00, 05:30 and 20:00, 16:30 starts
+# Pacing (OURS). Measured 2026-11-12 from the guard record: the lock of 2026-11-12T02:53Z (level 2, 24 h) followed one CBP run that
+# sent 65 YouTube requests in one hour (listing + a date call + a caption call per video, ten analysts back to back, no pause
+# between analysts). A normal run now stays under half of that.
+ANALYST_PAUSE_S = 30      # pause between two analysts' fetches
+MAX_VIDEOS_PER_ANALYST = 3   # --max-videos for each analyst's fetch (the fetcher's own default is 5)
+HOURLY_REQUEST_CAP = 30   # stop starting analysts once this many YouTube requests went out in the last hour (any exit IP)
 MODEL = os.environ.get("CBP_MODEL", "claude-sonnet-5-5")
 PROMPT = """You extract what ONE crypto analyst says in ONE video.
 Analyst: %(analyst)s. Published: %(published)s. Title: "%(title)s".
@@ -111,16 +120,64 @@ def analysts():
     return cfg, [a for a in cfg["analysts"] if a.get("enabled")]  # 2026-10-31: all feeds (Bottom-is-In vote, alts)
 
 
-def fetch_new(cutoff, store, run=subprocess.run):
+def requests_last_hour(now=None):
+    """YouTube requests recorded by the guard in the last 60 min, all IPs (no network)."""
+    now = now or datetime.now(timezone.utc)
+    n = 0
+    req = fct.read_block().get("req")
+    for stamps in (req.values() if isinstance(req, dict) else []):
+        for v in stamps:
+            try:
+                t = datetime.fromisoformat(v)
+            except (TypeError, ValueError):
+                continue
+            n += (now - (t if t.tzinfo else t.replace(tzinfo=timezone.utc))) < timedelta(hours=1)
+    return n
+
+
+def catch_up(an, cfg, cutoff, why, outdir=None):
+    """Path 4 for one analyst the YouTube fetch did not finish: newest uploads listed and fetched through a public
+    transcript site (no YouTube request); a video that still fails goes to the waiting list (never silently dropped).
+    Returns the ids still waiting."""
+    outdir = Path(outdir or TRANSCRIPTS)
+    inc = re.compile(cfg["include_regex"]) if an.get("topic_filter") and cfg.get("include_regex") else None
+    exc = re.compile(cfg["exclude_regex"]) if cfg.get("exclude_regex") else None
+    waiting = []
+    for i, (vid, title, d) in enumerate(sites.list_channel(an["channel"], 8)):
+        if (d and d < cutoff) or (exc and exc.search(title)) or (inc and not inc.search(title)):
+            continue
+        if (outdir / (vid + "_timed.txt")).exists():
+            continue
+        if i:
+            _time.sleep(sites.PAUSE_S)
+        r = fct.recover(vid, an["short"], ["en"], outdir, an["channel"], [why])
+        if r == "WAITING":
+            waiting.append(vid)
+    return waiting
+
+
+def fetch_new(cutoff, store, run=subprocess.run, sleep=None, recent=None):
     """yt-dlp captions for each actionable analyst, newest first, stopping at `cutoff` (YYYY-MM-DD).
     Existing transcripts are skipped by fetch_captions_timed, so reruns download nothing new.
-    Returns the analysts whose fetch exited nonzero; one of them never stops the others."""
+    Returns the analysts whose fetch exited nonzero; one of them never stops the others.
+    Paced: a pause between analysts and a one-hour request cap; an analyst the cap skips, or whose fetch did not finish
+    (exit 1, not the lock's exit 3 which the fetcher handles itself), goes through path 4 and then the waiting list."""
+    sleep, recent = sleep or _time.sleep, recent or requests_last_hour
     cfg, ans = analysts()
     cookies = CBP_HOME / "cookies_utube_1.txt"
     incomplete = []
-    for an in ans:
+    for n, an in enumerate(ans):
+        used = recent()
+        if used >= HOURLY_REQUEST_CAP:
+            print("cbp: %s not fetched from YouTube: %d requests in the last hour (cap %d); path 4" % (an["short"], used, HOURLY_REQUEST_CAP))
+            catch_up(an, cfg, cutoff, "ytdlp:hourly-cap")
+            incomplete.append(an["short"])
+            continue
+        if n:
+            sleep(ANALYST_PAUSE_S)
         cmd = [sys.executable, str(HERE / "fetch_captions_timed.py"), "--analyst", an["short"],
                "--channel", an["channel"], "--latest", "6", "--scan", "8", "--since", cutoff,
+               "--max-videos", str(MAX_VIDEOS_PER_ANALYST),
                "--out", str(TRANSCRIPTS), "--canonical-out", str(TRANSCRIPTS), "--exclude", cfg["exclude_regex"]]
         if an.get("topic_filter"):
             cmd += ["--include", cfg["include_regex"]]
@@ -130,6 +187,8 @@ def fetch_new(cutoff, store, run=subprocess.run):
         if result.returncode:  # DEFERRED (per-run --max-videos budget) or DATE_FAILED exits 1: keep going, retry next window
             print("cbp: fetch incomplete for %s (exit %s); window will be retried" % (an["short"], result.returncode))
             incomplete.append(an["short"])
+            if result.returncode != fct.EXIT_BLOCKED:
+                catch_up(an, cfg, cutoff, "ytdlp:exit%s" % result.returncode)
     return incomplete
 
 
@@ -360,6 +419,10 @@ def main(argv=None, now=None):
     print("cbp: +%d rows, %d total, window end %s%s" % (added, total, end, ", %d rejected" % rejected if rejected else ""))
     if partial:
         print("cbp: window not marked complete, fetch incomplete for: " + ", ".join(partial))
+    waiting = sites.pending(TRANSCRIPTS)
+    if waiting:
+        print("cbp: %d video(s) on the waiting list (no scripted path got them; Claude desktop drains by the Browser 2 panel, "
+              "YT_PROXY.md path 3): python scripts/dev/fetch_captions_timed.py --waiting" % len(waiting))
     return 0
 
 

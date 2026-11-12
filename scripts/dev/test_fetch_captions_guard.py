@@ -19,7 +19,8 @@ class T(unittest.TestCase):
         self.td = tempfile.TemporaryDirectory()
         self.addCleanup(self.td.cleanup)
         self.rec = pathlib.Path(self.td.name) / "yt_block.json"
-        p = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.rec), "YT_PROXY": "off"})
+        p = mock.patch.dict(os.environ, {"YT_BLOCK_FILE": str(self.rec), "YT_PROXY": "off",
+                                         "YT_WAITING_FILE": str(pathlib.Path(self.td.name) / "yt_waiting.json")})
         p.start()
         self.addCleanup(p.stop)
         ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
@@ -32,6 +33,9 @@ class T(unittest.TestCase):
         fs = mock.patch.object(f, "fleet_send", return_value=True)
         fs.start()
         self.addCleanup(fs.stop)
+        hg = mock.patch.object(f.sites, "http_get", return_value=(0, ""))   # path 4 offline: no site request in tests
+        hg.start()
+        self.addCleanup(hg.stop)
         s = mock.patch.object(f.time, "sleep")
         self.sleep = s.start()
         self.addCleanup(s.stop)
@@ -69,12 +73,12 @@ class T(unittest.TestCase):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             self.run_main(IDS[:2], ["BLOCKED", "OK auto 5w"])      # a fresh 429 in this run
-        self.assertTrue(buf.getvalue().rstrip().endswith(want), buf.getvalue())
+        self.assertIn(want, buf.getvalue())
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             code, m = self.run_main(IDS[:2], lambda *a, **k: "OK auto 5w")   # now locked: exit 3, no request
         self.assertEqual((code, m.call_count), (f.EXIT_BLOCKED, 0))
-        self.assertTrue(buf.getvalue().rstrip().endswith(want), buf.getvalue())
+        self.assertIn(want, buf.getvalue())
 
     def test_status_zero_calls(self):
         f.mark_blocked()
