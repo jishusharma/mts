@@ -8,9 +8,9 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gate_select as gs
 
-STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
+STEPS = [("1", "python scripts/dev/run_staged_tests.py MyTradingSys/execution -- test_risk_guard"), ("2", "x"), ("3", "x"), ("3k", "python -m unittest (scripts/dev/test_sync.py, 3 shards)"),
          ("3ds", "python -m unittest (scripts/dev/test_dsa.py, 2 shards)"), ("3tl", "python scripts/dev/tasks.py lint"), ("3q", "x"), ("3pc", "x"),
-         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3gd", "x"), ("3dl", "x"), ("3cm", "x"), ("3la", "python scripts/dev/lookahead_lint.py --new"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
+         ("3c", "x"), ("3w", "x"), ("3x", "x"), ("3dl", "x"), ("3cm", "x"), ("3la", "python scripts/dev/lookahead_lint.py --new"), ("3xt", "x"), ("4", "pytest MyTradingSys/tests/a"), ("4b", "pytest MyTradingSys/tests/b"),
          ("4d", "pytest MyTradingSys/tests/docs"), ("4e", "pytest MyTradingSys/backtest/test_no_own_costs.py"), ("5b", "unittest"), ("5c", "pytest options")]
 MENTIONED = {("dsa", "4b")}   # the pytest shard whose tests mention the module `dsa`
 BS = chr(92)
@@ -143,12 +143,13 @@ class Select(unittest.TestCase):
         # 2026-10-16: an unregistered research test file passed the ship gate and turned CI red (B150 lives in a pytest shard)
         mode, steps = self.sel("MyTradingSys/research/x_2026-10-16/test_x.py")
         self.assertEqual(mode, "smoke")
-        self.assertIn("3gd", steps)
+        self.assertNotIn("3gd", steps)   # change 4: discovery is automatic (run_extra_tests.discovered); the 3gd step is gone
+        self.assertIn("3xt", steps)
 
     def test_registering_an_extra_test_in_the_tsv_is_smoke_and_runs_the_discovery_check(self):
         mode, steps = self.sel("scripts/dev/extra_tests.tsv")
         self.assertEqual(mode, "smoke")
-        self.assertIn("3gd", steps)
+        self.assertNotIn("3gd", steps)
 
     def test_a_new_research_test_file_runs_the_ci_deps_lint(self):
         # 2026-10-16: research tests imported pandas, ci.yml did not install it; only CI saw it (the desktop has every package)
@@ -166,27 +167,35 @@ class Select(unittest.TestCase):
         self.assertEqual(mode, "smoke")
         self.assertIn("5b", steps)
 
-    def test_live_path_is_full(self):
+    def test_live_path_is_live_mode_with_execution_tests_not_full(self):
         for f in ("MyTradingSys/execution/auto_trader.py", "scripts/dev/live_mirror.py",
                   "scripts/dev/auto_deploy.py", "scripts/sched/relay.py", "src/main/java/A.java", "pom.xml",
                   ".github/workflows/ci.yml", "MyTradingSys/runtime/x.py", "MyTradingSys/backtest/layers/fabio/orderflow_live.py"):
             mode, steps = self.sel(f)
-            self.assertEqual(mode, "full", f)
-            self.assertEqual(steps, [n for n, _ in STEPS])
+            self.assertEqual(mode, "live", f)   # change 2: fast gate + execution tests (1, 2) + static suite (3); the full suite runs in CI
+            self.assertTrue({"1", "2", "3"} <= set(steps), f)
+            self.assertLess(len(steps), len(STEPS), f)
 
-    def test_unmapped_code_fails_closed(self):
+    def test_unmapped_code_gets_the_fast_gate_not_the_full_gate(self):
+        # change 1 (SHIP_ARCH_REVIEW_2026-11-12): an unknown path off the live list cannot reach live; it used to fail closed to the 21-132 min gate
         for f in ("weird/thing.py", "tools/run.ps1", "MyTradingSys/newarea/x.py", "scripts/dev/run.sh", "Makefile",
                   "MyTradingSys/backtest/data.bin"):
-            self.assertEqual(self.sel(f)[0], "full", f)
+            mode, steps = self.sel(f)
+            self.assertEqual(mode, "smoke", f)
+            self.assertFalse({"1", "2", "3"} & set(steps), f)
 
-    def test_one_live_file_among_docs_makes_it_full(self):
-        self.assertEqual(self.sel("README.md", "MyTradingSys/execution/executor.py")[0], "full")
+    def test_tools_pages_and_helpers_are_a_known_code_folder(self):
+        for f in ("MyTradingSys/tools/live_aid/footprint_bias_data.js", "MyTradingSys/tools/live_aid/helper.py", "MyTradingSys/tools/x/y.bin"):
+            self.assertEqual(self.sel(f)[0], "smoke", f)
+
+    def test_one_live_file_among_docs_makes_it_live(self):
+        self.assertEqual(self.sel("README.md", "MyTradingSys/execution/executor.py")[0], "live")
 
     def test_docs_riding_along_with_code_add_no_steps(self):
         self.assertEqual(self.sel("scripts/dev/dsa.py", "MyTradingSys/system/RELAY.md"), self.sel("scripts/dev/dsa.py"))
 
     def test_windows_separators(self):
-        self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "full")
+        self.assertEqual(self.sel("MyTradingSys" + BS + "execution" + BS + "auto_trader.py")[0], "live")
 
 
 class Explain(unittest.TestCase):
@@ -205,16 +214,15 @@ class Explain(unittest.TestCase):
 
     def test_full_names_the_file_that_forced_it(self):
         mode, nums, reason = self.ex("README.md", "scripts/dev/dsa.py", "src/x.java")
-        self.assertEqual(mode, "full")
-        self.assertEqual(nums, [n for n, _ in STEPS])
+        self.assertEqual(mode, "live")
+        self.assertTrue({"1", "2", "3"} <= set(nums))
         self.assertIn("src/x.java", reason)
         self.assertIn("live path", reason)
 
-    def test_full_for_unknown_path_says_so(self):
-        mode, _, reason = self.ex("tools/odd.rb")
-        self.assertEqual(mode, "full")
-        self.assertIn("tools/odd.rb", reason)
-        self.assertIn("no rule", reason)
+    def test_unknown_path_is_smoke_and_never_full(self):
+        mode, nums, reason = self.ex("tools/odd.rb")
+        self.assertEqual(mode, "smoke")
+        self.assertNotEqual(nums, [n for n, _ in STEPS])
 
     def test_smoke_names_the_always_steps(self):
         mode, nums, reason = self.ex("scripts/dev/dsa.py")
@@ -258,15 +266,15 @@ class FastGateRules(unittest.TestCase):
         self.assertEqual(self.sel("scripts/dev/gate_quarantine.tsv")[0], "smoke")
         self.assertIn("3k", self.sel("scripts/dev/sync.py")[1])    # test_sync.py is named by step 3k
         for f in ("auto_deploy", "live_mirror", "cloud_setup"):
-            self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "full", f)
+            self.assertEqual(self.sel(f"scripts/dev/{f}.py")[0], "live", f)
 
     def test_sim_desk_result_json_is_smoke_not_full(self):
         # dsa-research-ship-full-gate-timeout-1111: matched no rule -> fail-closed full gate (1100 s)
         self.assertEqual(self.sel("sim_desk/results/habib-plan-hit-rate-1104.json")[0], "smoke")
-        # no loosening: code under sim_desk, nested paths and live paths stay full
-        self.assertEqual(self.sel("sim_desk/results/run.py")[0], "full")
-        self.assertEqual(self.sel("sim_desk/results/sub/x.json")[0], "full")
-        self.assertEqual(self.sel("MyTradingSys/execution/x.json")[0], "full")
+        # code under sim_desk and nested paths are unknown paths: fast gate (change 1); live paths are live mode (change 2)
+        self.assertEqual(self.sel("sim_desk/results/run.py")[0], "smoke")
+        self.assertEqual(self.sel("sim_desk/results/sub/x.json")[0], "smoke")
+        self.assertEqual(self.sel("MyTradingSys/execution/x.json")[0], "live")
 
     def test_an_ordinary_dev_script_is_still_smoke(self):
         self.assertEqual(self.sel("scripts/dev/example_tool.py")[0], "smoke")
@@ -309,10 +317,11 @@ class GateSpeedRules(unittest.TestCase):
         self.assertEqual(mode, "smoke")
         self.assertIn("4b", nums)
 
-    def test_live_and_unknown_config_still_full(self):
-        for f in (".gitattributes", ".github/workflows/ci.yml", "mts.ps1", "scripts/core/x.json", "scripts/dev/auto_deploy.py",
-                  "MyTradingSys/runtime/run_list.txt", "scripts/dev/sub/x.tsv"):
-            self.assertEqual(self.sel(f)[0], "full", f)
+    def test_live_config_is_live_mode_and_unknown_config_is_smoke(self):
+        for f in (".github/workflows/ci.yml", "scripts/dev/auto_deploy.py", "MyTradingSys/runtime/run_list.txt"):
+            self.assertEqual(self.sel(f)[0], "live", f)
+        for f in (".gitattributes", "mts.ps1", "scripts/core/x.json", "scripts/dev/sub/x.tsv"):
+            self.assertEqual(self.sel(f)[0], "smoke", f)
 
     def test_extra_subset_picks_own_test_study_folder_shared_module_and_references(self):
         tests = ["MyTradingSys/research/s1/test_a.py", "MyTradingSys/research/s2/test_b.py", "scripts/dev/test_tool.py",
@@ -378,7 +387,7 @@ class DataOnlyMustExtras(unittest.TestCase):
     def test_sim_desk_results_json_alone_is_not_docs_and_keeps_the_always_steps(self):
         mode, nums = self.sel("MyTradingSys/research/sim_desk/results/x.json")
         self.assertEqual(mode, "smoke")
-        self.assertTrue({"3w", "3x", "3gd", "3dl"} <= set(nums), nums)
+        self.assertTrue({"3w", "3x", "3dl"} <= set(nums), nums)
 
     def test_must_extras_is_triggered_for_that_ship(self):
         f = "MyTradingSys/research/sim_desk/results/x.json"
@@ -393,7 +402,7 @@ class DataOnlyMustExtras(unittest.TestCase):
         for f in ("MyTradingSys/research/x/study.py", "MyTradingSys/backtest/foo.py", "MyTradingSys/backtest/layers/L/mod.py"):
             mode, nums = self.sel(f)
             self.assertIn("4e", nums, f)
-            self.assertTrue({"3w", "3x", "3gd", "3dl", "3cm"} <= set(nums), nums)   # only adds: ALWAYS steps stay
+            self.assertTrue({"3w", "3x", "3dl", "3cm"} <= set(nums), nums)   # only adds: ALWAYS steps stay
 
     def test_cost_shard_4e_not_added_for_test_files_or_other_code(self):
         self.assertNotIn("4e", self.sel("MyTradingSys/research/x/test_study.py")[1])

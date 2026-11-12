@@ -229,6 +229,18 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertIn("NO_READY_CARD", out)
 
+    def test_lint_warn_prints_the_problem_and_exits_zero(self):
+        # change 3 (SHIP_ARCH_REVIEW_2026-11-12): the ship gate (step 3tl) and CI run `lint --warn`; paperwork never turns trunk red
+        T.save(self.repo, good("B1", goal=""))
+        T.save(self.repo, good("V1", note="REVIEWED:2026-11-04 T0-ONLY; machine checks only"))
+        rc, out = self.run_cli("lint", "--warn")
+        self.assertEqual(rc, 0, out)
+        self.assertIn("WARN B1", out)
+        self.assertIn("goal is empty", out)
+        self.assertIn("void review stamp", out)
+        rc, _ = self.run_cli("lint")
+        self.assertEqual(rc, 1)   # plain lint (hand use) still fails
+
     def test_lint_flags_void_t0_stamp_semicolon(self):
         T.save(self.repo, good("V1", note="REVIEWED:2026-11-04 T0-ONLY; machine checks only"))
         rc, out = self.run_cli("lint")
@@ -772,7 +784,11 @@ class RepoDataTest(unittest.TestCase):
                 self.assertIn(c["state"], T.STATES)
                 self.assertEqual(c["id"] + ".json", T.path_of(T.REPO, c["id"]).name)
                 if c["state"] in T.LIVE:
-                    self.assertEqual(T.problems(c, cards, reg), [])
+                    # change 3 (SHIP_ARCH_REVIEW_2026-11-12): Definition-of-Ready problems warn here, they do not fail CI (`tasks.py lint --warn`)
+                    bad = T.problems(c, cards, reg)
+                    if bad:
+                        import warnings
+                        warnings.warn(f"{c['id']} ({c['state']}): {'; '.join(bad)}")
 
     def test_sized_open_model_cards_carry_worker_fields(self):
         """card-worker-fields: an open SONNET/HAIKU/OPUS card with a size also has worker and est_turns (WORKERS.md)."""

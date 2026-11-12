@@ -209,7 +209,8 @@ class FastPlan(unittest.TestCase):
         self.assertTrue(rat.fast_applied)
         run = [s for s in plan if not s.skip]
         self.assertLess(len(run), 25)
-        self.assertTrue(any(s.num == "3gd" for s in run))
+        self.assertFalse(any(s.num == "3gd" for s in run))   # change 4: the step is gone
+        self.assertTrue(any(s.num == "3x" for s in run))
         self.assertTrue(any(str(s.skip).startswith("fast:") for s in plan))
         self.assertTrue(any("test_nowin" in s.cmd_text for s in run))
 
@@ -217,9 +218,13 @@ class FastPlan(unittest.TestCase):
         r = gi.Reach()
         r.live_hit = ["MyTradingSys/execution/live.py"]
         plan, mode, _ = self.select(["scripts/dev/nowin.py"], reach=lambda files: r)
-        self.assertEqual(mode, "full")
-        self.assertFalse(rat.fast_applied)
-        self.assertFalse(any(str(s.skip).startswith("fast:") for s in plan))
+        self.assertEqual(mode, "live")   # change 2: not the full suite; the fast gate plus execution tests (1, 2) and static suite (3), must-pass
+        self.assertTrue(rat.fast_applied)
+        run = {s.num for s in plan if not s.skip}
+        self.assertTrue({"1", "2", "3"} <= run)
+        self.assertTrue(any(str(s.skip).startswith("fast:") for s in plan))
+        for n in ("1", "2", "3"):
+            self.assertIn(repr(next(s.cmd for s in plan if s.num == n)), rat.NO_DEFER_CMDS)
 
     def test_any_failure_in_the_fast_path_falls_back_to_the_whole_shard_smoke_selection(self):
         def boom(files):
@@ -232,8 +237,10 @@ class FastPlan(unittest.TestCase):
 
     def test_live_path_files_never_take_the_fast_path(self):
         plan, mode, _ = self.select(["scripts/dev/auto_deploy.py"])
-        self.assertEqual(mode, "full")
-        self.assertFalse(rat.fast_applied)
+        self.assertEqual(mode, "live")   # change 2: live path takes the fast path plus steps 1, 2, 3, never the full local suite
+        self.assertTrue(rat.fast_applied)
+        self.assertTrue({"1", "2", "3"} <= {s.num for s in plan if not s.skip})
+        self.assertTrue(any(str(s.skip).startswith("fast:") for s in plan))
 
     def test_fast_gate_runs_3dl_on_any_py_or_ci_yml_change(self):
         plan, mode, _ = self.select(["scripts/dev/nowin.py"])

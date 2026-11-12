@@ -65,7 +65,7 @@ For commits that run `git rm --cached` on generated runtime files (`AUDIT_DIGEST
 ## 4. Quick-Gate Speed & Host Health
 
 - Quick gate runs independent steps in parallel (`MTS_GATE_JOBS`, default `min(4, CPUs)`).
-- Gate steps `3gd` (every test file gated) and `3dl` (`ci_deps_lint.py`) ensure environment consistency across machines.
+- Gate step `3dl` (`ci_deps_lint.py`) ensure environment consistency across machines.
 - Machine backups run via local bare repo (`F:\MTS_backup.git`) with `install_backup_task.ps1 -Repo <path> --remote backup`. Snapshots are never pushed to the public origin.
 
 ---

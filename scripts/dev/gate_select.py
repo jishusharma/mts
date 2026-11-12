@@ -7,7 +7,9 @@
           docs   only docs/data/cards/pages: no local steps at all (DOC_STEPS is empty; CI gates behind); the wiring registry still runs 3x/3w
           smoke  code outside the live path: steps whose test file matches a changed file, the pytest shards whose tests mention
                  its module name, plus ALWAYS (wiring, task-card DoR, B150 discovery, CI deps lint); CI runs everything behind the push
-          full   any live-path file, or ANY path no rule knows (fail closed): every step, the old --quick gate
+          live   any live-path file (FULL_RE): the smoke selection plus the execution tests (steps 1, 2) and the static suite (3), all must-pass;
+                 the full suite runs in CI and on the live box before a deploy (SHIP_ARCH_REVIEW_2026-11-12 change 2, operator yes 11-12)
+          full   no longer chosen by select/explain (a path no rule knows is smoke now); `ship --full` runs every step by hand
 
 Nothing here decides what is safe to deploy: CI on both OSes does, and auto_deploy only takes green/fast-track.
 """
@@ -51,9 +53,10 @@ def is_gate_file(f):
 
 # Non-live code folders: smoke with name-matched steps + the pytest shards + extras
 CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/research/",
-             "MyTradingSys/options/", "MyTradingSys/observation/")
+             "MyTradingSys/options/", "MyTradingSys/observation/", "MyTradingSys/tools/")   # tools/: operator pages and helpers, off the live path (change 1)
+LIVE_STEPS = ("1", "2", "3")   # execution tests, g1g2 offline test, static suite: must-pass in a live-path ship
 
-ALWAYS = ("3w", "3x", "3gd", "3dl", "3cm")   # wiring, task-card DoR, test-file discovery (B150), CI deps lint, conflict markers: seconds, catch the usual merge-time breaks
+ALWAYS = ("3w", "3x", "3dl", "3cm")   # wiring, CI deps lint, conflict markers: seconds, catch the usual merge-time breaks (3gd, test-file discovery, went in change 4)
 DOC_STEPS = ()   # gate-tiers-by-path (operator q-v1-gate-tiers, 2026-10-20): a docs ship runs no local step; CI gates behind
 CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")   # a card in the diff brings step 3tl (task-card lint) with it
 # gate_gap_2026-11-03 (MyTradingSys/research/gate_gap_2026-11-03.md): docs/data-only ships ran no local step and went red on trunk,
@@ -310,9 +313,12 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
     always = [n for n in all_nums if n in ALWAYS]
     if len(code) < len(files):                    # docs ride along: their invariants too
         picked |= {n for n in DOC_STEPS if n in all_nums}
+    live = None
     for f in code:
         if FULL_RE.match(f):
-            return "full", list(all_nums), f"full: {f} is on the live path (FULL_RE)"
+            live = live or f
+            picked.update(_name_matches(f, steps))
+            continue
         if LOOKAHEAD_RE.match(f) and LOOKAHEAD_STEP in all_nums:
             picked.add(LOOKAHEAD_STEP)
         if COST_RE.match(f) and COST_STEP in all_nums:
@@ -325,7 +331,12 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
                 picked.add(JSON_STEP)
             continue
         if not f.endswith(".py") or not f.startswith(CODE_DIRS):
-            return "full", list(all_nums), f"full: {f} matches no rule (fail closed: not a .py under a known code folder)"
+            # change 1 (SHIP_ARCH_REVIEW_2026-11-12): an unknown path off the live list cannot reach live; it gets the fast gate (ALWAYS + the
+            # steps whose tests name it), CI runs everything behind the push. Used to fail closed to the 21-132 min full gate.
+            base = PurePosixPath(f).name
+            picked.update(_name_matches(f, steps))
+            picked.update(n for n, cmd in steps if named(base, cmd))
+            continue
         picked.update(_name_matches(f, steps))
         stem = PurePosixPath(f).stem
         picked.update(n for n, cmd in steps if n.startswith(SHARD_PREFIX) and n != "4d" and mentioned(stem, cmd))
@@ -334,6 +345,10 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
                 picked.add("5b")
             if f.startswith(("MyTradingSys/backtest/", "MyTradingSys/research/")) and "3xt" in all_nums:
                 picked.add("3xt")
+    if live:
+        picked |= {n for n in LIVE_STEPS if n in all_nums}
+        nums = [n for n in all_nums if n in picked]
+        return "live", nums, f"live: {live} is on the live path (FULL_RE); fast gate + execution tests/static suite ({','.join(LIVE_STEPS)}) must-pass, full suite in CI"
     nums = [n for n in all_nums if n in picked]
     extra = [n for n in nums if n not in always]
     return "smoke", nums, (f"smoke: {len(code)} code file(s) outside the live path; ALWAYS steps {','.join(always)} ran"
