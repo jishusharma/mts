@@ -1,0 +1,13 @@
+run in 4 parts (each under 650 s est): --quick --shard K/4 for K = 1..4
+
+[Step 5] Maven Java tests
+Step 5: SKIP (skipped with --quick)
+
+[Step 6] Backtest tests
+Step 6: SKIP (skipped with --quick)
+Gate: 78 steps, 4 at a time
+
+[Step 4] Pytest shard 1/5 (MyTradingSys/tests, 11 files)
+  Command: C:\Users\E-ngineers\AppData\Local\Python\pythoncore-3.14-64\python.exe -m pytest MyTradingSys/tests/research MyTradingSys/tests/test_aibridge_chain.py MyTradingSys/tests/test_proof_direction.py MyTradingSys/tests/test_relay_queue.py MyTradingSys/tests/test_role_budget.py MyTradingSys/tests/test_routing_gemini_tag.py MyTradingSys/tests/test_shot_bundle.py MyTradingSys/tests/test_super_watchdog.py MyTradingSys/tests/test_target_nearest_node.py MyTradingSys/tests/test_tasks_list_open_only.py MyTradingSys/tests/test_tom_probe_prereg.py -q -p no:cacheprovider -p pytest_test_limit --ignore-glob=C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-yt-fallback-chain-1112-2*[/\]tmp[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_] --basetemp=C:\Users\E-NGIN~1\AppData\Local\Temp\mts_s4_s4i25_vh\bt
+  Elapsed: 273.7s (1/78 done, +274s)
+Step 4: PASS
