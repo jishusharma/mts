@@ -21,7 +21,7 @@
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Land CBP rows for the analysts still behind (2026-11-12 16:29Z store: Michaal newest row 11-08, Jala 11-10, Qriptal 11-10) WITHOUT Chrome: after the caption lock ends (11-13 02:53Z) run scripts/dev/cbp_run.py --force; any video still blocked goes to the Gemini lane (ROUTING.md 'Gemini access', captions verified with verify_extract_quotes)",
+  "goal": "Land CBP rows for the analysts still behind (2026-11-12 16:29Z store: Michaal newest row 11-08, Jala 11-10, Qriptal 11-10) by caching their new videos through the Browser 2 transcript panel (YT_PROXY.md path 3), then run the extraction",
   "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
   "lane": "SONNET",
   "latest": [
@@ -43,7 +43,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-12 T0-ONLY. Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. CHROME IS OFF (OPERATOR_DECISIONS 2026-11-12 13:45Z): no Chrome tool of any kind until he names a deviceId himself; the Browser 2 panel path is withdrawn.",
+  "note": "REVIEWED:2026-11-12 T0-ONLY. Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. Needs the Browser 2 Chrome profile (CLAUDE.md), not Browser 1.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
@@ -65,11 +65,13 @@
   ],
   "state": "ready",
   "steps": [
+    "List each of the 3 analysts' uploads since their newest row (channels in F:/CryptoScrapper/cbp_v2/analysts.json; page text of the channel Videos tab in Browser 2 muted and paused); none new = record that and stop for that analyst",
+    "Per new video, one at a time: follow YT_PROXY.md Path 3 steps 1-7 (select_browser Browser 2 first), write raw_transcripts_canonical/<id>_timed.txt, run scripts/dev/cache_panel_transcript.py on it",
     "Run cbp_run.py --force --no-fetch (extraction on cached files only, no YouTube request); read the added and rejected counts it prints",
     "Report per analyst: new video ids cached, rows added or rejected with reason, no-new-upload cases; on a sign-in wall stop and report"
   ],
   "tests": "run card, no code change; transcripts stay untracked",
-  "title": "CBP rows lag for Michaal/Jala/Qriptal: after the caption lock ends 11-13 02:53Z run cbp_run --force; leftovers via the Gemini lane (no Chrome)",
+  "title": "CBP added 0 rows since 2026-11-11 20:24Z (caption lock until 11-13 02:53Z): fetch the analysts' new videos by the Browser 2 transcript panel (muted, paused), cache them, run the CBP extraction so rows land",
   "weight": "ROUTINE",
   "worker": "session"
 }
