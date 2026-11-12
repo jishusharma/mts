@@ -194,8 +194,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
   - `live-aid-closed-bars-sweep-1110` ready p3 SONNET: Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP ca
-  - `live-aid-flag-log-learner-header-1113` raw p3 : Live Aid flag-log CSV header does not match live_aid_learn.py (rows=0, r1h never computed)
-  - `live-aid-script-paths-404-1113` raw p3 : Live Aid page script URLs 404: oi_snapshot.js and toast script not served
+  - `live-aid-flag-log-learner-header-1113` ready p3 SONNET: Live Aid flag-log CSV header does not match live_aid_learn.py (rows=0, r1h never computed)
+  - `live-aid-script-paths-404-1113` ready p3 SONNET: Live Aid page script URLs 404: oi_snapshot.js and toast script not served
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
 
 ## Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) (`callers`)
