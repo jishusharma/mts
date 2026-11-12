@@ -1,12 +1,12 @@
 # Answers from the transcripts we already hold (2026-11-13)
 
-Source: raw_transcripts_canonical, keyword sweep of 116 Tom/Fabio/guest transcripts, then read. Every quote is gated by `scripts/dev/verify_extract_quotes.py`. Labels: SOURCED = trader's words; OURS = our number. Speaker for each id is Tom Vorwald unless the census marks it guest.
+Source: raw_transcripts_canonical, keyword sweep of the held Tom/Fabio/guest transcripts (a later count: "closing price" is in 24 of 122 Tom/Fabio videos, the earlier 116 figure does not reproduce), then read. Every quote is gated by `scripts/dev/verify_extract_quotes.py`. Labels: SOURCED = trader's words; OURS = our number. Speaker for each id is Tom Vorwald unless the census marks it guest.
 
 Line 1 transcript: raw_transcripts_canonical/<id>_raw.txt (YouTube auto-captions, no clock times; position = thirds).
 
 ## Q1 Trend vs balance read: what is Tom's 'closing-price count'?
 
-**Answer: NOT SEEN as a number in 116 held transcripts. Tom says a counting rule exists (PbD: P=up trend phase, B=down, D=balance) but only names it; the figure is not stated in any caption we hold. Our code uses SMA20/VWAP/CVD slopes instead: OURS.**
+**Answer: NOT SEEN as a number in the held transcripts (24 of 122 Tom/Fabio videos mention "closing price"). Tom says a counting rule exists (PbD: P=up trend phase, B=down, D=balance) but only names it; the figure is not stated in any caption we hold. Our code uses SMA20/VWAP/CVD slopes instead: OURS.**
 
 > "You can pinpoint that by counting closing prices or by all sorts of other means."
 **Source GPS: 3o1VVsfBmmU | BEGIN**
