@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Two breakouts, one with high volume and one with low volume, end the same after costs" width="880" height="400" viewBox="0 0 880 400">
+<rect x="0" y="0" width="880" height="400" rx="12" fill="#141B24"/>
+<rect x="40" y="10" width="400" height="290" fill="#4CC38A" opacity="0.12"/>
+<text x="48" y="34" font-family="Arial" font-size="18" fill="#4CC38A">breakout + volume</text>
+<rect x="440" y="10" width="410" height="290" fill="#A3B1BF" opacity="0.12"/>
+<text x="448" y="34" font-family="Arial" font-size="18" fill="#A3B1BF">breakout, no volume</text>
+<line x1="40" y1="200" x2="850" y2="200" stroke="#F2A23A" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="600" y="192" font-family="Arial" font-size="17" fill="#F2A23A">range edge</text>
+<polyline points="40,260 120,240 200,215 280,185 340,140 430,130" fill="none" stroke="#E8EDF2" stroke-width="5"/>
+<polyline points="450,260 520,240 600,215 680,185 760,170 850,185" fill="none" stroke="#E8EDF2" stroke-width="5"/>
+<circle cx="340" cy="140" r="12" fill="#4CC38A"/>
+<circle cx="760" cy="170" r="12" fill="#A3B1BF"/>
+<text x="48" y="320" font-family="Arial" font-size="18" fill="#C9D1D9">DEV: confirmed beats unconfirmed by +88 bp (p 0.008)</text>
+<text x="48" y="348" font-family="Arial" font-size="18" fill="#E5534B">VALIDATION: -13 bp, p 0.597: the gap is gone</text>
+</svg>

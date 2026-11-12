@@ -1,0 +1,62 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T20:39:12Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/analysts/PROVENANCE_CHECK_1113.md has one row per call_id (9 rows) with verdict REAL/SAMPLE/UNVERIFIED and evidence; ledger rows not REAL are removed or notes start SAMPLE",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Decide per row whether rlinda, bennett, cryptochase CALL_LEDGER.csv rows (3 each) are real posts: round entries and generic URLs look like illustrative samples. Keep a row only if its source_url is a fetchable post whose levels match; otherwise purge or mark SAMPLE.",
+  "id": "callers-peer-ledger-provenance-1113",
+  "kind": "audit",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "analysts: implement Crypto Chase FVG social call listener and ledger",
+      "ref": "1d9f4e8abdc3",
+      "utc": "2026-10-20T01:43:38Z"
+    }
+  ],
+  "layers": [
+    "callers"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY. Public data only; repo is public, no account data.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T21:00:22Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/analysts/rlinda/CALL_LEDGER.csv",
+    "MyTradingSys/research/analysts/bennett/CALL_LEDGER.csv",
+    "MyTradingSys/research/analysts/cryptochase/CALL_LEDGER.csv",
+    "MyTradingSys/research/analysts/PROVENANCE_CHECK_1113.md"
+  ],
+  "scope_out": [
+    "Chrome, YouTube, logged-in sites, qriptal/roman/krown ledgers, scraper code"
+  ],
+  "scope_sha": "1d9f4e8abdc3",
+  "size": "S",
+  "sources": [
+    "conceptualizer card text 2026-11-12"
+  ],
+  "state": "ready",
+  "steps": [
+    "read the 3 ledgers (4 lines each); list call_ids, entry, url",
+    "for each url use public WebFetch only; a 404, login wall or generic slug = UNVERIFIED, never guess",
+    "compare round numbers vs BTC daily close that day in MyTradingSys/research/pitchfork_2026-10-19/btc_1d_2020_2026.csv (entry inside the day high-low or not)",
+    "write PROVENANCE_CHECK_1113.md; remove rows not REAL (git history keeps them); grep other files for the removed call_ids"
+  ],
+  "tests": "MyTradingSys/research/analysts/rlinda/test_rlinda_ingestion.py still passes; no other test touched",
+  "title": "Check rlinda/bennett/cryptochase CALL_LEDGER.csv rows: round entries + generic URLs look like illustrative samples; verify each source_url or purge",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

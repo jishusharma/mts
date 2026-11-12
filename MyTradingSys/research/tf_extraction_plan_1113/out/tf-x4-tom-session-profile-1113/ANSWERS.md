@@ -63,10 +63,19 @@ Tom names one concrete window: 9 to 12 (his advice to a forex guest) as the DAX/
 > "analysis like this takes maybe 5 minutes per market, maybe 10"
 **Source GPS: -dMWA_bbm3o | END**
 
+> "I trade from 6:00 a.m."
+**Source GPS: 5Ljfwvtktek | BEGIN** (GUEST: Christian, gold)
+
+> "1530 to,600, maybe until 1615"
+**Source GPS: 5Ljfwvtktek | MIDDLE** (GUEST: Frank, S&P)
+
+> "I exit at 14:30 at the very latest"
+**Source GPS: 5Ljfwvtktek | MIDDLE** (GUEST: Katherina, speaker inferred from the turn order)
+
 ### Q8 Profile anchor and what he does on a market without a cash session
 
 **Verdict: PARTIAL**
-Tom uses three anchors, by purpose: (1) the weekly profile (and prior-week value area) set before the week or day starts, to see balance or trend; (2) the daily profile, drawn on the cash session only, plus "value area high of the current day" as a counter-trade target; (3) a composite from the last major high to the last major low for fair value, not years of data. Hours inside the cash session are not given. For a market with no cash session (crypto, forex) he never says how to anchor: NOT_SEEN. The only near item: to a forex guest he says to leave the forex chart and use the futures product volume and its cash time frames (6E for EUR/USD). Bitcoin appears in these files only as a news/sentiment counter-indicator, not profiled.
+Tom uses three anchors, by purpose: (1) the weekly profile (and prior-week value area) set before the week or day starts, to see balance or trend; (2) the daily profile, drawn on the cash session only, plus "value area high of the current day" as a counter-trade target; (3) a composite from the last major high to the last major low, not years of data. Hours inside the cash session are not given. For a market with no cash session (crypto, forex) he never says how to anchor: NOT_SEEN. The only near item: to a forex guest he says to leave the forex chart and use the futures product volume and its cash time frames (6E for EUR/USD). In Tom's lines Bitcoin appears only as a news/sentiment counter-indicator (sQ_biBKhPVU), not profiled; a guest in 5Ljfwvtktek says he trades it.
 
 > "each of these areas shows me one week."
 **Source GPS: BB3c8visnkI | MIDDLE**

@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T05:44:24Z",
+  "depends_on": [],
+  "done_when": "fetch_captions_timed.py docstring contains the pointer line 'YT_PROXY.md' + 'path order' and test_fetch_captions_timed.py exits 0",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "DECISION (OURS, conservative): A holds for the scripted fetcher (throttle, never evade; no scripted retry on a locked address). B is already corrected: YT_PROXY.md:24 says a new WARP account does NOT change the exit address, do not re-register, take the next path. Remaining work: make both texts say the same and point at each other.",
+  "id": "bug-conflict-ca369de3a4",
+  "lane": "HAIKU",
+  "last_seen": "2026-11-12T05:44:24Z",
+  "last_session": "9b0ce8fb-f501-4fac-9178-48bbfbffdb4d",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Chrome rule: no Chrome tool until operator names a deviceId; Browser 2 paths withdrawn",
+      "ref": "605e8a148cb6",
+      "utc": "2026-11-12T16:37:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "605e8a148cb6 Chrome rule: no Chrome tool until operator names a deviceId; Browser 2 paths ",
+      "ref": "MyTradingSys/system/YT_PROXY.md",
+      "utc": "2026-11-12T16:37:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS) 2026-11-13: asks cleared; the operator's 11-12 'decided proxy fix' was tried and failed (same exit address, OPERATOR_DECISIONS 2349), so A stands for scripted retries. REVIEWED:2026-11-13 T0-ONLY",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T20:34:00Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/YT_PROXY.md",
+    "scripts/dev/fetch_captions_timed.py"
+  ],
+  "scope_out": [
+    "guard logic, any non-docstring code"
+  ],
+  "scope_sha": "605e8a148cb6",
+  "seen": 1,
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/YT_PROXY.md:24",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md:2343-2349"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep both texts, confirm neither tells the scripted path to retry on another exit or re-register WARP",
+    "add one line to the fetch_captions_timed.py docstring: 'other paths when locked: YT_PROXY.md Never blocked: path order (not scripted retries)'",
+    "run python scripts/dev/test_fetch_captions_timed.py"
+  ],
+  "tests": "existing test_fetch_captions_timed.py passes unchanged (docstring-only edit; no new test needed)",
+  "title": "Instruction conflict: fetch_captions_timed.py docstring: we throttle, ne vs YT_PROXY.md:24 new WARP account after a 429 (opera",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

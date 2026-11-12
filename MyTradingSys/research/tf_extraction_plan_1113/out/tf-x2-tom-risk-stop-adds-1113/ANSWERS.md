@@ -1,13 +1,13 @@
 # tf-x2 Tom: stop, adds, target, risk and return claims (answers from held transcripts)
 
 Card: tf-x2-tom-risk-stop-adds-1113. Questions: Q5 stop, Q6 adds/trail/partials, Q10 target, Q12 risk/size/loss limits/return claim.
-Source: the 14 full `raw_transcripts_canonical/<id>_raw.txt` files on the card, all read whole. Speaker: Tom Vorwald (channel Tom Vorwald EN) in every file; no guest or contested ids on this card. UrZ4vpHJ97g quotes Tom in the third person once ("Tom says...") but the rest is the same voice. Captions are auto-generated (some words garbled, e.g. "takerit" = take profit); thirds = position of the quote in the transcript body. Nothing was read from memory or from an old extract.
+Source: the 14 full `raw_transcripts_canonical/<id>_raw.txt` files on the card, all read whole. Speaker: Tom in every file (intro names differ across files, ASR; same-voice not checked); no guest or contested ids on this card. UrZ4vpHJ97g quotes Tom in the third person once ("Tom says...") but the rest is the same voice. Captions are auto-generated (some words garbled, e.g. "takerit" = take profit); thirds = position of the quote in the transcript body. Nothing was read from memory or from an old extract.
 Settled items in ANSWERS_FROM_DISK.md (Q6 add at breakout, partials; Q12 size = % of wealth) are not redone; only new evidence is added below.
 
 ### Q5 Stop: exact placement and buffer
 
 **Verdict: PARTIAL**
-The placement rule is SOURCED and is structural: the stop goes beyond the last swing / last liquidity (below the last low for a long, above the last high for a short, outside the area where the idea is no longer valid). No buffer, tick offset or percentage is ever stated: NOT_SEEN. The one tick figure in the files (two ticks) is the market overshooting his stop, not a buffer rule.
+The placement rule is SOURCED and is structural: the stop goes beyond the last swing / last liquidity (below the last low for a long, outside the area where the idea is no longer valid; for a short, the cited quote says the stop "doesn't belong above the high" (yRvMW6lgN1o); the short placement is NOT_SEEN until a quote supports it). No buffer, tick offset or percentage is ever stated: NOT_SEEN. The one tick figure in the files (two ticks) is the market overshooting his stop, not a buffer rule.
 
 > "And I then placed my stop loss below the last swing low again."
 **Source GPS: kXhIAug0Gh8 | END**
@@ -56,7 +56,7 @@ Note on distances: his stop sizes appear only as examples of one specific trade 
 ### Q6 Adds, trail, break-even, partials
 
 **Verdict: PARTIAL**
-SOURCED qualitative rules: add to a winner at the breakout while price holds pace; take one contract/part at a nearby target and let the rest run; move the stop up to the last price area with real volume once acceptance is seen. A stop moved past entry means "I won't lose any more money". No add size, no distance or tick rule for the trail, no break-even trigger in R: NOT_SEEN. He also explains why he often does NOT trail and takes the planned target (UOBgXV20yCM), so trailing is a per-trade choice, not a fixed rule.
+SOURCED qualitative rules: add to a winner at the breakout while price holds pace; take one contract/part at a nearby target and let the rest run; move the stop up to the last price area with real volume once acceptance is seen. A stop moved to $650 means "I won't lose any more money" (entry price not stated in the quote). No add size, no distance or tick rule for the trail, no break-even trigger in R: NOT_SEEN. He also explains why he often does NOT trail and takes the planned target (UOBgXV20yCM), so trailing is a per-trade choice, not a fixed rule.
 
 > "I'll add to the position again at the breakout."
 **Source GPS: 4MoNjEQ2Dd8 | BEGIN**
@@ -153,7 +153,7 @@ SOURCED: the target is planned in advance and is the next major liquidity / volu
 ### Q12 Risk per trade, size rule, loss limits, claimed hit rate / R / yearly return
 
 **Verdict: PARTIAL**
-SOURCED: risk per trade is not a fixed 1-2%; it is derived from a hard 20% maximum drawdown for the whole business, simulated from hit rate and R. His worked outputs: 0.5% (DAX day trading), 0.7% (swing, R 2.5-3.5), and 1% as the textbook default he argues is often too much. Size = a percentage of current wealth, converted into contracts by the stop distance (he moves to a mini product when the stop is too wide). Loss limit: the 20% drawdown cap is the only one; a daily loss limit is NOT_SEEN. Claimed hit rate / R by style (his examples): counter or swing 30-42% at R 3-4 (EV 0.414R/trade at 35% and R 3.04); breakout 65-75% at R about 1.1; day trading 50% at R 1.8. Yearly return: no percent per year is stated; the "triple-digit returns" video gives only simulator euro ranges on 100,000 capital, so a yearly percentage is NOT_SEEN.
+SOURCED: risk per trade is not a fixed 1-2%; it is derived from a hard 20% maximum drawdown for the whole business, simulated from hit rate and R. His worked outputs: 0.5% (DAX day trading), 0.7% (swing; R 2.5 to 1 in the quote), and 1% as the textbook default he argues is often too much. Size = a percentage of current wealth, converted into contracts by the stop distance (he moves to a mini product when the stop is too wide). Loss limit: the 20% drawdown cap is the only one; a daily loss limit is NOT_SEEN. Claimed hit rate / R by style (his examples): counter or swing 30-42% at R 3-4 (EV 0.414R/trade at 35% and R 3.04); breakout 65-75% at R about 1.1; a hypothetical 50% at R 1.8 ("I'll claim we have a win rate of 50%"). Yearly return: no percent per year is stated; the "triple-digit returns" video gives only simulator euro ranges on 100,000 capital, so a yearly percentage is NOT_SEEN.
 
 > "you should always calculate the size of your trading positions as a percentage of your overall wealth"
 **Source GPS: hQ8sOq67x5o | BEGIN**
@@ -215,6 +215,9 @@ SOURCED: risk per trade is not a fixed 1-2%; it is derived from a hard 20% maxim
 > "Now, I'll claim we have a win rate of 50%, so significantly more than in the swing trading approach and we also have much smaller profit runs because 1.8 is our risk-reward ratio."
 **Source GPS: QClPWDJ-BrU | END**
 
+> "Typical breakout trading riskreward ratio of 1.1."
+**Source GPS: UrZ4vpHJ97g | MIDDLE**
+
 > "Achieving triple-digit returns and more in the capital markets, how is that even possible?"
 **Source GPS: hQ8sOq67x5o | BEGIN**
 
@@ -238,7 +241,7 @@ SOURCED: risk per trade is not a fixed 1-2%; it is derived from a hard 20% maxim
 | parameter | trader's value | SOURCED or NOT_SEEN | id |
 |---|---|---|---|
 | Stop placement (long) | below the last swing low / last high-liquidity area / below the business zone | SOURCED | kXhIAug0Gh8, QClPWDJ-BrU, UrZ4vpHJ97g, 4MoNjEQ2Dd8 |
-| Stop placement (short) | above the last (supposed) high, but not just above the high where size sits | SOURCED | WSCIURybK3U, yRvMW6lgN1o |
+| Stop placement (short) | cited quote: "It doesn't belong above the high" (yRvMW6lgN1o); no short-side placement quote | NOT_SEEN (contradicted by yRvMW6lgN1o; see note) | WSCIURybK3U, yRvMW6lgN1o |
 | Stop buffer (ticks / bps / %) | not stated | NOT_SEEN | all 14 |
 | Stop minimum width | not stated (35 ticks DAX judged too wide for 0.5%) | NOT_SEEN | WSCIURybK3U |
 | Add rule | add at the breakout while pace holds | SOURCED (no size) | 4MoNjEQ2Dd8 |
@@ -247,7 +250,7 @@ SOURCED: risk per trade is not a fixed 1-2%; it is derived from a hard 20% maxim
 | Partial fraction (% of size) | not stated | NOT_SEEN | all 14 |
 | Trail rule | stop to last price area with real volume / beyond last swing once acceptance seen; sometimes not trailed | SOURCED (qualitative) | 4MoNjEQ2Dd8, e83njGZFrPw, kXhIAug0Gh8, UOBgXV20yCM |
 | Trail distance | not stated | NOT_SEEN | all 14 |
-| Break-even trigger | not stated as a rule (stop moved past entry in one trade) | NOT_SEEN | T6hDJcHrVBM |
+| Break-even trigger | not stated as a rule (stop moved to $650 in one trade; entry price not stated) | NOT_SEEN | T6hDJcHrVBM |
 | Target pick | next major liquidity / high-volume node, VPOC, value high, or where liquidity fades | SOURCED | QClPWDJ-BrU, zQTbdEweG3c, UOBgXV20yCM, 4MoNjEQ2Dd8 |
 | Target offset from the node | "just slightly below"; "a few ticks off" for a first partial | NOT_SEEN as a number | QClPWDJ-BrU, 4MoNjEQ2Dd8 |
 | Target set before entry, not deleted | yes | SOURCED | UrZ4vpHJ97g |
@@ -257,7 +260,7 @@ SOURCED: risk per trade is not a fixed 1-2%; it is derived from a hard 20% maxim
 | Daily loss limit | not stated | NOT_SEEN | all 14 |
 | Hit rate, counter / swing | 30-42% in his examples (30, 35, 38-42); counter "usually below 50%" | SOURCED (his examples) | WSCIURybK3U, hQ8sOq67x5o, UrZ4vpHJ97g, kXhIAug0Gh8 |
 | Hit rate, breakout / momentum | 65-75% | SOURCED | UrZ4vpHJ97g, hQ8sOq67x5o |
-| Average R | counter/swing 3-4 (3.04 and 3.5 worked); breakout about 1.1; day trade 1.8 | SOURCED (his examples) | hQ8sOq67x5o, UrZ4vpHJ97g, QClPWDJ-BrU |
+| Average R | counter/swing 3-4 (3.04 worked); breakout about 1.1; day trade 1.8 | SOURCED (his examples) | hQ8sOq67x5o, UrZ4vpHJ97g, QClPWDJ-BrU |
 | Expected value per trade | 0.414R at 35% and R 3.04 | SOURCED (his arithmetic) | QClPWDJ-BrU |
 | Claimed yearly return (%) | not stated; only simulator euro ranges on 100,000 and the "triple-digit returns" title | NOT_SEEN | hQ8sOq67x5o |
 | Realised hit rate / R from his own trade log | not stated | NOT_SEEN | all 14 |

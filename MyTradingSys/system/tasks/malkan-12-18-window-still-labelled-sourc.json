@@ -1,36 +1,61 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/alerts/test_live_confluence_feed.py MyTradingSys/backtest/layers/rsi/test_div_flags_chart.py -q"
+  ],
   "created": "2026-11-12T17:32:36Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "grep -rn 'SOURCED' on window 12/18 lines in live_confluence_feed.py and rsi/div_flags_chart.py finds none; label reads OURS window 12/18; test_live_confluence_feed.py and test_div_flags_chart.py pass",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Relabel the Malkan 12/18 window OURS (d-malkan-window-label-1105: no Malkan source for 12/18) in the live feed label string, comments and div-flag report header. No logic or default change.",
   "id": "malkan-12-18-window-still-labelled-sourc",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "RSI divergence chart draws the close pivots the detector used (12/18, window_class in labe",
+      "ref": "cb12858236c1",
+      "utc": "2026-11-04T02:37:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Label-only, label string is a runtime event field: ship via normal gate, no deploy by builder (coordinator deploys). Next: END label corrected; the fee-net DEV window comparison stays a separate card.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "opus-concept-decks-1112"
+  "refreshed": "2026-11-12T20:19:11Z",
+  "refs": [
+    ""
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py",
+    "MyTradingSys/backtest/layers/rsi/div_flags_chart.py",
+    "MyTradingSys/backtest/layers/alerts/test_live_confluence_feed.py"
+  ],
+  "scope_out": [
+    "WINDOW_STRONG/WINDOW_MAX values, min bars 3/5 and RSI 40/60 levels (those stay SOURCED), live tree"
+  ],
+  "scope_sha": "cb12858236c1",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/OPERATOR_DECISIONS.md d-malkan-window-label-1105"
+  ],
+  "state": "ready",
+  "steps": [
+    "Edit docstring lines 16, 48-49 and label line 110 of live_confluence_feed.py: 12/18 window = OURS",
+    "Edit div_flags_chart.py docstring lines 15 and 217 the same way; keep min bars/levels SOURCED",
+    "Add the label test, run both test files"
+  ],
+  "tests": "In test_live_confluence_feed.py assert the Malkan event label contains 'OURS' and not 'SOURCED window'; fails on current code (label says SOURCED window 12/18)",
   "title": "Malkan 12/18 window still labelled SOURCED in live_confluence_feed.py and div-flag report header; relabel OURS per OPERATOR_DECISIONS.md:1755",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -126,6 +126,10 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         boxes.sort()
         assert boxes and all(b[0] >= a[1] - 0.5 for a, b in zip(boxes, boxes[1:])), boxes
         # operator 2026-11-10: WaveTrend lanes on Home: 1m 2m 3m timing, 15m 30m frame, 4h context
+        # operator 2026-11-13: ONE WaveTrend line, strips collapsed until clicked
+        assert page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.length") == 0
+        assert page.eval_on_selector_all("#p-home .hm-wsw", "es => es.length") == 1
+        page.click("#p-home .hm-wsw"); page.wait_for_timeout(300)
         lanes = page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.map(t => t.textContent)")
         assert lanes == ["1m", "2m", "3m", "15m", "30m", "4h"], lanes
         for h in ("#home", "#now", "#usopen", "#news"):

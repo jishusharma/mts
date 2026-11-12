@@ -93,7 +93,7 @@ Stops, targets and entries stated in words: none. The video states no stop rule,
 **Source GPS: YmygDgtoxO8 | BEGIN**
 
 > "that's why the market will always try to adapt to such fair price levels and return to them"
-**Source GPS: YmygDgtoxO8 | MIDDLE**
+**Source GPS: YmygDgtoxO8 | BEGIN**
 
 > "This is the point where the market has accumulated the highest total volume at a given price level."
 **Source GPS: YmygDgtoxO8 | MIDDLE**

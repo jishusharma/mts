@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-12T20:41:53Z",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/argon/JLcDdrHkB5M/EXTRACT.md"
+  ],
+  "created": "2026-11-12T20:14:59Z",
+  "depends_on": [],
+  "done_when": "For each of the 5 ids, MyTradingSys/research/nk_stocktalk_1113/argon/<id>/EXTRACT.md exists with Hindi caption quotes, TRANSLATION lines, SOURCED/NOT_SEEN labels, and verify_extract_quotes.py exits 0 against the Hindi caption file; or NOT_IN_DATA.md names the blocker (no caption)",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hindi concept extracts for the 5 selected NK StockTalk videos: exact rules and numbers (RSI length, MA types and lengths, BB settings, entry, exit, stop) each SOURCED with the Hindi caption quote exactly as in the caption plus an English TRANSLATION line; unstated = NOT_SEEN; market and timeframe noted; anything on crypto noted. Same card run on two Gemini models for comparison.",
+  "id": "gemini-nk-extract-argon-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "NOT_IN_DATA.md: caption fetcher BLOCKED until 2026-11-13T13:58:11+00:00",
+      "ref": "5d450fd17",
+      "utc": "2026-11-12T20:41:53Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: caption fetcher locked until 2026-11-13T13:58:11Z",
+  "note": "Run as gemini_queue.py run gemini-nk-extract-argon-1113:low:argon AFTER the NUC caption lock ends 2026-11-13T13:58:11Z. Ids: JLcDdrHkB5M, wrEEf8o9n9E, 3EpXq8JC4jU, ZuVWAu_MR2Q, cmH38Uo4sYM. Concepts: JLcDdrHkB5M=Hilega Milega; wrEEf8o9n9E=Bollinger Bands / breakout vs fakeout; 3EpXq8JC4jU=SRP / pivot; ZuVWAu_MR2Q=Nifty H23 expiry hedge; cmH38Uo4sYM=Nifty gap prediction 15-10-5 RSI",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T20:14:59Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md",
+    "MyTradingSys/research/nk_stocktalk_1113/SELECTED.md"
+  ],
+  "result": "NOT_IN_DATA.md: caption fetcher BLOCKED until 2026-11-13T13:58:11+00:00",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/nk_stocktalk_1113/argon/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no numbers from our own docs or prior knowledge",
+    "never verify against a translation"
+  ],
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13 relaying operator; OPERATOR_DECISIONS 2026-11-13 (NK StockTalk; both Gemini models)"
+  ],
+  "state": "done",
+  "steps": [
+    "Run fetch_captions_timed.py --status (no network); if BLOCKED write NOT_IN_DATA.md with the unlock time and stop; never evade",
+    "Fetch captions for the 5 ids once each (max 1 request per id; any 429 = stop); quote only from raw_transcripts_canonical/<id>_raw.txt (Hindi caption file)",
+    "Per id write EXTRACT.md: > \"exact Hindi caption line\" + Source GPS + [mm:ss] + English line labelled TRANSLATION; rules table with SOURCED numbers, NOT_SEEN for unstated; verify against the Hindi file until exit 0; commit on your branch"
+  ],
+  "taken": "2026-11-12T20:41:53Z",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] NK StockTalk Hindi concept extracts, 5 selected videos, model argon",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

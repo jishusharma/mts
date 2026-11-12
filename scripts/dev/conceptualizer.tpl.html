@@ -1,0 +1,255 @@
+<title>Conceptualizer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: layer tabs on top, a rail of concepts on the left, one concept card at a time; single dark look matching the MTS decks */
+:root {
+  color-scheme: dark;
+  --bg: #0E131A; --panel: #141B24; --panel2: #18212C; --line: #2A3644; --fg: #E8EDF2; --muted: #A3B1BF; --dim: #7D8B99;
+  --blue: #5AA9E6; --blue-soft: #8CC8F5; --blue-bg: #15283A; --orange: #F2A23A; --orange-soft: #F5B86A; --orange-bg: #3A2A16; --gold: #D9C27A; --grey: #8A96A3;
+  --display: 'Space Grotesk', 'Segoe UI', Arial, sans-serif; --text: Inter, 'Segoe UI', Arial, sans-serif; --mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--fg); }
+body { font: 16px/1.45 var(--text); margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 12px 32px; max-width: 1500px; margin: 0 auto; }
+header.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-block: 8px 14px; border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 5; }
+.brand { font: 700 1.6rem/1 var(--display); letter-spacing: .5px; }
+.brand span { color: var(--blue); }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tab { font: 600 .95rem var(--text); color: var(--muted); background: var(--panel2); border: 1px solid var(--line); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+.tab[aria-current="true"] { color: var(--bg); background: var(--blue); border-color: var(--blue); }
+.tab:focus-visible, .nav button:focus-visible, .ccard:focus-visible, .pn button:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.note { margin-left: auto; color: var(--dim); font-size: .85rem; }
+.app { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 24px; padding-top: 18px; }
+nav.nav { display: flex; flex-direction: column; gap: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); align-self: start; }
+.nav h4 { font: 600 .75rem var(--text); letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); margin: 14px 0 4px; }
+.nav button { all: unset; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: var(--muted); font-size: .95rem; }
+.nav button:hover { background: var(--panel2); color: var(--fg); }
+.nav button[aria-current="true"] { background: var(--panel2); color: var(--fg); box-shadow: inset 3px 0 0 var(--blue); }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.s-failed { background: var(--orange); } .s-inconclusive { background: var(--grey); } .s-promising { background: var(--blue); } .s-untested { background: transparent; border: 2px solid var(--gold); }
+main { min-width: 0; }
+.eyebrow { font: 600 .8rem var(--text); letter-spacing: 2px; text-transform: uppercase; color: var(--blue); }
+h2 { font: 700 2.1rem/1.15 var(--display); margin: 4px 0 10px; text-wrap: balance; }
+h3 { font: 600 .8rem var(--text); letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.chip { font: 700 .78rem var(--mono); letter-spacing: .5px; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; }
+.c-failed { background: var(--orange-bg); color: var(--orange-soft); } .c-inconclusive { background: #252E39; color: var(--muted); }
+.c-promising { background: var(--blue-bg); color: var(--blue-soft); } .c-untested { background: #2E2A1A; color: var(--gold); }
+.f-match { background: var(--blue-bg); color: var(--blue-soft); } .f-simplified { background: #2E2A1A; color: var(--gold); }
+.f-distorted { background: var(--orange-bg); color: var(--orange-soft); } .f-untested { background: #252E39; color: var(--muted); }
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; }
+.diagram { background: var(--panel); border-radius: 14px; overflow: hidden; }
+.diagram svg { display: block; width: 100%; height: auto; }
+.side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.quote { background: var(--panel); border-left: 5px solid var(--blue); border-radius: 8px; padding: 14px 18px; }
+.quote p { margin: 0; font: italic 1.15rem/1.4 var(--text); }
+.quote .src { font: .82rem var(--mono); color: var(--blue-soft); margin-top: 6px; font-style: normal; }
+.rule { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 4px 12px; font-size: 1rem; }
+.rule b { font: 700 .75rem var(--mono); text-transform: uppercase; padding-top: 3px; }
+.rule .his { color: var(--blue-soft); } .rule .ours { color: var(--orange-soft); }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; font-variant-numeric: tabular-nums; }
+th { text-align: left; font: 600 .75rem var(--text); letter-spacing: 1px; text-transform: uppercase; color: var(--dim); padding: 6px 10px; border-bottom: 1px solid var(--line); }
+td { padding: 7px 10px; border-bottom: 1px solid #1E2733; vertical-align: top; }
+td.num { text-align: right; font-family: var(--mono); }
+.t-SOURCED { color: var(--blue-soft); font: 700 .78rem var(--mono); } .t-OURS { color: var(--orange-soft); font: 700 .78rem var(--mono); }
+.code { font: .82rem var(--mono); color: var(--muted); background: var(--panel2); border-radius: 6px; padding: 8px 10px; overflow-wrap: anywhere; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+.tile { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.big { font: 700 1.6rem/1.15 var(--mono); }
+.v-FAIL { color: var(--orange-soft); } .v-PAPER, .v-PASS { color: var(--blue-soft); } .v-NOT, .v-INCONCL, .v-DESCR, .v-BLOCKED { color: var(--muted); }
+.small { font-size: .88rem; color: var(--muted); }
+.wire { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; font-size: .92rem; }
+.w { font: 700 .7rem var(--mono); padding: 2px 6px; border-radius: 4px; flex: none; }
+.w-wired { background: var(--blue-bg); color: var(--blue-soft); } .w-research, .w-partial { background: #252E39; color: var(--muted); } .w-none { background: var(--orange-bg); color: var(--orange-soft); }
+ul.ideas { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: .9rem; }
+ul.ideas li { display: flex; gap: 8px; } ul.ideas li::before { content: "✕"; color: var(--orange); font-weight: 700; }
+ul.ideas li.ok::before { content: "◆"; color: var(--blue); }
+.question { margin-top: 16px; background: var(--blue-bg); border: 1px solid #24476A; border-radius: 12px; padding: 12px 16px; font-size: 1rem; }
+.question b { color: var(--blue-soft); }
+.pn { display: flex; justify-content: space-between; gap: 12px; margin-top: 18px; }
+.pn button { font: 600 .9rem var(--text); color: var(--fg); background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 14px; cursor: pointer; }
+.pn button[disabled] { opacity: .35; cursor: default; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.kpi { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.kpi .big { font-size: 2.2rem; }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 14px; }
+.ccard { all: unset; cursor: pointer; display: flex; flex-direction: column; gap: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.ccard:hover { border-color: var(--blue); }
+.ccard .nm { font: 600 1.02rem var(--text); color: var(--fg); }
+.ccard .net { font: 700 1.05rem var(--mono); }
+.scroll { overflow-x: auto; }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar { display: grid; grid-template-columns: 180px minmax(0, 1fr) 72px; gap: 10px; align-items: center; font-size: .9rem; }
+.bar .track { background: var(--panel); border-radius: 4px; height: 20px; position: relative; }
+.bar .fill { height: 100%; border-radius: 4px; min-width: 3px; }
+.bar .v { font: 700 .9rem var(--mono); text-align: right; }
+.gaps { display: flex; flex-direction: column; gap: 10px; }
+.gap { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.gap.top { background: var(--blue-bg); border-color: #24476A; }
+.gap .n { font: 700 1.8rem var(--mono); color: var(--blue); }
+.gap .t { font: 600 1.05rem var(--text); }
+.st-ready { color: var(--blue-soft); } .st-partial { color: var(--gold); } .st-blocked, .st-gap { color: var(--orange-soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; color: var(--muted); margin-top: 10px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+a { color: var(--blue-soft); }
+@media (max-width: 1000px) { .hero { grid-template-columns: 1fr; } .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; gap: 12px; }
+  nav.nav { position: static; flex-direction: row; overflow-x: auto; gap: 6px; padding-bottom: 6px; }
+  .nav h4 { display: none; } .nav button { white-space: nowrap; background: var(--panel2); }
+  .tiles, .kpis, .two { grid-template-columns: 1fr; } .note { margin-left: 0; } h2 { font-size: 1.6rem; }
+  .bar { grid-template-columns: 110px minmax(0, 1fr) 60px; }
+}
+@media (prefers-reduced-motion: no-preference) { main > * { animation: in .25s ease-out both; } @keyframes in { from { opacity: .6; transform: translateY(4px); } to { opacity: 1; transform: none; } } }
+</style>
+<div class="wrap">
+<header class="top">
+  <div class="brand">Concept<span>ualizer</span></div>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="note">Trader concept → our rule → fidelity → tests · context only, not trade advice</div>
+</header>
+<div class="app">
+  <nav class="nav" id="nav" aria-label="Views"></nav>
+  <main id="main"></main>
+</div>
+</div>
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('data').textContent);
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); };
+  var LABEL = {failed: 'Failed', inconclusive: 'Inconclusive', promising: 'Promising', untested: 'Untested'};
+  var VIEWS = [['overview', 'Overview'], ['tests', 'All tests'], ['ideas', 'Your ideas'], ['next', 'Build next']];
+  var state = {layer: D.layers[0].id, view: 'overview'};
+
+  function layer() { return D.layers.filter(function (l) { return l.id === state.layer; })[0] || D.layers[0]; }
+  function vcls(v) { return 'v-' + String(v).split(/[ .]/)[0]; }
+  function tagCls(t) { return /^SOURCED/.test(t) ? 't-SOURCED' : 't-OURS'; }
+  function chip(status) { return '<span class="chip c-' + status + '">' + esc(LABEL[status] || status) + '</span>'; }
+
+  function readHash() {
+    var h = decodeURIComponent((location.hash || '').slice(1));
+    var L = D.layers.filter(function (l) { return h.indexOf(l.id + '-') === 0; })[0];
+    if (!L) { return; }
+    state.layer = L.id; state.view = h.slice(L.id.length + 1) || 'overview';
+  }
+  function go(view) {
+    state.view = view;
+    var h = '#' + state.layer + '-' + view;
+    if (location.hash !== h) { history.replaceState(null, '', h); }
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function renderTabs() {
+    document.getElementById('tabs').innerHTML = D.layers.map(function (l) {
+      return '<button class="tab" role="tab" data-l="' + l.id + '" aria-current="' + (l.id === state.layer) + '">' + esc(l.name) + '</button>';
+    }).join('');
+  }
+  function renderNav() {
+    var L = layer();
+    var h = '<h4>Layer</h4>' + VIEWS.slice(0, 1).map(btn).join('') + '<h4>Concepts</h4>';
+    h += L.concepts.map(function (c) {
+      return '<button data-v="' + c.id + '" aria-current="' + (state.view === c.id) + '"><span class="dot s-' + c.status + '" aria-hidden="true"></span>' + esc(c.name) + '</button>';
+    }).join('');
+    h += '<h4>Across concepts</h4>' + VIEWS.slice(1).map(btn).join('');
+    document.getElementById('nav').innerHTML = h;
+    function btn(v) { return '<button data-v="' + v[0] + '" aria-current="' + (state.view === v[0]) + '">' + v[1] + '</button>'; }
+  }
+
+  function overview(L) {
+    var h = '<div class="eyebrow">' + esc(L.traders) + '</div><h2>' + esc(L.name) + ' layer</h2>';
+    h += '<div class="kpis">' + L.kpis.map(function (k, i) {
+      var col = i === 2 ? ' style="color:var(--orange-soft)"' : (i === 3 ? ' style="color:var(--blue-soft)"' : '');
+      return '<div class="kpi"><div class="big"' + col + '>' + esc(k[0]) + '</div><div class="small">' + esc(k[1]) + '</div></div>';
+    }).join('') + '</div>';
+    h += '<div class="two"><div class="tile"><h3>Their market</h3><div>' + esc(L.their_market) + '</div></div><div class="tile"><h3>Our market</h3><div>' + esc(L.our_market) + '</div></div></div>';
+    h += '<div class="grid">' + L.concepts.map(function (c) {
+      return '<button class="ccard" data-v="' + c.id + '"><span class="nm">' + esc(c.name) + '</span><span class="chips" style="margin:0">' + chip(c.status) +
+        '<span class="chip f-' + c.fidelity[0] + '">' + esc(c.fidelity[0]) + '</span></span><span class="net ' + vcls(c.test.verdict) + '">' + esc(c.test.net) + '</span><span class="small">' + esc(c.test.study) + ' · n ' + esc(c.test.n) + '</span></button>';
+    }).join('') + '</div>';
+    h += '<div class="legend">' + Object.keys(D.status_legend).map(function (k) { return '<span><span class="dot s-' + k + '"></span>' + esc(LABEL[k]) + ': ' + esc(D.status_legend[k]) + '</span>'; }).join('') + '</div>';
+    if (L.fees) {
+      h += '<div class="tile" style="margin-top:18px"><h3>Fee per trade in R = 10bp ÷ stop (OURS arithmetic)</h3><div class="bars">' + L.fees.map(function (f) {
+        var w = Math.max(0.4, f[1] / 2 * 100), c = f[1] >= 1 ? 'var(--orange)' : (f[1] >= 0.2 ? 'var(--gold)' : (f[1] >= 0.05 ? 'var(--grey)' : 'var(--blue)'));
+        return '<div class="bar"><span>' + esc(f[0]) + '</span><span class="track"><span class="fill" style="display:block;width:' + w + '%;background:' + c + '"></span></span><span class="v">' + f[1] + 'R</span></div>';
+      }).join('') + '</div><div class="small" style="margin-top:8px">A stop that is cheap on index futures is unpayable on BTC; the swing stop is the only one where the fee is noise.</div></div>';
+    }
+    if (L.market_tiles) {
+      h += '<div class="kpis" style="margin-top:18px">' + L.market_tiles.map(function (k) { return '<div class="kpi"><div class="big" style="font-size:1.8rem">' + esc(k[0]) + '</div><div class="small">' + esc(k[1]) + ' (OURS)</div></div>'; }).join('') + '</div>';
+    }
+    h += '<p class="small" style="margin-top:16px">Slides: <a href="' + esc(L.deck) + '" target="_blank" rel="noopener">concept deck</a> · facts with citations: <span class="code">' + esc(L.facts) + '</span></p>';
+    return h;
+  }
+
+  function concept(L, c) {
+    var i = L.concepts.indexOf(c);
+    var h = '<div class="eyebrow">' + esc(L.name) + ' · concept ' + (i + 1) + ' of ' + L.concepts.length + ' · ' + esc(c.who) + '</div><h2>' + esc(c.name) + '</h2>';
+    h += '<div class="chips">' + chip(c.status) + '<span class="chip f-' + c.fidelity[0] + '">Fidelity: ' + esc(c.fidelity[0]) + '</span><span class="small" style="align-self:center">' + esc(c.fidelity[1]) + '</span></div>';
+    h += '<div class="hero"><div class="diagram">' + (c.svg || '<div class="small" style="padding:40px">No diagram yet</div>') + '</div><div class="side">';
+    h += '<div class="quote"><p>“' + esc(c.quote.text) + '”</p><div class="src">' + esc(c.quote.src) + ' · ' + esc(c.quote.check) + '</div></div>';
+    h += '<div class="rule"><b class="his">His rule</b><span>' + esc(c.rule) + '</span><b class="ours">MTS rule</b><span>' + esc(c.ours) + '</span></div>';
+    h += '<table><tr><th>Parameter</th><th>Value</th><th>Tag</th></tr>' + c.params.map(function (p) {
+      return '<tr><td>' + esc(p[0]) + '</td><td>' + esc(p[1]) + '</td><td class="' + tagCls(p[2]) + '">' + esc(p[2]) + '</td></tr>';
+    }).join('') + '</table><div class="code">' + esc(c.code) + '</div></div></div>';
+    if (c.steps) {
+      h += '<div class="tile" style="margin-top:20px"><h3>His steps → MTS piece today</h3><div class="scroll"><table><tr><th>#</th><th>His step (SOURCED)</th><th>MTS piece</th><th>Status</th></tr>' + c.steps.map(function (s, k) {
+        return '<tr><td class="num">' + (k + 1) + '</td><td>' + esc(s[0]) + '</td><td>' + esc(s[1]) + '</td><td class="st-' + s[2] + '" style="font:700 .8rem var(--mono);text-transform:uppercase">' + esc(s[2]) + '</td></tr>';
+      }).join('') + '</table></div></div>';
+    }
+    var sup = c.support.length ? c.support.map(function (s) { return '<div class="wire"><span class="w w-' + s[2] + '">' + esc(s[2]) + '</span><span><b>' + esc(s[0]) + '</b> · <span class="small">' + esc(s[1]) + '</span></span></div>'; }).join('') : '<div class="small">No other layer backs this concept yet.</div>';
+    var ideas = c.ideas.failed.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + c.ideas.promising.map(function (x) { return '<li class="ok">' + esc(x) + '</li>'; }).join('');
+    h += '<div class="tiles">';
+    h += '<div class="tile"><h3>Support from layers</h3>' + sup + '</div>';
+    h += '<div class="tile"><h3>Backtest (OURS)</h3><div class="big ' + vcls(c.test.verdict) + '">' + esc(c.test.net) + '</div><div style="font:700 .85rem var(--mono);margin:4px 0" class="' + vcls(c.test.verdict) + '">' + esc(c.test.verdict) + ' · n ' + esc(c.test.n) + '</div><div class="small">' + esc(c.test.study) + ' · ' + esc(c.test.lesson) + '</div></div>';
+    h += '<div class="tile"><h3>Check on the simulator</h3><div><b>' + esc(c.sim.where) + '</b></div><div class="small" style="margin:4px 0">' + esc(c.sim.path) + '</div><div style="font-size:.88rem;color:var(--blue-soft)">' + esc(c.sim.status) + '</div></div>';
+    h += '<div class="tile"><h3>Your ideas here</h3>' + (ideas ? '<ul class="ideas">' + ideas + '</ul>' : '<div class="small">None recorded.</div>') + '</div>';
+    h += '</div><div class="question"><b>Open question · </b>' + esc(c.question) + '</div>';
+    var prev = L.concepts[i - 1], next = L.concepts[i + 1];
+    h += '<div class="pn"><button data-v="' + (prev ? prev.id : '') + '"' + (prev ? '' : ' disabled') + '>← ' + esc(prev ? prev.name : 'Start') + '</button><button data-v="' + (next ? next.id : '') + '"' + (next ? '' : ' disabled') + '>' + esc(next ? next.name : 'End') + ' →</button></div>';
+    return h;
+  }
+
+  function tests(L) {
+    return '<div class="eyebrow">' + esc(L.name) + '</div><h2>Every test so far</h2><div class="scroll"><table><tr><th>Study</th><th>TF</th><th style="text-align:right">n</th><th style="text-align:right">Net (OURS)</th><th>Verdict</th><th>Lesson</th></tr>' +
+      L.tests.map(function (t) { return '<tr><td>' + esc(t[0]) + '</td><td>' + esc(t[1]) + '</td><td class="num">' + esc(t[2]) + '</td><td class="num">' + esc(t[3]) + '</td><td class="' + vcls(t[4]) + '" style="font:700 .82rem var(--mono)">' + esc(t[4]) + '</td><td class="small">' + esc(t[5]) + '</td></tr>'; }).join('') + '</table></div>';
+  }
+  function ideasView(L) {
+    function tbl(rows, title, cls) {
+      return '<div class="tile"><h3>' + title + '</h3><div class="scroll"><table><tr><th>Idea</th><th style="text-align:right">n</th><th style="text-align:right">Result (OURS)</th><th>Status</th></tr>' + rows.map(function (r) {
+        return '<tr><td>' + esc(r[0]) + '</td><td class="num">' + esc(r[1]) + '</td><td class="num">' + esc(r[2]) + '</td><td style="color:' + cls + ';font-size:.88rem">' + esc(r[3]) + '</td></tr>';
+      }).join('') + '</table></div></div>';
+    }
+    return '<div class="eyebrow">' + esc(L.name) + ' · operator’s own ideas</div><h2>' + L.ideas.failed.length + ' failed, ' + L.ideas.promising.length + ' still alive</h2><div class="two" style="margin-top:0">' +
+      tbl(L.ideas.failed, 'Failed', 'var(--orange-soft)') + tbl(L.ideas.promising, 'Alive / promising', 'var(--blue-soft)') + '</div>';
+  }
+  function nextView(L) {
+    return '<div class="eyebrow">' + esc(L.name) + ' · closes the fidelity gaps</div><h2>What to build next</h2><div class="gaps">' + L.gaps.map(function (g, i) {
+      return '<div class="gap' + (i < 3 ? ' top' : '') + '"><span class="n">' + (i + 1) + '</span><span><div class="t">' + esc(g[0]) + '</div><div class="small">' + esc(g[1]) + '</div></span></div>';
+    }).join('') + '</div><p class="small">1–3 are the top concept-fidelity gaps. Build list = OURS proposal.</p>';
+  }
+
+  function render() {
+    var L = layer();
+    renderTabs(); renderNav();
+    var c = L.concepts.filter(function (x) { return x.id === state.view; })[0];
+    var m = document.getElementById('main');
+    m.innerHTML = c ? concept(L, c) : state.view === 'tests' ? tests(L) : state.view === 'ideas' ? ideasView(L) : state.view === 'next' ? nextView(L) : overview(L);
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-l]');
+    if (t) { state.layer = t.getAttribute('data-l'); go('overview'); return; }
+    var v = e.target.closest('[data-v]');
+    if (v && v.getAttribute('data-v')) { go(v.getAttribute('data-v')); }
+  });
+  window.addEventListener('hashchange', function () { readHash(); render(); });
+  readHash();
+  render();
+})();
+</script>

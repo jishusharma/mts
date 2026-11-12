@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest scripts/dev/test_make_conceptualizer.py -q"
+  ],
+  "created": "2026-11-12T18:21:28Z",
+  "depends_on": [
+    "tf-g1-prime-captions-1113"
+  ],
+  "done_when": "concepts.json has a concept sourced to tom_O5s9zWI0n2s/EXTRACT.md with quotes+timestamps; test_make_conceptualizer.py passes; make_conceptualizer rebuild output lists the new row; republished URL named in result",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "When Tom O5s9zWI0n2s EXTRACT.md exists (verify_extract_quotes exit 0), add one Tom 4-Step Framework concept row to concepts.json with a diagram, rebuild and republish the conceptualizer.",
+  "id": "conceptualizer-tom-4step-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Conceptualizer: one app for both concept layers, built from concepts.json",
+      "ref": "2b09f18d93ac",
+      "utc": "2026-11-12T18:23:47Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "gemini-concept-extract-tom-O5s9zWI0n2s-1112"
+  ],
+  "note": "BLOCKED on input: the extract card finished NOT_IN_DATA; rerun is tf-g1-prime-captions-1113 (Gemini). Promote to ready when EXTRACT.md lands. Next: END row published.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T20:19:53Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/conceptualizer/concepts.json",
+    "scripts/dev/make_conceptualizer.py",
+    "scripts/dev/test_make_conceptualizer.py"
+  ],
+  "scope_out": [
+    "inventing steps without EXTRACT quotes, other videos"
+  ],
+  "scope_sha": "2b09f18d93ac",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/tom_fabio_rebuild_2026-11-09/tom_O5s9zWI0n2s/NOT_IN_DATA.md (caption lock to 2026-11-13T13:58Z)"
+  ],
+  "state": "refined",
+  "steps": [
+    "Read tom_O5s9zWI0n2s/EXTRACT.md; if only NOT_IN_DATA.md exists hand the card back (tf-g1-prime-captions-1113 not done)",
+    "Add concept row with one diagram in the style of diagrams/tf_*.svg; keep concept text to the extract quotes",
+    "Run test, rebuild, republish via the make_conceptualizer path"
+  ],
+  "tests": "test_real_data_is_clean_and_every_concept_renders in scripts/dev/test_make_conceptualizer.py: add assertion that the new concept id exists; fails before the row is added",
+  "title": "Conceptualizer: add Tom 4-Step Framework concept row when O5s9zWI0n2s EXTRACT.md lands (tom_fabio_rebuild_2026-11-09/tom_O5s9zWI0n2s), rebuild + republish",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

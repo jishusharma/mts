@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T20:45:25Z",
   "commands": [],
   "created": "2026-11-11T21:24:17Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "COUNTS: MATCH=6 DIFF=2 NOT_IN_DATA=0",
+      "ref": "b1ae9c210",
+      "utc": "2026-11-12T20:45:25Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T21:24:18Z",
   "refs": [],
-  "result": "",
+  "result": "COUNTS: MATCH=6 DIFF=2 NOT_IN_DATA=0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/edge_views_2026-11-11/TREND/RESULT.md (read)",
     "MyTradingSys/research/layer_lab/reports/2026-11-12_gemini-blind-read-edge-views-trend-result-1112.md (new)"
@@ -51,12 +64,13 @@
   "sources": [
     "D11_PROGRAMME.md section 6 (blind read of every new research RESULT)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "Pick up to 8 table rows, recompute or cross-check each against the stated rule and quote file:line",
     "Write the report with counts on line 1, one row per check"
   ],
+  "taken": "2026-11-12T20:45:25Z",
   "tests": "",
   "title": "[GEMINI] blind read of edge_views TREND RESULT.md",
   "weight": "ROUTINE",

@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T20:39:15Z",
+  "depends_on": [],
+  "done_when": "LAYERS.md CryptoCred Backtests list has a line naming RESULT_10SYM.md, n 1981, -0.0467 R, FAIL, kill scope; Krown S8 RESULT wording matches its verdict (or Note says none found)",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "LAYERS.md CryptoCred section shows the 4h 10-symbol FAIL (OURS result, DEV only) so a reader does not see only the older mixed L1-D3 line; fix the Krown S8 RESULT wording if it says FAIL means stop while the verdict is INCONCLUSIVE.",
+  "id": "layers-md-cryptocred-4h-fail-1113",
+  "kind": "audit",
+  "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Raw cards from Conceptualizer layer reads: caller ledger provenance, pitchfork Hagopian ta",
+      "ref": "e6aa593910a2",
+      "utc": "2026-11-12T20:39:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e6aa593910a2 Raw cards from Conceptualizer layer reads: caller ledger provenance, pitchfor",
+      "ref": "MyTradingSys/system/LAYERS.md",
+      "utc": "2026-11-12T20:39:55Z"
+    }
+  ],
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY. Refined by Session_Planner 1113.",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T21:00:20Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/system/LAYERS.md",
+    "MyTradingSys/research/krown_audit_2026-10-22"
+  ],
+  "scope_out": [
+    "result numbers, any .py file, layer_map.json regeneration"
+  ],
+  "scope_sha": "e6aa593910a2",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md:5",
+    "MyTradingSys/research/edge_views_2026-11-11/TESTED_MAP.md:46"
+  ],
+  "state": "ready",
+  "steps": [
+    "read cryptocred_s3_pooled_2026-11/RESULT_10SYM.md lines 1-5 and 30-34 (verdict, n, mean R, kill scope)",
+    "check whether layer_map.json or LAYERS.md is generated: grep LAYERS.md header; if generated, edit the source map entry instead",
+    "add one Backtests line dated 2026-11-07: 4h sr_flip 10 symbols pooled FAIL -0.0467 R n 1981 DEV, path to RESULT_10SYM.md",
+    "grep -rn 'FAIL means stop' in krown folders; if a Krown S8 RESULT says it but verdict is INCONCLUSIVE, reword to the pre-reg rule; else write Note: not found"
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py passes (docs-only edit, existing gate, no new test)",
+  "title": "LAYERS.md CryptoCred line misses the 4h 10-symbol FAIL (RESULT_10SYM, n 1981, -0.0467R); Krown S8 RESULT says 'FAIL means stop' but verdict INCONCLUSIVE",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Minutes 0 15 30 45 of each hour marked; a calendar entry two minutes before the turn with a two bar hold gives zero gross move" width="880" height="400" viewBox="0 0 880 400">
+<rect x="0" y="0" width="880" height="400" rx="12" fill="#141B24"/>
+<rect x="40" y="10" width="210" height="290" fill="#5AA9E6" opacity="0.12"/>
+<text x="48" y="34" font-family="Arial" font-size="18" fill="#5AA9E6">minute 0</text>
+<rect x="250" y="10" width="200" height="290" fill="#5AA9E6" opacity="0.12"/>
+<text x="258" y="34" font-family="Arial" font-size="18" fill="#5AA9E6">15</text>
+<rect x="450" y="10" width="200" height="290" fill="#5AA9E6" opacity="0.12"/>
+<text x="458" y="34" font-family="Arial" font-size="18" fill="#5AA9E6">30</text>
+<rect x="650" y="10" width="200" height="290" fill="#5AA9E6" opacity="0.12"/>
+<text x="658" y="34" font-family="Arial" font-size="18" fill="#5AA9E6">45</text>
+<line x1="40" y1="200" x2="850" y2="200" stroke="#A3B1BF" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="600" y="192" font-family="Arial" font-size="17" fill="#A3B1BF">flat: gross about 0.0000 percent</text>
+<polyline points="40,205 120,195 200,208 250,198 330,206 450,196 530,204 650,199 730,207 850,200" fill="none" stroke="#E8EDF2" stroke-width="5"/>
+<circle cx="250" cy="198" r="12" fill="#F2A23A"/>
+<circle cx="450" cy="196" r="12" fill="#F2A23A"/>
+<circle cx="650" cy="199" r="12" fill="#F2A23A"/>
+<text x="48" y="320" font-family="Arial" font-size="18" fill="#C9D1D9">entry 2 min before the turn, hold 2 bars, side fixed</text>
+<text x="48" y="348" font-family="Arial" font-size="18" fill="#E5534B">net loss = the round-trip cost, nothing else</text>
+</svg>

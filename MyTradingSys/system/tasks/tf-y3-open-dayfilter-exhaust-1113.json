@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-12T20:42:02Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-y3-open-dayfilter-exhaust-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T19:45:47Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y3-open-dayfilter-exhaust-1113/ANSWERS.md answers Q21 Q22 Q23 Q24 (ITERATION_2.md section 7) with a Verdict each (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), quotes tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From Tom's and Fabio's words: what to do in the first 30 minutes of the open and what the open type means, which day filters they state (news, gap, choppy, bias-only, volatility), what an exhausted open looks like, and why 24h profiles are meaningless for cash-session traders. Missing numbers are NOT_SEEN.",
+  "id": "tf-y3-open-dayfilter-exhaust-1113",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "26 quotes PASS (verify exit 0); Q21/Q23/Q24 ANSWER, Q22 PARTIAL",
+      "ref": "5d450fd17",
+      "utc": "2026-11-12T20:42:02Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "tf-s1-answer-ledger-1113",
+  "note": "Gap-driven re-read from iteration 2, not a video summary. Answer the Q-ids only; mark the speaker CONTESTED for 9IliXww64uM and GUEST for guests.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T19:47:11Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md"
+  ],
+  "result": "26 quotes PASS (verify exit 0); Q21/Q23/Q24 ANSWER, Q22 PARTIAL",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y3-open-dayfilter-exhaust-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN; no YouTube fetch"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "gap-hunt iteration 2 2026-11-13"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md sections 3 and 7 for the gaps and questions of this card; read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: Of_wlv3xaZo Fj4FDZQxw0I Ld1dhjGdTCA DyS79Eb92Ug 43JaKHRvxHk 9VN9y2DVtGQ LQvv5xgy_ik jasv3L-d8ZE Khgj5q1-ln8 C9n_d91Uitc k0zm5NYn0IQ UOBgXV20yCM 96iPFDpXEcU 0KyIEdvVKMQ (descriptions are not speech: quote only spoken text)",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-y3-open-dayfilter-exhaust-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "taken": "2026-11-12T20:42:02Z",
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[SONNET] Tom/Fabio open handling, day filters and exhausted-open signs from held transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
