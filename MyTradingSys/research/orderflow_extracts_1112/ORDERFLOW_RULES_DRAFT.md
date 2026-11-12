@@ -300,3 +300,5 @@ Same rules as above: idea only; every SOURCED row is a verbatim quote that passe
 | `DyS79Eb92Ug` | Order flow is not a magic tool: Order flow alone does not make a profitable trader. | SOURCED | "it's not a magic tool" |
 
 - DECISION (OURS): wave 3 adds 37 SOURCED rows from two Fabio transcripts; session-clock, dollar-figure, win-rate and buy-wall (L2) claims not adopted as BTC parameters.
+
+- Wave 4 (card of-extract-two-videos-1112): Tom volume-profile (`BB3c8visnkI`, 9 SOURCED) and DAX live trade (`e83njGZFrPw`, 8 SOURCED) extracts added as separate files; 6 frozen-rule ideas listed there (3 each), none run. Index clocks, DAX stocks, gap and correlation trick not carried. (OURS)

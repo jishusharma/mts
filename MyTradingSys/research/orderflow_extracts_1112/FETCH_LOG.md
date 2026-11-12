@@ -11,3 +11,4 @@ Gemini-lane list (no captions available yet; no ASR here): j-JVi02_C88, BB3c8vis
 
 | 2026-11-12T07Z | BB3c8visnkI | OK (browser transcript panel) | Browser 2 transcript panel, 104 cues, 2186 words, cached raw_transcripts_canonical/BB3c8visnkI_timed.txt + _raw.txt; scripted fetcher not used (locked); extraction stays with card of-extract-fetch-1112 |
 | 2026-11-12T07Z | e83njGZFrPw | OK (browser transcript panel) | Browser 2 transcript panel, 82 cues, 1802 words, cached raw_transcripts_canonical/e83njGZFrPw_timed.txt + _raw.txt; extraction stays with card of-extract-fetch-1112 |
+| 2026-11-12T08Z | BB3c8visnkI, e83njGZFrPw | EXTRACTED (card of-extract-two-videos-1112) | extract_BB3c8visnkI.md (9 quotes), extract_e83njGZFrPw.md (8 quotes); verify_extract_quotes exit 0 both; no network used |
