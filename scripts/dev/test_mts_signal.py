@@ -481,6 +481,33 @@ class SignalTest(unittest.TestCase):
         closed = {"t": S.stamp(at), "kind": "ack", "id": "b-old001", "state": "expired", "host": "jis-gone"}
         self.assertEqual(S.stale_open([bc, fresh, live, closed], at), [])
 
+    def test_expire_command_closes_stale_pairs_and_prints_before_after(self):
+        import contextlib
+        import io
+        self.machine("jis-gone", "pro")
+        orig = S.now
+        S.now = lambda: orig() - timedelta(hours=S.STALE_H + 30)
+        try:
+            S.send("last words", kind="note")                      # seen long ago, silent since: it cannot ack
+        finally:
+            S.now = orig
+        bid = self.high(back_min=(S.STALE_H + 5) * 60)            # a HIGH broadcast to everyone, older than STALE_H, nobody acked
+        self.machine("jis-nuc", "sharma")
+        S.send("a note", kind="note")                              # jis-nuc is active; every other target host stays silent
+        rows = S.load(S.ensure())
+        silent = {h for b, h in S.stale_open(rows) if b == bid}
+        self.assertIn("jis-gone", silent)
+        self.assertNotIn("jis-nuc", silent)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(S.main(["expire"]), 0)
+        out = buf.getvalue()
+        self.assertIn("before: %d stale" % len([1 for b, h in S.stale_open(rows)]), out)
+        self.assertIn("after: 0 stale", out)
+        self.assertEqual(S.stale_open(S.load(S.ensure())), [])
+        for h in silent:
+            self.assertEqual(S.ack_state(S.load(S.ensure()), bid, h), "expired")
+
     def test_told_on_a_cmd_broadcast_needs_a_note_a_plain_one_does_not(self):
         bid = self.high()
         self.machine("jis-nb", "pro")
