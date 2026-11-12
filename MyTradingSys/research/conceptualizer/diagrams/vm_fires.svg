@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="A support or resistance flip fires, entry at the next bar open, stop one fee-width beyond the level, exit by time" width="880" height="400" viewBox="0 0 880 400">
+<rect x="0" y="0" width="880" height="400" rx="12" fill="#141B24"/>
+<line x1="40" y1="200" x2="850" y2="200" stroke="#F2A23A" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="600" y="192" font-family="Arial" font-size="17" fill="#F2A23A">level</text>
+<line x1="40" y1="225" x2="850" y2="225" stroke="#E5534B" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="600" y="217" font-family="Arial" font-size="17" fill="#E5534B">stop: level minus 0.10 percent</text>
+<polyline points="40,290 150,260 260,215 340,190 400,205 470,170 560,150 700,135 850,120" fill="none" stroke="#E8EDF2" stroke-width="5"/>
+<circle cx="400" cy="205" r="12" fill="#4CC38A"/>
+<text x="300" y="270" font-family="Arial" font-size="18" fill="#4CC38A">flip fires: enter next open</text>
+<text x="48" y="330" font-family="Arial" font-size="18" fill="#C9D1D9">stop = 0.10 percent = the round-trip fee, so fee = 1.00 R</text>
+<text x="48" y="358" font-family="Arial" font-size="18" fill="#F2A23A">one old cell above 0: sr_flip 1h, 96 bars, TRAIN +9.8 bp</text>
+</svg>

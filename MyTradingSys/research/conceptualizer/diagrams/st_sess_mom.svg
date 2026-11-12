@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="First half of the session sets a signal that biases the second half, but the BTC second half shows no reliable lean" width="880" height="400" viewBox="0 0 880 400">
+<rect x="0" y="0" width="880" height="400" rx="12" fill="#141B24"/>
+<rect x="40" y="10" width="410" height="290" fill="#5AA9E6" opacity="0.12"/>
+<text x="48" y="34" font-family="Arial" font-size="18" fill="#5AA9E6">first half: signal</text>
+<rect x="450" y="10" width="400" height="290" fill="#F2A23A" opacity="0.12"/>
+<text x="458" y="34" font-family="Arial" font-size="18" fill="#F2A23A">second half: trade</text>
+<line x1="40" y1="230" x2="850" y2="230" stroke="#A3B1BF" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="600" y="222" font-family="Arial" font-size="17" fill="#A3B1BF">session open</text>
+<polyline points="40,230 150,200 260,170 370,150 450,155 550,185 650,170 750,215 850,190" fill="none" stroke="#E8EDF2" stroke-width="5"/>
+<circle cx="450" cy="155" r="12" fill="#4CC38A"/>
+<text x="48" y="320" font-family="Arial" font-size="18" fill="#C9D1D9">paper: first-half return biases the rest of the session</text>
+<text x="48" y="348" font-family="Arial" font-size="18" fill="#E5534B">BTC rerun: net +0.0177 percent, Sharpe 0.0084, 1 of 2 years up</text>
+</svg>
