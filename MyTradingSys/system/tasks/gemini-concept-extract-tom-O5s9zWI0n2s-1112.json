@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T18:16:32Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tom_fabio_rebuild_2026-11-09/tom_O5s9zWI0n2s/EXTRACT.md"
@@ -15,10 +16,18 @@
   "id": "gemini-concept-extract-tom-O5s9zWI0n2s-1112",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "NOT_IN_DATA.md: caption lock until 2026-11-13T13:58Z; rerun then",
+      "ref": "f6fd2c22f",
+      "utc": "2026-11-12T18:16:32Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blocked by caption lock, rerun after 2026-11-13T13:58Z",
   "note": "TOP PRIORITY operator 2026-11-12 17:05Z via Supervisor C; Gemini lane effort low; captions locked until 2026-11-13T13:58Z so Gemini-watch fallback is UNVERIFIED and needs re-check.",
   "prio": 1,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md"
   ],
-  "result": "",
+  "result": "NOT_IN_DATA.md: caption lock until 2026-11-13T13:58Z; rerun then",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_fabio_rebuild_2026-11-09/tom_O5s9zWI0n2s/"
   ],
@@ -39,12 +53,13 @@
   "sources": [
     "operator 2026-11-12 17:05Z: https://www.youtube.com/watch?v=O5s9zWI0n2s"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md and follow it for video O5s9zWI0n2s (analyst tag Tom, out dir MyTradingSys/research/tom_fabio_rebuild_2026-11-09/tom_O5s9zWI0n2s); format example research/tom_swing_2026-11-09/extract_M7ompiwv5co.md",
     "Real captions first (guard --status), else Gemini transcript file; quotes verbatim only; unverifiable quotes dropped",
     "Write EXTRACT.md with a rules table (entry, stop, target, timeframe, filters, steps), run verify_extract_quotes.py until exit 0, commit on your branch"
   ],
+  "taken": "2026-11-12T18:16:32Z",
   "tests": "verify_extract_quotes.py on EXTRACT.md with one quote altered must exit nonzero first, then exit 0 on the real file.",
   "title": "[GEMINI] Tom Vorwald O5s9zWI0n2s concept extract: How to Finally Become a Profitable Trader! (4-Step Framework)",
   "weight": "ROUTINE",
