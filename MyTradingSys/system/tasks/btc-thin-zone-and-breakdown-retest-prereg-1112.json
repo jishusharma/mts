@@ -1,36 +1,53 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/btc_thin_zone_retest_1112/run.py"
+  ],
   "created": "2026-11-12T07:02:49Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "PREREG.md committed before results; RESULT.md in research/btc_thin_zone_retest_1112 with n, mean, t, per-year, long/short, placebo, verdict per idea; exports sim_desk/results/btc-thin-zone-and-breakdown-retest-prereg-1112.json",
+  "est_turns": 30,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Frozen-rule DEV test on BTC of two untested order-flow ideas: thin-zone pass-through (5m) and accepted-breakdown retest (1h), fee 10 bp, placebo.",
   "id": "btc-thin-zone-and-breakdown-retest-prereg-1112",
   "lane": "SONNET",
+  "latest": [],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "not_twin_of": [
+    "forced-selloff-long-pooled-10-coins-1111"
+  ],
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T07:08:25Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "Builder of-extract-two-videos-1112 (extract_BB3c8visnkI.md, extract_e83njGZFrPw.md)"
+  "scope_in": [
+    "MyTradingSys/research/btc_thin_zone_retest_1112"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Edge: PREREG then DEV run on BTC of the two untested ideas from the Tom extracts as frozen rules (no sweeps, fee 10 bp, DEV 2022-02-01..2024-05-31, placebo): thin-zone pass-through (price entering a low-volume zone of the prior-day profile travels to the next high-volume node) and accepted-breakdown retest short. Done when: PREREG.md written before results and RESULT.md with n, mean, t, per-year and long/short rows, verdict",
+  "scope_out": [
+    "D:/MTS_data/binance_aggtrades; VALIDATION data; live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "extract_BB3c8visnkI.md idea 3",
+    "extract_e83njGZFrPw.md idea 1"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write and commit PREREG.md",
+    "Code rules + tests",
+    "Run DEV, write RESULT.md"
+  ],
+  "tests": "test_rules.py fails on a look-ahead-shifted rule version",
+  "title": "Edge: PREREG then DEV run on BTC, thin-zone pass-through and accepted-breakdown retest (Tom extracts)",
   "weight": "",
-  "worker": ""
+  "worker": "session"
 }
