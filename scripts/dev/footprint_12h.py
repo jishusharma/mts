@@ -226,13 +226,17 @@ def needs_build(start_ms, now_ms, outdir=None):
 # ---------- sources ----------
 def _get(url, timeout=60):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    try:
-        with _urlopen(req, timeout=timeout) as r:
-            return r.read()
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        raise
+    for attempt in range(4):
+        try:
+            with _urlopen(req, timeout=timeout) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return None
+            if e.code in (418, 429) and attempt < 3:  # rate limit: obey Retry-After, never hammer
+                time.sleep(min(float(e.headers.get("Retry-After") or 20), 120))
+                continue
+            raise
 
 
 def archive_day(day):
