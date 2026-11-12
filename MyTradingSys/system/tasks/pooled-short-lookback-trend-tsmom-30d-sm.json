@@ -2,6 +2,7 @@
   "approved_by": "",
   "asks": "",
   "class": "C2",
+  "closed": "2026-11-12T06:19:29Z",
   "commands": [
     "python scripts/dev/verdicts.py check \"published_strats short lookback trend\"",
     "python scripts/dev/prereg_gate.py --n 912 --sd 1.0 --cost 0.10 --m 62"
@@ -34,8 +35,10 @@
     "volume_candles_ma"
   ],
   "live_path": false,
-  "note": "REVIEWED:2026-10-18 ACCEPT LAB:results CLASS:C2 REVIEWER:Gemini 4 Argon low WEIGHT:CRUCIAL. DECISION (OURS, Lab_Guy E5/E7 gate): PARKED/BLOCKED because RESULTS.md:9-10 (0/62 passed DEV) and RESULTS.md:64-66 (0/9 passed ETH replication: 'there is no evidence of excess return. The sealed BTC holdout stays sealed') falsified the cluster on DEV/ETH, and opening 2025-07..2026-09 holdout after failed DEV/ETH violates E5/E7 and LAYER_LAB.md ('never by the lab').",
+  "note": "Card's own done_when: RESULTS.md:66 keeps the BTC holdout sealed after 0/62 DEV and 0/9 ETH replication; no run allowed.",
+  "pinned": false,
   "prio": 3,
+  "reason": "Card's own done_when: RESULTS.md:66 keeps the BTC holdout sealed after 0/62 DEV and 0/9 ETH replication; no run allowed.",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-18T05:12:41Z",
@@ -53,7 +56,7 @@
   "scope_sha": "6ca61b5ec89b",
   "size": "S",
   "sources": [],
-  "state": "blocked",
+  "state": "dropped",
   "steps": [
     "Check RESULTS.md:9-10 (0/62 cleared DEV) and RESULTS.md:64-66 (0/9 replicated on ETH; 'The sealed BTC holdout stays sealed').",
     "Run verdicts.py check and prereg_gate.py before any new run; do not open 2025-07..2026-09 while DEV and ETH replication both failed."

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:19:29Z",
   "commands": [],
   "context": {
     "calls_to_edit": 10,
@@ -42,8 +43,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-07: run 2-3 DSA chats per host under Haiku control. Design: each chat has its own mts-dsa-<chat> worktree; tasks.py take claims a card so two chats cannot take one; limit = concurrent sync.py ship (gate flakes at 4+, desk 20261029-170405). DONE 2026-11-07 (dsa-watcher-1107): DSA_SESSION_PROMPT section 0b Parallel sessions; scripts/dev/dsa_seed.py (chat slug, cards held by other DSA chats, UTF-8 env line; test_dsa_seed.py). It wraps dsa.seed_text and does NOT edit dsa.py: dsa.py is a bridge file, a first attempt (6336fa4c, reverted) failed test_aibridge_version_bump; a bump would put every running chat in a version mismatch. REMAINING: (1) fold dsa_seed.py into dsa.py at the next planned bridge bump; (2) the Haiku N-tab driver (DSA_DELEGATION Standing setup: open N=2 DeepSeek tabs per host in Profile 4, one dsa_seed.py seed per tab, send go); cap N=2 per host until it lands. | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: DSA bridge tooling; no roadmap exit | DSA refined 2026-11-09: fields filled from the refs and check passes, but dsa-refine-raw-cards-1107 says a refiner never marks ready; a builder or Lab_Guy promotes it.",
+  "note": "DSA fan-out parked by operator broadcast 2026-11-12 2031Z.",
+  "pinned": false,
   "prio": 2,
+  "reason": "DSA fan-out parked by operator broadcast 2026-11-12 2031Z.",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T13:26:38Z",
@@ -71,7 +74,7 @@
     "scripts/dev/dsa_seed.py:1-3 chat slug, cards held by other chats, UTF-8 stdout",
     "MyTradingSys/system/DSA_DELEGATION.md Standing setup: on stall the supervisor spawns ONE Haiku Agent that seeds a chat and sends the order line"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "1. git grep for an existing tab driver (Profile 4, chat.deepseek.com): extend it, do not duplicate",
     "2. Fail-first test: two seeds with distinct chat slugs, and a refusal at N=3",
