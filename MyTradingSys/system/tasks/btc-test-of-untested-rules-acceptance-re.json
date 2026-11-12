@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/sync.py ship --release btc-untested-rules-1112"
+  ],
+  "created": "2026-11-12T12:06:00Z",
+  "depends_on": [],
+  "done_when": "PREREG.md committed before results; RESULT.md with n/mean bp/t per rule, halves, per-year/side rows, placebo; shipped",
+  "est_turns": 40,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Test three untested order-flow rules (BB3c8visnkI R4/R5, YkclL6xgu-s R5, ODdF0Bn_KSc R6) on BTC DEV 2022-02-01..2024-05-31, fee-net, one PREREG then one RESULT",
+  "id": "btc-test-of-untested-rules-acceptance-re",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T12:06:15Z",
+  "refs": [
+    "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_untested_rules_1112/"
+  ],
+  "scope_out": [
+    "VALIDATION data, VERDICTS.csv, live tree"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "file PREREG",
+    "code + tests",
+    "run DEV, RESULT",
+    "ship"
+  ],
+  "tests": "test_untested_rules.py hand-computed cases, fail-first",
+  "title": "BTC test of untested rules: acceptance/return to liquidity, thin close to POC, naked POC",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

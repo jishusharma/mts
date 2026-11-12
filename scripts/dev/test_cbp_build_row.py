@@ -42,3 +42,47 @@ def test_run_once_stores_full_quote_in_rejected(tmp_path):
         cbp_run.TRANSCRIPTS = old
     rej = json.loads((tmp_path / "rows.json").read_text(encoding="utf-8"))["rejected"]
     assert rej and rej[0][2] == "quote not in transcript: " + FAKE
+
+
+# --- impossible extractor output: flags (spot injected, offline) ---
+def _flagged(analyst, bias, trades, spot, body="x btc eth"):
+    got = {"bias": bias, "symbols": ["BTC"], "quotes": [], "pointers": [],
+           "trades": [dict(t, quote="btc eth") for t in trades]}
+    return cbp_run.build_row(("v1", analyst, "2026-11-11", "T", None, None), got, body, spot=spot)
+
+
+def test_long_stop_above_entry_is_blanked_and_flagged():
+    t = {"asset": "BTC", "direction": "LONG", "entry": "74,573", "target": "80k", "invalidation": "82,000"}
+    row, why = _flagged("Krown", "BEARISH", [t], lambda a, d: 74500.0)
+    assert row and row["trades"][0]["invalidation"] == ""
+    assert "stop_wrong_side" in row["flags"] and "bias_contradicts_trades" in row["flags"]
+    assert "entry_far_from_spot" not in row["flags"]
+
+
+def test_short_stop_below_entry_flagged_and_good_stop_kept():
+    bad = {"asset": "BTC", "direction": "SHORT", "entry": "75000", "target": "70000", "invalidation": "74000"}
+    ok = {"asset": "BTC", "direction": "LONG", "entry": "75000", "target": "80000", "invalidation": "73k"}
+    row, _ = _flagged("K", "NEUTRAL", [bad, ok], lambda a, d: 75000.0)
+    assert row["trades"][0]["invalidation"] == "" and row["trades"][1]["invalidation"] == "73k"
+    assert row["flags"] == ["stop_wrong_side"]
+
+
+def test_entry_far_from_spot_flagged_entry_kept():
+    t = {"asset": "ETH", "direction": "LONG", "entry": "hold above 2360", "target": "2800", "invalidation": "2300"}
+    row, _ = _flagged("Michaal", "BULLISH", [t], lambda a, d: 2100.0)
+    assert row["flags"] == ["entry_far_from_spot"] and row["trades"][0]["entry"] == "hold above 2360"
+
+
+def test_clean_row_has_no_flags_and_missing_spot_skips():
+    t = {"asset": "ETH", "direction": "LONG", "entry": "2100", "target": "2300", "invalidation": "2000"}
+    row, _ = _flagged("M", "BULLISH", [t], lambda a, d: 2090.0)
+    assert "flags" not in row
+    far = dict(t, entry="9000")
+    row, _ = _flagged("M", "BULLISH", [far], lambda a, d: None)
+    assert "flags" not in row
+
+
+def test_bullish_with_short_flagged():
+    t = {"asset": "BTC", "direction": "SHORT", "entry": "75000", "target": "70000", "invalidation": "76000"}
+    row, _ = _flagged("K", "BULLISH", [t], lambda a, d: 75000.0)
+    assert row["flags"] == ["bias_contradicts_trades"]
