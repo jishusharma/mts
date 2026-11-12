@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T20:39:15Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "layers-md-cryptocred-4h-fail-1113",
+  "kind": "audit",
+  "lane": "HAIKU",
+  "layers": [
+    "cryptocred"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "conceptualizer"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "LAYERS.md CryptoCred line misses the 4h 10-symbol FAIL (RESULT_10SYM, n 1981, -0.0467R); Krown S8 RESULT says 'FAIL means stop' but verdict INCONCLUSIVE",
+  "weight": "",
+  "worker": ""
+}

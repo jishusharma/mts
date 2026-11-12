@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Local low, retest in the EU session, then the low breaks in the US window and price reclaims it" width="880" height="400" viewBox="0 0 880 400">
+<rect x="0" y="0" width="880" height="400" rx="12" fill="#141B24"/>
+<rect x="40" y="10" width="360" height="290" fill="#5AA9E6" opacity="0.12"/>
+<text x="48" y="34" font-family="Arial" font-size="18" fill="#5AA9E6">set low, retest</text>
+<rect x="560" y="10" width="290" height="290" fill="#4CC38A" opacity="0.12"/>
+<text x="568" y="34" font-family="Arial" font-size="18" fill="#4CC38A">US window</text>
+<line x1="40" y1="250" x2="850" y2="250" stroke="#E5534B" stroke-width="2" stroke-dasharray="10 8"/>
+<text x="600" y="242" font-family="Arial" font-size="17" fill="#E5534B">low L</text>
+<polyline points="40,150 110,250 180,150 260,200 330,246 400,200 480,175 560,180 640,275 720,235 800,200 850,190" fill="none" stroke="#E8EDF2" stroke-width="5"/>
+<circle cx="330" cy="246" r="12" fill="#5AA9E6"/>
+<circle cx="640" cy="275" r="12" fill="#E5534B"/>
+<circle cx="720" cy="235" r="12" fill="#4CC38A"/>
+<text x="290" y="290" font-family="Arial" font-size="18" fill="#5AA9E6">retest</text>
+<text x="610" y="305" font-family="Arial" font-size="18" fill="#E5534B">break</text>
+<text x="730" y="225" font-family="Arial" font-size="18" fill="#4CC38A">reclaim</text>
+<text x="48" y="340" font-family="Arial" font-size="18" fill="#C9D1D9">breaks 57 percent after a retest vs 26 percent for a single low</text>
+<text x="48" y="368" font-family="Arial" font-size="18" fill="#F2A23A">95 percent reclaim within 120 min: a sweep, not a trend</text>
+</svg>

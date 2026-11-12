@@ -4,32 +4,57 @@
   "commands": [],
   "created": "2026-11-11T20:23:39Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "EXTRACT.md (102 lines) and CHECK.md (30 lines) exist in MyTradingSys/research/btc_50w_ma_j-JVi02_1112/ and verify_extract_quotes.py exits 0",
+  "est_turns": 3,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Extract video j-JVi02_C88 and check its claims against own BTC data. Already shipped in abd2faa75 (transcript via Browser 2 panel, verify exit 0); card only needs closing.",
   "id": "extract-btc-50w-ma-video-j-JVi02_C88-1112",
   "kind": "build",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: j-JVi02_C88 transcript via Browser 2 panel; extract written, verify exit 0; BB3c8v",
+      "ref": "abd2faa757eb",
+      "utc": "2026-11-12T06:04:00Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "abd2faa757eb Result: j-JVi02_C88 transcript via Browser 2 panel; extract written, verify e",
+      "ref": "MyTradingSys/research/btc_50w_ma_j-JVi02_1112/EXTRACT.md",
+      "utc": "2026-11-12T06:04:00Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY; work already on trunk (abd2faa75)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T20:34:17Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_50w_ma_j-JVi02_1112/EXTRACT.md",
+    "MyTradingSys/research/btc_50w_ma_j-JVi02_1112/CHECK.md"
+  ],
+  "scope_out": [
+    "re-fetching captions"
+  ],
+  "scope_sha": "abd2faa757eb",
+  "size": "S",
   "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "Extract video j-JVi02_C88 (Bitcoin Falls Below the 50W Moving Average; operator sent the link 2026-11-12): captions via the guarded fetcher only (stop at a 429), quotes through verify_extract_quotes.py exit 0. Then check each claim against our own BTC data (weekly close vs 50W MA: count past breaks below, what followed at 4/12/26 weeks, fee-free descriptive) and against research/mts_bible/BIBLE.md cycle clock. Done when: research/btc_50w_ma_j-JVi02_1112/EXTRACT.md and CHECK.md exist, or NOT_IN_DATA.md names the block.",
-  "weight": "",
-  "worker": ""
+  "state": "ready",
+  "steps": [
+    "verify both files on origin/fast-track, run verify_extract_quotes.py on EXTRACT.md, close card"
+  ],
+  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/btc_50w_ma_j-JVi02_1112/EXTRACT.md exits 0",
+  "title": "Extract video j-JVi02_C88 (BTC below 50W MA) and check vs own BTC data; shipped abd2faa75, close card",
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
