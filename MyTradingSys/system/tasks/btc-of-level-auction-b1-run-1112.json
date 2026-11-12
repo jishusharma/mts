@@ -1,0 +1,72 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verdicts.py backfill"
+  ],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-11T22:51:08Z",
+    "misses": 63,
+    "reads": [
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/btc_orderflow_map_1112/events.py"
+    ],
+    "session": "agent-a724c4f57df97ac2e"
+  },
+  "created": "2026-11-11T22:41:35Z",
+  "depends_on": [],
+  "done_when": "btc_of_level_auction_1112/b1.py + test_b1.py exist and pytest passes; B1.md has the 2-cell table (event, horizon, n, mean net %, sd, t, share positive, placebo 1-99 % band, session mix, Regime mix, away-from-level contrast) with INSUFFICIENT_N where n<180, no loosening; B2 listed NOT_RUN (no DEV aggTrades); no VALIDATION/RESERVE/HOLDOUT file opened; verdicts.py backfill row added.",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run PREREG B1 (absorption at PDH/PDL/VAH/VAL, 2 horizons = 2 cells) on DEV 2022-02-01..2024-05-31 from 1m klines, exactly as frozen, including the at-level vs away contrast, placebo seed 1112 and Regime mix.",
+  "id": "btc-of-level-auction-b1-run-1112",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: DEV A2 n=170 INSUFFICIENT_N; A3 n=819 net15 -0.090% t-8.0, net60 -0.075% t-3.8 (no",
+      "ref": "e84dafc4821d",
+      "utc": "2026-11-11T22:07:46Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "DECISION (OURS 2026-11-12 planner-close-1112d): B2 stays NOT_RUN, not failed, until the operator approves the aggTrades fetch (100-400 GB to F:); do not fetch. Cells short of 180 are INSUFFICIENT_N.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-11T22:41:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_of_level_auction_1112/b1.py (new)",
+    "MyTradingSys/research/btc_of_level_auction_1112/test_b1.py (new)",
+    "MyTradingSys/research/btc_of_level_auction_1112/B1.md (new)",
+    "MyTradingSys/research/VERDICTS.csv"
+  ],
+  "scope_out": [
+    "VALIDATION/RESERVE/HOLDOUT data",
+    "B2 and any aggTrades fetch (needs operator decision: 100-400 GB to F:)",
+    "live tree"
+  ],
+  "scope_sha": "e84dafc4821d",
+  "size": "S",
+  "sources": [
+    "planner-close-1112d; PREREG research/btc_of_level_auction_1112/PREREG.md"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read PREREG.md; implement B1 from 1m klines per the frozen definitions (90th pct of abs(delta5) over prior 30 days, body < 0.15 %, level within 0.10 %); fixed seed 1112, fee 0.10 % round trip",
+    "Run DEV only; report n per cell; n<180 prints INSUFFICIENT_N, thresholds never loosened; write B1.md with Regime mix and the contrast",
+    "Write B2: NOT_RUN in B1.md (aggTrades for DEV not on disk; operator decision pending: 100-400 GB to F:); run verdicts.py backfill"
+  ],
+  "tests": "pytest on a synthetic 5m series: a delta<0 bar at PDL within 0.10 % is a long event, delta<0 at a high is not an event; must fail on a stub b1.py first.",
+  "title": "BTC level-auction B1: absorption at prior-day high/low or value-area edge, DEV only",
+  "weight": "",
+  "worker": "agent"
+}

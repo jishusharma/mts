@@ -4,6 +4,22 @@
   "commands": [
     "python -m pytest scripts/dev/test_cicd_run_per_test_limit.py -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T03:11:34Z",
+    "misses": 46,
+    "reads": [
+      "scripts/dev/cicd_run.py",
+      "scripts/dev/mts_signal.py",
+      "scripts/dev/pytest_test_limit.py",
+      "scripts/dev/test_pytest_test_limit.py",
+      "scripts/dev/extra_tests.tsv",
+      "scripts/dev/test_mts_signal.py",
+      "scripts/dev/run_all_tests.py",
+      ".github"
+    ],
+    "session": "agent-afc65f04df2eed76e"
+  },
   "created": "2026-11-11T15:54:08Z",
   "depends_on": [],
   "done_when": "All four cicd_run pytest invocations carry the limit; the sleeping-test case fails naming the test; the new test passes.",

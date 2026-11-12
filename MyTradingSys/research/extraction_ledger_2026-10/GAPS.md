@@ -4,10 +4,10 @@ Ledger rows: 328; transcripts: 153. Counts:
 
 | Gap | Count |
 |---|---|
-| transcript but no extract | 58 |
-| extract with FAIL or NA quotes | 57 |
-| extracted but used by no layer | 139 |
-| id seen in only one place | 144 |
+| transcript but no extract | 56 |
+| extract with FAIL or NA quotes | 60 |
+| extracted but used by no layer | 141 |
+| id seen in only one place | 142 |
 | priority-list id with no transcript | 56 |
 | extract file with no resolvable id | 0 |
 
@@ -15,7 +15,7 @@ Method notes: used_by is a text match of the id in layers params json and layer 
 layer file names the id (an extract may still feed a layer by rule text, not id). NA = extract file has no
 checkable quote for that id. Earlier inventories (linked, not replaced): MyTradingSys/research/transcript_inventory_2026-10-09/RESULT.md.
 
-## Transcript but no extract (58)
+## Transcript but no extract (56)
 
 - -2uZSqKKrFQ
 - 0CrkbfuIhkc
@@ -27,11 +27,9 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - 5MgOwizsnjk
 - 6BAzqewtPUk
 - 6rHybt-DfQ0
-- 9IliXww64uM
 - 9eHZMVXilgc
 - AQR6zIgCx7I
 - C9n_d91Uitc
-- DyS79Eb92Ug
 - Fj4FDZQxw0I
 - GbXnw_tNMtw
 - I0rxiH1jZwc
@@ -76,19 +74,21 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - wPMiyJXL0zU
 - yRvMW6lgN1o
 
-## Extract with FAIL / NA quotes (57)
+## Extract with FAIL / NA quotes (60)
 
 - 0ao14GkGLZY FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - 326kGNFr8tM FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
+- 43JaKHRvxHk FAIL extracts/v2/tom/43JaKHRvxHk_v2.md
 - 4kpH94Hb0GQ FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - 4zazKDSXlh8 FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md
 - 6WfTIyJ-YzQ FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md
-- 7BQPMJ39WpI FAIL extracts/gemini_out/7BQPMJ39WpI_gemini.md
+- 7BQPMJ39WpI FAIL extracts/processed/tom/new_selected_10/extract_7BQPMJ39WpI.md
 - 7wl0C1lVfRE FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - 8TvLQ87KrfU FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - 9ba0p8ZPL4c FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md
 - <id> FAIL MyTradingSys/research/malkan_extract_2026-10-15/EXTRACT_TEMPLATE.md
 - BB3c8visnkI FAIL extracts/processed/tom/extract_BB3c8visnkI.md
+- BVpYGKz9PBU FAIL extracts/v2/tom/BVpYGKz9PBU_v2.md
 - BsNHqXJeGbA FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - CY7-W_b7UAU FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - D-0xTsMPwys FAIL MyTradingSys/research/baileysforex_btc_liquidity_2026-11-12/extract_D-0xTsMPwys.md
@@ -98,20 +98,22 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - FPaXP3LE6c8 FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - GaHjNt91mPU FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - Hlot1KhrlMs FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
-- HySZZSjMxF8 FAIL extracts/gemini_out/HySZZSjMxF8_gemini.md
 - IjC2eoUzA6M FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - ItDvhFyZoG8 FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - K31xH-6g9Vc FAIL MyTradingSys/research/backtest_howto_K31xH_1112/EXTRACT.md
 - LB3DRYxnA0A FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_LB3DRYxnA0A.md
+- Ld1dhjGdTCA FAIL extracts/v2/tom/Ld1dhjGdTCA_v2.md
 - N6zlfBJsoRc FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md
+- NkQeOVDTAec FAIL extracts/v2/tom/NkQeOVDTAec_v2.md
 - OggsnATGbOg FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_OggsnATGbOg.md
 - Pg8Z7BezFeo FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - PjigwAmhiT0 FAIL extracts/processed/kurisko/extract_PjigwAmhiT0.md
 - RCq5pfzA4oo FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - T0H_jpQXdVI FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md
 - V0gjxlaW2Qk FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_V0gjxlaW2Qk.md
-- WQ_OAdz-PJ8 FAIL extracts/gemini_out/WQ_OAdz-PJ8_gemini.md
+- WQ_OAdz-PJ8 FAIL extracts/processed/tom/new_selected_10/extract_WQ_OAdz-PJ8.md
 - XBOGd67BJks FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md
+- YmygDgtoxO8 FAIL extracts/v2/tom/YmygDgtoxO8_v2.md
 - ZNvLh3JyOco FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_ZNvLh3JyOco.md
 - ZYrKqu8TxHo FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - _JoJbu_Ug-A FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract__JoJbu_Ug-A.md
@@ -122,21 +124,20 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - e83njGZFrPw FAIL MyTradingSys/research/tom_correlation_trick_2026-10-26/EXTRACT.md
 - fMRvOt26xcA FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_fMRvOt26xcA.md
 - ferg8JGxSzk FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_3.md
-- gWjHq5UMisY FAIL extracts/gemini_out/gWjHq5UMisY_gemini.md
+- gWjHq5UMisY FAIL extracts/processed/tom/new_selected_10/extract_gWjHq5UMisY.md
 - hMURCHLnZVE FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md
 - hNfjyrJEytI FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_hNfjyrJEytI.md
 - kozesVBKkg4 FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_1.md
 - l0j1irTKIUw FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md
 - nE2pJFXUjSU FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
 - pcYO-yzAtrQ FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md
-- rFPCtOcfUMI FAIL MyTradingSys/research/orderflow_extracts_1112/extract_rFPCtOcfUMI.md
+- qLnQan0KGmQ FAIL extracts/v2/tom/qLnQan0KGmQ_v2.md
 - sCLLZKY_r8g FAIL MyTradingSys/research/krown_ta101_2026-10-13/extracts/extract_sCLLZKY_r8g.md
+- ujedEcmvBMk FAIL extracts/v2/tom/ujedEcmvBMk_v2.md
 - xtN0U-j_4Jc FAIL MyTradingSys/research/rumers_2026-11-01/RUMERS_EXTRACT_2.md
 - y0gP2Ih6jwE FAIL MyTradingSys/research/pizzino_layer_2026-10-27/method_extraction.md
-- y67l86cSqb8 FAIL MyTradingSys/research/orderflow_extracts_1112/extract_y67l86cSqb8.md
-- zAwEX_tRUfE FAIL extracts/gemini_out/zAwEX_tRUfE_gemini.md
 
-## Extracted, used by no layer (139)
+## Extracted, used by no layer (141)
 
 - -CBvFi40sIQ
 - -NXzJs5JRks
@@ -168,6 +169,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - 8MvxK_nxO-0
 - 8TvLQ87KrfU
 - 96iPFDpXEcU
+- 9IliXww64uM
 - 9VN9y2DVtGQ
 - 9ba0p8ZPL4c
 - <id>
@@ -180,6 +182,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - D-0xTsMPwys
 - DD73wDVvObI
 - DVZVE9rXGtU
+- DyS79Eb92Ug
 - E_AP5kudK5Y
 - EoQDQVblmMY
 - FPaXP3LE6c8
@@ -278,7 +281,7 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - zAwEX_tRUfE
 - zQTbdEweG3c
 
-## Id seen in only one place (144)
+## Id seen in only one place (142)
 
 - -9rAJNUpMsk
 - -sZa50NZo7o
@@ -304,7 +307,6 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - 7wl0C1lVfRE
 - 8LoMhydNhCM
 - 8TvLQ87KrfU
-- 9IliXww64uM
 - 9ba0p8ZPL4c
 - 9eHZMVXilgc
 - <id>
@@ -314,7 +316,6 @@ checkable quote for that id. Earlier inventories (linked, not replaced): MyTradi
 - CY7-W_b7UAU
 - D-0xTsMPwys
 - DD73wDVvObI
-- DyS79Eb92Ug
 - EQy4HouRMMk
 - E_AP5kudK5Y
 - EoQDQVblmMY

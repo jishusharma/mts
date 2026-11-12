@@ -6,19 +6,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T20:02:31Z",
-    "misses": 31,
+    "folded": "2026-11-11T22:48:50Z",
+    "misses": 2,
     "reads": [
-      "scripts/dev/fetch_captions_timed.py",
-      "MyTradingSys/research/fabio_cvd_2026-10-30/cvd_u7_u8.py",
-      "scripts/dev/verdicts.py",
-      "MyTradingSys/backtest/fetch_binance_archive.py",
-      "MyTradingSys/backtest/layers/fabio/of_backfill.py",
-      "MyTradingSys/system/ROUTING.md",
-      "scripts/dev/gemini_queue.py",
-      "scripts/dev/fetch_captions.py"
+      "MyTradingSys/research/VERDICTS.csv"
     ],
-    "session": "agent-afe593fcda67d0261"
+    "session": "agent-ab94b81082deb0108"
   },
   "created": "2026-11-11T19:46:46Z",
   "depends_on": [
@@ -39,19 +32,19 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Edge hunt T01-T15 in one table; 13 VERDICTS.csv rows (PLAN_24H T2)",
-      "ref": "b43ad0be6253",
-      "utc": "2026-11-10T14:29:47Z"
+      "line": "Result: DEV A2 n=170 INSUFFICIENT_N; A3 n=819 net15 -0.090% t-8.0, net60 -0.075% t-3.8 (no",
+      "ref": "e84dafc4821d",
+      "utc": "2026-11-11T22:07:46Z"
     }
   ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Scope split 1/4..4/4 by planner-edge-cards-1112 (DECISION OURS). Earlier CVD results stand, not repeated. DECISION (OURS 2026-11-12): clocks.py refuses any split but dev, so PAPER_SLOT is the forward test; a validation run is a later card only for a frozen rule. Tom/Fabio give the order-flow idea only; DSA parked. BLOCKED-BY: btc-of-map-prints-1112 must be done first (tasks.py check refuses a ready dependency); it becomes READY the moment prints is done. 2026-11-12 planner-close-1112c: BLOCKED on btc-of-map-events-1112 (A2/A3 DEV result must be in RESULT.md; INSUFFICIENT_N cells reported as is). DECISION (OURS).",
+  "note": "DECISION (OURS 2026-11-12 planner-close-1112d): clocks, prints, events all done (events: A2 n=170 INSUFFICIENT_N, A3 n=819 net negative, ba97261ab); DEV only. Assemble CLOCKS.md/PRINTS.md/EVENTS.md tables unchanged into RESULT.md, one verdict per family; one paper slot only if a cell passes the PREREG bar, else NOT_IN_DATA/no edge. Earlier note on scope split: clocks.py refuses any split but dev, so PAPER_SLOT is the forward test.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T22:02:07Z",
+  "refreshed": "2026-11-11T22:41:49Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -65,12 +58,12 @@
     "live tree",
     "testnet orders (paper only)"
   ],
-  "scope_sha": "b43ad0be6253",
+  "scope_sha": "e84dafc4821d",
   "size": "S",
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read CLOCKS.md (DEV table, shipped bf380bbb) and PRINTS.md; copy both tables into RESULT.md unchanged, one headline per table: effect, n, z vs placebo",
     "A rule goes to PAPER_SLOT.md only if DEV |z|>=2 vs placebo and it survives the 10 bp fee; the forward paper run is the out-of-sample test (clocks.py allows --split dev only, VALIDATION stays sealed); else NOT_IN_DATA.md (liquidation history: no public feed) and call it FAIL or NOT_IN_DATA",

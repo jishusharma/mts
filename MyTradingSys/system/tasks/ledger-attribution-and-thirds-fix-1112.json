@@ -4,6 +4,20 @@
   "commands": [
     "python -m pytest -q MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py"
   ],
+  "context": {
+    "calls_to_edit": 18,
+    "folded": "2026-11-12T01:03:23Z",
+    "misses": 22,
+    "reads": [
+      "MyTradingSys/research/analyst_video_status_1112/STATUS.md",
+      "MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py",
+      "MyTradingSys/research/extraction_ledger_2026-10/rank_queue.py",
+      "MyTradingSys/research/fast_track_2026-09-27/PROVENANCE_AUDIT_TOM.md",
+      "MyTradingSys/research/layer_lab/reports/layer_review_tom_guidance.md",
+      "MyTradingSys/research/orderflow_extracts_1112/extract_y67l86cSqb8.md"
+    ],
+    "session": "agent-afbaf6e1747026896"
+  },
   "created": "2026-11-11T20:53:50Z",
   "depends_on": [],
   "done_when": "build_ledger.py strips the nested metadata block the way verify_extract_quotes.transcript_body does (test fails on old code); a channel map file assigns Tom Vorwald EN ids; extract_rFPCtOcfUMI.md and extract_y67l86cSqb8.md become PASS; GAPS.md rebuilt.",

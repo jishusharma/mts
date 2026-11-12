@@ -4,6 +4,20 @@
   "commands": [
     "python MyTradingSys/research/analyst_video_status_1112/count_status.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T00:04:09Z",
+    "misses": 9,
+    "reads": [
+      "raw_transcripts_canonical/DyS79Eb92Ug_raw.txt",
+      "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES_DRAFT.md",
+      "MyTradingSys/research/orderflow_extracts_1112/extract_y67l86cSqb8.md",
+      "raw_transcripts_canonical/9IliXww64uM_raw.txt",
+      "MyTradingSys/research/analyst_video_status_1112/count_status.py",
+      "MyTradingSys/research/fabio_transfer/PRESCREEN_DyS79Eb92Ug.csv"
+    ],
+    "session": "agent-a7135ba5d427eb8d2"
+  },
   "created": "2026-11-11T20:53:46Z",
   "depends_on": [],
   "done_when": "MyTradingSys/research/orderflow_extracts_1112/extract_9IliXww64uM.md and extract_DyS79Eb92Ug.md with ledger quotes_verified=PASS; count_status.py shows Fabio transcript_no_extract 0.",
