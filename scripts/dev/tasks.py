@@ -868,6 +868,11 @@ def cmd_lint(a):
         if c["id"] + ".json" != path_of(REPO, c["id"]).name:
             errs.append(f"{c['id']}: file name differs from id")
         errs += [f"{c['id']}: void review stamp {v!r} (a stamp must start a line and the kind must be followed by a space or line end)" for v in void_stamps(str(c.get("note") or "")) if c["state"] not in ("done", "dropped")]
+    if getattr(a, "warn", False):
+        # SHIP_ARCH_REVIEW_2026-11-12 change 3: card paperwork (Definition of Ready, review stamp) is printed as WARN and never fails the
+        # gate or CI; a malformed card reaches trunk and the planner skips it. Plain `lint` still exits 1 (hand use, tests).
+        print("\n".join([f"WARN {e}" for e in errs] + warns + [f"tasks lint (warn only): {len(cards)} cards, {len(errs)} problem(s) | {status_line(cards)}"]))
+        return 0
     print("\n".join(errs + warns) if errs else "\n".join(warns + [f"tasks lint: {len(cards)} cards OK | {status_line(cards)}"]))
     return 1 if errs else 0
 
@@ -1798,7 +1803,9 @@ def main(argv=None):
     c.add_argument("id", nargs="?")
     c.add_argument("--demote", action="store_true", help="send a ready/active card that now fails back to refined")
     c.set_defaults(f=cmd_check)
-    sp.add_parser("lint").set_defaults(f=cmd_lint)
+    lp = sp.add_parser("lint")
+    lp.add_argument("--warn", action="store_true", help="print every problem as WARN and exit 0 (the ship gate and CI use this)")
+    lp.set_defaults(f=cmd_lint)
     ls = sp.add_parser("list")
     ls.add_argument("--state", choices=STATES)
     ls.add_argument("--lane", choices=LANES)
