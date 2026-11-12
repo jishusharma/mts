@@ -189,9 +189,9 @@ n = 88 crosses from 2020-01-01.
 
 | split | 2d crosses | with a same-direction 1d cross in the previous 20 days | share | median lead (days) |
 |---|---|---|---|---|
-| DEV | 56 | 52 | 92.9% | 400.0% |
-| VALIDATION | 15 | 12 | 80.0% | 850.0% |
-| RECENT | 17 | 15 | 88.2% | 1300.0% |
+| DEV | 56 | 52 | 92.9% | 4.0 |
+| VALIDATION | 15 | 12 | 80.0% | 8.5 |
+| RECENT | 17 | 15 | 88.2% | 13.0 |
 
 Lead per 2d cross (days from the first same-direction 1d cross close to the 2d cross close; 'none' = no 1d cross in the previous 20 days):
 

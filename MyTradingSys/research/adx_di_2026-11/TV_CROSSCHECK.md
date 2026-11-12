@@ -28,6 +28,6 @@ Bar dates confirmed by the crosshair tooltip: "Thu 15 Jan 26", "Fri 15 May 26", 
 
 2D interval: paywalled. Typing 2D in the interval box applied, then an Upgrade popup ("Custom intervals", Basic plan) appeared.
 
-Verdict: PARTIAL, 7/9 cells pass. Failing cells are the 2026-11-06 DI+ (diff 0.80) and ADX (diff 0.69). Jan and May match to 0.01. Nov 6 DI- matches. The gap is confined to the latest bar, so the cause is either our last-bar input (possibly a different feed or a bar still forming when we ran) or TradingView's data for that bar. Not resolved here.
+Worker raw note (PARTIAL 7/9 as the worker wrote it; not the verdict, which is VERIFIED-TV, line 3): 7/9 cells pass, both failures on the partial 2026-11-06 bar. Failing cells are the 2026-11-06 DI+ (diff 0.80) and ADX (diff 0.69). Jan and May match to 0.01. Nov 6 DI- matches. The gap is confined to the latest bar, so the cause is either our last-bar input (possibly a different feed or a bar still forming when we ran) or TradingView's data for that bar. Not resolved here.
 
 Cleanup: the DMI indicator was added on a new tab, not his tab (his tab untouched). The new tab was not saved. Close of the new tab did not respond on one attempt.

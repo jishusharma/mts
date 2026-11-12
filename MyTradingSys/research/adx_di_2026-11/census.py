@@ -174,7 +174,7 @@ def render(daily, bars2d, rows, rows1d, bars1d):
         s = [(r, l) for r, l in leads if in_split(r, lo, hi)]
         h = [l for _, l in s if l is not None]
         L.append("| %s | %d | %d | %s | %s |" % (name.split(" ")[0], len(s), len(h), fmt(len(h) / len(s) if s else None, True),
-                                                 fmt(statistics.median(h) if h else None, 1)))
+                                                 fmt(statistics.median(h) if h else None)))
     L += ["", "Lead per 2d cross (days from the first same-direction 1d cross close to the 2d cross close; 'none' = no 1d cross in the previous 20 days):", "",
           "| date | dir | lead days |", "|---|---|---|"]
     for r, l in leads:
