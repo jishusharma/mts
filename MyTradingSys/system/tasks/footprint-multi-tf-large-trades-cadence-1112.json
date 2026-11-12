@@ -5,6 +5,22 @@
     "python -m pytest scripts/dev/test_footprint_12h.py MyTradingSys/tools/live_aid/test_live_aid_layout.py -q",
     "python scripts/dev/footprint_12h.py --tf 15m --days 1 --js"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-12T17:15:16Z",
+    "misses": 50,
+    "reads": [
+      "MyTradingSys/tools/live_aid/live_aid.html",
+      "MyTradingSys/tools/live_aid/test_live_aid_layout.py",
+      "scripts/dev/run_all_tests.py",
+      "scripts/dev/test_footprint_12h.py",
+      "scripts/dev/bg_watch.py",
+      "scripts/dev/us_prep.py",
+      "MyTradingSys/tools/live_aid/live_aid_indicators.js",
+      "MyTradingSys/system/gate_board.json"
+    ],
+    "session": "agent-a382735f6aa75ae9b"
+  },
   "created": "2026-11-12T13:16:03Z",
   "depends_on": [],
   "done_when": "pytest scripts/dev/test_footprint_12h.py green with >=4 new tests that failed first; footprint_12h.py --tf 1h --days 1 writes D:/MTS_data/footprint_1h/ files with a large_trades list; live_aid.html contains the 60 s reload and a 15m/1h line",

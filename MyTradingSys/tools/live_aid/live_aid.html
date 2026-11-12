@@ -239,6 +239,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     <div class="vrow"><span class="huge" id="uo-when">--</span><span class="sub" id="uo-box"></span></div>
     <div class="scroll"><table><thead><tr><th>If price goes</th><th>Level</th><th>Price</th><th>Distance</th><th>Reached in the 2 h after the open</th><th>Still beyond it 60 min after the touch</th></tr></thead><tbody id="uo-rows"></tbody></table></div>
     <span class="tag" id="uo-first3"></span>
+    <span class="tag" id="uo-fp-tf" title="15m / 1h footprint bar (Binance USD-M BTCUSDT, public aggTrades): delta, price vs POC, largest print (qty >= p99.9 of the bar, OURS). Re-read from footprint_bias_data.js on a timer: hourly, 15 min from 2 h before the US open, 1 min from -2 to +15 min, 10 min to +2 h. Context, not measured."></span>
     <span class="tag" id="uo-fp" title="Binance USD-M BTCUSDT 12h footprint (00:00-12:00 / 12:00-24:00 UTC) from public aggTrades, footprint_12h.py. Bucket 10 USD, imbalance 3:1 x 3 rows, value area 70 %: all OURS. Context, not measured: no study has scored it."></span>
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
@@ -381,6 +382,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="cycle_flag.js"></script>
 <script src="playbook_data.js"></script>
 <script src="footprint_bias_data.js"></script>
+<script src="footprint_cadence.js"></script>
 <script src="../../runtime/live_aid_toasts.js"></script>
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>
@@ -879,6 +881,11 @@ main>#p-pos:not(.off){flex:0 0 auto}
       var last = Math.floor(Date.now() / 43200000) * 43200000 - 43200000;
       el.textContent = F.latest_completed_bar_ms >= last && F.have_latest ? F.line
         : '12h footprint: latest completed bar missing. Run: python scripts/dev/footprint_12h.py --js (last line: ' + F.line + ')';
+      var te = $('uo-fp-tf'); if (!te) return;
+      var T = window.FOOTPRINT_BIAS.tf, cad = window.FpCadence ? window.FpCadence.cadenceMs(Date.now(), open) : 3600000;
+      te.textContent = !T ? '15m/1h footprint: not in data file. Run: python scripts/dev/footprint_12h.py --tf 15m --days 1 --js'
+        : Date.now() - F.built_ms > 2 * cad + 120000 ? '15m/1h footprint: stale (file ' + Math.round((Date.now() - F.built_ms) / 60000) + ' min old). Run: python scripts/dev/footprint_12h.py --tf 15m --days 1 --js'
+        : (T['15m'] ? T['15m'].line : '') + ' | ' + (T['1h'] ? T['1h'].line : '');
     })();
     $('uo-first3').textContent = brRow('us_open_first3m') ? A.first3Line(brRow('us_open_first3m').table) : '';
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
@@ -1742,6 +1749,17 @@ main>#p-pos:not(.off){flex:0 0 auto}
   loadAll(true).then(loadDaily);
   setInterval(function () { loadAll(false); }, 5000);
   setInterval(loadDaily, 300000);
+  // footprint cadence: ONE in-page 60 s tick (no OS scheduler); it re-injects footprint_bias_data.js only when FpCadence.cadenceMs says due
+  var fpLast = Date.now();
+  function fpReload() {
+    var now = Date.now(), open = sessionInfo(now - 7200000).us;
+    if (!window.FpCadence || now - fpLast < window.FpCadence.cadenceMs(now, open) - 5000) return;
+    fpLast = now;
+    var sc = document.createElement('script'); sc.src = 'footprint_bias_data.js?t=' + now; document.body.appendChild(sc);
+    sc.onload = function () { sc.remove(); };
+    sc.onerror = function () { sc.remove(); };
+  }
+  setInterval(fpReload, 60000);
   setInterval(render, 1000);
   function newsTick() { if (NF ? NF.shouldPoll(document.hidden, S.news.tried || 0, Date.now()) : !S.news.err) { S.news.tried = Date.now(); loadNews(); } }
   newsTick(); setInterval(newsTick, 1000); document.addEventListener('visibilitychange', newsTick);
