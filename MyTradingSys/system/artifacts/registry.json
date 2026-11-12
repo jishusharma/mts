@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "bd3120197140ef46d0e594f09987b3eb31307cacab1b895578a712e5a1f4812c",
-      "published_at": "2026-11-12T20:35:42Z"
+      "published_sha": "cb090457e38378a43b33de453f342bc48d07304b0b9a10803f898538a9d245af",
+      "published_at": "2026-11-12T21:01:00Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -260,9 +260,9 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "01559a9e1b797ea12745d5bbb99095e6218db37cfba9d7685d7ff7db496134ce",
+      "published_sha": "d9121327f530ba451a24263cbdc005dd2e33cd16076b498b0a58f749c174d419",
       "max_age_h": 24,
-      "published_at": "2026-11-12T20:35:43Z"
+      "published_at": "2026-11-12T21:01:00Z"
     },
     {
       "slug": "research_map",
