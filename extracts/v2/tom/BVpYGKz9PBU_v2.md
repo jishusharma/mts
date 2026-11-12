@@ -176,7 +176,7 @@ mirror stated?: no - do not assume
 **Source GPS: BVpYGKz9PBU | MIDDLE**
 
 > "I enter here and I want to get down there"
-**Source GPS: BVpYGKz9PBU | END**
+**Source GPS: BVpYGKz9PBU | MIDDLE**
 
 > "the next price area I was able to identify to the downside was 140"
 **Source GPS: BVpYGKz9PBU | MIDDLE**
