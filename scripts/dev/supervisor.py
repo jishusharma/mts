@@ -1487,7 +1487,7 @@ def _who_rows() -> list:
         return []
 
 
-REPUBLISH_TIMEOUT_S = 60       # OURS: the page builds run inside every publisher-login plan, so they are time-capped
+REPUBLISH_TIMEOUT_S = 150      # OURS: the page builds run inside every publisher-login plan, so they are time-capped (60 s was too tight: `stale` builds 3 pages in ~15 s idle, much longer on a busy host)
 
 
 def republish_notes(login: str) -> list:
@@ -1502,9 +1502,12 @@ def republish_notes(login: str) -> list:
         ex = ThreadPoolExecutor(max_workers=1)
         fut = ex.submit(artifacts.republish_lines, reg)
         try:
-            return fut.result(timeout=REPUBLISH_TIMEOUT_S)
+            got = fut.result(timeout=REPUBLISH_TIMEOUT_S)
+            # a PLAN-prefixed summary first: a reader that keeps only ^(PLAN|RUN|CI|WAKE) lines still sees stale pages (2026-11-13: REPUBLISH lines were dropped every wake)
+            return ([f"PLAN pages-stale {len(got)}: {', '.join(x.split()[1] for x in got)}; read the REPUBLISH lines below and publish them (SUPER_SESSION.md step 3b)"] + got) if got else got
         except FutTimeout:
-            return [f"NOTE REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s: run `python scripts/dev/artifacts.py republish` by hand"]
+            return [f"PLAN pages-unchecked: REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s",
+                    f"NOTE REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s: run `python scripts/dev/artifacts.py republish` by hand"]
         finally:
             ex.shutdown(wait=False)
     except Exception as e:
