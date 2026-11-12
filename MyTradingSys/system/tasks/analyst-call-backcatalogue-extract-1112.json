@@ -1,6 +1,8 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "",
+  "closed": "2026-11-12T20:30:40Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/analyst_call_slot_2026-11-11/backcatalogue_extract/EXTRACT.md"
   ],
@@ -15,10 +17,18 @@
   "id": "analyst-call-backcatalogue-extract-1112",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "EXTRACT.md written with 3 Benjamin Cowen (j-JVi02_C88, 2026-11-11) BTC support calls; veri",
+      "ref": "4480d514b",
+      "utc": "2026-11-12T20:30:40Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: ready for review",
   "note": "DSA parked; YouTube work is Gemini-only and the home IP is YouTube-blocked until 2026-11-13T02:53Z. Planner will refile as a Gemini-queue card. | 2026-11-12 reopened: DSA bridges closed; operator order all YouTube work on Gemini.",
   "pinned": false,
   "prio": 2,
@@ -27,7 +37,12 @@
   "refined_by": "",
   "refreshed": "2026-11-12T17:01:08Z",
   "refs": [],
-  "result": "",
+  "result": "EXTRACT.md written with 3 Benjamin Cowen (j-JVi02_C88, 2026-11-11) BTC support calls; verify_extract_quotes.py PASS: 0 problem(s)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/analyst_call_slot_2026-11-11/backcatalogue_extract/"
   ],
@@ -37,12 +52,13 @@
   "sources": [
     "Edge lead 1111"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Pick the analysts and videos from MyTradingSys/research/analyst_call_slot_2026-11-11/ (read its README first); captions only, never invented",
     "Write EXTRACT.md rows (video id, date, level, direction, verbatim quote); no outcomes read before extraction",
     "Run verify_extract_quotes.py until exit 0; unverifiable quotes dropped; commit on your branch"
   ],
+  "taken": "2026-11-12T20:29:11Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Extract the back-catalogue of analyst calls with a level, a direction and a date (losers included) from captions into research/analyst_call_slot_2026-11-11/calls.jsonl format; Gemini lane, verify_extract_quotes exit 0; no outcomes read before extraction",
   "weight": "",

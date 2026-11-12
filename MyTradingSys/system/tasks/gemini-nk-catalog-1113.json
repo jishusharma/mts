@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom --status"
+  ],
+  "created": "2026-11-12T20:02:31Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/nk_stocktalk_1113/CATALOG.md lists every channel video (count on line 1) with id, title, date, length, caption language; MyTradingSys/research/nk_stocktalk_1113/SELECTED.md names the extract-now set per concept (Hilega Milega, Bollinger Bands, SRP, Nifty use) with the reason; videos with no captions marked LISTED-ONLY",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "List every video of @NKStockTalk (id, title, date, length, caption language Hindi manual / Hindi auto / none / unknown) and pick a short extract-now set covering Hilega Milega, Bollinger Bands, SRP and Nifty use, first or definitive video per concept first.",
+  "id": "gemini-nk-catalog-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane effort low. Hindi: see OPERATOR_DECISIONS 2026-11-13. Extract cards follow after SELECTED.md exists.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T20:02:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/nk_stocktalk_1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no YouTube caption request while BLOCKED",
+    "no invented titles or ids"
+  ],
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13 relaying operator: NK StockTalk"
+  ],
+  "state": "ready",
+  "steps": [
+    "List the channel: python -c \"import sys;sys.path.insert(0,'scripts/dev');import yt_transcript_sites as y;print(y.list_channel('@NKStockTalk', n=200))\" (public transcript-site listing, no caption request); add anything Gemini search grounding finds, dated; never a proxy or cookies",
+    "Caption language: run fetch_captions_timed.py --status first (no network); while BLOCKED do NOT fetch, write caption language as unknown_until_unlock with the unlock time; never guess",
+    "Write CATALOG.md (count on line 1, one row per video) and SELECTED.md: read the titles to say what SRP stands for; first or definitive video per concept first; commit on your branch"
+  ],
+  "tests": "MyTradingSys/research/nk_stocktalk_1113/CATALOG.md has one row per video",
+  "title": "[GEMINI] NK StockTalk (Nitish Kumar, Hindi) channel catalog and extract-now triage",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

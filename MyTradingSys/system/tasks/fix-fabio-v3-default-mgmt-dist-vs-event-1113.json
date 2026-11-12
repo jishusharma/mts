@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/backtest/layers/fabio MyTradingSys/backtest/layers/alerts/test_lookahead_forcing_fabio_v3.py -q"
+  ],
+  "created": "2026-11-12T19:37:17Z",
+  "depends_on": [],
+  "done_when": "RESULT note lists each caller of v3 model/manage functions (fabio_v3.py, fabio_v3_exec.py, fabio_of_model.py, bigtrade/fires_kline.py, live_runner_cli.py) with mgmt used; every non-test caller passes mgmt explicitly; README.md Engine section states function defaults are test-only; tests pass",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "manage.py docstring says mgmt event is the v3.1 default, but walk_trade/simulate_trade/model_a_trade/scan defaults are mgmt=dist (kept for T01-T50). engine.run requires mgmt explicitly. Make every non-test caller pass mgmt explicitly and list which runs used which.",
+  "id": "fix-fabio-v3-default-mgmt-dist-vs-event-1113",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs(fabio): clarify session_bounds DST shifts per B102 in fabio_of_model docstring",
+      "ref": "325ce2adcf25",
+      "utc": "2026-11-01T12:07:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "b69d699f3164 fabio v3: resolve the three FORMULAS.md s28.6 code-vs-spec differences",
+      "ref": "MyTradingSys/backtest/layers/fabio/v3/README.md",
+      "utc": "2026-11-01T01:15:41Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Card text said README; the event-default claim is in manage.py docstring (README has no default). Any past run that omitted mgmt used dist: flag it in the result. Next: card context-factors / fabio v3 reruns read the table.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T20:19:36Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/fabio/v3/README.md",
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py",
+    "MyTradingSys/backtest/layers/fabio/fabio_v3.py",
+    "MyTradingSys/backtest/layers/fabio/fabio_v3_exec.py",
+    "MyTradingSys/backtest/layers/fabio/fabio_of_model.py"
+  ],
+  "scope_out": [
+    "changing function default values (T01-T50 depend on dist), live_runner_cli.py edits (live path, JIS-NB only: report only), re-running backtests"
+  ],
+  "scope_sha": "325ce2adcf25",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/layers/fabio/v3/manage.py:7-12; engine.py:41; gap-hunt 1113 via Supervisor C"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep callers of model_a_trade, scan_model_*, walk_trade, simulate_trade and engine.run outside v3/tests; tabulate mgmt used",
+    "Add explicit mgmt= at each research/backtest caller that omits it; report live_runner_cli.py status without editing",
+    "Add one README line: function defaults dist are not grid values; v3.1 default is event; add the ast guard test"
+  ],
+  "tests": "New test in v3/tests: scanning callers via ast asserts each non-test call of model_*_trade/scan_model_*/walk_trade/simulate_trade passes mgmt=; fails on current code if any caller omits it (if none omits, test is a regression guard and result says so)",
+  "title": "[SONNET] Fabio v3 models default to dist management while README says event: align code or README, then say which runs used which",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

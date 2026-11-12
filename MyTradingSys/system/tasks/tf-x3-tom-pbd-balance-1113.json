@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-x3-tom-pbd-balance-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T18:54:50Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-x3-tom-pbd-balance-1113/ANSWERS.md answers Q1 Q3 Q8 Q14 with a Verdict per question (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), each quote tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md in the same folder names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Answer from Tom's own words how he reads trend vs balance (P, B, D structures, closing-price count), what acceptance looks like and what profile anchor he uses; list any number, rule or example he states and mark every missing number NOT_SEEN.",
+  "id": "tf-x3-tom-pbd-balance-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:58:44Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-x3-tom-pbd-balance-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tf-extract-plan 2026-11-13 (operator order 11-13)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/PLAN.md section 1 (questions Q1 Q3 Q8 Q14); read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: Ly62G168MkQ jXR1afMy-3o m3IMdc7QwN4 6BAzqewtPUk uFxYcpiaOpw Sy-x5AQ9-Pk K8qtT2_axPo 1utSjHs_Mq8 0CrkbfuIhkc VumVuGnCcFM YkclL6xgu-s",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-x3-tom-pbd-balance-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[SONNET] Tom PbD / trend-vs-balance gap answers from held transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

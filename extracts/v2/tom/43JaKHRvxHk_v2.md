@@ -90,10 +90,10 @@ mirror stated?: no - do not assume
 **Source GPS: 43JaKHRvxHk | BEGIN**
 
 > "then I'd have 7 million stop losses here"
-**Source GPS: 43JaKHRvxHk | MIDDLE**
+**Source GPS: 43JaKHRvxHk | BEGIN**
 
 > "the VWAP must be based on a trend"
-**Source GPS: 43JaKHRvxHk | MIDDLE**
+**Source GPS: 43JaKHRvxHk | BEGIN**
 
 > "If the price is below it, they're initially more bearishly inclined."
 **Source GPS: 43JaKHRvxHk | MIDDLE**

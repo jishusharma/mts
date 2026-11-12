@@ -55,6 +55,7 @@ PYTEST_LAYER_PATHS = [
     "scripts/dev/test_hosts.py",
     "scripts/dev/test_loop_supervisor_grace.py",
     "scripts/dev/test_api_job.py",
+    "scripts/dev/test_make_conceptualizer.py",
     "scripts/dev/test_api_job_gpt.py",
     "scripts/dev/test_weekplan.py",
     "scripts/dev/test_route_audit.py",
@@ -120,7 +121,7 @@ _LOCK = threading.Lock()
 # before the slow steps start. OURS: the steps whose median is <= 25 s over 4106 step rows of 30 trees' gate_timing.jsonl (2026-10-18),
 # plus 3x (ALWAYS, 18 s in ship logs, 8 failures) and 3js. 2026-10-18: RELAY.md over its size cap failed step 4d (6.6 s) at +438 s.
 CHEAP_STEPS = ("1", "2", "3", "3b", "3c", "3r", "3cv", "3cva", "3tm", "3s", "3f", "3td", "3hs", "3sq", "3ly", "3cy", "3tl", "3q", "3p", "3t",
-               "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3gd", "3dl", "3x", "3mg", "3js",
+               "3d", "3h", "3g", "3gs", "3rc", "3e", "3sh", "3cs", "3pc", "3rb", "3af", "3vd", "3lm", "3dl", "3x", "3mg", "3js",
                "4d", "4e", "5c", "3cm", "3cmt")
 PRECHECK_JOBS = 2
 TARGET_STEP = "4t"   # precheck pytest of the MyTradingSys/tests files that reference the change (they also run in their shard)
@@ -454,7 +455,7 @@ def exec_layer_chunks(modules, jobs):
     chunks = balance_modules(modules, jobs)
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
-    outs = [p.communicate()[0] for p in procs]
+    outs = [communicate_or_kill(p) for p in procs]
     # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
     def passed(p, o):
         return p.returncode == 0 or (p.returncode == 5 and "NO TESTS RAN" in o)
@@ -463,6 +464,23 @@ def exec_layer_chunks(modules, jobs):
         return True, "\n".join(outs)
     keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if not passed(p, o)]
     return False, "\n".join(keep)
+
+
+UNITTEST_SHARD_TIMEOUT_S = 900   # DECISION (OURS) ci-hang-fix-1113: a hung script-style unittest ends its shard here, 15 of the 30 job minutes, with output
+
+
+def communicate_or_kill(p, timeout=None):
+    """p.communicate() with a limit: on expiry the process is killed and the output so far gets a HUNG line (returncode forced non-zero),
+    so a hung script-style test fails the step with its name instead of the 30 min job timeout cancelling the shard silently."""
+    limit = float(os.environ.get("MTS_UNITTEST_SHARD_TIMEOUT_S", UNITTEST_SHARD_TIMEOUT_S)) if timeout is None else timeout
+    try:
+        return p.communicate(timeout=limit or None)[0]
+    except subprocess.TimeoutExpired:
+        p.kill()
+        out = (p.communicate()[0] or "")
+        p.returncode = p.returncode or 1
+        tail = "\n".join(out.splitlines()[-30:])
+        return f"{tail}\nHUNG: unittest shard exceeded {limit:g} s and was killed; the last test line above is the hung test\n"
 
 
 def exec_unittest_shards(script, jobs, part=None):
@@ -485,9 +503,10 @@ def exec_unittest_shards(script, jobs, part=None):
         all_ids = all_ids[part[0]::part[1]]
     chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
-    procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    verbose = ["-v"] if os.environ.get("CI") else []   # CI: the last `test ... ` line of a killed shard names the hung test
+    procs = [subprocess.Popen([sys.executable, "-m", "unittest", *verbose] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                               text=True, encoding="utf-8", errors="replace", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
-    outs = [p.communicate()[0] for p in procs]
+    outs = [communicate_or_kill(p) for p in procs]
     ok = all(p.returncode == 0 for p in procs)
     def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
         lines = o.splitlines()
@@ -605,7 +624,7 @@ def build_plan(quick):
     add("3cx", "Layer lab runner tests", [sys.executable, "scripts/dev/test_codex_run.py"], "Step 3cx: Layer lab runner tests")
     add("3nl", "NUC lab wrapper tests (tick/status/gemini over the ssh gate)", [sys.executable, "scripts/dev/test_nuc_lab.py"], "Step 3nl: NUC lab wrapper tests")
     add("3cy", "ask_model tests", [sys.executable, "scripts/dev/test_ask_model.py"], "Step 3cy: ask_model tests")
-    add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint"], "Step 3tl: Task card lint")   # a ready/active card that fails the Definition of Ready is an error
+    add("3tl", "Task cards meet the Definition of Ready", [sys.executable, "scripts/dev/tasks.py", "lint", "--warn"], "Step 3tl: Task card lint")   # change 3 (SHIP_ARCH_REVIEW_2026-11-12): a card that fails the Definition of Ready / review stamp WARNs, never fails the gate or CI
     add("3q", "INDEX/BUGS consistency", [sys.executable, "scripts/dev/test_registry_consistency.py"], "Step 3q: INDEX/BUGS consistency")
     add("3p", "P4 corrected script tests", [sys.executable, "MyTradingSys/research/loose_code/test_p4_corrected.py"], "Step 3p: P4 corrected script tests")
     add("3t", "T093 turn-of-candle imbalance tests", [sys.executable, "MyTradingSys/research/loose_code/test_t093_toc_imbalance_klines.py"], "Step 3t: T093 imbalance tests")
@@ -648,9 +667,9 @@ def build_plan(quick):
     # Step 3w: wiring gate - every unrun code file is declared in wiring_registry.json or archived (fast, in --quick too)
     add("3w", "Wiring gate tests", [sys.executable, "scripts/dev/test_wiring_scan.py"], "Step 3w: Wiring gate tests")
     add("3x", "Wiring check: no undeclared unwired code (wiring_scan.py --check)", [sys.executable, "scripts/dev/wiring_scan.py", "--check"], "Step 3x: Wiring check")
-    # Step 3gd: B150 discovery in every ship (2026-10-16: two research test files shipped unregistered and turned CI red twice in 3 h;
-    # the smoke gate never picked the pytest shard that holds this test)
-    add("3gd", "Gate discovery: every tracked test file is gated (B150)", [sys.executable, "MyTradingSys/tests/test_gate_discovery_b150.py"], "Step 3gd: Gate discovery")
+    # Step 3gd (B150 discovery) is gone from the ship gate (SHIP_ARCH_REVIEW_2026-11-12 change 4): run_extra_tests.discovered() finds every
+    # tracked test under a study folder and the other dirs are collected wholesale, so no hand-kept list can fall behind; the check still
+    # runs as a pytest file in the MyTradingSys/tests shards (CI).
     # Step 3dl: CI deps lint (2026-10-16: pandas imported by research tests, missing from the ci.yml pip line; the desktop has every package, so
     # only CI saw ModuleNotFoundError at collection, three red rounds in 3 h). Always runs, ~5 s.
     # Step 3la: look-ahead lint (2026-10-24: 62a05b2eb added a run_rsi_backtest.py hit; no smoke shard named the module, the ship passed, CI
@@ -846,6 +865,12 @@ class _RecordedSlot:
     def __getattr__(self, name):   # name, slots, wait_s ... of the wrapped slot
         return getattr(self.inner, name)
 
+    def __setattr__(self, name, value):   # timeout, poll, alive ... must reach the wrapped slot: set on the wrapper they were silently
+        if name in ("inner", "mode"):     # ignored, so a test that set timeout=0.2 waited on the real default forever (CI hang 2026-11-12)
+            object.__setattr__(self, name, value)
+        else:
+            setattr(self.inner, name, value)
+
     def __enter__(self):
         self.inner.__enter__()
         record_gate_row("gate_slot", wait_s=round(getattr(self.inner, "wait_s", 0.0), 2), mode=self.mode)
@@ -864,7 +889,7 @@ def gate_slot_factory(mode):
 
 def step_timeout_for(mode):
     """gate-tiers-by-path: the per-step cap (seconds) of a smoke gate; a full gate and an unselected run keep none."""
-    return FAST_STEP_TIMEOUT_S if mode == "smoke" else None
+    return FAST_STEP_TIMEOUT_S if mode in ("smoke", "live") else None
 
 
 def changed_files(args):
@@ -929,7 +954,7 @@ def step_test_files(s, root=REPO):
     return sorted(out)
 
 
-def apply_fast(plan, files, nums, jobs):
+def apply_fast(plan, files, nums, jobs, live=False):
     """GATE_SPEED X1/X2: replace the smoke selection of a ship (`--fast`) by the tests the import graph reaches (gate_impact.reach), kept inside
     a time budget. `nums` = what gate_select.explain picked (ALWAYS steps, doc steps, steps whose test names a changed file; its shard picks
     are replaced here). Returns (plan, info); plan None = live code imports the change, the caller runs the full gate. Raises on any
@@ -939,16 +964,17 @@ def apply_fast(plan, files, nums, jobs):
     import run_extra_tests
     reach = gate_impact.reach(files)
     info = {"reached": len(reach.tests), "direct": len(reach.direct), "deferred": []}
+    live = bool(reach.live_hit) or live
     if reach.live_hit:
-        info["live_hit"] = reach.live_hit
-        return None, info
+        info["live_hit"] = reach.live_hit   # change 2 (SHIP_ARCH_REVIEW_2026-11-12): live code imports the change; no full local gate, the live must-pass steps run
+    must_nums = {LOOKAHEAD_MUST} | (set(gate_select.LIVE_STEPS) if live else set())
     est_file = lambda f: gate_impact.estimate(f, TEST_FILE_SECONDS)   # noqa: E731
     step_est = lambda n: STEP_EST.get(n, UNIT_DEFAULT_S)              # noqa: E731
     all_nums = [s.num for s in plan]
     pytest_nums = [n for n in all_nums if n.startswith("4") and n not in FAST_ALWAYS and n != TARGET_STEP]
     steps_list = [(s.num, s.cmd_text) for s in plan]
     # ALWAYS steps that cost 3-9 s each run in a fast gate only when the change can matter to them: a file their command names, a ride-along
-    # doc (task cards, INDEX/BUGS), a changed test file (CI deps lint). 3x (wiring check), 3gd (test discovery), 3qn, 4d always run.
+    # doc (task cards, INDEX/BUGS), a changed test file (CI deps lint). 3x (wiring check), 3qn, 4d always run.
     needed = set()
     for f in files:
         needed.update(gate_select._name_matches(f, steps_list))
@@ -958,13 +984,15 @@ def apply_fast(plan, files, nums, jobs):
         needed.update(gate_select.DOC_STEPS)
     needed.update(gate_select.doc_must(files, all_nums))   # gate_gap_2026-11-03: a ride-along card keeps 3tl
     keep_nums = {n for n in nums if n in all_nums and n not in pytest_nums and n not in ("3xt", "5b") and (n not in FAST_COSTLY_ALWAYS or n in needed)}         | {n for n in FAST_ALWAYS if n in all_nums}
+    if live:
+        keep_nums |= {n for n in gate_select.LIVE_STEPS if n in all_nums}
     units = {}   # key -> (estimated seconds, direct)
 
     def unit(key, e, direct):
         old = units.get(key)
         units[key] = (e, direct or (old[1] if old else False))
 
-    for n in keep_nums - {LOOKAHEAD_MUST}:   # 3la is must-pass: never left to the budget
+    for n in keep_nums - must_nums:   # 3la (and the live steps 1/2/3) are must-pass: never left to the budget
         unit(("sc", n), step_est(n), True)
     pyt = {}
     for s in plan:
@@ -1037,7 +1065,7 @@ def apply_fast(plan, files, nums, jobs):
                 NO_DEFER_CMDS.add(repr(m.cmd))
                 new_plan.append(m)
             continue
-        if n == LOOKAHEAD_MUST and n in keep_nums:
+        if n in must_nums and n in keep_nums:
             s.est = step_est(n)
             NO_DEFER_CMDS.add(repr(s.cmd))
             new_plan.append(s)
@@ -1215,9 +1243,9 @@ def apply_selection(plan, args):
     if mode == "full":   # every shard runs: 4t would run its files twice, serially before the main gate (303 s, ship 2026-10-24)
         return [s for s in plan if s.num != TARGET_STEP], mode
     global fast_applied, fast_info
-    if "--fast" in args and mode == "smoke":
+    if "--fast" in args and mode in ("smoke", "live"):
         try:
-            new_plan, info = apply_fast(plan, files, nums, fast_jobs())
+            new_plan, info = apply_fast(plan, files, nums, fast_jobs(), live=mode == "live")
         except Exception as e:   # any surprise: the old whole-shard smoke selection below (a larger, slower set)
             for s in plan:
                 if str(s.skip).startswith("fast:"):
@@ -1225,12 +1253,13 @@ def apply_selection(plan, args):
             print(f"fast path unavailable ({type(e).__name__}: {e}); using the whole-shard smoke selection", flush=True)
         else:
             fast_info = info
-            if new_plan is None:
-                gate_reason = f"full: live code imports the change ({', '.join(info['live_hit'][:3])})"
-                gate_mode = "full"
-                return plan, "full"
             fast_applied = True
-            ran_always = [s.num for s in new_plan if not s.skip and s.num in ("3w", "3x", "3tl", "3gd", "3dl")]
+            ran_always = [s.num for s in new_plan if not s.skip and s.num in ("3w", "3x", "3tl", "3dl")]
+            if info.get("live_hit") or mode == "live":
+                mode = gate_mode = "live"
+                why = f"live code imports the change ({', '.join(info['live_hit'][:3])})" if info.get("live_hit") else gate_reason.split(";")[0]
+                gate_reason = f"fast live: {why}; execution tests + static suite ({','.join(gate_select.LIVE_STEPS)}) must-pass; ALWAYS steps {','.join(ran_always) if ran_always else 'none'} ran"
+                return new_plan, mode
             gate_reason = f"fast smoke: {len(files)} file(s); ALWAYS steps {','.join(ran_always) if ran_always else 'none'} ran"
             return new_plan, mode
     for s in plan:

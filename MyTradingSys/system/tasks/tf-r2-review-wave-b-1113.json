@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-r2-review-wave-b-1113/REVIEW.md"
+  ],
+  "created": "2026-11-12T18:55:27Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-r2-review-wave-b-1113/REVIEW.md answers all with a Verdict per question (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), each quote tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md in the same folder names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review each ANSWERS.md and TRIAGE.md of cards tf-g1..tf-g3 per the reviewer rules in the brief: gate exit 0 with a quote, 5 blocks per file checked, every NOT_SEEN grep-checked, TRIAGE rubric applied as written; write REVIEW.md per card folder with PASS or FIX.",
+  "id": "tf-r2-review-wave-b-1113",
+  "lane": "HAIKU",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:59:14Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-r2-review-wave-b-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tf-extract-plan 2026-11-13 (operator order 11-13)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/PLAN.md section 1 (questions all); read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Run the gate on each out/tf-g*/ANSWERS.md and record exit codes",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-r2-review-wave-b-1113/REVIEW.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[HAIKU] Review wave B answers (tf-g1..g3) against transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

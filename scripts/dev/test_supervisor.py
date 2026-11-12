@@ -1546,6 +1546,11 @@ def test_plan_prints_a_republish_line_per_stale_page_on_a_publisher_login(tmp_pa
     lines = _plan_run(tmp_path, 0, 0)[0]
     got = [x for x in lines if x.startswith("REPUBLISH ")]
     assert len(got) == 2 and got[0].split()[1:2] == ["mts_home"] and got[0].endswith("https://claude.ai/artifact/AAA")
+    # a reader that keeps only ^(PLAN|RUN|CI|WAKE) lines (the supervisor's filter, dropped REPUBLISH for weeks) still sees stale pages
+    import re
+    kept = [x for x in lines if re.match(r"(PLAN|RUN|CI|WAKE)", x)]
+    assert any(x.startswith("PLAN pages-stale 2: mts_home, sim_desk") for x in kept)
+    assert S.REPUBLISH_TIMEOUT_S >= 120
     assert S.republish_notes("A") == [] and S.republish_notes("B") == []
 
 
@@ -1558,4 +1563,4 @@ def test_republish_notes_time_cap_becomes_a_note(monkeypatch):
     monkeypatch.setattr(artifacts, "republish_lines", lambda reg: gate.wait(5) or [])
     out = S.republish_notes("C")
     gate.set()
-    assert len(out) == 1 and out[0].startswith("NOTE REPUBLISH check timed out")
+    assert len(out) == 2 and out[0].startswith("PLAN pages-unchecked") and out[1].startswith("NOTE REPUBLISH check timed out")

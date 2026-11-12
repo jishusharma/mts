@@ -4,6 +4,14 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-pages-follow-data | decided 2026-11-13 | Supervisor C (relayed from the operator)
+```json
+{"id": "d-pages-follow-data", "order": 48, "date": "2026-11-13", "status": "DECIDED",
+ "question": "Pinned claude.ai pages (CBP desk, Live feed, MTS Home) showed 4-9 day old data for weeks despite rules. What must hold?",
+ "answer": "Every artifact must update whenever a session touches its data; the super session owns it. Buy Crypto (spot alt buying) updates after every CBP fetch. The fix is a mechanism that runs, not another rule. (operator, relayed by Supervisor C 2026-11-13)",
+ "done": "mechanism: registry.json per-page feeds/max_age_h/producer; artifacts.py stale flags a page whose feed is newer than its last publish or older than max_age_h; supervisor plan prints PLAN pages-stale + REPUBLISH lines; cbp_run.py, buy_crypto.py and the live-page generator print REPUBLISH for pages whose producer they are (Buy Crypto producer = cbp). Gap: research_map has no generator (hand-made), flagged stale until a super session edits it."}
+```
+
 ## d-restart-c-a-supervisors | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
 ```json
 {"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
@@ -2413,3 +2421,32 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Desktop path: no local `agy` here, so `gemini_queue.py run` hands the specs to the NUC as a one-shot /IT schtask over the SSH gate (`nuc_lab.py gemini-task`; poll with `nuc_lab.py gemini-status`). A skipped card now prints `SKIP <card>: <why>` instead of exiting 0 silent.
 - Every Gemini extract still needs `verify_extract_quotes.py` exit 0 (Gemini watching a video invents quotes); a Claude session reviews the `gemini-q/<id>` branch and ships it.
 - Cards moved: cbp-gap-since-1111-fetch-by-browser-panel-1112 (SONNET to CODEX, Chrome/panel steps removed), analyst-call-backcatalogue-extract-1112 (dropped DSA to ready CODEX), tom-fabio-rebuild-from-beginner-videos-1109 (scope fixed).
+
+## 2026-11-12 ~18:10Z: Fable ship-architecture change list: yes, all 8
+- Operator, verbatim: "Apply the Fable change list? - yes all 8". Spec: SHIP_ARCH_REVIEW_2026-11-12.md section 7.
+- Decision: apply changes 1-8. Change 2 (live-path ships run the fast gate + execution tests + static suite locally; the full suite only on CI and on the live box before a deploy) explicitly REVERSES the 11-10 "must-not-cut" item (full local suite on live-path ships), with his approval.
+- Kept blocking: 3pc, 3vd, 3xm, 3la and the 2-slot gate pool. Card lint (3tl), review stamp and the `Next:` card-name check now warn. 3gd is gone (auto-discovery). The coordinator is measured (plan timing row), not cut.
+
+## 2026-11-13: Tom/Fabio gap hunt iteration 2 done, iteration 3 GOES AHEAD
+- Operator order (11-13): keep hunting holes in extraction, conceptualization and translation-to-trade with different models and methods. Five hunters ran read-only (opus_trade_replay, sonnet_param_trace, haiku_vocab, sonnet_conditions, gemini_blind_map); merged in `MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md`.
+- Stopping rule fired: market profile (time-based, TPO) is named in 23 Tom/Fabio videos and was never coded (Haiku V1), a pattern-2 hole (10+ videos, no code). Decision: run iteration 3 after ITERATION_2 ships. Gaps ranked first are those two or more hunters found: context layer (balance read by profile shape, weekly value migration, NY-session profile instead of 24h), post-fill management (41 of 104 steps, 4 run), Fabio not using order flow on BTC.
+- Corrections carried: the "116 videos" closing-price figure is 24 of 122; audit root cause 4 (VAH ct_short, short below VAL) was fixed by 36513c888 and e6f378bf3; the DAX 0/7 recall was run with DAX fees too.
+- Raw cards filed: fix-auction-context-maker-fee-roundtrip-1113, fix-fabio-v3-default-mgmt-dist-vs-event-1113.
+
+## 2026-11-13: learn NK StockTalk concepts (Hilega Milega, Bollinger Bands, SRP, Nifty use)
+- Operator (relayed by Supervisor C): new analyst Nitish Kumar, https://www.youtube.com/@NKStockTalk/videos, Hindi. Learn his concepts: Hilega Milega (RSI with moving averages of RSI, and the volume-weighted one), how he uses Bollinger Bands, "SRP" (meaning to be read from the titles), and how he applies them to Nifty.
+- Decision: all of it runs on the Gemini lane at low effort, like Tom/Fabio. Catalog first (`nk_stocktalk_1113/CATALOG.md`), then a short extract-now set (`SELECTED.md`) with the first or definitive video per concept.
+- Hindi rule: quote the caption text exactly (Devanagari or romanised as the caption has it) plus an English line labelled TRANSLATION; `verify_extract_quotes.py` runs against the Hindi caption file, never a translation. Videos without captions are listed only. Every number he states is SOURCED, anything unstated is NOT_SEEN, never filled with our numbers.
+- Caption locks respected (desktop to 2026-11-13T02:53Z, NUC to 13:58Z); no fetch before then.
+
+## 2026-11-13: use both Gemini models on NK StockTalk and iteration-3 Tom/Fabio jobs
+- Operator (relayed by Supervisor C): "use both gemini models". The queue's two Gemini models are `flash` (gemini-3.8-flash) and `argon` (Gemini 4 Argon); the other queue models (opus, sonnet, gpt) are not Gemini.
+- Decision: NK StockTalk selected extracts and iteration-3 Tom/Fabio Gemini jobs run on both, effort low, as separate cards per model. Comparison per video in `nk_stocktalk_1113/MODEL_COMPARE.md` (Tom/Fabio: beside each batch): AGREED = a rule or number both models give that passes `verify_extract_quotes.py`; SINGLE = only one model gives it, checked by a Claude session against the caption text; CONFLICT = the models disagree, both quotes recorded.
+
+## 2026-11-13: bookkeeping entries (recorded by Supervisor C's request)
+- (a) 2026-11-12: build the Conceptualizer as one app for all concept decks, and discuss concepts one by one. On trunk at 35e318ce.
+- (b) Revalidate the DSA root-cause note. Verdict: 4 confirmed, 2 partial. The 0/7 DAX recall was not caused by fees (it was run with DAX fees too). File: `gap_hunt_1113/dsa_revalidation_1113.md` (notes folder); corrections applied in AUDIT_AND_COURSE_CORRECTION.md.
+- (c) Discard useless tests to speed up shipping, following `test_value_audit_1113.md`. The cut list is being applied (card test-cut-1113). Keep the 61 execution and live-path tests.
+- (d) A stuck test must name itself: per-test limit of 300 s on CI and 900 s per shard (958130902).
+- (e) Cleanup is a standing super-session duty: merged, clean worktrees are removed, with their ignored data moved to `C:/Users/E-ngineers/Dumps/wt_rescue`, not deleted.
+- Cards copied from the main checkout to trunk (were untracked there): bug-conflict-ca369de3a4, extract-btc-50w-ma-video-j-JVi02_C88-1112. The other 8 on the supervisor's list were already on trunk.

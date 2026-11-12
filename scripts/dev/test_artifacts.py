@@ -74,7 +74,7 @@ class Registry(unittest.TestCase):
         self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
                                                       "Test Simulator", "CBP Analyst Desk", "Live feed one page",
                                                       "Tom and Fabio Setup Review", "Buy Crypto",
-                                                      "Concept deck: Tom & Fabio", "Concept deck: Malkan RSI"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
+                                                      "Concept deck: Tom & Fabio", "Concept deck: Malkan RSI", "Conceptualizer"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
@@ -314,6 +314,8 @@ class Stale(unittest.TestCase):
         self.assertNotEqual(af.content_hash(c), af.content_hash(c.replace('"x": 1', '"x": 2')))
 
     def test_stale_lists_exactly_the_differing_pages(self):
+        for q in self.reg["pages"]:      # the hash check on its own; feed/max_age_h flags have their own tests
+            q.pop("feeds", None), q.pop("max_age_h", None)
         pages = af.tracked(self.reg)
         self.assertGreaterEqual(len(pages), 3)
         built = {pg["slug"]: f"html of {pg['slug']}" for pg in pages}
@@ -355,7 +357,7 @@ class Stale(unittest.TestCase):
         finally:
             af.build_html = orig
         with self.assertRaises(SystemExit):
-            af.publish_record(self.reg, "cbp_analyst_desk")  # no html, no buildable generator
+            af.publish_record(self.reg, "concept_deck_tom_fabio")  # no html, no buildable generator, no feeds
 
     def test_every_page_has_generator_or_hand_made_mark(self):
         for pg in self.reg["pages"]:
@@ -423,6 +425,8 @@ class PagesFollowBuilds(unittest.TestCase):
 
     def test_republish_lines_format(self):
         reg = af.load()
+        for q in reg["pages"]:
+            q.pop("feeds", None), q.pop("max_age_h", None)
         pages = af.tracked(reg)
         lines = af.republish_lines(reg, lambda pg: "<html>" + pg["slug"] + "</html>")
         self.assertEqual(len(lines), len(pages))
@@ -434,3 +438,61 @@ class PagesFollowBuilds(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FeedStaleTests(unittest.TestCase):
+    """2026-11-13 root cause A: a page whose generator is not re-run on fresh data never showed as stale."""
+
+    def _reg(self, tmp, **extra):
+        pg = {"slug": "p", "title": "P", "status": "canonical", "pinned": True, "generator": "x", "html": None, "single_owner": "acc",
+              "urls": {"acc": "https://claude.ai/artifact/AAA"}, "last_published": {"acc": "2026-11-07"}, "published_at": "2026-11-07T10:00:00Z"}
+        pg.update(extra)
+        return {"accounts": {"acc": ""}, "pages": [pg]}
+
+    def test_feed_newer_than_publish_is_stale(self):
+        import os, tempfile, time
+        with tempfile.TemporaryDirectory() as d:
+            feed = Path(d) / "board.html"
+            feed.write_text("x", encoding="utf-8")
+            reg = self._reg(d, feeds=[str(feed)])
+            self.assertEqual([s for s, _u, _w in af.stale(reg)], ["p"])            # file is "now", published 11-07
+            old = time.time() - 40 * 86400
+            os.utime(feed, (old, old))
+            self.assertEqual(af.stale(reg), [])                                    # feed older than the publish: current
+
+    def test_glob_feed_and_missing_feed(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "a1.json").write_text("x", encoding="utf-8")
+            self.assertEqual(len(af.stale(self._reg(d, feeds=[str(Path(d) / "a*.json")]))), 1)
+            self.assertEqual(af.stale(self._reg(d, feeds=[str(Path(d) / "absent*.json")])), [])    # absent on this machine: skipped
+
+    def test_max_age_h_flags_old_publish(self):
+        from datetime import datetime, timezone
+        reg = self._reg(".", max_age_h=24)
+        now = datetime(2026, 11, 13, tzinfo=timezone.utc)
+        self.assertIn("max_age_h", af.stale(reg, now=now)[0][2])
+        self.assertEqual(af.stale(reg, now=datetime(2026, 11, 7, 12, tzinfo=timezone.utc)), [])
+
+    def test_publish_record_stores_time_and_clears_stale(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            feed = Path(d) / "f.json"
+            feed.write_text("x", encoding="utf-8")
+            reg = self._reg(d, feeds=[str(feed)])
+            self.assertTrue(af.stale(reg))
+            af.publish_record(reg, "p")
+            self.assertEqual(af.stale(reg), [])
+
+    def test_republish_line_uses_publish_file_and_producer_lines(self):
+        reg = self._reg(".", feeds=[], max_age_h=1, publish_file="F:/x/board.html", producer=["cbp"])
+        self.assertEqual(af.republish_lines(reg), ["REPUBLISH p F:/x/board.html https://claude.ai/artifact/AAA"])
+        self.assertEqual(af.producer_lines(reg, "cbp"), ["REPUBLISH p F:/x/board.html https://claude.ai/artifact/AAA"])
+        self.assertEqual(af.producer_lines(reg, "other"), [])
+
+    def test_real_registry_data_pages_declare_feeds(self):
+        reg = af.load()
+        by = {p["slug"]: p for p in reg["pages"]}
+        for slug in ("cbp_analyst_desk", "buy_crypto", "live_feed_onepage_mock", "research_map"):
+            self.assertTrue(by[slug].get("max_age_h"), slug)
+        self.assertIn("cbp", by["buy_crypto"]["producer"])

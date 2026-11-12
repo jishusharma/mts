@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-x4-tom-session-profile-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T18:55:01Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-x4-tom-session-profile-1113/ANSWERS.md answers Q2 Q7 Q8 with a Verdict per question (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), each quote tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md in the same folder names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Answer from Tom's own words which hours he trades and avoids, how he treats the open, which profile period and market the 70% return claim refers to, and whether he ever profiles a market without a cash session; mark every missing item NOT_SEEN.",
+  "id": "tf-x4-tom-session-profile-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:58:53Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-x4-tom-session-profile-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "tf-extract-plan 2026-11-13 (operator order 11-13)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/PLAN.md section 1 (questions Q2 Q7 Q8); read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: 5Ljfwvtktek wPMiyJXL0zU BB3c8visnkI VxN5IxTwpbE HySZZSjMxF8 sQ_biBKhPVU -dMWA_bbm3o YopZ5ZDmMFw",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-x4-tom-session-profile-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[SONNET] Tom session window and profile-anchor answers from held transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

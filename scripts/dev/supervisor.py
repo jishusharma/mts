@@ -994,6 +994,22 @@ def loop_home(home=None) -> Path:
     return Path(home) if home else Path(os.environ.get("MTS_RELAY_HOME") or Path.home() / ".claude") / LOOP_DIR
 
 
+def record_plan_timing(login: str, wall_s: float, n_lines: int = 0, context_tokens: int | None = None, running: int = 0, home=None) -> bool:
+    """Change 8 (SHIP_ARCH_REVIEW_2026-11-12): measure the coordinator, do not cut it yet. One JSON row per `plan` run in
+    <home>/<login>-plan-timing.jsonl (outside the repo, which is public): wall seconds of the run, lines printed, the coordinator's
+    context size when the caller passes it (the token proxy), workers running. The next review totals it after one day. Never raises."""
+    try:
+        p = loop_home(home) / f"{login}-plan-timing.jsonl"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        row = {"at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "login": login, "wall_s": round(float(wall_s), 2),
+               "lines": int(n_lines), "context_tokens": context_tokens, "running": int(running)}
+        with open(p, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(row) + "\n")
+        return True
+    except Exception:
+        return False
+
+
 def record_reading(login: str, rd: dict, home=None) -> list:
     """Append this reading to <home>/<login>.jsonl and return the last 50 (oldest first). A write error keeps the reading in memory only."""
     p = loop_home(home) / f"{login}.jsonl"
@@ -1300,6 +1316,9 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if lane_owner(live, NUC) == login and ctx.get("codex_ready"):
             L.append(f"NOTE GPT lab: {ctx['codex_ready']} CODEX card(s) ready; owner unknown this wake")
         me_codex = me_any = False
+    if me_any:   # cbp-pipe-fix-1112: new analyst uploads reached the board only when a session ran cbp_run; now every wake checks
+        L.append("RUN python scripts/dev/cbp_run.py --due --quick-new   (CBP NEW lines = uploads not on the board; fetch obeys the YouTube lock; "
+                 "ends with REPUBLISH when rows were added)")
     if ctx.get("refine_raw") and claude_ok:
         L.append(f"RUN Session_Planner (Agent, sonnet): refine {ctx['refine_raw']} raw cards")
     cx = ctx.get("codex_ready", 0)
@@ -1471,7 +1490,7 @@ def _who_rows() -> list:
         return []
 
 
-REPUBLISH_TIMEOUT_S = 60       # OURS: the page builds run inside every publisher-login plan, so they are time-capped
+REPUBLISH_TIMEOUT_S = 150      # OURS: the page builds run inside every publisher-login plan, so they are time-capped (60 s was too tight: `stale` builds 3 pages in ~15 s idle, much longer on a busy host)
 
 
 def republish_notes(login: str) -> list:
@@ -1486,9 +1505,12 @@ def republish_notes(login: str) -> list:
         ex = ThreadPoolExecutor(max_workers=1)
         fut = ex.submit(artifacts.republish_lines, reg)
         try:
-            return fut.result(timeout=REPUBLISH_TIMEOUT_S)
+            got = fut.result(timeout=REPUBLISH_TIMEOUT_S)
+            # a PLAN-prefixed summary first: a reader that keeps only ^(PLAN|RUN|CI|WAKE) lines still sees stale pages (2026-11-13: REPUBLISH lines were dropped every wake)
+            return ([f"PLAN pages-stale {len(got)}: {', '.join(x.split()[1] for x in got)}; read the REPUBLISH lines below and publish them (SUPER_SESSION.md step 3b)"] + got) if got else got
         except FutTimeout:
-            return [f"NOTE REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s: run `python scripts/dev/artifacts.py republish` by hand"]
+            return [f"PLAN pages-unchecked: REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s",
+                    f"NOTE REPUBLISH check timed out after {REPUBLISH_TIMEOUT_S} s: run `python scripts/dev/artifacts.py republish` by hand"]
         finally:
             ex.shutdown(wait=False)
     except Exception as e:
@@ -2272,9 +2294,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.until and wu is None or args.hours is not None and not 0 < args.hours <= 48:
             print("--until: UTC time like 2026-10-31T06:00Z; --hours: 0-48")
             return 2
+        t_plan = time.monotonic()
         lines, data = plan(REPO, args.login, rd, running=args.running, send=not args.no_send, no_fetch=args.no_fetch,
                            shas=parse_shas_arg(args.shas), context_tokens=args.context_tokens, wave_start=ws,
                            work_hours=args.hours, work_until=wu)
+        if not args.no_send:
+            record_plan_timing(args.login, time.monotonic() - t_plan, len(lines), args.context_tokens, args.running)
         print(json.dumps(data, indent=1, sort_keys=True, default=str) if args.json else chr(10).join(lines))
         return 0
     if args.cmd == "session-log":
