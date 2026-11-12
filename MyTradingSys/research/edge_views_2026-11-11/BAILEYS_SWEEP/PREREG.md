@@ -4,6 +4,11 @@ Card baileysforex-btc-liquidity-extract-1112, video D-0xTsMPwys. Analyst stateme
 This file is committed before any trade of this rule is computed. One rule, one parameter set, no sweep.
 
 ## Context
+Regime: the daily bias gate (close vs SMA50, long above / short below) is the only regime filter; no volatility or phase gate.
+Phase: none, because phase labels were not part of the video rule; DEV spans bear 2022, base 2023, run-up 2024.
+Session: none, because the video states no session; all hours trade.
+Entry: next 15m bar open after the retest bar closes (market fill).
+(Format amendment before any result was read: these four labelled lines restate the text below; no rule changed.)
 Source: Baileysforex "Backtesting Bitcoin | Easy Liquidity Strategy": daily bias, 1h swing-low sweep, 15m break of
 structure (BOS) plus fresh demand, retest, stop under demand, 1:3 target. The video gives the idea, not numbers: every
 number below is OURS unless it carries SOURCED (quote).

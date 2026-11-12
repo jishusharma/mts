@@ -6,6 +6,8 @@ BTCUSDT 1m Binance perp, DEV 2022-02-01..2024-05-31; data to 2024-06-07 read onl
 **Verdict: FAIL.** 321 trades, fee-net mean -0.324 R (t -3.38). Both DEV halves negative, both sides negative, every year negative.
 Pass bar was mean > 0, t >= 2, both halves > 0.
 
+Regime mix: DEV days with a long bias 51.4 % and short bias 48.6 % (832 days with SMA50); trades 164 long, 157 short; entries 141 in 2022, 138 in 2023, 42 in 2024 (to May).
+
 ## Numbers
 ```
 n 321, win rate 23.7 %, mean net R -0.3236, mean net bp -21.8, t -3.38, max drawdown 111.36 R (sum of R, peak to trough)
