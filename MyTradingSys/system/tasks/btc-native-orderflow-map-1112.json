@@ -1,17 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T09:08:19Z",
   "commands": [
     "python scripts/dev/verdicts.py backfill"
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T22:48:50Z",
-    "misses": 2,
+    "folded": "2026-11-12T09:06:35Z",
+    "misses": 17,
     "reads": [
-      "MyTradingSys/research/VERDICTS.csv"
+      "MyTradingSys/research/btc_orderflow_map_1112/results_clocks.json"
     ],
-    "session": "agent-ab94b81082deb0108"
+    "session": "agent-ab8b9320c2eb4f221"
   },
   "created": "2026-11-11T19:46:46Z",
   "depends_on": [
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "map assembled (fd5acc39): best cell h22 long n 851 net -5.22 bp; no cell passes the 10 bp ",
+      "ref": "fd5acc396",
+      "utc": "2026-11-12T09:08:19Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: DEV A2 n=170 INSUFFICIENT_N; A3 n=819 net15 -0.090% t-8.0, net60 -0.075% t-3.8 (no",
@@ -40,13 +47,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: every measured BTC order-flow cell fails the fee, nothing to queue",
   "note": "DECISION (OURS 2026-11-12 planner-close-1112d): clocks, prints, events all done (events: A2 n=170 INSUFFICIENT_N, A3 n=819 net negative, ba97261ab); DEV only. Assemble CLOCKS.md/PRINTS.md/EVENTS.md tables unchanged into RESULT.md, one verdict per family; one paper slot only if a cell passes the PREREG bar, else NOT_IN_DATA/no edge. Earlier note on scope split: clocks.py refuses any split but dev, so PAPER_SLOT is the forward test.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T22:41:49Z",
   "refs": [],
-  "result": "",
+  "result": "map assembled (fd5acc39): best cell h22 long n 851 net -5.22 bp; no cell passes the 10 bp fee; paper slot NOT_IN_DATA",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/btc_orderflow_map_1112/RESULT.md (new)",
     "MyTradingSys/research/btc_orderflow_map_1112/PAPER_SLOT.md (new, if a rule survives)",
@@ -63,12 +76,13 @@
   "sources": [
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read CLOCKS.md (DEV table, shipped bf380bbb) and PRINTS.md; copy both tables into RESULT.md unchanged, one headline per table: effect, n, z vs placebo",
     "A rule goes to PAPER_SLOT.md only if DEV |z|>=2 vs placebo and it survives the 10 bp fee; the forward paper run is the out-of-sample test (clocks.py allows --split dev only, VALIDATION stays sealed); else NOT_IN_DATA.md (liquidation history: no public feed) and call it FAIL or NOT_IN_DATA",
     "Run verdicts.py backfill for the row"
   ],
+  "taken": "2026-11-12T09:08:19Z",
   "tests": "grep checker: RESULT.md holds both table headers; PAPER_SLOT.md or NOT_IN_DATA.md exists; with RESULT.md absent it must fail first.",
   "title": "BTC order-flow map 4/4: assemble clocks and prints, one paper slot or NOT_IN_DATA (Tom/Fabio give the idea only)",
   "weight": "",
