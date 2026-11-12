@@ -3,7 +3,7 @@ sys.dont_write_bytecode = True
 """Four untested value-area rules A..D exactly as PREREG.md (frozen). 15m bars, arrays are numpy, t = bar open ms.
 
 Imports profile / day_profiles / simulate from edge_views_2026-11-11/VA_REENTRY_POC_SHIFT/va_poc.py (not copied).
-Differs from backtest/vp_return_to_value.py (a 5m touch COUNT with no entry, stop, target or fee): these simulate fee-net trades.
+Differs from the backtest return-to-value count script (vp return to value, in backtest/) (a 5m touch COUNT with no entry, stop, target or fee): these simulate fee-net trades.
 """
 import glob
 import gzip
