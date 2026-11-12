@@ -172,3 +172,5 @@ btc_of_level_auction_1112,BTC order flow at a level absorption B1,B1_at_level_15
 btc_of_level_auction_1112,BTC order flow at a level absorption B1,B1_at_level_60m,DEV,524,-0.036,0.0219,0.10,FAIL,none,no,UNPARSED,2026-11-12
 btc_thin_zone_retest_1112,BTC thin-zone pass-through and accepted-breakdown retest,T1 thin-zone pass-through,DEV,4892,0.00294,UNPARSED,0.10,FAIL,"this frozen rule only, DEV",no,UNPARSED,UNPARSED
 btc_thin_zone_retest_1112,BTC thin-zone pass-through and accepted-breakdown retest,T2 accepted-breakdown retest,DEV,71,0.13678,UNPARSED,0.10,FAIL,"this frozen rule only, DEV",no,UNPARSED,UNPARSED
+btc_of_level_auction_1112,BTC order flow at a level absorption B1,B2_unfinished_auction_15m,DEV,480,-0.013,0.0198,0.10,FAIL,none,no,UNPARSED,2026-11-12
+btc_of_level_auction_1112,BTC order flow at a level absorption B1,B2_unfinished_auction_60m,DEV,480,-0.058,0.0401,0.10,FAIL,none,no,UNPARSED,2026-11-12

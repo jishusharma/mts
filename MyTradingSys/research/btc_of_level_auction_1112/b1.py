@@ -184,8 +184,7 @@ def main(argv=None):
         st = res['B1 at level %dm' % hh]
         L.append('| %dm | %s | %s |' % (hh, ' '.join('%s %+.3f' % kv for kv in st['regime_mean'].items()),
                                        ' '.join('%s %+.3f' % kv for kv in st['session_mean'].items())))
-    L += ['', 'B2 unfinished auction at a 24h extreme: NOT_RUN (not failed). DEV aggTrades are not on disk and the fetch '
-          '(100-400 GB to F:) needs operator approval; nothing fetched. Its two cells stay in the family count.']
+    L += ['', 'B2 unfinished auction at a 24h extreme: run in a later card on D: aggTrades, see B2.md (FAIL on DEV). Its two cells stay in the family count.']
     with open(os.path.join(HERE, 'B1.md'), 'w') as fh:
         fh.write('\n'.join(L) + '\n')
     with open(os.path.join(HERE, 'results_b1.json'), 'w') as fh:

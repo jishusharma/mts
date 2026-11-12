@@ -1,34 +1,69 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
-  "created": "2026-11-12T05:47:27Z",
+  "commands": [
+    "python MyTradingSys/research/btc_of_level_auction_1112/fetch_b2.py",
+    "python MyTradingSys/research/btc_of_level_auction_1112/b2.py --split dev",
+    "python -m pytest MyTradingSys/research/btc_of_level_auction_1112/test_b2.py"
+  ],
+  "context": {
+    "calls_to_edit": 11,
+    "folded": "2026-11-12T07:15:40Z",
+    "misses": 16,
+    "reads": [
+      "MyTradingSys/research/VERDICTS.csv",
+      "scripts/dev/verdicts.py"
+    ],
+    "session": "agent-a1526a8860a54bb2e"
+  },
+  "created": "2026-11-12T05:46:10Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "B2.md + results_b2.json exist with n, gross and net (after 10 bp) mean per horizon, t, placebo, diagnostic revisit share, Regime mix line and a verdict per PREREG words (PASS/FAIL/INSUFFICIENT_N); RESULT/VERDICTS rows that list B2 as NOT_RUN updated like B1's; verdict-registry lint green; b2.py + test_b2.py pass; no raw data, zips or D: files committed.",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Run PREREG B2 (unfinished auction at a 24h extreme, 2 horizons = 2 cells) on DEV 2022-02-01..2024-05-31 from Binance USD-M BTCUSDT aggTrades fetched to D:/MTS_data, exactly as frozen.",
   "id": "btc-of-level-auction-b2-fetch-run-1112",
-  "lane": "",
+  "kind": "run",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: B2 DEV n=480 net15 -0.113% t-5.72, net60 -0.158% t-3.95, both FAIL; 29 zips (15 GB",
+      "ref": "c77c2c78659e",
+      "utc": "2026-11-12T07:12:52Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
   "note": "",
-  "prio": 3,
+  "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T07:13:08Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
+  "scope_in": [
+    "MyTradingSys/research/btc_of_level_auction_1112/"
+  ],
   "scope_out": [],
-  "size": "",
+  "scope_sha": "c77c2c78659e",
+  "size": "M",
   "sources": [],
-  "state": "raw",
-  "steps": [],
+  "state": "ready",
+  "steps": [
+    "file card",
+    "b2.py + test_b2.py, commit",
+    "background fetch+reduce to D:",
+    "run b2, B2.md, results_b2.json",
+    "update NOT_RUN rows",
+    "ship"
+  ],
   "tests": "",
-  "title": "B2 unfinished auction: fetch DEV aggTrades to D: and run the frozen pre-registration",
+  "title": "Run PREREG B2 unfinished auction: fetch DEV USD-M aggTrades to D:, reduce to 15m tables, b2.py, B2.md, results_b2.json, verdict",
   "weight": "",
   "worker": ""
 }

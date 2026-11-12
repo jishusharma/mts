@@ -536,3 +536,6 @@ MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	c[a:a + 
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	h[a:a + 60] = hi	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	l[a:a + 60] = lo	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a:a + 60] = vol / 60.0	reviewed 2026-11-12: synthetic data construction
+MyTradingSys/research/btc_of_level_auction_1112/b2.py	fwd-index	if k < start_bar or e + hmax > len(o1) or pre[e + hmax] != pre[k * BAR_MIN]:	reviewed: forward-completeness check of the outcome window e+hmax (data presence only; event decided at bar close k); test_b2.py::test_missing_data_drops
+MyTradingSys/research/btc_of_level_auction_1112/b2.py	fwd-index	x = h1[e:e + span] if side == -1 else l1[e:e + span]	reviewed: diagnostic revisit window after entry (outcome measurement, never an event input); test_b2.py::test_revisit
+MyTradingSys/research/btc_of_level_auction_1112/test_b2.py	fwd-index	rows += red.feed(p[i:i + step], q[i:i + step], t[i:i + step], ag[i:i + step])	reviewed: chunk slicing of synthetic trades in the test; test_b2.py::test_reducer_chunking_and_aggressor
