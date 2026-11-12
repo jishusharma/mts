@@ -30,6 +30,18 @@ class TestCensus(unittest.TestCase):
     def test_bucket(self):
         self.assertEqual([census.bucket(v) for v in (19.9, 20, 40, 40.1)], ["<20", "20-40", "20-40", ">40"])
 
+    def test_cascade_median_lead_is_days_not_percent(self):
+        with open(census.REGISTRY) as f:
+            registry = census.json.load(f)
+        daily = census.load_daily()
+        b2 = census.to_2d(daily, registry)
+        out = census.render(daily, b2, census.cross_rows(b2), census.cross_rows(daily), daily)
+        cells = [ln.split("|")[5].strip() for ln in out.splitlines()
+                 if ln.startswith(("| DEV |", "| VALIDATION |", "| RECENT |"))]
+        self.assertEqual(len(cells), 3)
+        for c in cells:
+            self.assertNotIn("%", c)
+
 
 if __name__ == "__main__":
     unittest.main()
