@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T09:40:35Z",
   "commands": [],
   "context": {
     "calls_to_edit": 8,
@@ -25,8 +26,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done in f29fcf10: value-area re-entry FAIL (n 882, -0.215 R, t -3.23); POC shift 1d INCONCLUSIVE (n 421, +4.45 bp), 3d FAIL; Haiku recount matched all numbers, no look-ahead",
+  "pinned": false,
   "prio": 1,
+  "reason": "done in f29fcf10: value-area re-entry FAIL (n 882, -0.215 R, t -3.23); POC shift 1d INCONCLUSIVE (n 421, +4.45 bp), 3d FAIL; Haiku recount matched all numbers, no look-ahead",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -35,7 +38,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Edge: PREREG then DEV run on BTC of two untested ideas from ORDERFLOW_RULES.md (no sweeps, fee 10 bp, DEV 2022-02-01..2024-05-31, direction-matched placebo, VALIDATION never read): (1) 9IliXww64uM R10 failed breakout back inside the prior-day value area, trade to the other edge; (2) VOiy8mAALWA R6 two same-direction daily POC shifts, next-day and 3-day return. Done when PREREG.md is committed before RESULT.md and RESULT.md holds n, net, t, halves, placebo and a plain verdict per rule",
