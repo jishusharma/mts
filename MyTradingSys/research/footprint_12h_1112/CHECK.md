@@ -1,8 +1,8 @@
 # Legend 12H Footprint vs our 12h record
 
-**Status: pending: MTS Charts profile not connected.**
+**Status: pending: chart profile not connected.**
 
-`list_connected_browsers` (2026-11-12, after 13:05Z) shows only "Browser 1" and "Browser 2"; the only allowed connection is one named exactly "MTS Charts". No Chrome tab was opened. No screenshots are used as data.
+No Chrome was used for the check (coordinator order 2026-11-12: the profile reached was not the chart profile). No screenshots are used as data.
 
 When MTS Charts is listed: open legend.coinglass.com, Binance BTCUSDT perp, 12H, Footprint; read the last 3 completed bars; fill the table below from `D:/MTS_data/footprint_12h/BTCUSDT_<date>_<00|12>.json`. Do not tune our bucket/ratio to match; explain any gap (bucket size, trade aggregation, venue, bar boundary).
 
