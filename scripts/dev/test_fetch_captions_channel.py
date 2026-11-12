@@ -45,9 +45,13 @@ class T(unittest.TestCase):
     def setUp(self):   # never touch the real ~/.mts/yt_block.json
         self._td = tempfile.TemporaryDirectory()
         self.addCleanup(self._td.cleanup)
-        p = mock.patch.dict("os.environ", {"YT_BLOCK_FILE": str(pathlib.Path(self._td.name) / "b.json"), "YT_PROXY": "off"})
+        p = mock.patch.dict("os.environ", {"YT_BLOCK_FILE": str(pathlib.Path(self._td.name) / "b.json"), "YT_PROXY": "off",
+                                           "YT_WAITING_FILE": str(pathlib.Path(self._td.name) / "w.json")})
         p.start()
         self.addCleanup(p.stop)
+        site = mock.patch.object(f.sites, "http_get", return_value=(0, ""))   # no real transcript-site request, no real waiting list
+        site.start()
+        self.addCleanup(site.stop)
         ip = mock.patch.object(f, "public_ip", return_value="203.0.113.7")   # no real ipify request
         ip.start()
         self.addCleanup(ip.stop)
