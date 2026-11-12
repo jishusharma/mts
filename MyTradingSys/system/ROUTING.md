@@ -5,6 +5,7 @@ procedures (how to post a desk row, how the lab runs a card). Changes come from 
 (ROLES.md row Pipeliner); a change that alters how sessions behave also gets an ANNOUNCEMENTS.md entry and one signal line.
 
 ## Changes (newest first)
+- 2026-11-12 flow-doh-1112: Binance futures data = runtime/binance_doh, never raw fapi (live read: scripts/dev/flow_read.py; lint in test_flow_read.py).
 - 2026-11-11 routing-doc-contradictions-1111 (Gemini scan rows 1-3). DECISION (OURS): (1) spec-derived tests: a Haiku Agent writes them from a spec (WORKERS.md 3a); GPT on the CODEX lane does lab audits and mutation tests; Lab/D11 rows reworded. (2) Worker type: WORKERS.md rule 7 wins, workers are background Agents; "session" only for interactive roles (the NB deploy row, the "session / N" items in Routed open items are legacy labels read as Agent). (3) DSA bridges (DSA/DSA-NB/DSA-NUC): CLOSED under the standing operator hold (he drove DSA 11-10/11, then said run no more rows); rows below naming them are history, reopened only by his word.
 - 2026-10-28 Pipeliner re-sweep (lead-pipeline-2026-10-28, third opening today): 15 -> 15 pending, no closes. Standing operator
   hold confirmed in force: the DeepSeek bridges (DSA/DSA-NB/DSA-NUC) stay closed, so all 5 DSA-target rows (gemini-krown-

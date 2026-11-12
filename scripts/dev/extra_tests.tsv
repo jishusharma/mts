@@ -279,3 +279,4 @@ MyTradingSys/tools/live_aid/test_live_aid_guidance.py
 scripts/dev/test_footprint_12h.py
 scripts/dev/test_no_browser2_rule.py
 scripts/dev/test_gate_reason_wait.py
+scripts/dev/test_flow_read.py
