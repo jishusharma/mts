@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "cb090457e38378a43b33de453f342bc48d07304b0b9a10803f898538a9d245af",
-      "published_at": "2026-11-12T21:01:00Z"
+      "published_sha": "e9b12b8f9167f82387daca1c21ac84ac9aa74f606c134cc5ea463ae1528ac9aa",
+      "published_at": "2026-11-12T21:07:11Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -260,9 +260,9 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "d9121327f530ba451a24263cbdc005dd2e33cd16076b498b0a58f749c174d419",
+      "published_sha": "3d756a3f172c469660536c3237280e963704556e29e4295752e8a67175726d64",
       "max_age_h": 24,
-      "published_at": "2026-11-12T21:01:00Z"
+      "published_at": "2026-11-12T21:07:13Z"
     },
     {
       "slug": "research_map",
@@ -429,7 +429,7 @@
       "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
       "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
       "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": "4042a50929950d630ccfc7e2901cd885c0b8a8593b04a8fe4a0860ceaeb85a1d",
+      "published_sha": "bd521da5f4ae7d16b802e3a3b89b0efe36a50714fa881af8184e719338210af0",
       "producer": [
         "live_onepage",
         "cbp"
@@ -438,7 +438,7 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 12,
-      "published_at": "2026-11-12T19:52:37Z"
+      "published_at": "2026-11-12T21:07:14Z"
     },
     {
       "slug": "buy_crypto",
@@ -476,7 +476,7 @@
         "~/.mts_private/buy_crypto_analysts.json"
       ],
       "max_age_h": 36,
-      "published_at": "2026-11-12T20:43:43Z"
+      "published_at": "2026-11-12T21:07:14Z"
     },
     {
       "slug": "concept_deck_tom_fabio",
