@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-y1-phase-shape-setup-map-1113/ANSWERS.md"
+  ],
+  "created": "2026-11-12T19:45:42Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y1-phase-shape-setup-map-1113/ANSWERS.md answers Q15 Q16 Q17 (ITERATION_2.md section 7) with a Verdict each (ANSWER/PARTIAL/NOT_SEEN/CONTRADICTION), quotes tagged Source GPS, verify_extract_quotes.py exits 0 with at least 1 quote; or NOT_IN_DATA.md names the blocker",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "From Tom's and Fabio's words: which setup (counter trade, breakout, trend follow) he picks per market phase and profile shape, how often each phase occurs with the base stated, and how weekly or composite profile gives bias. Mark every missing number NOT_SEEN.",
+  "id": "tf-y1-phase-shape-setup-map-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gap-driven re-read from iteration 2, not a video summary. Answer the Q-ids only; mark the speaker CONTESTED for 9IliXww64uM and GUEST for guests.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T19:47:01Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y1-phase-shape-setup-map-1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented numbers: a number the trader did not say is NOT_SEEN; no YouTube fetch"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "gap-hunt iteration 2 2026-11-13"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md sections 3 and 7 for the gaps and questions of this card; read ANSWERS_FROM_DISK.md so settled items are not redone",
+    "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: BB3c8visnkI Fj4FDZQxw0I VxN5IxTwpbE 4VXpUjhKG2U 3o1VVsfBmmU 2xnNPIyHGQ4 VumVuGnCcFM 15JoLK0PbMU uFxYcpiaOpw m3IMdc7QwN4 Ld1dhjGdTCA -dMWA_bbm3o 9IliXww64uM qLnQan0KGmQ (descriptions are not speech: quote only spoken text)",
+    "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-y1-phase-shape-setup-map-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
+  ],
+  "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
+  "title": "[SONNET] Tom/Fabio phase-to-setup map and weekly bias from held transcripts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

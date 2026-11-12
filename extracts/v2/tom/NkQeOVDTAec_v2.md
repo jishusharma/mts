@@ -109,10 +109,10 @@ mirror stated?: no - do not assume
 **Source GPS: NkQeOVDTAec | BEGIN**
 
 > "Should the market reach that point, we can initially expect a reaction."
-**Source GPS: NkQeOVDTAec | MIDDLE**
+**Source GPS: NkQeOVDTAec | BEGIN**
 
 > "We can only ever expect that something will happen there."
-**Source GPS: NkQeOVDTAec | MIDDLE**
+**Source GPS: NkQeOVDTAec | BEGIN**
 
 > "So, always an idea and proof that the idea is working out."
 **Source GPS: NkQeOVDTAec | MIDDLE**

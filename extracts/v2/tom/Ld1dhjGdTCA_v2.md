@@ -109,7 +109,7 @@ No trade is taken or shown. The 13 points are a planning checklist (news, trade 
 **Source GPS: Ld1dhjGdTCA | BEGIN**
 
 > "I simply mark this information in my chart to know that important news is coming"
-**Source GPS: Ld1dhjGdTCA | MIDDLE**
+**Source GPS: Ld1dhjGdTCA | BEGIN**
 
 > "I shouldn't necessarily have positions open"
 **Source GPS: Ld1dhjGdTCA | MIDDLE**
@@ -151,7 +151,7 @@ No trade is taken or shown. The 13 points are a planning checklist (news, trade 
 **Source GPS: Ld1dhjGdTCA | MIDDLE**
 
 > "And then I wait and can clearly plan that a market will run from A to B or continue in a certain direction."
-**Source GPS: Ld1dhjGdTCA | END**
+**Source GPS: Ld1dhjGdTCA | MIDDLE**
 
 > "I create my daily roadmap"
 **Source GPS: Ld1dhjGdTCA | END**

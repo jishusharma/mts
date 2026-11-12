@@ -5,7 +5,7 @@ Source: full raw_transcripts_canonical/<id>_raw.txt of the card's 11 ids, read w
 ### Q4 What does Tom measure as "market speed", and on what?
 
 **Verdict: PARTIAL**
-Speed is tape/order-book tempo: how fast orders execute and are routed at a price level, judged high or low against a normal for the specific product, and read at low-volume or big-order locations. He says speed must be defined (fast vs slow execution) and not left to gut feel, but he gives no number (no orders per second, no bar count, no time window) in his own words. A "30 seconds between orders" example is only the GUEST's.
+Speed is tape/order-book tempo: how fast orders execute and are routed at a price level, judged high or low against a normal for the specific product, and read at low-volume or big-order locations. He says speed must be defined (fast vs slow execution), but he gives no number (no orders per second, no bar count, no time window) in his own words. A "30 seconds between orders" example is only the GUEST's.
 
 > "What else do I need in addition to that? I need market speed. That means I need to see interaction that plays in my direction."
 **Source GPS: G0CiJcuXCRs | BEGIN**
@@ -45,7 +45,7 @@ GUEST (Serge Hoffmann, not Tom): speed example with a number, not Tom's.
 ### Q9 Absorption: what result counts as "almost zero", what size is a big trade, what does he read on the footprint?
 
 **Verdict: PARTIAL**
-What he reads: heavy aggressive volume at a price while price does not move on (then a large passive player absorbs it), plus the tape slowing; footprint "finished auction" = a run of zeros/small numbers at the extreme versus large numbers still printing at the extreme (unfinished). Sizes are product-specific, never one number: examples he gives are ES big orders of 325 and 676 contracts, a 100 block in crude oil as large, and "not blocks of 80 or blocks of 60" for ES. No percentage or tick threshold for "almost zero price result" and no universal big-trade size (our 99th percentile is OURS).
+What he reads: heavy aggressive volume at a price while price does not move on (then a large passive player absorbs it), plus the tape slowing; footprint "finished auction" = a run of zeros/small numbers at the extreme versus large numbers still printing at the extreme (unfinished). Sizes are product-specific, never one number: examples he gives are an S&P 500 book order of 325 contracts and an ES order of 676 contracts, a 100 block as a large trader's ambition in a crude oil comparison, blocks of 74 or 48 contracts on the S&P sell side, and "not blocks of 80 or blocks of 60" for ES. No percentage or tick threshold for "almost zero price result" and no universal big-trade size (our 99th percentile is OURS).
 
 > "there's heavy selling here, but the market doesn't go any lower down. So, what does that mean for me? It means that there is a very large buyer here who is absorbing everything that's being sold."
 **Source GPS: y67l86cSqb8 | MIDDLE**
@@ -74,6 +74,9 @@ What he reads: heavy aggressive volume at a price while price does not move on (
 > "Let's take a look at those. Those are 325 contracts."
 **Source GPS: vl01TiVTuoQ | BEGIN**
 
+> "There are sometimes blocks of 74 contracts or 48 contracts."
+**Source GPS: usho6UVLqkE | BEGIN**
+
 > "there's an order here with 676 contracts."
 **Source GPS: usho6UVLqkE | MIDDLE**
 
@@ -97,7 +100,7 @@ GUEST (Serge Hoffmann, not Tom): footprint absorption at a high, with sizes.
 ### Q11 What counts as "proof" before entry, and how many?
 
 **Verdict: PARTIAL**
-Tom gives an ordered stack, not a count to hit: location (profile levels) then balance/imbalance and acceptance with real liquidity, then footprint/order-book timing with market speed ("this trilogy ... that's when we've won"; in 3o1VVsfBmmU a four-point list, with step 6 (order books) as the extra timing layer). Delta/CVD needs other filters and a support/resistance level. He never states "N proofs before entry"; the phrase "many, many parameters" was not found in these ten files.
+Tom gives an ordered stack, not a count to hit: location (profile levels) then balance/imbalance and acceptance with real liquidity, then footprint/order-book timing with market speed ("this trilogy ... that's when we've won"; in 3o1VVsfBmmU a four-point list, with step 6 (order books) as the extra timing layer). Delta/CVD needs other filters and a support/resistance level. He never states "N proofs before entry"; the phrase "many, many parameters" is not in these nine Tom files; it appears in zQTbdEweG3c (no count).
 
 > "The first thing we do is look for locations that are interesting. The second thing we do is always look for when markets go out of balance or return to an old balance."
 **Source GPS: -dMWA_bbm3o | BEGIN**
@@ -120,9 +123,6 @@ Tom gives an ordered stack, not a count to hit: location (profile levels) then b
 > "And if I then back all of this up with a smart and intelligent support resistance level, then I have an edge."
 **Source GPS: y67l86cSqb8 | END**
 
-> "I have prepared a nice combination with NASDAQ and also with Nvidia."
-**Source GPS: OUM9LYwL8eA | BEGIN**
-
 GUEST (Serge Hoffmann, not Tom): do not trade a signal alone.
 
 > "please as I said don't trade the delta divergence alone always use confirmation"
@@ -135,8 +135,8 @@ GUEST (Serge Hoffmann, not Tom): do not trade a signal alone.
 | market speed measure (unit, window) | none: "high speed / low speed", relative to product | NOT_SEEN (number) | G0CiJcuXCRs, vl01TiVTuoQ |
 | fast vs slow threshold | must be defined per product, no value given | NOT_SEEN | G0CiJcuXCRs |
 | bar count for speed | none | NOT_SEEN | all 9 Tom ids |
-| ES big order | 325 and 676 contracts shown as big; 80 and 60 "not" big | SOURCED (examples, no cutoff) | vl01TiVTuoQ, usho6UVLqkE, G0CiJcuXCRs |
-| crude oil big block | 100 block = large trader | SOURCED (example) | vl01TiVTuoQ |
+| ES big order | S&P 500 325; ES 676 (shown as big orders); S&P sell-side blocks of 74 or 48; 80 and 60 "not" big | SOURCED (examples, no cutoff) | vl01TiVTuoQ, usho6UVLqkE, G0CiJcuXCRs |
+| crude oil comparison block | 100 block = large trader's ambition, in a crude oil comparison | SOURCED (example) | vl01TiVTuoQ |
 | universal big-trade size | none, product-specific | NOT_SEEN | y67l86cSqb8 |
 | cumulative delta extreme | crude +500 may be extreme, Euro stocks 500 normal | SOURCED (example) | y67l86cSqb8 |
 | "almost zero" price result for absorption | none | NOT_SEEN | all 9 Tom ids |

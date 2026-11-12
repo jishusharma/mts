@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T19:25:14Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py extracts/v2/tom/43JaKHRvxHk_v2.md"
   ],
@@ -14,10 +15,18 @@
   "id": "gemini-tom-v2-thirds-tag-fix-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "V2 extracts verify exit 0 with >=1 quote each (re-run here)",
+      "ref": "d2931c96c",
+      "utc": "2026-11-12T19:25:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: batch delivered",
   "note": "Gemini lane effort low (operator 2026-11-12). Ids: 43JaKHRvxHk, BVpYGKz9PBU, Ld1dhjGdTCA, NkQeOVDTAec, YmygDgtoxO8, qLnQan0KGmQ, ujedEcmvBMk",
   "prio": 2,
   "refine_tries": 0,
@@ -26,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md"
   ],
-  "result": "",
+  "result": "V2 extracts verify exit 0 with >=1 quote each (re-run here)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "extracts/v2/tom/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "Supervisor C census 2026-11-12 (tom_fabio_census_1112.md); operator order: all YouTube work on Gemini"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md and follow it",
     "Ids: 43JaKHRvxHk, BVpYGKz9PBU, Ld1dhjGdTCA, NkQeOVDTAec, YmygDgtoxO8, qLnQan0KGmQ, ujedEcmvBMk",
     "Verify each file until exit 0 with >=1 quote; commit on your branch"
   ],
+  "taken": "2026-11-12T19:25:14Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Fix 7 Tom V2 extracts that fail only on thirds-tag mismatch",
   "weight": "ROUTINE",
