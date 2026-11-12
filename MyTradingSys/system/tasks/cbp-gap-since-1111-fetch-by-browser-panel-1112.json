@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/cache_panel_transcript.py raw_transcripts_canonical/<id>_timed.txt",
+    "python scripts/dev/cbp_run.py --force --no-fetch"
+  ],
   "context": {
     "calls_to_edit": null,
     "folded": "2026-11-12T08:31:04Z",
@@ -13,33 +16,62 @@
   },
   "created": "2026-11-12T08:03:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "rows.json holds a row newer than the 11-08 / 11-10 / 11-10 dates for each of Michaal, Jala, Qriptal, or the report names each as no new upload on its channel; report lists video ids and counts",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Land CBP rows for the analysts still behind (2026-11-12 16:29Z store: Michaal newest row 11-08, Jala 11-10, Qriptal 11-10) by caching their new videos through the Browser 2 transcript panel (YT_PROXY.md path 3), then run the extraction",
   "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + waiting list docs",
+      "ref": "3b2276375840",
+      "utc": "2026-11-12T09:46:04Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3b2276375840 Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + wait",
+      "ref": "MyTradingSys/system/YT_PROXY.md",
+      "utc": "2026-11-12T09:46:04Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-12 T0-ONLY. Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. Needs the Browser 2 Chrome profile (CLAUDE.md), not Browser 1.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T15:12:41Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "operator 2026-11-12 08Z: how are we doing on CBP if blocked on YouTube"
+  "scope_in": [
+    "MyTradingSys/system/YT_PROXY.md",
+    "scripts/dev/cache_panel_transcript.py",
+    "scripts/dev/cbp_run.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "any YouTube request by script while the caption lock lasts (until 11-13 02:53Z); Browser 1; product code; committing transcripts (git-ignored cache)"
+  ],
+  "scope_sha": "3b2276375840",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-12 08Z; store state read 2026-11-12 16:29Z; YT_PROXY.md Path 3 worked for 3 videos 11-12"
+  ],
+  "state": "ready",
+  "steps": [
+    "List each of the 3 analysts' uploads since their newest row (channels in F:/CryptoScrapper/cbp_v2/analysts.json; page text of the channel Videos tab in Browser 2 muted and paused); none new = record that and stop for that analyst",
+    "Per new video, one at a time: follow YT_PROXY.md Path 3 steps 1-7 (select_browser Browser 2 first), write raw_transcripts_canonical/<id>_timed.txt, run scripts/dev/cache_panel_transcript.py on it",
+    "Run cbp_run.py --force --no-fetch (extraction on cached files only, no YouTube request); read the added and rejected counts it prints",
+    "Report per analyst: new video ids cached, rows added or rejected with reason, no-new-upload cases; on a sign-in wall stop and report"
+  ],
+  "tests": "run card, no code change; transcripts stay untracked",
   "title": "CBP added 0 rows since 2026-11-11 20:24Z (caption lock until 11-13 02:53Z): fetch the analysts' new videos by the Browser 2 transcript panel (muted, paused), cache them, run the CBP extraction so rows land",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

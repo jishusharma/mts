@@ -239,6 +239,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     <div class="vrow"><span class="huge" id="uo-when">--</span><span class="sub" id="uo-box"></span></div>
     <div class="scroll"><table><thead><tr><th>If price goes</th><th>Level</th><th>Price</th><th>Distance</th><th>Reached in the 2 h after the open</th><th>Still beyond it 60 min after the touch</th></tr></thead><tbody id="uo-rows"></tbody></table></div>
     <span class="tag" id="uo-first3"></span>
+    <span class="tag" id="uo-fp" title="Binance USD-M BTCUSDT 12h footprint (00:00-12:00 / 12:00-24:00 UTC) from public aggTrades, footprint_12h.py. Bucket 10 USD, imbalance 3:1 x 3 rows, value area 70 %: all OURS. Context, not measured: no study has scored it."></span>
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
 
@@ -379,6 +380,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="cycle_flag_data.js"></script>
 <script src="cycle_flag.js"></script>
 <script src="playbook_data.js"></script>
+<script src="footprint_bias_data.js"></script>
 <script src="../../runtime/live_aid_toasts.js"></script>
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>
@@ -871,6 +873,13 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
     var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
     $('uo-when').textContent = when;
+    (function () {
+      var F = window.FOOTPRINT_BIAS, el = $('uo-fp'); if (!el) return;
+      if (!F) { el.textContent = '12h footprint: no data file. Run: python scripts/dev/footprint_12h.py --js [context, not measured]'; return; }
+      var last = Math.floor(Date.now() / 43200000) * 43200000 - 43200000;
+      el.textContent = F.latest_completed_bar_ms >= last && F.have_latest ? F.line
+        : '12h footprint: latest completed bar missing. Run: python scripts/dev/footprint_12h.py --js (last line: ' + F.line + ')';
+    })();
     $('uo-first3').textContent = brRow('us_open_first3m') ? A.first3Line(brRow('us_open_first3m').table) : '';
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
       (r.or ? ' | opening range (15 min) ' + fmt(r.or.l, 0) + ' - ' + fmt(r.or.h, 0) : r.phase === 'before' ? ' | opening range: after the open' : '') + ' | ' + r.priorDays + ' prior days loaded' + brWin('us_open_levels');

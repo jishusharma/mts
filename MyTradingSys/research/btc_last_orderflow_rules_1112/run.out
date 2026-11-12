@@ -1,0 +1,135 @@
+Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-30 08:00 px 67627.90 | kline o 67627.90 c 67648.80 | ok   exit 2024-05-30 08:59 px 67723.30 | kline o 67747.00 c 67723.30 | ok
+  OK   short entry 2024-05-31 19:00 px 67456.20 | kline o 67456.20 c 67437.80 | ok   exit 2024-05-31 19:59 px 67719.90 | kline o 67841.50 c 67719.90 | ok
+  OK   short entry 2024-05-31 21:00 px 67755.00 | kline o 67755.00 c 67750.90 | ok   exit 2024-05-31 21:59 px 67602.30 | kline o 67625.40 c 67602.30 | ok
+  OK   short entry 2024-05-31 22:00 px 67602.50 | kline o 67602.50 c 67619.60 | ok   exit 2024-05-31 22:59 px 67537.30 | kline o 67586.80 c 67537.30 | ok
+  OK   short entry 2024-05-31 23:00 px 67537.20 | kline o 67537.20 c 67585.60 | ok   exit 2024-05-31 23:59 px 67577.90 | kline o 67582.30 c 67577.90 | ok
+Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   long  entry 2024-05-28 02:00 px 68640.70 | kline o 68640.70 c 68719.00 | ok   exit 2024-05-28 02:59 px 68700.10 | kline o 68750.80 c 68700.10 | ok
+  OK   long  entry 2024-05-28 04:00 px 68070.00 | kline o 68070.00 c 68057.60 | ok   exit 2024-05-28 04:59 px 67809.10 | kline o 67817.10 c 67809.10 | ok
+  OK   long  entry 2024-05-31 14:00 px 68118.90 | kline o 68118.90 c 67994.20 | ok   exit 2024-05-31 14:59 px 67538.50 | kline o 67529.50 c 67538.50 | ok
+  OK   long  entry 2024-05-31 15:00 px 67538.50 | kline o 67538.50 c 67538.40 | ok   exit 2024-05-31 15:59 px 67252.70 | kline o 67271.90 c 67252.70 | ok
+  OK   long  entry 2024-05-31 17:00 px 67242.10 | kline o 67242.10 c 67201.00 | ok   exit 2024-05-31 17:59 px 67380.70 | kline o 67374.00 c 67380.70 | ok
+Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   long  entry 2024-05-24 06:28 px 67091.70 | kline o 67091.70 c 67159.60 | ok   exit 2024-05-24 07:27 px 67306.30 | kline o 67246.20 c 67306.30 | ok
+  OK   long  entry 2024-05-28 01:50 px 68726.40 | kline o 68726.40 c 68644.00 | ok   exit 2024-05-28 02:49 px 68747.60 | kline o 68708.40 c 68747.60 | ok
+  OK   short entry 2024-05-29 00:37 px 68619.70 | kline o 68619.70 c 68641.80 | ok   exit 2024-05-29 01:36 px 68470.10 | kline o 68484.90 c 68470.10 | ok
+  OK   short entry 2024-05-30 02:19 px 68045.70 | kline o 68045.70 c 68034.90 | ok   exit 2024-05-30 03:18 px 68039.20 | kline o 67998.80 c 68039.20 | ok
+  OK   short entry 2024-05-31 12:31 px 68927.10 | kline o 68927.10 c 68799.10 | ok   exit 2024-05-31 13:30 px 68767.20 | kline o 68743.20 c 68767.20 | ok
+Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-23 01:45 px 69588.60 | kline o 69588.60 c 69569.60 | ok   exit 2024-05-23 02:44 px 69497.10 | kline o 69509.30 c 69497.10 | ok
+  OK   short entry 2024-05-24 07:30 px 67276.90 | kline o 67276.90 c 67281.20 | ok   exit 2024-05-24 08:29 px 66721.80 | kline o 66707.60 c 66721.80 | ok
+  OK   short entry 2024-05-27 01:45 px 69157.00 | kline o 69157.00 c 69220.80 | ok   exit 2024-05-27 02:44 px 69160.00 | kline o 69171.70 c 69160.00 | ok
+  OK   long  entry 2024-05-29 02:15 px 68546.70 | kline o 68546.70 c 68559.50 | ok   exit 2024-05-29 03:14 px 68850.00 | kline o 68828.50 c 68850.00 | ok
+  OK   long  entry 2024-05-30 03:00 px 67980.10 | kline o 67980.10 c 67977.10 | ok   exit 2024-05-30 03:59 px 68156.00 | kline o 68118.50 c 68156.00 | ok
+Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-10 15:45 px 60938.40 | kline o 60938.40 c 60888.90 | ok   exit 2024-05-10 16:44 px 60855.30 | kline o 60837.70 c 60855.30 | ok
+  OK   short entry 2024-05-20 07:30 px 66698.90 | kline o 66698.90 c 66747.80 | ok   exit 2024-05-20 08:29 px 66895.70 | kline o 66905.00 c 66895.70 | ok
+  OK   long  entry 2024-05-26 08:15 px 69486.90 | kline o 69486.90 c 69472.90 | ok   exit 2024-05-26 09:14 px 69257.20 | kline o 69253.00 c 69257.20 | ok
+  OK   short entry 2024-05-28 02:30 px 68765.40 | kline o 68765.40 c 68773.60 | ok   exit 2024-05-28 03:29 px 68239.10 | kline o 68254.20 c 68239.10 | ok
+  OK   long  entry 2024-05-31 13:15 px 68748.30 | kline o 68748.30 c 68719.70 | ok   exit 2024-05-31 14:14 px 67854.30 | kline o 67886.30 c 67854.30 | ok
+| Arm | n (L/S) | mean net % | sd | t | half 1 / half 2 | share pos | placebo mean (p1..p99) | placebo rank | verdict | Regime mix |
+|---|---|---|---|---|---|---|---|---|---|---|
+| R8a trend-down no extreme -> short | 4272 (0/4272) | -0.0953 | 0.586 | -10.63 | -0.0777 (n 2223) / -0.1144 (n 2049) | 32.8 % | -0.1043 (-0.1215..-0.0859) | 86.8 % | FAIL | bear 761 bull 1415 n/a 257 range 1839 |
+| R8b trend-down sell extreme -> long | 710 (710/0) | -0.0648 | 0.888 | -1.94 | -0.0461 (n 410) / -0.0904 (n 300) | 51.3 % | -0.0957 (-0.1432..-0.0467) | 92.8 % | FAIL | bear 157 bull 203 n/a 55 range 295 |
+| R5 open inside prior VA, fade first edge touch | 496 (246/250) | -0.1173 | 0.777 | -3.36 | -0.1276 (n 214) / -0.1095 (n 282) | 48.8 % | -0.1003 (-0.1601..-0.0398) | 24.8 % | FAIL | bear 70 bull 179 n/a 29 range 218 |
+| R11p breakout, volume persists, with the break | 546 (288/258) | -0.0739 | 0.599 | -2.88 | -0.0830 (n 262) / -0.0655 (n 284) | 35.9 % | -0.1000 (-0.1545..-0.0476) | 85.8 % | FAIL | bear 87 bull 203 n/a 34 range 222 |
+| R11d breakout, volume dries up, with the break | 158 (74/84) | -0.1423 | 0.447 | -4.00 | -0.0994 (n 79) / -0.1853 (n 79) | 29.1 % | -0.0996 (-0.2112..+0.0055) | 15.0 % | INSUFFICIENT_N | bear 23 bull 53 n/a 10 range 72 |
+
+R8a trend-down no extreme -> short per-year and long/short (net %):
+
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 1819 | -0.0724 | -131.6947 |
+| year 2023 | 1766 | -0.1086 | -191.7297 |
+| year 2024 | 687 | -0.1219 | -83.7602 |
+| long | 0 | nan | 0.0000 |
+| short | 4272 | -0.0953 | -407.1845 |
+
+R8b trend-down sell extreme -> long per-year and long/short (net %):
+
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 342 | -0.0416 | -14.2289 |
+| year 2023 | 255 | -0.0536 | -13.6746 |
+| year 2024 | 113 | -0.1604 | -18.1204 |
+| long | 710 | -0.0648 | -46.0239 |
+| short | 0 | nan | 0.0000 |
+
+R5 open inside prior VA, fade first edge touch per-year and long/short (net %):
+
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 164 | -0.0803 | -13.1686 |
+| year 2023 | 244 | -0.1659 | -40.4897 |
+| year 2024 | 88 | -0.0514 | -4.5198 |
+| long | 246 | -0.1028 | -25.2960 |
+| short | 250 | -0.1315 | -32.8821 |
+
+R11p breakout, volume persists, with the break per-year and long/short (net %):
+
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 208 | -0.0535 | -11.1316 |
+| year 2023 | 233 | -0.1000 | -23.2919 |
+| year 2024 | 105 | -0.0564 | -5.9170 |
+| long | 288 | -0.0920 | -26.5029 |
+| short | 258 | -0.0536 | -13.8376 |
+
+R11d breakout, volume dries up, with the break per-year and long/short (net %):
+
+| cut | n | mean | sum |
+|---|---|---|---|
+| year 2022 | 60 | -0.1101 | -6.6072 |
+| year 2023 | 73 | -0.0976 | -7.1272 |
+| year 2024 | 25 | -0.3501 | -8.7531 |
+| long | 74 | -0.1862 | -13.7795 |
+| short | 84 | -0.1037 | -8.7080 |
+{
+ "R8_descriptive": {
+  "extreme": {
+   "n": 710,
+   "mean_gross_short": -0.03517763843599835
+  },
+  "not extreme": {
+   "n": 7725,
+   "mean_gross_short": 0.0019211588202866932
+  }
+ },
+ "R5_descriptive": {
+  "open_inside_days": 532,
+  "stay_inside_share": 0.05075187969924812,
+  "open_outside_days": 319,
+  "stay_inside_share_outside": 0.0
+ }
+}
+R8a Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-30 08:00 px 67627.90 | kline o 67627.90 c 67648.80 | ok   exit 2024-05-30 08:59 px 67723.30 | kline o 67747.00 c 67723.30 | ok
+  OK   short entry 2024-05-31 19:00 px 67456.20 | kline o 67456.20 c 67437.80 | ok   exit 2024-05-31 19:59 px 67719.90 | kline o 67841.50 c 67719.90 | ok
+  OK   short entry 2024-05-31 21:00 px 67755.00 | kline o 67755.00 c 67750.90 | ok   exit 2024-05-31 21:59 px 67602.30 | kline o 67625.40 c 67602.30 | ok
+  OK   short entry 2024-05-31 22:00 px 67602.50 | kline o 67602.50 c 67619.60 | ok   exit 2024-05-31 22:59 px 67537.30 | kline o 67586.80 c 67537.30 | ok
+  OK   short entry 2024-05-31 23:00 px 67537.20 | kline o 67537.20 c 67585.60 | ok   exit 2024-05-31 23:59 px 67577.90 | kline o 67582.30 c 67577.90 | ok
+R8b Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   long  entry 2024-05-28 02:00 px 68640.70 | kline o 68640.70 c 68719.00 | ok   exit 2024-05-28 02:59 px 68700.10 | kline o 68750.80 c 68700.10 | ok
+  OK   long  entry 2024-05-28 04:00 px 68070.00 | kline o 68070.00 c 68057.60 | ok   exit 2024-05-28 04:59 px 67809.10 | kline o 67817.10 c 67809.10 | ok
+  OK   long  entry 2024-05-31 14:00 px 68118.90 | kline o 68118.90 c 67994.20 | ok   exit 2024-05-31 14:59 px 67538.50 | kline o 67529.50 c 67538.50 | ok
+  OK   long  entry 2024-05-31 15:00 px 67538.50 | kline o 67538.50 c 67538.40 | ok   exit 2024-05-31 15:59 px 67252.70 | kline o 67271.90 c 67252.70 | ok
+  OK   long  entry 2024-05-31 17:00 px 67242.10 | kline o 67242.10 c 67201.00 | ok   exit 2024-05-31 17:59 px 67380.70 | kline o 67374.00 c 67380.70 | ok
+R5 Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   long  entry 2024-05-24 06:28 px 67091.70 | kline o 67091.70 c 67159.60 | ok   exit 2024-05-24 07:27 px 67306.30 | kline o 67246.20 c 67306.30 | ok
+  OK   long  entry 2024-05-28 01:50 px 68726.40 | kline o 68726.40 c 68644.00 | ok   exit 2024-05-28 02:49 px 68747.60 | kline o 68708.40 c 68747.60 | ok
+  OK   short entry 2024-05-29 00:37 px 68619.70 | kline o 68619.70 c 68641.80 | ok   exit 2024-05-29 01:36 px 68470.10 | kline o 68484.90 c 68470.10 | ok
+  OK   short entry 2024-05-30 02:19 px 68045.70 | kline o 68045.70 c 68034.90 | ok   exit 2024-05-30 03:18 px 68039.20 | kline o 67998.80 c 68039.20 | ok
+  OK   short entry 2024-05-31 12:31 px 68927.10 | kline o 68927.10 c 68799.10 | ok   exit 2024-05-31 13:30 px 68767.20 | kline o 68743.20 c 68767.20 | ok
+R11p Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-23 01:45 px 69588.60 | kline o 69588.60 c 69569.60 | ok   exit 2024-05-23 02:44 px 69497.10 | kline o 69509.30 c 69497.10 | ok
+  OK   short entry 2024-05-24 07:30 px 67276.90 | kline o 67276.90 c 67281.20 | ok   exit 2024-05-24 08:29 px 66721.80 | kline o 66707.60 c 66721.80 | ok
+  OK   short entry 2024-05-27 01:45 px 69157.00 | kline o 69157.00 c 69220.80 | ok   exit 2024-05-27 02:44 px 69160.00 | kline o 69171.70 c 69160.00 | ok
+  OK   long  entry 2024-05-29 02:15 px 68546.70 | kline o 68546.70 c 68559.50 | ok   exit 2024-05-29 03:14 px 68850.00 | kline o 68828.50 c 68850.00 | ok
+  OK   long  entry 2024-05-30 03:00 px 67980.10 | kline o 67980.10 c 67977.10 | ok   exit 2024-05-30 03:59 px 68156.00 | kline o 68118.50 c 68156.00 | ok
+R11d Log sanity (last 5 trades vs 1m klines; entry/exit px vs bar open/close):
+  OK   short entry 2024-05-10 15:45 px 60938.40 | kline o 60938.40 c 60888.90 | ok   exit 2024-05-10 16:44 px 60855.30 | kline o 60837.70 c 60855.30 | ok
+  OK   short entry 2024-05-20 07:30 px 66698.90 | kline o 66698.90 c 66747.80 | ok   exit 2024-05-20 08:29 px 66895.70 | kline o 66905.00 c 66895.70 | ok
+  OK   long  entry 2024-05-26 08:15 px 69486.90 | kline o 69486.90 c 69472.90 | ok   exit 2024-05-26 09:14 px 69257.20 | kline o 69253.00 c 69257.20 | ok
+  OK   short entry 2024-05-28 02:30 px 68765.40 | kline o 68765.40 c 68773.60 | ok   exit 2024-05-28 03:29 px 68239.10 | kline o 68254.20 c 68239.10 | ok
+  OK   long  entry 2024-05-31 13:15 px 68748.30 | kline o 68748.30 c 68719.70 | ok   exit 2024-05-31 14:14 px 67854.30 | kline o 67886.30 c 67854.30 | ok

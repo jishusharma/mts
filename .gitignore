@@ -239,6 +239,7 @@ MyTradingSys/research/setup_review_2026-10/review_page.html
 MyTradingSys/tools/live_aid/analyst_data.js
 # daily playbook data: carries CBP analyst text (daily_playbook.py rebuilds it each UTC day)
 MyTradingSys/tools/live_aid/playbook_data.js
+MyTradingSys/tools/live_aid/footprint_bias_data.js
 MyTradingSys/tools/live_aid/ff_calendar_snapshot.js
 MyTradingSys/observation/uptime_heartbeat.jsonl
 MyTradingSys/runtime/us_prep/
