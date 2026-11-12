@@ -1,0 +1,48 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python MyTradingSys/research/btc_of_level_auction_1112/fetch_b2.py",
+    "python MyTradingSys/research/btc_of_level_auction_1112/b2.py --split dev",
+    "python -m pytest MyTradingSys/research/btc_of_level_auction_1112/test_b2.py"
+  ],
+  "created": "2026-11-12T05:46:10Z",
+  "depends_on": [],
+  "done_when": "B2.md + results_b2.json exist with n, gross and net (after 10 bp) mean per horizon, t, placebo, diagnostic revisit share, Regime mix line and a verdict per PREREG words (PASS/FAIL/INSUFFICIENT_N); RESULT/VERDICTS rows that list B2 as NOT_RUN updated like B1's; verdict-registry lint green; b2.py + test_b2.py pass; no raw data, zips or D: files committed.",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run PREREG B2 (unfinished auction at a 24h extreme, 2 horizons = 2 cells) on DEV 2022-02-01..2024-05-31 from Binance USD-M BTCUSDT aggTrades fetched to D:/MTS_data, exactly as frozen.",
+  "id": "btc-of-level-auction-b2-fetch-run-1112",
+  "kind": "run",
+  "lane": "JIS-NB",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/btc_of_level_auction_1112/"
+  ],
+  "scope_out": [],
+  "size": "M",
+  "sources": [],
+  "state": "ready",
+  "steps": [
+    "file card",
+    "b2.py + test_b2.py, commit",
+    "background fetch+reduce to D:",
+    "run b2, B2.md, results_b2.json",
+    "update NOT_RUN rows",
+    "ship"
+  ],
+  "tests": "",
+  "title": "Run PREREG B2 unfinished auction: fetch DEV USD-M aggTrades to D:, reduce to 15m tables, b2.py, B2.md, results_b2.json, verdict",
+  "weight": "",
+  "worker": ""
+}
