@@ -4,6 +4,14 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-pages-follow-data | decided 2026-11-13 | Supervisor C (relayed from the operator)
+```json
+{"id": "d-pages-follow-data", "order": 48, "date": "2026-11-13", "status": "DECIDED",
+ "question": "Pinned claude.ai pages (CBP desk, Live feed, MTS Home) showed 4-9 day old data for weeks despite rules. What must hold?",
+ "answer": "Every artifact must update whenever a session touches its data; the super session owns it. Buy Crypto (spot alt buying) updates after every CBP fetch. The fix is a mechanism that runs, not another rule. (operator, relayed by Supervisor C 2026-11-13)",
+ "done": "mechanism: registry.json per-page feeds/max_age_h/producer; artifacts.py stale flags a page whose feed is newer than its last publish or older than max_age_h; supervisor plan prints PLAN pages-stale + REPUBLISH lines; cbp_run.py, buy_crypto.py and the live-page generator print REPUBLISH for pages whose producer they are (Buy Crypto producer = cbp). Gap: research_map has no generator (hand-made), flagged stale until a super session edits it."}
+```
+
 ## d-restart-c-a-supervisors | decided 2026-10-27 | Lead (admin, JIS-NUC login B)
 ```json
 {"id": "d-restart-c-a-supervisors", "order": 46, "date": "2026-10-27", "status": "DECIDED",
@@ -2434,3 +2442,15 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13: use both Gemini models on NK StockTalk and iteration-3 Tom/Fabio jobs
 - Operator (relayed by Supervisor C): "use both gemini models". The queue's two Gemini models are `flash` (gemini-3.8-flash) and `argon` (Gemini 4 Argon); the other queue models (opus, sonnet, gpt) are not Gemini.
 - Decision: NK StockTalk selected extracts and iteration-3 Tom/Fabio Gemini jobs run on both, effort low, as separate cards per model. Comparison per video in `nk_stocktalk_1113/MODEL_COMPARE.md` (Tom/Fabio: beside each batch): AGREED = a rule or number both models give that passes `verify_extract_quotes.py`; SINGLE = only one model gives it, checked by a Claude session against the caption text; CONFLICT = the models disagree, both quotes recorded.
+
+## 2026-11-13: bookkeeping entries (recorded by Supervisor C's request)
+- (a) 2026-11-12: build the Conceptualizer as one app for all concept decks, and discuss concepts one by one. On trunk at 35e318ce.
+- (b) Revalidate the DSA root-cause note. Verdict: 4 confirmed, 2 partial. The 0/7 DAX recall was not caused by fees (it was run with DAX fees too). File: `gap_hunt_1113/dsa_revalidation_1113.md` (notes folder); corrections applied in AUDIT_AND_COURSE_CORRECTION.md.
+- (c) Discard useless tests to speed up shipping, following `test_value_audit_1113.md`. The cut list is being applied (card test-cut-1113). Keep the 61 execution and live-path tests.
+- (d) A stuck test must name itself: per-test limit of 300 s on CI and 900 s per shard (958130902).
+- (e) Cleanup is a standing super-session duty: merged, clean worktrees are removed, with their ignored data moved to `C:/Users/E-ngineers/Dumps/wt_rescue`, not deleted.
+- Cards copied from the main checkout to trunk (were untracked there): bug-conflict-ca369de3a4, extract-btc-50w-ma-video-j-JVi02_C88-1112. The other 8 on the supervisor's list were already on trunk.
+
+## 2026-11-13: make sure we build concepts from Nitish Kumar (NK StockTalk)
+- Operator decision: NK is not extract-only. After the NK extracts land, a Conceptualizer NK layer must ship. Owner: opus-concept-decks (local_91880c0a).
+- Card: nk-conceptualizer-layer-after-extracts-1113 (raw; the owner refines it once the NK extracts exist).

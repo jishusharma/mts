@@ -5,7 +5,7 @@
   python scripts/dev/artifacts.py plan --account jishu.sharma   # what a session on that account must publish / pin / record
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
   python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
-  python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD]   # after an Artifact publish: store published_sha + the publish date (default today)
+  python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD] [--ship]   # --ship commits+ships registry.json itself; after an Artifact publish: store published_sha + the publish date (default today)
   python scripts/dev/artifacts.py stamp --file page.html   # put "Updated <UTC>" first on a built page (build does it for generated pages)
   python scripts/dev/artifacts.py republish                 # REPUBLISH <slug> <html> <url> for each stale page (publisher login only; --all: any login)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
@@ -256,15 +256,71 @@ def tracked(reg):
     return [pg for pg in reg["pages"] if pg["status"] == "canonical" and (pg.get("html") or generated_only(pg)) and pg["urls"].get(owner(pg))]
 
 
-def stale(reg, builder=build_html):
-    """[(slug, url, reason)] for each tracked page whose build hash differs from published_sha."""
+def feed_pages(reg):
+    """Canonical pages on their owner's login that declare `feeds` (input paths/globs) or `max_age_h`: the pages whose DATA can go old
+    while the repo build hash stays the same (the hash check alone never flagged cbp_analyst_desk, buy_crypto or the live page)."""
+    return [pg for pg in reg["pages"] if pg["status"] == "canonical" and pg["urls"].get(owner(pg)) and (pg.get("feeds") or pg.get("max_age_h"))]
+
+
+def feed_files(pg, repo=REPO):
+    """Existing files behind a page's `feeds`: absolute, ~ or repo-relative paths, globs allowed. A feed that is absent on this machine is skipped."""
+    import glob
     out = []
+    for f in pg.get("feeds") or []:
+        f = str(Path(f).expanduser()) if f.startswith("~") else f
+        pat = f if Path(f).is_absolute() else str(Path(repo) / f)
+        out += [Path(x) for x in glob.glob(pat) if Path(x).is_file()]
+    return out
+
+
+def published_at(pg):
+    """UTC time of the last publish: `published_at` (set by publish-record), else the start of the `last_published` day (conservative)."""
+    pa = pg.get("published_at")
+    try:
+        if pa:
+            return datetime.fromisoformat(pa.replace("Z", "+00:00"))
+        return datetime.fromisoformat(pg["last_published"][owner(pg)]).replace(tzinfo=timezone.utc)
+    except (ValueError, KeyError, TypeError):
+        return None
+
+
+def feed_reasons(pg, now=None, repo=REPO):
+    """Why a feed page is stale: a feed file newer than the last publish, or the last publish older than `max_age_h`. [] = current."""
+    now = now or datetime.now(timezone.utc)
+    pub, why = published_at(pg), []
+    if pub is None:
+        return ["no publish time recorded"]
+    files = feed_files(pg, repo)
+    if files:
+        newest = max(files, key=lambda f: f.stat().st_mtime)
+        fresh = datetime.fromtimestamp(newest.stat().st_mtime, timezone.utc)
+        if (fresh - pub).total_seconds() > 2:     # published_at is whole seconds; a feed written in the same second is not newer
+            why.append(f"feed {newest.name} is newer than the last publish ({fresh:%Y-%m-%d %H:%M}Z > {pub:%Y-%m-%d %H:%M}Z)")
+    age = (now - pub).total_seconds() / 3600
+    if pg.get("max_age_h") and age > float(pg["max_age_h"]):
+        why.append(f"last publish {age:.0f} h ago, over max_age_h {pg['max_age_h']}")
+    return why
+
+
+def stale(reg, builder=build_html, now=None, repo=REPO):
+    """[(slug, url, reason)] for each page whose repo build hash differs from published_sha, or whose feed is newer than its last publish,
+    or which is older than max_age_h (root cause A, 2026-11-13)."""
+    out, seen = [], set()
     for pg in tracked(reg):
         sha = pg.get("published_sha")
         if not sha:
             out.append((pg["slug"], pg["urls"][owner(pg)], "no published_sha recorded"))
         elif content_hash(builder(pg)) != sha:
             out.append((pg["slug"], pg["urls"][owner(pg)], "repo build differs from last publish"))
+        else:
+            continue
+        seen.add(pg["slug"])
+    for pg in feed_pages(reg):
+        why = feed_reasons(pg, now, repo)
+        if why and pg["slug"] in seen:
+            out = [(s, u, w + "; " + "; ".join(why)) if s == pg["slug"] else (s, u, w) for s, u, w in out]
+        elif why:
+            out.append((pg["slug"], pg["urls"][owner(pg)], "; ".join(why)))
     return out
 
 
@@ -272,13 +328,26 @@ def stale_lines(reg, builder=build_html):
     return [f"STALE {s} {u}  ({why})" for s, u, why in stale(reg, builder)]
 
 
+def publish_source(pg):
+    """What a session publishes for this page: `publish_file` (a built file outside the repo), else the repo html, else the generator."""
+    return pg.get("publish_file") or pg.get("html") or pg.get("generator")
+
+
 def republish_lines(reg, builder=build_html):
-    """One `REPUBLISH <slug> <html> <url>` line per stale page: <html> is the repo file, or the generator for a page that exists only as build output."""
+    """One `REPUBLISH <slug> <file> <url>` line per stale page: <file> is publish_file, the repo html, or the generator for a page that exists only as build output."""
     out = []
     for s, u, _why in stale(reg, builder):
         pg = next(p for p in reg["pages"] if p["slug"] == s)
-        out.append(f"REPUBLISH {s} {pg.get('html') or pg.get('generator')} {u}")
+        out.append(f"REPUBLISH {s} {publish_source(pg)} {u}")
     return out
+
+
+def producer_lines(reg, producer):
+    """`REPUBLISH <slug> <file> <url>` for every canonical page whose registry `producer` is this one: a producer calls it when it finishes
+    (cbp_run.py at the end of a run, buy_crypto.py after its feed), so a finished run names its pages (root cause C)."""
+    return [f"REPUBLISH {pg['slug']} {publish_source(pg)} {pg['urls'][owner(pg)]}"
+            for pg in reg["pages"] if pg["status"] == "canonical" and producer in ([pg["producer"]] if isinstance(pg.get("producer"), str) else pg.get("producer") or [])
+            and pg["urls"].get(owner(pg))]
 
 
 def behind(reg, pg, repo=REPO):
@@ -290,13 +359,30 @@ def behind(reg, pg, repo=REPO):
         return True
 
 
-def publish_record(reg, slug, today=None, repo=REPO):
+def publish_record(reg, slug, today=None, repo=REPO, now=None):
     pg = next((p for p in reg["pages"] if p["slug"] == slug), None)
-    if not pg or not (pg.get("html") or generated_only(pg)):
-        raise SystemExit(f"artifacts: no page {slug!r} with repo html or a buildable generator")
-    pg["published_sha"] = content_hash(build_html(pg, repo) if generated_only(pg) else repo_html(pg, repo))
-    pg["last_published"][owner(pg)] = today or date.today().isoformat()
-    return pg["published_sha"]
+    if not pg or not (pg.get("html") or generated_only(pg) or pg.get("feeds") or pg.get("max_age_h")):
+        raise SystemExit(f"artifacts: no page {slug!r} with repo html, a buildable generator, or feeds")
+    now = now or datetime.now(timezone.utc)
+    if pg.get("html") or generated_only(pg):
+        pg["published_sha"] = content_hash(build_html(pg, repo) if generated_only(pg) else repo_html(pg, repo))
+    pg["last_published"][owner(pg)] = today or now.date().isoformat()
+    pg["published_at"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return pg.get("published_sha") or "(feed page, no sha)"
+
+
+def ship_records(slugs, run=subprocess.run, repo=REPO):
+    """Commit and ship ONLY registry.json after publish-record, so a publish record never sits uncommitted in a scratch tree
+    (2026-11-13: stale kept listing pages that were already republished). Returns the ship exit code."""
+    reg = str(REG.relative_to(repo)) if REG.is_absolute() else str(REG)
+    msg = "Pages republished: publish records for " + ", ".join(slugs) + chr(10)*2 + "Result: registry publish records current" + chr(10) + "Next: END: records only"
+    git = lambda *a: run(["git", "-C", str(repo), *a], capture_output=True, text=True)
+    git("add", "--", reg)
+    if git("diff", "--cached", "--quiet", "--", reg).returncode == 0:
+        return 0
+    if git("commit", "-m", msg, "--", reg).returncode != 0:
+        return 1
+    return run([sys.executable, str(Path(repo) / "scripts" / "dev" / "sync.py"), "ship"], cwd=str(repo)).returncode
 
 
 def cmd_build(reg):
@@ -488,6 +574,7 @@ def main(argv=None):
     ap.add_argument("--all", action="store_true", help="republish: print for any login, not only a publisher login")
     ap.add_argument("--file", help="banner / stamp: html to update in place (default: the page's repo html)")
     ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
+    ap.add_argument("--ship", action="store_true", help="publish-record: commit and ship registry.json at once (no record left uncommitted)")
     a = ap.parse_args(argv)
     reg = load()
     if a.cmd == "audit-links":
@@ -536,8 +623,8 @@ def main(argv=None):
     if a.cmd == "publish-record":
         sha = publish_record(reg, a.slug, today=a.date)
         REG.write_text(json.dumps(reg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
-        print(f"publish-record: {a.slug} published_sha={sha[:12]}")
-        return 0
+        print(f"publish-record: {a.slug} published_sha={sha[:12] if len(sha) == 64 else sha}")
+        return ship_records([a.slug]) if a.ship else 0
     if a.cmd == "stale":
         lines = stale_lines(reg)
         print("\n".join(lines) if lines else f"artifacts: no stale pages ({len(tracked(reg))} checked)")

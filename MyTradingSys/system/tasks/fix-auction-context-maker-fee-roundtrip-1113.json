@@ -1,36 +1,58 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py -q"
+  ],
   "created": "2026-11-12T19:37:16Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "auction_context.DEFAULT_MAKER_RT_BPS == 4.0; comment says 2 x 2 bps maker; new test passes; test_auction_context.py all pass; grep confirms no caller of the constant exists or each is checked",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "DEFAULT_MAKER_RT_BPS (auction_context.py:47) is BINANCE_MAKER*10000 = 2 bps, one side, but named round trip; fees.py scenario D says 4 bp round trip (2 x BINANCE_MAKER). Fix to 20000 and the comment. Constant is currently unused, so no census number changes.",
   "id": "fix-auction-context-maker-fee-roundtrip-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "auction_context: prior NY cash-session VAH/VAL/POC, DST-aware (tf-ny-session-va-profile-11",
+      "ref": "86502d26c4ba",
+      "utc": "2026-11-08T22:15:33Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Latent bug, no current number affected (verified: only the definition references it). Next: END fix shipped; any future maker-fill study must read this constant.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T20:19:31Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "gap-hunt 1113 via Supervisor C"
+  "scope_in": [
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "DEFAULT_TAKER_RT_BPS (10 bps, correct), AUCTION_CENSUS_1108.md numbers, live tree"
+  ],
+  "scope_sha": "86502d26c4ba",
+  "size": "S",
+  "sources": [
+    "MyTradingSys/backtest/fees.py:23,37 (SOURCED); gap-hunt 1113 via Supervisor C"
+  ],
+  "state": "ready",
+  "steps": [
+    "Change line 47 to BINANCE_MAKER * 20000.0 with comment 4 bps round trip (2 x 2 bps, fees.py D)",
+    "Add the test; run it red on old line, green on new",
+    "grep repo for DEFAULT_MAKER_RT_BPS callers (none at refinement time); if any appear, name them in the result"
+  ],
+  "tests": "New test_maker_rt_is_two_legs in test_auction_context.py asserts DEFAULT_MAKER_RT_BPS == 4.0 (expected from fees.py:23 'D Binance maker both legs 4 bp'); fails on current code (2.0)",
   "title": "[SONNET] auction_context.py:47 comment says maker fee is per side but code uses it as the round trip: maker cost understated by half",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

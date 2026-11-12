@@ -98,6 +98,17 @@ def get(url, tries=4):
     return None
 
 
+def announce_republish(out=print):
+    """Name the pages this feed drives (registry producer 'buy_crypto'): REPUBLISH <slug> <file> <url>. Best effort."""
+    try:
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+        import artifacts
+        for line in artifacts.producer_lines(artifacts.load(), "buy_crypto"):
+            out(line)
+    except Exception as e:  # noqa: BLE001
+        print("buy_crypto: republish note failed: " + str(e))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default=str(pathlib.Path.home() / ".mts_private" / "buy_crypto.json"))
@@ -144,6 +155,7 @@ def main():
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         json.dump(doc, f, indent=1)
     print(f"wrote {out} ({len(coins)} coins, missing {missing})")
+    announce_republish()
 
 
 if __name__ == "__main__":

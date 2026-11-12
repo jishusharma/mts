@@ -1,0 +1,49 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T20:53:27Z",
+  "depends_on": [
+    "gemini-nk-catalog-1113"
+  ],
+  "done_when": "MyTradingSys/research/conceptualizer/concepts.json has an nk layer with >=1 concept per extracted video, each with a SOURCED quote line and file path; NK_FACTS.md lists the quotes and NOT_SEEN gaps",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Ship a Conceptualizer NK layer (concepts from NK StockTalk: Hilega Milega, Bollinger Bands, SRP, Nifty use) built only from extracts that carry Hindi caption quotes; every number SOURCED (quote) or OURS.",
+  "id": "nk-conceptualizer-layer-after-extracts-1113",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY. Waits on gemini-nk-catalog-1113 and a caption fetch after the lock ends; re-ask the Gemini extract lane if no EXTRACT.md lands.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/conceptualizer",
+    "MyTradingSys/research/nk_stocktalk_1113"
+  ],
+  "scope_out": [
+    "re-fetching captions outside the lock rules, Chrome, any trade or layer code, Gemini background knowledge presented as NK's words"
+  ],
+  "size": "M",
+  "sources": [
+    "operator decision 2026-11-13 via Supervisor C",
+    "MyTradingSys/research/nk_stocktalk_1113/SELECTED.md:1"
+  ],
+  "state": "refined",
+  "steps": [
+    "find EXTRACT.md files under nk_stocktalk_1113/{argon,flash}/<id>/; both lanes wrote NOT_IN_DATA.md (caption lock until 2026-11-13T13:58Z), so if none exist hand the card back refined with that note",
+    "run verify_extract_quotes.py on each EXTRACT.md; use only quotes that pass",
+    "write NK_FACTS.md (quote, video id, concept, SOURCED/OURS/NOT_SEEN); SELECTED.md concept text is Gemini background, never cite it as NK",
+    "add the nk layer to concepts.json (read with utf-8) in the existing entry format; coordinate with owner opus-concept-decks local_91880c0a"
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py passes; verify_extract_quotes.py exits 0 on each EXTRACT.md used",
+  "title": "[SONNET] Build concepts from Nitish Kumar (NK StockTalk): after the NK extracts land, ship a Conceptualizer NK layer (owner opus-concept-decks local_91880c0a); NK is not extract-only",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

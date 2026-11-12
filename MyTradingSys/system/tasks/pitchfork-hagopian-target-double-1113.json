@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T20:39:13Z",
+  "depends_on": [],
+  "done_when": "pitchfork_detector.py or desk EXIT label states SOURCED or OURS for the Hagopian target with a quote; new test fails on old code; PHASE1_EVENT_STUDY.md text and table agree or Note says why they differ",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Resolve review F1: the Hagopian target is entry +/- (UML-LML), 2x the sourced W = |UML-ML|, yet the sim desk labels it trader. Pick one reading, either change the code or relabel OURS; also reconcile PHASE1 text (76.8-81.2% to ML) with the table (86%).",
+  "id": "pitchfork-hagopian-target-double-1113",
+  "kind": "audit",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Pitchfork copy-paste fork vs random parallels, BTC 4H DEV count",
+      "ref": "cb341d766dfc",
+      "utc": "2026-11-06T07:36:44Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "1339d6af9d75 feat(pitchfork): revalidate engine, implement fixes & complete 2020-2026 even",
+      "ref": "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md",
+      "utc": "2026-10-20T21:36:21Z"
+    }
+  ],
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY. Sim desk label lives in a file outside scope_in: builder greps EXIT['ML'] first and adds it to scope if found, non-live only.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T21:00:34Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/backtest/layers/pitchfork/pitchfork_detector.py",
+    "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_review_fixes.py",
+    "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md"
+  ],
+  "scope_out": [
+    "PitchforkSignalLayer.java and any live-path file (F3), Java parity, other review findings"
+  ],
+  "scope_sha": "cb341d766dfc",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/pitchfork_2026-10-19/OPUS_E2E_REVIEW_2026-10-28.md:21",
+    "MyTradingSys/research/pitchfork_2026-10-19/PHASE1_EVENT_STUDY.md:17-27"
+  ],
+  "state": "ready",
+  "steps": [
+    "read OPUS_E2E_REVIEW_2026-10-28.md F1 and RESEARCH_PITCHFORK_LAYER.md:42,54-55",
+    "default (conservative): keep the code, relabel the target OURS and name W=UML-LML in the detector docstring and sim desk EXIT label text; code change only if the quote clearly says W=|UML-ML|",
+    "add the fail-first test; run test_pitchfork_detector.py and test_pitchfork_review_fixes.py",
+    "PHASE1_EVENT_STUDY.md: recount from TRIALS_PITCHFORK.csv which rows the 76.8-81.2% and 86.15% rows cover; fix the text or add one line naming the difference"
+  ],
+  "tests": "MyTradingSys/backtest/layers/pitchfork/test_pitchfork_review_fixes.py: new test asserts Hagopian target distance equals the chosen reading (fails on current 2x code, or asserts OURS label)",
+  "title": "Hagopian target uses UML-LML (2x sourced UML-ML, review F1) yet sim desk labels it trader; fix code or relabel OURS; also PHASE1 text 76.8-81.2% vs table 86-90%",
+  "weight": "ROUTINE",
+  "worker": "session"
+}
