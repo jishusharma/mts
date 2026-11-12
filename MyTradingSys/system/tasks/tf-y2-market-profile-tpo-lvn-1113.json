@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T20:42:12Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-y2-market-profile-tpo-lvn-1113/ANSWERS.md"
   ],
@@ -14,10 +15,18 @@
   "goal": "From Tom's words: how time-based market profile (30-minute blocks, single prints, tails, double distribution) is used for levels beside volume profile, what low-volume area means and what he does at it, and every profile-shape word with its stated meaning. Missing numbers are NOT_SEEN.",
   "id": "tf-y2-market-profile-tpo-lvn-1113",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "34 quotes PASS (verify exit 0); Q18/Q19/Q20 ANSWER",
+      "ref": "5d450fd17",
+      "utc": "2026-11-12T20:42:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "tf-s1-answer-ledger-1113",
   "note": "Gap-driven re-read from iteration 2, not a video summary. Answer the Q-ids only; mark the speaker CONTESTED for 9IliXww64uM and GUEST for guests.",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
     "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
     "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md"
   ],
-  "result": "",
+  "result": "34 quotes PASS (verify exit 0); Q18/Q19/Q20 ANSWER",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y2-market-profile-tpo-lvn-1113/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "gap-hunt iteration 2 2026-11-13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md sections 3 and 7 for the gaps and questions of this card; read ANSWERS_FROM_DISK.md so settled items are not redone",
     "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: 3o1VVsfBmmU 5Ljfwvtktek 1utSjHs_Mq8 4P5WAxyPCis 0CrkbfuIhkc kXhIAug0Gh8 -dMWA_bbm3o o-w5Gxss6T0 BB3c8visnkI Ld1dhjGdTCA (descriptions are not speech: quote only spoken text)",
     "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-y2-market-profile-tpo-lvn-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
   ],
+  "taken": "2026-11-12T20:42:12Z",
   "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
   "title": "[SONNET] Tom market profile (TPO), shapes and low-volume area from held transcripts",
   "weight": "ROUTINE",

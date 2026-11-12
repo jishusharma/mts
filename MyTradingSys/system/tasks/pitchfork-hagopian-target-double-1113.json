@@ -1,0 +1,39 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-12T20:39:13Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "pitchfork-hagopian-target-double-1113",
+  "kind": "audit",
+  "lane": "SONNET",
+  "layers": [
+    "pitchfork"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "conceptualizer"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Hagopian target uses UML-LML (2x sourced UML-ML, review F1) yet sim desk labels it trader; fix code or relabel OURS; also PHASE1 text 76.8-81.2% vs table 86-90%",
+  "weight": "",
+  "worker": ""
+}
