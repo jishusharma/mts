@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T06:56:51Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
     "python scripts/dev/fetch_captions_timed.py --analyst Tom --channel @TomVorwald --since 2026-11-04 --latest 3 --scan 12 --max-videos 3"
@@ -19,6 +20,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "2 extracts (BB3c8visnkI 9 quotes, e83njGZFrPw 8 quotes) verify exit 0",
+      "ref": "42efeca92",
+      "utc": "2026-11-12T06:56:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: ORDERFLOW_QUEUE.md ranks 69+2 ON_DISK and 63 TO_FETCH ids (rank_queue.py, 2 tests ",
@@ -36,13 +43,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "tom-fabio-newest-and-unextracted-videos-1112",
   "note": "Guard lockout 6/24/72 h, never evade. 2026-11-12 status: BLOCKED until 02:41Z (level 1, 87 of 150 budget), run after that. DECISION (OURS): ORDERFLOW_QUEUE.md TO_FETCH has 62 of 63 ids at score 0 (Malkan, Krown), so top-5 TO_FETCH dropped. Handle @TomVorwald from repo docs. Extraction of fetched ids is a later wave.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T20:59:22Z",
   "refs": [],
-  "result": "",
+  "result": "2 extracts (BB3c8visnkI 9 quotes, e83njGZFrPw 8 quotes) verify exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md (new)",
     "MyTradingSys/research/extraction_ledger_2026-10/ORDERFLOW_QUEUE.md (read)"
@@ -58,12 +71,13 @@
     "planner-edge-cards-1112; OPERATOR_DECISIONS.md 2026-11-12 ~00:10Z",
     "scripts/dev/fetch_captions_timed.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run --status; if BLOCKED write the retry time to FETCH_LOG.md (one BLOCKED row) and stop",
     "Run the --channel line (max 3 network fetches); log each id OK, EXISTS, DEFERRED or NO_CAPTIONS with UTC",
     "On the first 429 stop and log BLOCKED; ids without captions go to a Gemini-lane list in FETCH_LOG.md, no ASR here"
   ],
+  "taken": "2026-11-12T06:56:51Z",
   "tests": "Run card: FETCH_LOG.md is the test; git diff outside scope_in must be empty.",
   "title": "Extraction backlog 3/3a: guarded caption fetch, newest Tom and top priority ids",
   "weight": "",
