@@ -109,7 +109,7 @@ def parse_expiry(v):
 def is_tradable(r):
     """A trade with entry, target, invalidation and valid direction all stated (the analyst's words, nothing filled in)."""
     return any(
-        t.get("direction") in DIRECTIONS and
+        t.get("direction") in DIRECTIONS and not t.get("flag") and
         all(str(t.get(k) or "").strip() not in ("", "—") for k in ("entry", "target", "invalidation"))
         for t in r.get("trades") or []
     )
