@@ -147,6 +147,29 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertEqual(bad, 1, out)
         self.assertIn("MISSING", out)
 
+    def test_pure_hindi_quote_ok_and_changed_number_missing(self):
+        # Devanagari words must be compared, not dropped: an exact Hindi quote passes, a changed number fails.
+        q1 = "आज बाजार में निफ्टी दस प्रतिशत गिरा"
+        q2 = "स्टॉप लॉस 22500 पर रखें"
+        self._transcript("[0:00] " + q1 + "।\n[0:03] " + q2 + "\n")
+        bad, out = self._check(q1, "BEGIN")
+        self.assertEqual(bad, 0, out)
+        bad, out = self._check(q2, "MIDDLE")
+        self.assertEqual(bad, 0, out)
+        bad, out = self._check(q2.replace("22500", "22600"), "MIDDLE")
+        self.assertEqual(bad, 1)
+        self.assertIn("MISSING", out)
+        bad, out = self._check(q1.replace("दस", "बीस"), "BEGIN")
+        self.assertEqual(bad, 1, "a different Hindi number word must not match")
+
+    def test_unicode_forms_and_joiners_compare_equal(self):
+        # NFD vs NFC, zero-width joiners and the danda must not break an exact Hindi quote.
+        import unicodedata
+        word = "क्षति ड़ा"
+        self.assertEqual(v.norm(unicodedata.normalize("NFD", word)), v.norm(unicodedata.normalize("NFC", word)))
+        self.assertEqual(v.norm("क्‍ष"), v.norm("क्ष"))
+        self.assertEqual(v.norm("निफ्टी। buy 5%"), "निफ्टी buy 5%")
+
 
 class VerifyRepoDocCitesTest(unittest.TestCase):
     """layer_facts / layer review sheets: file:line cites and quoted repo-doc spans are resolved."""
