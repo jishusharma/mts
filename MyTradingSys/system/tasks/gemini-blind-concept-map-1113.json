@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-12T19:49:11Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/gap_hunt_1113/gemini_blind_map.md"
+  ],
+  "created": "2026-11-12T19:27:05Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gap_hunt_1113/gemini_blind_map.md exists, lists concepts, decision steps and numbers each with an exact quote, [mm:ss] and Source GPS video id, and verify_extract_quotes.py exits 0",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Gap hunt (operator 11-13, different models different methods): from the transcript text files alone, with no repo docs, write an independent map of Tom Vorwald and Fabio Valentini method: every concept, decision step and number, each with an exact quote and the video id.",
+  "id": "gemini-blind-concept-map-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "gemini_blind_map.md 97 quotes verify exit 0 (re-run here)",
+      "ref": "283abe663",
+      "utc": "2026-11-12T19:49:11Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: map delivered",
+  "note": "Gemini lane effort low. Ids: 43JaKHRvxHk, 9eHZMVXilgc, BVpYGKz9PBU, C9n_d91Uitc, Fj4FDZQxw0I, KEe_CWHyuSg, Kg6sYKgtkrY, Ld1dhjGdTCA, NkQeOVDTAec, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, VumVuGnCcFM, YmygDgtoxO8, dh-ysRR8f-M, e6Gm1n2h05M, kKZCJui4S9U, l8RZrBfzvp4, qLnQan0KGmQ, rrHj24GSR6M, sQ_biBKhPVU, ujedEcmvBMk, v5EuDl9c0iI, vk0mkNPuhDc, vl01TiVTuoQ, wPMiyJXL0zU, yRvMW6lgN1o, zQTbdEweG3c",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T19:27:05Z",
+  "refs": [],
+  "result": "gemini_blind_map.md 97 quotes verify exit 0 (re-run here)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gap_hunt_1113/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented quotes or numbers",
+    "no YouTube request",
+    "do not read our docs or prior extracts"
+  ],
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13 gap hunt; HAVE_LIST RELEVANT-NOW (28 ids with transcripts)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read ONLY raw_transcripts_canonical/<id>_raw.txt for the ids in note (text, no video); do NOT open any other file under MyTradingSys/research, extracts/ or docs: the view must stay unbiased",
+    "Write MyTradingSys/research/layer_lab/gap_hunt_1113/gemini_blind_map.md: a table of concepts, decision steps (entry, stop, target, timeframe, filters, management, no-trade) and every stated number; each row has an exact > \"quote\", [mm:ss], **Source GPS: <id> | BEGIN|MIDDLE|END**; mark a number SOURCED only if he says it, else do not invent one",
+    "Run verify_extract_quotes.py until exit 0 (fix the quote or tag, never the checker); commit on your branch"
+  ],
+  "taken": "2026-11-12T19:49:11Z",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind independent concept map of Tom/Fabio from 28 transcripts (text only)",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

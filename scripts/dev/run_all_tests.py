@@ -455,7 +455,7 @@ def exec_layer_chunks(modules, jobs):
     chunks = balance_modules(modules, jobs)
     procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE,
                               stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
-    outs = [p.communicate()[0] for p in procs]
+    outs = [communicate_or_kill(p) for p in procs]
     # Python 3.12+ exits 5 when a chunk holds only modules with no unittest cases ('NO TESTS RAN'): that is not a failure.
     def passed(p, o):
         return p.returncode == 0 or (p.returncode == 5 and "NO TESTS RAN" in o)
@@ -464,6 +464,23 @@ def exec_layer_chunks(modules, jobs):
         return True, "\n".join(outs)
     keep = [o if os.environ.get("CI") else "\n".join(o.splitlines()[-15:]) for p, o in zip(procs, outs) if not passed(p, o)]
     return False, "\n".join(keep)
+
+
+UNITTEST_SHARD_TIMEOUT_S = 900   # DECISION (OURS) ci-hang-fix-1113: a hung script-style unittest ends its shard here, 15 of the 30 job minutes, with output
+
+
+def communicate_or_kill(p, timeout=None):
+    """p.communicate() with a limit: on expiry the process is killed and the output so far gets a HUNG line (returncode forced non-zero),
+    so a hung script-style test fails the step with its name instead of the 30 min job timeout cancelling the shard silently."""
+    limit = float(os.environ.get("MTS_UNITTEST_SHARD_TIMEOUT_S", UNITTEST_SHARD_TIMEOUT_S)) if timeout is None else timeout
+    try:
+        return p.communicate(timeout=limit or None)[0]
+    except subprocess.TimeoutExpired:
+        p.kill()
+        out = (p.communicate()[0] or "")
+        p.returncode = p.returncode or 1
+        tail = "\n".join(out.splitlines()[-30:])
+        return f"{tail}\nHUNG: unittest shard exceeded {limit:g} s and was killed; the last test line above is the hung test\n"
 
 
 def exec_unittest_shards(script, jobs, part=None):
@@ -486,9 +503,10 @@ def exec_unittest_shards(script, jobs, part=None):
         all_ids = all_ids[part[0]::part[1]]
     chunks = split_modules(all_ids, jobs)
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([mod_dir, os.environ.get("PYTHONPATH", "")]).rstrip(os.pathsep))
-    procs = [subprocess.Popen([sys.executable, "-m", "unittest"] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    verbose = ["-v"] if os.environ.get("CI") else []   # CI: the last `test ... ` line of a killed shard names the hung test
+    procs = [subprocess.Popen([sys.executable, "-m", "unittest", *verbose] + c, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                               text=True, encoding="utf-8", errors="replace", env=env, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)) for c in chunks]
-    outs = [p.communicate()[0] for p in procs]
+    outs = [communicate_or_kill(p) for p in procs]
     ok = all(p.returncode == 0 for p in procs)
     def failing(o):   # from the first FAIL/ERROR header (a plain tail is only the tests' own prints), capped
         lines = o.splitlines()
@@ -846,6 +864,12 @@ class _RecordedSlot:
 
     def __getattr__(self, name):   # name, slots, wait_s ... of the wrapped slot
         return getattr(self.inner, name)
+
+    def __setattr__(self, name, value):   # timeout, poll, alive ... must reach the wrapped slot: set on the wrapper they were silently
+        if name in ("inner", "mode"):     # ignored, so a test that set timeout=0.2 waited on the real default forever (CI hang 2026-11-12)
+            object.__setattr__(self, name, value)
+        else:
+            setattr(self.inner, name, value)
 
     def __enter__(self):
         self.inner.__enter__()

@@ -5,8 +5,8 @@ test is still running after the limit, the plugin prints `TEST TIMEOUT: <nodeid>
 ends the pytest process with exit 1, so the shard fails with the test's name instead of holding the ship (2026-11-11: one ship sat 50 min on a
 hung pytest with no test name).
 
-DECISION (OURS): limit 300 s locally (raised from 120 s 2026-11-12: test_aibridge_selftest_concurrent ran past 120 s on a loaded machine); MTS_TEST_LIMIT_S overrides it on any host (0 = off). ON GITHUB CI THE LIMIT IS OFF unless MTS_TEST_LIMIT_S
-is set: the first version (582709541, reverted c2771d345) applied 120 s on CI and killed test_aibridge_chain's long test (the CI file total of
+DECISION (OURS): limit 300 s locally (raised from 120 s 2026-11-12: test_aibridge_selftest_concurrent ran past 120 s on a loaded machine); MTS_TEST_LIMIT_S overrides it on any host (0 = off). ON GITHUB CI THE LIMIT IS ON (300 s, since ci-hang-fix-1113; it was off 2026-11-11..12 and a hang cancelled shards).
+The first version (582709541, reverted c2771d345) applied 120 s on CI and killed test_aibridge_chain's long test (the CI file total of
 that file was 121-144 s in runs 43074883278/43075303873). CI prints per-FILE seconds only, so per-test CI times are unknown until the
 "Gate test times" notice (run_all_tests.times_notice, top 25 single tests) has shown one green CI run; then set MTS_TEST_LIMIT_S on CI.
 SLOW_OK = {path substring: seconds}: an allowance is at least 3x the slowest CI seconds seen for the file (CI per-file totals, runs
@@ -33,8 +33,8 @@ SLOW_OK = {
 def limit_for(nodeid, env=None):
     env = os.environ if env is None else env
     raw = env.get("MTS_TEST_LIMIT_S")
-    if raw is None and env.get("GITHUB_ACTIONS"):
-        return 0   # CI: off until per-test CI durations exist (see module doc)
+    # CI uses the same 300 s default as a local run (ci-hang-fix-1113): with the limit off, one hung test (test_sync's gate-slot test, 2026-11-12)
+    # held a shard to the 30 min job timeout and GitHub cancelled it with no test name. SLOW_OK allowances are all >= 300 s.
     try:
         base = float(raw) if raw is not None else DEFAULT_LIMIT_S
     except ValueError:

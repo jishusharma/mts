@@ -63,13 +63,10 @@ Confirms the disk answer: no bar count and no number of closes in these 11 trans
 > "And greater acceptance of lower prices means that for now the probability is high that the downtrend will continue."
 **Source GPS: YkclL6xgu-s | END**
 
-> "as long as the market remains above the 325 level based on the closing price."
-**Source GPS: 0CrkbfuIhkc | END**
-
 ### Q8 Profile anchor: cash session vs day vs week vs composite vs last major high to low; markets with no cash session
 
 **Verdict: PARTIAL**
-No single anchor is named as the rule. He uses the previous week profile and daily profiles (cash session only) together, a 30-minute TPO block as the profile unit, and merging of profiles into one large profile while price stays in a fair range. VWAP is session based and he calls a continuous display not useful. Nothing is said about a market with no cash session (24/7, crypto): NOT_SEEN.
+No single anchor is named as the rule. He uses the previous week profile and daily profiles (cash session only) together, 30-minute blocks as the profile unit, and merging of profiles into one large profile while price stays in a fair range. VWAP is session based and he calls a continuous display not useful. Nothing is said about a market with no cash session (24/7, crypto): NOT_SEEN.
 
 > "Here you can see the volume profile from the previous week."
 **Source GPS: uFxYcpiaOpw | BEGIN**

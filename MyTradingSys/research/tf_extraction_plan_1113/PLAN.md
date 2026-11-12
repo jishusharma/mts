@@ -6,7 +6,7 @@ Labels: SOURCED = trader's own words; OURS = our number; NOT_SEEN = looked for, 
 
 ## Headline
 
-- Of 12 gaps that a trader's words could settle, 4 are already answered from what we hold (Q2, Q3, Q4 partly, Q14 partly). The answers matter: **no bar count exists for acceptance (our 6 is OURS), "speed" is tape speed not a bar count, "70%" is three different claims, and Tom's "closing-price count" (PbD) is named in 116 transcripts but never given as a number.** That last one is the biggest hole: it is his trend-vs-balance read and no code uses it.
+- Of 12 gaps that a trader's words could settle, 4 are already answered from what we hold (Q2, Q3, Q4 partly, Q14 partly). The answers matter: **no bar count exists for acceptance (our 6 is OURS), "speed" is tape speed not a bar count, "70%" is three different claims, and Tom's "closing-price count" (PbD) is named in the Tom/Fabio videos ("closing price" appears in 24 of 122 of them, per the 11-13 Haiku vocab sweep) but never given as a number.** That last one is the biggest hole: it is his trend-vs-balance read and no code uses it.
 - Most remaining gaps sit in videos we already hold and extracted badly (V1 fresh, catalog-only). They need a gap-driven re-read, not a download. New downloads are capped at about 16 ids.
 - The Tom feed of 60 is not ranked by id here: titles are not stored and no YouTube/Invidious call was made this turn (captions locked to 02:53Z). Card `tf-g2` lists, triages by a fixed title rubric, then fetches at most 12.
 
@@ -14,7 +14,7 @@ Labels: SOURCED = trader's own words; OURS = our number; NOT_SEEN = looked for, 
 
 | Q | Question | What we use now | Status today | Likely answered by (id) | Who |
 |---|---|---|---|---|---|
-| Q1 | How does Tom read trend vs balance ("counting closing prices", P/B/D structures)? Any number? | SMA20 / VWAP-CVD slope (OURS) | NOT_SEEN as a number in 116 transcripts; he says "clear rules" exist (m3IMdc7QwN4, jXR1afMy-3o, 3o1VVsfBmmU) | PbD set: Ly62G168MkQ, jXR1afMy-3o, m3IMdc7QwN4, 6BAzqewtPUk, uFxYcpiaOpw, Sy-x5AQ9-Pk, K8qtT2_axPo; new Tom uploads titled PbD | x3 now, g2 after unlock |
+| Q1 | How does Tom read trend vs balance ("counting closing prices", P/B/D structures)? Any number? | SMA20 / VWAP-CVD slope (OURS) | NOT_SEEN as a number in the held transcripts ("closing price" is in 24 of 122 Tom/Fabio videos; the earlier "116" figure does not reproduce); he says "clear rules" exist (m3IMdc7QwN4, jXR1afMy-3o, 3o1VVsfBmmU) | PbD set: Ly62G168MkQ, jXR1afMy-3o, m3IMdc7QwN4, 6BAzqewtPUk, uFxYcpiaOpw, Sy-x5AQ9-Pk, K8qtT2_axPo; new Tom uploads titled PbD | x3 now, g2 after unlock |
 | Q2 | What is "70%": value area, time in balance, or return to value? | 70% return tested (E6: 57% vs placebo 47%) | SETTLED as 3 claims (a) VA 68.2/70% (b) balance 60-70%+ of time, one video says 30% trend (c) 30% run / 70% come back (BB3c8visnkI). Open: which profile period and market for (c) | BB3c8visnkI, aursfDVYzUk, Fj4FDZQxw0I, VOiy8mAALWA, K8qtT2_axPo | done (disk); x4 for the period |
 | Q3 | Acceptance: how many bars/closes? | 6 x 5m (OURS, once mislabelled SOURCED) | SETTLED: no count; "closing price + sideways phase", "real acceptance, not quick spikes" | Ly62G168MkQ, qLnQan0KGmQ, VxN5IxTwpbE, WQ_OAdz-PJ8 | done; x3 for the build-up wording |
 | Q4 | "Speed" of rejection: what is it measured on? | reclaim <= 3 bars (OURS) | PARTIAL: market/tape speed, third pillar with footprint and price acceptance; relative to the product; no bar count | -dMWA_bbm3o, G0CiJcuXCRs, 4P5WAxyPCis (guest), k0zm5NYn0IQ; Fabio Is1HvdfQm5c | x5, x1 |

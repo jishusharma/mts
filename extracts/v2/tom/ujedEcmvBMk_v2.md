@@ -209,7 +209,7 @@ mirror stated?: no - do not assume
 **Source GPS: ujedEcmvBMk | MIDDLE**
 
 > "it hasn't made a decision up here to really go long sustainably."
-**Source GPS: ujedEcmvBMk | END**
+**Source GPS: ujedEcmvBMk | MIDDLE**
 
 > "Otherwise, I would never have made this re-entry."
 **Source GPS: ujedEcmvBMk | END**

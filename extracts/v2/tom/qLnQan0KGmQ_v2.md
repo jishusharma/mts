@@ -175,7 +175,7 @@ mirror stated?: no - do not assume
 **Source GPS: qLnQan0KGmQ | BEGIN**
 
 > "But with the kind of volatility we're seeing here right now, that's obviously not very likely."
-**Source GPS: qLnQan0KGmQ | MIDDLE**
+**Source GPS: qLnQan0KGmQ | BEGIN**
 
 > "there's an initial opportunity to execute a trade"
 **Source GPS: qLnQan0KGmQ | MIDDLE**
@@ -238,7 +238,7 @@ mirror stated?: no - do not assume
 **Source GPS: qLnQan0KGmQ | MIDDLE**
 
 > "Oh, but now the market bounced off there and went back again."
-**Source GPS: qLnQan0KGmQ | END**
+**Source GPS: qLnQan0KGmQ | MIDDLE**
 
 > "In theory, I can plan the next leg up to the next high volume area."
 **Source GPS: qLnQan0KGmQ | END**
