@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T20:42:32Z",
   "commands": [],
   "created": "2026-11-11T15:28:27Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "CONSISTENT: 5 | CONTRADICTION: 0 | NOT_IN_CODE: 0 (MyTradingSys/research/layer_lab/reports",
+      "ref": "5587bcc04",
+      "utc": "2026-11-12T20:42:32Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -32,13 +39,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "note": "next: END: task complete",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T15:28:30Z",
   "refs": [],
-  "result": "",
+  "result": "CONSISTENT: 5 | CONTRADICTION: 0 | NOT_IN_CODE: 0 (MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-doc-code-scan-usage-adx-formulas-1111.md)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tv_favorites_2026-11/USAGE_adx.md (read)",
     "MyTradingSys/backtest/layers/adx/adx.py (read)",
@@ -52,12 +65,13 @@
   "sources": [
     "Session_Planner planner-c-refine-1111b"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 5 clauses: +DM/-DM rule, TR definition, Wilder smoothing with n=14, DI and DX formula, ADX as smoothed DX; find the matching default or line in the code; mark CONSISTENT or CONTRADICTION or NOT_IN_CODE",
     "Mark each with file:line, write the table with counts on line 1, quote file:line per row, ship the report"
   ],
+  "taken": "2026-11-12T20:42:32Z",
   "tests": "",
   "title": "[GEMINI] scan: USAGE_adx.md formulas vs adx.py",
   "weight": "ROUTINE",

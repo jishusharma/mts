@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T20:42:21Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-y6-btc-orderflow-exec-entry-1113/ANSWERS.md"
   ],
@@ -14,10 +15,18 @@
   "goal": "From Fabio's words: whether he uses order flow on crypto and with what clock and size, what the range bars (40/80) and big-trade filter 60 mean in units, when he uses 1m, 5m or footprint, his entry order types and choice rule, and the tool tier verdicts. Missing numbers are NOT_SEEN.",
   "id": "tf-y6-btc-orderflow-exec-entry-1113",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "27 quotes PASS (verify exit 0); Q31 CONTRADICTION, Q32/Q33 PARTIAL, Q34 ANSWER",
+      "ref": "5587bcc04",
+      "utc": "2026-11-12T20:42:21Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "tf-s1-answer-ledger-1113",
   "note": "Gap-driven re-read from iteration 2, not a video summary. Answer the Q-ids only; mark the speaker CONTESTED for 9IliXww64uM and GUEST for guests.",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
     "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
     "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md"
   ],
-  "result": "",
+  "result": "27 quotes PASS (verify exit 0); Q31 CONTRADICTION, Q32/Q33 PARTIAL, Q34 ANSWER",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y6-btc-orderflow-exec-entry-1113/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "gap-hunt iteration 2 2026-11-13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md sections 3 and 7 for the gaps and questions of this card; read ANSWERS_FROM_DISK.md so settled items are not redone",
     "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: DyS79Eb92Ug Is1HvdfQm5c FawPrRUGNpk 3JZH06L28us 5Ljfwvtktek 3o1VVsfBmmU 4P5WAxyPCis 9IliXww64uM LQvv5xgy_ik cUTsoU-15Tc 06R-ebyOhDI (descriptions are not speech: quote only spoken text)",
     "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-y6-btc-orderflow-exec-entry-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
   ],
+  "taken": "2026-11-12T20:42:21Z",
   "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
   "title": "[SONNET] Fabio order flow on crypto, range bars, entry order types and tool tiers from held transcripts",
   "weight": "ROUTINE",
