@@ -88,6 +88,10 @@ TEXT_EXT = {".md", ".py", ".ps1", ".json", ".java", ".txt", ".csv", ".jsonl", ".
 
 
 # ------------------------------------------------------------------ plumbing
+# Per-test limit (cicd-run-per-test-limit-1111): the ship gate's plugin scripts/dev/pytest_test_limit.py (named SLOW_OK allowlist with a reason
+# per entry; off on GitHub CI unless MTS_TEST_LIMIT_S is set), so a hung test fails by name. `-p` needs the module importable in the child.
+DEV_DIR = str(Path(__file__).resolve().parent)
+TEST_LIMIT_ARGS = ["-p", "pytest_test_limit"]
 def utc_now():
     return datetime.now(timezone.utc)
 
@@ -96,6 +100,7 @@ def default_run(cmd, cwd=None, env=None):
     """Run a command, capture stdout+stderr, record wall seconds, kill nothing. (rc None = tool missing.)"""
     e = dict(os.environ)
     e["PYTHONDONTWRITEBYTECODE"] = "1"
+    e["PYTHONPATH"] = DEV_DIR + (os.pathsep + e["PYTHONPATH"] if e.get("PYTHONPATH") else "")
     if env:
         e.update(env)
     t0 = time.time()
@@ -433,10 +438,10 @@ def stage_build(ctx):
     steps = [
         ("build/mvn-compile", [mvn, "-q", "-DskipTests", "compile"] if mvn else None, "mvn", None),
         ("build/mvn-test", [mvn, "-q", "test"] if mvn else None, "mvn", None),
-        ("build/pytest-math", [py, "-m", "pytest", "MyTradingSys/tests", "--ignore=MyTradingSys/tests/docs", "-q", "-p", "no:cacheprovider"], "pytest", "MyTradingSys/tests"),
-        ("build/pytest-docs", [py, "-m", "pytest", "MyTradingSys/tests/docs", "-q", "-p", "no:cacheprovider"], "pytest", "MyTradingSys/tests/docs"),
+        ("build/pytest-math", [py, "-m", "pytest", "MyTradingSys/tests", "--ignore=MyTradingSys/tests/docs", "-q", "-p", "no:cacheprovider", *TEST_LIMIT_ARGS], "pytest", "MyTradingSys/tests"),
+        ("build/pytest-docs", [py, "-m", "pytest", "MyTradingSys/tests/docs", "-q", "-p", "no:cacheprovider", *TEST_LIMIT_ARGS], "pytest", "MyTradingSys/tests/docs"),
         ("build/run-all-tests", [py, "scripts/dev/run_all_tests.py"] + (["--quick"] if (ctx.quick or not mvn or cloud) else []), "runall", "scripts/dev/run_all_tests.py"),
-        ("build/pytest-root", [py, "-m", "pytest", "tests", "-q", "-p", "no:cacheprovider"], "pytest", "tests"),
+        ("build/pytest-root", [py, "-m", "pytest", "tests", "-q", "-p", "no:cacheprovider", *TEST_LIMIT_ARGS], "pytest", "tests"),
         ("build/build-check", [ps, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "scripts/Build-Check.ps1", "-Quick", "-ReadOnly"] if ps else None, "buildcheck", "scripts/Build-Check.ps1"),
     ]
     for name, cmd, kind, target in steps:
@@ -541,7 +546,7 @@ def stage_contract(ctx):
     checks.append(ck("contract/non-ascii", PASS, "non-ASCII counts (information): %s" % (", ".join(nonascii) or "none")))
     # C4 forbidden phrases: the doc test's own hit lines
     if ctx.p("MyTradingSys/tests/docs/test_integrity.py").exists():
-        rc, out, secs = ctx.run([PY, "-m", "pytest", "MyTradingSys/tests/docs/test_integrity.py", "-q", "-p", "no:cacheprovider",
+        rc, out, secs = ctx.run([PY, "-m", "pytest", "MyTradingSys/tests/docs/test_integrity.py", "-q", "-p", "no:cacheprovider", *TEST_LIMIT_ARGS,
                                  "-k", "test_2_no_forbidden_refs"], cwd=ctx.repo)
         ctx.append(ctx.day_file("out.txt"), "=== contract/forbidden-phrases rc=%s\n%s\n" % (rc, out))
         checks.append(ck("contract/forbidden-phrases", PASS if rc == 0 else (SKIP if rc is None else FAIL),
