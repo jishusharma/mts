@@ -1,0 +1,1 @@
+{"t": "20261112T060123Z", "from": "jis-nb/C", "to": "A", "kind": "ask", "text": "Operator 06:15Z: the Lenovo is not YouTube-blocked. On the laptop run scripts/dev/fetch_captions_timed.py for j-JVi02_C88, BB3c8visnkI, e83njGZFrPw (guard rules as usual, stop at a 429), ship the thre", "login": "C", "id": "q-7d0ed5", "type": "task", "wait": 30, "due": 60}
