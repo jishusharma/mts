@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T04:03:58Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/video_extracts_1112/e83njGZFrPw/EXTRACT.md"
@@ -17,6 +18,12 @@
   "kind": "run",
   "lane": "CODEX",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "NUC Gemini job finished: 0 quotes PASS, NOT_IN_DATA (caption lock until 2026-11-13T13:58Z,",
+      "ref": "f2c42b2fe",
+      "utc": "2026-11-12T04:03:58Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -35,6 +42,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "extract-50w-ma-j-JVi02-retry-1112",
   "note": "DECISION (OURS) 2026-11-12: Gemini lane, effort low (load as gemini-extract-tom-e83njGZFrPw-1112:low); DSA/AIBridge parked. Captions locked until 2026-11-13T02:53Z; never evaded.",
   "prio": 2,
   "refine_tries": 0,
@@ -43,7 +51,12 @@
   "refs": [
     "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md"
   ],
-  "result": "",
+  "result": "NUC Gemini job finished: 0 quotes PASS, NOT_IN_DATA (caption lock until 2026-11-13T13:58Z, not 02:53Z)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/video_extracts_1112/e83njGZFrPw/EXTRACT.md (new)",
     "MyTradingSys/research/layer_lab/video_extracts_1112/e83njGZFrPw/gemini_transcript_e83njGZFrPw.txt (new, only if no real captions)",
@@ -62,12 +75,13 @@
     "MyTradingSys/research/orderflow_extracts_1112/FETCH_LOG.md",
     "scripts/dev/gemini_queue.py"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md and follow it for video e83njGZFrPw (analyst tag Tom, out dir MyTradingSys/research/layer_lab/video_extracts_1112/e83njGZFrPw).",
     "Real captions first (guard --status), else Gemini transcript file; quotes verbatim only; unverifiable quotes dropped.",
     "Write EXTRACT.md, run verify_extract_quotes.py until exit 0, write the one-line report, commit on your branch."
   ],
+  "taken": "2026-11-12T04:03:58Z",
   "tests": "verify_extract_quotes.py on EXTRACT.md with one quote altered must exit nonzero first, then exit 0 on the real file.",
   "title": "[GEMINI] Tom Vorwald video e83njGZFrPw",
   "weight": "ROUTINE",
