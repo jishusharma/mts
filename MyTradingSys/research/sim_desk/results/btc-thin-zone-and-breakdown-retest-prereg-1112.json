@@ -1,0 +1,67 @@
+{
+ "id": "btc-thin-zone-and-breakdown-retest-prereg-1112",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Order-flow ideas from Tom extracts on BTC",
+ "title": "BTC thin-zone pass-through (5m) and accepted-breakdown retest (1h): frozen rules, fee-net, DEV",
+ "provenance": "run",
+ "date": "2026-11-12",
+ "what": [
+  {
+   "name": "Idea source",
+   "value_plain": "Tom extracts extract_BB3c8visnkI idea 3 and extract_e83njGZFrPw idea 1 (idea only, every number is ours)",
+   "label": "SOURCED"
+  },
+  {
+   "name": "T1 rule",
+   "value_plain": "prior 7 UTC days profile, 0.05% buckets; 5m close enters a bucket under 25% of POC from a non-thin one; trade in that direction; target next bucket over 75% of POC; stop one bucket back; exit 24 5m bars",
+   "label": "OURS"
+  },
+  {
+   "name": "T2 rule",
+   "value_plain": "1h; prior 24-bar range under 2.5% wide; close beyond range on 2x median volume, 2 more closes beyond, retest within 24 bars; stop 0.2% past the extreme, target the extreme, exit 48 bars; both sides",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "10 bp round trip (taker, repo fee), entry at the next 1m open, no slippage",
+   "label": "SOURCED"
+  }
+ ],
+ "how": "1m BTCUSDT klines, fill walk per 1m bar with stop before target; one position at a time; direction-matched placebo with the real trade geometry at random same-hour times, 1000 draws.",
+ "window": "DEV 2022-02-01 to 2024-05-31 only; VALIDATION never opened",
+ "verdict": {
+  "label": "Both FAIL on DEV: no fee-net edge",
+  "tone": "bad"
+ },
+ "why": [
+  "T1 has about zero gross move (+0.29 bp) so the fee makes it -9.7 bp per trade; 87% of trades hit the one-bucket stop.",
+  "T2 is +3.7 bp with t 0.35; the second DEV half is -0.2 bp, and the result sits inside the placebo band.",
+  "About 102 tries on this family so far; neither rule clears even the lenient t >= 2 bar."
+ ],
+ "kpis": [
+  {
+   "label": "T1 thin zone",
+   "value": "n 4892, mean -9.71 bp, t -25.65",
+   "tone": "bad"
+  },
+  {
+   "label": "T2 breakdown retest",
+   "value": "n 71, mean 3.68 bp, t 0.35",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "no example trades exported",
+   "caption": "numbers only, repo is public"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/btc_thin_zone_retest_1112/RESULT.md",
+  "MyTradingSys/research/btc_thin_zone_retest_1112/PREREG.md",
+  "MyTradingSys/research/btc_thin_zone_retest_1112/rules.py"
+ ],
+ "commit": "this card"
+}
