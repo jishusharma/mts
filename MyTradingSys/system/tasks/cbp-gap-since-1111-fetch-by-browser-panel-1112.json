@@ -28,6 +28,7 @@
   "from_inbox": "",
   "goal": "Land CBP rows for the analysts still behind (2026-11-12 16:29Z store: Michaal newest row 11-08, Jala 11-10, Qriptal 11-10) WITHOUT Chrome: after the caption lock ends (11-13 02:53Z) run scripts/dev/cbp_run.py --force; any video still blocked goes to the Gemini lane (ROUTING.md 'Gemini access', captions verified with verify_extract_quotes)",
   "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
+  "kind": "run",
   "lane": "CODEX",
   "latest": [],
   "layers": [],
