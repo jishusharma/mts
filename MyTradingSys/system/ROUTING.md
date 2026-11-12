@@ -53,6 +53,7 @@ Requirement: ANY Claude login (A, B, C), on ANY machine, starts Gemini work on E
 | Desktop (JIS-NB) | SSH gate + one-shot /IT schtask: `gemini_queue.py run <card>:low` (works, checked 2026-11-09) | BLOCKED: laptop has no sshd (LENOVO_SETUP.md); operator one-time admin step opens it |
 | Laptop (login A) | SSH gate (key needed on laptop) | local `agy.exe` (VERIFIED 2026-11-09 22:30Z at `~/AppData/Local/agy/bin`, models argon/flash low-med-high, opus, sonnet, gpt-oss; scripts find it via `scripts/dev/agy_path.py`) |
 | NUC (login B) | local `agy.exe` | BLOCKED: same sshd step |
+- 2026-11-12 operator order: ALL YouTube/video work (caption fetch, extracts, CBP gap, back-catalogue, Tom/Fabio rulebook) goes to the Gemini lane as `[GEMINI]` CODEX cards, ordered from any Claude session with `gemini_queue.py run <card>:low`. JIS-DESKTOP has no `agy`: that command hands off to the NUC as a one-shot /IT task (`nuc_lab.py gemini-task`; poll `nuc_lab.py gemini-status`). No Claude Agent, no Chrome; every extract passes `verify_extract_quotes.py` exit 0.
 Target state: both Gemini accounts signed in to `agy` on both hosts (operator signs in once; never a session), so either host serves either account. Until then: one host down or quota out = use the other host, never wait. "Hand-started only", "Gemini = NUC only" and "one account per machine" lines elsewhere are superseded by this section. Launcher card: gemini-any-host-launcher-1109.
 
 ## Channels (what each one is)

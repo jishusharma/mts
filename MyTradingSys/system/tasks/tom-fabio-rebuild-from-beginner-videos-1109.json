@@ -23,31 +23,31 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "scripts/dev/test_verify_extract_quotes.py::test_quote_spanning_timestamp_markers_is_found",
-  "note": "Gemini on the NUC via gemini_queue :low:flash, captions only. Next steps after it ships (separate cards): code rule 1 alone, then add one rule at a time and measure each (does it help?), testnet forward in parallel from the first version.",
+  "note": "Gemini on the NUC via gemini_queue :low:flash, captions only. Next steps after it ships (separate cards): code rule 1 alone, then add one rule at a time and measure each (does it help?), testnet forward in parallel from the first version. | 2026-11-12 operator order: all YouTube work on Gemini, dispatched from any Claude session (gemini_queue.py run <card>:low; no local agy -> NUC one-shot task).",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T19:46:12Z",
+  "refreshed": "2026-11-12T17:00:48Z",
   "refs": [],
   "result": "",
   "scope_in": [
-    "MyTradingSys/research/malkan_level_shorts_2026-11-09/"
+    "MyTradingSys/research/tom_fabio_rebuild_2026-11-09/"
   ],
   "scope_out": [
     "no repo code change|no invented conditions"
   ],
-  "scope_sha": "17fbce4b1fb7",
+  "scope_sha": "",
   "size": "S",
   "sources": [
     "Lead C 2026-11-09: A-CQiV_UFB4_raw.txt:291-298; web research agent found titles only"
   ],
   "state": "ready",
+  "status": "ready",
   "steps": [
     "fetch captions (yt-dlp subs, hi + en) for the listed videos and the 3X3 series list; grep star grades; write the table; verify quotes; ship"
   ],
   "tests": "scripts/dev/verify_extract_quotes.py",
-  "title": "Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what candles cannot see",
+  "title": "[GEMINI] Tom/Fabio rebuild step 1: rulebook from their newest beginner videos, every rule quoted, plus a list of what candles cannot see",
   "weight": "",
-  "worker": "agent",
-  "status": "ready"
+  "worker": "agent"
 }
