@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/v2/tom/9eHZMVXilgc_v2.md"
+  ],
+  "created": "2026-11-12T18:42:02Z",
+  "depends_on": [],
+  "done_when": "Each listed id has an extracts/v2/<tom|fabio>/<id>_v2.md with >=1 quote and verify_extract_quotes.py exit 0 (ids in note)",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Rewrite 19 Tom extracts that only have V1-fresh files (every quote fails, no Source GPS) into the V2 format with verified quotes.",
+  "id": "gemini-tom-v1fresh-to-v2-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane effort low (operator 2026-11-12). Ids: 9eHZMVXilgc, C9n_d91Uitc, Fj4FDZQxw0I, KEe_CWHyuSg, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, VumVuGnCcFM, dh-ysRR8f-M, e6Gm1n2h05M, l8RZrBfzvp4, rrHj24GSR6M, sQ_biBKhPVU, v5EuDl9c0iI, vk0mkNPuhDc, vl01TiVTuoQ, wPMiyJXL0zU, yRvMW6lgN1o, zQTbdEweG3c",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:42:02Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "extracts/v2/tom/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented quotes",
+    "no YouTube request",
+    "verifier and fetch scripts untouched"
+  ],
+  "size": "M",
+  "sources": [
+    "Supervisor C census 2026-11-12 (tom_fabio_census_1112.md); operator order: all YouTube work on Gemini"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md and follow it",
+    "Ids: 9eHZMVXilgc, C9n_d91Uitc, Fj4FDZQxw0I, KEe_CWHyuSg, OUM9LYwL8eA, T6hDJcHrVBM, UOBgXV20yCM, VumVuGnCcFM, dh-ysRR8f-M, e6Gm1n2h05M, l8RZrBfzvp4, rrHj24GSR6M, sQ_biBKhPVU, v5EuDl9c0iI, vk0mkNPuhDc, vl01TiVTuoQ, wPMiyJXL0zU, yRvMW6lgN1o, zQTbdEweG3c",
+    "Verify each file until exit 0 with >=1 quote; commit on your branch"
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Re-extract 19 Tom ids from V1-fresh to V2 format (transcripts on disk)",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
