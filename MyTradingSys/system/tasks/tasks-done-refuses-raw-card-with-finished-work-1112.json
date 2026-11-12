@@ -4,33 +4,52 @@
   "commands": [],
   "created": "2026-11-12T07:23:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "pytest MyTradingSys/tests/test_tasks_done_raw.py passes (first case fails on the old cmd_done) and python scripts/dev/tasks.py check shows no new miss",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "tasks.py done closes a raw or refined card whose work is already on trunk, so a Builder needs one command, not a hand edit of the card state",
   "id": "tasks-done-refuses-raw-card-with-finished-work-1112",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "chain n reads (5 Gemini scans) + fix sync.py/tasks.py docstring drift",
+      "ref": "bab3a11097a3",
+      "utc": "2026-11-11T20:39:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-12 T0-ONLY DECISION (OURS): sha-on-trunk is the proof of finished work; no flag to bypass it.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T15:46:16Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/tasks.py",
+    "MyTradingSys/tests/test_tasks_done_raw.py"
+  ],
+  "scope_out": [
+    "ready/active done path unchanged; flow cards; bug-conflict cards; any other tasks.py command"
+  ],
+  "scope_sha": "bab3a11097a3",
+  "size": "S",
   "sources": [
     "3 Builders 2026-11-12 Noticed"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "In cmd_done (scripts/dev/tasks.py ~L1444) accept state raw/refined only when --result holds a 7-40 hex sha that git cat-file -e finds in REPO; keep the refusal otherwise, and make its message name the rule",
+    "Keep review_gate and mark_shared_bases calls as they are; skip the ready-only promotion checks for raw/refined"
+  ],
+  "tests": "MyTradingSys/tests/test_tasks_done_raw.py: raw card + --result with a real sha closes to done; raw card without a sha, or with an unknown sha, is still refused; the first fails on current code",
   "title": "tasks.py done refuses a raw card even when its work is on trunk (seen 3 times on 2026-11-12); allow done on raw with --result and a sha, or print the one command that closes it. Done when: a raw card with finished work closes in one command, test added",
   "weight": "",
-  "worker": ""
+  "worker": "agent"
 }
