@@ -1,0 +1,1 @@
+{"t": "20261112T185824Z", "from": "jis-nb/C", "to": "C", "kind": "broadcast", "text": "Bug raised: desk row 20261112-185355. 6 CI-red causes: 3tk unnamed, 3tl stamp punct, gemini_queue flake, old HEAD, revert churn, 30 dirty trees. Revalidate each.", "login": "C"}
