@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T15:13:05Z",
   "commands": [],
   "context": {
     "calls_to_edit": 13,
@@ -25,8 +26,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "shipped: 442e47bf4 re-ship on fast-track, trade_sanity.py wired (used by btc_last_orderflow_rules RESULT)",
+  "pinned": false,
   "prio": 2,
+  "reason": "shipped: 442e47bf4 re-ship on fast-track, trade_sanity.py wired (used by btc_last_orderflow_rules RESULT)",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -37,7 +40,7 @@
   "sources": [
     "Supervisor C revert of 4987fd131/78c52d450 (CI red d0504cbf)"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Re-ship the trade_sanity helper (reverted: CI red, wiring check step 3x, trade_sanity.py referenced by tests only and not declared in wiring_registry.json). Cherry-pick 4987fd131 and 78c52d450, declare the file in wiring_registry.json, run the full quick gate before ship. Done when: on trunk and CI green",

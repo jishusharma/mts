@@ -1,7 +1,10 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/cache_panel_transcript.py raw_transcripts_canonical/<id>_timed.txt",
+    "python scripts/dev/cbp_run.py --force --no-fetch"
+  ],
   "context": {
     "calls_to_edit": null,
     "folded": "2026-11-12T08:31:04Z",
@@ -13,33 +16,60 @@
   },
   "created": "2026-11-12T08:03:12Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "rows.json holds a row newer than the 11-08 / 11-10 / 11-10 dates for each of Michaal, Jala, Qriptal, or the report names each as no new upload on its channel; report lists video ids and counts",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Land CBP rows for the analysts still behind (2026-11-12 16:29Z store: Michaal newest row 11-08, Jala 11-10, Qriptal 11-10) WITHOUT Chrome: after the caption lock ends (11-13 02:53Z) run scripts/dev/cbp_run.py --force; any video still blocked goes to the Gemini lane (ROUTING.md 'Gemini access', captions verified with verify_extract_quotes)",
   "id": "cbp-gap-since-1111-fetch-by-browser-panel-1112",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + waiting list docs",
+      "ref": "3b2276375840",
+      "utc": "2026-11-12T09:46:04Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "3b2276375840 Result: path 4 tests (8 fail on old code), certifi TLS, YT_PROXY table + wait",
+      "ref": "MyTradingSys/system/YT_PROXY.md",
+      "utc": "2026-11-12T09:46:04Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-12 T0-ONLY Premise corrected: 11-11/11-12 rows for Krown, Benjamin, Jason, Michael already landed; only three analysts lag. CHROME IS OFF (OPERATOR_DECISIONS 2026-11-12 13:45Z): no Chrome tool of any kind until he names a deviceId himself; the Browser 2 panel path is withdrawn.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T15:12:41Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "operator 2026-11-12 08Z: how are we doing on CBP if blocked on YouTube"
+  "scope_in": [
+    "MyTradingSys/system/YT_PROXY.md",
+    "scripts/dev/cache_panel_transcript.py",
+    "scripts/dev/cbp_run.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
-  "title": "CBP added 0 rows since 2026-11-11 20:24Z (caption lock until 11-13 02:53Z): fetch the analysts' new videos by the Browser 2 transcript panel (muted, paused), cache them, run the CBP extraction so rows land",
-  "weight": "",
-  "worker": ""
+  "scope_out": [
+    "any YouTube request by script while the caption lock lasts (until 11-13 02:53Z); Browser 1; product code; committing transcripts (git-ignored cache)"
+  ],
+  "scope_sha": "3b2276375840",
+  "size": "M",
+  "sources": [
+    "operator 2026-11-12 08Z; store state read 2026-11-12 16:29Z; YT_PROXY.md Path 3 worked for 3 videos 11-12"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run cbp_run.py --force --no-fetch (extraction on cached files only, no YouTube request); read the added and rejected counts it prints",
+    "Report per analyst: new video ids cached, rows added or rejected with reason, no-new-upload cases; on a sign-in wall stop and report"
+  ],
+  "tests": "run card, no code change; transcripts stay untracked",
+  "title": "CBP rows lag for Michaal/Jala/Qriptal: after the caption lock ends 11-13 02:53Z run cbp_run --force; leftovers via the Gemini lane (no Chrome)",
+  "weight": "ROUTINE",
+  "worker": "session"
 }
