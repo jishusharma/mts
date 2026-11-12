@@ -1316,6 +1316,9 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         if lane_owner(live, NUC) == login and ctx.get("codex_ready"):
             L.append(f"NOTE GPT lab: {ctx['codex_ready']} CODEX card(s) ready; owner unknown this wake")
         me_codex = me_any = False
+    if me_any:   # cbp-pipe-fix-1112: new analyst uploads reached the board only when a session ran cbp_run; now every wake checks
+        L.append("RUN python scripts/dev/cbp_run.py --due --quick-new   (CBP NEW lines = uploads not on the board; fetch obeys the YouTube lock; "
+                 "ends with REPUBLISH when rows were added)")
     if ctx.get("refine_raw") and claude_ok:
         L.append(f"RUN Session_Planner (Agent, sonnet): refine {ctx['refine_raw']} raw cards")
     cx = ctx.get("codex_ready", 0)
