@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-12T19:25:19Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/v2/tom/Kg6sYKgtkrY_v2.md"
+  ],
+  "created": "2026-11-12T18:42:02Z",
+  "depends_on": [],
+  "done_when": "Each listed id has an extracts/v2/<tom|fabio>/<id>_v2.md with >=1 quote and verify_extract_quotes.py exit 0 (ids in note)",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write V2 extracts for 2 Tom videos and 5 guest-speaker videos (Serge Hoffmann, Patrick Nill; label the speaker) that have transcripts but no extract.",
+  "id": "gemini-tom-new-extracts-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "V2 extracts verify exit 0 with >=1 quote each (re-run here)",
+      "ref": "d2931c96c",
+      "utc": "2026-11-12T19:25:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: batch delivered",
+  "note": "Gemini lane effort low (operator 2026-11-12). Ids: Kg6sYKgtkrY, kKZCJui4S9U, 3oqxklw9zuU, AQR6zIgCx7I, _Uvb2RIjZvk, cBkwYjn-6mM, f225iVdsrfg",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:42:02Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md"
+  ],
+  "result": "V2 extracts verify exit 0 with >=1 quote each (re-run here)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "extracts/v2/tom/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented quotes",
+    "no YouTube request",
+    "verifier and fetch scripts untouched"
+  ],
+  "size": "M",
+  "sources": [
+    "Supervisor C census 2026-11-12 (tom_fabio_census_1112.md); operator order: all YouTube work on Gemini"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md and follow it",
+    "Ids: Kg6sYKgtkrY, kKZCJui4S9U, 3oqxklw9zuU, AQR6zIgCx7I, _Uvb2RIjZvk, cBkwYjn-6mM, f225iVdsrfg",
+    "Verify each file until exit 0 with >=1 quote; commit on your branch"
+  ],
+  "taken": "2026-11-12T19:25:19Z",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Extract Tom Kg6sYKgtkrY, kKZCJui4S9U and 5 Tom-channel guest videos with transcripts but no extract",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
