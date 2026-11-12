@@ -4,7 +4,11 @@ sys.dont_write_bytecode = True
 
 Bars are dicts of numpy arrays: t (open ms), o, h, l, c. A bar is usable only after it closes (t + width).
 """
+import os
 import numpy as np
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "backtest"))
+from fees import BINANCE_TAKER  # shared cost source (T06): 2 x taker = 0.10 % round trip
 
 M15 = 15 * 60_000
 H1 = 60 * 60_000
@@ -18,7 +22,7 @@ ATR_K = 0.1        # stop buffer in ATR (OURS)
 MIN_RISK = 0.001   # R/entry floor (OURS)
 RR = 3.0           # SOURCED (quote): mechanically target a one to three
 CAP = 672          # 7 days of 15m bars (OURS)
-FEE = 0.001        # 10 bp round trip
+FEE = BINANCE_TAKER * 2  # 10 bp round trip
 
 
 def resample(t, o, h, l, c, width):
