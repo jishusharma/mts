@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py extracts/v2/fabio/_xEhztnK2g0_v2.md"
+  ],
+  "created": "2026-11-12T18:42:02Z",
+  "depends_on": [],
+  "done_when": "Each listed id has an extracts/v2/<tom|fabio>/<id>_v2.md with >=1 quote and verify_extract_quotes.py exit 0 (ids in note)",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write V2 extracts for 5 Fabio Valentini shorts whose public caption transcripts are now tracked in raw_transcripts_canonical (copied from the rescue worktree).",
+  "id": "gemini-fabio-shorts-extract-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Gemini lane effort low (operator 2026-11-12). Ids: _xEhztnK2g0, 3GwHv2FF4Hw, 5H1MCBG87YI, FDrHnl7StOM, 3JZH06L28us",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-12T18:42:02Z",
+  "refs": [
+    "MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "extracts/v2/fabio/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no invented quotes",
+    "no YouTube request",
+    "verifier and fetch scripts untouched"
+  ],
+  "size": "S",
+  "sources": [
+    "Supervisor C census 2026-11-12 (tom_fabio_census_1112.md); operator order: all YouTube work on Gemini"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/layer_lab/video_extracts_1113/BRIEF_V2.md and follow it",
+    "Ids: _xEhztnK2g0, 3GwHv2FF4Hw, 5H1MCBG87YI, FDrHnl7StOM, 3JZH06L28us",
+    "Verify each file until exit 0 with >=1 quote; commit on your branch"
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Extract 5 Fabio shorts from newly tracked transcripts",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
