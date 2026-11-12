@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-12T20:43:13Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-y4-mgmt-targets-reentry-1113/ANSWERS.md"
   ],
@@ -14,10 +15,18 @@
   "goal": "From narrated trades: what target types the trader names (far side, curve low, impulse origin, measured move), when he re-enters after a stop, how he locks the day (stops count, profit-only risk) and how partials and first size work. Count instances; missing numbers are NOT_SEEN.",
   "id": "tf-y4-mgmt-targets-reentry-1113",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "42 quotes PASS (verify exit 0); Q25/Q26/Q27 ANSWER, Q28 PARTIAL",
+      "ref": "13a6d74ff",
+      "utc": "2026-11-12T20:43:13Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "tf-s1-answer-ledger-1113",
   "note": "Gap-driven re-read from iteration 2, not a video summary. Answer the Q-ids only; mark the speaker CONTESTED for 9IliXww64uM and GUEST for guests.",
   "prio": 1,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
     "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
     "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md"
   ],
-  "result": "",
+  "result": "42 quotes PASS (verify exit 0); Q25/Q26/Q27 ANSWER, Q28 PARTIAL",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tf_extraction_plan_1113/out/tf-y4-mgmt-targets-reentry-1113/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "gap-hunt iteration 2 2026-11-13"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md sections 3 and 7 for the gaps and questions of this card; read ANSWERS_FROM_DISK.md so settled items are not redone",
     "Read every transcript raw_transcripts_canonical/<id>_raw.txt for: 0jM5Y31YJak 8CWKfoSJu3c fZlNGWvd2Ko Is1HvdfQm5c DyS79Eb92Ug 9IliXww64uM k0zm5NYn0IQ kXhIAug0Gh8 qLnQan0KGmQ UOBgXV20yCM 7BQPMJ39WpI e83njGZFrPw 4MoNjEQ2Dd8 (descriptions are not speech: quote only spoken text)",
     "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-y4-mgmt-targets-reentry-1113/ANSWERS.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
   ],
+  "taken": "2026-11-12T20:43:13Z",
   "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
   "title": "[SONNET] Tom/Fabio targets, re-entry, day P&L rules and partials from held transcripts",
   "weight": "ROUTINE",
