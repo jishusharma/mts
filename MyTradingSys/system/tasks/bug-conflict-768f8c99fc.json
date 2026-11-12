@@ -1,37 +1,66 @@
 {
   "approved_by": "",
-  "asks": "Which holds: CLAUDE.md hard rule: Chrome profile Browser 2 only, never Browser 1; Browser 2 is not signed in to CoinGlass Legend or Operator 13:07Z: always use his CoinGlass-Pro Chrome profile for charts?",
+  "asks": "",
   "commands": [],
   "created": "2026-11-12T13:09:05Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "CLAUDE.md line 41 says no Chrome tool until the operator names a deviceId, never pick by Browser 1/2 label, has no 'Browser 2' rule, is <= 7168 bytes, and test_integrity plus the new test pass.",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "Two instructions contradict: A = CLAUDE.md hard rule: Chrome profile Browser 2 only, never Browser 1; Browser 2 is not signed in to CoinGlass Legend | B = Operator 13:07Z: always use his CoinGlass-Pro Chrome profile for charts. The operator decides which holds; then fix the loser's text.",
+  "goal": "CLAUDE.md line 41 still says Chrome profile Browser 2 only; the operator's 2026-11-12 13:45Z decision is that no session uses Chrome until he names a deviceId in chat. Fix the loser's text.",
   "id": "bug-conflict-768f8c99fc",
   "lane": "SONNET",
   "last_seen": "2026-11-12T13:09:05Z",
   "last_session": "9b0ce8fb-f501-4fac-9178-48bbfbffdb4d",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: one YouTube never-blocked pointer in CLAUDE, AGENTS, DSA and Gemini start docs",
+      "ref": "d71b82a95b44",
+      "utc": "2026-11-12T06:06:11Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "d71b82a95b44 Result: one YouTube never-blocked pointer in CLAUDE, AGENTS, DSA and Gemini s",
+      "ref": "CLAUDE.md",
+      "utc": "2026-11-12T06:06:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "DECIDED by operator, see OPERATOR_DECISIONS 13:45Z. No Chrome step in this card (text edit only).\nREVIEWED:2026-11-12 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-12T16:23:09Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
+  "scope_in": [
+    "CLAUDE.md",
+    "MyTradingSys/tests/docs/test_integrity.py"
+  ],
+  "scope_out": [
+    "scripts/dev/cbp_run.py and other Browser 2 mentions in code; OPERATOR_DECISIONS.md history"
+  ],
+  "scope_sha": "d71b82a95b44",
   "seen": 1,
-  "size": "",
-  "sources": [],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "size": "S",
+  "sources": [
+    "OPERATOR_DECISIONS.md 2026-11-12 13:45Z CORRECTION"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read OPERATOR_DECISIONS.md lines 2392-2412 (13:45Z CORRECTION wins).",
+    "Add the failing test, then replace the Chrome line in CLAUDE.md with one of equal or shorter length (size cap 7168 B).",
+    "Run python -m pytest MyTradingSys/tests/docs/test_integrity.py -q; tasks.py done bug-conflict-768f8c99fc --result ... --next END."
+  ],
+  "tests": "New test in MyTradingSys/tests/docs/test_integrity.py asserting CLAUDE.md has 'deviceId' and no 'only profile \"Browser 2\"'; fails on the current line.",
   "title": "Instruction conflict: CLAUDE.md hard rule: Chrome profile Browser 2 only vs Operator 13:07Z: always use his CoinGlass-Pro Chro",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
