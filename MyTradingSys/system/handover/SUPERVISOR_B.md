@@ -12,6 +12,14 @@ Stop at week >= 90% (new work), CI red you did not fix, or no ready cards.
 - agy: Argon (low/medium) and Flash (low/medium) both verified online 2026-11-07T14:32Z; assign review tasks across Argon and Flash in low and medium settings in background; a second Gemini governor (F:/MTS/mts-gemini) ships gq branches itself | `python scripts/dev/gemini_queue.py status` | read at 2026-11-07T14:32Z
 - 9 symbols of 1m 2022-01..2024-06 on disk at F:/MTS/data/tom_raw/klines (SOL/XRP/LTC miss 7,200 source bars); h3-ny-open-count-10sym queued on Flash | `python scripts/dev/kline_gap_check.py ETHUSDT 2022-01 2024-06` | read at 2026-11-06T16:50Z
 
+## Wake 2026-11-13 (super session on login B, JIS-NUC, F:/MTS/b-work)
+- Signals: `mts_signal.py pending` empty; `asks` shows only q-5aeda0 (A's console-window flash, not B's card). CI: `ci_watch.py` ok (fewer than 2 failed runs in a row).
+- Link row B cards checked: tf-r1-review-wave-a-1113, bug-conflict-ca369de3a4, news-effect-report-md-stale-counts-says- already closed on trunk; tf-r2-review-wave-b-1113 BLOCKED (transcripts not on JIS-NUC, g2/g3 no ANSWERS, see out/tf-r2-review-wave-b-1113/NOT_IN_DATA.md); ship-marker-card-cleanup-1111 done_when says on/after 2026-11-18, not doable today.
+- Shipped: supervisor-wake-haiku-hygiene-disk-1111 (commit 1409129cf, `plan` prints one SPAWN haiku hygiene line per login per 5 h window; marker MyTradingSys/system/hygiene/.window_<L>.txt; 123 tests pass in test_supervisor.py). Card closed with tasks.py done before ship.
+- Not taken: republish-mts-home-and-mts-layers-stale- (needs the owning login's artifact session, parked); forced-selloff... is SONNET M, not S.
+- Stations: host health reported a STRAY explorer.exe PID 5400 on this machine. Left alone (no process kills).
+- Blocker: Read/Edit tools refused F:/MTS/b-work until the directory was granted with request_directory.
+
 ## Ruled out
 - gpt-oss via agy for re-check cards: fakes or refuses; use sonnet or flash.
 - `tasks.py tried --asks` parks a card for the operator: never use it to leave a note; edit the card `note` field.

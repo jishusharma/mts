@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T16:05:03Z",
   "commands": [],
   "created": "2026-11-12T07:23:59Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tasks.py done --sha <shipped sha> closes a raw card in one command (on_trunk check); test_",
+      "ref": "25b7be49d",
+      "utc": "2026-11-13T16:05:03Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Ship pipeline: apply Fable review changes 1-8 (operator yes 11-12)",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no follow-up card",
   "note": "REVIEWED:2026-11-12 T0-ONLY DECISION (OURS): sha-on-trunk is the proof of finished work; no flag to bypass it.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T00:41:08Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py done --sha <shipped sha> closes a raw card in one command (on_trunk check); test_tasks_done_raw.py 3 pass; old tasks.py fails all 3; shipped 25b7be49",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/tasks.py",
     "MyTradingSys/tests/test_tasks_done_raw.py"
@@ -43,11 +56,12 @@
   "sources": [
     "3 Builders 2026-11-12 Noticed"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In cmd_done (scripts/dev/tasks.py ~L1444) accept state raw/refined only when --result holds a 7-40 hex sha that git cat-file -e finds in REPO; keep the refusal otherwise, and make its message name the rule",
     "Keep review_gate and mark_shared_bases calls as they are; skip the ready-only promotion checks for raw/refined"
   ],
+  "taken": "2026-11-13T16:05:03Z",
   "tests": "MyTradingSys/tests/test_tasks_done_raw.py: raw card + --result with a real sha closes to done; raw card without a sha, or with an unknown sha, is still refused; the first fails on current code",
   "title": "tasks.py done refuses a raw card even when its work is on trunk (seen 3 times on 2026-11-12); allow done on raw with --result and a sha, or print the one command that closes it. Done when: a raw card with finished work closes in one command, test added",
   "weight": "",

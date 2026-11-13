@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T16:05:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1113/review-h3-ny-open/REVIEW.md exists with the claim table, a verdict line and file:line citations",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind review of MyTradingSys/research/h3_ny_open_pooled_2026-11 and MyTradingSys/research/h3_ny_open_10sym_2026-11: Recount the headline numbers in its report files from its code and CSVs. Hunt look-ahead (any feature using bars after the decision bar) and fee or slippage errors (fees missing, wrong side, double counted).",
+  "id": "gemini-edge-review-h3-ny-open-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-13, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "Blind: do not trust the author's conclusion.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T15:56:47Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1113/review-h3-ny-open/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the files in MyTradingSys/research/h3_ny_open_pooled_2026-11 and MyTradingSys/research/h3_ny_open_10sym_2026-11 and the scripts they import. Do not read other reviews of the same study.",
+    "Recount each headline number from the code and data in the folder; where data is not on this machine say UNVERIFIABLE. Table: claim, claimed value, recounted value, MATCH / MISMATCH / UNVERIFIABLE.",
+    "Look-ahead hunt: per feature name the bar timestamps used vs the entry bar. Fee hunt: state fee model, side, round-trip count. Cite file:line for every finding.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1113/review-h3-ny-open/REVIEW.md with a one-line verdict first (SOUND / FLAWED / UNVERIFIABLE); commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind review of h3-ny-open study",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

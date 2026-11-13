@@ -73,3 +73,13 @@ and "18 % of margin" are wrong for Deribit: BTC-PERPETUAL is inverse and cross-m
 liquidation depends on the whole account. What holds: size comes from risk (about 18 USD lost at the 250 stop on
 5,000 USD notional, OURS). From design v2 the module reads the exchange's own liquidation price after each fill and
 closes the trade if the stop is not well inside it; leverage is reported as notional / account equity.
+
+## Result: replay of today's plan (scored 16:32Z, public Binance spot 1m klines, no orders placed)
+
+| id | side | kind | level | entry | exit | reason | r_gross | r_net |
+|---|---|---|---|---|---|---|---|---|
+| C | sell | fade | analyst cluster 70,000 | 69,980 | 69,480 | target | 2.00 | 1.72 |
+| B | sell | breakout | Europe low 68,516 | 68,490 | 68,120 | target | 1.48 | 1.21 |
+
+2 trades, 2 net wins, r_gross 3.48, r_net 2.93 (OURS rules, fees 0.05 % per side). One day, a dry run: not evidence of an edge.
+Rows are engine replay (fills at trigger), not testnet fills. Recorder readings stay in the git-ignored runtime_data folder.
