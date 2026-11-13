@@ -83,3 +83,33 @@ under its server stop and is still closed at flat time. Never widens a stop. Nev
 `cotrade`. `mode="paper"` makes no exchange call at all. `--said` is required in testnet mode (operator's words).
 Tests: restart mid-position, restart with corrupt state, price feed errors, cotrade refusal, server stop detected,
 flat-time close failing, HALT present, paper mode makes zero client calls.
+
+## 7. recorder.py (scope add, operator 2026-11-13 ~13:10Z; cadence SOURCED OPERATOR_DECISIONS.md 2026-11-12 13:05Z)
+`MyTradingSys/execution/us_open_trader/recorder.py`, replaces the stop-gap `research/us_open_trader_2026-11-13/record_now.py`
+(keep its record keys: ts_utc, kind, binance_spot, bybit, bybit_1m, bybit_15m, okx, deribit, levels_touched, gaps).
+Cadence (his words 11-12: "hourly in the Asian/Eur sessions, every 15 mins 2 hr before US open, every min from US open
+-2 min to +15 min, then every 10-15 mins during the US session"): pure `next_due(now, open_dt)`; open from
+`MyTradingSys/tools/us_open_alert.py open_utc` (DST-aware; do not hard-code 14:30). Until 21:00Z.
+Readings per tick, per venue where public REST answers (each call independent, a failure is a recorded gap, never
+an invented number): price, hi/lo since last, volume, net delta + CVD (Binance spot taker split via
+data-api.binance.vision), open interest, funding, long/short share (Bybit), Deribit perp mark/OI/funding, Bollinger(20,2)
+and RSI(14) on 1m and 15m, levels touched (levels from the day's plan json), large trades and footprint line by reusing
+`scripts/dev/footprint_12h.py` if it can be called without a download (else gap). Known gaps to state in every record:
+liquidations (no public REST; see `tools/live_aid/xliq_collector.py` for what exists), CoinGlass (needs a browser; Chrome
+tools are off), fapi.binance.com (does not answer on this machine: try, record the gap).
+Output: `runtime_data/us_open_trader/readings_<day>.jsonl` (git-ignored), append-only, one JSON per line; restart-safe
+(CVD resumes from the last line of the day's file). `--once`, `--until`, injectable fetch/clock/sleep; tests offline.
+
+## 8. Daily auto-start (no scheduler: SCHEDULING_POLICY.md)
+`scripts/dev/supervisor.py plan` prints one RUN line on US trading days from 2 h before the cash open until 2 h after it:
+`RUN US session (Agent, haiku): follow MyTradingSys/execution/us_open_trader/RUNBOOK.md` - hidden once the day's
+session is claimed (`sync.py claim us-session-<day>`), so only one machine starts it. Weekdays only (OURS: the module
+trades the US cash open, which does not exist at weekends). US market holidays are not skipped (OURS: no maintained
+holiday list; the record is still wanted and the runbook notes a thin session). One line in the supervisor role doc.
+
+## 9. RUNBOOK.md (`MyTradingSys/execution/us_open_trader/RUNBOOK.md`)
+One file, one start command, numbered steps a Haiku worker can follow: command, expected output, on-failure action.
+Steps: claim the day -> start recorder (background) -> build plan (plan.py; cites BIBLE.md, scenario ledger, Eagle_Eyes
+session studies, yesterday's readings/score if present) -> paper runner (testnet mode ONLY when the supervisor passes the
+operator's words via --said and the tree holds the testnet keys; otherwise paper) -> at flat time score -> ship the
+public summary -> release the claim. Never touches .mts_live, HALT, or processes it did not start.
