@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T15:20:14Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/alerts/test_live_confluence_feed.py MyTradingSys/backtest/layers/rsi/test_div_flags_chart.py -q"
   ],
@@ -16,6 +17,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Malkan 12/18 window labelled OURS (d-malkan-window-label-1105) in live_confluence_feed.py ",
+      "ref": "f4a592b74",
+      "utc": "2026-11-13T15:20:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "RSI divergence chart draws the close pivots the detector used (12/18, window_class in labe",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: label corrected; fee-net DEV window comparison is its own card",
   "note": "Label-only, label string is a runtime event field: ship via normal gate, no deploy by builder (coordinator deploys). Next: END label corrected; the fee-net DEV window comparison stays a separate card.",
   "prio": 3,
   "refine_tries": 0,
@@ -34,7 +42,12 @@
   "refs": [
     ""
   ],
-  "result": "",
+  "result": "Malkan 12/18 window labelled OURS (d-malkan-window-label-1105) in live_confluence_feed.py label, constants comments, docstring and div_flags_chart.py text; levels/min bars stay SOURCED; new test fails on old code; diff-only review APPROVE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/alerts/live_confluence_feed.py",
     "MyTradingSys/backtest/layers/rsi/div_flags_chart.py",
@@ -48,12 +61,13 @@
   "sources": [
     "MyTradingSys/system/OPERATOR_DECISIONS.md d-malkan-window-label-1105"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Edit docstring lines 16, 48-49 and label line 110 of live_confluence_feed.py: 12/18 window = OURS",
     "Edit div_flags_chart.py docstring lines 15 and 217 the same way; keep min bars/levels SOURCED",
     "Add the label test, run both test files"
   ],
+  "taken": "2026-11-13T15:20:14Z",
   "tests": "In test_live_confluence_feed.py assert the Malkan event label contains 'OURS' and not 'SOURCED window'; fails on current code (label says SOURCED window 12/18)",
   "title": "Malkan 12/18 window still labelled SOURCED in live_confluence_feed.py and div-flag report header; relabel OURS per OPERATOR_DECISIONS.md:1755",
   "weight": "ROUTINE",

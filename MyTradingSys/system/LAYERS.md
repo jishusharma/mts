@@ -90,7 +90,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Code: `MyTradingSys/backtest/layers/rsi/malkan_40_60.py`; `MyTradingSys/backtest/layers/rsi/malkan_mtf.py`; `MyTradingSys/backtest/layers/kurisko/quad_rotation.py`; `MyTradingSys/backtest/layers/kurisko/stoch_core.py`
 - Other results: `MyTradingSys/research/rsi_divergence_mtf_2026-10-09`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
-  - `malkan-12-18-window-still-labelled-sourc` ready p3 HAIKU: Malkan 12/18 window still labelled SOURCED in live_confluence_feed.py and div-flag report header; relabel OURS
   - `malkan-prereg-dwm-equities` refined p4 SONNET: Malkan: pre-registration for the D/W/M equity home test (items 6/7/8/9/11/12, gates 0a/0f)
 
 ## CryptoCred setups (`cryptocred`)

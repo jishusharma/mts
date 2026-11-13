@@ -54,6 +54,9 @@ class FeedTests(unittest.TestCase):
                 self.assertEqual(e["label"], "OURS")
             if e["code"] in ("R-BULL", "R-BEAR", "PRD", "NRD"):
                 self.assertEqual(e["source"], "MALKAN")
+                # d-malkan-window-label-1105: the 12/18 window has no Malkan source, so it is OURS
+                self.assertIn("OURS window 12/18", e["label"])
+                self.assertNotIn("SOURCED window", e["label"])
 
     def test_restart_is_stateless_and_prefix_equal(self):
         bars = walk(300, seed=9)
