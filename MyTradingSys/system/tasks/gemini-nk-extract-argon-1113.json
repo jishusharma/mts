@@ -21,9 +21,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "tf-y1/y2/y3/y5 YT held-transcript extracts + gemini-nk-extract-argon NOT_IN_DATA",
-      "ref": "5587bcc04add",
-      "utc": "2026-11-12T20:42:14Z"
+      "line": "nk_stocktalk_1113(argon): 5/5 Hindi concept extracts verified",
+      "ref": "ae47fa07bc3f",
+      "utc": "2026-11-13T21:40:40Z"
     },
     {
       "kind": "ship",
@@ -40,7 +40,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-13T03:04:12Z",
+  "refreshed": "2026-11-13T21:45:34Z",
   "refs": [
     "MyTradingSys/research/layer_lab/video_extracts_1112/BRIEF.md",
     "MyTradingSys/research/nk_stocktalk_1113/SELECTED.md"
@@ -59,7 +59,7 @@
     "no numbers from our own docs or prior knowledge",
     "never verify against a translation"
   ],
-  "scope_sha": "5587bcc04add",
+  "scope_sha": "ae47fa07bc3f",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13 relaying operator; OPERATOR_DECISIONS 2026-11-13 (NK StockTalk; both Gemini models)"
