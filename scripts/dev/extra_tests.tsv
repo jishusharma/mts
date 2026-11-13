@@ -279,6 +279,7 @@ MyTradingSys/tools/trade_journal/test_log_trade.py
 scripts/dev/test_cicd_run_per_test_limit.py
 scripts/dev/test_yt_fallback_chain.py
 MyTradingSys/tools/live_aid/test_live_aid_guidance.py
+MyTradingSys/tools/live_aid/test_live_aid_key.py
 scripts/dev/test_footprint_12h.py
 scripts/dev/test_no_browser2_rule.py
 scripts/dev/test_cbp_recheck.py
@@ -293,6 +294,16 @@ MyTradingSys/execution/us_open_trader/test_plan.py
 MyTradingSys/execution/us_open_trader/test_recorder.py
 MyTradingSys/execution/us_open_trader/test_runner.py
 MyTradingSys/execution/us_open_trader/test_score.py
+MyTradingSys/research/rsi_extreme_confirm_2026-11-13/test_engine.py
 scripts/dev/test_ship_timing_report.py
 MyTradingSys/research/rsi_range_census_2026-11-13/test_census_lib.py
 MyTradingSys/research/adx_1d_through25_2026-11-13/test_run_1113.py
+MyTradingSys/tools/live_aid/test_flow_chart.py
+MyTradingSys/tools/live_aid/test_flow_collector.py
+MyTradingSys/tools/live_aid/test_adx_strip.py
+MyTradingSys/tools/live_aid/test_home_one.py
+MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_run_1113.py
+scripts/dev/test_shared_lists.py
+MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/test_mal_div.py
+MyTradingSys/research/rsi_htf_extreme_2026-11-13/test_htf.py
+MyTradingSys/research/rsi_confirm_layers_2026-11-13/test_study.py

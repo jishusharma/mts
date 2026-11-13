@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-14T19:30:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1114/rederive-oi-flush-4h/REDERIVE.md exists",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-derive the near-miss rule '4h OI flush, 12h hold, top 30 coins' from the rule text alone on public Bybit data and report your own numbers BEFORE comparing to the author's. Rule text: 4h-bar open-interest flush (sharp OI drop with price move) then reversal entry at next bar open, hold 12h, fees plus funding. Full author text is in MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/edge-oi-flush_RESULTS.md; read only its Setup/Rule paragraph first, compute, then compare.",
+  "id": "gemini-edge-rederive-oi-flush-4h-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-14, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:30:00Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1114/rederive-oi-flush-4h/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file, a computation you ran, or a verbatim quote, never memory",
+    "do not run sync.py ship",
+    "Gemini always low effort"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13/14 operator order: use Gemini flash quota fully before it expires"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only the setup/rule description in MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/edge-oi-flush_RESULTS.md (stop before the results tables). Fetch Bybit v5 public klines / OI / ratio as needed; save CSVs in the output folder.",
+    "Implement the rule from the text alone, fee-net with funding, next-bar entry, no look-ahead; state every parameter you choose and why. Report n, mean, win rate, per-year split, with a block bootstrap CI.",
+    "Then read the author's table and compare: MATCH / DIFFER with reason.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1114/rederive-oi-flush-4h/REDERIVE.md with a one-line verdict first; commit code and CSV summaries on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Independent re-derivation: 4h OI flush, 12h hold, top 30 coins",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
