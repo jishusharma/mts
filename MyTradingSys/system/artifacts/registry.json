@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "54053549ad016ff8106493e32b41ef66d93dd6337e9df7773373996ffc31290e",
-      "published_at": "2026-11-13T00:02:33Z"
+      "published_sha": "e3a5033503dfa21cffc32befe5b1dd7a13ac47dc604a5f5dbaee3745c269203b",
+      "published_at": "2026-11-13T05:18:39Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -220,7 +220,7 @@
         "jishusharma1985": "https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
@@ -234,7 +234,7 @@
       ],
       "max_age_h": 36,
       "publish_file": "F:/CryptoScrapper/cbp_v2/cbp_board.html",
-      "published_at": "2026-11-12T21:15:37Z"
+      "published_at": "2026-11-13T05:18:40Z"
     },
     {
       "slug": "mts_home",
@@ -260,9 +260,9 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "7100c24591d9b03ae49bc76dcb3535e74407cf3963b267ebd8706737f2d1000f",
+      "published_sha": "54c67beea3398cd78bea71900b125a596a0d5f3bffcd89c7fbeaf53bd370fb2f",
       "max_age_h": 24,
-      "published_at": "2026-11-13T00:02:35Z"
+      "published_at": "2026-11-13T05:18:39Z"
     },
     {
       "slug": "research_map",
@@ -276,7 +276,7 @@
         "jishu.awgp": ""
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12",
+        "jishusharma1985": "2026-11-13",
         "jishu.sharma": "never",
         "jishu.awgp": "never"
       },
@@ -291,12 +291,12 @@
       "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
       "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
       "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
-      "published_sha": "50ec90ef1e201d264c1ee6ecab7e8d0b2a773532cfbad407e514adb35853a2ec",
+      "published_sha": "dc1623b8c26ad973ef5e8b6d1e2a72e027af150d40b8beec25c666788f71e0ff",
       "feeds": [
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 72,
-      "published_at": "2026-11-12T22:39:37Z"
+      "published_at": "2026-11-13T05:18:40Z"
     },
     {
       "slug": "session_planner",
@@ -425,12 +425,12 @@
         "jishusharma1985": "https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
       "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
       "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": "b207849cee57edbf585bbed63df69a67f0a4c36d4de52beaf337a28fc3e0ae47",
+      "published_sha": "a6462497661eb599be958b591802ef66a67b9f8a6c697e8b382e8a8182dc7c79",
       "producer": [
         "live_onepage",
         "cbp"
@@ -439,7 +439,7 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 12,
-      "published_at": "2026-11-12T22:39:38Z"
+      "published_at": "2026-11-13T05:18:41Z"
     },
     {
       "slug": "buy_crypto",
