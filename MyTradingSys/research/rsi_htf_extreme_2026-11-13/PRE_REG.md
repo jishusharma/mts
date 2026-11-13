@@ -6,7 +6,10 @@ Written and committed before any trade outcome is computed. Only the BTC daily r
 RSI(14) on a closed 4h / 8h / 12h bar reaches an extreme; if the NEXT bar of that timeframe closes above the extreme bar's close, going long at that close with the stop at the extreme bar's low has positive fee-net expectancy, more so when the daily RSI is below 30. Seen on BTC alone: 4h RSI<=12 with daily RSI<30 reached 2-3R in 4 of 5 episodes (too few). This study pools 20 coins.
 
 ## Context
-Regime/phase: counter-trend long entries in sold-off conditions (capitulation, mostly below the daily 200d SMA); no regime filter is applied, the daily RSI band is the only conditioner. Session: not filtered (TF bars cover all sessions). Entry: close of the confirming bar. Prior tests of this family: edge-rsi-extreme-confirm-1113 (0/384 PASS, fixed stops) and edge3-rsi-deep-extreme-grid-1113 (0/60 PASS, mostly UNDERPOWERED, 1h-12h on 10 coins). This study extends to 20 coins and drops the green-candle requirement (the operator's wording is only "closes above the extreme close").
+Regime: no regime filter applied; the daily RSI band is the only conditioner.
+Phase: counter-trend long entries in sold-off conditions (capitulation, mostly below the daily 200d SMA); no regime filter is applied, the daily RSI band is the only conditioner. 
+Session: not filtered (TF bars cover all sessions).
+Entry: close of the confirming bar. Prior tests of this family: edge-rsi-extreme-confirm-1113 (0/384 PASS, fixed stops) and edge3-rsi-deep-extreme-grid-1113 (0/60 PASS, mostly UNDERPOWERED, 1h-12h on 10 coins). This study extends to 20 coins and drops the green-candle requirement (the operator's wording is only "closes above the extreme close").
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %, else range): DEV bull 51 % / bear 40 % / range 10 %; VALIDATION bull 56 % / bear 30 % / range 15 %.
 
 ## Data and splits
