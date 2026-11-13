@@ -1,0 +1,97 @@
+{
+ "id": "forced-selloff-long-pooled-10-coins-1111",
+ "kind": "backtest",
+ "parity": null,
+ "family": "Edge views 2026-11-11",
+ "title": "Pooled 10 coins: forced-selloff cascade long (1h, 24 h) and 4h Donchian 55/20, fee-net, DEV and VALIDATION",
+ "provenance": "run",
+ "date": "2026-11-13",
+ "what": [
+  {
+   "name": "Coins",
+   "value_plain": "BTC, ETH, ADA, AVAX, BNB, DOGE, LINK, LTC, SOL, XRP (1m perp candles resampled)",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule A",
+   "value_plain": "long at next 1h open after a 1h drop of 3% or more on 3x volume (median of previous 720 bars), held 24 h, one position per coin; frozen from FLOW/PREREG.md",
+   "label": "OURS"
+  },
+  {
+   "name": "Rule B",
+   "value_plain": "4h Donchian 55/20, long and short; frozen from TREND/PREREG.md",
+   "label": "OURS"
+  },
+  {
+   "name": "Counting",
+   "value_plain": "A: net aggregated per UTC day, per-day t; B: per exit month, monthly t",
+   "label": "OURS"
+  },
+  {
+   "name": "Costs",
+   "value_plain": "10 bp round trip from backtest/fees.py, price and fee only, no funding",
+   "label": "SOURCED"
+  },
+  {
+   "name": "Placebo",
+   "value_plain": "200 draws, seed 11; pass bar t >= 2.5, mean net > 0, above placebo 95th pct on VALIDATION",
+   "label": "OURS"
+  }
+ ],
+ "how": "DEV 60% of the window, 30 day gap, then VALIDATION; rules, fees and thresholds are not changed. Full tables in POOLED/tables.md.",
+ "window": "DEV and VALIDATION, 2022-01 to 2026-09 for BTC/ETH, 2022-01 to 2024-06 for the eight alts",
+ "verdict": {
+  "label": "Both rules FAIL on VALIDATION: no fee-net edge",
+  "tone": "bad"
+ },
+ "why": [
+  "Rule A DEV looked good (596 events on 198 days, per-day t 1.57, placebo 100th pct) but VALIDATION is negative: -0.43% per event, per-day t -0.36, placebo 44th pct.",
+  "Rule B VALIDATION: 354 trades, +0.59% per trade, monthly t 1.11, placebo 80th pct (p95 +1.15%); not separable from being long.",
+  "VALIDATION for A is mostly BTC and ETH; the eight alts have only about three months there and all are negative.",
+  "No edge claim, no forecast. About 100 studies listed in TESTED_MAP.md, so a pass needed more than t 2."
+ ],
+ "kpis": [
+  {
+   "label": "A DEV",
+   "value": "n 596 events, 198 days, +0.67% per day, t 1.57"
+  },
+  {
+   "label": "A VALIDATION",
+   "value": "n 132 events, 69 days, -0.19% per day, t -0.36",
+   "tone": "bad"
+  },
+  {
+   "label": "B DEV",
+   "value": "n 415 trades, 19 months, +0.74% per month, t 0.74"
+  },
+  {
+   "label": "B VALIDATION",
+   "value": "n 354 trades, 38 months, +0.84% per month, t 1.11",
+   "tone": "bad"
+  }
+ ],
+ "examples": [
+  {
+   "kind": "none",
+   "title": "no example trades exported",
+   "caption": "numbers only, repo is public"
+  }
+ ],
+ "source_files": [
+  "MyTradingSys/research/edge_views_2026-11-11/POOLED/RESULT.md",
+  "MyTradingSys/research/edge_views_2026-11-11/POOLED/PREREG.md",
+  "MyTradingSys/research/edge_views_2026-11-11/POOLED/tables.md",
+  "MyTradingSys/research/edge_views_2026-11-11/POOLED/pooled.py"
+ ],
+ "commit": "this card",
+ "banner": {
+  "state": "FAIL",
+  "tone": "bad",
+  "verdict": "Both rules FAIL on VALIDATION: no fee-net edge",
+  "n": 132,
+  "net_r": null,
+  "try_no": null,
+  "breakeven_x": null,
+  "text": "FAIL \u00b7 verdict as written: Both rules FAIL on VALIDATION: no fee-net edge \u00b7 n=132 (A VALIDATION events) \u00b7 net R after fees n/a \u00b7 try n/a \u00b7 fee break-even n/a"
+ }
+}

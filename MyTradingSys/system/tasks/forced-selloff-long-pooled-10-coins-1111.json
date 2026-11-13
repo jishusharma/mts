@@ -7,19 +7,19 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T18:07:44Z",
-    "misses": 26,
+    "folded": "2026-11-13T15:05:30Z",
+    "misses": 15,
     "reads": [
-      "scripts/dev/supervisor.py",
-      "MyTradingSys/research/edge_plan_2026-11-11/EDGE_PLAN.md",
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/test_supervisor.py",
-      "scripts/dev/station_disk_report.py",
-      "scripts/dev/extra_tests.tsv",
-      "MyTradingSys/research/edge_views_2026-11-11/DATA_MAP.md",
-      "MyTradingSys/backtest/fees.py"
+      "MyTradingSys/research/VERDICTS.csv",
+      "MyTradingSys/research/sim_desk/export_results.py",
+      "scripts/dev/verdicts.py",
+      "MyTradingSys/research/edge_views_2026-11-11/POOLED/RESULT.md",
+      "sim_desk/results/habib-plan-hit-rate-1104.json",
+      "MyTradingSys/research/edge_views_2026-11-11/POOLED/tables.md",
+      "MyTradingSys/research/sim_desk/DESIGN.md",
+      "MyTradingSys/backtest/test_no_own_costs.py"
     ],
-    "session": "agent-a6c3eb523142e7a59"
+    "session": "agent-ae159c6551f45b12f"
   },
   "created": "2026-11-11T16:20:11Z",
   "depends_on": [],
