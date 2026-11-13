@@ -769,62 +769,43 @@
  ],
  "backtests": [
   {
-   "id": "RSI-EXTREME-CONFIRM-1H-20261113",
-   "trials": 384,
-   "title": "Hourly RSI extreme (<=10/15/20/25, mirror >=75-90) + next candle closes beyond prior close, daily-RSI bucket, 4 stops x 3 exits, 10 coins",
-   "date": "2026-11-13",
-   "market": "Bybit linear 1h, BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, 2020+",
-   "layers": [
-    "rsi_levels"
-   ],
-   "params": "SOURCED: operator rule; OURS: T grid, buckets, stops (ATR .25/1.0, 1%, low-1%), exits (2R, RSI50, 24h)",
-   "split": "DEV 2020-01..2024-06 / VAL 2024-07..2025-06 / RECENT 2025-07+",
-   "fees": "fee-net, taker both legs + funding",
-   "interaction": "daily RSI bucket context; matched placebo (confirm only)",
-   "effects": "none",
-   "n": "384 cells",
-   "verdict": "FAIL: 0/384 pass, 0 BH-significant on DEV or VALIDATION; only VAL-positive pocket is negative in DEV and RECENT",
-   "report": "MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md",
-   "read": "summary"
+    "id": "BIGCANDLE-STORY-1H-20261105",
+    "trials": null,
+    "title": "Big BTC 1h/5m candles (price, OI or taker delta |z|>=3): 8 stories x Binance top-trader class x phase, what followed",
+    "date": "2026-11-05",
+    "market": "Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader positions and accounts ratio)",
+    "layers": [
+      "oi_delta"
+    ],
+    "params": "OURS: |z|>=3 vs trailing 30d, 12-bar lockout (5m), top-trader flat 0.2%, band +-10%/30d, weekly streak R3+/R1-2/G1-2/G3+; horizons 1h/4h/24h",
+    "split": "DEV 2022-01-03..2024-06-30 only; holdout not read",
+    "fees": "fee-free descriptive",
+    "interaction": "story x top-trader class x phase vs same-direction baseline",
+    "effects": "continuation 43-60% vs 45-50% baseline; size-long/accounts-short after a big up candle not different from baseline (1h n=51: 45/53/51%); UP/UP/BUY 4h 59% [51-66] a lead",
+    "n": "843 big 1h events, 3991 big 5m events, 21831 baseline 1h bars",
+    "verdict": "descriptive: stories are readable, odds are near baseline; no trade rule",
+    "report": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
+    "read": "summary"
   },
   {
-   "id": "BIGCANDLE-STORY-1H-20261105",
-   "trials": null,
-   "title": "Big BTC 1h/5m candles (price, OI or taker delta |z|>=3): 8 stories x Binance top-trader class x phase, what followed",
-   "date": "2026-11-05",
-   "market": "Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader positions and accounts ratio)",
-   "layers": [
-    "oi_delta"
-   ],
-   "params": "OURS: |z|>=3 vs trailing 30d, 12-bar lockout (5m), top-trader flat 0.2%, band +-10%/30d, weekly streak R3+/R1-2/G1-2/G3+; horizons 1h/4h/24h",
-   "split": "DEV 2022-01-03..2024-06-30 only; holdout not read",
-   "fees": "fee-free descriptive",
-   "interaction": "story x top-trader class x phase vs same-direction baseline",
-   "effects": "continuation 43-60% vs 45-50% baseline; size-long/accounts-short after a big up candle not different from baseline (1h n=51: 45/53/51%); UP/UP/BUY 4h 59% [51-66] a lead",
-   "n": "843 big 1h events, 3991 big 5m events, 21831 baseline 1h bars",
-   "verdict": "descriptive: stories are readable, odds are near baseline; no trade rule",
-   "report": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
-   "read": "summary"
-  },
-  {
-   "id": "RSI-DEEP-PRESTUDIES",
-   "trials": 662,
-   "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
-   "date": "2026-11-04",
-   "market": "BTCUSDT DEV, VALIDATION read once, HOLDOUT never read",
-   "layers": [
-    "rsi_levels",
-    "rsi_divergence"
-   ],
-   "params": "see research/rsi_deep_buy_2026-10-19/",
-   "split": "DEV / VALIDATION per backtest/splits.py",
-   "fees": "fee-net",
-   "interaction": "context, confirmation and confluence overlays on the RSI deep-buy touch",
-   "effects": "none material",
-   "n": "168 + 230 + 120 + 144 tests",
-   "verdict": "no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/144; grid empty, rsi-deep-prereg/engine/run-dev parked",
-   "report": "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md",
-   "read": "summary"
+    "id": "RSI-DEEP-PRESTUDIES",
+    "trials": 662,
+    "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
+    "date": "2026-11-04",
+    "market": "BTCUSDT DEV, VALIDATION read once, HOLDOUT never read",
+    "layers": [
+      "rsi_levels",
+      "rsi_divergence"
+    ],
+    "params": "see research/rsi_deep_buy_2026-10-19/",
+    "split": "DEV / VALIDATION per backtest/splits.py",
+    "fees": "fee-net",
+    "interaction": "context, confirmation and confluence overlays on the RSI deep-buy touch",
+    "effects": "none material",
+    "n": "168 + 230 + 120 + 144 tests",
+    "verdict": "no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/144; grid empty, rsi-deep-prereg/engine/run-dev parked",
+    "report": "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md",
+    "read": "summary"
   },
   {
    "id": "L1-D3",
