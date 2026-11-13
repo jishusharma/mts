@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T14:50:45Z",
   "commands": [],
   "created": "2026-11-10T19:04:16Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "haiku-refresh-10-stale-ready-cards-1111",
   "kind": "build",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "tasks.py lint: 0 'STALE scope changed' lines for ready cards (was 10 on 11-11, 3 today). T",
+      "ref": "a3d6c402d",
+      "utc": "2026-11-13T14:50:45Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: stale ready cards cleared",
   "note": "REVIEWED:2026-11-11 T0-ONLY twin check: prior haiku refresh cards are done; these ids went stale since. DECISION (OURS): ROUTINE",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-10T19:04:37Z",
   "refs": [],
-  "result": "",
+  "result": "tasks.py lint: 0 'STALE scope changed' lines for ready cards (was 10 on 11-11, 3 today). Today: btc-test closed (on trunk af16c249b); depth-band refreshed, still blocked on fapi reach; forced-selloff refreshed, only the sim_desk json export left",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/tasks"
   ],
@@ -35,12 +49,13 @@
   "sources": [
     "Session_Planner planner-A-20261111 (D11_PROGRAMME s6 Haiku seed)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "For each id: tasks.py show <id>; compare to the commit that changed its scope",
     "If still valid run tasks.py tag <id> --refresh; else tasks.py tried <id>",
     "Run tasks.py lint and quote the STALE count"
   ],
+  "taken": "2026-11-13T14:50:45Z",
   "tests": "none (card metadata only); lint before and after counts quoted in the Result line",
   "title": "Haiku: refresh the 10 ready cards that tasks.py lint flags STALE (scope changed after refresh): re-read each card against its scope change, then tasks.py tag <id> --refresh",
   "weight": "ROUTINE",

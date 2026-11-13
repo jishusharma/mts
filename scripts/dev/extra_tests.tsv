@@ -286,3 +286,10 @@ scripts/dev/test_gate_reason_wait.py
 scripts/dev/test_flow_read.py
 MyTradingSys/tools/live_aid/test_xliq.py
 scripts/dev/test_routines_due.py
+MyTradingSys/execution/test_cotrade_close.py
+MyTradingSys/execution/us_open_trader/test_engine.py
+MyTradingSys/execution/us_open_trader/test_levels.py
+MyTradingSys/execution/us_open_trader/test_plan.py
+MyTradingSys/execution/us_open_trader/test_recorder.py
+MyTradingSys/execution/us_open_trader/test_runner.py
+MyTradingSys/execution/us_open_trader/test_score.py
