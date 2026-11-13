@@ -894,6 +894,20 @@ class TestOffgateTiers(unittest.TestCase):
             for p in run_extra_tests.OFFGATE:
                 self.assertNotIn(Path(p).as_posix(), text, (quick, p))
 
+    def test_slow_signal_tests_are_offgate_and_the_gate_file_keeps_fast_smokes(self):
+        """gate-signals-offgate-1113: the slow signals tests sit in the slow tier; the gate step (3sig) runs only the fast file."""
+        import run_extra_tests
+        slow = "scripts/dev/test_mts_signal_slow.py"
+        self.assertIn(slow, [Path(p).as_posix() for p in run_extra_tests.OFFGATE])
+        self.assertTrue((Path(__file__).parent / "test_mts_signal_slow.py").exists())
+        text = " ".join((s.cmd_text or "") for s in rat.build_plan(False))
+        self.assertIn("scripts/dev/test_mts_signal.py", text)
+        self.assertNotIn(slow, text)
+        fast = (Path(__file__).parent / "test_mts_signal.py").read_text(encoding="utf-8")
+        for fn in ("test_send_then_other_machine_reads_not_own", "test_ask_record_carries_id_wait_deadline",
+                   "test_the_hub_lock_is_exclusive_and_released", "test_pending_lists_none_and_expired_told_per_host"):
+            self.assertIn(fn, fast)
+
     def test_control_room_step_is_gone_but_cbp_runner_step_3cr_stays(self):
         labels = [s.label for s in rat.build_plan(True)]
         self.assertNotIn("Step 3cr: Control Room tests", labels)

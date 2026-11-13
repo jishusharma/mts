@@ -139,7 +139,7 @@ UNIT_DEFAULT_S = 8            # OURS: estimated seconds of a script-style test s
 EXTRA_FILE_S = 4              # OURS: estimated seconds per step-3xt file (one pytest process each) and per step-5b module
 # Estimated CPU seconds of the script-style test steps a change can reach (each run alone on JIS-NB, 2026-10-18; 3k/3ds/3dk/3bk run as
 # 2-3 shards, the figure is their sum); a step above the budget is deferred to CI unless a changed file names it.
-STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 150, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
+STEP_EST = {"3k": 200, "3ds": 30, "3bk": 25, "3dk": 14, "3ad": 24, "3sig": 70, "3cx": 11, "3tk": 13, "3lh": 9, "3ms": 13, "3sg": 9,
             "3cr": 8, "3lm": 4, "3hy": 1, "3w": 9, "3x": 3, "3cm": 2, "3cmt": 3}
 RECORD_NAME = "mts_gate_record.json"   # GATE_SPEED D3: per-worktree git dir, never shared between trees or machines
 RECORD_MAX_AGE_S = 24 * 3600
