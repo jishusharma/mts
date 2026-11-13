@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge remote-tracking branch 'origin/fast-track' into JIS-NB/fable-run7-forward-test",
-      "ref": "34417a1f4c3a",
-      "utc": "2026-11-08T19:07:42Z"
+      "line": "Revert \"Revert e9de2fb4 (off-gate tier): CI red, test_ci_deps_lint fails on the new offgat",
+      "ref": "2343ec1c8a2e",
+      "utc": "2026-11-13T00:31:31Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T19:12:48Z",
+  "refreshed": "2026-11-13T03:31:23Z",
   "refs": [
     "MyTradingSys/system/SHIP_TRAIN.md"
   ],
@@ -41,7 +41,7 @@
   "scope_out": [
     "live tree; auto_deploy"
   ],
-  "scope_sha": "34417a1f4c3a",
+  "scope_sha": "2343ec1c8a2e",
   "size": "M",
   "sources": [],
   "state": "ready",

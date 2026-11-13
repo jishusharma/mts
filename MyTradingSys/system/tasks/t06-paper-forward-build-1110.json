@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:58Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -23,10 +24,18 @@
   "goal": "T06 (best leftover, +0.048 R n=1322) needs a context-only paper forward so the weekly readout can judge it.",
   "id": "t06-paper-forward-build-1110",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "rsi_ma_cross_live.py + parity test on trunk; tests pass here",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk a5bba158c",
   "not_twin_of": [
     "deploy-malkan-level-short-forward-1109"
   ],
@@ -36,7 +45,12 @@
   "refined_by": "",
   "refreshed": "2026-11-10T19:35:32Z",
   "refs": [],
-  "result": "",
+  "result": "rsi_ma_cross_live.py + parity test on trunk; tests pass here",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope": [
     "MyTradingSys/backtest/layers/rsi/rsi_ma_cross_live.py",
     "MyTradingSys/backtest/layers/rsi/test_rsi_ma_cross_live.py"
@@ -51,13 +65,14 @@
   "sources": [
     "Lead B"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read malkan_level_short_live.py and rsi_ma_cross.py",
     "write the live adapter importing rsi_ma_cross, not copying",
     "parity test and journal row test",
     "ship"
   ],
+  "taken": "2026-11-13T03:30:58Z",
   "tests": [
     "test_rsi_ma_cross_live.py::test_batch_equals_one_bar_feed (fail first)"
   ],

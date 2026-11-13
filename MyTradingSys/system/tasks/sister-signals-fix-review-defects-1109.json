@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:56Z",
   "commands": [
     "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py -q"
   ],
@@ -31,6 +32,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "6 defects fixed, 8 new tests fail on old code; test_sister_signals 25 tests pass",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "sister_signals: fix 6 review defects (save-before-emit, 2-confirm flip, last-2-lows STOP, ",
@@ -41,13 +48,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "each new test fails on 97d223b00 version of sister_signals.py",
+  "next": "END: already on trunk 9bd153f55",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T17:03:52Z",
   "refs": [],
-  "result": "",
+  "result": "6 defects fixed, 8 new tests fail on old code; test_sister_signals 25 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/alerts/sister_signals.py",
     "MyTradingSys/backtest/layers/alerts/test_sister_signals.py",
@@ -61,13 +74,14 @@
   "scope_sha": "9bd153f55b37",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "failing-first tests",
     "fix sister_signals.py",
     "wire BACKGROUND in live_runner_cli",
     "ship"
   ],
+  "taken": "2026-11-13T03:30:56Z",
   "tests": "python -m pytest MyTradingSys/backtest/layers/alerts/test_sister_signals.py MyTradingSys/backtest/layers/alerts/test_live_runner_cli.py -q",
   "title": "Fix 6 reviewer defects in sister_signals (commit 8a4bf6bff): save-before-emit, 2-confirm flips, last-2-lows STOP, corrupt state UNKNOWN, pinned source, non-blocking fetch; each with a failing-first test",
   "weight": "",

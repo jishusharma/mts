@@ -20,9 +20,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Result: sender_note says Cut to 200 only on real truncation; redaction gets its own line N",
-      "ref": "71d5cbd545b7",
-      "utc": "2026-11-11T09:01:09Z"
+      "line": "Result: broadcast expiry has an end-to-end test (expire closes silent-host pairs, before/a",
+      "ref": "4ded553120b5",
+      "utc": "2026-11-12T03:11:36Z"
     }
   ],
   "layers": [],
@@ -32,7 +32,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T21:00:46Z",
+  "refreshed": "2026-11-13T03:31:13Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
     "sync.py and the ship gate",
     "hook behaviour and signal format"
   ],
-  "scope_sha": "71d5cbd545b7",
+  "scope_sha": "4ded553120b5",
   "size": "S",
   "sources": [],
   "state": "ready",

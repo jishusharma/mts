@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:51Z",
   "commands": [
     "python -m pytest MyTradingSys/tests/docs -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "GEMINI_START opens with agy.exe, agy.exe models; test_integrity 17 pass",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:51Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk ea1541be1",
   "note": "Planner 2026-11-10: docs half only; health-check half split off as raw follow-up (not filed: Planner files no cards).",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T19:34:06Z",
   "refs": [],
-  "result": "",
+  "result": "GEMINI_START opens with agy.exe, agy.exe models; test_integrity 17 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/GEMINI_START.md"
   ],
@@ -55,12 +68,13 @@
   "sources": [
     "d-gemini-no-host-dependency-1109; login B on NUC said no Gemini CLI installed"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read GEMINI_START.md l.1-8 (the agy path is only in l.6 and l.22, buried)",
     "Add the one-line rule at the top (DECISION OURS: docs only; a per-host health check is a separate card)",
     "Run python -m pytest MyTradingSys/tests/docs -q"
   ],
+  "taken": "2026-11-13T03:30:51Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py (size caps) green; docs-only change, no fail-first possible",
   "title": "Docs/hooks name the Gemini lane binary: agy.exe under .gemini/bin, not gemini; health check reports agy per host",
   "weight": "",
