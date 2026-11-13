@@ -1564,3 +1564,53 @@ def test_republish_notes_time_cap_becomes_a_note(monkeypatch):
     out = S.republish_notes("C")
     gate.set()
     assert len(out) == 2 and out[0].startswith("PLAN pages-unchecked") and out[1].startswith("NOTE REPUBLISH check timed out")
+
+
+# --- US session RUN line (us_open_trader DESIGN s8). Window = open-2h .. open+2h, expectations from the rule text:
+# winter open 14:30Z -> 12:30Z..16:30Z; summer open 13:30Z -> 11:30Z..15:30Z.
+def _us(y, mo, d, h, mi, claims=frozenset()):
+    return S.us_session_lines(datetime(y, mo, d, h, mi, tzinfo=timezone.utc), claims)
+
+
+def test_us_session_winter_friday_window_edges():
+    assert _us(2026, 11, 13, 12, 29) == []
+    assert _us(2026, 11, 13, 12, 30) == [S.US_SESSION_LINE]
+    assert _us(2026, 11, 13, 16, 30) == [S.US_SESSION_LINE]
+    assert _us(2026, 11, 13, 16, 31) == []
+    assert S.US_SESSION_LINE == "RUN US session (Agent, haiku): follow MyTradingSys/execution/us_open_trader/RUNBOOK.md"
+
+
+def test_us_session_summer_window_is_one_hour_earlier():
+    assert _us(2026, 7, 10, 11, 29) == []
+    assert _us(2026, 7, 10, 11, 30) == [S.US_SESSION_LINE]
+    assert _us(2026, 7, 10, 15, 30) == [S.US_SESSION_LINE]
+    assert _us(2026, 7, 10, 15, 31) == []
+
+
+def test_us_session_weekend_none():
+    assert _us(2026, 11, 14, 14, 30) == []   # Saturday
+    assert _us(2026, 11, 15, 14, 30) == []   # Sunday
+
+
+def test_us_session_claimed_hides_line():
+    assert _us(2026, 11, 13, 14, 30, claims={"us-session-2026-11-13"}) == []
+    assert _us(2026, 11, 13, 14, 30, claims={"us-session-2026-11-12"}) == [S.US_SESSION_LINE]
+
+
+def test_us_session_claim_state_unknown_shows_with_note():
+    out = _us(2026, 11, 13, 14, 30, claims=None)
+    assert out == [S.US_SESSION_LINE + " (claim state unknown: check sync.py where)"]
+
+
+def test_us_session_weekday_holiday_still_shows():
+    assert _us(2026, 11, 26, 14, 30) == [S.US_SESSION_LINE]   # Thanksgiving 2026, OURS: still shown
+
+
+def test_us_session_no_now_no_line_and_plan_lines_carries_it():
+    assert S.us_session_lines(None, set()) == []
+    p = S.pace_plan(T0, _rd(7, 20, week_reset="2026-10-23T16:00Z"), 95)
+    ctx = {"ci": {"red": False}, "now": datetime(2026, 11, 13, 14, 30, tzinfo=timezone.utc), "us_claims": set()}
+    out = "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, {}, ctx, gate_key=False))
+    assert S.US_SESSION_LINE in out
+    ctx["us_claims"] = {"us-session-2026-11-13"}
+    assert S.US_SESSION_LINE not in "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, {}, ctx, gate_key=False))

@@ -1259,6 +1259,34 @@ def usage_gate_refusal(plan: dict) -> str:
     return ""
 
 
+US_SESSION_H = 2   # OURS (us_open_trader DESIGN s8): line shows from open-2h to open+2h; the 09:30 ET open itself comes from us_open_alert.open_utc
+US_SESSION_LINE = "RUN US session (Agent, haiku): follow MyTradingSys/execution/us_open_trader/RUNBOOK.md"
+
+
+def us_session_lines(now, claims) -> list:
+    """Pure: the US-session RUN line. `now` aware UTC (None = no line); `claims` = set of open claim slugs, None = unreadable.
+    Weekdays only; a weekday US holiday still shows it (OURS: the Haiku run finds a closed market and stops cheaply)."""
+    if now is None:
+        return []
+    sys.path.insert(0, str(REPO / "MyTradingSys" / "tools"))
+    try:
+        import us_open_alert
+    finally:
+        sys.path.pop(0)
+    day = now.astimezone(timezone.utc).date()
+    if day.weekday() >= 5:
+        return []
+    o = us_open_alert.open_utc(day)
+    if not (o - timedelta(hours=US_SESSION_H) <= now <= o + timedelta(hours=US_SESSION_H)):
+        return []
+    if claims is None:
+        return [US_SESSION_LINE + " (claim state unknown: check sync.py where)"]
+    import sync
+    if sync.slugify(f"us-session-{day.isoformat()}") in claims:
+        return []
+    return [US_SESSION_LINE]
+
+
 def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_key: bool) -> list:
     """Pure: the text a supervisor reads each wake. PLAN/PEER/BOARD lines are state; RUN lines are commands to run now in one Bash call;
     SPAWN is who to start; NOTE needs nothing from you; OPERATOR is the only thing the operator must do."""
@@ -1289,6 +1317,7 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         L.append(f"BOARD {kind} {hid}: {title} (no card of that kind)")
     if ctx.get("handover"):
         L.append(f"HANDOVER {ctx['handover']}")
+    L.extend(us_session_lines(ctx.get("now"), ctx.get("us_claims")))
     ci = ctx.get("ci") or {}
     if ci.get("error"):
         L.append(f"NOTE CI unknown ({ci['error'][:80]}): treat as red for live-path cards")
@@ -1581,6 +1610,12 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         nxt = [next_line(ho)] if next_line(ho) else [x.strip() for x in ho.splitlines() if x.strip().startswith(("- Next", "Next", "- next"))][:1]
         ctx["handover"] = HANDOVER_REL.format(login) + " on trunk" + (": " + nxt[0][:160] if nxt else "")
     ctx["ci"] = read_ci(now=now)
+    ctx["now"] = now
+    try:    # claim state as of the last fetch, no network; None = unreadable -> the line says so
+        import sync
+        ctx["us_claims"] = {s for s, _ in sync.open_claims(repo, fetch=False)}
+    except (Exception, SystemExit):
+        ctx["us_claims"] = None
     try:
         snap = _dispatch_raw(repo, now, host=host, login=login, logins=shard)
         ctx["picks"] = pick_cards(snap.get("dispatch", []), host, pl["new"], pl["mode"] == "CRUCIAL-ONLY")
