@@ -1,0 +1,69 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T19:59:36Z",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-14T19:30:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge4-rsi-confirm-exits/REVIEW.md exists",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind review of the study result in MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/edge4-rsi-confirm-exits_RESULTS.md (the study itself is not on trunk; the result text is all you have). Check look-ahead risk, fee/slippage handling, placebo validity, clustering/independence, and whether the verdict follows from the table.",
+  "id": "gemini-edge-blind-edge4-rsi-confirm-exits-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge4-rsi-confirm-exits/REVIEW.md",
+      "ref": "735186644",
+      "utc": "2026-11-13T19:59:36Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: card complete",
+  "note": "Blind: do not trust the author's conclusion.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:30:00Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge4-rsi-confirm-exits/REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge4-rsi-confirm-exits/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file, a computation you ran, or a verbatim quote, never memory",
+    "do not run sync.py ship",
+    "Gemini always low effort"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13/14 operator order: use Gemini flash quota fully before it expires"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/edge4-rsi-confirm-exits_RESULTS.md. Do not read other reviews. Do not invent data.",
+    "Table: claim, where in the text, internally consistent? (YES / NO / CANNOT-TELL). Recompute any arithmetic that can be recomputed from the text (means, counts, percentages, sums).",
+    "List concrete look-ahead, fee, placebo, clustering and multiple-testing risks the text itself exposes, quoting the sentence; do not speculate beyond the text.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge4-rsi-confirm-exits/REVIEW.md with a one-line verdict first (SOUND / FLAWED / UNVERIFIABLE) and what would change it; commit on your gemini-q branch only."
+  ],
+  "taken": "2026-11-13T19:59:36Z",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind review of edge4-rsi-confirm-exits",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
