@@ -66,3 +66,10 @@ tests and a safety review before it places anything. Both A and B passed `cotrad
 After 16:30Z `us_open_trader score` replays these four orders over the 1m candles (a bar that touches stop and
 target counts as the stop) and writes entry, exit, R, level and confluence per trade to the ignored path
 `runtime_data/us_open_trader/` for the Live Aid learner. The summary (no account data) is added below.
+
+## Correction 13:55Z (after the plan was frozen; the four orders are unchanged)
+The lines "5,000 USD = 100 USD margin at 50x", "about 5 times closer than the 50x liquidation distance (about 2 %, 1,380)"
+and "18 % of margin" are wrong for Deribit: BTC-PERPETUAL is inverse and cross-margined, the order sets no leverage, and
+liquidation depends on the whole account. What holds: size comes from risk (about 18 USD lost at the 250 stop on
+5,000 USD notional, OURS). From design v2 the module reads the exchange's own liquidation price after each fill and
+closes the trade if the stop is not well inside it; leverage is reported as notional / account equity.
