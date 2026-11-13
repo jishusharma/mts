@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T18:35:44Z",
   "commands": [
     "python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py",
     "python -m pytest MyTradingSys/research/fable_run7_forward_test/test_forward_readout_all.py MyTradingSys/research/c30_forward_2026-11-11/test_c30_paper_log.py -q"
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "FORWARD_AUDIT.md: 4 slots wired Y, all n 0; C30 row+tests already present, 14 pass",
+      "ref": "9d32a81fa",
+      "utc": "2026-11-13T18:35:44Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Analyst-call paper slot: logger with two placebos, Habib 72-73k long seeded, line in the c",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: audit complete",
   "note": "Twins: forward-readout-paper-journals-1110 (forward_readout.py Malkan journal, not the _all file; keep both), krown-s8-forward-weekly-readout (Krown only). Do depend on neither. Live fetch of C30 needs a JIS-NB deploy, out of scope.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T12:14:40Z",
   "refs": [],
-  "result": "",
+  "result": "FORWARD_AUDIT.md: 4 slots wired Y, all n 0; C30 row+tests already present, 14 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/edge_plan_2026-11-11/FORWARD_AUDIT.md",
     "MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py",
@@ -50,12 +63,13 @@
   "sources": [
     "EDGE_PLAN.md s(b), PLAN_24H_2026-11-10 T1"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read EDGE_PLAN.md lines 17-37 and forward_readout_all.py; list each slot's journal path",
     "Run python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py and paste it; run c30_paper_log.py only with --once against a temp journal to prove the logger parses",
     "Add the C30 row test if missing; write FORWARD_AUDIT.md"
   ],
+  "taken": "2026-11-13T18:35:44Z",
   "tests": "MyTradingSys/research/fable_run7_forward_test/test_forward_readout_all.py: new case, C30 paper journal rows give a fourth row n and net R (fails if the C30 row is missing)",
   "title": "Forward slots: C30 logger, combined readout, four rows",
   "weight": "",
