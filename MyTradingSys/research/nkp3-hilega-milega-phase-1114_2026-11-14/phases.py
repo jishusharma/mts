@@ -8,7 +8,7 @@ D1 = 86400000
 HERE = Path(__file__).resolve().parent
 CSV_OLD = HERE.parents[1] / "research" / "btc_cycles_2026-11" / "btc_daily.csv"
 BTC5 = Path(r"F:/MTS/data_cache/binance/BTCUSDT_5m.npz")
-OUT = Path(r"F:/MTS/data_cache/mts_brains/phase_daily.csv")
+OUT = Path(r"F:/MTS/data_cache/mts_brains/nkp3/phase_daily_nkp3.csv")  # own copy: the shared phase_daily.csv was built by a sibling with another schema
 NAMES = {0: "NA", 1: "CAPITULATION", 2: "MARKDOWN", 3: "RELIEF", 4: "ACCUM-RANGE", 5: "MARKUP", 6: "DISTRIBUTION"}
 # phase-appropriate directions: +1 long, -1 short ; ACCUM both
 ALLOWED = {1: (1,), 2: (-1,), 3: (1,), 4: (1, -1), 5: (1,), 6: (-1,)}
