@@ -575,6 +575,15 @@ def run_mvn():
     return exec_step([mvn, "-q", "test"])
 
 
+def _offgate():
+    """Paths gate_tiers.tsv takes off the push gate (retired + study + slow); empty when the list cannot be read (then everything runs)."""
+    try:
+        import run_extra_tests
+        return run_extra_tests.OFFGATE
+    except Exception:
+        return frozenset()
+
+
 def build_plan(quick):
     """Every step in report order. One step per line: parallel sessions append here (a shared line is a guaranteed conflict)."""
     plan = []
@@ -651,7 +660,7 @@ def build_plan(quick):
     add("3cs", "Cloud SessionStart hook tests (no-op off cloud)", [sys.executable, "scripts/dev/test_cloud_setup.py"], "Step 3cs: Cloud setup hook tests")
     add("3pc", "Prompt contract tests (DSA_SESSION_PROMPT 5d, B155)", [sys.executable, "scripts/dev/test_prompt_contract.py"], "Step 3pc: Prompt contract tests")
     plan.append(Step("3ds", "DSA helper CLI tests (dsa.py)", "Step 3ds: DSA helper CLI tests", run=lambda: exec_unittest_shards("scripts/dev/test_dsa.py", gate_jobs() if gate_jobs() == 1 else 2), cmd_text="python -m unittest (scripts/dev/test_dsa.py, 2 shards)", tail=None))   # dsa.py: DSA one-call helpers (put/edit/commit/begin/end/host)
-    add("3cr", "Control Room page generator tests", [sys.executable, "scripts/dev/test_make_control_room.py"], "Step 3cr: Control Room tests")
+    # Control Room page tests (was step 3cr, 49 CI step-s, 0 failures in 14 d): Control Room retired; gate_tiers.tsv lists test_make_control_room.py (retired)
     add("3lh", "GPT lane health tests (down/up rules, reroute, pause, resume, DSA prompt)", [sys.executable, "scripts/dev/test_lane_health.py"], "Step 3lh: GPT lane health tests")
     add("3rb", "Claude-GPT relay board tests (shared notes, lanes, pack)", [sys.executable, "scripts/dev/test_relay_board.py"], "Step 3rb: Relay board tests")
     add("3af", "Artifact registry tests (one url per page per account)", [sys.executable, "scripts/dev/test_artifacts.py"], "Step 3af: Artifact registry tests")
@@ -692,7 +701,7 @@ def build_plan(quick):
     tests_dir = REPO / "MyTradingSys" / "tests"
     doc_shard = ["MyTradingSys/tests/docs", "MyTradingSys/tests/test_relay_prompts.py"]
     top = sorted(f"MyTradingSys/tests/{f.name}" for f in tests_dir.glob("test_*.py")) if tests_dir.exists() else []
-    top = [f for f in top if f not in doc_shard]
+    top = [f for f in top if f not in doc_shard and f not in _offgate()]   # gate_tiers.tsv: retired relay tests, slow infra tests (offgate tier, ci.yml job offgate-tier)
     if quick:
         top = [f for f in top if Path(f).name not in SMOKE_SKIP_FILES]
     # a new test subfolder under MyTradingSys/tests is collected wholesale, as before the split
@@ -1490,6 +1499,12 @@ def main(argv=None):
     run_temp_root()
     isolate_pytest_tmp()
     quick = "--quick" in args
+    if "--offgate" in args:   # the off-gate tier (gate_tiers.tsv study + slow): ci.yml job offgate-tier, or by hand; retired files never run
+        off_plan = [Step("7o", "Off-gate tier (gate_tiers.tsv study + slow files)", "Step 7o: Off-gate tier",
+                         cmd=[sys.executable, "scripts/dev/run_extra_tests.py", "--offgate"])]
+        ok = run_plan(off_plan, 1).get("7o") is True
+        print("ALL TESTS PASSED" if ok else "FAILED: 1 step(s)\n  - Step 7o: Off-gate tier", flush=True)
+        return 0 if ok else 1
 
     plan = build_plan(quick)
     if quick and not any(a in args for a in ("--shard", "--smoke", "--precheck", "--changed-file")) and not os.environ.get("CI"):
