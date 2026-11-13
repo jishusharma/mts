@@ -1623,25 +1623,6 @@
    "read": "summary"
   },
   {
-   "id": "LA-FLAGS-FULL-20261113",
-   "trials": null,
-   "title": "Live Aid idea-flag groups (idea, 3 states, 11 fade levels) x side, full-history re-test with Benjamini-Hochberg 10% over 30 cells, 60-min time exit",
-   "date": "2026-11-13",
-   "market": "BTCUSDT 5m 2019-01..2026-11 (spot 2019, perp 2020+); DEV first 70% of days, VALIDATION from 2024-07-02; ETH/SOL replication not run (no BTC pass)",
-   "layers": [
-    "session_levels"
-   ],
-   "params": "Live Aid code unchanged (levelstory.js, pulse.js lane, replay levels); entry next 5m open, exit 60 min, day-block bootstrap, placebo = same side at random same-day 5m step; setup and timing groups not coverable on 5m data (OURS)",
-   "split": "BTC VALIDATION from 2024-07-02 (chosen before run)",
-   "fees": "4 bp maker round trip (auction_context.DEFAULT_MAKER_RT_BPS); 10 bp mean in cells_BTC.json",
-   "interaction": "none (single flag family; groups overlap, BH under positive dependence)",
-   "effects": "29 of 30 cells fee-net negative; best Europe high LONG +0.6 bps CI [-4.7, +6.1]; 3 cells beat placebo but all lose money",
-   "n": "BTC 66554 events; VALIDATION cells n 135 to 10669",
-   "verdict": "FAIL: 0 of 30 cells pass (CI lower bound < 0 in every cell, smallest BH-input p 0.415); no idea-flag group earns a testnet-forward run; setup and timing not covered",
-   "report": "MyTradingSys/research/live_aid_flags_full_2026-11-13/REPORT.md",
-   "read": "summary"
-  },
-  {
     "id": "XSEC-MOM-WEEKLY-20261113",
     "trials": null,
     "title": "Cross-sectional momentum (7/14/28d) and 1-week reversal, long-short quintile, plus long-only top quintile minus equal-weight; top-20 Bybit USDT perps, weekly Monday rebalance",
