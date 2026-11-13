@@ -1,1 +1,0 @@
-{"t": "20261106T183217Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "CI RED since 589c392aa (last green 15729f6bc): Step 3w test_real_repo_passes: STALE MyTradingSys/execution/cotrade.py now LIVE, remove its wiring registry entry. Likely from the cycle-bottom-long batc", "login": "A"}
