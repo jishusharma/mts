@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T16:12:38Z",
   "commands": [
     "python -m pytest scripts/dev/test_supervisor.py -q"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "plan prints one SPAWN haiku hygiene line per login per 5 h window (marker MyTradingSys/sys",
+      "ref": "f31e28ff0",
+      "utc": "2026-11-13T16:12:38Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: hygiene report run by the Haiku Agent on each login's window; no follow-up card",
   "note": "DECISION (OURS): report only, removals stay with the Supervisor. Twin check: station_disk_report.py is the tool reused, no card duplicates the plan line.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T18:05:09Z",
   "refs": [],
-  "result": "",
+  "result": "plan prints one SPAWN haiku hygiene line per login per 5 h window (marker MyTradingSys/system/hygiene/.window_<login>.txt); 123 passed in test_supervisor.py incl. 2 new hygiene tests",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py",
     "scripts/dev/test_supervisor.py",
@@ -57,12 +70,13 @@
   "sources": [
     "OPERATOR_DECISIONS.md 2026-11-11 17:55Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read plan_lines (supervisor.py near line 1246) and how another per-window line stores its last-fired time",
     "Add the hygiene line (model Haiku, explicit) with a per-login window stamp; brief: run station_disk_report.py here, ssh gate verb for the NUC, list candidates, write the dated report",
     "Add the fail-first test; one line in STATION_CLEANUP.md"
   ],
+  "taken": "2026-11-13T16:12:38Z",
   "tests": "scripts/dev/test_supervisor.py: new test, two plan_lines calls in one 5 h window give one SPAWN haiku hygiene line, a call after the window gives another (fails on old code: no such line)",
   "title": "Supervisor wake: one Haiku agent per login checks disk health, free space and clean-up candidates; done when supervisor.py plan prints a SPAWN haiku hygiene line once per 5 h window and the result lands in a dated file",
   "weight": "",

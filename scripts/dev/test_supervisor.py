@@ -1014,6 +1014,29 @@ def test_wait_wakes_when_an_api_job_finishes(tmp_path):
     assert rc == 0 and "api job j8-c31" in reason
 
 
+# ---------- supervisor-wake-haiku-hygiene-disk-1111 ----------
+def test_hygiene_spawn_once_per_login_per_five_hour_window(tmp_path):
+    now = datetime(2026, 11, 13, 16, 0, tzinfo=timezone.utc)
+    assert S._hygiene_due(tmp_path, "B", "2026-11-13T18:00Z", now) == "2026-11-13"
+    # second plan in the same 5 h window prints none
+    assert S._hygiene_due(tmp_path, "B", "2026-11-13T18:00Z", now) is None
+    # another login has its own spawn in the same window
+    assert S._hygiene_due(tmp_path, "A", "2026-11-13T18:00Z", now) == "2026-11-13"
+    # next window spawns again
+    assert S._hygiene_due(tmp_path, "B", "2026-11-13T23:00Z", now) == "2026-11-13"
+    assert (tmp_path / S.HYGIENE_DIR / ".window_B.txt").exists()
+
+
+def test_hygiene_line_names_the_report_path():
+    p = {"mode": "NORMAL", "five": 10.0, "target": 50, "five_reset": "2026-11-13T18:00Z", "week": 30.0, "cap": 75.0,
+         "slots": 1, "running": 0, "new": 0, "why": "t", "transit": "2026-11-13T17:40Z"}
+    out = "\n".join(S.plan_lines("B", "JIS-NUC", p, {}, {"hygiene_due": "2026-11-13"}, gate_key=False))
+    assert "SPAWN haiku hygiene" in out
+    assert "MyTradingSys/system/hygiene/2026-11-13_B.md" in out
+    out2 = "\n".join(S.plan_lines("B", "JIS-NUC", p, {}, {}, gate_key=False))
+    assert "SPAWN haiku hygiene" not in out2
+
+
 # ---------- C4 supervisor-handover-fixed-form ----------
 import subprocess as _sp
 EXDIR = Path(__file__).resolve().parents[2] / "MyTradingSys" / "research" / "mts_doctor" / "context_files"
