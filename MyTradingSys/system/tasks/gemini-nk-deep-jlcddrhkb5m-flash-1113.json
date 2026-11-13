@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T04:37:11Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/flash_deep/JLcDdrHkB5M/EXTRACT.md",
     "python MyTradingSys/research/nk_stocktalk_1113/review/harness.py check"
@@ -20,6 +20,12 @@
   "latest": [
     {
       "kind": "ship",
+      "line": "deep NK flash extract: >=6 Hindi quotes, verify exit 0, harness check exit 0",
+      "ref": "9f06fe1fa",
+      "utc": "2026-11-13T04:37:11Z"
+    },
+    {
+      "kind": "ship",
       "line": "5 NK flash extracts: verify_extract_quotes exit 0 on all 5, harness check exit 0 (5 quotes",
       "ref": "7b9eb86cd",
       "utc": "2026-11-13T03:43:45Z"
@@ -34,7 +40,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "gemini-nk-extract-argon-1113",
   "note": "Run as gemini_queue.py run gemini-nk-deep-jlcddrhkb5m-flash-1113:low:flash. Disk only, no YouTube request. Deeper pass because flash/JLcDdrHkB5M is THIN (one quote).",
   "prio": 2,
   "refine_tries": 0,
@@ -44,7 +50,7 @@
     "MyTradingSys/research/nk_stocktalk_1113/review/BRIEF_DEEP.md",
     "MyTradingSys/research/nk_stocktalk_1113/flash/JLcDdrHkB5M/EXTRACT.md"
   ],
-  "result": "",
+  "result": "deep NK flash extract: >=6 Hindi quotes, verify exit 0, harness check exit 0",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -63,7 +69,7 @@
   "sources": [
     "Supervisor C 2026-11-13 relaying operator; OPERATOR_DECISIONS 2026-11-13 (NK StockTalk; both Gemini models)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only raw_transcripts_canonical/JLcDdrHkB5M_raw.txt and MyTradingSys/research/nk_stocktalk_1113/review/BRIEF_DEEP.md",
     "Write MyTradingSys/research/nk_stocktalk_1113/flash_deep/JLcDdrHkB5M/EXTRACT.md per BRIEF_DEEP.md; every quote verbatim from the caption file",
