@@ -86,7 +86,8 @@ def task_script(specs):
     body = "\n".join([
         f"Start-Transcript -Path {GQ}\\{tag}.transcript.txt -Force | Out-Null",
         f"Set-Location {GEMINI_CD}",
-        "git fetch -q origin; git merge -q --ff-only origin/fast-track",
+        "for ($i = 1; $i -le 6; $i++) { git fetch -q origin 2>$null; if ($LASTEXITCODE -eq 0) { break }; Start-Sleep -Seconds (Get-Random -Minimum 1 -Maximum 4) }",
+        "git merge -q --ff-only origin/fast-track",
         f"& '{NUC_PY}' scripts/dev/gemini_queue.py run " + " ".join(specs),
         "Stop-Transcript | Out-Null",
         f"schtasks /Delete /TN {tag} /F | Out-Null",
@@ -97,7 +98,7 @@ def task_script(specs):
         body,
         "'@",
         f"Set-Content -Path {GQ}\\{tag}.ps1 -Value $b -Encoding UTF8",
-        f'schtasks /Create /TN {tag} /TR "powershell -NoProfile -ExecutionPolicy Bypass -File {GQ}\\{tag}.ps1" /SC ONCE /ST 23:59 /RU e-ngineers /IT /F',
+        f'schtasks /Create /TN {tag} /TR "powershell -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -File {GQ}\\{tag}.ps1" /SC ONCE /ST 23:59 /RU e-ngineers /IT /F',
         f"schtasks /Run /TN {tag}",
         f'"STARTED {tag}: log {GQ}\\{tag}.transcript.txt; poll: python scripts/dev/nuc_lab.py gemini-status"',
     ]) + "\n"

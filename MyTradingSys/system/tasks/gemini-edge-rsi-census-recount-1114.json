@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-14T19:30:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1114/rsi-census-recount/RECOUNT.md exists",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Recompute from public Bybit BTCUSDT data per timeframe (1h, 4h, 1d, 1w): all-time RSI(14, Wilder) minima, and the 1st and 5th percentile RSI values, then compare to MyTradingSys/research/rsi_range_census_2026-11-13/REPORT.md. Also settle the open point: BTC 1h RSI<=10 episodes since 2020 - 5 (first touch, re-arm only after RSI>30) vs 6 episodes / 8 bars by another count.",
+  "id": "gemini-edge-rsi-census-recount-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-14, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:30:00Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1114/rsi-census-recount/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file, a computation you ran, or a verbatim quote, never memory",
+    "do not run sync.py ship",
+    "Gemini always low effort"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13/14 operator order: use Gemini flash quota fully before it expires"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/rsi_range_census_2026-11-13/REPORT.md for the claims, and MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/RSI_CENSUS_TABLES.md for the tables. Fetch BTCUSDT linear klines from Bybit v5 public API (paginate; save CSV under the output folder).",
+    "Compute RSI Wilder(14) on closes, per TF. Table: TF, metric, report value, your value, MATCH (within 0.5 RSI) / MISMATCH. State the exact data span and bar count.",
+    "Settle the 1h RSI<=10 episode count with both definitions, listing each episode start time and bar count.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1114/rsi-census-recount/RECOUNT.md with a one-line verdict first; commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind recount of RSI range census (BTC minima, percentile bands)",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
