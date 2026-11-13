@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T21:45:54Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py <RULES.md>"
   ],
@@ -14,17 +15,44 @@
   "id": "gemini-edge-mine-tomfabio-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "RULES.md and layer_lab report already on trunk (planner 1114 check)",
+      "ref": "ae47fa07b",
+      "utc": "2026-11-13T21:45:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Gemini argon twin: Tom/Fabio rule mining, 15 rules, verify PASS",
+      "ref": "f45ffc7e2044",
+      "utc": "2026-11-13T21:22:22Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "f45ffc7e2044 Gemini argon twin: Tom/Fabio rule mining, 15 rules, verify PASS",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-13_gemini-edge-mine-tomfabio-argon-1113.md",
+      "utc": "2026-11-13T21:22:22Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: Gemini edge push 11-13, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "next": "END: output shipped",
   "note": "Flash and argon both welcome. Second-model twin (argon); compare against the flash twin later.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-13T15:58:31Z",
+  "refreshed": "2026-11-13T21:45:43Z",
   "refs": [],
+  "result": "RULES.md and layer_lab report already on trunk (planner 1114 check)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-tomfabio-argon/"
   ],
@@ -34,18 +62,19 @@
     "every number must trace to a file or a verbatim quote, never memory",
     "do not run sync.py ship"
   ],
-  "scope_sha": "",
+  "scope_sha": "f45ffc7e2044",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only: MyTradingSys/research/layer_lab/video_extracts_1113 and MyTradingSys/research/layer_lab/tf_extract_1113 (any EXTRACT, ANSWERS, v2 .md). No web, no memory.",
     "Write MyTradingSys/research/layer_lab/gemini_edge_1113/mine-tomfabio-argon/RULES.md: table of 15 rules (id, indicator, extreme threshold, confirming candle, entry, stop, exit, timeframe, source file). A parameter the source does not state is NOT_STATED, never invented.",
     "Under each rule put the verbatim quote as > \"...\" then Source GPS: <id> | BEGIN|MIDDLE|END where the source has one. Run verify_extract_quotes.py on RULES.md until exit 0; commit on your gemini-q branch only.",
     "End with a ranked top 5 by fewest NOT_STATED fields."
   ],
+  "taken": "2026-11-13T21:45:54Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] argon twin: Mine 15 testable rules from Tom and Fabio",
   "weight": "ROUTINE",
