@@ -167,20 +167,31 @@ def fade_table(c, dip, dim, adx, valid, fee):
     return len(low) / len(valid), rows
 
 
+def fwd_abs_move(c, valid, h):
+    """Mean absolute h-bar move over every bar in valid (the unconditional comparison for the peak table)."""
+    return stats([abs(c[i + h] / c[i] - 1.0) for i in valid if i + h < len(c)])["mean"]
+
+
+def fwd_peak_outcomes(c, dip, dim, adx, pk, h, fee):
+    """Outcomes h bars after each peak event: (net returns holding the trend direction, abs moves, count with ADX<25)."""
+    cont, absm, below = [], [], 0
+    for i in pk:
+        if i + h >= len(c):
+            continue
+        s = 1 if dip[i - 1] > dim[i - 1] else -1     # trend direction at the peak bar
+        cont.append(fwd(c, i, h, s, fee))
+        absm.append(abs(c[i + h] / c[i] - 1.0))
+        if adx[i + h] is not None and adx[i + h] < LV_MID:
+            below += 1
+    return cont, absm, below
+
+
 def peak_row(c, dip, dim, adx, pk, valid, fee):
     out = []
     for h in HORIZONS:
-        cont, absm, below = [], [], 0
-        for i in pk:
-            if i + h >= len(c):
-                continue
-            s = 1 if dip[i - 1] > dim[i - 1] else -1     # trend direction at the peak bar
-            cont.append(fwd(c, i, h, s, fee))
-            absm.append(abs(c[i + h] / c[i] - 1.0))
-            if adx[i + h] is not None and adx[i + h] < LV_MID:
-                below += 1
+        cont, absm, below = fwd_peak_outcomes(c, dip, dim, adx, pk, h, fee)
         st = stats(cont)
-        base_abs = stats([abs(c[i + h] / c[i] - 1.0) for i in valid if i + h < len(c)])["mean"]
+        base_abs = fwd_abs_move(c, valid, h)
         out.append("n=%d trend-dir net %s win %.0f%%; abs move %s vs all-bars %s; ADX<25 after: %s%s" % (
             st["n"], pct(st["mean"]), (st["win"] or 0) * 100,
             pct(sum(absm) / len(absm)) if absm else "-", pct(base_abs),
