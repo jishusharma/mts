@@ -3,7 +3,8 @@
 Run after the NK extracts land in `flash/<id>/EXTRACT.md` and `argon/<id>/EXTRACT.md` (5 ids, captions unlock 11-13).
 
 ## Steps (coordinator)
-1. `python MyTradingSys/research/nk_stocktalk_1113/review/harness.py check`: every quote against its Hindi caption
+1. `python MyTradingSys/research/nk_stocktalk_1113/review/harness.py check` (set PYTHONUTF8=1): every extract quote, every
+   Conceptualizer `nk-stocktalk` concept quote and every `«span» VID` in a SOURCED param label, against its Hindi caption
    `raw_transcripts_canonical/<id>_raw.txt`. Exit 0 required before step 3. This replaces `verify_extract_quotes.py`
    for Hindi, because that tool's `norm()` drops every Devanagari word.
 2. `... harness.py fill`: writes `CHECKLIST.md` with one section per concept. Each section holds the page's claim and
@@ -34,3 +35,7 @@ unless it appears in the caption.
 - He states a number = SOURCED. He does not state it = NOT_SEEN. Gemini's earlier RSI 9 / EMA 3 / WMA 21 counts as a guess
   until the caption shows it.
 - BTC mappings stay OURS (gap = session open; options = Deribit testnet).
+
+## Layer row format
+- SOURCED row: label `SOURCED: «<exact Hindi caption span>» <VIDEO_ID>`; the check fails if the span is not in that caption.
+- NOT_SEEN row: `SOURCED: slot only, NOT_SEEN (<why>)`. Captions are untimed: cite a span, never a [mm:ss].
