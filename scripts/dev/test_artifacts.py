@@ -392,7 +392,16 @@ class PagesFollowBuilds(unittest.TestCase):
         self.assertTrue(once.index("Updated") < once.index("<main>"))
         twice = af.put_stamp(once, datetime(2026, 11, 7, 16, 0, tzinfo=timezone.utc))
         self.assertEqual(twice.count("Updated"), 1)
-        self.assertIn("16:00 UTC", twice)
+        self.assertIn("16:00 UTC · 21:30 IST", twice)
+        self.assertIn("15:04 UTC · 20:34 IST", once)
+
+    def test_stamp_shows_ist_next_day_date_and_changes_each_minute(self):
+        from datetime import datetime, timezone
+        late = af.stamp_block(datetime(2026, 11, 13, 20, 0, tzinfo=timezone.utc))
+        self.assertIn("2026-11-13 20:00 UTC · 01:30 IST 14 Nov", late)
+        self.assertNotEqual(af.stamp_block(datetime(2026, 11, 13, 12, 6, tzinfo=timezone.utc)),
+                            af.stamp_block(datetime(2026, 11, 13, 12, 7, tzinfo=timezone.utc)))
+        self.assertIn("12:06 UTC · 17:36 IST", af.stamp_block(datetime(2026, 11, 13, 12, 6, tzinfo=timezone.utc)))
 
     def test_stamp_alone_never_makes_a_page_stale(self):
         page = "<html><body><main>x</main></body></html>"
