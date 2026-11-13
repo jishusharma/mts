@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>BTC Live Aid</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,15 +121,27 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
-<nav id="tabs"><a href="#home">Home</a><a href="#money">Money</a><a href="#news">News</a><a href="#usopen">US open</a><a href="#intrade">In trade</a><a href="#now" title="Every reading in one table; click a row for its page (Map, Levels, Momentum, Liquidations, Funding, Macro, Coil)">All readings</a><button type="button" id="flag-auto" style="margin-left:auto" title="Pick the folder runtime_data/live_aid once; the flag log is then saved there as flag_log_&lt;day&gt;.csv with no download click (learner reads it)">Auto-save: set folder</button><button type="button" id="flag-dl" title="Download every banner Live Aid flashed (kept in this browser, last 2000) as CSV" style="margin-left:0">Download flag log</button></nav>
+<nav id="tabs" data-onescreen="1"><a href="#home">Home</a><a href="#intrade">In trade</a><a href="#details" title="Money, News, US open, All readings, Forced moves and the previous Home: nothing was removed">Details</a><button type="button" id="flag-auto" style="margin-left:auto" title="Pick the folder runtime_data/live_aid once; the flag log is then saved there as flag_log_&lt;day&gt;.csv with no download click (learner reads it)">Auto-save: set folder</button><button type="button" id="flag-dl" title="Download every banner Live Aid flashed (kept in this browser, last 2000) as CSV" style="margin-left:0">Download flag log</button></nav>
 <div id="flash"></div>
 <section id="p-home"></section>
+<section id="p-details" class="off"><div class="hd"><h2>Details</h2><span class="src" title="The pages that used to be tabs. Nothing was removed; Home shows what matters from each.">kept</span></div>
+  <details open><summary>Pages</summary><ul class="it">
+    <li><a href="#money">Money</a> <span class="dim">open interest and price per venue, with the NOT_IN_DATA columns</span></li>
+    <li><a href="#news">News</a> <span class="dim">every headline, score, source, reading</span></li>
+    <li><a href="#usopen">US open</a> <span class="dim">countdown, day range, levels with base rates</span></li>
+    <li><a href="#now">All readings</a> <span class="dim">one table of every reading, click a row for its page</span></li>
+    <li><a href="#flow">Forced moves</a> <span class="dim">R25 chart with timeframe and CVD buttons</span></li>
+    <li><a href="#playbook">Map</a> <span class="dim">bias dial, price ladder, sessions, scenarios</span></li>
+    <li><a href="#homeold">Previous Home</a> <span class="dim">the full-text Home before the one-screen layout</span></li>
+  </ul></details>
+</section>
+<section id="p-home-old" class="off"></section>
 <style>
 #tabs{position:sticky;top:0;z-index:9;display:flex;gap:4px;padding:6px 0;background:#0d1117;border-bottom:1px solid #30363d;margin-bottom:8px}
 #tabs a{padding:6px 14px;border-radius:6px;color:#c9d1d9;text-decoration:none;font-weight:600;border:1px solid #30363d}
 #tabs a.on{background:#e3a72f;color:#0d1117;border-color:#e3a72f}
 html,body{height:100%;overflow:hidden}
-main{height:100vh;overflow:hidden;display:flex;flex-direction:column}
+main{height:100vh;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column}
 main>section:not(.off){flex:1 1 auto;min-height:0;overflow:auto}
 main>#p-pos:not(.off){flex:0 0 auto}
 </style>
@@ -411,6 +424,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="analyst_note.js"></script>
 <script src="liq_rates.js"></script>
 <script src="home.js"></script>
+<script src="home_one.js"></script>
 <script src="flag_autosave.js"></script>
 <script src="pulse.js"></script>
 <script src="indread.js"></script>
@@ -916,6 +930,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
   function renderUsOpen(now) {
     var open = sessionInfo(now - 7200000).us, px = S.dbtMark || S.dbt || (S.tf['5m'] && S.tf['5m'].length ? +S.tf['5m'][S.tf['5m'].length - 1][4] : NaN), rates = brRow('us_open_levels') ? brRow('us_open_levels').table.rates : null;
     var r = A.usOpen(S.tf['5m'], S.daily ? S.daily.rows : null, open, now, px, rates), tb = $('uo-rows');
+    S.uoR = { r: r, open: open };
     var m = r.minutes, when = r.phase === 'before' ? 'US open ' + hhmm(open) + ' in ' + (-m) + ' min' : r.phase === 'in' ? 'US opened ' + m + ' min ago' : 'US open + 2 h window over (opened ' + hhmm(open) + ')';
     $('uo-when').textContent = when;
     (function () {
@@ -1052,7 +1067,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
     try { renderAntic(now); } catch (e) { $('am-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderBigCandle(now); } catch (e) { $('bc-rows').innerHTML = '<tr><td colspan="7" class="err">' + esc(e.message) + '</td></tr>'; }
     try { renderVA(now); } catch (e) { $('va-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
-    var coilR = renderCoil(now);
+    var coilR = renderCoil(now); S.coilR = coilR || null;
     try { renderLevelApproach(now, coilR); } catch (e) { $('lap-rows').innerHTML = '<tr><td colspan="6" class="err">' + esc(e.message) + '</td></tr>'; }
     renderLiq(now);
     renderFund(now);
@@ -1155,9 +1170,18 @@ main>#p-pos:not(.off){flex:0 0 auto}
       PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60, now); } catch (e) { PULSE.lanes[tf] = null; } });
     }
     var news = (S.news.items || []).slice(0, 80).map(function (x) { var nb = S.nw && S.nw.by && S.nw.by[x._id] || {}; return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag, source: x.source || '', cls: nb.cls, w: nb.w, k: nb.k }; });
-    if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, onFlag: flagAdd, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
-    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], k1h: TF.k['1h'], liq: liq, onFlag: flagAdd, flagRows: FLAGLOG.rows, flagStats: window.LA_FLAGSTATS || {}, money: S.moneyHead || null, news: news,
-      ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
+    if (S.view !== 'home' && S.view !== 'homeold') { window.LAHOME.flashes({ now: now, news: news, onFlag: flagAdd, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
+    var hctx = { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], k1h: TF.k['1h'], liq: liq, onFlag: flagAdd, flagRows: FLAGLOG.rows, flagStats: window.LA_FLAGSTATS || {}, money: S.moneyHead || null, news: news,
+      ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] };
+    if (S.view === 'homeold') { window.LAHOME.render($('p-home-old'), hctx); return; }   // previous Home, kept under Details
+    // One-screen Home (R27, home_one.js): the same inputs plus the feed stamps, money windows, coil, ADX candles, news items and calendar
+    var oiT = 0; ['DERIBIT', 'BYBIT', 'BINANCE', 'GATE', 'HYPERLIQUID', 'OKX', 'BITGET', 'BITMEX', 'KRAKEN', 'BINGX', 'HTX', 'MEXC'].forEach(function (k) { var l = S.om[k] && S.om[k].live; if (l && l.length && l[l.length - 1].t > oiT) oiT = l[l.length - 1].t; });
+    hctx.feeds = { price: S.dbtT || 0, oi: oiT, news: S.news.t || 0, candles: TF.t['15m'] || TF.t['1m'] || S.klT || 0 };
+    hctx.moneyRows = S.moneyRows || []; hctx.venueTotal = OMV.length; hctx.coil = S.coilR || null;
+    hctx.kAdx = { '5m': TF.k['5m'], '15m': TF.k['15m'], '1h': TF.k['1h'], '4h': TF.k['4h'] };
+    hctx.usOpen = S.uoR || null; hctx.usOpenT = S.uoR ? S.uoR.open : 0; hctx.cal = S.cal;
+    hctx.newsItems = S.news.items || []; hctx.rows1m = S.tf['1m'];
+    if (window.LAONE) window.LAONE.render($('p-home'), hctx); else window.LAHOME.render($('p-home'), hctx);
   }
 
   // ---------- Now table and detail pages (operator 10-31: no long scroll, click-through) ----------
@@ -1166,7 +1190,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
                 fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'],
                 antic: ['p-antic', 'Same data, other readings'], bc: ['p-bc', 'Big candle story'], lap: ['p-lap', 'Level approach prep'], xliq: ['p-xliq', 'Forced selling on other exchanges'] };
-  VIEWS.now = ['p-ov', 'Now']; VIEWS.home = ['p-home', 'Home'];
+  VIEWS.now = ['p-ov', 'Now']; VIEWS.home = ['p-home', 'Home']; VIEWS.details = ['p-details', 'Details']; VIEWS.homeold = ['p-home-old', 'Previous Home'];
   if (window.LAFlow) window.LAFlow.init({ views: VIEWS });   // R25 Forced moves panel: registers its view and tab, loads its data
   S.view = '';
   function route() {
@@ -1175,7 +1199,8 @@ main>#p-pos:not(.off){flex:0 0 auto}
     var v = location.hash.replace(/^#/, ''), vw = VIEWS[v], id = vw ? vw[0] : '';
     S.view = vw ? v : '';
     document.body.classList.toggle('detail', !!vw);
-    Array.prototype.forEach.call(document.querySelectorAll('#tabs a'), function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + v); });
+    var tabOn = v === 'home' || v === 'intrade' ? v : (vw ? 'details' : '');   // one-screen tab bar: every other page lives under Details
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs a'), function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + tabOn); });
     Array.prototype.forEach.call(document.querySelector('main').children, function (el) {
       if (el.id === 'back') el.classList.add('off');
       else if (el.id === 'tabs' || el.id === 'flash') el.classList.remove('off');
@@ -1249,6 +1274,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
       var net = A.oiNet(vs); return { label: wn[0], vs: vs, net: net, dis: net ? A.oiDisagree(vs, net.doi) : null };
     });
     var head = rows[1].net ? rows[1] : rows[0].net ? rows[0] : null;
+    S.moneyRows = rows;   // Home money tile (home_one.js)
     if (head) {
       var m = head.net.state.money;
       $('m-call').innerHTML = '<span class="' + (m === 'in' ? 'up' : m === 'out' ? 'down' : '') + '">' + esc(head.net.state.text) + '</span>';

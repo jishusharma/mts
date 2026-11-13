@@ -68,6 +68,18 @@ def git(*a, cwd=REPO, timeout=120):
     return sh(['git', '-C', str(cwd), *a], cwd=cwd, timeout=timeout)
 
 
+def fetch_origin(cwd=REPO, tries: int = 6, sleep=time.sleep):
+    """`git fetch origin` that survives parallel queue runs: several launchers fetch into one lab checkout and race
+    for refs/remotes locks ('cannot lock ref'); retry that error with a growing random pause, any other result returns at once."""
+    r = git('fetch', '-q', 'origin', cwd=cwd, timeout=60)
+    for i in range(1, tries):
+        if r.returncode == 0 or 'cannot lock ref' not in (r.stderr or ''):
+            break
+        sleep(random.uniform(0.5, 2.0) * i)
+        r = git('fetch', '-q', 'origin', cwd=cwd, timeout=60)
+    return r
+
+
 def child_env(card: str, brief: str, base=None) -> dict:
     """Singleton-role cards (lease.SINGLETONS) get MTS_ROLE + MTS_LEASE_SESSION so desk/sync writes are lease-guarded."""
     import lease
@@ -178,7 +190,7 @@ def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
     Returns the last CompletedProcess of worktree add (rc 0 = ok); a busy setup lock comes back as rc 124."""
     try:
         with setup_lock(sleep=sleep):
-            git('fetch', '-q', 'origin', timeout=60)
+            fetch_origin()
             for n in range(tries + 1):
                 r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
                 err = (r.stderr or '').lower()
@@ -232,7 +244,7 @@ def deliver(card: str, wt: Path, log: Path, mode: str) -> None:
 
 def review_list() -> int:
     """Branches origin/gemini-q/* with commits not on origin/fast-track = work waiting for a Claude review."""
-    git('fetch', '-q', 'origin', timeout=60)
+    fetch_origin()
     out = git('for-each-ref', '--format=%(refname:short)', 'refs/remotes/origin/gemini-q/').stdout.split()
     n = 0
     for ref in sorted(out):
@@ -250,7 +262,7 @@ def run_job(card: str, effort: str, model: str = 'flash', mode: str = 'solo') ->
     wt = root() / card
     log = root() / f'{card}.log'
     root().mkdir(parents=True, exist_ok=True)
-    git('fetch', '-q', 'origin', timeout=60)
+    fetch_origin()
     import sync
     ok, why = card_gate(card)
     if not ok:

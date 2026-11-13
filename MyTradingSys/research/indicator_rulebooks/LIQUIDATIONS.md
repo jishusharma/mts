@@ -49,10 +49,13 @@ Formula pointer: `backtest/layers/FORMULAS.md` section N (none found, `NOT VERIF
 | Malkan | NO-SOURCE: no extract mentions liquidation heatmaps | `research/malkan_extract_2026-10-15/` |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (no numbers in this section per task instruction):
-- `MyTradingSys/research/liquidation_layer_2026-10-28/` (README.md, BANDS_LEDGER.csv): Pre-registered framework evaluating CoinGlass and Hyperliquid liquidation bands on forward data, testing touch rates (H1), reversal >=1 ATR (H2), and realized forceOrder notional (H3) against random placebos.
-- `MyTradingSys/research/coinglass_usage_2026-10-28/` (A_liquidation.md): Systematic qualitative survey of CoinGlass liquidation heatmaps (Models 1-3), Hyperliquid liquidation maps, and Binance forceOrder feeds.
-- `MyTradingSys/research/sim_desk/results/` (c26-q7-liquidation-bands.json, dir-liquidation_layer_2026-10-28.json): Forward ledger logging and simulation capture of liquidation bands.
+All rows OURS, copied from the named file. BTCUSDT. No outcome study of the vendor heatmap exists: no historical CoinGlass heatmaps are in the repo (`research/c26_roadmap_2026-11-01/PHASE1_RANGE.md` Q7).
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/liquidation_layer_2026-10-28/README.md` | Pre-registered forward test of vendor bands: H1 touch vs placebo, H2 reversal >= 1 ATR(15m) within 2 h, H3 forceOrder notional; conclusion bar n >= 56 touches | `BANDS_LEDGER.csv` holds 14 lines (header plus hand-read rows); no scored touches | NOT_MEASURED (forward ledger only, nothing scored) | UNTESTED |
+| `research/c26_roadmap_2026-11-01/PHASE1_RANGE.md` Q7 (card `sim_desk/results/c26-q7-liquidation-bands.json`) | OURS proxy bands built from Binance open-interest rises (not the vendor map), single short after a held-high take-out, 15m, 0.10% round trip, slippage and funding not modelled; RECENT SEEN window 2026-06-21..2026-11-01, the file says "not evidence" | 25 distinct take-out bars (30 events) | 72h proxy: excursion reached the band 14 events, 7 reach L1, mean net +0.24, overshoot 1.16%; stopped short 11 events, 7 L1, mean net +0.52, overshoot 0.48%. 24h proxy: reached 13, 4 L1, -0.10; stopped short 12, 10 L1, +0.88. Base rate of a strong band within 0.5% above price: 10% of hourly samples (64% at take-outs, by construction). Unit of "mean net" as written in that file | CONTEXT ONLY (overshoot-risk read, not a trigger; SEEN window, n 25: UNDERPOWERED) |
+| `research/coinglass_usage_2026-10-28/A_liquidation.md` | Qualitative survey of CoinGlass models, Hyperliquid map, Binance forceOrder | none | none; vendor leverage mix and exchange coverage NOT_IN_DATA | UNTESTED |
+DEV / VALIDATION / RECENT split and regime mix: NOT_MEASURED (the only run is a RECENT design look). Binance forceOrder prints are a lower bound of real liquidations and are not yet in the research cache (PHASE1_RANGE.md Q7 reading 5).
 
 ## 6. How to read it now on Live Aid
 - **Liquidations glance tile** (`tools/live_aid/live_aid.html`, `tools/live_aid/STEPS.md:29`): Displays 5-minute net liquidation state: `longs flushed`, `shorts flushed`, `both sides` (whipsaw), or `none`.
