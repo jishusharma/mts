@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T16:05:48Z",
   "commands": [],
   "created": "2026-11-13T12:14:10Z",
   "depends_on": [],
@@ -13,6 +14,12 @@
   "id": "krown-s8-result-fail-means-stop-wording-1113",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "RESULT.md line 23 now says INCONCLUSIVE is not FAIL and implies no stop; the stop applies ",
+      "ref": "a9ffe57bc",
+      "utc": "2026-11-13T16:05:48Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,13 +40,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no follow-up card",
   "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T14:57:05Z",
   "refs": [],
-  "result": "",
+  "result": "RESULT.md line 23 now says INCONCLUSIVE is not FAIL and implies no stop; the stop applies only to a FAIL under PRE_REG item 0f; diff touches that line only",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/fable_run6_powered_prereg/RESULT.md"
   ],
@@ -51,11 +64,12 @@
   "sources": [
     "Builder layers-md-cryptocred-4h-fail-1113"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PRE_REG.md item 0f and RESULT.md line 23",
     "Reword line 23: INCONCLUSIVE is not FAIL, STOP list not triggered; FAIL (0f) would trigger it"
   ],
+  "taken": "2026-11-13T16:05:48Z",
   "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q (fail-first N/A: wording-only; grep 'FAIL means stop' must return 0 hits after)",
   "title": "Krown S8 RESULT (research/fable_run6_powered_prereg/RESULT.md line 23) says 'FAIL means stop' incl. R1 section 5 STOP list; check against its verdict word (INCONCLUSIVE?) and reword to the PRE_REG rule",
   "weight": "ROUTINE",

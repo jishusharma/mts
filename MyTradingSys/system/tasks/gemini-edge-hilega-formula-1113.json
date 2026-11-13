@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T16:05:00Z",
+  "depends_on": [],
+  "done_when": "FORMULA.md exists and every parameter has a URL and a quote or is UNKNOWN",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find the public definition of the Hilega Milega indicator: what the red, green and blue lines are (RSI length, moving averages of RSI, smoothing, signal rules) with a source URL for every parameter.",
+  "id": "gemini-edge-hilega-formula-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-13, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "Web sources only. No code change.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T15:53:46Z",
+  "refs": [
+    "MyTradingSys/research/nk_stocktalk_1113/flash_deep/"
+  ],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
+  ],
+  "state": "ready",
+  "steps": [
+    "Use web search only (no YouTube caption fetch). Collect at least 3 independent public sources (TradingView scripts or descriptions, Indian trading blogs, broker pages).",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula/FORMULA.md: one table (line, formula, length, source URL, exact quoted sentence). Mark each parameter SOURCED (URL + quote) or UNKNOWN; never fill a gap from memory.",
+    "Add a comparison per parameter: AGREED / SINGLE / CONFLICT across sources, and read MyTradingSys/research/nk_stocktalk_1113/flash_deep/*/EXTRACT.md to say which parameters NK states himself (quote)."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Hilega Milega public formula with source URLs",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
