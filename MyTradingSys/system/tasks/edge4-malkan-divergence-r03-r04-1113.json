@@ -1,0 +1,55 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T18:33:46Z",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_run_1113.py -q"
+  ],
+  "created": "2026-11-13T18:18:10Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/PRE_REG.md (with ## Context and Regime mix:), REPORT.md, summary.json exist, tests pass, fee-net and placebo results for R03/R04 x 1h/4h x 12/18 bars, layer_map row with trials null",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fee-net, placebo-controlled test of Malkan rules MAL-R03 (regular bearish RSI divergence short) and MAL-R04 (regular bullish divergence long) from research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md, using closes only and 12/18-bar swing lookbacks, on 20 perps at 1h and 4h; verdict plus layer_map row with trials null.",
+  "id": "edge4-malkan-divergence-r03-r04-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "split into size-S cards a/b/c-1114 (agent-runnable)",
+  "pinned": false,
+  "prio": 1,
+  "reason": "split into size-S cards a/b/c-1114 (agent-runnable)",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:27:01Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/",
+    "MyTradingSys/backtest/layer_map*"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "public Bybit / data-api.binance.vision data only; no keys"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C, operator order 2026-11-13 18:15Z"
+  ],
+  "state": "dropped",
+  "steps": [
+    "Read MAL-R03/R04 in RULES.md; write MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/PRE_REG.md from PRE_REG_TEMPLATE.md with '## Context' and 'Regime mix:' line; mark SOURCED (confirm candle, stop beyond signal candle, target point C) vs OURS (12/18 bars, 1h/4h, closes only)",
+    "Fetch 1h/4h klines for 20 perps (adx_1d_through25_2026-11-13/fetch_klines.py pattern)",
+    "Write run_1113.py: RSI(14) on closes, divergence = price higher high/lower low over 12 or 18 bars vs RSI opposite, confirm candle, stop = signal candle extreme, target = point C; fees+slippage; placebo control",
+    "Run, write REPORT.md and summary.json (n, fee-net expectancy per rule x TF x lookback, placebo); add layer_map row with trials null; ship docs/research only"
+  ],
+  "tests": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_run_1113.py: test_r03_bearish_divergence_detected_on_closes_only and test_r04_stop_below_signal_low, written first and failing on the stub",
+  "title": "Wave 2: test Malkan divergence rules MAL-R03 and MAL-R04 (closes only, 12/18 bars) on 20 perps 1h/4h, fee-net, placebo, PRE_REG with Context + Regime mix; layer_map row trials null",
+  "weight": "",
+  "worker": "session"
+}

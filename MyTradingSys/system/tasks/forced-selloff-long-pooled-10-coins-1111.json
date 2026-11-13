@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T17:39:55Z",
   "commands": [
     "python scripts/dev/verdicts.py check forced selloff cascade long pooled",
     "python -m pytest MyTradingSys/backtest/test_no_own_costs.py -q"
@@ -33,6 +34,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "shipped on trunk 6da093b9e",
+      "ref": "6da093b9e",
+      "utc": "2026-11-13T17:39:55Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "POOLED: FLOW cascade long and TREND 4h Donchian on ten coins, both FAIL validation",
@@ -50,13 +57,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: result on trunk",
   "note": "Refresh 2026-11-13 (login B): scope commit de6b495be is the run itself; POOLED/RESULT.md is on trunk (both rules FAIL VALIDATION). Left: the sim_desk/results/forced-selloff-long-pooled-10-coins-1111.json export (export_results.py has no function for it yet), then done.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T14:50:17Z",
   "refs": [],
-  "result": "",
+  "result": "shipped on trunk 6da093b9e",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/edge_views_2026-11-11/POOLED/",
     "MyTradingSys/research/edge_views_2026-11-11/FLOW/PREREG.md",
@@ -72,13 +85,14 @@
   "sources": [
     "operator 2026-11-11 16:15Z edge views; OPERATOR_DECISIONS 16:15Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read FLOW/PREREG.md event (b), TREND/PREREG.md and DATA_MAP.md (1m paths: tom_raw klines, klines_eth, klines_<sym>, 2022-01..2024-06); resample 1m to 1h and 4h",
     "Write POOLED/PREREG.md first: frozen rules copied, per-day counting, DEV 60 % / 30 d gap / VALIDATION, placebo 200 draws seed 11; label every parameter OURS",
     "Run both rules on the 10 coins; fees via backtest/fees.py; one position per coin; aggregate net by UTC day; per-day t",
     "Write RESULT.md (DEV, VALIDATION, placebo, per-coin) and the sim_desk json; verdicts.py backfill"
   ],
+  "taken": "2026-11-13T17:39:55Z",
   "tests": "MyTradingSys/backtest/test_no_own_costs.py passes (fees import from backtest/fees.py, no own constant) plus a new pooled_test check that the day count equals distinct UTC days (fails on a per-coin count)",
   "title": "Pooled test on 10 coins (1m data on disk per edge_views_2026-11-11/DATA_MAP.md): frozen rules from FLOW/PREREG.md (long after 1h drop >=3% on 3x volume, 24h) and TREND/PREREG.md (4h Donchian 55/20); events counted per day not per coin; done when RESULT.md has DEV/VALIDATION, placebo and per-coin rows",
   "weight": "",
