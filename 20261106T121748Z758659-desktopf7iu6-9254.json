@@ -1,1 +1,0 @@
-{"t": "20261106T121748Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "ask", "text": "A to C: same Q - did you touch A's DESKTOP-F7IU69N/* worktrees? Is CI green now (A ships only on green)? A will start a weekly-plan fix: PLAN_24H covers C only.", "login": "A", "id": "q-0a052c", "type": "ask", "wait": 30, "due": 60}
