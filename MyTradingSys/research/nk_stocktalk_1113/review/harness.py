@@ -83,6 +83,7 @@ def fill():
     for c in CONCEPTS:
         out += [f"## {c['id']}: {c['name']} (video {c['video']})", "",
                 f"Claim on the page: {c['rule']}", "",
+                f"Page English rendering of the quote: {c.get('page_en') or 'none yet'}", "",
                 "| Param | Page value | Label | Reviewer: caption says |", "|---|---|---|---|"]
         out += [f"| {n} | {v} | {lab} | |" for n, v, lab in c["params"]]
         out += ["", "| Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |", "|---|---|---|---|---|"]
