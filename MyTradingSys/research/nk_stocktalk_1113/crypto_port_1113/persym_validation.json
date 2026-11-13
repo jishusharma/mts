@@ -1,0 +1,716 @@
+{
+ "R3_CONT_00UTC_1h": {
+  "ADAUSDT": {
+   "count": 12,
+   "mean": 0.00199
+  },
+  "AVAXUSDT": {
+   "count": 16,
+   "mean": 0.00161
+  },
+  "BNBUSDT": {
+   "count": 14,
+   "mean": -0.00369
+  },
+  "BTCUSDT": {
+   "count": 13,
+   "mean": -0.00211
+  },
+  "DOGEUSDT": {
+   "count": 11,
+   "mean": 0.00243
+  },
+  "ETHUSDT": {
+   "count": 8,
+   "mean": -0.00316
+  },
+  "LINKUSDT": {
+   "count": 11,
+   "mean": 0.0046
+  },
+  "LTCUSDT": {
+   "count": 5,
+   "mean": 0.01144
+  },
+  "SOLUSDT": {
+   "count": 18,
+   "mean": -0.00047
+  },
+  "XRPUSDT": {
+   "count": 15,
+   "mean": 0.00449
+  }
+ },
+ "R1_CONT_00UTC_4h": {
+  "ADAUSDT": {
+   "count": 28,
+   "mean": 1e-05
+  },
+  "AVAXUSDT": {
+   "count": 38,
+   "mean": 0.0056
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": -0.00061
+  },
+  "BTCUSDT": {
+   "count": 28,
+   "mean": -0.00309
+  },
+  "DOGEUSDT": {
+   "count": 29,
+   "mean": -0.00147
+  },
+  "ETHUSDT": {
+   "count": 30,
+   "mean": 0.00027
+  },
+  "LINKUSDT": {
+   "count": 32,
+   "mean": 0.00179
+  },
+  "LTCUSDT": {
+   "count": 17,
+   "mean": 0.01043
+  },
+  "SOLUSDT": {
+   "count": 37,
+   "mean": -0.0027
+  },
+  "XRPUSDT": {
+   "count": 26,
+   "mean": 0.00538
+  }
+ },
+ "R3_CONT_00UTC_4h": {
+  "ADAUSDT": {
+   "count": 12,
+   "mean": 0.00501
+  },
+  "AVAXUSDT": {
+   "count": 16,
+   "mean": 0.00591
+  },
+  "BNBUSDT": {
+   "count": 14,
+   "mean": -0.00019
+  },
+  "BTCUSDT": {
+   "count": 13,
+   "mean": -0.00182
+  },
+  "DOGEUSDT": {
+   "count": 11,
+   "mean": 0.00799
+  },
+  "ETHUSDT": {
+   "count": 8,
+   "mean": 0.00122
+  },
+  "LINKUSDT": {
+   "count": 11,
+   "mean": 0.007
+  },
+  "LTCUSDT": {
+   "count": 5,
+   "mean": 0.02473
+  },
+  "SOLUSDT": {
+   "count": 18,
+   "mean": -0.00087
+  },
+  "XRPUSDT": {
+   "count": 15,
+   "mean": 0.01256
+  }
+ },
+ "R1_CONT_00UTC_8h": {
+  "ADAUSDT": {
+   "count": 28,
+   "mean": -0.00068
+  },
+  "AVAXUSDT": {
+   "count": 38,
+   "mean": 0.00674
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": -0.00056
+  },
+  "BTCUSDT": {
+   "count": 28,
+   "mean": -0.00242
+  },
+  "DOGEUSDT": {
+   "count": 29,
+   "mean": 0.00469
+  },
+  "ETHUSDT": {
+   "count": 30,
+   "mean": 0.00288
+  },
+  "LINKUSDT": {
+   "count": 32,
+   "mean": 0.00374
+  },
+  "LTCUSDT": {
+   "count": 17,
+   "mean": 0.01298
+  },
+  "SOLUSDT": {
+   "count": 37,
+   "mean": -0.00399
+  },
+  "XRPUSDT": {
+   "count": 26,
+   "mean": 0.0121
+  }
+ },
+ "R3_CONT_00UTC_8h": {
+  "ADAUSDT": {
+   "count": 12,
+   "mean": 0.00501
+  },
+  "AVAXUSDT": {
+   "count": 16,
+   "mean": 0.01382
+  },
+  "BNBUSDT": {
+   "count": 14,
+   "mean": 0.00023
+  },
+  "BTCUSDT": {
+   "count": 13,
+   "mean": 0.00395
+  },
+  "DOGEUSDT": {
+   "count": 11,
+   "mean": 0.03397
+  },
+  "ETHUSDT": {
+   "count": 8,
+   "mean": 0.0209
+  },
+  "LINKUSDT": {
+   "count": 11,
+   "mean": 0.01707
+  },
+  "LTCUSDT": {
+   "count": 5,
+   "mean": 0.03496
+  },
+  "SOLUSDT": {
+   "count": 18,
+   "mean": -0.00318
+  },
+  "XRPUSDT": {
+   "count": 15,
+   "mean": 0.01589
+  }
+ },
+ "R1_CONT_20UTC_1h": {
+  "ADAUSDT": {
+   "count": 33,
+   "mean": -0.00321
+  },
+  "AVAXUSDT": {
+   "count": 27,
+   "mean": -0.00113
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": 0.00034
+  },
+  "BTCUSDT": {
+   "count": 44,
+   "mean": -0.00108
+  },
+  "DOGEUSDT": {
+   "count": 32,
+   "mean": -0.00026
+  },
+  "ETHUSDT": {
+   "count": 39,
+   "mean": 0.00265
+  },
+  "LINKUSDT": {
+   "count": 42,
+   "mean": 0.00232
+  },
+  "LTCUSDT": {
+   "count": 32,
+   "mean": -0.00271
+  },
+  "SOLUSDT": {
+   "count": 36,
+   "mean": 0.00033
+  },
+  "XRPUSDT": {
+   "count": 32,
+   "mean": 0.00265
+  }
+ },
+ "R1_CONT_20UTC_4h": {
+  "ADAUSDT": {
+   "count": 33,
+   "mean": 0.00305
+  },
+  "AVAXUSDT": {
+   "count": 27,
+   "mean": 0.00066
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": -0.00139
+  },
+  "BTCUSDT": {
+   "count": 44,
+   "mean": -0.00246
+  },
+  "DOGEUSDT": {
+   "count": 32,
+   "mean": 0.00312
+  },
+  "ETHUSDT": {
+   "count": 39,
+   "mean": 0.0034
+  },
+  "LINKUSDT": {
+   "count": 42,
+   "mean": 0.00041
+  },
+  "LTCUSDT": {
+   "count": 32,
+   "mean": -0.00092
+  },
+  "SOLUSDT": {
+   "count": 36,
+   "mean": 0.00161
+  },
+  "XRPUSDT": {
+   "count": 32,
+   "mean": 0.00075
+  }
+ },
+ "R3_CONT_20UTC_4h": {
+  "ADAUSDT": {
+   "count": 19,
+   "mean": 0.00139
+  },
+  "AVAXUSDT": {
+   "count": 13,
+   "mean": 0.00364
+  },
+  "BNBUSDT": {
+   "count": 15,
+   "mean": -0.00538
+  },
+  "BTCUSDT": {
+   "count": 21,
+   "mean": -0.003
+  },
+  "DOGEUSDT": {
+   "count": 13,
+   "mean": 0.00433
+  },
+  "ETHUSDT": {
+   "count": 22,
+   "mean": 0.00478
+  },
+  "LINKUSDT": {
+   "count": 20,
+   "mean": 0.00189
+  },
+  "LTCUSDT": {
+   "count": 17,
+   "mean": -0.00151
+  },
+  "SOLUSDT": {
+   "count": 18,
+   "mean": 0.00275
+  },
+  "XRPUSDT": {
+   "count": 23,
+   "mean": -0.00033
+  }
+ },
+ "R1_CONT_20UTC_8h": {
+  "ADAUSDT": {
+   "count": 33,
+   "mean": 0.00285
+  },
+  "AVAXUSDT": {
+   "count": 27,
+   "mean": 7e-05
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": 0.00015
+  },
+  "BTCUSDT": {
+   "count": 44,
+   "mean": -0.00317
+  },
+  "DOGEUSDT": {
+   "count": 32,
+   "mean": 0.004
+  },
+  "ETHUSDT": {
+   "count": 39,
+   "mean": -0.00091
+  },
+  "LINKUSDT": {
+   "count": 42,
+   "mean": 0.00119
+  },
+  "LTCUSDT": {
+   "count": 32,
+   "mean": 0.00094
+  },
+  "SOLUSDT": {
+   "count": 36,
+   "mean": -0.00188
+  },
+  "XRPUSDT": {
+   "count": 32,
+   "mean": 0.00798
+  }
+ },
+ "R3_CONT_20UTC_8h": {
+  "ADAUSDT": {
+   "count": 19,
+   "mean": 0.00148
+  },
+  "AVAXUSDT": {
+   "count": 13,
+   "mean": 0.00294
+  },
+  "BNBUSDT": {
+   "count": 15,
+   "mean": -0.00731
+  },
+  "BTCUSDT": {
+   "count": 21,
+   "mean": -0.00065
+  },
+  "DOGEUSDT": {
+   "count": 13,
+   "mean": 0.00693
+  },
+  "ETHUSDT": {
+   "count": 22,
+   "mean": 0.00159
+  },
+  "LINKUSDT": {
+   "count": 20,
+   "mean": 0.00523
+  },
+  "LTCUSDT": {
+   "count": 17,
+   "mean": -0.00038
+  },
+  "SOLUSDT": {
+   "count": 18,
+   "mean": 0.00277
+  },
+  "XRPUSDT": {
+   "count": 23,
+   "mean": 0.00664
+  }
+ },
+ "R1_CONT_21UTC_8h": {
+  "ADAUSDT": {
+   "count": 23,
+   "mean": 0.00279
+  },
+  "AVAXUSDT": {
+   "count": 36,
+   "mean": 0.0081
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": -0.00126
+  },
+  "BTCUSDT": {
+   "count": 36,
+   "mean": -0.00276
+  },
+  "DOGEUSDT": {
+   "count": 31,
+   "mean": 0.00424
+  },
+  "ETHUSDT": {
+   "count": 37,
+   "mean": -0.00279
+  },
+  "LINKUSDT": {
+   "count": 41,
+   "mean": 0.0018
+  },
+  "LTCUSDT": {
+   "count": 33,
+   "mean": -0.00494
+  },
+  "SOLUSDT": {
+   "count": 36,
+   "mean": -5e-05
+  },
+  "XRPUSDT": {
+   "count": 25,
+   "mean": 0.00515
+  }
+ },
+ "R1_REV_21UTC_1h": {
+  "ADAUSDT": {
+   "count": 23,
+   "mean": -0.00105
+  },
+  "AVAXUSDT": {
+   "count": 36,
+   "mean": -0.00157
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": 0.00174
+  },
+  "BTCUSDT": {
+   "count": 36,
+   "mean": 0.00145
+  },
+  "DOGEUSDT": {
+   "count": 31,
+   "mean": 0.00161
+  },
+  "ETHUSDT": {
+   "count": 37,
+   "mean": 0.00208
+  },
+  "LINKUSDT": {
+   "count": 41,
+   "mean": 0.00109
+  },
+  "LTCUSDT": {
+   "count": 33,
+   "mean": 0.0005
+  },
+  "SOLUSDT": {
+   "count": 36,
+   "mean": -3e-05
+  },
+  "XRPUSDT": {
+   "count": 25,
+   "mean": -0.00133
+  }
+ },
+ "R3_REV_21UTC_1h": {
+  "ADAUSDT": {
+   "count": 12,
+   "mean": -0.00209
+  },
+  "AVAXUSDT": {
+   "count": 17,
+   "mean": -0.0004
+  },
+  "BNBUSDT": {
+   "count": 15,
+   "mean": 0.0002
+  },
+  "BTCUSDT": {
+   "count": 13,
+   "mean": 0.00396
+  },
+  "DOGEUSDT": {
+   "count": 14,
+   "mean": 0.00298
+  },
+  "ETHUSDT": {
+   "count": 19,
+   "mean": 0.00433
+  },
+  "LINKUSDT": {
+   "count": 22,
+   "mean": 0.00339
+  },
+  "LTCUSDT": {
+   "count": 19,
+   "mean": -0.00053
+  },
+  "SOLUSDT": {
+   "count": 17,
+   "mean": 0.00367
+  },
+  "XRPUSDT": {
+   "count": 14,
+   "mean": 0.00189
+  }
+ },
+ "R1_REV_21UTC_4h": {
+  "ADAUSDT": {
+   "count": 23,
+   "mean": -0.00236
+  },
+  "AVAXUSDT": {
+   "count": 36,
+   "mean": -0.00158
+  },
+  "BNBUSDT": {
+   "count": 32,
+   "mean": 0.00203
+  },
+  "BTCUSDT": {
+   "count": 36,
+   "mean": 0.00239
+  },
+  "DOGEUSDT": {
+   "count": 31,
+   "mean": 0.00208
+  },
+  "ETHUSDT": {
+   "count": 37,
+   "mean": 0.00195
+  },
+  "LINKUSDT": {
+   "count": 41,
+   "mean": 0.0004
+  },
+  "LTCUSDT": {
+   "count": 33,
+   "mean": 0.00039
+  },
+  "SOLUSDT": {
+   "count": 36,
+   "mean": -1e-05
+  },
+  "XRPUSDT": {
+   "count": 25,
+   "mean": -0.00023
+  }
+ },
+ "R3_REV_21UTC_4h": {
+  "ADAUSDT": {
+   "count": 12,
+   "mean": -0.00616
+  },
+  "AVAXUSDT": {
+   "count": 17,
+   "mean": -0.00242
+  },
+  "BNBUSDT": {
+   "count": 15,
+   "mean": -0.00084
+  },
+  "BTCUSDT": {
+   "count": 13,
+   "mean": 0.0053
+  },
+  "DOGEUSDT": {
+   "count": 14,
+   "mean": 0.00334
+  },
+  "ETHUSDT": {
+   "count": 19,
+   "mean": 0.00469
+  },
+  "LINKUSDT": {
+   "count": 22,
+   "mean": 0.00362
+  },
+  "LTCUSDT": {
+   "count": 19,
+   "mean": -0.00436
+  },
+  "SOLUSDT": {
+   "count": 17,
+   "mean": 0.00338
+  },
+  "XRPUSDT": {
+   "count": 14,
+   "mean": 0.00199
+  }
+ },
+ "R3_REV_21UTC_8h": {
+  "ADAUSDT": {
+   "count": 12,
+   "mean": -0.00415
+  },
+  "AVAXUSDT": {
+   "count": 17,
+   "mean": -0.0033
+  },
+  "BNBUSDT": {
+   "count": 15,
+   "mean": -0.0012
+  },
+  "BTCUSDT": {
+   "count": 13,
+   "mean": 0.0099
+  },
+  "DOGEUSDT": {
+   "count": 14,
+   "mean": 0.00428
+  },
+  "ETHUSDT": {
+   "count": 19,
+   "mean": 0.00358
+  },
+  "LINKUSDT": {
+   "count": 22,
+   "mean": 0.00474
+  },
+  "LTCUSDT": {
+   "count": 19,
+   "mean": 0.00156
+  },
+  "SOLUSDT": {
+   "count": 17,
+   "mean": 0.00331
+  },
+  "XRPUSDT": {
+   "count": 14,
+   "mean": -0.00664
+  }
+ },
+ "R4_daily_LONG": {
+  "ADAUSDT": {
+   "count": 23,
+   "mean": -0.00273
+  },
+  "AVAXUSDT": {
+   "count": 18,
+   "mean": 0.01517
+  },
+  "BNBUSDT": {
+   "count": 23,
+   "mean": -0.00479
+  },
+  "BTCUSDT": {
+   "count": 19,
+   "mean": 0.01519
+  },
+  "DOGEUSDT": {
+   "count": 15,
+   "mean": 0.32819
+  },
+  "ETHUSDT": {
+   "count": 20,
+   "mean": 0.0215
+  },
+  "LINKUSDT": {
+   "count": 22,
+   "mean": 0.05959
+  },
+  "LTCUSDT": {
+   "count": 24,
+   "mean": 0.00755
+  },
+  "SOLUSDT": {
+   "count": 18,
+   "mean": 0.0111
+  },
+  "XRPUSDT": {
+   "count": 23,
+   "mean": 0.14703
+  }
+ }
+}
