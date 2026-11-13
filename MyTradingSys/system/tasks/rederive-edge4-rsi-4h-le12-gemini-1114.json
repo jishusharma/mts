@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T21:47:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114/rederive-edge4-rsi-4h-le12/REDERIVE.md exists with a first-line verdict and a claim table of at least 4 rows, each with a file:line",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-derive the headline verdict of MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13 from its PRE_REG.md rule and its cells or summary files, without reading REPORT.md first. Then compare with REPORT.md: same verdict, n and mean, or list every mismatch.",
+  "id": "rederive-edge4-rsi-4h-le12-gemini-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini queue refill 11-14, output on a gemini-q branch",
+  "note": "Planner refill 1114. Every number must trace to a file or verbatim quote. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T21:47:32Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114/rederive-edge4-rsi-4h-le12/REDERIVE.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2026-11-14 (planner-gemini-refill-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/PRE_REG.md only (frozen rule: decision cell, threshold, n, cost). Write down the expected pass/fail test before opening results.",
+    "Open the cells, summary or csv in MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13; recompute n, mean R and the PASS/FAIL call by your own arithmetic (show the formula). Data not on this machine: UNVERIFIABLE.",
+    "Only now read REPORT.md; table: claim, claimed, recomputed, MATCH / MISMATCH / UNVERIFIABLE, file:line.",
+    "Write REDERIVE.md, first line AGREE / DISAGREE / UNVERIFIABLE. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind re-derivation: edge4-rsi-4h-le12 verdict",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
