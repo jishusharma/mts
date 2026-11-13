@@ -789,7 +789,7 @@
   },
   {
    "id": "RSI-EXTREME-CONFIRM-1H-20261113",
-   "trials": 384,
+   "trials": null,
    "title": "Hourly RSI extreme (<=10/15/20/25, mirror >=75-90) + next candle closes beyond prior close, daily-RSI bucket, 4 stops x 3 exits, 10 coins",
    "date": "2026-11-13",
    "market": "Bybit linear 1h, BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, 2020+",
@@ -1662,7 +1662,7 @@
   },
   {
    "id": "OI-FLUSH-XCOIN-20261113",
-   "trials": 10,
+   "trials": null,
    "title": "Liquidation-flush reversal: OI drop below own trailing-30d 1st percentile + price move > 2 ATR, fade at next bar open, 10 Bybit perps pooled, 1h and 4h bars, holds 4/12/24/72h and 2R bracket",
    "date": "2026-11-13",
    "market": "Bybit USDT perps BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, OI from 2020-07 (per-coin start in REPORT.md); DEV to 2024-06, VALIDATION 2024-07..2025-06, RECENT after",
@@ -1677,6 +1677,20 @@
    "n": "1106 events 1h, 262 events 4h; VALIDATION n 139 and 48",
    "verdict": "FAIL: 0 of 10 cells pass (4h 12h/24h pass BH and CI but not the placebo test, n 48 over 19 days; shrinks in RECENT)",
    "report": "MyTradingSys/research/edge_oi_flush_2026-11-13/REPORT.md",
+   "id": "EXTREME-CONFIRM-1H-20261113",
+   "trials": null,
+   "title": "Extreme reading + confirming candle + next-open entry, 1h, 10 coins, daily-EMA bucket (BB %B, EMA200/dEMA20 ATR distance, StochRSI, run length, capitulation bar)",
+   "date": "2026-11-13",
+   "market": "Bybit linear 1h, 10 coins, 2020+",
+   "layers": [],
+   "params": "percentiles 99/95 OURS; stop k 0.25/1.0 by DEV; 2R; 24h",
+   "split": "DEV 2020-2024-06 / VAL 2024-07..2025-06 / RECENT 2025-07+",
+   "fees": "fees.py BINANCE_TAKER x2 + funding",
+   "interaction": "reading x daily EMA20/50 bucket x confirm candle",
+   "effects": "0/54 cells pass; no VALIDATION CI lower bound > 0; 14 underpowered; capitulation-bar long positive in VAL and RECENT, CI spans 0",
+   "n": "VALIDATION n 30-818 per powered cell",
+   "verdict": "FAIL",
+   "report": "MyTradingSys/research/extreme_confirm_template_2026-11/REPORT.md",
    "read": "summary"
   },
  {

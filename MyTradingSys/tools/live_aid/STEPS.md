@@ -101,6 +101,23 @@ WaveTrend 10/21/4, 0.015, lines 53/60 = OURS (LazyBear defaults; his chart setti
 | Fresh analyst | newest valid CBP row 3 days old or less (publish day 00:00Z to now, floored); NO ROW = ingested but nothing in the 5-day store; NOT FETCHED = enabled but outside cbp_run's "actionable" profile |
 | Evidence | every row says "analyst call, not backtested" or OURS; no size, no order, no entry/stop wording; the trader decides |
 
+## Forced moves rules (requirement R25; OURS, written before any outcome was looked at)
+
+Descriptive only: no gate, no order, no size. Tested 2026-11-13: fading forced moves 0/128 cells pass; OI build/unwind did not separate spikes that reverse from those that continue (research edge-forced-move-fade-1113).
+
+| Part | Rule | Label |
+|---|---|---|
+| Bar change | Closed bars only. Price change = close vs previous close; OI change = Bybit open interest stamp vs previous stamp (both in %); CVD = per-bar delta (spot: 2 x taker buy - volume from data-api.binance.vision, labelled "spot CVD"; perp: Bybit publicTrade taker side, since the collector started) | OURS |
+| Flat | Price or OI change under 0.1 % in size = FLAT (grey). The page's existing flat threshold | OURS |
+| State | price up + OI up = NEW LONGS (solid green); price up + OI down = FORCED BUYING, shorts closing (hatched green); price down + OI up = NEW SHORTS (solid red); price down + OI down = FORCED SELLING, longs closing (hatched red) | OURS |
+| Taker flag | CVD sign agrees with price = taker-driven; disagrees = absorbed; flat or CVD 0 = n/a; no CVD = NOT_IN_DATA | OURS |
+| BUILD / UNWIND | Run of 3 or more consecutive bars with OI rising and cumulative OI change +0.5 % or more = BUILD; falling and -0.5 % or less = UNWIND; direction = price change over the run (0.1 % flat). Maximal runs only; a bar with unchanged or missing OI ends a run | OURS |
+| Last hour | The last 12 closed 5m bars taken together (same state rule, CVD summed) | OURS |
+| Large trade | One print with notional (BTC x price) of 500,000 USD or more, from Bybit publicTrade; 24 h kept in `runtime_data/live_aid/flow_trades.jsonl`; top 10 per hour in `flow_state.json` | OURS |
+| Stale | Last closed bar ended more than 2 bars ago = dash / NOT_IN_DATA, never a guess. Collector feed older than 90 s = "collector not running" | OURS |
+| Footprint | From the same trade stream: per 15 m and 1 h bar, delta (BTC), POC (10 USD price buckets, tie = lower price), largest single print, large-trade buy / sell counts; "(partial)" when the collector started inside the bar. Page tag `uo-fp-tf` shows it as "Bybit perp, collector" while fresher than 2 x re-read cadence + 2 min, else "footprint feed stale since HH:MMZ" | OURS |
+| Parity | `flow_chart.js` and `flow_collector.py` use the same rules, tested against `flow_fixture.json` | - |
+
 ## Backlog (his words first)
 
 | Step | His words / source | Reading (OURS) |
@@ -132,3 +149,4 @@ What confused or annoyed him, in the order it came up. The fix built that day is
 | Text tables where he wanted candles | Home is 70 % candle chart (last 12 h of 5m) with level lines named in the gutter |
 | Money panel only Deribit and Bybit, and no "how do I use it" | One plain sentence on price vs OI; Binance / OKX OI and CVD still open (fapi blocked on JIS-NB): card live-aid-graphical-redesign-1109 |
 | News without impact or weight | Last-hour top 4 with an up/down arrow and a 0-10 weight bar; big news, liquidation bursts and level touches flash on every tab |
+- 2026-11-13 ADX / DI strip (R26): panel under Moving averages, `adx_strip.js` (pure functions + panel driver, self-mounts into `#p-adxs`), `test_adx_strip.py`, text twin `python MyTradingSys/tools/live_aid/adx_now.py` (prints the table, writes runtime_data/live_aid/adx_state.json, gitignored). Refresh 60 s for 4h and lower, 15 min for the rest.
