@@ -23,7 +23,9 @@ RSI_MAX = 12.0
 DAILY_MAX = 30.0
 HOLD = 12          # bars after the entry bar (OURS)
 DAY = 86400000
-COST_RT = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13
+def cost_rt():
+    return 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13
+
 SPLITS = ("DEV", "VAL", "RECENT")
 VAL0 = int(np.datetime64("2024-07-01", "ms").astype(np.int64))
 REC0 = int(np.datetime64("2025-07-01", "ms").astype(np.int64))
@@ -100,7 +102,7 @@ def outcomes(o, h, l, c, t, S, tf_ms, exit_kind):
     j = ev.argmax(axis=1)
     r = np.arange(len(S))
     px = np.where(stop_hit[r, j], np.minimum(O[r, j], P), np.where(tgt_hit[r, j], tgt, C[r, j]))
-    net_pct = px / entry - 1.0 - COST_RT
+    net_pct = px / entry - 1.0 - cost_rt()
     return {"valid": ok, "e": e, "x": e + 1 + j, "net_pct": net_pct, "net_r": net_pct / (R / entry)}
 
 
@@ -111,8 +113,9 @@ def make_8h(rows):
     by = {int(r[0]): r for r in rows}
     out = []
     for tt in sorted(by):
-        if tt % h8 == 0 and (tt + h4) in by:
-            a, b = by[tt], by[tt + h4]
+        pair = tt + h4
+        if tt % h8 == 0 and pair in by:
+            a, b = by[tt], by[pair]
             out.append([tt, a[1], max(a[2], b[2]), min(a[3], b[3]), b[4], a[5] + b[5]])
     return np.array(out, float).reshape(-1, 6)
 
@@ -314,7 +317,7 @@ def _write(rows, verdict, nsig, shares, one_regime_val, btc):
     val = [r for r in rows if r["split"] == "VAL"]
     allr = [r for r in rows if r["split"] == "ALL"]
     n_pass = sum(1 for r in val if r["pass"])
-    summ = dict(verdict=verdict, cost_rt=COST_RT, hold_bars=HOLD, coins=len(COINS), n_pass=n_pass,
+    summ = dict(verdict=verdict, cost_rt=cost_rt(), hold_bars=HOLD, coins=len(COINS), n_pass=n_pass,
                 cells=[{k: _clean(r.get(k)) for k in keys} for r in rows],
                 signals_per_tf_coin={"%s/%s" % k: v for k, v in nsig.items()}, regime_share=shares)
     json.dump(summ, open(os.path.join(HERE, "summary.json"), "w"), indent=1)
@@ -329,7 +332,7 @@ def _write(rows, verdict, nsig, shares, one_regime_val, btc):
     L.append("Regime mix: BTC daily close vs 200d SMA (bull > +5%%, bear < -5%%, else range), share of days: %s%s." % (
         "; ".join(mix), "; VALIDATION is ONE-REGIME (cannot carry a PASS)" if one_regime_val else ""))
     L.append("")
-    L.append("Round-trip cost %.4f (2 x fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13), no funding; stop = signal-candle low; entry at the close of the confirming candle; %d-bar cap after entry; 20 Bybit perps from listing (2020-03 on)." % (COST_RT, HOLD))
+    L.append("Round-trip cost %.4f (2 x fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13), no funding; stop = signal-candle low; entry at the close of the confirming candle; %d-bar cap after entry; 20 Bybit perps from listing (2020-03 on)." % (cost_rt(), HOLD))
     L.append("")
     L.append("## Pooled all-period (descriptive, the card's headline)")
     L.append("| TF | exit | n | mean net R | 95% CI | win % | mean net % |")
