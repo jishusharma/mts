@@ -1,5 +1,7 @@
 # NK StockTalk Concept Extract: JLcDdrHkB5M
 
+> **THIN:** one Hindi quote only; params without a quote stay NOT_SEEN. Deeper pass: flash_deep/JLcDdrHkB5M/EXTRACT.md
+
 - **Concept:** Hilega Milega (RSI + RSI averages)
 - **Video ID:** `JLcDdrHkB5M`
 - **Title:** `Intraday Chart How To Analyse #NK Singh #nkstocktalk #nitishsirhilegamilega`

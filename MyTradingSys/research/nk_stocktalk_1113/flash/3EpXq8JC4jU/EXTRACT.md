@@ -1,5 +1,7 @@
 # NK StockTalk Concept Extract: 3EpXq8JC4jU
 
+> **THIN:** one Hindi quote only; params without a quote stay NOT_SEEN. Deeper pass: flash_deep/3EpXq8JC4jU/EXTRACT.md
+
 - **Concept:** SRP (meaning from captions)
 - **Video ID:** `3EpXq8JC4jU`
 - **Title:** `Pivot Point Use & Butterfly Hedge || #nk_sir #marketanalysis`

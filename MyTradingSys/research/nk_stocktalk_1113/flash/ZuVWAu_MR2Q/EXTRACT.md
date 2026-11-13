@@ -1,5 +1,7 @@
 # NK StockTalk Concept Extract: ZuVWAu_MR2Q
 
+> **THIN:** one Hindi quote only; params without a quote stay NOT_SEEN. Deeper pass: flash_deep/ZuVWAu_MR2Q/EXTRACT.md
+
 - **Concept:** Nifty Hedge 23 expiry setup
 - **Video ID:** `ZuVWAu_MR2Q`
 - **Title:** `NIFTY H23 Strategy After CAS Rule | Smart Entry & Exit  | Low Capital Weekly Expiry Hedge Setup`

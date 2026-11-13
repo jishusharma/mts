@@ -15,10 +15,12 @@ import sys
 import unicodedata
 from pathlib import Path
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')  # Devanagari on a cp1251/cp1252 console
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 CONCEPTS = json.loads((HERE / "concepts.json").read_text(encoding="utf-8"))
-MODELS = ("flash", "argon")
+MODELS = ("flash", "flash_deep", "argon")
 QUOTE = re.compile(r'^>\s*"(.*)"\s*$')
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})")
 TS = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")

@@ -1,5 +1,7 @@
 # NK StockTalk Concept Extract: wrEEf8o9n9E
 
+> **THIN:** one Hindi quote only; params without a quote stay NOT_SEEN. Deeper pass: flash_deep/wrEEf8o9n9E/EXTRACT.md
+
 - **Concept:** Bollinger Bands breakout vs fakeout
 - **Video ID:** `wrEEf8o9n9E`
 - **Title:** `असली ब्रेकआउट कैसे पहचानें 📈📉Market Breakout या Fakeout ? || Breakout vs Fakeout || #trading #stocks`

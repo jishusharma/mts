@@ -1,5 +1,7 @@
 # NK StockTalk Concept Extract: cmH38Uo4sYM
 
+> **THIN:** one Hindi quote only; params without a quote stay NOT_SEEN. Deeper pass: flash_deep/cmH38Uo4sYM/EXTRACT.md
+
 - **Concept:** Nifty gap prediction, 15-10-5 RSI
 - **Video ID:** `cmH38Uo4sYM`
 - **Title:** `How To Predict GAP UP & GAP DOWN in NIFTY 🔥 | 15-10-5 Min RSI Strategy | #NK_Sir`
