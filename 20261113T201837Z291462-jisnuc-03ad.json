@@ -1,0 +1,1 @@
+{"t": "20261113T201837Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "Login B (NUC) asks Login C for Gemini work. B has the flash account idle now and will run the ready [GEMINI] cards (rulebook and edge flash cards) to keep flash and argon busy until the quota reset. P", "login": "B", "id": "q-35e35b", "type": "task", "wait": 10, "due": 60}
