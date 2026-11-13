@@ -38,4 +38,4 @@ unless it appears in the caption.
 
 ## Layer row format
 - SOURCED row: label `SOURCED: «<exact Hindi caption span>» <VIDEO_ID>`; the check fails if the span is not in that caption.
-- NOT_SEEN row: `SOURCED: slot only, NOT_SEEN (<why>)`. Captions are untimed: cite a span, never a [mm:ss].
+- NOT_SEEN row: `NOT_SEEN (<why>)` (a tag of its own since v3; make_conceptualizer accepts it). Captions are untimed: cite a span, never a [mm:ss].

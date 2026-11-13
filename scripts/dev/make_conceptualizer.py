@@ -25,6 +25,7 @@ TPL = HERE / "conceptualizer.tpl.html"
 OUT = REPO / "MyTradingSys" / "system" / "artifacts" / "conceptualizer.html"
 STATUSES = ("failed", "inconclusive", "promising", "untested")
 FIDELITY = ("match", "simplified", "distorted", "untested")
+TAGS = ("SOURCED", "OURS", "NOT_SEEN")  # NOT_SEEN = a slot of the trader's that no verified source states
 NEEDED = ("id", "name", "who", "status", "quote", "rule", "ours", "params", "code", "fidelity", "support", "test", "sim", "ideas", "question")
 
 
@@ -44,8 +45,8 @@ def problems(data, src=SRC):
             if (c.get("fidelity") or [None])[0] not in FIDELITY:
                 out.append(f"{cid}: fidelity grade not one of {FIDELITY}")
             for p in c.get("params", []):
-                if len(p) != 3 or not (p[2].startswith("SOURCED") or p[2].startswith("OURS")):
-                    out.append(f"{cid}: param {p!r} needs a SOURCED or OURS tag")
+                if len(p) != 3 or not p[2].startswith(TAGS):
+                    out.append(f"{cid}: param {p!r} needs a SOURCED, OURS or NOT_SEEN tag")
             d = c.get("diagram")
             if d and not (src / "diagrams" / d).is_file():
                 out.append(f"{cid}: diagram {d} missing")

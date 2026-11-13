@@ -29,7 +29,15 @@ def test_problems_are_caught():
     del c["question"]
     text = "\n".join(mc.problems(bad))
     assert "status 'maybe'" in text
-    assert "SOURCED or OURS" in text
+    assert "SOURCED, OURS or NOT_SEEN" in text
     assert "diagram nope.svg missing" in text
     assert "no question" in text
+    assert mc.problems(data) == []
+
+
+def test_not_seen_is_a_valid_tag():
+    import json
+    data = json.loads((mc.SRC / "concepts.json").read_text(encoding="utf-8"))
+    c = data["layers"][0]["concepts"][0]
+    c["params"][0][2] = "NOT_SEEN (never stated)"
     assert mc.problems(data) == []
