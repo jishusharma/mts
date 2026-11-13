@@ -1,7 +1,7 @@
 """Queue task cards onto Gemini through the Antigravity CLI (`agy`), one throwaway worktree per card.
 
   python scripts/dev/gemini_queue.py run <card-id>[:<effort>][:<model>] ...  run the jobs one after another
-    effort in low|medium|high (default low); model in flash|argon|opus|sonnet|gpt (default flash; gpt = gpt-oss-120b-medium, effort ignored);
+    effort in low|medium|high (default low); model in flash|argon|hydrogen|opus|sonnet|gpt (default flash; gpt = gpt-oss-120b-medium, effort ignored);
     tokens may appear in either order
   python scripts/dev/gemini_queue.py status                                state per job (DONE, FAILED, RUNNING, STALE, SKIPPED) and last log line
   python scripts/dev/gemini_queue.py review-list                           branches waiting for a Claude review (REVIEW mode)
@@ -66,6 +66,18 @@ def sh(cmd, cwd=REPO, timeout=120):
 
 def git(*a, cwd=REPO, timeout=120):
     return sh(['git', '-C', str(cwd), *a], cwd=cwd, timeout=timeout)
+
+
+def fetch_origin(cwd=REPO, tries: int = 6, sleep=time.sleep):
+    """`git fetch origin` that survives parallel queue runs: several launchers fetch into one lab checkout and race
+    for refs/remotes locks ('cannot lock ref'); retry that error with a growing random pause, any other result returns at once."""
+    r = git('fetch', '-q', 'origin', cwd=cwd, timeout=60)
+    for i in range(1, tries):
+        if r.returncode == 0 or 'cannot lock ref' not in (r.stderr or ''):
+            break
+        sleep(random.uniform(0.5, 2.0) * i)
+        r = git('fetch', '-q', 'origin', cwd=cwd, timeout=60)
+    return r
 
 
 def child_env(card: str, brief: str, base=None) -> dict:
@@ -178,7 +190,7 @@ def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
     Returns the last CompletedProcess of worktree add (rc 0 = ok); a busy setup lock comes back as rc 124."""
     try:
         with setup_lock(sleep=sleep):
-            git('fetch', '-q', 'origin', timeout=60)
+            fetch_origin()
             for n in range(tries + 1):
                 r = git('worktree', 'add', '-b', f'gemini-q/{card}', str(wt), 'origin/fast-track')
                 err = (r.stderr or '').lower()
@@ -189,8 +201,8 @@ def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
         return subprocess.CompletedProcess([], 124, '', str(e))
 
 
-MODELS = ('flash', 'argon', 'opus', 'sonnet', 'gpt')
-MODEL_PREFIX = {'flash': 'gemini-3.8-flash', 'argon': 'gemini-4-argon', 'opus': 'claude-opus-5-5', 'sonnet': 'claude-sonnet-5-5'}
+MODELS = ('flash', 'argon', 'hydrogen', 'opus', 'sonnet', 'gpt')
+MODEL_PREFIX = {'flash': 'gemini-3.8-flash', 'argon': 'gemini-4-argon', 'hydrogen': 'gemini-4-hydrogen', 'opus': 'claude-opus-5-5', 'sonnet': 'claude-sonnet-5-5'}
 GPT_ID = 'gpt-oss-120b-medium'   # no effort variants
 
 
@@ -232,7 +244,7 @@ def deliver(card: str, wt: Path, log: Path, mode: str) -> None:
 
 def review_list() -> int:
     """Branches origin/gemini-q/* with commits not on origin/fast-track = work waiting for a Claude review."""
-    git('fetch', '-q', 'origin', timeout=60)
+    fetch_origin()
     out = git('for-each-ref', '--format=%(refname:short)', 'refs/remotes/origin/gemini-q/').stdout.split()
     n = 0
     for ref in sorted(out):
@@ -250,7 +262,7 @@ def run_job(card: str, effort: str, model: str = 'flash', mode: str = 'solo') ->
     wt = root() / card
     log = root() / f'{card}.log'
     root().mkdir(parents=True, exist_ok=True)
-    git('fetch', '-q', 'origin', timeout=60)
+    fetch_origin()
     import sync
     ok, why = card_gate(card)
     if not ok:

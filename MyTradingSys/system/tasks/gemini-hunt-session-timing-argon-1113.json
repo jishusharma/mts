@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T22:43:37Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/hunt_session_timing/argon.md"
   ],
@@ -16,21 +16,35 @@
   "id": "gemini-hunt-session-timing-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tf_iteration3_1113/hunt_session_timing/argon.md",
+      "ref": "2a573795b",
+      "utc": "2026-11-13T22:43:37Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Gemini gap hunts: cryptocred (both models), positioning, session_timing, volume_candles_ma",
+      "ref": "3d6951c1249b",
+      "utc": "2026-11-13T01:53:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "END: card complete, verify_extract_quotes exits 0",
   "note": "Run as gemini_queue.py run gemini-hunt-session-timing-argon-1113:low:argon. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request. Find the layer's transcripts from the LAYERS.md section 'session levels, turn of candle, session momentum'. Twin card on the other model: compare in MODEL_COMPARE.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T23:28:43Z",
+  "refreshed": "2026-11-13T21:45:15Z",
   "refs": [
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/tf_iteration3_1113/hunt_session_timing/argon.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -44,12 +58,12 @@
     "no numbers from our docs or your own knowledge: unstated = NOT_SEEN",
     "no YouTube or web fetch"
   ],
-  "scope_sha": "",
+  "scope_sha": "3d6951c1249b",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Find the session timing transcripts in raw_transcripts_canonical via the LAYERS.md section; compare with that layer code",

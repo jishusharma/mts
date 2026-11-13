@@ -1,0 +1,76 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T20:52:18Z",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13 -q"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T20:42:07Z",
+    "misses": 41,
+    "reads": [
+      "scripts/dev/bg_watch.py",
+      "scripts/dev/run_all_tests.py",
+      "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md"
+    ],
+    "session": "agent-a5325d7d689d0289c"
+  },
+  "created": "2026-11-13T18:33:34Z",
+  "depends_on": [],
+  "done_when": "PRE_REG.md has ## Context and Regime mix:, klines for 20 perps 1h/4h present, tests pass",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Malkan MAL-R03/R04 (edge4-malkan-divergence-r03-r04-1113 part a): PRE_REG and kline data.",
+  "id": "edge4-malkan-a-1114",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "PRE_REG + fetch_klines shipped 02252cc11; 2 tests pass",
+      "ref": "30e7e3bfb",
+      "utc": "2026-11-13T20:52:18Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "edge4-malkan-b-1114",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:33:35Z",
+  "refs": [],
+  "result": "PRE_REG + fetch_klines shipped 02252cc11; 2 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "public data only, no keys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "session-planner split of edge4-malkan-divergence-r03-r04-1113"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MAL-R03/R04 in research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md; write PRE_REG.md (## Context; Regime mix: line; SOURCED = confirm candle, stop beyond signal candle, target point C; OURS = closes only, 12/18-bar swing lookback, 1h/4h) and fetch_klines.py for 20 perps 1h/4h since 2020 (public Bybit or data-api.binance.vision only)",
+    "Run the named tests, commit in MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/, ship docs/research only"
+  ],
+  "taken": "2026-11-13T20:52:18Z",
+  "tests": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_fetch_klines.py::test_no_gap_or_duplicate_bars and ::test_only_closed_bars_kept, written first and failing on the stub",
+  "title": "Malkan MAL-R03/R04 part a: PRE_REG and kline data",
+  "weight": "",
+  "worker": "agent"
+}
