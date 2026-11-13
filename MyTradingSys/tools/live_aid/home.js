@@ -127,6 +127,25 @@
              '<text x="' + (R - 158) + '" y="' + (y(q[1]) + (q[0] === 'up' ? -6 : 16)) + '" class="hm-sct ' + q[0] + '">' + q[2] + ' ' + n0(q[1]) + ' (playbook)</text>';
       });
     });
+    // session highs/lows of today's sessions, from the closed 5m bars on screen (OURS: computed here, not a marked level)
+    var dayStart = Math.floor(ctx.now / 86400000) * 86400000;
+    SESS.forEach(function (ss) {
+      var a0 = dayStart + ss[1] * 3600000, a1 = dayStart + ss[2] * 3600000, sb = rows.filter(function (r) { return +r[0] >= a0 && +r[0] < a1 && +r[0] + step <= ctx.now; });
+      if (sb.length < 3) return;
+      var sh = Math.max.apply(null, sb.map(function (r) { return +r[2]; })), sl = Math.min.apply(null, sb.map(function (r) { return +r[3]; })), done = ctx.now >= a1;
+      [[sh, 'high'], [sl, 'low']].forEach(function (q) {
+        if (q[0] < lo || q[0] > hi) return;
+        s += '<line x1="' + Math.max(L, x(a0)) + '" x2="' + R + '" y1="' + y(q[0]) + '" y2="' + y(q[0]) + '" class="hm-lv hm-sl"/>';
+        labs.push({ y: y(q[0]), c: 'dim', t: ss[0] + ' ' + q[1] + (done ? '' : ' so far') + ' (OURS)', p: q[0], n: 1 });
+      });
+    });
+    // flag markers: where a banner fired (from the flag log rows the page keeps); hover shows what it said
+    (ctx.flagRows || []).forEach(function (f) {
+      var ft = +f.t, fp = +f.price;
+      if (!(ft >= t0) || !(fp >= lo && fp <= hi)) return;
+      var fx = x(ft), fy = y(fp), c = f.side === 'UP' ? 'up' : f.side === 'DOWN' ? 'down' : 'amber', dir = f.side === 'DOWN' ? -1 : 1;
+      s += '<path d="M' + fx + ' ' + (fy - 7 * dir) + ' l5 ' + (11 * dir) + ' h-10 z" class="hm-fm ' + c + '"><title>' + esc(f.kind + ' ' + new Date(ft).toISOString().slice(11, 16) + 'Z: ' + (f.evidence || '')) + '</title></path>';
+    });
     // candles
     rows.forEach(function (r) {
       var o = +r[1], h = +r[2], l = +r[3], c = +r[4], xx = x(+r[0]), col = c >= o ? 'up' : 'down';
@@ -159,6 +178,25 @@
     });
     s += '<rect x="' + (R + 2) + '" y="' + (py - 12) + '" width="64" height="24" rx="4" class="hm-tag"/><text x="' + (R + 34) + '" y="' + (py + 5) + '" text-anchor="middle" class="hm-tagt">' + n0(md.px) + '</text>';
     return s + '</svg>';
+  }
+  // One plain-words caption above the chart, from CLOSED 5m bars only (operator 11-13). Descriptive: where the last closed bar sits vs the
+  // nearest named levels, which session, the last logged flag and its hit rate with n. Level names SOURCED (his chart, prior-day data,
+  // analyst calls); session hours, nearest-level pick and this sentence OURS. No forecast, no advice.
+  function caption(ctx, md) {
+    var cl = (ctx.rows5 || []).filter(function (r) { return +r[0] + 300000 <= ctx.now; }), lastB = cl[cl.length - 1];
+    if (!lastB) return '<div class="hm-cap dim">Closed 5m bars NOT_IN_DATA</div>';
+    var c = +lastB[4], up = null, dn = null;
+    (md.zones || []).forEach(function (z) { if (z.price > c && (!up || z.price < up.price)) up = z; if (z.price < c && (!dn || z.price > dn.price)) dn = z; });
+    var pc = function (z) { return Math.abs((z.price / c - 1) * 100).toFixed(2) + '%'; };
+    var hr = new Date(+lastB[0] + 300000).getUTCHours() + new Date(+lastB[0] + 300000).getUTCMinutes() / 60;
+    var ses = SESS.filter(function (ss) { return hr >= ss[1] && hr < ss[2]; }).map(function (ss) { return ss[0]; }).join(' + ') || 'between sessions';
+    var fr = (ctx.flagRows || []).filter(function (f) { return isFinite(+f.t); }), lf = fr[fr.length - 1], st = lf && ctx.flagStats && ctx.flagStats[lf.kind];
+    var flag = !lf ? 'no flag logged yet' : 'last flag ' + lf.kind + (lf.level ? ' ' + lf.level : '') + ' at ' + new Date(+lf.t).toISOString().slice(11, 16) + 'Z, ' +
+      (st && st.n > 0 ? 'hit rate ' + Math.round(st.hit) + '% of n ' + st.n + (st.n < 30 ? ' (too few to trust)' : '') : 'hit rate not scored yet (n 0)');
+    var txt = 'Last closed 5m bar ' + new Date(+lastB[0] + 300000).toISOString().slice(11, 16) + 'Z at ' + n0(c) + ': ' +
+      (up ? pc(up) + ' under ' + esc(up.name) + ' ' + n0(up.price) : 'no named level above') + ', ' + (dn ? pc(dn) + ' over ' + esc(dn.name) + ' ' + n0(dn.price) : 'no named level below') +
+      ' · session ' + ses + ' · ' + esc(flag);
+    return '<div class="hm-cap">' + txt + ' <small class="dim">levels SOURCED, session hours and this line OURS · ▲▼ = flag fired</small></div>';
   }
   // A level is only named in the header when the chart reaches it (within 2 % of price; chart() fits those): no off-frame level (operator 11-12).
   function inFrame(md, z) { return md.px > 0 && Math.abs(z.price / md.px - 1) <= 0.02; }
@@ -458,7 +496,7 @@
     if (!el._wtl) { el._wtl = true; var tg = function (e) { if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; if (e.target.closest && e.target.closest('[data-wttoggle]')) { e.preventDefault(); wtOpen = !wtOpen; wtSave(wtOpen); render(el, el._ctx); } }; el.addEventListener('click', tg); el.addEventListener('keydown', tg); }
     el._ctx = ctx;
     ctx._tm = null;   // trigger row removed 11-12 (he could not select or read it); timingStrip/timingOf stay for tests
-    el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 78 - wh) + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + moneyCard(ctx) + newsCard(ctx) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + caption(ctx, md) + chart(ctx, md, W, H - 102 - wh) + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + moneyCard(ctx) + newsCard(ctx) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -508,7 +546,7 @@
     '.hm-bl2{margin:0;padding-left:14px;font-size:11px;max-height:64px;overflow:hidden}.hm-brate{font-size:11px;margin-top:3px}.hm-brate small{color:var(--dim);font-size:10px}' +
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '.hm-vr{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;font-size:13px;margin-top:3px;padding-left:6px;border-left:4px solid var(--dim)}.hm-vr.up{border-left-color:var(--up)}.hm-vr.down{border-left-color:var(--down)}.hm-vr b{font:700 13px var(--mono,monospace);color:var(--fg)}.hm-vr.up span{color:var(--up)}.hm-vr.down span{color:var(--down)}.hm-vr small{color:var(--dim);font-size:11px}.hm-vr em{font-style:normal;font-weight:700;color:var(--amber)}' +
-    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-wc{display:inline-block;margin-right:8px;font-size:11px;font-weight:600}.hm-wc i{font-style:normal;font-weight:400;color:var(--dim);margin-right:2px}.hm-wc.up{color:var(--up)}.hm-wc.down{color:var(--down)}.hm-wc.dim{color:var(--dim)}.hm-wl{font-size:11px;color:var(--dim);margin-left:4px}.hm-wfull{font-weight:400}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
+    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-cap{font-size:12px;margin:2px 0 0;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sl{stroke:var(--dim);stroke-width:1;stroke-dasharray:2 4;opacity:.8}.hm-fm.up{fill:var(--up)}.hm-fm.down{fill:var(--down)}.hm-fm.amber{fill:var(--amber)}.hm-fm{stroke:var(--bg,#000);stroke-width:1}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-wc{display:inline-block;margin-right:8px;font-size:11px;font-weight:600}.hm-wc i{font-style:normal;font-weight:400;color:var(--dim);margin-right:2px}.hm-wc.up{color:var(--up)}.hm-wc.down{color:var(--down)}.hm-wc.dim{color:var(--dim)}.hm-wl{font-size:11px;color:var(--dim);margin-left:4px}.hm-wfull{font-weight:400}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
     '.hm-bias.conflict{border-color:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
@@ -519,6 +557,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _inFrame: inFrame, _boardCard: boardCard };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _inFrame: inFrame, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);

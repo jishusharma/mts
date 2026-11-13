@@ -126,3 +126,35 @@ def test_conflict_names_the_idea_level_and_the_decider():
     md = dict(MD, dir="LONG", bull=5, bear=0, n=5)
     t = _txt(_run("H._biasLine({pulse:{hi:-0.5},k15:null},j.md)", {"md": md}))
     assert "conflict: long idea at 73,500 (Yesterday low) vs short big picture, stand aside until a 15m close decides" in t
+
+
+# ---------- 5-minute chart explains itself (operator 2026-11-13, part C) ----------
+D0 = 1_794_528_000_000                      # 2026-11-13 00:00Z
+NOW = D0 + 10 * 3600_000 + 3 * 60_000       # 10:03Z: the 10:00 bar is still forming
+ROWS5 = [[D0 + 8 * 3600_000 + i * 300_000, 73800, 73850, 73750, 99999 if D0 + 8 * 3600_000 + i * 300_000 == D0 + 10 * 3600_000 else 73800, 1] for i in range(25)]
+ZMD = dict(MD, zones=[{"price": 74000, "name": "Today high", "n": 1}, {"price": 73500, "name": "Yesterday low", "n": 1}, {"price": 76000, "name": "Week high", "n": 1}])
+FLAG = {"t": D0 + 9 * 3600_000 + 30 * 60_000, "kind": "touch", "level": "Yesterday low 73500", "side": "UP", "price": 73760, "evidence": "TOUCHING Yesterday low 73500"}
+
+
+def test_caption_is_plain_words_from_closed_bars_with_hit_rate_and_n():
+    ctx = {"now": NOW, "rows5": ROWS5, "flagRows": [FLAG], "flagStats": {"touch": {"n": 12, "hit": 58.3}}}
+    t = html.unescape(_txt(_run("H._caption(j.ctx,j.md)", {"ctx": ctx, "md": ZMD})))
+    # by hand: last CLOSED bar opens 09:55, closes 10:00 at 73,800 (the forming 10:00 bar at 99,999 is ignored); 200/73800=0.27%, 300/73800=0.41%
+    assert ("Last closed 5m bar 10:00Z at 73,800: 0.27% under Today high 74,000, 0.41% over Yesterday low 73,500 · session Europe · "
+            "last flag touch Yesterday low 73500 at 09:30Z, hit rate 58% of n 12 (too few to trust)") in t, t
+    assert "levels SOURCED, session hours and this line OURS" in t
+    nof = html.unescape(_txt(_run("H._caption(j.ctx,j.md)", {"ctx": dict(ctx, flagStats={}), "md": ZMD})))
+    assert "hit rate not scored yet (n 0)" in nof
+    none = html.unescape(_txt(_run("H._caption(j.ctx,j.md)", {"ctx": dict(ctx, flagRows=[]), "md": ZMD})))
+    assert "no flag logged yet" in none
+    assert "NOT_IN_DATA" in _txt(_run("H._caption(j.ctx,j.md)", {"ctx": {"now": NOW, "rows5": []}, "md": ZMD}))
+
+
+def test_chart_has_flag_markers_and_session_high_low_lines():
+    ctx = {"now": NOW, "rows5": ROWS5, "flagRows": [FLAG]}
+    svg = _run("H._chart(j.ctx,j.md,1000,500)", {"ctx": ctx, "md": ZMD})
+    assert 'class="hm-fm up"' in svg and "touch 09:30Z: TOUCHING Yesterday low 73500" in svg
+    assert "Europe high so far (OURS)" in svg and "Europe low so far (OURS)" in svg
+    assert "Asia high" not in svg                                           # fewer than 3 closed Asia bars on screen: no line
+    plain = _run("H._chart(j.ctx,j.md,1000,500)", {"ctx": {"now": NOW, "rows5": ROWS5}, "md": ZMD})
+    assert "hm-fm" not in plain.replace(".hm-fm", "")                       # no flag rows, no markers
