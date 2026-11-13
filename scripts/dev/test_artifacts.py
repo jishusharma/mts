@@ -43,12 +43,12 @@ class Registry(unittest.TestCase):
         self.assertIn("NO COPY      Tom and Fabio", "\n".join(af.plan(self.reg, "jishu.awgp")))
         self.assertNotIn("CBP Dashboard", text)
         r = copy.deepcopy(self.reg)
-        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["status"] = "retire"
-        self.assertIn("OPERATOR UNPIN+DELETE  MTS Layers", "\n".join(af.plan(r, "jishusharma1985")))
-        self.assertIn("REPUBLISH    MTS Layers", text)
+        next(pg for pg in r["pages"] if pg["slug"] == "buy_crypto")["status"] = "retire"
+        self.assertIn("OPERATOR UNPIN+DELETE  Buy Crypto", "\n".join(af.plan(r, "jishusharma1985")))
+        self.assertIn("REPUBLISH    Buy Crypto", text)
         r = copy.deepcopy(self.reg)
-        next(pg for pg in r["pages"] if pg["slug"] == "mts_layer_map")["urls"]["jishusharma1985"] = ""
-        self.assertIn("PUBLISH NEW  MTS Layers", "\n".join(af.plan(r, "jishusharma1985")))
+        next(pg for pg in r["pages"] if pg["slug"] == "buy_crypto")["urls"]["jishusharma1985"] = ""
+        self.assertIn("PUBLISH NEW  Buy Crypto", "\n".join(af.plan(r, "jishusharma1985")))
         with self.assertRaises(SystemExit):
             af.plan(self.reg, "nobody")
 
@@ -60,22 +60,18 @@ class Registry(unittest.TestCase):
         self.assertIn("jishusharma1985=MNuodXmi5RiEihX7rFpqUp", out.getvalue())
         # single live copy (operator 2026-10-17): the home login republishes every page; the old jishu.sharma copies get the pointer page
         plan = "\n".join(af.plan(self.reg, "jishu.sharma"))
-        self.assertIn("NO COPY      MTS Research Map", plan)
-        self.assertIn("REPLACE      MTS Layers <- MyTradingSys/system/artifacts/cr_moved.html", plan)
+        self.assertIn("NO COPY      Buy Crypto", plan)
         self.assertNotIn("REPUBLISH    MTS Control Room", plan)
-        self.assertNotIn("REPUBLISH    MTS Layers", plan)
-        self.assertIn("REPUBLISH    MTS Research Map", "\n".join(af.plan(self.reg, "jishusharma1985")))
+        self.assertIn("REPUBLISH    Buy Crypto", "\n".join(af.plan(self.reg, "jishusharma1985")))
         awgp = "\n".join(af.plan(self.reg, "jishu.awgp"))
         self.assertIn("NO COPY      MTS Control Room", awgp)  # 2026-10-17: EoHi2q is now the live page on jishu.sharma
 
     def test_pages_index_one_link_per_page(self):
         import make_control_room as mc
         rows = mc.page_index()
-        self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
-                                                      "Test Simulator", "CBP Analyst Desk", "Buy Crypto", "Conceptualizer"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
+        self.assertEqual({r["title"] for r in rows}, {"MTS Home", "Test Simulator", "CBP Analyst Desk", "Buy Crypto", "Conceptualizer"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
-        self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
-        self.assertEqual(own["MTS Research Map"], "jishusharma1985")
+        self.assertEqual(own["Conceptualizer"], "jishusharma1985")
         self.assertTrue(all("/artifact/" in r["url"] for r in rows))
 
 
@@ -123,7 +119,7 @@ class Home(unittest.TestCase):
         import make_home as mh
         d = mh.build(self.reg)
         titles = [p["title"] for p in d["pages"]]
-        self.assertEqual(titles[:2], ["MTS Research Map", "MTS Layers"])  # where Jis writes, first
+        self.assertEqual(titles[:2], ["Test Simulator", "CBP Analyst Desk"])  # where Jis writes, first
         self.assertNotIn("MTS Home", titles)
         urls = {r["url"] for r in d["retire"]}
         self.assertIn("https://claude.ai/artifact/EoHi2qTMEsbR4VsKWuo2su", urls)  # the jishu.sharma Control Room is an old copy
@@ -191,7 +187,7 @@ class Home(unittest.TestCase):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
         import make_home as mh
         titles = [p["title"] for p in mh.build(self.reg)["pages"]]
-        for t in ("Test Simulator", "CBP Analyst Desk", "MTS Layers", "Buy Crypto"):
+        for t in ("Test Simulator", "CBP Analyst Desk", "Conceptualizer", "Buy Crypto"):
             self.assertIn(t, titles)
         reg = copy.deepcopy(self.reg)
         extra = copy.deepcopy(next(p for p in reg["pages"] if p["slug"] == "sim_desk"))
@@ -292,12 +288,12 @@ class Stale(unittest.TestCase):
 
     def test_home_shows_behind_badge_and_published_date(self):
         import make_home as mh
-        next(p for p in self.reg["pages"] if p["slug"] == "research_map")["published_sha"] = None
+        next(p for p in self.reg["pages"] if p["slug"] == "buy_crypto")["published_sha"] = None
         pages = {p["slug"]: p for p in mh.build(self.reg)["pages"]}
-        self.assertTrue(pages["research_map"]["behind"])  # no published_sha yet
-        af.publish_record(self.reg, "research_map", today="2026-10-18")
+        self.assertTrue(pages["buy_crypto"]["behind"])  # no published_sha yet
+        af.publish_record(self.reg, "buy_crypto", today="2026-10-18")
         d = mh.build(self.reg)
-        self.assertFalse({p["slug"]: p for p in d["pages"]}["research_map"]["behind"])
+        self.assertFalse({p["slug"]: p for p in d["pages"]}["buy_crypto"]["behind"])
         self.assertIn("behind repo", mh.render(d))
 
     def test_status_reports_pages_stale_line(self):
