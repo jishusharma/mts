@@ -2505,3 +2505,7 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 
 ## 2026-11-13 ~16:55Z: ADX/DI reads on Live Aid (R26); Chrome profile named
 - 2026-11-13 ~16:55Z: operator wants the ADX/DI reads (1w, 5d, 3d, 2d and lower frames) visible on Live Aid with how to use each frame; built as R26. He also named the Chrome profile sessions may use: the purple 'j' profile signed in as his 1985 Gmail (CoinGlass Pro, always open); never ask again; the other two profiles stay untouched.
+
+## 2026-11-13 ~17:10Z: a rule book for every indicator (voice, JIS-NB)
+- Operator order (sense, verbatim in spirit): "we have so many indicators ... we need to know from the basics of these indicators and the developers like Lazy Bear, and what the internet says, what MTS says, what research we do, so there is a rule book for every indicator on how to read it and when it should be applied, like confluence, a confidence builder or a position builder. Every layer needs to be doing this, not just ADX and DI. Every indicator needs this feature."
+- Mechanism: `MyTradingSys/research/indicator_rulebooks/` (TEMPLATE.md, INDEX.md, one file per indicator); Gemini cards `gemini-rulebook-<name>-1113` fill sections 2-4, 6-8; a Sonnet pass fills section 5. Model: `research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md`. Labels SOURCED vs OURS as in that doc.
