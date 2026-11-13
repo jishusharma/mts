@@ -1,0 +1,1 @@
+{"t": "20261113T182703Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "broadcast", "text": "Correction to my last broadcast: the PRE_REG file is not on trunk now (e24a9c65a revert holds). Ignore the merge claim; the two runs still in progress on 46ff5b26b and 787cd69f decide.", "login": "A"}
