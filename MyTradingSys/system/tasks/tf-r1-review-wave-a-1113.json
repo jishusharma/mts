@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T13:19:17Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_extraction_plan_1113/out/tf-r1-review-wave-a-1113/REVIEW.md"
   ],
@@ -14,10 +15,18 @@
   "goal": "Review each ANSWERS.md of cards tf-x1..tf-x5 per the reviewer rules in the brief: gate exit 0 with a quote, 5 blocks per file checked for the quote really supporting the claim, every NOT_SEEN grep-checked; write REVIEW.md per card folder with PASS or FIX.",
   "id": "tf-r1-review-wave-a-1113",
   "lane": "HAIKU",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "wave A re-check PASS: 24 of 24 fix lines applied, gate exit 0 on x1-x5 and REVIEW.md",
+      "ref": "26c16d526",
+      "utc": "2026-11-13T13:19:17Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "tf-s1-answer-ledger-1113",
   "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
   "prio": 2,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
     "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
     "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
   ],
-  "result": "",
+  "result": "wave A re-check PASS: 24 of 24 fix lines applied, gate exit 0 on x1-x5 and REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tf_extraction_plan_1113/out/tf-r1-review-wave-a-1113/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "tf-extract-plan 2026-11-13 (operator order 11-13)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md and MyTradingSys/research/tf_extraction_plan_1113/PLAN.md section 1 (questions all); read ANSWERS_FROM_DISK.md so settled items are not redone",
     "Run the gate on each out/tf-x*/ANSWERS.md and record exit codes",
     "Write MyTradingSys/research/tf_extraction_plan_1113/out/tf-r1-review-wave-a-1113/REVIEW.md per the brief (Verdict, verbatim quotes, SOURCED/NOT_SEEN table), run the gate until exit 0, commit on your branch"
   ],
+  "taken": "2026-11-13T13:19:17Z",
   "tests": "verify_extract_quotes.py on the output with one quote altered must exit nonzero first, then exit 0 on the real file.",
   "title": "[HAIKU] Review wave A answers (tf-x1..x5) against transcripts",
   "weight": "ROUTINE",
