@@ -110,35 +110,37 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         vis = lambda sel: page.eval_on_selector(sel, "e => e.offsetParent !== null")
         assert vis("#tabs") and vis("#p-home") and not vis("#p-ov") and not vis("#p-tfs"), "home alone under the tab bar"
         tabs = page.eval_on_selector_all("#tabs a", "as => as.map(a => a.innerText)")
-        assert tabs[0] == "Home", tabs
-        assert page.eval_on_selector_all("#p-home .hm-svg rect.hm-bd", "rs => rs.length") >= 5   # candles drawn
+        assert tabs == ["Home", "In trade", "Details"], tabs   # R27 one-screen tab bar
+        # R27 (operator 2026-11-13): the full-text Home of 11-09..11-13 is kept under Details > Previous Home (#homeold); its checks run there
+        page.evaluate("location.hash = '#homeold'"); page.wait_for_timeout(500)
+        assert page.eval_on_selector_all("#p-home-old .hm-svg rect.hm-bd", "rs => rs.length") >= 5   # candles drawn
         # operator 2026-11-09 17Z: liquidations on 1m 2m 3m 5m 7m 10m 15m 30m 1h 2h 4h; indicator grid on the same 11 timeframes
-        wins = page.eval_on_selector_all("#p-home .hm-lc b", "bs => bs.map(b => b.innerText)")
+        wins = page.eval_on_selector_all("#p-home-old .hm-lc b", "bs => bs.map(b => b.innerText)")
         assert wins == ["1m", "2m", "3m", "5m", "7m", "10m", "15m", "30m", "1h", "2h", "4h"], wins
         # operator 2026-11-10: the 11-row indicator grid is replaced by "What the indicators say": 6 indicators x 15m 1h 4h
-        assert page.eval_on_selector_all("#p-home .hm-pr", "rs => rs.length") == 0
+        assert page.eval_on_selector_all("#p-home-old .hm-pr", "rs => rs.length") == 0
         # operator 2026-11-12: the grid is ONE verdict row per timeframe (15m, 1h, 4h) plus a "So what" line; no 6-row table
-        assert page.eval_on_selector_all("#p-home .hm-ir", "rs => rs.length") == 0
-        assert page.eval_on_selector_all("#p-home .hm-vr b", "bs => bs.map(b => b.innerText)") in ([], ["15m", "1h", "4h"])
-        assert page.eval_on_selector_all("#p-home .hm-sw", "es => es.length") >= 2
+        assert page.eval_on_selector_all("#p-home-old .hm-ir", "rs => rs.length") == 0
+        assert page.eval_on_selector_all("#p-home-old .hm-vr b", "bs => bs.map(b => b.innerText)") in ([], ["15m", "1h", "4h"])
+        assert page.eval_on_selector_all("#p-home-old .hm-sw", "es => es.length") >= 2
         # operator 2026-11-10: session names overprinted at the chart's left edge; no two session labels may overlap
-        boxes = page.eval_on_selector_all("#p-home .hm-sest", "ts => ts.map(t => { const b = t.getBoundingClientRect(); return [b.left, b.right]; })")
+        boxes = page.eval_on_selector_all("#p-home-old .hm-sest", "ts => ts.map(t => { const b = t.getBoundingClientRect(); return [b.left, b.right]; })")
         boxes.sort()
         assert boxes and all(b[0] >= a[1] - 0.5 for a, b in zip(boxes, boxes[1:])), boxes
         # operator 2026-11-10: WaveTrend lanes on Home: 1m 2m 3m timing, 15m 30m frame, 4h context
         # operator 2026-11-13 (2nd ask, "WaveTrend has gone completely"): the six strips are OPEN by default under a smaller chart;
         # one click on the WaveTrend row hides them, the next click brings them back
-        assert page.eval_on_selector_all("#p-home .hm-wsw", "es => es.length") == 1
-        lanes = page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.map(t => t.textContent)")
+        assert page.eval_on_selector_all("#p-home-old .hm-wsw", "es => es.length") == 1
+        lanes = page.eval_on_selector_all("#p-home-old .hm-wtl", "ts => ts.map(t => t.textContent)")
         assert lanes == ["1m", "2m", "3m", "15m", "30m", "4h"], lanes
         # volume has its own strip (the replay fixture has no Binance 5m feed, so the strip may be its NOT_IN_DATA note instead)
-        assert page.eval_on_selector_all("#p-home .hm-vol", "es => es.length") == 1 or "Volume NOT_IN_DATA" in page.inner_text("#p-home .hm-chart")
-        assert page.eval_on_selector_all("#p-home .hm-svg .hm-vb", "es => es.length") == 0   # and no volume bar sits on the candles
-        page.click("#p-home .hm-wsw"); page.wait_for_timeout(300)
-        assert page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.length") == 0
-        page.click("#p-home .hm-wsw"); page.wait_for_timeout(300)
-        assert page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.length") == 6
-        for h in ("#home", "#now", "#usopen", "#news"):
+        assert page.eval_on_selector_all("#p-home-old .hm-vol", "es => es.length") == 1 or "Volume NOT_IN_DATA" in page.inner_text("#p-home-old .hm-chart")
+        assert page.eval_on_selector_all("#p-home-old .hm-svg .hm-vb", "es => es.length") == 0   # and no volume bar sits on the candles
+        page.click("#p-home-old .hm-wsw"); page.wait_for_timeout(300)
+        assert page.eval_on_selector_all("#p-home-old .hm-wtl", "ts => ts.length") == 0
+        page.click("#p-home-old .hm-wsw"); page.wait_for_timeout(300)
+        assert page.eval_on_selector_all("#p-home-old .hm-wtl", "ts => ts.length") == 6
+        for h in ("#home", "#homeold", "#details", "#now", "#usopen", "#news"):
             page.evaluate(f"location.hash = '{h}'"); page.wait_for_timeout(200)
             sc = page.evaluate("[Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), window.innerHeight, getComputedStyle(document.body).overflow]")
             assert sc[0] <= sc[1] + 1 or sc[2] == "hidden", (h, sc)
@@ -170,7 +172,7 @@ def test_click_opens_detail_and_tabs_return(browser):
     ctx, page, errs = _open(browser)
     try:
         vis = lambda sel: page.eval_on_selector(sel, "e => e.offsetParent !== null")
-        page.click("#tabs a[href='#now']"); page.wait_for_timeout(200)
+        page.evaluate("location.hash = '#now'"); page.wait_for_timeout(200)   # R27: All readings now lives under Details
         page.click("#ov tr[data-go=momentum]")
         page.wait_for_timeout(200)
         assert page.evaluate("location.hash") == "#momentum"

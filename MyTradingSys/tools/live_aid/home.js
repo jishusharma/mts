@@ -184,11 +184,20 @@
       });
     });
     // flag markers: where a banner fired (from the flag log rows the page keeps); hover shows what it said
+    // operator 11-13 (3rd ask: "because of this red triangle the chart is not clearly visible"): markers left the candles. They sit on a
+    // rail along the bottom edge of the price pane, one per 5m bar (the last flag of that bar; the count of the others is in the hover).
+    var fbar = {};
     (ctx.flagRows || []).forEach(function (f) {
-      var ft = +f.t, fp = +f.price;
-      if (!(ft >= t0) || !(fp >= lo && fp <= hi)) return;
-      var fx = x(ft), fy = y(fp), c = f.side === 'UP' ? 'up' : f.side === 'DOWN' ? 'down' : 'amber', dir = f.side === 'DOWN' ? -1 : 1;
-      s += '<path d="M' + fx + ' ' + (fy - 7 * dir) + ' l5 ' + (11 * dir) + ' h-10 z" class="hm-fm ' + c + '"><title>' + esc(f.kind + ' ' + new Date(ft).toISOString().slice(11, 16) + 'Z: ' + (f.evidence || '')) + '</title></path>';
+      var ft = +f.t; if (!(ft >= t0)) return;
+      var k = Math.floor((ft - t0) / step); (fbar[k] = fbar[k] || []).push(f);
+    });
+    var flagSvg = '';
+    Object.keys(fbar).forEach(function (k) {
+      var fs = fbar[k], f = fs[fs.length - 1], ft = +f.t, fx = x(t0 + k * step);
+      if (fx > R) return;
+      var c = f.side === 'UP' ? 'up' : f.side === 'DOWN' ? 'down' : 'amber', dir = f.side === 'DOWN' ? -1 : 1;
+      flagSvg += '<path d="M' + fx.toFixed(1) + ' ' + (B - 5.5 - 3.5 * dir) + ' l4 ' + (7 * dir) + ' h-8 z" class="hm-fm ' + c + '"><title>' +
+        esc(f.kind + ' ' + new Date(ft).toISOString().slice(11, 16) + 'Z: ' + (f.evidence || '') + (fs.length > 1 ? ' (+' + (fs.length - 1) + ' more in this 5m bar)' : '')) + '</title></path>';
     });
     // candles
     rows.forEach(function (r) {
@@ -212,6 +221,7 @@
       s += d; leg += '<tspan class="hm-mal m' + mi + '" dx="10">━ ' + m[2] + (lastV != null ? ' ' + n0(lastV) : ' needs ' + m[1] + ' bars') + '</tspan>';
     });
     s += '<text x="' + (L + 4) + '" y="' + (T + 13) + '" class="hm-ax">Averages on 5m (Krown’s set)' + leg + '</text>';
+    s += flagSvg;   // marker rail, drawn over the candles' bottom margin
     // now line + tag
     var py = y(md.px);
     s += '<line x1="' + L + '" x2="' + R + '" y1="' + py + '" y2="' + py + '" class="hm-now"/>';
@@ -242,7 +252,13 @@
     var txt = 'Last closed 5m bar ' + new Date(+lastB[0] + 300000).toISOString().slice(11, 16) + 'Z at ' + n0(c) + ': ' +
       (up ? pc(up) + ' under ' + esc(up.name) + ' ' + n0(up.price) : 'no named level above') + ', ' + (dn ? pc(dn) + ' over ' + esc(dn.name) + ' ' + n0(dn.price) : 'no named level below') +
       ' · session ' + ses + ' · ' + esc(flag);
-    return '<div class="hm-cap">' + txt + ' <small class="dim">levels SOURCED, session hours and this line OURS · ▲▼ = flag fired</small></div>';
+    return '<div class="hm-cap">' + txt + ' <small class="dim">levels SOURCED, session hours and this line OURS</small></div>' + chartKey();
+  }
+  // Key to everything drawn on the chart (operator 11-13: "what are these triangles ... where is the explanation"). Wording OURS.
+  function chartKey() {
+    return '<div class="hm-cap hm-key"><b>Key</b> small triangles on the bottom edge = the LONG / SHORT board or a level alert changed in that 5m bar: ' +
+      '<span class="up">▲ green</span> long-side readings switched on · <span class="down">▼ red</span> short-side · <span class="amber">▲ amber</span> both or neither. ' +
+      'A log mark, not a signal; hover one to read it. Curves = 21 EMA, 55 EMA, 200 SMA. Dashed lines = named levels. Shaded blocks = Asia, Europe, US hours.</div>';
   }
   // A level is only named in the header when the chart reaches it (within 2 % of price; chart() fits those): no off-frame level (operator 11-12).
   function inFrame(md, z) { return md.px > 0 && Math.abs(z.price / md.px - 1) <= 0.02; }
@@ -446,7 +462,27 @@
   function wtSoWhat(ctx, md) {
     var r = wtSentence(ctx, md), L = ctx.lanes || {};
     return '<div class="hm-sw hm-wsw ' + r.cls + '" data-wttoggle="1" role="button" tabindex="0" title="' + esc(r.txt) + ' (click to ' + (wtOpen ? 'hide' : 'show') + ' the six strips)"><b>WaveTrend</b> ' + wtChips(L) + ' <small>[' + (wtOpen ? 'hide' : 'show') + ' strips]</small></div>' +
-      (wtOpen ? '<div class="hm-sw hm-wfull ' + r.cls + '">' + esc(r.txt) + '</div>' : '');
+      (wtOpen ? '<div class="hm-sw hm-wfull ' + r.cls + '">' + esc(r.txt) + '</div><div class="hm-sw hm-whow">' + esc(WT_HOW) + '<br>' + esc(divLine(ctx)) + '</div>' : '');
+  }
+  // How to read the strips next to a 5m chart (operator 11-13: "the chart is 5 minutes, which timeframe do I use?"). OURS, not backtested.
+  var WT_HOW = 'How to use (OURS, not backtested): the candles are 5m, the strips are faster and slower on purpose. 15m + 30m pointing the same way = which side. ' +
+    'A big dot on 1m-3m in that direction = when. 4h = backdrop only. A bounce against the frame needs a divergence (below) at a named level; without one it is only a pause.';
+  // Divergence of price against WaveTrend and RSI on closed bars (pulse.js read(): last 15 bars vs the 15 before, OURS). Bullish = price
+  // made a lower low while the indicator made a higher low; bearish = the mirror on highs. 5m is the chart, 15m and 1h the frame.
+  var DIV_TFS = ['5m', '15m', '1h'];
+  function divRows(ctx) {
+    var out = {};
+    ((ctx.pulse && ctx.pulse.rows) || []).forEach(function (x) { if (x && DIV_TFS.indexOf(x.tf) >= 0 && x.r && x.r.div) out[x.tf] = x.r.div; });
+    return out;
+  }
+  function divLine(ctx) {
+    var d = divRows(ctx);
+    return 'Divergence now (price vs WaveTrend / RSI, last 15 closed bars vs the 15 before, OURS): ' + DIV_TFS.map(function (tf) {
+      var v = d[tf], w = [];
+      if (!v) return tf + ' no data';
+      [['wt', 'WaveTrend'], ['rsi', 'RSI']].forEach(function (q) { if (v[q[0]] > 0) w.push('bullish ' + q[1]); else if (v[q[0]] < 0) w.push('bearish ' + q[1]); });
+      return tf + ' ' + (w.length ? w.join(' + ') : 'none');
+    }).join(' · ') + '. Bullish = price lower low, indicator higher low (selling is tiring). It also lights the LONG / SHORT board.';
   }
   function WTH(PU) { return PU && PU.WT_HOT || 53; }
   // Level story: nearest level above and below (or the one price sits at), read on completed 15m Binance closes (levelstory.js).
@@ -500,11 +536,13 @@
   // wired here yet: they simply do not appear (nothing invented). ctx.boardInputs overrides (tests, later wiring).
   function boardInputs(ctx) {
     if (ctx.boardInputs) return ctx.boardInputs;
-    var T = ctx.ind, out = {};
+    var T = ctx.ind, out = {}, dv = divRows(ctx);
+    // divergences wired 11-13 (operator: "the hint is the divergence"): 5m / 15m / 1h, price vs RSI, WaveTrend and buyer/seller flow
+    Object.keys(dv).forEach(function (tf) { out[tf] = { div: dv[tf] }; });
     if (!T || !T.r) return out;
     (T.tfs || []).forEach(function (x) {
       var R = T.r[x[0]]; if (!R || !R.cells) return;
-      var c = R.cells, o = {};
+      var c = R.cells, o = out[x[0]] || {};
       if (c.vfi && c.vfi.v != null) o.vfi = { v: c.vfi.v };
       if (c.sqz && c.sqz.v != null) o.sqz = { rel: c.sqz.rel, v: c.sqz.v };
       if (c.adx && c.adx.v != null) o.adx = { v: c.adx.v };
@@ -604,7 +642,7 @@
     if (!el._wtl) { el._wtl = true; var tg = function (e) { if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; if (e.target.closest && e.target.closest('[data-wttoggle]')) { e.preventDefault(); wtOpen = !wtOpen; wtSave(wtOpen); render(el, el._ctx); } else if (e.target.closest && e.target.closest('[data-foldtoggle]')) { e.preventDefault(); foldOpen = !foldOpen; foldSave(foldOpen); render(el, el._ctx); } }; el.addEventListener('click', tg); el.addEventListener('keydown', tg); }
     el._ctx = ctx;
     ctx._tm = null;   // trigger row removed 11-12 (he could not select or read it); timingStrip/timingOf stay for tests
-    el.innerHTML = '<div class="hm-chart">' + head + caption(ctx, md) + chart(ctx, md, W, Math.max(220, H - 102 - 26 - vh - wh)) + volPane(ctx, md, W, vh) + volRead(ctx).html + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + newsCard(ctx) + foldCard(ctx, md) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + caption(ctx, md) + chart(ctx, md, W, Math.max(220, H - 122 - 26 - vh - wh - (wtOpen ? 38 : 0))) + volPane(ctx, md, W, vh) + volRead(ctx).html + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + newsCard(ctx) + foldCard(ctx, md) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -655,7 +693,7 @@
     '.hm-bl2{margin:0;padding-left:14px;font-size:11px;max-height:64px;overflow:hidden}.hm-brate{font-size:11px;margin-top:3px}.hm-brate small{color:var(--dim);font-size:10px}' +
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '.hm-vr{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;font-size:13px;margin-top:3px;padding-left:6px;border-left:4px solid var(--dim)}.hm-vr.up{border-left-color:var(--up)}.hm-vr.down{border-left-color:var(--down)}.hm-vr b{font:700 13px var(--mono,monospace);color:var(--fg)}.hm-vr.up span{color:var(--up)}.hm-vr.down span{color:var(--down)}.hm-vr small{color:var(--dim);font-size:11px}.hm-vr em{font-style:normal;font-weight:700;color:var(--amber)}' +
-    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-fold{max-height:60vh;overflow:auto}.hm-cap{font-size:12px;margin:2px 0 0;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sl{stroke:var(--dim);stroke-width:1;stroke-dasharray:2 4;opacity:.8}.hm-fm.up{fill:var(--up)}.hm-fm.down{fill:var(--down)}.hm-fm.amber{fill:var(--amber)}.hm-fm{stroke:var(--bg,#000);stroke-width:1}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-wc{display:inline-block;margin-right:8px;font-size:11px;font-weight:600}.hm-wc i{font-style:normal;font-weight:400;color:var(--dim);margin-right:2px}.hm-wc.up{color:var(--up)}.hm-wc.down{color:var(--down)}.hm-wc.dim{color:var(--dim)}.hm-wl{font-size:11px;color:var(--dim);margin-left:4px}.hm-wfull{font-weight:400}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
+    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-fold{max-height:60vh;overflow:auto}.hm-cap{font-size:12px;margin:2px 0 0;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sl{stroke:var(--dim);stroke-width:1;stroke-dasharray:2 4;opacity:.8}.hm-fm.up{fill:var(--up)}.hm-fm.down{fill:var(--down)}.hm-fm.amber{fill:var(--amber)}.hm-fm{stroke:var(--bg,#000);stroke-width:1}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-wc{display:inline-block;margin-right:8px;font-size:11px;font-weight:600}.hm-wc i{font-style:normal;font-weight:400;color:var(--dim);margin-right:2px}.hm-wc.up{color:var(--up)}.hm-wc.down{color:var(--down)}.hm-wc.dim{color:var(--dim)}.hm-wl{font-size:11px;color:var(--dim);margin-left:4px}.hm-wfull{font-weight:400}.hm-whow{font-weight:400;font-size:11px;opacity:.85}.hm-key{font-size:11px;background:none;opacity:.85}.hm-key .up{color:var(--up)}.hm-key .down{color:var(--down)}.hm-key .amber{color:var(--amber)}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
     '.hm-bias.conflict{border-color:var(--amber)}.hm-stm{font-size:11px;color:var(--dim)}.hm-an{font-size:11px;margin-top:1px;padding-left:6px;border-left:2px solid currentColor}.hm-an.dim{color:var(--fg);border-left-color:var(--dim)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS + (NF && NF.CSS || ''); doc.head.appendChild(st); }
@@ -666,6 +704,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _foldCard: foldCard, _boardLog: boardLog, _boardLogReset: function () { FLB.sig = null; }, _foldSetOpen: function (v) { foldOpen = !!v; foldSave(foldOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _inFrame: inFrame, _boardCard: boardCard, _volPane: volPane, _volRead: volRead, _emaS: emaS, _smaS: smaS, _storyCard: storyCard, _newsCard: newsCard, _liqMeaning: liqMeaning, MA5: MA5 };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _foldCard: foldCard, _boardLog: boardLog, _boardLogReset: function () { FLB.sig = null; }, _foldSetOpen: function (v) { foldOpen = !!v; foldSave(foldOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _chartKey: chartKey, _divLine: divLine, _boardInputs: boardInputs, _inFrame: inFrame, _boardCard: boardCard, _volPane: volPane, _volRead: volRead, _emaS: emaS, _smaS: smaS, _storyCard: storyCard, _newsCard: newsCard, _liqMeaning: liqMeaning, MA5: MA5 };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);
