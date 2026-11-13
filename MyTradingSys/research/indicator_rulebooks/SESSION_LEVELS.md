@@ -53,13 +53,16 @@ A session sweep measures a price probe that temporarily breaches a prior session
 | Malkan | Every Malkan setup requires strictly OHLC price bars to compute Wilder RSI(14) on close; no session levels used. | `MyTradingSys/research/malkan_extract_2026-10-15/PRE_REG_MALKAN_GFS_BTC.md:64` |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (study folder, no numbers per task instruction):
-- `MyTradingSys/research/t087_session_levels_2026-10-09/` (`RESULT.md`, `summary.json`): Systematic evaluation of failed first break of prior-day high/low before 14:00 UTC on BTCUSDT 1m (2022–2026), testing Asia and EU session extreme targets versus spike stops with taker fees.
-- `MyTradingSys/research/fast_track_2026-09-27/` (`BTC_SESSION_SWEEPS_2026-10-04.md`): T054 & T058 research study evaluating BTC session-open sweeps, DST-dependent volume peaks, London sweeps of Asia high/low, and opening-range predictive validity on multi-year 1m data.
-- `MyTradingSys/research/session_sweeps/` (`session_open_study.py`, `results_2026-10-04.json`): Execution runner and underlying trial results for pre-US sweeps and session open directional persistence.
-- `MyTradingSys/research/pre_us_failed_break_2026-10/` (`RESULT.md`): Pre-US failed-break short with 4-tranche scale-in on BTCUSDT 1m DEV dataset.
-- `MyTradingSys/research/setup_alpha_beta_2026-10-10/` (`BETA_RESULTS.md`): 15m/1h liquidity sweep combined with CVD absorption and 5m market structure shift entry on Binance BTCUSDT perp.
-- `MyTradingSys/research/layer_lab/session_levels_event_table/` (`REPORT.md`, `event_table.py`, `test_event_table.py`): Tabulation of failed break events across DEV 1m klines, recording touch/fail times, spike distance, and forward MFE/MAE.
+All rows OURS, copied from the named file. BTCUSDT 1m. No levels or prices quoted.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/t087_session_levels_2026-10-09/RESULT.md` | Failed first break of the prior-day high/low before 14:00 UTC, close back through within 60 min, entry at that close, stop at the spike, target Asia or EU session extreme, net of 2 x 0.05% taker. Window 2022-01-01..2026-10-07 with NO DEV / VALIDATION / HOLDOUT cut (file's own note), so treat as base rate, not evidence | 913 events (466 high, 447 low); asia_target all touch sessions 911 | asia_target both sides net -0.036% (t -1.72), target 24% / stop 63% / neither 13%; high -0.023% (n 466), low -0.049% (n 445); 2025 -0.077% (t -2.45), 2026 -0.087%. eu_target both 269, net -0.049% (n < 300) | 1m: DO NOT USE (file: no edge; VERDICTS.csv INCONCLUSIVE, no cut) |
+| `research/pre_us_failed_break_2026-10/RESULT.md` | Pre-US (07:00-13:00 UTC) failed break of PDH / early-session high / 5-day swing high, short, 4 tranches, DEV 2022-01-01..2024-06-30, taker 5 bp + 2 bp slippage | 176 episodes (228 signals) | mean net -0.0173% of K (SE 0.0520, t -0.33); win rate 61.4%; 154 of 176 days hit the time cap (sum -14.41% of K), 22 target days (+11.36% of K) | 1m: UNDERPOWERED (n 176 < 250; mean negative) |
+| same file, regime mix | DEV 130 weeks | | bull 25 (19%), bear 0, range 105 (81%) | |
+| `research/fast_track_2026-09-27/BTC_SESSION_SWEEPS_2026-10-04.md` | Pre-US sweeps (London sweeps Asia range, pre-US sweeps prior day high/low), US session direction, gross, no fee-net figure | not stated in the quoted bottom line (F6 n 59) | US session closes up 46-49% after such sweeps vs 48% base; first 30 min after a pre-US range sweep: 52% up either way; Tom opening-range rule: trend days 29% / 31% / 33% for small / mid / large range | CONTEXT ONLY (no direction edge; gross; DEV cut NOT_MEASURED in that file) |
+| `research/layer_lab/session_levels_event_table/REPORT.md` | Failed-break event table, DEV through 2024-06-30, 4h forward MFE/MAE in R | 445 events (225 high, 220 low) | none: construction only, no fees or outcome | UNTESTED |
+| `research/setup_alpha_beta_v2_2026-10/RESULT.md` (PDH/PDL sweep, 15m) | Plain sweep S0 and CVD arm S1, 1.5R / 90 min bracket, taker fees | S0 DEV 344 / VAL 148 | S0 mean R net DEV -0.470 (t -7.19), VAL -0.669 (t -4.82) | 15m: DO NOT USE |
+Sweep-reclaim "0 of 12" (INDEX verdict, side-notes `edge-session-sweep-reclaim-1113_RESULTS.md`): file not in the repo, NOT_MEASURED here. Weekly/monthly levels, Asia high/low as a standalone level: NOT_MEASURED.
 
 ## 6. How to read it now on Live Aid
 - **Panel:** **Levels** and **Timeframe strip** (`MyTradingSys/tools/live_aid/live_aid.html`).
