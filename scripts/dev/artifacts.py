@@ -6,7 +6,7 @@
   python scripts/dev/artifacts.py build                     # regenerate every page that has a generator in this repo
   python scripts/dev/artifacts.py stale                     # STALE <slug> <url> for each page whose repo build differs from what was last published
   python scripts/dev/artifacts.py publish-record --slug X [--date YYYY-MM-DD] [--ship]   # --ship commits+ships registry.json itself; after an Artifact publish: store published_sha + the publish date (default today)
-  python scripts/dev/artifacts.py stamp --file page.html   # put "Updated <UTC>" first on a built page (build does it for generated pages)
+  python scripts/dev/artifacts.py stamp --file page.html --at <UTC data time> | --remove   # stamp a hand-made page with when its DATA was built, never now (generators stamp themselves at build)
   python scripts/dev/artifacts.py republish                 # REPUBLISH <slug> <html> <url> for each stale page (publisher login only; --all: any login)
   python scripts/dev/artifacts.py banner --slug research_map [--file live.html]   # insert/refresh the "Part of MTS Home" line
   python scripts/dev/artifacts.py audit-links               # audit registry vs repo copy and verify relative links across pages
@@ -619,6 +619,8 @@ def main(argv=None):
     ap.add_argument("--all", action="store_true", help="republish: print for any login, not only a publisher login")
     ap.add_argument("--file", help="banner / stamp: html to update in place (default: the page's repo html)")
     ap.add_argument("--date", help="publish-record: the day the page was last published (default today)")
+    ap.add_argument("--at", help="stamp: UTC time the page's DATA was built (required; never 'now')")
+    ap.add_argument("--remove", action="store_true", help="stamp: drop the stamp (a page whose data time is not in the file)")
     ap.add_argument("--ship", action="store_true", help="publish-record: commit and ship registry.json at once (no record left uncommitted)")
     a = ap.parse_args(argv)
     reg = load()
@@ -633,10 +635,17 @@ def main(argv=None):
         print(f"banner: {a.slug} -> {f}")
         return 0
     if a.cmd == "stamp":
+        # A stamp says when the page's DATA was built, never when it was republished (operator 2026-11-13: a fresh stamp on 8-hour-old data lies).
         f = Path(a.file or "")
         if not f.is_file():
             raise SystemExit("artifacts: stamp needs --file <existing html>")
-        f.write_text(put_stamp(f.read_text(encoding="utf-8")), encoding="utf-8", newline="\n")
+        if a.remove:
+            f.write_text(STAMP_RE.sub("", f.read_text(encoding="utf-8"), count=1), encoding="utf-8", newline=chr(10))
+            print(f"stamp removed: {f}")
+            return 0
+        if not a.at:
+            raise SystemExit("artifacts: stamp needs --at <UTC time the page DATA was built, e.g. 2026-11-13T05:17Z> (or --remove); the time of this command is never the data time")
+        f.write_text(put_stamp(f.read_text(encoding="utf-8"), datetime.fromisoformat(a.at.replace("Z", "+00:00")).replace(tzinfo=timezone.utc)), encoding="utf-8", newline=chr(10))
         print(f"stamp: {f}")
         return 0
     if a.cmd == "stale-cache":      # the prompt hook's background refresh: slugs of stale pages -> --file (json), never raises
