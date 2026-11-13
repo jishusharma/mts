@@ -44,12 +44,14 @@ Formula pointer: `backtest/layers/FORMULAS.md` section 13 (funding cash flow: `s
 | Habib / CBP | NO-SOURCE: no extract mentions funding rate or long/short ratios. | none found |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (no numbers in this section per task instruction):
-- `MyTradingSys/research/fast_track_2026-09-27/` (T055_BT_RERUN_FULLFUNDING_2026-10-07.md, T055_BT_c1_RERUN_2026-10-06.md): T055 C1 candidate evaluating funding-extreme reversion combined with CVD/price divergence fade on 15m BTC bars.
-- `MyTradingSys/research/flow_layers_concepts_2026-10-28/` (README.md): Observational study of flow layers around US open, examining CVD, net delta, OI, net longs/shorts, and Binance top-trader account and position ratios.
-- `MyTradingSys/research/tom_fabio_guidance_2026-10-12/` (FAST_MOVE_CATALOGUE.md, GUIDANCE_AUDIT.md, MATRIX_REPORT.md): Catalogue and data-gap audit noting global account and top-trader long/short ratios as positioning features.
-- `MyTradingSys/research/tom_fabio_course_correction_2026-11-07/` (AUDIT_AND_COURSE_CORRECTION.md): Observation of top-trader long/short ratio expansion during liquidity flushes.
-- `MyTradingSys/research/screenshots/extracts/` (c4e9667bc1f6_coss_2h_positioning.md): Extraction of 2h positioning snapshot evaluating top-trader long/short account metrics.
+All rows OURS, copied from the named file. BTCUSDT.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md` (C1 funding_cvd_fade) | Funding-extreme reversion plus CVD/price divergence fade, 15m bars, 108 variants, fee 10 bp + slip 2 bp + real funding, chronological 70/30 IS/OOS (not the DEV/VALIDATION/HOLDOUT split) | IS 129 events; OOS 76 | IS net +0.4113%; OOS net -0.0453%, net Sharpe -0.0346; PBO 0.1385; criteria oos_mean_net, oos_net_sharpe, same_sign fail | 15m: DO NOT USE (file verdict FAIL, provisional, single OOS year) |
+| `research/gross_effect_screen_2026-10-15/FUNDING_RERUN.md` | Gross-effect screen, primary cell d=1 h=60, flat 1 bp funding vs real signed funding, DEV < 2024-07-01, before the 0.14% trading cost | T 40; notF 1399; C 1439 | mean G with real funding: T -0.05610%, notF -0.00548%, C -0.00688% (before cost) | UNDERPOWERED (file: INCONCLUSIVE, n_T 40 < 200 pre-registered minimum; funding impact on the primary cell +0.0013 pp at most) |
+| `research/layer_lab/funding_extreme_event_table/REPORT.md` | DEV-only event table: trailing 90-print 95th-percentile funding flag, faded, 24h forward excursions in ATR14 units | 2,736 prints; 726 extreme events (695 short fades, 31 long fades) | none: the report is a table build, no outcome or fee-net result | UNTESTED (file verdict BUILT; no trading rule) |
+| `research/flow_layers_concepts_2026-10-28/README.md` | Top-trader long/short ratios beside price around the US open, observation of one session | observed, no sample | no returns computed; ratios moved slowly and opposite to the hours-long price swing (README point 3); lead/lag finer than the source period NOT_IN_DATA (F10) | CONTEXT ONLY (descriptive concept, no outcome) |
+Long/short ratio fade (INDEX verdict "ratio fade 0 of 2", side-notes `edge2-ratio-fade-wide-1113_RESULTS.md`): that file is not in the repo, so the numbers are NOT_MEASURED here; re-copy once it is committed. Funding-rate rule fee-net on the DEV / VALIDATION / RECENT split, regime mix: NOT_MEASURED.
 
 ## 6. How to read it now on Live Aid
 - **Funding and premium panel** (`tools/live_aid/live_aid.html` table `#fund`):

@@ -2529,3 +2529,21 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13 ~18:15Z: load logins A and B and both Gemini accounts (voice, JIS-NB)
 - Operator order (sense): logins A and B are hardly doing anything; put them to use in line with the 5-hour plan; do not get off track; keep watching threads, CPU, cleanups and the Haiku feed watcher; engage every model and give them loads of tasks so the quota is used before it expires tomorrow.
 - Mechanism: `MyTradingSys/system/LOGIN_PLAN_2026-11-13.md` (ordered queue per login and per Gemini account, read at station boot per WORKERS.md rule 10) plus a HIGH broadcast to the laptop; two wave-2 cards filed (edge4-rsi-4h-le12-daily-lt30-1113, edge4-malkan-divergence-r03-r04-1113). Login B needs one operator-started session on the NUC (start line in the plan).
+
+## 2026-11-13 ~18:38Z: login C spends past the 5-hour pacing until weekly 85%; edge in 3 hours (voice, JIS-NB)
+- Operator order (sense): do not worry about the session (5-hour) limits; until the weekly reading is 85% use the session limits fully and save work. All he needs is an edge, found in the next 3 hours, from what was discussed. Forget the laptop as the main engine (assign it what you like).
+- Applied: 5 Sonnet edge studies started on the desktop at 18:40Z (4h/8h/12h RSI extremes with daily band; Malkan divergence R03/R04; the RSI-confirm rule with one layer at a time; where to sell; NY-session value return). Workers do not ship; the Supervisor ships after the pre-ship checks. `supervisor.py plan` still prints CRUCIAL-ONLY from its pacing rule: his order outranks it until week 85%.
+
+## 2026-11-13 ~18:42Z: shipping must stop blocking work (voice, JIS-NB)
+- Operator (sense): why are we still stuck on red CI; has shipping time improved; find a solution or remove the blockage; we need to work freely.
+- Measured: local ship 9 s to 2.4 min (was 17-27 min); CI median 4 min; but 35 of 57 trunk runs red in 4 h, from 4 breaks, each a check CI runs and the local ship gate did not (PRE_REG context lint, wiring registry row, own-cost test, shared-list consistency).
+- Mechanism: card ship-gate-misses-prereg-lint-and-cost-test-1113 (Builder ship-gate-ci-parity-1113, started 18:45Z): the ship gate runs those checks on the merged tree before the push. No gate removed. Next if red persists: the ship train (cards ship-train-*), which lands only green batches.
+
+## 2026-11-13 ~19:05Z: Live Aid becomes one home screen (four screenshots, JIS-NB)
+- Operator (sense): Money has too many NOT_IN_DATA cells and no "last updated"; News is unreadable, misaligned and not actionable (say what to buy or sell on a news item, keep a story while it builds, drop it when it fades, show what just passed and its impact, and the important events ahead for the day, week and month); US open looked stale; the map and All readings are not used; the coil belongs on the main page; Home is too stretched and wordy and does not look like a dashboard. "We just need the home screen." Detail only when he asks. The unused In trade column may stay.
+- Mechanism: requirement R27 in `MyTradingSys/tools/live_aid/REQUIREMENTS.md`, Builder slug live-aid-one-screen-1114 (one dense screen, an as-of stamp on every panel, coil on Home, news as buy/sell/building/fading rows plus an events-ahead strip). Other tabs are folded in or removed, not deleted from history.
+
+## 2026-11-13 ~19:35Z: "Zing" real-time setups with 60-100% win rates; what are we not doing right (JIS-NB)
+- Operator (sense): check what Zing does with real-time trade setups at 60% to 100% win rates; what are we not doing right.
+- Answer given: no service of that name was found (he has not given a link or exact name yet). A win rate alone says nothing about profit: a high win rate with small wins and rare large losses loses money, so every MTS test reports profit per trade after fees, not win rate. Today's 11 fee-net tests found no rule that passes; the RSI-extreme signal beats random entries but its profit sits in about five market-wide crash days.
+- Open: link or exact name from him; then a like-for-like check of its published setups (entry, stop, target, fees, sample size).

@@ -42,13 +42,15 @@ Measures the total number of outstanding, active derivative contracts (futures o
 | Habib / CBP | NO-SOURCE: no extract mentions open interest. | none found |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (study folder, no numbers per task instruction):
-- `MyTradingSys/research/oi_side_2026-10-30/` (`OI_CONCEPTS.md`, `study.py`, `RESULT.md`): Mapping of Krown open interest and liquidation concepts to Binance metrics archive; evaluation of OI changes, leverage stacking, and liquidation cascade flushes.
-- `MyTradingSys/research/eagle_eyes_picture_2026-10-28/` (`OI_COMMENTARY_SPEC.md`, `OPERATOR_POINTERS.md`): Specification and empirical lookback of C24 Bybit 5m flush study, evaluating 4h forward returns after liquidation flushes and persistent OI drop.
-- `MyTradingSys/research/flow_layers_concepts_2026-10-28/` (`README.md`): Observational analysis of open interest alongside CVD, net delta, and top-trader positioning around the US open.
-- `MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/` (`PRE_REG.md`, `RESULT.md`): L1 open interest tracking on weekly-low bounce events; noted as NOT_IN_DATA for historical DEV tape (live-tracking field).
-- `MyTradingSys/research/c26_roadmap_2026-11-01/` (`PHASE1_RANGE.md`, `phase1_liq_look.py`): Examination of open interest buildup and liquidation bands across range boundary touches.
-- Side-notes referenced in backlog: `edge-oi-flush-1113_RESULTS.md`, `edge-crowding-reversal-1113_RESULTS.md`, `edge-forced-move-fade-1113_RESULTS.md` (uncommitted/external candidate notes referenced in INDEX.md).
+All rows OURS, copied from the named file. BTCUSDT. No fee-net OI rule has been run in a committed file; fee-net columns say NOT_MEASURED.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/oi_side_2026-10-30/RESULT.md` | Binance USD-M 5m OI and price over 30-minute windows (OI up or down >= 0.25%), share up 60 min later; descriptive counts, no fees, no edge claim; DEV 2022-2025 (file's own DEV label) | 35,963 windows; cells 4,985 to 8,023 | NOT_MEASURED. Up 60 min later: OI up/price up 48.5% (n 6,193); OI up/price down 52.7% (4,985); OI down/price up 48.9% (5,428); OI down/price down 53.5% (6,296); all cells 48% to 54%; +0.5%-first vs -0.5%-first between 37.5% and 47.9% vs 39.3% and 48.8% | 5m/30m: CONTEXT ONLY (OI alone gives no direction; gap of about 4 points is below fee level per the file) |
+| same file, by year | Short-covering rally (OI down, price up), share up 60 min | per-year cells 842 to 2,817 | 2022 44%, 2023 48%, 2024 52%, 2025 55%; long liquidation (OI down, price down) bounce 2023 58%, 2025 48% | CONTEXT ONLY (sign flips across years; about 5 standard errors swing, regime-dependent) |
+| same file, taker-delta split | Taker delta in the window, share up 60 min | buyers 2,035; mixed 3,765; sellers 2,223 | up 60 min 49.4% / 51.6% / 52.6%; next +-0.5% first about a coin flip (38% vs 39% for one split); ratio moved > 1% in about 6% of build-ups (n 133 and 379) | CONTEXT ONLY |
+| `research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md` (line 40, C24 Bybit 5m, 120 days, window not DEV-labelled in the extract) | After an OI flush (price -0.25% and OI -0.2% on a 5m bar), OI path over the next 40 min and 4h forward | rebuilding 18, flat 9, still falling 22 | 4h up 53% / 56% / 55% vs 52% base (gross); still falling: 4h drop > 1% 14% vs 6% base | UNDERPOWERED (n 9 to 22; direction not given by OI) |
+| `research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md` | OI as a layer on weekly-low bounce events | 8 | NOT_EVALUATED, every split has a side with n < 10; OI is NOT_IN_DATA on DEV (Binance metrics archive starts 2025-09-01) | UNDERPOWERED |
+Backlog notes `edge-oi-flush-1113`, `edge-crowding-reversal-1113`, `edge-forced-move-fade-1113` (INDEX verdict "flush 0/10, crowding 0/24, forced-move 0/128") are not committed, so those counts are NOT_MEASURED here; re-copy once committed. Regime mix and DEV / VALIDATION / RECENT split: only the per-year rows above exist; the rest NOT_MEASURED.
 
 ## 6. How to read it now on Live Aid
 - **Panel:** "What the money is doing" (`tools/live_aid/live_aid.html` container `#m-wrap` / `.hd`):

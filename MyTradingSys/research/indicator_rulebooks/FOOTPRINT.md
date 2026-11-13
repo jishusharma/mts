@@ -43,11 +43,16 @@ Formula pointer: `backtest/layers/FORMULAS.md` section 28.1 (`NOT VERIFIED-TV`, 
 | NK (StockTalk) | No extract mentions footprint charts or order-flow ladders (relies on Hilega-Milega, RSI, and pivots) | `MyTradingSys/research/nk_stocktalk_1113/` (no mentions found) |
 | CryptoCred | No extract mentions footprint ladder charts (relies on HTF support/resistance, market structure, and trigger patterns) | `backtest/layers/cryptocred/TEST_PLAN.md` (no footprint mentions) |
 
-## 5. OUR measurements (pointers only)
-- `research/large_trade_absorption_2026-10-30/RESULT.md`: Study of large trades (trailing 99th percentile, >=244.5 BTC buy / <=-259.2 BTC sell) and candle absorption across 5m bars on Binance BTCUSDT perp (DEV 2024-12 to 2025-12).
-- `research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md`: Study of big trade exit policies (bracket 1-1.5 ATR, time stops 24-96 bars) across multiple layer triggers on 15m and 1h spot bars.
-- `research/footprint_12h_1112/CHECK.md`: Parity verification study comparing MTS 12h footprint aggregations against Legend CoinGlass 12h footprint charts.
-- `research/orderflow_views_2026-10-14/RESULT.md`: Study of order-flow views including CVD divergence and volume absorption features across Binance perp bars.
+## 5. OUR measurements
+All rows OURS, copied from the named file. BTCUSDT. No price levels quoted.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/large_trade_absorption_2026-10-30/RESULT.md` | Large-trade bars (top/bottom 2% of 5m large-trade net, >= +244.5 / <= -259.2 BTC) and what the next 60 min and 4 h did; DEV 2024-12..2025-12; descriptive, no fees, no edge claim | buy-aggression 1,155; buy-absorbed 99; sell-aggression 1,168; sell-absorbed 95 | Up in 60 min: 47.4% / 50.5% / 53.5% / 44.2%. Up in 4 h: 48.1% / 51.5% / 55.5% / 43.2%. After absorbed big sells, -0.5% came first 54.7% vs +0.5% first 35.8% | 5m: CONTEXT ONLY (aggression fades a little; absorption alone did not reverse price; level x absorption not yet run) |
+| `research/bigtrade_2026-10-09/EXIT_POLICIES_RERUN_DEV_2026-10-17.md` | Fabio cvd_absorption layer fires (a footprint-adjacent trigger, not footprint itself), six exit policies, 10 bp taker round trip + 2 bp slippage (assumed), TRAIN 2022-01..2024-06, VALIDATE not read | 15m 2,497; 1h 603 | 15m: all six policies -12.2 to -16.6 bp. 1h: five policies -4.6 to -19.8 bp; time_96_wide_stop_2atr +26.7 bp (+0.35 R) with no VALIDATE read. Summary line: 0 cells positive in both splits | 15m: DO NOT USE. 1h: UNDERPOWERED as a lead only (single DEV cell of 114 trials, VALIDATE unread) |
+| same family, original run `EXIT_POLICIES_REPORT.md` (flagged CONTAMINATED, TRAIN ran to 2025-01) | same, with VALIDATE 2025-01..06 | 1h 687 TRAIN / 120 VALIDATE | cvd_absorption 1h time_96: +26.9 bp TRAIN, -63.5 bp VALIDATE | the 1h positive does not hold out of sample |
+| `research/orderflow_views_2026-10-14/RESULT.md` | CVD divergence with the OI split, 1m and 5m (not a footprint cell read) | see CVD.md section 5 | DEV rerun DIV minus CONTROL within +-0.022; 0 of 4 pass | 1m, 5m: DO NOT USE |
+| `research/footprint_12h_1112/CHECK.md` | MTS 12h footprint (delta, POC) vs the Legend CoinGlass 12h footprint | 0 bars compared | Status in the file: pending, chart profile not connected | 12h: UNTESTED (parity NOT_MEASURED) |
+Fee-net footprint-cell outcome study (stacked imbalance, POC rejection, per-level delta): NOT_MEASURED, none in the repo. Regime mix and DEV / VALIDATION / RECENT split: NOT_MEASURED for the large-trade study (DEV 2024-12..2025-12 only, 2026 untouched).
 
 ## 6. How to read it now on Live Aid
 Panel "Timeframe strip" / "Forced moves" / "Money":
