@@ -301,3 +301,4 @@ MyTradingSys/research/adx_1d_through25_2026-11-13/test_run_1113.py
 MyTradingSys/tools/live_aid/test_flow_chart.py
 MyTradingSys/tools/live_aid/test_flow_collector.py
 MyTradingSys/tools/live_aid/test_adx_strip.py
+scripts/dev/test_shared_lists.py
