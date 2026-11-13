@@ -1,0 +1,1 @@
+{"t": "20261113T195352Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Login A: run=0, week 5%. Start now: fetch, read MyTradingSys/system/LOGIN_PLAN_2026-11-13.md login A queue, run 2 Sonnet workers on it; reply done/blocked.", "login": "C", "id": "b-71f042", "prio": "high", "cmd": "", "aud": "top"}
