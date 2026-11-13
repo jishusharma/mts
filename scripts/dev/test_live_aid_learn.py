@@ -53,3 +53,17 @@ def test_tables_md_fallback_parses_committed_review():
     assert d["idea"]["n"] == 759 and round(d["idea"]["hit"]) == 47
     assert d["idea fade @ Yesterday low"]["verdict"].startswith("test")
     assert d["idea fade @ Last week low"]["verdict"].startswith("NOT-ENOUGH-EVIDENCE")
+
+
+def test_page_csv_header_scores_rows(tmp_path):
+    """Header of home.js FLAG_COLS + synthetic klines: rows > 0, r1h computed, SHORT sign flipped."""
+    t0 = 1794000000000 // 60000 * 60000
+    kl = tmp_path / "k.json"
+    kl.write_text('[[%d,"0","0","0","101","0"],[%d,"0","0","0","99","0"]]' % (t0 + 3600000, t0 + 3600000 + 60000))
+    csvp = tmp_path / "log.csv"
+    iso = lambda ms: __import__("datetime").datetime.fromtimestamp(ms / 1000, __import__("datetime").timezone.utc).isoformat()
+    csvp.write_text("\n".join(["t,kind,side,level,evidence,price", "%s,idea,LONG,Day open,REJECTED,100" % iso(t0), "%s,idea,SHORT,Day open,REJECTED,100" % iso(t0 + 60000), "%s,idea,LONG,Day open,REJECTED,100" % iso(t0 + 7200000), ""]))
+    rows = la.load_log(csvp, la.load_klines(kl))
+    assert [r["r1h"] for r in rows] == [1.0, 1.0, None]  # LONG +1%, SHORT vs 99 = +1%, no kline
+    assert rows[0]["at"] == "Day open" and rows[0]["state"] == "REJECTED"
+    assert rows_by_name(la.score(rows))["idea"]["n"] == 2

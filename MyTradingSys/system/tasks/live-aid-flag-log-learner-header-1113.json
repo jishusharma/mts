@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T11:56:39Z",
   "commands": [],
   "created": "2026-11-12T21:31:46Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "live_aid_learn.py reads page CSV header + --klines computes r1h; new test fails on old cod",
+      "ref": "4d4a63e4b",
+      "utc": "2026-11-13T11:56:39Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: live_aid_learn.py scores Live Aid flags vs 1h move; first list 2026-11-11 (17 rows",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "live-aid-flag-log-autoexport-1113",
   "note": "Refined 1113b. Verified on trunk: FLAG_COLS in home.js:493 vs learner docstring line 6; mismatch still present.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T22:35:16Z",
   "refs": [],
-  "result": "",
+  "result": "live_aid_learn.py reads page CSV header + --klines computes r1h; new test fails on old code, 8 pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/live_aid_learn.py",
     "scripts/dev/test_live_aid_learn.py"
@@ -45,12 +58,13 @@
   "sources": [
     "Live Aid recording audit 2026-11-12 (notes folder live_aid_audit_1112.md). Lane: Live Aid (not an enum lane; refiner sets lane)."
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "In load_log detect the page header (has 't' and 'price', no 'r1h'): map level->at, evidence->state.",
     "Add --klines <1m closes json, fixture_klines.json shape>; r1h = (close at t+60min / price - 1)*100, sign flipped for SHORT; no kline => None.",
     "Keep the old kind,side,state,at,r1h CSV path unchanged."
   ],
+  "taken": "2026-11-13T11:56:39Z",
   "tests": "test_page_csv_header_scores_rows: build CSV with home.js columns + synthetic klines; fails on old code (rows=0, KeyError r1h).",
   "title": "Live Aid flag-log CSV header does not match live_aid_learn.py (rows=0, r1h never computed)",
   "weight": "",
