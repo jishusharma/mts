@@ -293,8 +293,26 @@
   }
   // ONE line for the WaveTrend lanes (operator 11-13: six strips took the space and he could not use them). Timing = 1m 2m 3m, frame =
   // 15m + 30m agree, 4h = the last CLOSED 4h bar (his TradingView shows the forming bar), backdrop only. OURS, not backtested.
-  var wtOpen = false;   // strips behind a click, collapsed by default; kept across the 1 s re-render
-  function wtSoWhat(ctx, md) {
+  // operator 11-13 (2nd ask): ONE compact row = timeframe chips (state, zone) + last cross and its age; the full sentence moves into the
+  // tooltip and, when opened, above the strips (no information lost). Open/closed is remembered per viewer in localStorage (try/catch).
+  var WT_KEY = 'mts_wt_open';
+  function wtStore() { try { return (typeof globalThis !== 'undefined' && globalThis.localStorage) || root.localStorage || null; } catch (e) { return null; } }
+  function wtLoad() { try { var st = wtStore(); return !!st && st.getItem(WT_KEY) === '1'; } catch (e) { return false; } }
+  function wtSave(v) { try { var st = wtStore(); if (st) st.setItem(WT_KEY, v ? '1' : '0'); } catch (e) { /* storage blocked: choice lives for this page only */ } }
+  var wtOpen = wtLoad();   // strips behind a click, collapsed by default; kept across the 1 s re-render
+  var WT_MS = { '1m': 60000, '2m': 120000, '3m': 180000, '15m': 900000, '30m': 1800000, '4h': 14400000 };
+  function wtAge(ms) { var m = Math.round(ms / 60000); return m < 120 ? m + ' min' : Math.round(m / 60) + ' h'; }
+  function wtChips(L) {
+    var chips = LANES.map(function (ln) {
+      var z = L[ln[0]], sd = z && z.side != null ? z.side : null, c = sd === 1 ? 'up' : sd === -1 ? 'down' : 'dim', z2 = z && z.zone === 'hot' ? ' OB' : z && z.zone === 'cold' ? ' OS' : '';
+      return '<span class="hm-wc ' + c + '" title="' + ln[0] + ' ' + ln[1] + ': ' + (sd === 1 ? 'rising' : sd === -1 ? 'falling' : 'no data') + (z2 ? (z2 === ' OB' ? ', overbought' : ', oversold') : '') + '"><i>' + ln[0] + '</i>' + (sd === 1 ? '▲' : sd === -1 ? '▼' : '·') + z2 + '</span>';
+    }).join('');
+    var last = null;
+    ['1m', '2m', '3m', '15m', '30m'].forEach(function (tf) { var z = L[tf], lx = z && z.last; if (!lx) return; var age = lx.ago * (z.ms || WT_MS[tf]); if (!last || age < last.age) last = { tf: tf, side: lx.side, age: age, strong: lx.strong }; });
+    var lt = last ? '<span class="hm-wl">last cross ' + last.tf + ' ' + (last.side > 0 ? '▲ up' : '▼ down') + (last.strong ? ' (big dot)' : '') + ', ' + wtAge(last.age) + ' ago</span>' : '<span class="hm-wl dim">last cross: none in view</span>';
+    return chips + lt;
+  }
+  function wtSentence(ctx, md) {
     var L = ctx.lanes || {}, a = L['15m'], b = L['30m'], sd = function (z) { return z && z.side != null ? z.side : null; };
     var fr = sd(a) !== null && sd(a) === sd(b) ? sd(a) : 0;
     var dot = ['1m', '2m', '3m'].some(function (tf) { var z = L[tf]; return z && z.bars && fr && z.bars.slice(-4).some(function (x) { return x.x === fr && x.strong; }); });
@@ -307,7 +325,12 @@
     var act = !a && !b ? 'wait' : fr > 0 ? (dot ? 'a big green dot just fired on 1m-3m, that is the timing; long side only' : 'wait for a big green dot on 1m-3m') + (up ? ', or a 15m close above ' + n0(up.price) : '') :
       fr < 0 ? (dot ? 'a big red dot just fired on 1m-3m, that is the timing; short side only' : 'wait for a big red dot on 1m-3m') + (dn ? ', or a 15m close below ' + n0(dn.price) : '') : 'wait';
     var txt = 'Timing 1-3m: ' + tim + ' · Frame 15m/30m: ' + frame + ' · 4h (last closed bar): ' + h4 + ' (backdrop, not a trigger) -> ' + act;
-    return '<div class="hm-sw hm-wsw ' + (fr > 0 ? 'up' : fr < 0 ? 'down' : 'dim') + '" data-wttoggle="1" role="button" tabindex="0" title="Click to ' + (wtOpen ? 'hide' : 'show') + ' the six WaveTrend strips"><b>WaveTrend:</b> ' + esc(txt) + ' <small>[' + (wtOpen ? 'hide' : 'show') + ' strips]</small></div>';
+    return { cls: fr > 0 ? 'up' : fr < 0 ? 'down' : 'dim', txt: txt };
+  }
+  function wtSoWhat(ctx, md) {
+    var r = wtSentence(ctx, md), L = ctx.lanes || {};
+    return '<div class="hm-sw hm-wsw ' + r.cls + '" data-wttoggle="1" role="button" tabindex="0" title="' + esc(r.txt) + ' (click to ' + (wtOpen ? 'hide' : 'show') + ' the six strips)"><b>WaveTrend</b> ' + wtChips(L) + ' <small>[' + (wtOpen ? 'hide' : 'show') + ' strips]</small></div>' +
+      (wtOpen ? '<div class="hm-sw hm-wfull ' + r.cls + '">' + esc(r.txt) + '</div>' : '');
   }
   function WTH(PU) { return PU && PU.WT_HOT || 53; }
   // Level story: nearest level above and below (or the one price sits at), read on completed 15m Binance closes (levelstory.js).
@@ -432,7 +455,7 @@
       (md.lad.below[0] && inFrame(md, md.lad.below[0]) ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
     var wh = wtOpen ? Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32))) : 0;
-    if (!el._wtl) { el._wtl = true; var tg = function (e) { if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; if (e.target.closest && e.target.closest('[data-wttoggle]')) { e.preventDefault(); wtOpen = !wtOpen; render(el, el._ctx); } }; el.addEventListener('click', tg); el.addEventListener('keydown', tg); }
+    if (!el._wtl) { el._wtl = true; var tg = function (e) { if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; if (e.target.closest && e.target.closest('[data-wttoggle]')) { e.preventDefault(); wtOpen = !wtOpen; wtSave(wtOpen); render(el, el._ctx); } }; el.addEventListener('click', tg); el.addEventListener('keydown', tg); }
     el._ctx = ctx;
     ctx._tm = null;   // trigger row removed 11-12 (he could not select or read it); timingStrip/timingOf stay for tests
     el.innerHTML = '<div class="hm-chart">' + head + chart(ctx, md, W, H - 78 - wh) + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + gauge(md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + moneyCard(ctx) + newsCard(ctx) + '</div>';
@@ -485,7 +508,7 @@
     '.hm-bl2{margin:0;padding-left:14px;font-size:11px;max-height:64px;overflow:hidden}.hm-brate{font-size:11px;margin-top:3px}.hm-brate small{color:var(--dim);font-size:10px}' +
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '.hm-vr{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;font-size:13px;margin-top:3px;padding-left:6px;border-left:4px solid var(--dim)}.hm-vr.up{border-left-color:var(--up)}.hm-vr.down{border-left-color:var(--down)}.hm-vr b{font:700 13px var(--mono,monospace);color:var(--fg)}.hm-vr.up span{color:var(--up)}.hm-vr.down span{color:var(--down)}.hm-vr small{color:var(--dim);font-size:11px}.hm-vr em{font-style:normal;font-weight:700;color:var(--amber)}' +
-    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
+    '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-wc{display:inline-block;margin-right:8px;font-size:11px;font-weight:600}.hm-wc i{font-style:normal;font-weight:400;color:var(--dim);margin-right:2px}.hm-wc.up{color:var(--up)}.hm-wc.down{color:var(--down)}.hm-wc.dim{color:var(--dim)}.hm-wl{font-size:11px;color:var(--dim);margin-left:4px}.hm-wfull{font-weight:400}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
     '.hm-bias.conflict{border-color:var(--amber)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
   function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
@@ -496,6 +519,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; }, _soWhat: soWhat, _chart: chart, _inFrame: inFrame, _boardCard: boardCard };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _inFrame: inFrame, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);
