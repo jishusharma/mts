@@ -184,13 +184,16 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-board-rates-1111` ready p1 SONNET: Live Aid setup board hit rate per evidence mix from replay.js, printed with n
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
   - `live-aid-board-value-area-not-wired-1111` ready p2 SONNET: Live Aid setup board gets the value area from one definition
+  - `live-aid-flag-hitrate-grey-1113` raw p2 SONNET: Live Aid: show hit rate and n next to each flag/level story (from live_aid_learn.py, SOURCED replay now, real 
   - `live-aid-flag-log-autoexport-1113` raw p2 SONNET: Live Aid flag log is browser-only: add an automatic export to a file the learner can read (page posts rows to 
+  - `live-aid-log-idea-setup-rows-1113` raw p2 SONNET: Live Aid flag log records only news/liq/touch since IDEA/SETUP banners were removed; log the board LONG/SHORT 
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
   - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
+  - `live-aid-cbp-mts-state-on-home-1113` raw p3 SONNET: Live Aid Home: one row for CBP analyst levels (age, call) and MTS layer state (fired/silent per layer, R15) wh
   - `live-aid-closed-bars-sweep-1110` ready p3 SONNET: Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP ca
   - `live-aid-learn-daily-trigger-1113` raw p3 SONNET: Live Aid learner has no named daily trigger: us_prep.py P4 is the only hook and no pass ran for 11-12; wire a 
   - `live-aid-liq-history-log-1113` raw p3 SONNET: Live Aid liquidation layer history survives reload but is never written to a scoreable log; add a log (time, s
