@@ -207,7 +207,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/research/analysts/ROADMAP.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `analyst-ingest-roman-x` ready p3 SONNET: Implement Roman Trading volume-absorption social call listener
-  - `callers-peer-ledger-provenance-1113` ready p3 HAIKU: Check rlinda/bennett/cryptochase CALL_LEDGER.csv rows: round entries + generic URLs look like illustrative sam
 
 ## Krown (TA 101: zones, volume, candles, averages, ranges) (`krown`)
 - Status: Spec v0.2 + 120-rule ledger from 15 of 19 reachable TA 101 videos (14 TA + 1 fees). The 4 missing transcripts are on disk since 2026-10-16 (krown_capture_2026-10-16/transcripts/ta101_missing4). Gate G2 reached: KROWN_SETUP_CATALOG.md (commit f4a5182a). One structural stop (compression breakout), no stop distance or size rule: the rest is OURS. Detectors S1-S9 exist (v0, 49 tests; S10-S16 have none). Recall check on his dated examples: 3 of 12 verified against klines, 0 strict hits (RECALL FAIL). No DEV event study yet (card krown-dev-event-study not started); fable run 6 (S8) INCONCLUSIVE.
