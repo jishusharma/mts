@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T14:58:29Z",
   "commands": [],
   "context": {
     "calls_to_edit": 9,
@@ -24,8 +25,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "auto-captured empty card (no lane, goal or source; only a test_artifacts.py edit-miss context); nothing scopable, refile with a concrete defect if one remains",
+  "pinned": false,
   "prio": 3,
+  "reason": "auto-captured empty card (no lane, goal or source; only a test_artifacts.py edit-miss context); nothing scopable, refile with a concrete defect if one remains",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -34,7 +37,7 @@
   "scope_out": [],
   "size": "",
   "sources": [],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "MTS pages cleanup 1113 follow-ups",
