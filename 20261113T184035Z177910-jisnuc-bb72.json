@@ -1,0 +1,1 @@
+{"t": "20261113T184035Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B: krown-s8 readout.py shipped 1c401377 (10 tests); week 11-09 n=0 because live auto_trades.jsonl is not on NUC. Re-queue must run readout.py --root <live tree> on the machine holding the journals (de", "login": "B"}
