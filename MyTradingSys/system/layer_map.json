@@ -769,25 +769,6 @@
  ],
  "backtests": [
   {
-   "id": "BIGCANDLE-STORY-1H-20261105",
-   "trials": null,
-   "title": "Big BTC 1h/5m candles (price, OI or taker delta |z|>=3): 8 stories x Binance top-trader class x phase, what followed",
-   "date": "2026-11-05",
-   "market": "Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader positions and accounts ratio)",
-   "layers": [
-    "oi_delta"
-   ],
-   "params": "OURS: |z|>=3 vs trailing 30d, 12-bar lockout (5m), top-trader flat 0.2%, band +-10%/30d, weekly streak R3+/R1-2/G1-2/G3+; horizons 1h/4h/24h",
-   "split": "DEV 2022-01-03..2024-06-30 only; holdout not read",
-   "fees": "fee-free descriptive",
-   "interaction": "story x top-trader class x phase vs same-direction baseline",
-   "effects": "continuation 43-60% vs 45-50% baseline; size-long/accounts-short after a big up candle not different from baseline (1h n=51: 45/53/51%); UP/UP/BUY 4h 59% [51-66] a lead",
-   "n": "843 big 1h events, 3991 big 5m events, 21831 baseline 1h bars",
-   "verdict": "descriptive: stories are readable, odds are near baseline; no trade rule",
-   "report": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
-   "read": "summary"
-  },
-  {
    "id": "RSI-EXTREME-CONFIRM-1H-20261113",
    "trials": null,
    "title": "Hourly RSI extreme (<=10/15/20/25, mirror >=75-90) + next candle closes beyond prior close, daily-RSI bucket, 4 stops x 3 exits, 10 coins",
