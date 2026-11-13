@@ -5,7 +5,7 @@ Gemini pool 81% of the week left, 93% of the 5 h left. Claude/GPT pool inside ag
 Written by Opus for a Haiku Supervisor A to follow. Use only the steps below; anything else goes to login C as an `ask`.
 
 ## Facts (checked 20:45Z)
-- argon on this account answers `429 RESOURCE_EXHAUSTED Individual quota reached, resets ~14:17Z 11-14`. Use `:flash` only.
+- argon on this account answers `429 RESOURCE_EXHAUSTED Individual quota reached, resets ~14:17Z 11-14`. Argon is out (0% weekly). Operator order 21:00Z: use `:medium:hydrogen` (heavy cards), `:low:hydrogen` (light), `:medium:flash`. Hydrogen is in gemini_queue.py (trunk 3907955c).
   All 12 argon jobs of the GEMINI_NOW.md run died after 11 s (log: `~/.gemini/mts-gq/<id>.log`), so those cards stayed ready.
 - Run the queue with `PYTHONUTF8=1 PYTHONIOENCODING=utf-8` (otherwise it crashes on cp1252 output).
 - Delivery `solo` (default): each finished card ships itself via `sync.py ship`. A card someone else claims prints SKIP.
@@ -19,6 +19,11 @@ Started 20:50Z as two background Bash calls (`run_in_background`, never `&`), in
 - LC (when LA or LB ends): every card still `ready` in the CODEX lane. List it fresh in WT:
   `git -C <WT> fetch -q origin`, `git -C <WT> merge -q origin/fast-track`, then `python scripts/dev/tasks.py list --lane CODEX --state ready`.
   Run them as `<id>:low:flash` in one `gemini_queue.py run` call (claimed or done cards SKIP by themselves). At most 2 queues at once.
+
+## Updates 21:30Z
+- LH queue (hydrogen, started 21:10Z) runs rederive/hilega/rsi-census/i3/i4/nk cards. Start further queues as `<id>:low:hydrogen` or `<id>:medium:flash`, max 3 at once.
+- 11 `gemini-rulebook-*-1113` and 4 `*-argon-1113` hunt cards are STALE (scope changed after refresh): the queue SKIPs them. Only a Session_Planner refresh makes them runnable; do not retry them.
+- A solo ship that fails (`SOLO SHIP FAILED`) leaves the work on branch `gemini-q/<id>`: retry `python scripts/dev/sync.py ship` from that branch's tree only when no other ship runs on this laptop (gate lock), else leave it for review.
 
 ## Every wake (Haiku), in this order, all cheap
 1. The normal Supervisor wake (role file): `get_usage`, `usage_reminder.py record`, `supervisor.py plan`, act on its lines.
