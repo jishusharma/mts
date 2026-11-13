@@ -97,7 +97,15 @@ def due_main_refresh(repo, home, now):
 def due_shots(repo, home, now):
     import shot
     n = len(shot.status_line(shot.fold(shot.load_events(shot.store_dir())))[1])
-    return ("note", f"{n} screenshot(s) overdue (>24h): `python scripts/dev/shot.py status` lists them; Haiku classifies and closes") if n else None
+    if not n:
+        return None
+    if n >= SHOT_SWEEP_AT:   # a NOTE had no reader (450 overdue on 11-13): a RUN line puts the sweep on a worker
+        return (f"python scripts/dev/shot.py list --status pending   # sweep {n} overdue screenshot(s): per id classify, "
+                f"read --extract <file>, done --outcome <text>; stop when `shot.py status` shows overdue under {SHOT_SWEEP_AT}")
+    return ("note", f"{n} screenshot(s) overdue (>24h): `python scripts/dev/shot.py status` lists them; Haiku classifies and closes")
+
+
+SHOT_SWEEP_AT = 20   # OURS (card routine-shot-overdue-no-reader-1113): at 20+ overdue the plan prints a RUN sweep line
 
 
 # id, ROUTINES.md row, cheapest model, due test

@@ -2485,3 +2485,13 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Auto-start days (OURS, default taken): weekdays only; US market holidays are NOT skipped (no maintained holiday list; the Haiku run finds a thin/closed market and stops cheaply). The RUN line shows from 2 h before to 2 h after the cash open and hides once `us-session-<day>` is claimed.
 - Builder process after CI red 13:23Z: workflow builders commit to branches only; the lead merges, registers every new test file in `scripts/dev/extra_tests.tsv` and ships once.
 - Testnet runs need the operator's words via `--said` and a tree that holds the testnet keys (coordinator deploy); until then the runbook runs paper mode.
+
+## 2026-11-13 ~15:20Z and ~15:40Z: 5-hour edge push; "extreme + confirming candle" template (Supervisor C)
+- Order 15:20Z: consolidate, archive finished chats, use the whole 5-hour window (to 20:00Z) to find an edge. This outranks the plan's slot count for this window (login C week 60% of cap 85).
+- Order 15:40Z (voice): stop buying blindly. Measure how far RSI really goes on each timeframe (minimum, rarely hit, sometimes hit); given the daily RSI, see what the hourly RSI does; when the hourly RSI is at its extreme (about 10, find the range) and the next hourly candle closes above the prior close, buy with the stop below that candle's low, distance chosen by test (1% or ATR). "This is an example: do it with every indicator, with closes; spawn as many workers as needed; bounce it to different models."
+- Mechanism: `MyTradingSys/system/PLAN_EDGE_5H_2026-11-13.md` lists the studies; each ships PRE_REG before outcomes and a layer_map row. Rule label: SOURCED operator; open parameters OURS.
+
+## 2026-11-13 ~16:00Z: Gemini full use before expiry; NK RSI port; local-work mode (login C desktop)
+- Operator order (~16:00Z, login C desktop): both Gemini accounts expire in about 24 h. Use 100% of their 5-hour limits now for the edge push: any work (YouTube, reviews, refinement, edge cases, edge tests). Owner: gemini-yt session. Cards tagged [GEMINI]. The operator starts the laptop Gemini by hand.
+- Nitish Kumar (NK StockTalk) ideas, RSI use first, are to be understood and applied to crypto. Study edge-nk-rsi-hilega-1113 started; the remaining 55 catalog videos go to Gemini.
+- For this window Sonnet and Haiku workers run in bulk ("ultra mode") and work locally. The supervisor verifies the numbers and ships what needs shipping.
