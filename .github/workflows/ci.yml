@@ -187,9 +187,12 @@ jobs:
     permissions:
       contents: write
     # Runs are per commit now, so an older commit can finish after a newer one: publish only when the current green is an
-    # ancestor of this SHA (green never moves backwards), one mark-green at a time, with a lease on the green we checked.
+    # ancestor of this SHA (green never moves backwards), with a lease on the green we checked. NOT one shared group: a shared
+    # group keeps one running + one PENDING job and cancels the older pending one, so a commit whose gate passed ended
+    # "cancelled" with no verdict (runs 43300471907, 43299262054; card ci-fast-track-runs-cancelled-1113). Races are settled by
+    # force=false below; a lost race re-reads the ref and passes when green already covers this SHA.
     concurrency:
-      group: mark-green
+      group: mark-green-${{ github.sha }}
       cancel-in-progress: false
     # No checkout (a full-history fetch cost seconds): the ancestry check is the compare API, the move is a ref update that
     # GitHub refuses unless it is a fast-forward (force=false), so green never moves backwards even when two runs race.
@@ -208,4 +211,9 @@ jobs:
           if [ "$st" != "ahead" ]; then
             echo "green/fast-track is at $old ($st vs $SHA): left as is"; exit 0
           fi
-          gh api -X PATCH "repos/$REPO/git/refs/heads/green/fast-track" -f sha="$SHA" -F force=false >/dev/null
+          if ! gh api -X PATCH "repos/$REPO/git/refs/heads/green/fast-track" -f sha="$SHA" -F force=false >/dev/null; then
+            now=$(gh api "repos/$REPO/git/ref/heads/green/fast-track" -q .object.sha)
+            st=$(gh api "repos/$REPO/compare/$now...$SHA" -q .status)
+            if [ "$st" = "behind" ] || [ "$st" = "identical" ]; then echo "lost the race to $now ($st): green already covers $SHA"; exit 0; fi
+            exit 1
+          fi
