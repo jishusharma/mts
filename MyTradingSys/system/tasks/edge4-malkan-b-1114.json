@@ -6,14 +6,17 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-13T20:58:03Z",
-    "misses": 29,
+    "folded": "2026-11-13T21:10:53Z",
+    "misses": 40,
     "reads": [
       "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/PRE_REG.md",
       "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md",
+      "MyTradingSys/system/layer_map.json",
+      "scripts/dev/lookahead_allowlist.tsv",
       "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/fetch_klines.py",
       "MyTradingSys/backtest/fees.py",
-      "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_fetch_klines.py"
+      "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_fetch_klines.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md"
     ],
     "session": "agent-af5cb131e22ecbc56"
   },
