@@ -1132,7 +1132,8 @@ main>#p-pos:not(.off){flex:0 0 auto}
   // Each row copies numbers already computed for its panel (same feed fields); a click sets #<view>, which shows that panel alone.
   var VIEWS = { momentum: ['p-strip', 'Momentum'], levels: ['p-levels', 'Levels'], coil: ['p-coil', 'Coil and pierce'], pierce: ['p-coil', 'Coil and pierce'],
                 money: ['p-money', 'What the money is doing'], news: ['p-news', 'News'], verdict: ['p-verdict', 'Verdict and watch list'], liq: ['p-liq', 'Liquidations'],
-                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'] };
+                fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'],
+                antic: ['p-antic', 'Same data, other readings'], bc: ['p-bc', 'Big candle story'], lap: ['p-lap', 'Level approach prep'], xliq: ['p-xliq', 'Forced selling on other exchanges'] };
   VIEWS.now = ['p-ov', 'Now']; VIEWS.home = ['p-home', 'Home'];
   S.view = '';
   function route() {

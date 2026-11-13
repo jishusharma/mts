@@ -158,3 +158,43 @@ def test_chart_has_flag_markers_and_session_high_low_lines():
     assert "Asia high" not in svg                                           # fewer than 3 closed Asia bars on screen: no line
     plain = _run("H._chart(j.ctx,j.md,1000,500)", {"ctx": {"now": NOW, "rows5": ROWS5}, "md": ZMD})
     assert "hm-fm" not in plain.replace(".hm-fm", "")                       # no flag rows, no markers
+
+
+# ---------- seven readings folded behind one click (operator 2026-11-13 "Yes, fold them") ----------
+RAIL_CTX = {"now": NOW, "px": 73800, "rows5": ROWS5, "votes": [1, 1, -1, 0, 0, 0], "map": {}, "lanes": {}}
+
+
+def _rail(pre, expr):
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    js = pre + "const H=require(process.argv[1]);const el={innerHTML:'',getBoundingClientRect(){return{width:1200,height:700}},addEventListener(){}};" + expr
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    assert out.returncode == 0, out.stderr[-1200:]
+    return out.stdout
+
+
+def test_seven_readings_are_one_collapsed_fold_on_the_home_rail():
+    h = _rail("", "H.render(el," + json.dumps(RAIL_CTX) + ");console.log(el.innerHTML)")
+    assert h.count('data-foldtoggle="1"') == 1 and "Folded readings" in h and "7 · show" in h
+    assert 'class="hm-g"' not in h and "Direction <b" not in h                  # gauge is inside the fold, hidden by default
+    assert "What the money is doing" not in _txt(h) and 'href="#verdict"' not in h
+    o = _rail("", "H._foldSetOpen(true);H.render(el," + json.dumps(RAIL_CTX) + ");console.log(el.innerHTML)")
+    assert 'class="hm-g"' in o and "Direction <b" in o and "7 · hide" in o                  # nothing deleted: gauge is back when opened
+    for pg, name in [("verdict", "Verdict and watch list"), ("antic", "Same data, other readings"), ("bc", "Big candle story"), ("lap", "Level approach prep"), ("xliq", "Forced selling on other exchanges")]:
+        assert 'href="#%s"' % pg in o and name in o
+
+
+def test_fold_choice_is_remembered_per_viewer_and_storage_may_fail():
+    mk = "globalThis.localStorage={_d:{%s},getItem(k){return k in this._d?this._d[k]:null},setItem(k,v){this._d[k]=v}};"
+    assert _rail(mk % "", "H._foldSetOpen(true);console.log(localStorage._d.mts_fold_open)").strip() == "1"
+    assert "7 · hide" in _rail(mk % "mts_fold_open:'1'", "console.log(H._foldCard({},{px:1,dir:'WAIT',bull:0,bear:0,n:0,lad:{above:[],below:[]},zones:[]}))")
+    blocked = "Object.defineProperty(globalThis,'localStorage',{get(){throw new Error('blocked')},configurable:true});"
+    assert "7 · hide" in _rail(blocked, "H._foldSetOpen(true);console.log(H._foldCard({},{px:1,dir:'WAIT',bull:0,bear:0,n:0,lad:{above:[],below:[]},zones:[]}))")
+
+
+def test_folded_pages_still_exist_and_are_reachable():
+    page = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    for pid, view in [("p-verdict", "verdict"), ("p-antic", "antic"), ("p-bc", "bc"), ("p-lap", "lap"), ("p-xliq", "xliq"), ("p-money", "money")]:
+        assert '<section id="%s">' % pid in page                                       # nothing deleted
+        assert re.search(r"\b%s: \['%s'," % (view, pid), page), view                    # and a route reaches it (antic/bc/lap/xliq had none)

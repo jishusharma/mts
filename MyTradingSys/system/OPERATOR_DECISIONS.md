@@ -2454,3 +2454,6 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13: make sure we build concepts from Nitish Kumar (NK StockTalk)
 - Operator decision: NK is not extract-only. After the NK extracts land, a Conceptualizer NK layer must ship. Owner: opus-concept-decks (local_91880c0a).
 - Card: nk-conceptualizer-layer-after-extracts-1113 (raw; the owner refines it once the NK extracts exist).
+
+## 2026-11-13 Live Aid: fold seven low-evidence readings
+- Operator ("Yes, fold them"), on REVIEW.md remove-candidates (research/live_aid_review_2026-11-13): Direction gauge, Verdict and watch list, Same data other readings, Big candle story, Level approach prep, Money (OI) card, Forced selling on other exchanges go behind ONE click on the Home rail, collapsed by default, choice saved per viewer (localStorage mts_fold_open). Fold only: nothing deleted. The four pages with no route (antic, bc, lap, xliq) got one. Card live-aid-fold-seven-readings-1113. Reaches his screen only after a deploy.
