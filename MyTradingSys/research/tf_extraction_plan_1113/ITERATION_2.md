@@ -2,6 +2,7 @@
 
 Sources: four hunters plus the DSA revalidation. Gemini blind map: **pending** (card `gemini-blind-concept-map-1113`; not waited for, add its rows when it lands).
 Hunters: **opus** = opus_trade_replay (10 narrated trades, 104 steps, TR1-TR25); **sonnet-cond** = sonnet_conditions (G01-G26); **sonnet-param** = sonnet_param_trace (PT-01..PT-18); **haiku** = haiku_vocab (V1-V11). Notes folder: `gap_hunt_1113/` in the side-session notes.
+Third check 2026-11-13: `THIRD_CHECK_I2_REFUTE.md` (this folder) re-read 8 argon refute rows; amended I2-01, I2-03, I2-06, I2-11, I2-13, I2-17 (markers inline); I2-08 untouched (IR-14 REFUTED, gap stands).
 Ranking: number of distinct hunters, ties stage T first. Iteration-1 column: Y = iteration 1 already covers it, P = partly (a question exists, the new part is not covered), N = not covered. Iteration 1 = PLAN.md questions Q1-Q14 in this folder.
 Speaker labels on quotes: Tom = Tom channel set, Fabio = Fabio set, GUEST and CONTESTED as in the hunters' files; ASR = machine captions.
 
@@ -9,23 +10,23 @@ Speaker labels on quotes: Tom = Tom channel set, Fabio = Fabio set, GUEST and CO
 
 | id | stage | pattern | gap | hunters | iter 1 | fix type | card |
 |---|---|---|---|---|---|---|---|
-| I2-01 | T | 5 | NY open handling: he skips or waits the first 30 minutes and reads the open type; our NY block and models A/B/D start at the open | 4: opus, cond, param, haiku | P (Q7 windows) | extract | tf-y3 |
+| I2-01 | T | 5 | NY open handling: he waits for the opening range (15 to 30 minutes, 60 for slower use) to complete, then trades the breakout or retest; Tom stops trading in the first 30 minutes; ours starts at the open with no wait (was: "he skips or waits the first 30 minutes and reads the open type"; "skips" deleted) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-01: PARTIAL] | 4: opus, cond, param, haiku | P (Q7 windows) | extract | tf-y3 |
 | I2-02 | C/T | 5 | Every value area is a 24h UTC day; Tom calls that meaningless for a cash-session trader; the NY-session function exists and nothing calls it | 4: opus, cond, param, haiku | P (Q8) | re-frame + test | none |
-| I2-03 | C | 1,3,4 | Balance is read by profile shape and picks the setup (counter, breakout, trend); ours is a 60-minute box true in 3.1% of windows | 4: opus, cond, param, haiku | P (Q1, Q2) | extract | tf-y1 |
+| I2-03 | C | 1,3,4 | Balance is read by a closing-price count on a line chart as first pass, then by weekly and daily profile shape, which picks the setup (counter, breakout, trend); ours is a 60-minute box true in 3.1% of windows (was: "read by profile shape", not exclusive) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-05: PARTIAL] | 4: opus, cond, param, haiku | P (Q1, Q2) | extract | tf-y1 |
 | I2-04 | T | 4 | Break-even and trail are events (immediately, not even one candle, only at the opposite level); ours is a distance of 1 D that is 5-8x his stop | 3: opus, cond, param | P (Q6) | re-code + test | none |
 | I2-05 | T | 4 | Targets are named levels (far side of range, curve low, impulse origin, measured move); ours is the nearest volume node and models A/C/D have none | 3: opus, cond, param | P (Q10) | extract | tf-y4 |
-| I2-06 | T | 1,4 | Execution object differs: he uses range bars (40/80) and a fixed big-trade filter 60 with a 5m-close trigger; v3 uses 1m bars and a percentile | 3: opus, param, haiku | N | extract | tf-y6 |
+| I2-06 | T | 1,4 | Execution object: he prefers range bars (40/80) at the open but accepts one-minute; he sets the big-trade filter by session volume (60 on the Is1HvdfQm5c chart, raised on a high-volume day; units NOT_SEEN); 5m-close trigger; v3 uses 1m bars and a percentile (was: "range bars (40/80) and a fixed big-trade filter 60"; bar type is not a gap) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-08: CONFIRMED; IR-09: PARTIAL] | 3: opus, param, haiku | N | extract | tf-y6 |
 | I2-07 | T | NEW | Day filters never coded: news/gap skip, choppy or fully absorbed day, bias-only trades, opening-range size, volatility regime, day-side lock | 3: opus, cond, param | N | extract | tf-y3 |
 | I2-08 | C | 1,3,4 | Proof is a sequence and a volume shape (falling volume under VAH, spike then trade-off, level weaker each test, delta never alone); ours is one event | 3: opus, cond, param | P (Q11) | extract | tf-y5 |
 | I2-09 | C | 1,3 | Acceptance is a new range forming outside the level; ours counts 6 closes, three code versions disagree, docstring cites the wrong source | 3: opus, cond, param | P (Q3) | re-frame + re-code | none |
 | I2-10 | C/E | 2 | Market profile (time at price, 30-minute blocks, single prints, tails) is a level source in 23 videos; docs and code hold only volume profile | 3: opus, param, haiku | P (30-min TPO note) | extract | tf-y2 |
 | I2-11 | T | NEW | Day rules coded but called by no engine; his P&L-keyed management, 3-stop day and trade-count limits are not in the tests | 2: opus, cond | P (Q12) | re-code + test | none |
 | I2-12 | T | 4 | Partials, runner, scale-in from a part size, and adds (two different add rules) cannot be expressed: one exit per leg | 2: opus, param | P (Q6) | re-code + test | none |
-| I2-13 | T | 5 | Fabio on order flow for Bitcoin: one line says he does not use it, another says crypto order-flow scalping is extremely profitable | 2: cond, param | N | extract | tf-y6 |
+| I2-13 | T | 5 | Fabio on order flow for Bitcoin: scalps crypto futures with order flow as income (weekends, own account); the "no order flow for Bitcoin, on-chain" line refers to his long-term account; not a contradiction (was: one line says he does not use it, another says crypto order-flow scalping is extremely profitable) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-19: CONFIRMED] | 2: cond, param | N | extract | tf-y6 |
 | I2-14 | T | NEW | Entry order type: market or half-candle limit (rule unstated), buy-stop entry before the 5m close, pullback entry; ours is a rest limit or next open | 2: opus, haiku | N | extract | tf-y6 |
 | I2-15 | C | 4 | Higher-timeframe bias is weekly or 10-day volume-profile migration and the last reaction; ours is a candle ladder (monthly colour vs 20M SMA) | 2: opus, param | P (Q8) | extract | tf-y1 |
 | I2-16 | C | 3 | Low-volume area means four different things (fill target, edge scalp, trend join, in-VA gap); his words say volume area for a low-volume gap | 2: param, haiku | N | extract + re-frame | tf-y2 |
-| I2-17 | C | 4 | Setup grade (AAA = value-area low plus 30 minutes in) drives size; our sizing tier and 1.20 RR floor have no source and sit below his stated floors | 2: opus, param | P (Q12) | re-frame | none |
+| I2-17 | C | 4 | Setup grade (AAA = value-area low plus 30 minutes in) drives size; our sizing tier and 1.20 RR floor are OURS; Tom says breakout RR is often 1:1 to 1.5:1, Fabio reports 1:2 to 1:2.5 with order-flow entries; no stated floor seen (was: "sit below his stated floors"; 'his stated floors 1.5 to 2.5' is NOT_SEEN) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-23: PARTIAL] | 2: opus, param | P (Q12) | re-frame | none |
 | I2-18 | E | NEW | Tool tier list (footprint A, MACD F, Bollinger F, RSI D) never used; Live Aid header credits Tom and Fabio for Bollinger, WaveTrend and OI votes | 2: haiku, param | N | extract (tiny) | tf-y6 |
 | I2-19 | T | 4 | Tom reads speed and liquidity in the book while the trade runs; management and proof are conditioned on bars, no depth data | 2: cond, param | P (Q4, x5) | extract | tf-y5 |
 | I2-20 | T | NEW | No re-entry after a stop on the same idea; both Tom and Fabio do it and call it part of the method | 1: opus | N | extract | tf-y4 |
@@ -200,7 +201,7 @@ Haiku count: market profile in 23 videos, 71 mentions, 0 hits in the scoped docs
 
 > "why are you trying to take five seven ten twenty five trades per day"
 **Source GPS: Is1HvdfQm5c | BEGIN** (Fabio, ASR)
-Code: `MyTradingSys/backtest/layers/fabio/v3/day_gates.py:120` first_leg_allowed and `MyTradingSys/backtest/layers/fabio/v3/day_gates.py:140` first_leg_risk have callers only in tests and the package init (opus git grep, not re-run). `MyTradingSys/backtest/layers/fabio/v3/day_gates.py:16` daily stop -3 R is NO-SOURCE; his rule is a count of stops. Is1HvdfQm5c is ASR.
+Code: `MyTradingSys/backtest/layers/fabio/v3/day_gates.py:120` first_leg_allowed and `MyTradingSys/backtest/layers/fabio/v3/day_gates.py:140` first_leg_risk have callers only in tests and the package init (opus git grep, not re-run). `MyTradingSys/backtest/layers/fabio/v3/day_gates.py:16` daily stop -3 R is NO-SOURCE; his rules are a stop count (3, then lower size or stop) and a dollar cut ($8k to $9k on his account, unit conversion NOT_SEEN) (was: a count of stops only) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-18: PARTIAL]. Is1HvdfQm5c is ASR.
 
 ### I2-12 Partials, scale-in, adds
 > "So now we're taking a part out here and yes, nothing can really go wrong anymore."
@@ -410,7 +411,7 @@ Six cards, each over held transcripts, no YouTube fetch. Questions Q15-Q36 are d
 | I2-09 | acceptance = new balance forms outside the level, stop beyond it; one shared acceptance function; fix the stale docstring |
 | I2-11 | wire first_leg_allowed, first_leg_risk and add logic into the engine; stop count instead of -3 R sum |
 | I2-12 | multi-exit legs (partial, runner), first size a fraction, two add rules (Fabio after BE, Tom at retest) |
-| I2-17 | label the sizing tier and 1.20 RR floor OURS; floor at his stated 1.5 to 2.5 |
+| I2-17 | label the sizing tier and 1.20 RR floor OURS; no stated floor seen (was: "floor at his stated 1.5 to 2.5", NOT_SEEN) [amended 2026-11-13 per THIRD_CHECK_I2_REFUTE IR-23: PARTIAL] |
 | I2-22 | one profile library, fix labels |
 | I2-23 | fee-net run at his stop sizes on a maker venue; stop anchor at the far edge of the value zone |
 | I2-24 | run the pre-registered swing cells first (only cells with a stated 24h transfer) |

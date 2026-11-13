@@ -1,19 +1,20 @@
 {
   "approved_by": "operator 2026-11-09 (chat to login B): log a bug",
   "asks": "",
+  "closed": "2026-11-13T01:58:35Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-11T09:17:52Z",
-    "misses": 24,
+    "folded": "2026-11-13T01:58:34Z",
+    "misses": 6,
     "reads": [
+      "scripts/dev/test_old_shell_health.py",
+      "scripts/dev/bg_watch.py",
+      "scripts/dev/extra_tests.tsv",
       "scripts/dev/test_bg_watch.py",
-      "scripts/dev/host_health.py",
-      "MyTradingSys/system/OPS_CHANGE_CHECK.md",
-      "MyTradingSys/tests/docs/test_integrity.py",
-      "scripts/dev/mts_doctor.py"
+      "MyTradingSys/system/WORKERS.md"
     ],
-    "session": "agent-af9a27b5231639476"
+    "session": "agent-ad5a8232e87512601"
   },
   "created": "2026-11-09T07:57:34Z",
   "depends_on": [],
@@ -26,6 +27,12 @@
   "id": "bug-background-shell-runs-12h-1109",
   "lane": "SONNET",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Already shipped f6824b1ef on fast-track (sync.py health NOTE OLD-SHELL via bg_watch.live_s",
+      "ref": "e2f11afdd",
+      "utc": "2026-11-13T01:58:35Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -44,6 +51,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: mechanism and rule already on trunk",
   "not_twin_of": [
     "coordinator-sits-idle-during-long-backgr"
   ],
@@ -53,7 +61,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T09:11:24Z",
   "refs": [],
-  "result": "Repro: a cat heredoc as a background shell exits at once here (exit 0); the 12 h hang was a harness shell that never exited, not reproducible from the command. Root cause of 'unnoticed': bg_watch (STALLED-BG/GHOST-BG/OLD-SHELL, shells --kill) and the WORKERS.md 30-min rule already existed (4498f4672) but nothing in boot/health showed live old shells; supervisor.py plan only runs for coordinators. Extended, not duplicated: sync.py health now prints NOTE OLD-SHELL from bg_watch.live_shells (test_old_shell_health.py, registered in extra_tests.tsv; test_bg_watch covers the lister).",
+  "result": "Already shipped f6824b1ef on fast-track (sync.py health NOTE OLD-SHELL via bg_watch.live_shells; test_old_shell_health.py + test_bg_watch.py pass; WORKERS.md 30-min rule line 32). Re-checked 2026-11-13: card was stale, no new code needed. No timer added: SCHEDULING_POLICY forbids schedulers",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/",
     "tests/",
@@ -68,7 +81,7 @@
   "sources": [
     "operator 2026-11-09 via login B (JIS-NUC)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce: run the same heredoc write as a background shell and see whether it exits",
     "Write a fail-first test for a stale-background-shell check (age over limit gets flagged)",
@@ -76,6 +89,7 @@
     "Add the rule to the session rules: quick writes run in the foreground; background only for real long jobs, with a timeout",
     "Write a short root-cause note in the card result"
   ],
+  "taken": "2026-11-13T01:58:35Z",
   "tests": "tests/test_stale_background_shells.py",
   "title": "Background shell ran 12h+ unnoticed; make long-running background work impossible",
   "weight": "",
