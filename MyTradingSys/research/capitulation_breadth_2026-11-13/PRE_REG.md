@@ -8,6 +8,10 @@ Six single-coin studies of "4h RSI extreme, next candle up = long" failed, and i
 ## Context
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %, else range), 2021-01-01..2026-11: bull 49 % / bear 38 % / range 13 %; 2024-01-01..now: bull 56 % / bear 29 % / range 15 %.
 Phase: capitulation / forced-selling washout, long the rebound; any regime (regime split descriptive only). Session: any (24h). Entry: close of the confirm 4h bar (market, taker). Closed bars only; the still-forming bar is dropped; B at bar t uses only bars <= t; a coin counts in B only from the bar its RSI(14) is defined (its listing + 15 bars); B is NaN while fewer than 10 coins are defined.
+Regime: none as a gate, because the study pools all regimes; BTC daily close vs 200d SMA mix is reported and the regime split is descriptive only.
+Session: none, because 4h bars, any hour (24h market).
+Entry: breadth B = share of 60 coins with 4h RSI14 <= 25; event when B >= 30 %/50 % after 30 quiet bars; entry at the close of the first confirm bar (B falls back and BTC closes up) within 3 bars.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Universe (fixed now)
 Source: data-api.binance.vision public spot 4h klines (USDT quote). Candidate list = 93 well-known crypto tickers written in fetch.py (explicit crypto-only: no stock/ETF/commodity tokens, no stablecoins, no wrapped/staked tokens). Rule (OURS): first 4h bar on or before 2021-12-31 (history from 2021 or earlier), still trading (last bar within 7 days of the newest), rank by quote volume of the last 90 days, top 60. Computed by universe.py:

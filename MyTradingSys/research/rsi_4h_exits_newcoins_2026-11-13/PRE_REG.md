@@ -8,6 +8,10 @@ Parent (edge4-rsi-confirm-exits-1113, rsi_confirm_exits_2026-11-13/): on set S3 
 ## Context
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %, else range), 2021-01-01..2026-11: bull 51 % / bear 36 % / range 12 %; 2024-01-01..now: bull 56 % / bear 30 % / range 15 %.
 Phase: oversold-bounce / mean-reversion long into a 4h capitulation candle on alts, any regime (regime split descriptive only). Session: any (24h). Entry: close of the confirming 4h candle (market, taker); the entry bar is never read forward; closed bars only.
+Regime: none as a gate, because all regimes are pooled (regime split descriptive only); the BTC daily regime mix is reported.
+Session: none, any hour (24h market).
+Entry: S3: first touch per episode of 4h RSI14 <= 20, next 4h candle green and closing above the signal close; entry at the close of that confirming candle (market, taker).
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Universe (fixed now, SOURCED = rule, OURS = the 90-day-history-style cut)
 Bybit v5 public SPOT USDT pairs ranked by 24h turnover on 2026-11-13 (tickers endpoint). Excluded: the parent's 20 coins, stablecoins, wrapped/staked/commodity/stock-token symbols. OURS filter: first monthly kline on or before 2023-01-01 (>= ~3 y of history; a pure volume rank returns mostly 2025-26 listings with no history). Top 40 that pass, in rank order:

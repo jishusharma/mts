@@ -8,6 +8,11 @@ Parent study (rsi_htf_extreme_2026-11-13, 20 Bybit perps since 2020): long when 
 ## Context
 Regime/phase: counter-trend long entries in sold-off conditions (capitulation); no regime filter, the daily RSI<30 gate is the only conditioner on cells 1-2. Session: not filtered. Entry: close of the confirming TF bar. Prior tests of this family: edge-rsi-extreme-confirm-1113 (0/384 PASS), edge3-rsi-deep-extreme-grid-1113 (0/60), edge4 parent (0/40, two leads). Regime split is reported, not conditioned on.
 Regime mix: BTC daily close vs 200d SMA (bull = close above, bear = at or below), all BTCUSDT spot dailies: 2017-2019 bull 30% / bear 70% (n 668 days with SMA defined); 2020-now bull 59% / bear 41%; all 53% / 47%.
+Regime: none as a gate, because bull and bear are pooled; BTC close vs 200d SMA bull/bear split is reported, not conditioned on.
+Phase: counter-trend long in sold-off conditions (capitulation); the daily RSI<30 gate on cells S1/S2 is the only conditioner, S3 has no gate.
+Session: none, not filtered (24h).
+Entry: closed red TF bar with RSI14 <= T (first touch, re-arm above 30), next TF bar closes above its close; entry at that close, stop = signal bar low.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Data (new data only, two blocks)
 Binance SPOT klines (1h and 1d) from data-api.binance.vision (public market data; no futures host), cached under runtime_data/edge5-rsi-htf-power-1113/ (ignored). Folding to 4h/8h/12h (UTC epoch anchor, incomplete groups dropped), Wilder RSI and daily-RSI lookup are the parent's code (rsi_grid_lib.py, htf_lib.py copied unchanged). Daily RSI = Wilder 14 on closed spot dailies, last daily closed at or before the signal bar close.

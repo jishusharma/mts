@@ -8,6 +8,10 @@ Crypto daily trends persist (time-series momentum / breakout). A diversified boo
 ## Context
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %, else range), 2021-01-01..2026-11: bull 49 % / bear 38 % / range 13 %; 2024-01-01..now: bull 56 % / bear 29 % / range 15 % (computed in edge6 capitulation_breadth RESULT.md).
 Phase: trend continuation, both directions, any regime (rules 8-10 gate by regime). Session: none (daily bars). Entry: signal on the close of closed daily bar t, fill at the OPEN of day t+1 (market, taker). The still-forming bar is dropped. Everything at bar t uses only bars <= t.
+Regime: rules 1-7 none (long and short in any regime, regime mix reported); rules 8-10 gated: longs only while BTC close > its 200d SMA, shorts only while below.
+Session: none, because daily bars.
+Entry: signal on the close of a closed daily bar t (Donchian breakout, 30/90d momentum, ADX/DI, MA stack); fill at the OPEN of day t+1.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Universe (fixed now)
 The 60 coins of edge6 PRE_REG.md, in universe.py (rule there: listing <= 2021-12-31, still trading Nov 2026, top 60 by 90-day volume, crypto-only). Source: data-api.binance.vision public spot daily klines, USDT quote, 2020-01-01 onward; a coin enters the book only from the first bar where all its indicators are defined. SURVIVORSHIP: only coins still trading in Nov 2026 are included (delisted losers excluded) and the rank uses current volume; long-side results are upper bounds, short-side results are lower bounds (coins that died are the best shorts and are missing). Early years hold only ~15 coins.

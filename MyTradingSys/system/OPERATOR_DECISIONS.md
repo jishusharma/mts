@@ -2577,3 +2577,7 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13 ~20:50Z: where to buy after the 7-week fall (operator, voice)
 - Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
 - Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).
+
+## 2026-11-14 ~22:30Z: quick Fable sessions for critical tasks; Claude temp data is the supervisor's (operator)
+- Operator: spawn quick Fable sessions for critical tasks; Claude temp/VM data on this machine is the supervisor's to manage, no questions.
+- Mechanism: the supervisor starts a time-boxed Fable session per critical task (first one: ship-queue-unblock-1114) and cleans Claude temp/VM data without asking.

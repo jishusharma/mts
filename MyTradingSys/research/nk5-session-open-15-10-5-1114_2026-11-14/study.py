@@ -1,12 +1,14 @@
 """nk5 session-open 15-10-5 study. See PRE_REG.md. STUDY_BUG=1 = deliberate look-ahead (test only)."""
 import os, sys, json, numpy as np, pandas as pd
 from zoneinfo import ZoneInfo
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "backtest")))
+import fees  # noqa: E402  (single cost module, test_no_own_costs)
 CACHE = r"F:\MTS\data_cache\binance"
 SYMS = ["BTC","ETH","BNB","XRP","ADA","DOGE","SOL","LTC","LINK","TRX","EOS","XLM","ETC","DASH","ZEC","BCH","ATOM","NEO","IOTA","VET"]
 SPLIT = pd.Timestamp("2024-01-01", tz="UTC")
 ROWS = [("NY", "2h", 2), ("NY", "4h", 4), ("NY", "asia", None), ("UTC", "2h", 2), ("UTC", "4h", 4)]
-FEE = 12.0
-FEE_MAKER = 6.0
+FEE = round((fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13 / 2) * 2e4, 6)  # bp round trip: taker 5 bp + 1 bp slippage per side = 12.0 (PRE_REG primary)
+FEE_MAKER = FEE / 2  # bp: the pre-registered 6 bp maker-entry row (PRE_REG states the figure, not a split)
 
 
 def bug():

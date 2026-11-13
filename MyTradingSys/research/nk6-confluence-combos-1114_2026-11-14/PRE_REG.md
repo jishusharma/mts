@@ -9,6 +9,11 @@ Binance spot USDT 15m, 20 coins (BTC ETH BNB XRP ADA DOGE SOL LTC TRX LINK DOT A
 Daily phase for UTC day D from daily bars closed on D-1 only: UP = ADX(14,Wilder) >= 20 and +DI > -DI and SMA20(close) rising over 5 days; DOWN = ADX>=20 and -DI > +DI and SMA20 falling; else RANGE (ADX 20 OURS, operator-ordered; SMA20/5-day slope OURS).
 Primary rows: longs in UP, shorts in DOWN, both directions in RANGE (fade = take whichever layers fire). Control rows (not in BH, not a PASS path): shorts in UP, longs in DOWN.
 `## Context` and `Regime mix:` reported in RESULT.md (share of bars, trades per phase, DEV vs VAL).
+Regime: none beyond the daily phase label; the regime mix is reported in RESULT.md only.
+Phase: daily UP/DOWN/RANGE from ADX(14), DI and SMA20 slope; longs in UP, shorts in DOWN, both in RANGE; mismatched direction = control rows, not in BH.
+Session: none as a gate on trades (24h UTC-day); VWAP resets at 00:00 UTC and layer 1 uses the UTC 00:00-01:00 first hour (fires from 01:00).
+Entry: onset bar where the combo of 5 layers (first-hour reclaim, pivots, retest, Hilega Milega, RSI14 re-cross) turns true in the trade direction; fill at the next 15m bar open.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Layers (15m bar i, UTC day session, all computed from bars <= i)
 Long / short booleans. Event layers (1,2,3,5) are "active" for 4 bars after the event (K=4, OURS); layer 4 is a state at bar i.

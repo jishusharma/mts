@@ -9,6 +9,11 @@ After a long decline, price that sweeps below a prior low (a bear trap) and is r
 - Why now: operator order 2026-11-13 20:05Z: long edges after a long decline (bear traps and retests); BTC has 6 red weeks in a row.
 - Phase/regime: the filter below IS the regime spec; the unfiltered rows are the control. RESULT.md prints `Regime mix:` (share of events and of all hourly bars that pass the filter, and by year).
 - Earlier studies, and how this one differs (read, not repeated): `eur_low_sweep_reclaim_pooled_2026-11-13` (Europe-session low swept in the US window, 5m, BTC/ETH/SOL, long and short, FAIL: VAL means -0.23 to +0.1 R) and `reclaim_close_stop_2026-11` (BTC 4h/1D, stop = close back below, DEV only, INCONCLUSIVE). This study differs on: levels (prior day low and prior WEEK low, not session lows), timeframe (1h), pool (20 coins), a trend-context filter with an unfiltered control (neither earlier study had a context gate), a stop below the sweep low (not close-based), a prior-day-high target, an open-interest flush variant, and day-cluster inference. `v_recovery_low_sweep_2026-11-04` (5-day low + 50% win-back) was BLOCKED before any outcome and is not the same rule.
+Regime: downtrend filter at the signal bar: coin daily close < its falling SMA20, OR BTC last 3 completed weeks all red; unfiltered rows are the control.
+Phase: none separate, because the downtrend filter above is the only context spec (the file says the filter IS the regime spec); no cycle-phase gate.
+Session: none, because 1h bars on a 24h market with no hour-of-day filter (the placebo only matches the UTC hour, it does not gate).
+Entry: first 1h bar sweeps prior day/week low by 0.1 %, then a close back above that level within 6 bars; entry at the OPEN of the bar after the reclaim bar.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Rule (SOURCED = operator order, OURS = chosen here before any outcome)
 | Item | Value | Label |

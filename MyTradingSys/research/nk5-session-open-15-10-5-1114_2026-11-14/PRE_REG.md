@@ -9,6 +9,11 @@ Phase for UTC day D uses data to the close of day D-1 only (daily bars built fro
 - UP: ADX>=20 and +DI>-DI and slope>0. DOWN: ADX>=20 and -DI>+DI and slope<0. Else RANGE. (thresholds: ADX 20 = operator order; slope window 5d = OURS)
 - Matched direction: UP -> long only; DOWN -> short only; RANGE -> long on oversold signal and short on overbought signal (fade both ways). Control: UP shorts, DOWN longs (not gated).
 Regime mix: reported in RESULT.md (share of coin-days UP/DOWN/RANGE, DEV and VAL, and trades by phase).
+Regime: none beyond the daily phase label; the regime mix is reported in RESULT.md only.
+Phase: daily UP/DOWN/RANGE from ADX(14), DI and SMA20 slope; UP long only, DOWN short only, RANGE fades both ways; mismatched direction = control rows, not gated.
+Session: anchors only: NY cash close 16:00 New York (20:00/21:00 UTC) into the next Asia open (2h, 4h, to 08:00 UTC), and the 00:00 UTC close into the next 4 h (2h, 4h).
+Entry: at anchor T, 15m RSI14 touch (min of last 4 <= 35 long, max >= 65 short) AND 10m and 5m Hilega Milega on the same side; entry at the 5m open at T.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Universe / data
 20 Binance spot USDT coins (BTC ETH BNB XRP ADA DOGE SOL LTC LINK TRX EOS XLM ETC DASH ZEC BCH ATOM NEO IOTA VET), 5m klines from 2019 where listed, via data-api.binance.vision, cache F:\MTS\data_cache\binance\<SYM>USDT_5m.npz (array 'a' = t,o,h,l,c,v). 10m, 15m, 1h, 1d resampled from 5m (UTC, left-labelled, incomplete bars dropped).

@@ -8,6 +8,11 @@ Following the daily trend LONG ONLY, while BTC is above its 200-day average, ear
 ## Context
 Regime mix (BTC daily close vs 200d SMA: bull > +5 %, bear < -5 %, else range; parent definition): 2024-01-01..2026-11: bull 56 % / bear 29 % / range 15 % (edge6 capitulation_breadth RESULT.md); RESULT.md recomputes it from the BTC data used here.
 Market condition the rule needs: a persistent, broad uptrend (BTC bull) in which coins that start trending keep going for days to weeks, so that entering after a strength signal and exiting on trend decay pays more than the round-trip cost. In chop or bear the BTC gate keeps the book flat; in a bull market that reverses sharply the rules give back gains before exit (they act on daily closes, no intraday stop). Without a bull regime and without sustained trends the rule has no reason to work. Session: none (daily bars). Entry: signal on the close of closed daily bar t, fill at the OPEN of day t+1; the forming bar is dropped. Everything at bar t uses bars <= t only.
+Regime: long only while BTC close is strictly above its 200d SMA, checked every day; the book is flat otherwise (bull/bear/range mix reported).
+Phase: none separate, because the BTC 200d gate is the only context; no cycle-phase gate.
+Session: none, because daily bars.
+Entry: R9 Monday close with 30d return > 0, or R10 +DI > -DI with ADX(14) > 25 and rising; signal on the daily close t, fill at the OPEN of day t+1.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Rules (EXACTLY 2; definitions identical to parent rules 9 and 10; code = parent trend_lib.py copied unchanged)
 - R9 GATED-TSM30: at each Monday close, long if close/close[-30] - 1 > 0 else flat (the parent's short half is discarded); held to the next Monday close; position exists only while BTC close > BTC 200d SMA (checked every day; resumes when the regime allows). Weight = 0.01 / max(2 x std of last 20 daily returns, 1 %), capped 0.5 per coin, re-sized each Monday.

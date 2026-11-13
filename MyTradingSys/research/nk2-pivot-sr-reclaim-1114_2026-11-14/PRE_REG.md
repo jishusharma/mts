@@ -30,6 +30,11 @@ Primary 12 bp round trip taker on notional (fee in R = 0.0012*entry/stop distanc
 Phase of day D from data up to the close of D-1 (daily bars): MA20 slope = MA20[D-1] - MA20[D-6]; ADX(14, Wilder) >= 20 with DI+ > DI- and slope > 0 = UP; ADX >= 20, DI- > DI+, slope < 0 = DOWN; else RANGE.
 Primary rows (matched direction): LONG in UP or RANGE; SHORT in DOWN or RANGE (RANGE = fades both ways). Control rows (mismatched, not gated): LONG in DOWN, SHORT in UP.
 Primary row = timeframe x trigger family: {15m,1h} x {LONG-P, LONG-S1, SHORT-P, SHORT-R1} = 8 rows. Regime mix reported per row (share of trades in UP/DOWN/RANGE) and over all days.
+Regime: none beyond the daily phase label; the share of trades in UP/DOWN/RANGE and over all days is reported only.
+Phase: daily UP/DOWN/RANGE from ADX(14), DI and MA20 slope; LONG in UP or RANGE, SHORT in DOWN or RANGE; mismatched (long in DOWN, short in UP) = control rows, not gated.
+Session: none, because 15m and 1h bars on UTC-day pivots in a 24h market, no hour filter.
+Entry: close back above pivot P or S1 after a lower close (short mirror with P/R1); entry at the OPEN of the next bar after the trigger close.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## PASS gates (all on VALIDATION, taker 12 bp, per primary row)
 1. n >= 100 trades. 2. mean net R > 0. 3. bootstrap 95% CI lower > 0 per trade AND per UTC-day cluster (10000 / 5000 resamples, seed 7). 4. placebo p < 0.05: matched random entries (same symbol, same side, same allowed phases, same timeframe, VALIDATION period, same stop/target/R:R machinery, no trigger) drawn 1000 times at the same n per symbol; p = (1+#random mean >= observed)/(1001); pool = up to 2000 random bars per symbol/side/tf. 5. survives Benjamini-Hochberg q=0.05 over the 8 primary rows' placebo p. 6. mean net R still > 0 after removing the 5 highest-R UTC days.

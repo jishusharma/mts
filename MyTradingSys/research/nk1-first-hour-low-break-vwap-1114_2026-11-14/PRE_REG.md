@@ -7,6 +7,11 @@ Phase for day D from data known at the close of D-1 (UTC daily bars built from t
 - UP: ADX>=20 and +DI>-DI and slope>0. DOWN: ADX>=20 and -DI>+DI and slope<0. Else RANGE. (OURS: 5-day slope lag; NK gives no phase rule.)
 - Primary rows trade only the direction that fits: UP -> long, DOWN -> short, RANGE -> both fades (long on early-low break, short on early-high break). Mismatched direction (shorts in UP, longs in DOWN, RANGE excluded) = CONTROL rows only, never in the verdict or the BH family.
 Regime mix: reported per split as share of coin-days UP/DOWN/RANGE, and a bull/bear share (close above own 200d SMA). A split >85% one regime is flagged ONE-REGIME.
+Regime: none beyond the daily phase label; bull/bear share (close vs own 200d SMA) and UP/DOWN/RANGE share are reported only, a split over 85 % one regime is flagged ONE-REGIME.
+Phase: daily UP/DOWN/RANGE from ADX(14), DI and MA20 slope; primary rows trade UP long, DOWN short, RANGE both fades; mismatched direction = control rows only.
+Session: two sessions: S_UTC 00:00-12:00 UTC and S_NY (NY cash open 09:30 to 16:00 New York time); the signal lives in the first hour (12 5m bars) after the open.
+Entry: early low (first 3 bars) broken in bars 3-11, close back above it, no big candle, close within 0.1 % of VWAP or above; entry at the OPEN of the next 5m bar (short mirrored).
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Data
 Binance spot USDT 5m via data-api.binance.vision, cached at F:\MTS\data_cache\binance\<SYM>USDT_5m.npz. 20 coins: BTC ETH BNB XRP ADA LTC TRX LINK XLM DOGE ETC BCH SOL DOT AVAX ATOM UNI VET NEO ZEC (liquid, chosen by name before any outcome; history from the listing date, 2019 where it exists). Current partial bar dropped. Gaps: a session with a missing bar in its window is skipped.

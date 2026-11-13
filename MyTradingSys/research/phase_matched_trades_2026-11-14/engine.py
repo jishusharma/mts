@@ -1,11 +1,14 @@
 """Phase-matched trade study engine (PRE_REG.md). Pure functions; data loading in run.py."""
 import sys
+import os
 sys.dont_write_bytecode = True
 import numpy as np
 
 H1 = 3600000
 DAY = 86400000
-COST = 0.0012            # 5 bp x2 fees + 2 bp x2 slippage round trip
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "backtest")))
+import fees  # noqa: E402  (single cost module)
+COST = round(2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13, 10)   # 0.0012 round trip: 5 bp taker per side + 2 bp round-trip slippage (fees.py)
 NONE, UP, DOWN, RANGE = 0, 1, 2, 3
 PH = {UP: "UP", DOWN: "DOWN", RANGE: "RANGE"}
 

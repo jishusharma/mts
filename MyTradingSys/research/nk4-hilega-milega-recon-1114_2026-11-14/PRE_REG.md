@@ -24,6 +24,11 @@ DEV to 2023-12-31, VALIDATION from 2024-01-01 (by entry time). Gates only on VAL
 ## Context (operator order)
 Daily phase for day D from data to prior day close: MA20 slope = MA20[D-1]/MA20[D-6]-1; Wilder ADX(14), DI+/DI-. UP: ADX>=20, DI+>DI-, slope>0. DOWN: ADX>=20, DI->DI+, slope<0. Else RANGE.
 Matched (primary) direction: long in UP, short in DOWN, both ways in RANGE (buy flip long, sell flip short). Control: mismatched direction (short in UP, long in DOWN). Regime mix reported.
+Regime: none beyond the daily phase label; the regime mix is reported only.
+Phase: daily UP/DOWN/RANGE from ADX(14), DI and MA20 slope; long in UP, short in DOWN, both ways in RANGE; mismatched direction = control rows.
+Session: none, because 5m/10m/15m signals run 24h with no hour filter.
+Entry: Hilega Milega state flips to buy/sell on a completed signal-tf bar (confirmed rows also need 15m RSI14 <= 30 / >= 70 and 5m/10m/15m agreement); entry at the next 5m open.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Rows
 For tf in {5m,10m,15m}: filter in {raw (control, no RSI/agree filter), confirmed}; cost in {12bp, 6bp}; set in {matched, mismatched control}. 24 rows. PASS is judged on matched rows at 12 bp (6 rows: 3 confirmed, 3 raw-control reported but also gated; raw is a control and cannot be the headline).

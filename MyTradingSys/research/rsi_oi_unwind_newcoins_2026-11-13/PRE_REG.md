@@ -8,6 +8,11 @@ Two layer cells looked better than the unfiltered rule on the parent's VALIDATIO
 ## Context
 Regime/phase: counter-trend dip buy after an RSI(14) <= 20 flush; the layer asks whether a flush where open interest fell (positions closed, forced unwind) is a bounce rather than a continuation (cells A, C), and whether a flush inside a young, mid-strength daily trend (ADX 20-25) bounces (cell B). Session: A and B all 24 h; C only signal bar opening 13:00-20:59 UTC (US session, signal bar open hour 13..20; OURS). Entry: close of the confirming bar (SOURCED, operator rule).
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %), as measured in the parent: 2020-2023 bull 51 % / bear 40 % / range 10 %; 2024-now bull 56 % / bear 30 % / range 15 %. The new coins mostly list 2021-2025, so their sample sits mostly in the 2023-2026 regime; per-coin history start is reported.
+Regime: none as a gate; the BTC bull/bear/range mix is reported and regime is not conditioned on.
+Phase: counter-trend dip buy after an RSI14 <= 20 flush; layers: 24h open interest change <= -3 % (A, C) and daily ADX 20-25 (B).
+Session: A and B all 24 h; C only signal bars opening 13:00-20:59 UTC (US session).
+Entry: close of the confirming bar s+1 (green, closes above the close of signal bar s) after the first RSI14 <= 20 touch; stop = low of s.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Rule (unchanged from the parent; SOURCED = operator words, OURS = our choice)
 - Signal bar s on TF in {1h, 4h} (4h folded from 1h, UTC-anchored): Wilder RSI(14) of TF closes <= 20 (OURS, parent), first touch per episode, re-arm after RSI > 30 (OURS).

@@ -126,7 +126,7 @@ def simulate(D, atr, direction):
         done |= hs | ht
     nd = ~done
     res[nd] = sgn * (c[i[nd] + HOLD] - entry[nd]) / S[nd]; ex[nd] = i[nd] + HOLD
-    feeR = 1e-4 * entry / S
+    feeR = entry / S * 1e-4  # R cost of 1 bp of price (a unit conversion, not a fee level)
     pad = lambda a, f: np.r_[a, np.full(n - m, f)]
     return pad(res, np.nan), pad(feeR, np.nan), pad(ex, n)
 

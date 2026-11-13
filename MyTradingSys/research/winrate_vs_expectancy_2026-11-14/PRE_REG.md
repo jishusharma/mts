@@ -8,6 +8,9 @@ target/stop shape alone and what that does to profit per trade after fees; (2) s
 Regime: none as an entry gate; the BTC daily close vs its 200-day SMA share per split is reported (see Regime mix). Phase: none. Session: none (24h market, no hour filter).
 Entry: the open of the 5m bar after the signal bar's close (taker variant) or a limit at the signal bar's close (maker variant).
 Regime mix: reported in RESULT.md per split as % of days BTC closed above / below / within 5% of its 200-day SMA; a split >85% one regime is flagged ONE-REGIME and cannot carry a PASS alone.
+Phase: none, no cycle-phase gate on entries.
+Session: none, 24h market with no hour filter.
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Data
 | Item | Choice |

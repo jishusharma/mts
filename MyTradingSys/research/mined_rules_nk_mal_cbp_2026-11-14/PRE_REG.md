@@ -67,6 +67,9 @@ Each rule, applied mechanically as written on 20 liquid Bybit USDT perps pooled,
 - NK-R11: trend-initiation / volatility expansion (Bollinger "blast"), long breakout; needs a market leaving a range with expanding bands; ride with previous-candle-low trail ("you can ride the trade for a long time").
 - Regime: no regime gate. `Regime mix:` per split = share of weeks BTC close is above / below / inside +-5 % of its 200-day SMA (bull / bear / range), descriptive only (how it is read, not used to select trades).
 - Session: UTC entry-hour blocks reported descriptively.
+Phase: none as a gate; each rule is its own pattern: MAL-R05 weekly-leg reversal, NK-R04/R05 RSI-zone mean reversion near the close, NK-R11 Bollinger breakout (see bullets above).
+Entry: next bar open after the signal bar closes (MAL-R05: 3rd daily candle after weekly divergence; NK-R04/R05: 15m RSI14 <= 30 / >= 70; NK-R11: stop-entry at breakout high within 4 bars).
+(Context lines restated at ship 2026-11-14 from this file and the study code, after the run; no rule was changed.)
 
 ## Splits
 DEV: trades with entry time <= 2023-12-31 23:59 UTC (descriptive only; nothing is tuned or dropped on DEV). VALIDATION: entry >= 2024-01-01 (to data end). Every cell is tested once on VALIDATION.
