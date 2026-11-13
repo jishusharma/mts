@@ -3,145 +3,190 @@
     "id": "hilega-milega",
     "name": "Hilega Milega (RSI + RSI averages)",
     "video": "JLcDdrHkB5M",
-    "rule": "RSI with a moving average and a volume-weighted average of RSI (operator's description).",
+    "rule": "On the Hilega Milega line a W (double bottom) forms and turns up.",
     "params": [
       [
         "RSI length",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Fast average of RSI (type, length)",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Volume-weighted average of RSI (length)",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Timeframe",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
-        "Entry trigger (cross / level)",
-        "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "Entry shape",
+        "W formed upward",
+        "SOURCED: in the verified Hindi quote"
       ],
       [
         "Port Nifty to BTC perp",
         "same rules, BTC 24/7 bars",
         "OURS: our market mapping"
       ]
-    ]
+    ],
+    "page_en": "It will build a W: Hilega Milega goes like this, like this, and a W forms pointing up."
   },
   {
     "id": "bollinger",
     "name": "Bollinger Bands breakout vs fakeout",
     "video": "wrEEf8o9n9E",
-    "rule": "Tell a real breakout from a fakeout at the bands (title).",
+    "rule": "Price fails under the daily 20 average while the bands 'blast' (expand).",
     "params": [
+      [
+        "Reference average",
+        "20 'एसए' (likely 20 SMA)",
+        "SOURCED: in the verified Hindi quote"
+      ],
+      [
+        "Timeframe",
+        "day",
+        "SOURCED: in the verified Hindi quote"
+      ],
+      [
+        "Band event name",
+        "'ब्लास्ट' (blast)",
+        "SOURCED: in the verified Hindi quote"
+      ],
       [
         "BB length",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote; 20 average is adjacent, link unconfirmed"
       ],
       [
         "BB width (std dev)",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
-        "Fakeout test (close back inside?)",
+        "Fakeout test",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
-      ],
-      [
-        "Timeframe",
-        "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ]
-    ]
+    ],
+    "page_en": "It could not get above the 20 SA on the day timeframe, and the Bollinger Band blast happened too."
   },
   {
     "id": "srp",
     "name": "SRP (meaning from captions)",
     "video": "3EpXq8JC4jU",
-    "rule": "Meaning not yet read; nearest title is Pivot Point Use.",
+    "rule": "Pivot S3 and R3 act as strong support and resistance.",
     "params": [
+      [
+        "Key levels",
+        "S3 and R3",
+        "SOURCED: in the verified Hindi quote"
+      ],
       [
         "What SRP stands for",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote; acronym not spoken"
       ],
       [
         "Pivot formula (classic / Camarilla / Fib)",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Pivot timeframe (day / week)",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
+      ],
+      [
+        "Entry rule at pivot",
+        "NOT_SEEN",
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ]
-    ]
+    ],
+    "page_en": "In pivots, S3 and R3 are quite good support and resistance."
   },
   {
     "id": "nifty-h23",
     "name": "Nifty Hedge 23 expiry setup",
     "video": "ZuVWAu_MR2Q",
-    "rule": "Weekly-expiry Nifty option hedge under CAS rules (title).",
+    "rule": "Hedge 23 is redesigned to fit the new CAS rule.",
     "params": [
+      [
+        "Rule it adapts to",
+        "CAS (new rule)",
+        "SOURCED: in the verified Hindi quote"
+      ],
       [
         "Strike distance",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Entry time on expiry day",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Exit / stop",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "Port to Deribit testnet options",
         "possible later",
         "OURS: only route for options"
       ]
-    ]
+    ],
+    "page_en": "How do we design Hedge 23 according to the CAS that has come in."
   },
   {
     "id": "nifty-gap-rsi",
     "name": "Nifty gap prediction, 15-10-5 RSI",
     "video": "cmH38Uo4sYM",
-    "rule": "Read RSI on 15, 10 and 5 min to call next open gap (title).",
+    "rule": "Watch the 15m RSI(14) touch the 30 zone to read the next open.",
     "params": [
       [
-        "Timeframes",
-        "15, 10, 5 min",
+        "RSI length",
+        "14",
+        "SOURCED: in the verified Hindi quote"
+      ],
+      [
+        "First timeframe",
+        "15 min",
+        "SOURCED: in the verified Hindi quote"
+      ],
+      [
+        "RSI zone",
+        "30",
+        "SOURCED: in the verified Hindi quote"
+      ],
+      [
+        "Other timeframes",
+        "10, 5 min",
         "SOURCED: video title only"
       ],
       [
-        "RSI length",
+        "Gap side for the 30 touch",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
-        "Gap threshold",
+        "Time of day",
         "NOT_SEEN",
-        "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+        "SOURCED: slot only, NOT_SEEN in any verified quote"
       ],
       [
         "BTC gap proxy",
         "session open (Asia/London/NY)",
         "OURS: BTC trades 24/7"
       ]
-    ]
+    ],
+    "page_en": "It touches the 30 zone; RSI of which period? 14-period RSI, on the 15-minute timeframe."
   }
 ]

@@ -2,76 +2,94 @@
 
 ## hilega-milega: Hilega Milega (RSI + RSI averages) (video JLcDdrHkB5M)
 
-Claim on the page: RSI with a moving average and a volume-weighted average of RSI (operator's description).
+Claim on the page: On the Hilega Milega line a W (double bottom) forms and turns up.
+
+Page English rendering of the quote: It will build a W: Hilega Milega goes like this, like this, and a W forms pointing up.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
-| RSI length | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Fast average of RSI (type, length) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Volume-weighted average of RSI (length) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Timeframe | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Entry trigger (cross / level) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
+| RSI length | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Fast average of RSI (type, length) | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Volume-weighted average of RSI (length) | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Timeframe | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Entry shape | W formed upward | SOURCED: in the verified Hindi quote | |
 | Port Nifty to BTC perp | same rules, BTC 24/7 bars | OURS: our market mapping | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
 |---|---|---|---|---|
-| - | - | PENDING: extract not landed | - | |
+| flash | 14 | एक डब्ल्यू का निर्माण कर देगा हिलेगा मिलेगा ऐसे ऐसे और एक ऐसे ऊपर की तरफ डब्लू बन जाएगा | "It will form a W, Hilega Milega like this and like this a W will form upwards" | |
 
 ## bollinger: Bollinger Bands breakout vs fakeout (video wrEEf8o9n9E)
 
-Claim on the page: Tell a real breakout from a fakeout at the bands (title).
+Claim on the page: Price fails under the daily 20 average while the bands 'blast' (expand).
+
+Page English rendering of the quote: It could not get above the 20 SA on the day timeframe, and the Bollinger Band blast happened too.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
-| BB length | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| BB width (std dev) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Fakeout test (close back inside?) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Timeframe | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
+| Reference average | 20 'एसए' (likely 20 SMA) | SOURCED: in the verified Hindi quote | |
+| Timeframe | day | SOURCED: in the verified Hindi quote | |
+| Band event name | 'ब्लास्ट' (blast) | SOURCED: in the verified Hindi quote | |
+| BB length | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote; 20 average is adjacent, link unconfirmed | |
+| BB width (std dev) | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Fakeout test | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
 |---|---|---|---|---|
-| - | - | PENDING: extract not landed | - | |
+| flash | 14 | 20 एसए में डे टाइम फ्रेम के ऊपर नहीं जा पाई और बुलिंजर बैंड ब्लास्ट भी कर गई | "Could not go above the 20 SMA on the day timeframe and Bollinger Band blast also happened" | |
 
 ## srp: SRP (meaning from captions) (video 3EpXq8JC4jU)
 
-Claim on the page: Meaning not yet read; nearest title is Pivot Point Use.
+Claim on the page: Pivot S3 and R3 act as strong support and resistance.
+
+Page English rendering of the quote: In pivots, S3 and R3 are quite good support and resistance.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
-| What SRP stands for | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Pivot formula (classic / Camarilla / Fib) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Pivot timeframe (day / week) | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
+| Key levels | S3 and R3 | SOURCED: in the verified Hindi quote | |
+| What SRP stands for | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote; acronym not spoken | |
+| Pivot formula (classic / Camarilla / Fib) | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Pivot timeframe (day / week) | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Entry rule at pivot | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
 |---|---|---|---|---|
-| - | - | PENDING: extract not landed | - | |
+| flash | 14 | पिवट में S3 और R3 ये काफी अच्छा सपोर्ट रेजिस्टेंस होता है | "In Pivot, S3 and R3 act as very good support and resistance" | |
 
 ## nifty-h23: Nifty Hedge 23 expiry setup (video ZuVWAu_MR2Q)
 
-Claim on the page: Weekly-expiry Nifty option hedge under CAS rules (title).
+Claim on the page: Hedge 23 is redesigned to fit the new CAS rule.
+
+Page English rendering of the quote: How do we design Hedge 23 according to the CAS that has come in.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
-| Strike distance | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Entry time on expiry day | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Exit / stop | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
+| Rule it adapts to | CAS (new rule) | SOURCED: in the verified Hindi quote | |
+| Strike distance | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Entry time on expiry day | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Exit / stop | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
 | Port to Deribit testnet options | possible later | OURS: only route for options | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
 |---|---|---|---|---|
-| - | - | PENDING: extract not landed | - | |
+| flash | 14 | जो सीए एस आया है उसके अकॉर्डिंग हम लोग हेज टू थ्री कैसे डिजाइन करें | "According to the CAS that has arrived, how do we design Hedge 23" | |
 
 ## nifty-gap-rsi: Nifty gap prediction, 15-10-5 RSI (video cmH38Uo4sYM)
 
-Claim on the page: Read RSI on 15, 10 and 5 min to call next open gap (title).
+Claim on the page: Watch the 15m RSI(14) touch the 30 zone to read the next open.
+
+Page English rendering of the quote: It touches the 30 zone; RSI of which period? 14-period RSI, on the 15-minute timeframe.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
-| Timeframes | 15, 10, 5 min | SOURCED: video title only | |
-| RSI length | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
-| Gap threshold | NOT_SEEN | SOURCED: slot only, value NOT_SEEN until Hindi captions verified | |
+| RSI length | 14 | SOURCED: in the verified Hindi quote | |
+| First timeframe | 15 min | SOURCED: in the verified Hindi quote | |
+| RSI zone | 30 | SOURCED: in the verified Hindi quote | |
+| Other timeframes | 10, 5 min | SOURCED: video title only | |
+| Gap side for the 30 touch | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
+| Time of day | NOT_SEEN | SOURCED: slot only, NOT_SEEN in any verified quote | |
 | BTC gap proxy | session open (Asia/London/NY) | OURS: BTC trades 24/7 | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
 |---|---|---|---|---|
-| - | - | PENDING: extract not landed | - | |
+| flash | 14 | 30 का जो जोन है उस पे टच करता है कौन से पीरियड की 14 पीरियड की आरएसआई 15 मिनट के टाइम फ्रेम | "Touches the 30 zone, of which period, 14-period RSI on 15-minute timeframe" | |

@@ -7187,11 +7187,11 @@
         ],
         [
           "5",
-          "selected for extract"
+          "videos extracted (flash, thin)"
         ],
         [
-          "0",
-          "captions fetched"
+          "5",
+          "Hindi quotes verified"
         ],
         [
           "0",
@@ -7199,7 +7199,7 @@
         ]
       ],
       "deck": "",
-      "facts": "MyTradingSys/research/nk_stocktalk_1113/SELECTED.md",
+      "facts": "MyTradingSys/research/nk_stocktalk_1113/review/CHECKLIST.md",
       "tests": [],
       "market_tiles": [
         [
@@ -7220,8 +7220,8 @@
         "promising": []
       },
       "gaps": [
-        "Every rule is from titles only; no caption read",
-        "SRP meaning unknown",
+        "One quote per concept; deep flash pass pending",
+        "SRP meaning still unknown",
         "Options setups have no BTC twin"
       ],
       "concepts": [
@@ -7232,37 +7232,38 @@
           "status": "untested",
           "diagram": "",
           "quote": {
-            "text": "",
-            "src": "pending caption JLcDdrHkB5M",
-            "check": "none"
+            "text": "एक डब्ल्यू का निर्माण कर देगा हिलेगा मिलेगा ऐसे ऐसे और एक ऐसे ऊपर की तरफ डब्लू बन जाएगा",
+            "src": "MyTradingSys/research/nk_stocktalk_1113/flash/JLcDdrHkB5M/EXTRACT.md | JLcDdrHkB5M END [45:00]",
+            "check": "verified",
+            "en": "It will build a W: Hilega Milega goes like this, like this, and a W forms pointing up."
           },
-          "rule": "RSI with a moving average and a volume-weighted average of RSI (operator's description).",
+          "rule": "On the Hilega Milega line a W (double bottom) forms and turns up.",
           "ours": "Not built; waiting for his stated lengths",
           "params": [
             [
               "RSI length",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Fast average of RSI (type, length)",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Volume-weighted average of RSI (length)",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Timeframe",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
-              "Entry trigger (cross / level)",
-              "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "Entry shape",
+              "W formed upward",
+              "SOURCED: in the verified Hindi quote"
             ],
             [
               "Port Nifty to BTC perp",
@@ -7273,7 +7274,7 @@
           "code": "none",
           "fidelity": [
             "untested",
-            "Skeleton from titles only; video JLcDdrHkB5M"
+            "One verified Hindi quote (flash THIN); video JLcDdrHkB5M"
           ],
           "support": [
             [
@@ -7289,10 +7290,10 @@
           ],
           "test": {
             "study": "none yet",
-            "n": "0 captions",
+            "n": "1 verified quote",
             "net": "—",
             "verdict": "NONE",
-            "lesson": "captions not fetched yet"
+            "lesson": "quote verified; no backtest yet"
           },
           "sim": {
             "where": "none",
@@ -7303,7 +7304,7 @@
             "failed": [],
             "promising": []
           },
-          "question": "Are the lengths 9/3/21 (Gemini's unverified guess) or something else?"
+          "question": "Is 'हिलेगा मिलेगा' the indicator's name here or a gesture? Flash claims an RSI 82 zone, unquoted."
         },
         {
           "id": "bollinger",
@@ -7312,38 +7313,49 @@
           "status": "untested",
           "diagram": "",
           "quote": {
-            "text": "",
-            "src": "pending caption wrEEf8o9n9E",
-            "check": "none"
+            "text": "20 एसए में डे टाइम फ्रेम के ऊपर नहीं जा पाई और बुलिंजर बैंड ब्लास्ट भी कर गई",
+            "src": "MyTradingSys/research/nk_stocktalk_1113/flash/wrEEf8o9n9E/EXTRACT.md | wrEEf8o9n9E BEGIN [00:45]",
+            "check": "verified",
+            "en": "It could not get above the 20 SA on the day timeframe, and the Bollinger Band blast happened too."
           },
-          "rule": "Tell a real breakout from a fakeout at the bands (title).",
+          "rule": "Price fails under the daily 20 average while the bands 'blast' (expand).",
           "ours": "Not built; BB 15m mechanical test exists for another trader",
           "params": [
             [
+              "Reference average",
+              "20 'एसए' (likely 20 SMA)",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
+              "Timeframe",
+              "day",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
+              "Band event name",
+              "'ब्लास्ट' (blast)",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
               "BB length",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote; 20 average is adjacent, link unconfirmed"
             ],
             [
               "BB width (std dev)",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
-              "Fakeout test (close back inside?)",
+              "Fakeout test",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
-            ],
-            [
-              "Timeframe",
-              "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ]
           ],
           "code": "none",
           "fidelity": [
             "untested",
-            "Skeleton from titles only; video wrEEf8o9n9E"
+            "One verified Hindi quote (flash THIN); video wrEEf8o9n9E"
           ],
           "support": [
             [
@@ -7354,10 +7366,10 @@
           ],
           "test": {
             "study": "none yet",
-            "n": "0 captions",
+            "n": "1 verified quote",
             "net": "—",
             "verdict": "NONE",
-            "lesson": "captions not fetched yet"
+            "lesson": "quote verified; no backtest yet"
           },
           "sim": {
             "where": "none",
@@ -7368,7 +7380,7 @@
             "failed": [],
             "promising": []
           },
-          "question": "Does he use the bands at all in this video, or only price breakouts?"
+          "question": "Is the 20 SA the bands' middle line? Flash's re-test SL rule is unquoted."
         },
         {
           "id": "srp",
@@ -7377,33 +7389,44 @@
           "status": "untested",
           "diagram": "",
           "quote": {
-            "text": "",
-            "src": "pending caption 3EpXq8JC4jU",
-            "check": "none"
+            "text": "पिवट में S3 और R3 ये काफी अच्छा सपोर्ट रेजिस्टेंस होता है",
+            "src": "MyTradingSys/research/nk_stocktalk_1113/flash/3EpXq8JC4jU/EXTRACT.md | 3EpXq8JC4jU BEGIN [09:30]",
+            "check": "verified",
+            "en": "In pivots, S3 and R3 are quite good support and resistance."
           },
-          "rule": "Meaning not yet read; nearest title is Pivot Point Use.",
+          "rule": "Pivot S3 and R3 act as strong support and resistance.",
           "ours": "Not built; meaning unconfirmed",
           "params": [
             [
+              "Key levels",
+              "S3 and R3",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
               "What SRP stands for",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote; acronym not spoken"
             ],
             [
               "Pivot formula (classic / Camarilla / Fib)",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Pivot timeframe (day / week)",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
+            ],
+            [
+              "Entry rule at pivot",
+              "NOT_SEEN",
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ]
           ],
           "code": "none",
           "fidelity": [
             "untested",
-            "Skeleton from titles only; video 3EpXq8JC4jU"
+            "One verified Hindi quote (flash THIN); video 3EpXq8JC4jU"
           ],
           "support": [
             [
@@ -7414,10 +7437,10 @@
           ],
           "test": {
             "study": "none yet",
-            "n": "0 captions",
+            "n": "1 verified quote",
             "net": "—",
             "verdict": "NONE",
-            "lesson": "captions not fetched yet"
+            "lesson": "quote verified; no backtest yet"
           },
           "sim": {
             "where": "none",
@@ -7428,7 +7451,7 @@
             "failed": [],
             "promising": []
           },
-          "question": "Is SRP his own term, and is it pivots at all?"
+          "question": "Where does 'SRP' come from, if not this video? Flash's close-above-pivot entry is unquoted."
         },
         {
           "id": "nifty-h23",
@@ -7437,27 +7460,33 @@
           "status": "untested",
           "diagram": "",
           "quote": {
-            "text": "",
-            "src": "pending caption ZuVWAu_MR2Q",
-            "check": "none"
+            "text": "जो सीए एस आया है उसके अकॉर्डिंग हम लोग हेज टू थ्री कैसे डिजाइन करें",
+            "src": "MyTradingSys/research/nk_stocktalk_1113/flash/ZuVWAu_MR2Q/EXTRACT.md | ZuVWAu_MR2Q BEGIN [00:15]",
+            "check": "verified",
+            "en": "How do we design Hedge 23 according to the CAS that has come in."
           },
-          "rule": "Weekly-expiry Nifty option hedge under CAS rules (title).",
+          "rule": "Hedge 23 is redesigned to fit the new CAS rule.",
           "ours": "Options structure; no BTC equivalent built",
           "params": [
             [
+              "Rule it adapts to",
+              "CAS (new rule)",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
               "Strike distance",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Entry time on expiry day",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Exit / stop",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "Port to Deribit testnet options",
@@ -7468,7 +7497,7 @@
           "code": "none",
           "fidelity": [
             "untested",
-            "Skeleton from titles only; video ZuVWAu_MR2Q"
+            "One verified Hindi quote (flash THIN); video ZuVWAu_MR2Q"
           ],
           "support": [
             [
@@ -7479,10 +7508,10 @@
           ],
           "test": {
             "study": "none yet",
-            "n": "0 captions",
+            "n": "1 verified quote",
             "net": "—",
             "verdict": "NONE",
-            "lesson": "captions not fetched yet"
+            "lesson": "quote verified; no backtest yet"
           },
           "sim": {
             "where": "none",
@@ -7493,7 +7522,7 @@
             "failed": [],
             "promising": []
           },
-          "question": "Is any part directional, or is it pure premium hedging?"
+          "question": "What is CAS? Flash's ATM strike after 2 PM is unquoted."
         },
         {
           "id": "nifty-gap-rsi",
@@ -7502,27 +7531,43 @@
           "status": "untested",
           "diagram": "",
           "quote": {
-            "text": "",
-            "src": "pending caption cmH38Uo4sYM",
-            "check": "none"
+            "text": "30 का जो जोन है उस पे टच करता है कौन से पीरियड की 14 पीरियड की आरएसआई 15 मिनट के टाइम फ्रेम",
+            "src": "MyTradingSys/research/nk_stocktalk_1113/flash/cmH38Uo4sYM/EXTRACT.md | cmH38Uo4sYM MIDDLE [14:45]",
+            "check": "verified",
+            "en": "It touches the 30 zone; RSI of which period? 14-period RSI, on the 15-minute timeframe."
           },
-          "rule": "Read RSI on 15, 10 and 5 min to call next open gap (title).",
+          "rule": "Watch the 15m RSI(14) touch the 30 zone to read the next open.",
           "ours": "Not built; BTC has no session gap, needs a session-open proxy",
           "params": [
             [
-              "Timeframes",
-              "15, 10, 5 min",
+              "RSI length",
+              "14",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
+              "First timeframe",
+              "15 min",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
+              "RSI zone",
+              "30",
+              "SOURCED: in the verified Hindi quote"
+            ],
+            [
+              "Other timeframes",
+              "10, 5 min",
               "SOURCED: video title only"
             ],
             [
-              "RSI length",
+              "Gap side for the 30 touch",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
-              "Gap threshold",
+              "Time of day",
               "NOT_SEEN",
-              "SOURCED: slot only, value NOT_SEEN until Hindi captions verified"
+              "SOURCED: slot only, NOT_SEEN in any verified quote"
             ],
             [
               "BTC gap proxy",
@@ -7533,7 +7578,7 @@
           "code": "none",
           "fidelity": [
             "untested",
-            "Skeleton from titles only; video cmH38Uo4sYM"
+            "One verified Hindi quote (flash THIN); video cmH38Uo4sYM"
           ],
           "support": [
             [
@@ -7549,10 +7594,10 @@
           ],
           "test": {
             "study": "none yet",
-            "n": "0 captions",
+            "n": "1 verified quote",
             "net": "—",
             "verdict": "NONE",
-            "lesson": "captions not fetched yet"
+            "lesson": "quote verified; no backtest yet"
           },
           "sim": {
             "where": "none",
@@ -7563,7 +7608,7 @@
             "failed": [],
             "promising": []
           },
-          "question": "Which RSI reading at close predicts the gap side?"
+          "question": "Does a 30 touch call a gap up or down? Flash's 3:00-3:30 PM window is unquoted."
         }
       ]
     }
