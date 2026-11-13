@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T11:58:14Z",
   "commands": [],
   "created": "2026-11-12T20:39:12Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "all 9 source_urls unfetchable (8x404, 3x402); 9 rows UNVERIFIED, notes marked SAMPLE",
+      "ref": "f11f0e6af",
+      "utc": "2026-11-13T11:58:14Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "analysts: implement Crypto Chase FVG social call listener and ledger",
@@ -27,13 +34,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no fetchable source for any row; logged-in or operator check needed to upgrade",
   "note": "REVIEWED:2026-11-13 T0-ONLY. Public data only; repo is public, no account data.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T21:00:22Z",
   "refs": [],
-  "result": "",
+  "result": "all 9 source_urls unfetchable (8x404, 3x402); 9 rows UNVERIFIED, notes marked SAMPLE",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/analysts/rlinda/CALL_LEDGER.csv",
     "MyTradingSys/research/analysts/bennett/CALL_LEDGER.csv",
@@ -48,13 +61,14 @@
   "sources": [
     "conceptualizer card text 2026-11-12"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read the 3 ledgers (4 lines each); list call_ids, entry, url",
     "for each url use public WebFetch only; a 404, login wall or generic slug = UNVERIFIED, never guess",
     "compare round numbers vs BTC daily close that day in MyTradingSys/research/pitchfork_2026-10-19/btc_1d_2020_2026.csv (entry inside the day high-low or not)",
     "write PROVENANCE_CHECK_1113.md; remove rows not REAL (git history keeps them); grep other files for the removed call_ids"
   ],
+  "taken": "2026-11-13T11:58:14Z",
   "tests": "MyTradingSys/research/analysts/rlinda/test_rlinda_ingestion.py still passes; no other test touched",
   "title": "Check rlinda/bennett/cryptochase CALL_LEDGER.csv rows: round entries + generic URLs look like illustrative samples; verify each source_url or purge",
   "weight": "ROUTINE",
