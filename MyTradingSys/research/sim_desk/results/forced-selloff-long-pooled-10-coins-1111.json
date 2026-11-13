@@ -85,13 +85,13 @@
  ],
  "commit": "this card",
  "banner": {
-  "state": "FAIL",
-  "tone": "bad",
+  "state": "UNCLEAR",
+  "tone": "",
   "verdict": "Both rules FAIL on VALIDATION: no fee-net edge",
-  "n": 132,
+  "n": null,
   "net_r": null,
   "try_no": null,
   "breakeven_x": null,
-  "text": "FAIL \u00b7 verdict as written: Both rules FAIL on VALIDATION: no fee-net edge \u00b7 n=132 (A VALIDATION events) \u00b7 net R after fees n/a \u00b7 try n/a \u00b7 fee break-even n/a"
+  "text": "NO TRADE COUNT \u00b7 verdict as written: Both rules FAIL on VALIDATION: no fee-net edge \u00b7 n=? \u00b7 net R after fees n/a \u00b7 try n/a \u00b7 fee break-even n/a"
  }
 }
