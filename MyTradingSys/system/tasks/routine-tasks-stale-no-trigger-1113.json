@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T13:44:35Z",
   "commands": [],
   "created": "2026-11-13T13:30:42Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "wired by routines-plan-wiring-1113: supervisor.py plan prints a due line via routines_due.py (row 12 tasks.py stale); closed as done, not discarded",
+  "pinned": false,
   "prio": 3,
+  "reason": "wired by routines-plan-wiring-1113: supervisor.py plan prints a due line via routines_due.py (row 12 tasks.py stale); closed as done, not discarded",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "ROUTINES row 12: tasks.py stale lists 63 stale ready cards and nobody runs it. Smallest fix: one plan NOTE line with the stale count and a Session_Planner RUN line to re-refine them; done when stale is under 10",

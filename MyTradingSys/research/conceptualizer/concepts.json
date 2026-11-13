@@ -32,7 +32,7 @@
           "untested: swing"
         ]
       ],
-      "deck": "https://claude.ai/artifact/L4A2SBrnC2JrK1iutL18XV",
+      "deck": null,
       "facts": "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
       "concepts": [
         {
@@ -890,7 +890,7 @@
           "best arm, n 126"
         ]
       ],
-      "deck": "https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP",
+      "deck": null,
       "facts": "MyTradingSys/research/concept_decks_1112/MALKAN_FACTS.md",
       "concepts": [
         {
