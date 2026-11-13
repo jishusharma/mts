@@ -16,7 +16,15 @@
   "id": "gemini-hunt-volume-candles-ma-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Gemini gap hunts: cryptocred (both models), positioning, session_timing, volume_candles_ma",
+      "ref": "3d6951c1249b",
+      "utc": "2026-11-13T01:53:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T23:28:47Z",
+  "refreshed": "2026-11-13T21:45:19Z",
   "refs": [
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
@@ -44,7 +52,7 @@
     "no numbers from our docs or your own knowledge: unstated = NOT_SEEN",
     "no YouTube or web fetch"
   ],
-  "scope_sha": "",
+  "scope_sha": "3d6951c1249b",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"

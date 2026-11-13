@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T21:47:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114/prereg-lint-nov13/LINT.md exists with one row per PRE_REG touched since 2026-11-11 and a prereg_context_lint.py exit code per row",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check each PRE_REG.md under MyTradingSys/research touched since 2026-11-11 against the template (gross_effect_screen_2026-10-15/PRE_REG.md): verdicts.py check paste, one m, prereg_gate.py line, rule frozen before RESULT, SOURCED/OURS labels. List the missing items per file.",
+  "id": "prereg-lint-nov13-gemini-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini queue refill 11-14, output on a gemini-q branch",
+  "note": "Planner refill 1114. Every number must trace to a file or verbatim quote. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T21:47:32Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114/prereg-lint-nov13/LINT.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2026-11-14 (planner-gemini-refill-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "List files: git log --since=2026-11-11 --name-only --format= -- 'MyTradingSys/research/*/PRE_REG.md' | sort -u.",
+    "Read the template PRE_REG. Per file a row: verdicts.py check paste yes/no, m value, prereg_gate command yes/no, SOURCED/OURS labels yes/no.",
+    "Run python scripts/dev/prereg_context_lint.py on each file and paste each exit code.",
+    "Write LINT.md, first line N files, M with at least one gap. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/prereg_context_lint.py",
+  "title": "[GEMINI] PRE_REG lint: every PRE_REG written 11-11 to 11-13",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
