@@ -1,0 +1,40 @@
+BTC bars 826496
+# Live Aid idea-flag groups, full-history test, cell BTC (2026-11-13)
+
+Frozen in PRE_REG.md. Cell BTC 2019-01-01..2026-11-10, VALIDATION from 2024-07-02; node {"bars5": 826496, "bars15": 275498, "steps": 825590, "idea_steps": 292373, "events": 66559, "first": 1546300800000, "last": 1794354900000}; events scored 66554, skipped 5.
+Regime mix: up 41.1 % / down 32.2 % / range 26.8 %
+
+| group | side | VAL n | hit % | fee-net bps [95 % CI] | placebo p (* beats p95) | boot p, BH survive | verdict |
+|---|---|---|---|---|---|---|---|
+| idea | LONG | 10096 | 50.9 | -4.2 [-5.5, -2.8] | 0.77 | 1.000 n | FAIL |
+| idea | SHORT | 10669 | 49.3 | -5.3 [-6.6, -4.0] | 1.00 | 1.000 n | FAIL |
+| idea REJECTED | LONG | 3443 | 51.9 | -5.1 [-7.4, -2.9] | 0.57 | 1.000 n | FAIL |
+| idea REJECTED | SHORT | 3726 | 51.3 | -5.5 [-7.6, -3.4] | 0.51 | 1.000 n | FAIL |
+| idea ACCEPTED | LONG | 3297 | 49.2 | -3.6 [-5.7, -1.6] | 0.93 | 0.999 n | FAIL |
+| idea ACCEPTED | SHORT | 3378 | 48.1 | -5.2 [-7.3, -3.2] | 1.00 | 1.000 n | FAIL |
+| idea FAILED BREAK | LONG | 3356 | 51.6 | -3.7 [-5.7, -1.7] | 0.38 | 1.000 n | FAIL |
+| idea FAILED BREAK | SHORT | 3565 | 48.4 | -5.1 [-6.8, -3.3] | 0.90 | 1.000 n | FAIL |
+| idea fade @ Day open | LONG | 1877 | 50.6 | -6.1 [-8.4, -3.9] | 0.98 | 1.000 n | FAIL |
+| idea fade @ Day open | SHORT | 1989 | 50.1 | -4.0 [-6.3, -1.7] | 0.69 | 1.000 n | FAIL |
+| idea fade @ 2-day-ago low | LONG | 476 | 54.6 | -5.0 [-10.4, +0.4] | 0.25 | 0.967 n | FAIL |
+| idea fade @ 2-day-ago low | SHORT | 448 | 49.1 | -6.2 [-12.7, +0.1] | 0.91 | 0.973 n | FAIL |
+| idea fade @ 2-day-ago high | LONG | 399 | 50.9 | -1.3 [-7.9, +6.0] | 0.25 | 0.655 n | FAIL |
+| idea fade @ 2-day-ago high | SHORT | 536 | 46.8 | -9.0 [-13.5, -4.5] | 0.84 | 1.000 n | FAIL |
+| idea fade @ Asia low | LONG | 979 | 51.3 | -3.2 [-6.7, +0.3] | 0.00* | 0.964 n | FAIL |
+| idea fade @ Asia low | SHORT | 503 | 50.1 | -2.1 [-7.5, +3.8] | 0.90 | 0.770 n | FAIL |
+| idea fade @ Asia high | LONG | 456 | 49.8 | -4.5 [-10.4, +1.0] | 0.99 | 0.943 n | FAIL |
+| idea fade @ Asia high | SHORT | 1124 | 51.2 | -5.3 [-8.8, -1.9] | 0.06 | 0.999 n | FAIL |
+| idea fade @ Yesterday low | LONG | 643 | 51.8 | -7.8 [-13.4, -2.2] | 0.60 | 0.997 n | FAIL |
+| idea fade @ Yesterday low | SHORT | 311 | 48.2 | -8.6 [-15.1, -2.3] | 1.00 | 0.996 n | FAIL |
+| idea fade @ Yesterday high | LONG | 446 | 45.7 | -6.7 [-11.4, -1.9] | 1.00 | 0.997 n | FAIL |
+| idea fade @ Yesterday high | SHORT | 814 | 53.7 | -3.9 [-7.6, -0.2] | 0.02* | 0.982 n | FAIL |
+| idea fade @ Europe low | LONG | 833 | 56.8 | -1.4 [-6.1, +3.3] | 0.00* | 0.715 n | FAIL |
+| idea fade @ Europe low | SHORT | 317 | 47.0 | -4.5 [-10.4, +1.4] | 0.97 | 0.932 n | FAIL |
+| idea fade @ Europe high | LONG | 378 | 51.1 | +0.6 [-4.7, +6.1] | 0.21 | 0.415 n | FAIL |
+| idea fade @ Europe high | SHORT | 949 | 47.7 | -7.6 [-11.9, -3.3] | 0.74 | 1.000 n | FAIL |
+| idea fade @ Last week low | LONG | 135 | 53.3 | -8.1 [-21.1, +4.1] | 0.58 | 0.899 n | FAIL |
+| idea fade @ Last week low | SHORT | 135 | 52.6 | -0.6 [-9.8, +8.4] | 0.28 | 0.561 n | FAIL |
+| idea fade @ Last week high | LONG | 177 | 58.2 | -2.6 [-13.0, +8.0] | 0.51 | 0.673 n | FAIL |
+| idea fade @ Last week high | SHORT | 165 | 49.7 | -8.9 [-16.5, -1.8] | 0.55 | 0.992 n | FAIL |
+
+PASS cells: 0 
