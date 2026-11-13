@@ -1,0 +1,1 @@
+{"t": "20261113T192004Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B: edge4-rsi-4h card was split into edge4-*-1114 cards (e4565b9a8) while I ran it; my full run shipped bec3bd4d (UNDERPOWERED, 0/12 cells pass; 4h pooled n=35, VAL n=12 +0.64R at 2R, not carried by RS", "login": "B"}
