@@ -3,6 +3,8 @@
 Reference that only some tasks need, moved out of CLAUDE.md on 2026-10-15 (CLAUDE.md is loaded on every turn; this file is read on demand).
 The operator is not a developer: do these, do not ask, do not re-investigate. Hard rules and gates stay in CLAUDE.md.
 
+- Routines index (every recurring job: start command, check, trigger, model, state): `MyTradingSys/system/ROUTINES.md`.
+
 ## Operator page, pages, inbox
 - Operator page = MTS Control Room (pinned artifact). Their questions/tasks arrive in its Inbox, verbatim; procedure `MyTradingSys/system/CONTROL_ROOM.md`. Ask the operator via a page decision, not chat.
 - Session start (operator 2026-10-09): after `sync.py start`, read the Control Room Inbox/decisions (ArtifactData, CONTROL_ROOM.md) only if your task aligns; fetch full text of aligned items only.
