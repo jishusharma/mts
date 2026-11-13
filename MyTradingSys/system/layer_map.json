@@ -769,6 +769,25 @@
  ],
  "backtests": [
  {
+  "id": "NY-SESSION-VALUE-RETURN-20261113",
+  "trials": null,
+  "title": "Tom return-to-value on the prior NY cash-session value area: re-entry for two 30m closes, target opposite edge, balanced vs trend, BTC ETH SOL 1m",
+  "date": "2026-11-13",
+  "market": "Binance spot 1m klines (data.binance.vision), BTCUSDT ETHUSDT SOLUSDT 2020..2026-10-31",
+  "layers": [
+   "tom_vp_pivot"
+  ],
+  "params": "SOURCED: Tom's prior-session value area rule (70-80% claim); OURS: 2x30m-close re-entry, stop at session extreme +1bp, first-30-min skip variants, 12 cells",
+  "split": "DEV to 2023-12-31 / VALIDATION 2024-01-01..2026-10-31",
+  "fees": "fee-net: 5 bp taker + 1 bp slippage per side = 12 bp round trip from fees.py",
+  "interaction": "balanced vs trend day; session-date bootstrap, placebo draws, BH 10% over 12 cells",
+  "effects": "none: opposite-edge reach about 40% (POC about 69%) against the claimed 70-80%; no cell has a fee-net edge",
+  "n": "12 cells; about 1260-1330 outside-value sessions per coin",
+  "verdict": "FAIL: 0 of 12 cells pass; opposite-edge reach about 40%",
+  "report": "MyTradingSys/research/ny_session_value_return_2026-11-13/RESULT.md",
+  "read": "summary"
+ },
+ {
   "id": "RSI-HTF-EXTREME-20261113",
   "trials": null,
   "title": "4h/8h/12h RSI(14) extreme + next bar closes above, stop = signal low, exits 1R/2R/3R/10-bar, 20 perps, daily RSI<30 gate on 4h<=12",
