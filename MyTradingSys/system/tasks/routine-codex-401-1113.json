@@ -4,33 +4,52 @@
   "commands": [],
   "created": "2026-11-13T13:31:15Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "plan NOTE names the 401 age in days and the host; test covers a 401 state",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "codex_run.py status shows last scheduler check 11-04 IDLE with Codex 401; make plan print a NOTE with the 401 age and which host can run the lab",
   "id": "routine-codex-401-1113",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:50Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/codex_run.py",
+    "scripts/dev/test_codex_run.py"
+  ],
+  "scope_out": [
+    "no Codex login, no .secrets, no lane_state edits"
+  ],
+  "scope_sha": "8b71721d87ad",
+  "size": "S",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read the STALLED branch near codex_run.py:208",
+    "Add 401 age and host to the plan NOTE"
+  ],
+  "tests": "scripts/dev/test_codex_run.py::test_plan_note_401_age_and_host (fails first)",
   "title": "ROUTINES row 19: codex_run.py status shows last scheduler check 2026-11-04 IDLE with Codex 401 on this host. Smallest fix: plan prints NOTE with the 401 age and the host that can run the lab; done when the lab ticks on one host and status shows a fresh check",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

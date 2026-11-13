@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T14:58:29Z",
   "commands": [],
   "created": "2026-11-13T13:10:10Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "shipped on origin/fast-track: engine, score, plan, recorder, runner, cotrade close_trade/ensure_stop, RUNBOOK (commits 383fca58b, 0548eb338, 63cab7174); follow-ups are the CODEX audit cards",
+  "pinned": false,
   "prio": 1,
+  "reason": "shipped on origin/fast-track: engine, score, plan, recorder, runner, cotrade close_trade/ensure_stop, RUNBOOK (commits 383fca58b, 0548eb338, 63cab7174); follow-ups are the CODEX audit cards",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "operator chat 2026-11-13 via Supervisor C"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "us_open_trader: testnet module trading the hours around the US open (plan, watcher via cotrade, scored record)",

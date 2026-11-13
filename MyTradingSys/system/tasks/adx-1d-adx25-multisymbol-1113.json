@@ -1,37 +1,46 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python MyTradingSys/research/adx_di_2026-11/adx_gate_run.py"
+  ],
   "created": "2026-11-13T13:35:20Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "exports sim_desk/results/adx-1d-adx25-multisymbol-1113.json and RESULT.md with n, fee-net mean R and verdict per symbol per split",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Test 1d ADX rises-through-25 and Holy Grail pullback gate on BTC, ETH, SOL fee-net with DEV/VAL/RECENT split, rule fixed before the run",
   "id": "adx-1d-adx25-multisymbol-1113",
   "kind": "run",
-  "lane": "SONNET",
+  "lane": "DSA",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113; needs a real stamp (IMPORTANT backtest)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/adx_di_2026-11/"
+  ],
+  "scope_out": [
+    "no tuning of ADX period; no live path"
+  ],
+  "size": "M",
   "sources": [
     "adx-di-synthesis-1113"
   ],
   "state": "raw",
-  "steps": [],
+  "steps": [
+    "Write PRE_REG with the rule fixed, split dates and fees (backtest/fees.py)",
+    "Run on BTC/ETH/SOL; report per split"
+  ],
   "tests": "",
   "title": "ADX 1d rises-through-25 and Holy Grail pullback gate: BTC plus ETH/SOL, DEV/VAL/RECENT split, fee-net, rule fixed first (see research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md sec 7)",
-  "weight": "",
+  "weight": "IMPORTANT",
   "worker": ""
 }
