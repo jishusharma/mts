@@ -2,11 +2,11 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "python -m pytest MyTradingSys/execution/us_open_trader -k spec -q"
+    "python -m pytest MyTradingSys/research/layer_lab/us_open_engine_spec -q"
   ],
   "created": "2026-11-13T14:11:37Z",
   "depends_on": [],
-  "done_when": "a spec test file for engine.py exists under MyTradingSys/execution/us_open_trader/, passes against engine.py, fails at least once on a mutated engine.py (mutation noted in the findings file), and MyTradingSys/research/us_open_trader_2026-11-13/gpt_spec_tests_us_open_engine_1113.md records the derived values and the mutation result",
+  "done_when": "spec test file MyTradingSys/research/layer_lab/us_open_engine_spec/test_engine_spec.py passes against engine.py, fails once on a mutated engine.py, and MyTradingSys/research/layer_lab/gpt_spec_tests_us_open_engine_1113.md records derived values and the mutation result",
   "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
@@ -15,13 +15,30 @@
   "id": "gpt-spec-tests-us-open-engine-1113",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge branch 'worktree-wf_7e09608e-270-5' into claude/distracted-mendel-c4e866",
+      "ref": "724b8d392e5b",
+      "utc": "2026-11-13T14:17:23Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "61c8f76e6456 us_open_trader: design v2 (Opus design check, 10 findings accepted) + plan co",
+      "ref": "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md",
+      "utc": "2026-11-13T13:52:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner; outputs moved into layer_lab (audit rule). DECISION (OURS)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:56:15Z",
   "refs": [
     "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md"
   ],
@@ -33,18 +50,19 @@
   "scope_out": [
     "no edit to engine.py itself; no live-tree edit, no deploy, no .secrets or .env read"
   ],
+  "scope_sha": "724b8d392e5b",
   "size": "S",
   "sources": [
     "MyTradingSys/system/ANNOUNCEMENTS.md A-20261104-1"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read DESIGN.md sections 2 and 10 only",
     "Derive 5+ expected values by hand",
     "Write spec tests and run green",
     "Mutate engine.py locally once, see red, revert and record it"
   ],
-  "tests": "python -m pytest MyTradingSys/execution/us_open_trader -k spec -q",
+  "tests": "python -m pytest MyTradingSys/research/layer_lab/us_open_engine_spec -q",
   "title": "gpt spec tests: us_open_trader engine from DESIGN.md sections 2 and 10",
   "weight": "ROUTINE",
   "worker": "agent"

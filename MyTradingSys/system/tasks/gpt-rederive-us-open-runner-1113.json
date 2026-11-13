@@ -6,7 +6,7 @@
   ],
   "created": "2026-11-13T14:11:40Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/research/us_open_trader_2026-11-13/gpt_rederive_us_open_runner_1113.md has one row per fail-closed path: | spec clause | expected behaviour | runner.py file:line | match OK / MISMATCH / MISSING |, and verify_extract_quotes.py exits 0 on it",
+  "done_when": "MyTradingSys/research/layer_lab/gpt_rederive_us_open_runner_1113.md has one row per fail-closed path: | spec clause | expected behaviour | runner.py file:line | match OK / MISMATCH / MISSING |, and verify_extract_quotes.py exits 0 on it",
   "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
@@ -15,13 +15,30 @@
   "id": "gpt-rederive-us-open-runner-1113",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "us_open_trader runner: safety review fixes F1, F3-F10",
+      "ref": "63cab7174d6c",
+      "utc": "2026-11-13T14:34:31Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "61c8f76e6456 us_open_trader: design v2 (Opus design check, 10 findings accepted) + plan co",
+      "ref": "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md",
+      "utc": "2026-11-13T13:52:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner; findings path moved into layer_lab (audit rule). DECISION (OURS)",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:56:13Z",
   "refs": [
     "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md"
   ],
@@ -33,11 +50,12 @@
   "scope_out": [
     "no edit to any source file; no live-tree change; no .secrets or .env read"
   ],
+  "scope_sha": "63cab7174d6c",
   "size": "S",
   "sources": [
     "MyTradingSys/system/ANNOUNCEMENTS.md A-20261104-1"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read DESIGN.md and list fail-closed paths from the spec only",
     "Then read runner.py and match each path to a line",
