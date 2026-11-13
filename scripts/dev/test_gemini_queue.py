@@ -307,6 +307,41 @@ class LeaseKeepAliveTest(unittest.TestCase):
         self.assertFalse(t.is_alive())
 
 
+class GeminiStatusTest(unittest.TestCase):
+    """gemini-status-no-end-1113: status says DONE, FAILED, RUNNING, STALE or SKIPPED per job, not just the last line."""
+
+    def test_exit_zero_is_done(self):
+        self.assertEqual(gq.job_state(["START c 3.8", "out", "EXIT 0 after 5s"], 10), "DONE")
+
+    def test_nonzero_exit_is_failed(self):
+        self.assertEqual(gq.job_state(["START c 3.8", "EXIT 1 after 9s"], 10), "FAILED")
+
+    def test_start_without_exit_recent_is_running(self):
+        self.assertEqual(gq.job_state(["START c 3.8", "working"], 600), "RUNNING")
+
+    def test_start_without_exit_over_2h_is_stale(self):
+        self.assertEqual(gq.job_state(["START gpt-mutation-trendline-core-1031 gpt-oss", "partial"], 3 * 3600), "STALE")
+
+    def test_skip_and_claim_failures_never_look_done(self):
+        self.assertEqual(gq.job_state(["SKIP c: state done"], 10), "SKIPPED")
+        self.assertEqual(gq.job_state(["CLAIM FAILED: c: push rejected"], 10), "FAILED")
+
+    def test_status_prints_state_per_log(self):
+        import io, contextlib, os
+        with tempfile.TemporaryDirectory() as t:
+            stuck = Path(t) / "gpt-mutation-trendline-core-1031.log"
+            stuck.write_text("START gpt-mutation-trendline-core-1031 gpt-oss-120b-medium\npartial\n", encoding="utf-8")
+            old = stuck.stat().st_mtime - 3 * 3600
+            os.utime(stuck, (old, old))
+            (Path(t) / "ok.log").write_text("START ok 3.8\nEXIT 0 after 4s\n", encoding="utf-8")
+            buf = io.StringIO()
+            with mock.patch.dict("os.environ", {"MTS_GQ_ROOT": t}), contextlib.redirect_stdout(buf):
+                self.assertEqual(gq.main(["status"]), 0)
+        out = buf.getvalue()
+        self.assertIn("gpt-mutation-trendline-core-1031 | STALE |", out)
+        self.assertIn("ok | DONE |", out)
+
+
 if __name__ == "__main__":
     unittest.main()
 
