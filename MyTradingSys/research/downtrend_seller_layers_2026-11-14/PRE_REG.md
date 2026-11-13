@@ -57,3 +57,6 @@ Verdict PASS only if all hold. Win rate (share of net R > 0) is printed beside m
 
 ## Also
 Descriptive list (not a trade instruction) of BTC seller layers for 2026-11-13 and 2026-11-14 UTC with prices, from the same code, plus last price and DOWN state.
+
+## Amendment 1 (written before any outcome was computed, before the study code ran)
+L4 low-volume node: a 5 bp bin over 3 days is mostly empty bins (288 bars over ~100 bins), so "lowest volume" would just pick a gap. The L4 profile (and its 70% value area) therefore uses bins of 25 bp of the window's mean close (OURS); ties on the lowest bin go to the bin nearest the value-area middle. L1/L2 stay at 5 bp. Everything else unchanged.

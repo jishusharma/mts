@@ -15,7 +15,7 @@ def page(sym, end_ms):
     return None
 def main(out):
     now = int(time.time() * 1000)
-    for sym in COINS:
+    for sym in (sys.argv[2:] or COINS):
         end, rows = now, []
         while True:
             r = page(sym, end)
