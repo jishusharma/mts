@@ -4,6 +4,16 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-live-aid-forced-moves-chart | decided 2026-11-13 | Builder live-aid-forced-move-chart-1113
+```json
+{"id": "d-live-aid-forced-moves-chart", "order": 50, "date": "2026-11-13", "status": "DECIDED", "question": "Should Live Aid show forced buying and exits (large trades, OI, CVD) as a graph and be runnable by a Haiku or Sonnet reader?", "answer": "2026-11-13 ~16:45Z: Live Aid must show forced buying/exits (large trades, OI, CVD) as a colour-coded graph, and be runnable by a Haiku/Sonnet reader from a state file; built as R25 (flow_chart.js, flow_collector.py, FLOW_READER.md).", "done": "R25 built: panel Forced moves (flow_chart.js), flow_collector.py (--once writes flow_state.json and flow_digest.txt), FLOW_READER.md checklist."}
+```
+
+## d-feed-watcher-footprint-capture | decided 2026-11-13 | Builder live-aid-forced-move-chart-1113
+```json
+{"id": "d-feed-watcher-footprint-capture", "order": 51, "date": "2026-11-13", "status": "DECIDED", "question": "Visible Haiku feed-watcher and 15 min / 1 min footprint plus large-trade capture in Live Aid?", "answer": "2026-11-13 ~16:50Z: operator wants a visible Haiku feed-watcher session giving the Supervisor a market read every 15 min (every minute at special times), and the 15-min / 1-min footprint + large-trade capture wired into Live Aid. Started session feed-watcher (Haiku) on record_now.py readings; CoinGlass screenshots are NOT captured because Chrome tools are off, the collector's Bybit trade stream replaces them.", "done": "Footprint 15m / 1h from the Bybit trade stream written by flow_collector.py (feed js and FP lines in flow_digest.txt); page tag uo-fp-tf labelled Bybit perp, collector, stale label added."}
+```
+
 ## d-pages-follow-data | decided 2026-11-13 | Supervisor C (relayed from the operator)
 ```json
 {"id": "d-pages-follow-data", "order": 48, "date": "2026-11-13", "status": "DECIDED",

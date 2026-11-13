@@ -287,6 +287,13 @@ main>#p-pos:not(.off){flex:0 0 auto}
     <span class="tag">Absorption measured as a stall, not a turn: it reverses less and breaks less than other approaches. One alert per level per UTC day. Context, never a signal; no size, no orders.</span>
   </section>
 
+  <!-- 2c2. FORCED MOVES (requirement R25; flow_chart.js draws everything, flow_collector.py adds large trades and perp CVD) -->
+  <section id="p-flow">
+    <div class="hd"><h2>Forced moves</h2><span class="src" title="Context, not a signal. Tested 2026-11-13: fading forced moves 0/128 cells pass, OI build/unwind did not separate spikes that reverse from those that continue (research edge-forced-move-fade-1113).">OURS</span><span class="age" id="age-flow">--</span></div>
+    <div id="flow-root"><span class="nid">NOT_IN_DATA</span></div>
+    <span class="tag">Context, never a signal; no size, no orders. Large trades and perp CVD need flow_collector.py running; otherwise they say so.</span>
+  </section>
+
   <!-- 2d. WHAT THE MONEY IS DOING (research/eagle_eyes_picture_2026-10-28/OI_COMMENTARY_SPEC.md; descriptive) -->
   <section id="p-money">
     <div class="hd"><h2>What the money is doing</h2><span class="src" title="Price vs open interest per venue over 5 / 15 / 60 min. Six-state sentences, flat under 0.1 %, venues disagree at 0.2 % up vs 0.2 % down, FLUSH / SQUEEZE = a Bybit 5m bar with its wick 0.25 % past the previous close while OI falls 0.2 %, trapped line at OI +0.2 % since the event: OURS (spec fixed before use). Lines marked MEASURED come from C24 (Bybit 5m 07-02..10-30, oi_after_flush.py). Feeds SOURCED: Deribit ticker, Bybit tickers + REST open-interest, Binance fapi openInterest.">OURS + MEASURED</span><span class="tag" id="m-feeds"></span></div>
@@ -396,6 +403,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="footprint_bias_data.js"></script>
 <script src="footprint_cadence.js"></script>
 <script src="xliq.js"></script>
+<script src="flow_chart.js"></script>
 <script src="../../runtime/live_aid_toasts.js"></script>
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>
@@ -912,15 +920,13 @@ main>#p-pos:not(.off){flex:0 0 auto}
     $('uo-when').textContent = when;
     (function () {
       var F = window.FOOTPRINT_BIAS, el = $('uo-fp'); if (!el) return;
-      if (!F) { el.textContent = '12h footprint: no data file. Run: python scripts/dev/footprint_12h.py --js [context, not measured]'; return; }
+      if (!F) { var te0 = $('uo-fp-tf'); if (te0 && window.LAFlow) te0.textContent = window.LAFlow.fpLabel(window.LIVEAID_FLOW, null, Date.now(), 3600000); el.textContent = '12h footprint: no data file. Run: python scripts/dev/footprint_12h.py --js [context, not measured]'; return; }
       var last = Math.floor(Date.now() / 43200000) * 43200000 - 43200000;
       el.textContent = F.latest_completed_bar_ms >= last && F.have_latest ? F.line
         : '12h footprint: latest completed bar missing. Run: python scripts/dev/footprint_12h.py --js (last line: ' + F.line + ')';
       var te = $('uo-fp-tf'); if (!te) return;
       var T = window.FOOTPRINT_BIAS.tf, cad = window.FpCadence ? window.FpCadence.cadenceMs(Date.now(), open) : 3600000;
-      te.textContent = !T ? '15m/1h footprint: not in data file. Run: python scripts/dev/footprint_12h.py --tf 15m --days 1 --js'
-        : Date.now() - F.built_ms > 2 * cad + 120000 ? '15m/1h footprint: stale (file ' + Math.round((Date.now() - F.built_ms) / 60000) + ' min old). Run: python scripts/dev/footprint_12h.py --tf 15m --days 1 --js'
-        : (T['15m'] ? T['15m'].line : '') + ' | ' + (T['1h'] ? T['1h'].line : '');
+      te.textContent = window.LAFlow ? window.LAFlow.fpLabel(window.LIVEAID_FLOW, F, Date.now(), cad) : (T ? (T['15m'] ? T['15m'].line : '') + ' | ' + (T['1h'] ? T['1h'].line : '') : '15m/1h footprint: not in data file');
     })();
     $('uo-first3').textContent = brRow('us_open_first3m') ? A.first3Line(brRow('us_open_first3m').table) : '';
     $('uo-box').textContent = (r.box ? 'day so far ' + fmt(r.box.l, 0) + ' - ' + fmt(r.box.h, 0) + ' (' + fmt(100 * (r.box.h - r.box.l) / r.box.l, 2) + '%)' : 'day range: not enough 5m bars') +
@@ -1161,6 +1167,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
                 fund: ['p-fund', 'Funding and premium'], macro: ['p-macro', 'Macro calendar'], usopen: ['p-usopen', 'US open'], intrade: ['p-intrade', 'In-trade readings'], analysts: ['p-an', 'Analysts'], playbook: ['p-playbook', 'Map'],
                 antic: ['p-antic', 'Same data, other readings'], bc: ['p-bc', 'Big candle story'], lap: ['p-lap', 'Level approach prep'], xliq: ['p-xliq', 'Forced selling on other exchanges'] };
   VIEWS.now = ['p-ov', 'Now']; VIEWS.home = ['p-home', 'Home'];
+  if (window.LAFlow) window.LAFlow.init({ views: VIEWS });   // R25 Forced moves panel: registers its view and tab, loads its data
   S.view = '';
   function route() {
     // operator 11-09: one page, no scroll, tab bar; landing tab = Map
