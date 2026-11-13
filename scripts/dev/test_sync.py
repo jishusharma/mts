@@ -66,9 +66,11 @@ class SyncTest(unittest.TestCase):
         self.slots_base.mkdir(parents=True, exist_ok=True)
         os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
         os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"   # tests ship repeatedly; TierTest turns the 10-minute rule on
+        os.environ["MTS_WORKTREE_ROOT"] = ""         # "" = next to the main checkout, whatever this machine's host row says
         self.gated = []
 
     def tearDown(self):
+        os.environ.pop("MTS_WORKTREE_ROOT", None)
         os.environ.pop("MTS_GATE_SLOTS_DIR", None)
         os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -706,6 +708,23 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(dirty.exists())
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
+
+    def test_new_worktree_honours_mts_worktree_root(self):
+        root = self.tmp / "wtroot"
+        with mock.patch.dict(os.environ, {"MTS_WORKTREE_ROOT": str(root)}), contextlib.redirect_stdout(io.StringIO()):
+            p = sync.new_worktree(self.a, "elsewhere")
+        self.assertEqual(p.resolve().parent, root.resolve())
+        self.assertTrue((p / "README.md").exists())
+        self.assertNotEqual(p.resolve().parent, self.a.resolve().parent)
+
+    def test_tidy_finds_and_removes_a_tree_under_the_custom_root(self):
+        root = self.tmp / "wtroot"
+        with mock.patch.dict(os.environ, {"MTS_WORKTREE_ROOT": str(root)}), contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+            later = time.time() + 48 * 3600
+            self.assertEqual(sync.tidy(self.a, now=later), [str(done.resolve())])
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(done.resolve())])
+        self.assertFalse(done.exists())
 
     def test_tidy_skips_gateway_marked_worktree(self):
         with contextlib.redirect_stdout(io.StringIO()):
