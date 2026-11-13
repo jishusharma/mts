@@ -390,3 +390,10 @@ class NoLocalAgyTest(unittest.TestCase):
             with contextlib.redirect_stdout(buf):
                 gq.run_job("c1", "low")
         self.assertIn("SKIP c1: state ready/STALE:x", buf.getvalue())
+
+
+def test_hydrogen_model_id():
+    import gemini_queue as g
+    assert 'hydrogen' in g.MODELS
+    assert g.model_id('hydrogen', 'medium') == 'gemini-4-hydrogen-medium'
+    assert g.model_id('hydrogen', 'low') == 'gemini-4-hydrogen-low'

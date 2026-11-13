@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T21:47:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114/diffreview-us-open-trader/REVIEW.md exists, its first line is the verdict, and every sha from the git log appears in the table once",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review every commit of the last 24 h on origin/fast-track under MyTradingSys/execution/us_open_trader: hunt logic errors, unguarded None or empty input, swallowed exceptions, off-by-one on bar indexing, fee or timezone mistakes. Report only what you can cite file:line.",
+  "id": "diffreview-us-open-trader-gemini-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini queue refill 11-14, output on a gemini-q branch",
+  "note": "Planner refill 1114. Every number must trace to a file or verbatim quote. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T21:47:32Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114/diffreview-us-open-trader/REVIEW.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2026-11-14 (planner-gemini-refill-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run git log --since='24 hours ago' --format='%h %s' origin/fast-track -- MyTradingSys/execution/us_open_trader and list the shas.",
+    "For each sha read git show --stat then the diff of code files only (skip JSON data and docs).",
+    "Table: sha, file:line, finding, severity (BUG / RISK / STYLE), one-line fix. A sha with no finding gets a row saying CLEAN.",
+    "Write REVIEW.md with a one-line verdict first (N BUG, M RISK) and the table. Commit on your gemini-q branch only; do not edit product code."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] 24 h trunk diff review: execution/us_open_trader",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

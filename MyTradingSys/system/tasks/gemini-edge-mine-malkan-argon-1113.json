@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T21:45:53Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py <RULES.md>"
   ],
@@ -14,17 +15,44 @@
   "id": "gemini-edge-mine-malkan-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "RULES.md and layer_lab report already on trunk (planner 1114 check)",
+      "ref": "ae47fa07b",
+      "utc": "2026-11-13T21:45:53Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "mine 15 testable rules from Malkan RSI",
+      "ref": "e62ae14eff07",
+      "utc": "2026-11-13T21:01:05Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "e62ae14eff07 mine 15 testable rules from Malkan RSI",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-13_gemini-edge-mine-malkan-argon-1113.md",
+      "utc": "2026-11-13T21:01:05Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: Gemini edge push 11-13, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "next": "END: output shipped",
   "note": "Flash and argon both welcome. Second-model twin (argon); compare against the flash twin later.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-13T15:58:21Z",
+  "refreshed": "2026-11-13T21:45:38Z",
   "refs": [],
+  "result": "RULES.md and layer_lab report already on trunk (planner 1114 check)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan-argon/"
   ],
@@ -34,18 +62,19 @@
     "every number must trace to a file or a verbatim quote, never memory",
     "do not run sync.py ship"
   ],
-  "scope_sha": "",
+  "scope_sha": "e62ae14eff07",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only: MyTradingSys/research/malkan_rsi_2026-09-28, malkan_extract_2026-10-15, malkan_hindi_2026-11-04, malkan_ledger_2026-10 (any .md under them). No web, no memory.",
     "Write MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan-argon/RULES.md: table of 15 rules (id, indicator, extreme threshold, confirming candle, entry, stop, exit, timeframe, source file). A parameter the source does not state is NOT_STATED, never invented.",
     "Under each rule put the verbatim quote as > \"...\" then Source GPS: <id> | BEGIN|MIDDLE|END where the source has one. Run verify_extract_quotes.py on RULES.md until exit 0; commit on your gemini-q branch only.",
     "End with a ranked top 5 by fewest NOT_STATED fields."
   ],
+  "taken": "2026-11-13T21:45:53Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] argon twin: Mine 15 testable rules from Malkan RSI",
   "weight": "ROUTINE",

@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T21:45:10Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/crypto/argon.md"
   ],
@@ -18,6 +18,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "argon.md already on trunk in scope dir (planner 1114 check); card stale only because flash",
+      "ref": "ae47fa07b",
+      "utc": "2026-11-13T21:45:10Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "research(tf_i3): crypto/BTC/24h/weekend statements extract",
@@ -28,7 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "END: output shipped",
   "note": "Run as gemini_queue.py run gemini-crypto-statements-argon-1113:low:argon. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply. Second-model twin of the flash card; compare AGREED/SINGLE/CONFLICT afterwards.",
   "prio": 1,
   "refine_tries": 0,
@@ -39,7 +45,7 @@
     "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "argon.md already on trunk in scope dir (planner 1114 check); card stale only because flash sibling shipped",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -58,7 +64,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Grep for bitcoin, BTC, crypto, coin, 24 hour, weekend, Saturday, on-chain, binance",
