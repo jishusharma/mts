@@ -255,6 +255,31 @@
    "ref": "cotrade-p1-say-and-place",
    "why": "Operator-called testnet co-trade CLI (place/stop/kill); run by hand from a session, never by a loop; testnet only, journaled; tested by test_cotrade.py."
   },
+  "MyTradingSys/execution/us_open_trader/open_levels.py": {
+   "disp": "TOOL",
+   "ref": "us-open-trader-module-1113",
+   "why": "us_open_trader: gathers the day's levels/ATR for plan.py; run via plan.py by the US-session Haiku worker (RUNBOOK.md); public data only."
+  },
+  "MyTradingSys/execution/us_open_trader/plan.py": {
+   "disp": "TOOL",
+   "ref": "us-open-trader-module-1113",
+   "why": "us_open_trader: builds the day's testnet plan json/md; run by hand by the US-session worker (RUNBOOK.md); public data only."
+  },
+  "MyTradingSys/execution/us_open_trader/recorder.py": {
+   "disp": "TOOL",
+   "ref": "us-open-trader-module-1113",
+   "why": "us_open_trader: US-session market recorder (public REST); run by hand by the US-session worker (RUNBOOK.md); writes only to git-ignored runtime_data."
+  },
+  "MyTradingSys/execution/us_open_trader/runner.py": {
+   "disp": "TOOL",
+   "ref": "us-open-trader-module-1113",
+   "why": "us_open_trader: operator-called testnet watcher; run by hand per RUNBOOK.md (paper by default, testnet only with --said); orders only via cotrade.py; never a scheduler."
+  },
+  "MyTradingSys/execution/us_open_trader/score.py": {
+   "disp": "TOOL",
+   "ref": "us-open-trader-module-1113",
+   "why": "us_open_trader: replays the day's plan on public 1m klines after flat time; run by hand by the US-session worker (RUNBOOK.md); writes only to git-ignored runtime_data."
+  },
   "MyTradingSys/execution/deribit_client.py": {
    "disp": "TOOL",
    "why": "Phase-1 read-only Deribit testnet connectivity probe, run by hand: MyTradingSys/items/T050_deribit_execution_layer.md:127."
@@ -1010,11 +1035,6 @@
    "disp": "TOOL",
    "ref": "live-aid-oi-poller-all-venues-1110",
    "why": "Live Aid open-interest poller: operator runs it by hand (python MyTradingSys/tools/live_aid/oi_poller.py); writes the gitignored runtime_data/live_aid/oi_snapshot.js that live_aid.html reloads every 30 s. No scheduler by policy."
-  },
-  "MyTradingSys/tools/us_open_alert.py": {
-   "disp": "WIRE",
-   "ref": "ask-p0-37-us-open-alert-line",
-   "why": "Pure US-open countdown line (T054 step 5, context only); a later live_aid card imports us_open_line. Not wired here because another session owns live_aid."
   },
   "scripts/Dump_All.ps1": {
    "disp": "TOOL",

@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/us_open_trader_2026-11-13/gemini_blind_read_cotrade_close_1113.md"
+  ],
+  "created": "2026-11-13T14:11:31Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/us_open_trader_2026-11-13/ has a findings file gemini_blind_read_cotrade_close_1113.md with one row per finding: | file:line | what it does | spec clause in DESIGN.md | severity | verdict OK / BUG / UNSPECIFIED |, and verify_extract_quotes.py exits 0 on it",
+  "est_turns": 6,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind read of cotrade.py close_trade and ensure_stop with no prior context: find correctness, fail-open and order-state bugs against the spec in MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md. Read the code cold, list findings with file:line.",
+  "id": "gemini-blind-read-cotrade-close-1113",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "cotrade.py close_trade and ensure_stop (read)",
+    "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md (read)"
+  ],
+  "scope_out": [
+    "no edit to any source or card other than this one; no live-tree change; no .secrets or .env read; no order placed"
+  ],
+  "size": "M",
+  "sources": [
+    "MyTradingSys/system/ANNOUNCEMENTS.md A-20261104-1"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read close_trade and ensure_stop cold, without the design doc first",
+    "Read DESIGN.md and map each clause to the cotrade.py lines",
+    "Write findings file with the table and a TOP findings section"
+  ],
+  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/us_open_trader_2026-11-13/gemini_blind_read_cotrade_close_1113.md",
+  "title": "[GEMINI] blind read of cotrade.py close_trade and ensure_stop",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
