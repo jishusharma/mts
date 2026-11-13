@@ -1659,25 +1659,6 @@
    "verdict": "Rule A FAIL (VALIDATION fee-net excess -1.71%, CI [-5.8%,+1.9%], n=30; BTC-alone DEV +2.98% did not carry to 4 more symbols or VALIDATION); Rule B UNDERPOWERED (VALIDATION n=0; the frozen filter and touch almost never coincide)",
    "report": "MyTradingSys/research/adx_1d_through25_2026-11-13/REPORT.md",
    "read": "summary"
-  },
-  {
-   "id": "OI-FLUSH-XCOIN-20261113",
-   "trials": null,
-   "title": "Liquidation-flush reversal: OI drop below own trailing-30d 1st percentile + price move > 2 ATR, fade at next bar open, 10 Bybit perps pooled, 1h and 4h bars, holds 4/12/24/72h and 2R bracket",
-   "date": "2026-11-13",
-   "market": "Bybit USDT perps BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, OI from 2020-07 (per-coin start in REPORT.md); DEV to 2024-06, VALIDATION 2024-07..2025-06, RECENT after",
-   "layers": [
-    "oi_delta"
-   ],
-   "params": "1st percentile, 30d window, 2 ATR(14), 24h dedup, 2R bracket stop at flush extreme (all OURS); fixed holds 4/12/24/72h; placebo = same coin-month same-size move without OI drop",
-   "split": "VALIDATION 2024-07-01..2025-06-30 (chosen before run)",
-   "fees": "fees.BINANCE_TAKER x2 round trip plus actual funding paid",
-   "interaction": "none (single rule, both sides pooled)",
-   "effects": "1h: no fee-net edge any split; 4h bars VALIDATION 12h +3.9% CI +1.5..+6.4 and 24h +4.5% (n 48 events, 19 days) but placebo diff CI spans 0 and RECENT 12h +0.4%, 24h -0.9% (n 37)",
-   "n": "1106 events 1h, 262 events 4h; VALIDATION n 139 and 48",
-   "verdict": "FAIL: 0 of 10 cells pass (4h 12h/24h pass BH and CI but not the placebo test, n 48 over 19 days; shrinks in RECENT)",
-   "report": "MyTradingSys/research/edge_oi_flush_2026-11-13/REPORT.md",
-   "read": "summary"
   }
  ]
 }
