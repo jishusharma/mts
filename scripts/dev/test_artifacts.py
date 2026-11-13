@@ -341,6 +341,19 @@ class PagesFollowBuilds(unittest.TestCase):
         self.assertTrue(moved.startswith("<!doctype"))
         self.assertEqual(moved.count("mts-stamp:start"), 1)
 
+    def test_stamp_command_refuses_now_and_stamps_the_data_time(self):
+        """Operator 2026-11-13: a stamp is when the DATA was built; `stamp` without --at must fail, with --at it shows that time."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "p.html"
+            f.write_text("<html><body><main>x</main></body></html>", encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                af.main(["stamp", "--file", str(f)])
+            af.main(["stamp", "--file", str(f), "--at", "2026-11-13T05:17Z"])
+            self.assertIn("2026-11-13 05:17 UTC · 10:47 IST", f.read_text(encoding="utf-8"))
+            af.main(["stamp", "--file", str(f), "--remove"])
+            self.assertNotIn("mts-updated", f.read_text(encoding="utf-8"))
+
     def test_stamp_alone_never_makes_a_page_stale(self):
         page = "<html><body><main>x</main></body></html>"
         self.assertEqual(af.content_hash(af.put_stamp(page)), af.content_hash(af.put_stamp(page, None)))

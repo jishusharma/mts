@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T13:50:07Z",
   "commands": [],
   "created": "2026-11-12T05:44:24Z",
   "depends_on": [],
@@ -15,6 +16,12 @@
   "last_seen": "2026-11-12T05:44:24Z",
   "last_session": "9b0ce8fb-f501-4fac-9178-48bbfbffdb4d",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk 10719c05e: docstring 'Never blocked (... YT_PROXY.md path order)' + 'we t",
+      "ref": "3400eb6da",
+      "utc": "2026-11-13T13:50:07Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -33,13 +40,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: texts agree",
   "note": "DECISION (OURS) 2026-11-13: asks cleared; the operator's 11-12 'decided proxy fix' was tried and failed (same exit address, OPERATOR_DECISIONS 2349), so A stands for scripted retries. REVIEWED:2026-11-13 T0-ONLY",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T20:34:00Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk 10719c05e: docstring 'Never blocked (... YT_PROXY.md path order)' + 'we throttle, never evade'; YT_PROXY.md 'no scripted retry on a locked address' and points at fetch_captions_timed.py; test_fetch_captions_timed.py 10 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/YT_PROXY.md",
     "scripts/dev/fetch_captions_timed.py"
@@ -54,12 +67,13 @@
     "MyTradingSys/system/YT_PROXY.md:24",
     "MyTradingSys/system/OPERATOR_DECISIONS.md:2343-2349"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep both texts, confirm neither tells the scripted path to retry on another exit or re-register WARP",
     "add one line to the fetch_captions_timed.py docstring: 'other paths when locked: YT_PROXY.md Never blocked: path order (not scripted retries)'",
     "run python scripts/dev/test_fetch_captions_timed.py"
   ],
+  "taken": "2026-11-13T13:50:07Z",
   "tests": "existing test_fetch_captions_timed.py passes unchanged (docstring-only edit; no new test needed)",
   "title": "Instruction conflict: fetch_captions_timed.py docstring: we throttle, ne vs YT_PROXY.md:24 new WARP account after a 429 (opera",
   "weight": "ROUTINE",
