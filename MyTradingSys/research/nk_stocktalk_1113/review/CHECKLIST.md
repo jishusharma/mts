@@ -9,14 +9,15 @@ Page English rendering of the quote: Here the red line is below and the green is
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
 | Buy state (10m chart) | red line below green | SOURCED: «तो अगर यह 10 मिनट पर बाइंग में है। यहां पर देखेंगे रेड लाइन नीचे है। ग्रीन ऊपर है» cmH38Uo4sYM | |
-| RSI filter | RSI 9 above 50 (shown on the 10m chart) | SOURCED: «9 पीरियड की आरएसआई 50 से ऊपर भी है» cmH38Uo4sYM | |
+| RSI note | he notes the 9-period RSI is above 50 too, in passing; not stated as a rule | SOURCED: «9 पीरियड की आरएसआई 50 से ऊपर भी है» cmH38Uo4sYM | |
 | Sell state | red line up, other line 'into the water', i.e. blue | SOURCED: «रेड लाइन ऊपर आ जाए और ये नीचे आ जाए पानी में आ जाए मतलब ब्लू में आ जाए» cmH38Uo4sYM | |
-| Sell needs | a close below the support area AND HM fully in sell; he keeps planning an exit at support | SOURCED: «इस सपोर्ट का एरिया के नीचे जाकर बाजार को क्लोज करना चाहिए और हिलेगा मिलेगा पूरी तरह से सेल में आनी चाहिए» cmH38Uo4sYM + «तो सपोर्ट एरिया में एग्जिट का प्लान बनाते रहना है» cmH38Uo4sYM | |
+| Sell needs (daily-chart swing talk) | in his market talk on the daily chart: a close below the support area AND HM fully in sell; he keeps planning an exit at support, and says only then does he carry a swing sell further | SOURCED: «डे टाइम फ्रेम पे जाते हैं तो वहां भी हिलेगा मिलेगा» cmH38Uo4sYM + «इस सपोर्ट का एरिया के नीचे जाकर बाजार को क्लोज करना चाहिए और हिलेगा मिलेगा पूरी तरह से सेल में आनी चाहिए» cmH38Uo4sYM + «तो सपोर्ट एरिया में एग्जिट का प्लान बनाते रहना है» cmH38Uo4sYM + «तभी हम आगे उसको फदर लेकर जाएंगे स्विंग में सेल के लिए» cmH38Uo4sYM | |
 | RSI back under 70 | he says it is not primary confirmation | SOURCED: «बस आरएसआई 70 बिलो आया है। लेकिन वो प्राइमरी कन्फर्मेशन नहीं है» cmH38Uo4sYM | |
-| Trap reading | after RSI '13' (garbled, likely 30) the 15m HM has no reason to buy: big money wants something else | SOURCED (HIS CLAIM, untested): «क्योंकि आरएसआई 13 आने के बाद 15 मिनट की हिलेगा मिलेगा। बाइंग में आने का कोई तूफ नहीं बनता है» cmH38Uo4sYM + «बड़ा पैसा वहां पे कुछ करना और चाहता है। दिखाना कुछ और चाहता है» cmH38Uo4sYM; caption says 13; तूफ = तुक | |
-| Sell at support | he says to stay cautious | SOURCED: «प्राइस सपोर्ट पे है। तो कॉशियस रहना है» cmH38Uo4sYM | |
+| Trap reading | after RSI '13' (as captioned) the 15m HM has no reason ('तूफ', garbled) to turn to buying: big money wants to do something else and shows something else | SOURCED (HIS CLAIM, untested): «क्योंकि आरएसआई 13 आने के बाद 15 मिनट की हिलेगा मिलेगा। बाइंग में आने का कोई तूफ नहीं बनता है» cmH38Uo4sYM + «बड़ा पैसा वहां पे कुछ करना और चाहता है। दिखाना कुछ और चाहता है» cmH38Uo4sYM; caption says 13; तूफ is garbled | |
+| Sell at support | price is at support, so he says to stay cautious | SOURCED: «प्राइस सपोर्ट पे है। तो कॉशियस रहना है» cmH38Uo4sYM | |
 | Daily trend change (breakout video aside) | either daily HM fully buying + price above 20 SMA, or weekly bullish engulfing | SOURCED: «डे टाइम फ्रेम पे हमारा हिलेगा मिलेगा पूरी तरह से बाइंग में आ जाए और प्राइस 20 एसएमए के ऊपर आ जाए या वीकली बेसिस पे बुलिश इंग्ल्फिंग बन जाए। इन दोनों में से कोई भी» wrEEf8o9n9E | |
 | W to the 82 zone (his forecast) | after a W, RSI tries the 82 zone again (Sensex view, not a rule) | SOURCED (HIS CLAIM, untested): «और जब डब्लू बन जाएगा तो ये वाले आरएसआई के पास भी जाने की फिर से कोशिश करेंगे 82 के ज़ोन में» JLcDdrHkB5M | |
+| His disclaimer | he says: 99% chance it fails, so no trade on it; not trading advice; he also says to backtest everything, not on his word alone | SOURCED (HIS CLAIM, untested): «99% संभावना है कि फेल कर जाएगा। इसलिए इस पर कोई भी ट्रेड मत लेना» cmH38Uo4sYM + «ट्रेडिंग एडवाइस नहीं है» cmH38Uo4sYM + «सारी चीजों को बैक टेस्ट भी करनी है। सिर्फ मेरे कहने पे नहीं रहेंगे» cmH38Uo4sYM; a disclaimer, not a measured rate | |
 | Red / green line formula | NOT_SEEN | NOT_SEEN (lines named, never computed aloud) | |
 | Line lengths | NOT_SEEN | NOT_SEEN (no EMA/WMA/VWAP length spoken) | |
 | What 'blue' is | NOT_SEEN | NOT_SEEN (caption glosses it only as 'in the water') | |
@@ -35,34 +36,37 @@ Page English rendering of the quote: Here the red line is below and the green is
 
 ## bollinger: Breakout vs fakeout (thin on bands) (video wrEEf8o9n9E)
 
-Claim on the page: He trades a range break with a close beyond it; if the breakout candle's high is not taken out, he calls it a fakeout. Band 'blast' is one example.
+Claim on the page: He trades a range break; if the breakout candle's high is not taken out, he calls it a fakeout. He lists band 'blast' beside breakout and never defines it.
 
 Page English rendering of the quote: If any candle has broken out of the zone, its high must be broken.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
 | Breakout definition | a range left fast, up or down, by breaking it | SOURCED: «ब्रेकआउट का मतलब होता है कि कोई ऐसा प्राइस जो एक रेंज में रहा हो, एक रेंज में रहा हो और उस रेंज के बाद काफी तेजी से ऊपर जाने की कोशिश किया हो या एक रेंज में रहा हो और काफी तेजी से नीचे जाने की कोशिश किया हो उस रेंज को तोड़ कर» wrEEf8o9n9E | |
-| 20 SMA rule (bullish side) | any index sustaining under 20 SMA: no bullishness until a close back above | SOURCED: «जब भी प्राइस 20 एसएमए के नीचे आकर सस्टेन कर जाए निफ्टी में या बैंक निफ्टी कोई भी इंडेक्सेस में तो वहां पे जब तक वो 20 एसएमए के ऊपर फिर से जाकर क्लोज नहीं करता है वो बुलिशनेस उसमें नहीं आती है» wrEEf8o9n9E | |
+| 20 SMA rule (bullish side) | his example is on the daily timeframe: price could not get above the 20 SMA; any index sustaining under 20 SMA: no bullishness until a close back above | SOURCED: «20 एसए में डे टाइम फ्रेम के ऊपर नहीं जा पाई» wrEEf8o9n9E + «जब भी प्राइस 20 एसएमए के नीचे आकर सस्टेन कर जाए निफ्टी में या बैंक निफ्टी कोई भी इंडेक्सेस में तो वहां पे जब तक वो 20 एसएमए के ऊपर फिर से जाकर क्लोज नहीं करता है वो बुलिशनेस उसमें नहीं आती है» wrEEf8o9n9E | |
 | 20 SMA rule (bearish side) | a weekly close under the weekly 20 SMA = major fall (his market view) | SOURCED (HIS CLAIM, untested): «जब वीकली बेसिस पे ये 20 एसएमए को ब्रेक कर दे» wrEEf8o9n9E + «वीकली क्लोज कर जाती है तब बाजार में एक मेजर फॉल देखने को मिलेगी» wrEEf8o9n9E | |
-| Band event | 'blast', said 4 times, never defined | SOURCED: «बुलिंजर बैंड ब्लास्ट भी कर गई» wrEEf8o9n9E | |
+| Band event | 'band blast' is named beside breakout and never defined | SOURCED: «बुलिंजर बैंड ब्लास्ट भी कर गई» wrEEf8o9n9E + «ब्रेकआउट हो या बुलिंजर बैंड ब्लास्ट» wrEEf8o9n9E | |
 | Stop, fast breakout | the breaking candle's high or low | SOURCED: «उसका हाई या लो हमारा एसएल होना चाहिए प्राइमरी एसएल» wrEEf8o9n9E | |
 | Stop, retest case | the range-edge candle that was broken | SOURCED: «जो ज़ोन की कैंडल को इसने ब्रेकआउट दिया है» wrEEf8o9n9E | |
 | Entry timeframe | he enters next day/session one timeframe below the breakout's | SOURCED: «जिस टाइम फ्रेम पे ब्रेकआउट हुआ है उसके लोअर टाइम फ्रेम पे अगले दिन या अगले समय हम ट्रेड को लेते हैं» wrEEf8o9n9E | |
 | Trailing | prior candle's low (or high) as the stop, only on breakout or blast | SOURCED: «पिछले कैंडल का लो हमारा एसएल की तरह काम करता है या पिछले कैंडल का हाई हमारा एसएल की तरह काम» wrEEf8o9n9E + «ब्रेकआउट हो या बुलिंजर बैंड ब्लास्ट» wrEEf8o9n9E | |
 | Why trail that way | he says the guilty feeling goes and you ride the trade longer | SOURCED: «पिछले कैंडल का लो हमारा एसएल की तरह जब ट्रीट की जाए तो कहीं ना कहीं आपको ये जो गिल्टी वाली फीलिंग होती है वो नहीं होती है और आप लंबे समय तक ट्रेड को राइड कर पाते हो» wrEEf8o9n9E | |
 | Retest share | '50% of breakouts will retest' | SOURCED (HIS CLAIM, untested): «50% ब्रेकआउट में क्या होगा कि वो रिटेस्ट करेगी» wrEEf8o9n9E | |
-| Retest stop | above the nearest candle high in the zone | SOURCED: «जो भी सबसे नियरेस्ट वाला इसके हाई के ऊपर आप एसएल मानेंगे पहला एसएल» wrEEf8o9n9E | |
-| Bull retest area | near a trend line, a 20 or 50 average, or 'एब' (likely AVWAP) | SOURCED: «प्राइस में फॉल आती है और एक ट्रेंड लाइन आप ले लेते हैं। ट्रेंड लाइन के आसपास कहीं ना प्राइस आती है या कोई मूविंग एवरेज होगी 20 50 या एब होगा उसके पास प्राइस आएगी» wrEEf8o9n9E | |
-| Retest preference | he says retest trading is best trading | SOURCED: «रिटेस्ट ट्रेडिंग इज बेस्ट ट्रेडिंग» wrEEf8o9n9E | |
-| Bearish fakeout | on the prior low break; stop above the high; he buys puts | SOURCED: «जैसे ही इसका लो ब्रेक करें हमारी ट्रेडिंग पोजीशन बनती है और इस हाई के ऊपर हमारा एसएल होता है। वहां पुट बाइंग होती है» wrEEf8o9n9E | |
+| Retest stop | above the nearest candle's high, first stop | SOURCED: «जो भी सबसे नियरेस्ट वाला इसके हाई के ऊपर आप एसएल मानेंगे पहला एसएल» wrEEf8o9n9E | |
+| Bull retest area | near a trend line, a 20 or 50 average, or 'एब' (garbled, maybe AVWAP) | SOURCED: «प्राइस में फॉल आती है और एक ट्रेंड लाइन आप ले लेते हैं। ट्रेंड लाइन के आसपास कहीं ना प्राइस आती है या कोई मूविंग एवरेज होगी 20 50 या एब होगा उसके पास प्राइस आएगी» wrEEf8o9n9E | |
+| Retest preference | he says retest trading is best trading (his claim) | SOURCED (HIS CLAIM, untested): «रिटेस्ट ट्रेडिंग इज बेस्ट ट्रेडिंग» wrEEf8o9n9E | |
+| Bearish fakeout | when its low breaks; stop above the high; he buys puts | SOURCED: «जैसे ही इसका लो ब्रेक करें हमारी ट्रेडिंग पोजीशन बनती है और इस हाई के ऊपर हमारा एसएल होता है। वहां पुट बाइंग होती है» wrEEf8o9n9E | |
 | Fakeout target | at least the prior low | SOURCED: «आपका टारगेट एयर लो होता है कम से कम» wrEEf8o9n9E; एयर लो = earlier low | |
-| Fakeout payoff | three to four times more than a breakout | SOURCED (HIS CLAIM, untested): «थ्री टू फोर टाइम ज्यादा बनता है» wrEEf8o9n9E | |
-| Fakeout instruments | naked buys, long puts, futures hedges; not ratio, double diagonal or '2:1' (garbled) | SOURCED: «नेकेड बाइंग करते हैं। लॉन्ग टर्म की पुट बाइंग करते हैं। फ्यूचर हैज बनाते हैं» wrEEf8o9n9E + «लेकिन रेशियो जैसी हैेजिंग यहां नहीं बनाते हैं। डबल डायगोनल टाइप की हैेजिंग यहां नहीं बनाते हैं» wrEEf8o9n9E + «हैज टू वन बेसिस घटनाएं भी यहां पे नहीं बनाते हैं» wrEEf8o9n9E | |
-| Support fakeout (mirror) | zone breaks down, next candle closes green back above it | SOURCED: «सपोर्ट फेक आउट» wrEEf8o9n9E + «तो प्राइस क्या करता है कि इस ज़ोन को इस प्रकार ब्रेक कर देता है» wrEEf8o9n9E + «ग्रीन कैंडल बनके ये जो ज़ोन के ऊपर आकर क्लोज कर जाएगी» wrEEf8o9n9E | |
+| Fakeout payoff | he says a fakeout ('चेक आउट' in the caption) makes three to four times more money than a breakout | SOURCED (HIS CLAIM, untested): «जो फेकआउट में पैसा बनता है वह ब्रेकआउट में नहीं बनता है» wrEEf8o9n9E + «पैसा ब्रेकआउट के मुकाबले थ्री टू फोर टाइम ज्यादा बनता है» wrEEf8o9n9E | |
+| Fakeout instruments | naked buying, put buying (caption: 'लॉन्ग टर्म की पुट'), futures hedges; not ratio, double diagonal or a 'two-to-one' hedge | SOURCED: «नेकेड बाइंग करते हैं। लॉन्ग टर्म की पुट बाइंग करते हैं। फ्यूचर हैज बनाते हैं» wrEEf8o9n9E + «लेकिन रेशियो जैसी हैेजिंग यहां नहीं बनाते हैं। डबल डायगोनल टाइप की हैेजिंग यहां नहीं बनाते हैं» wrEEf8o9n9E + «हैज टू वन बेसिस घटनाएं भी यहां पे नहीं बनाते हैं» wrEEf8o9n9E | |
+| Support fakeout (mirror) | zone breaks down, then a green candle closes back above it | SOURCED: «सपोर्ट फेक आउट» wrEEf8o9n9E + «तो प्राइस क्या करता है कि इस ज़ोन को इस प्रकार ब्रेक कर देता है» wrEEf8o9n9E + «ग्रीन कैंडल बनके ये जो ज़ोन के ऊपर आकर क्लोज कर जाएगी» wrEEf8o9n9E | |
+| Support fakeout: trade | he expects it to break the earlier high too; he picks the call side at that high, or a futures hedge, covered call, or equity buying | SOURCED: «और इस हाई को भी यह ब्रेक कर देगा। तो इस हाई का स्ट्राइक का हम सिलेक्शन करते हैं कॉल साइड में या हम फ्यूचर हैज बनाते हैं कवर्ड कॉल कॉल साइड में बनाते हैं या इक्विटी में बाइंग करते हैं» wrEEf8o9n9E | |
+| Support fakeout: retest | retest is possible on a support fakeout, and much less likely on the downside | SOURCED: «जैसे कि सपोर्ट में फेक आउट होता है तो उसमें क्या होगी कि एक रिटेस्ट होने की भी संभावना होती है» wrEEf8o9n9E + «डाउन साइड में जब होती है तो रिटेस्ट की संभावना काफी कम होती है» wrEEf8o9n9E | |
 | Timeframe scaling | bigger timeframe, bigger target and stop | SOURCED: «बिगर द टाइम फ्रेम, बिगर द टारगेट, बिगर द एसएल» wrEEf8o9n9E | |
 | Timeframe discipline | he says not to change timeframe while in a trade | SOURCED: «ट्रेडिंग करने के दौरान» wrEEf8o9n9E + «टाइम फ्रेम को भी चेंज ना करें» wrEEf8o9n9E | |
 | Blast on monthly (his forecast) | a new-high move would 'blast' the monthly bands (Sensex view) | SOURCED (HIS CLAIM, untested): «तो मंथली टाइम फ्रेम कहता है कि अगर ये नया हाई की ओर निकलेगा तो यहां से ही बुलिंजर बैंड ब्लास्ट» JLcDdrHkB5M | |
-| Bands vs pivot | in today's falling market even the bands give little momentum; pivots may give more | SOURCED (HIS CLAIM, untested): «इवन बिलिंिजर बैंड में भी ज्यादा मोमेंटम नहीं» 3EpXq8JC4jU + «पीवेट में आपको ज्यादा मोमेंटम देखने को मिल सकता है» 3EpXq8JC4jU | |
+| Bands vs pivot | he says even in the Bollinger bands there is not much momentum; in pivots there may be more | SOURCED (HIS CLAIM, untested): «इवन बिलिंिजर बैंड में भी ज्यादा मोमेंटम नहीं» 3EpXq8JC4jU + «पीवेट में आपको ज्यादा मोमेंटम देखने को मिल सकता है» 3EpXq8JC4jU | |
+| His disclaimer | he says: educational, no buy/sell recommendation; trading these without a backtest has a 99% chance of loss | SOURCED (HIS CLAIM, untested): «यहां कोई भी बाइंग सेलिंग रेकमेंडेशन नहीं है» wrEEf8o9n9E + «अगर ट्रेड करने की कोशिश करेंगे बिना बैक टेस्ट किए इन चीजों को तो 99% लॉस होने की संभावना है» wrEEf8o9n9E | |
 | BB length | NOT_SEEN | NOT_SEEN (20 SMA is a reference average, not the band length) | |
 | BB width (std dev) | NOT_SEEN | NOT_SEEN (no deviation term spoken) | |
 | BTC port | NSE rule, NOT tested on BTC | OURS: range/zone logic may port to BTC bars; option instruments do not | |
@@ -86,7 +90,7 @@ Page English rendering of the quote: If any candle has broken out of the zone, i
 
 ## srp: Pivot S/R ('SRP') (video 3EpXq8JC4jU)
 
-Claim on the page: He uses standard pivots from the previous close; he buys a close back above the pivot.
+Claim on the page: He uses standard pivots from the previous close; a close back above the pivot after a fall is his support-buy condition.
 
 Page English rendering of the quote: In pivots, S3 and R3 are quite good support and resistance.
 
@@ -96,28 +100,31 @@ Page English rendering of the quote: In pivots, S3 and R3 are quite good support
 | Pivot formula | standard (not Fibonacci, Camarilla) | SOURCED: «हम स्टैंडर्ड पीवेट का यूज़ करेंगे। हम फिबोनाची कैमला ये सब में नहीं जाएंगे» 3EpXq8JC4jU | |
 | Input | previous day's close | SOURCED: «पिछले दिन के क्लोजिंग प्राइस से» 3EpXq8JC4jU | |
 | Pivot line | CPR middle line | SOURCED: «सीपीआर का जो मिड लाइन» 3EpXq8JC4jU | |
-| Timeframe map (his view) | 15m/1h trades; day for 20-25 day swings; weekly for 6 months or a year; monthly beyond | SOURCED: «वहां पे टाइम फ्रेम हमारे पास होनी चाहिए 15 मिनट की 1 ऑवर की» 3EpXq8JC4jU + «जैसे कि 20 दिन 25 दिन की लॉन्ग टर्म मतलब कि स्विंग का तो वहां पर डे टाइम फ्रेम होता है» 3EpXq8JC4jU + «लेकिन अगर हमारी 6 महीने या एक साल की ट्रेड है तो वहां पे हम वीकली टाइम फ्रेम को देखते हैं» 3EpXq8JC4jU + «मंथली टाइम फ्रेम के पीवेट» 3EpXq8JC4jU | |
+| Timeframe map (his view) | 15m/1h for short-term trades; day for 20-25 day swings; weekly for a 6-month or one-year trade; monthly-timeframe pivots for longer | SOURCED: «वहां पे टाइम फ्रेम हमारे पास होनी चाहिए 15 मिनट की 1 ऑवर की» 3EpXq8JC4jU + «जैसे कि 20 दिन 25 दिन की लॉन्ग टर्म मतलब कि स्विंग का तो वहां पर डे टाइम फ्रेम होता है» 3EpXq8JC4jU + «लेकिन अगर हमारी 6 महीने या एक साल की ट्रेड है तो वहां पे हम वीकली टाइम फ्रेम को देखते हैं» 3EpXq8JC4jU + «और उससे ज्यादा के लिए हम लोग मंथली टाइम फ्रेम के पीवेट का यूज़ करते हैं» 3EpXq8JC4jU | |
 | Key levels | S3 and R3 | SOURCED: «S3 और R3 ये काफी अच्छा सपोर्ट रेजिस्टेंस» 3EpXq8JC4jU | |
 | S3 / R3 break | rare; when it breaks it runs, and a reversal stays possible | SOURCED: «बहुत कम केसेस में ऐसा देखा गया है कि R3 और S3 को तेजी से वो ब्रेक कर दे» 3EpXq8JC4jU + «रिवर्सल होने की संभावना बनी रहती है» 3EpXq8JC4jU | |
-| Level behaviour | tries to hold at S1 | SOURCED: «S1 पे रुकने की कोशिश करता है» 3EpXq8JC4jU | |
-| Support buy: entry | he buys a close back above the pivot after a fall | SOURCED: «पीवेट के ऊपर आकर क्लोज» 3EpXq8JC4jU | |
-| Support buy: stop | the pivot, on a full-body close (pivot setup only) | SOURCED: «पीवेट को स्टॉप लॉस» 3EpXq8JC4jU + «फुल बॉडी क्लोजिंग» 3EpXq8JC4jU | |
-| Stop basis (pivot setup) | a closing basis; R3 and first-hour setups also allow a low break | SOURCED: «याद रखिएगा हमेशा स्टॉप लॉस क्लोजिंग का होना चाहिए।» 3EpXq8JC4jU | |
-| Stop ladder | each level's stop is the level below (R2 entry, R1 stop) | SOURCED: «R2 पे लेते हैं। R1 का एसएल» 3EpXq8JC4jU | |
+| Level behaviour (R1-R3, S1-S3) | R1: price may rise and fall back; a close above R2 then tries R3; downward it tries to hold at S1, a break gives S2, then S3 | SOURCED: «R1 का मतलब रेजिस्टेंस वन जहां पे प्राइस ऊपर जाकर नीचे गिरने की संभावना होती है» 3EpXq8JC4jU + «और R2 के ऊपर अगर प्राइस क्लोज कर जाती है तो फिर R3 के पास जाने की कोशिश करता है» 3EpXq8JC4jU + «सेम पीवेट से नीचे की ओर प्राइस आता है तो S1 पे रुकने की कोशिश करता है। S1 के नीचे ब्रेक करता है तो S2 के पास जाने की कोशिश करता है और इसको ब्रेक करता है तो S3 के पास जाने की कोशिश करता है» 3EpXq8JC4jU | |
+| Support buy: entry | after a fall, a close above the pivot makes the pivot act as support; a buy condition forms there | SOURCED: «नीचे गिर के पीवेट के ऊपर आकर क्लोज किया हो» 3EpXq8JC4jU + «वहां पे हम लोग के बाइंग कंडीशन बनती है» 3EpXq8JC4jU | |
+| Support buy: stop | the pivot, on a full-body close | SOURCED: «पीवेट को स्टॉप लॉस» 3EpXq8JC4jU + «फुल बॉडी क्लोजिंग» 3EpXq8JC4jU | |
+| Stop basis (pivot setup) | he says the stop should always be on a closing basis | SOURCED: «याद रखिएगा हमेशा स्टॉप लॉस क्लोजिंग का होना चाहिए।» 3EpXq8JC4jU | |
+| Stop ladder | his list: R3 taken, R2 the stop; R2 taken, R1 the stop; R1 taken, pivot the stop | SOURCED: «R3 के ऊपर लेते हैं। R2 का एसएल, R2 पे लेते हैं। R1 का एसएल, R1 पे लेते हैं। नीचे पीवेट का एसएल» 3EpXq8JC4jU | |
 | Support buy: targets | R1, R2, R3 | SOURCED: «हमारा पहला टारगेट R1 होता है और दूसरा R2 होता है और तीसरा R3 होता है» 3EpXq8JC4jU | |
-| Support buy: RSI | in a fall, RSI below 30 then back above, plus a close above pivot = fast move | SOURCED: «जैसे गिरते हुए केस में अगर आरएसआई 30 बिलो जाकर दोबारा 30 के ऊपर आए और पीवेट के ऊपर क्लोज कर जाए» 3EpXq8JC4jU | |
-| Sell side | the same in mirror (S1-S3) | SOURCED: «सेम सेलिंग के केस में वैसा ही» 3EpXq8JC4jU | |
+| Support buy: RSI | in a fall, RSI below 30 then back above 30, plus a close above pivot: a very fast move | SOURCED: «जैसे गिरते हुए केस में अगर आरएसआई 30 बिलो जाकर दोबारा 30 के ऊपर आए और पीवेट के ऊपर क्लोज कर जाए तो प्राइस में बहुत तेज मूवमेंट देखने को मिलती है» 3EpXq8JC4jU | |
+| Sell side | the same, mirrored (vice versa) | SOURCED: «सेम सेलिंग के केस में वैसा ही होगा वाइसवरसा» 3EpXq8JC4jU | |
 | 15m open-range setup | opens near pivot, 15m closes above R1; he buys the break of its high | SOURCED: «पीवेट्स में टच कर गया या जस्ट इसके बिगिनिंग में और R1 के ऊपर 15 मिनट के टाइम फ्रेम में क्लोज कर गई» 3EpXq8JC4jU + «जैसे ही यह ओआरबी ब्रेक करता है ओआरबी मतलब 15 मिनट का हाई हमारी बाइंग होती है» 3EpXq8JC4jU | |
-| 15m setup: stop | his example stop sits just under R1 (a day-low stop he calls too big) | SOURCED: «R1 के जस्ट नीचे एक कैंडल क्लोजिंग होती है बेस्ट एसएल होता है डे लो बट डे लो का एसएल» 3EpXq8JC4jU | |
+| 15m setup: stop | he says the stop is below the pivot; his chart note reads 'R1, just below, a candle close' (garbled); day low is the best stop but can get very big | SOURCED: «स्टॉप लॉस हमारा पीवेट के नीचे होता है» 3EpXq8JC4jU + «R1 के जस्ट नीचे एक कैंडल क्लोजिंग होती है बेस्ट एसएल होता है डे लो बट डे लो का एसएल कभी-कभी बहुत बड़ा हो जाता है» 3EpXq8JC4jU; caption is ambiguous between a pivot stop and just under R1 | |
 | 15m setup: target | at least the R2-R3 midpoint | SOURCED: «कम से कम R2 R3 के मिड का हमारा टारगेट» 3EpXq8JC4jU | |
-| 15m, sustaining near pivot | he buys a close above R1 with no big tail; no breakout wait in this case only | SOURCED: «जैसे ही यह R1 के ऊपर क्लोज कर गया हमारी बाइंग होती है। जहां भी पीवेट के आसपास हो वहां पर हम ब्रेकआउ का वेट फिर नहीं करेंगे» 3EpXq8JC4jU + «यह R1 के ऊपर क्लोज कर गया। बड़ी पूंछ नहीं है» 3EpXq8JC4jU | |
-| Red first candle above pivot | he places a buy just above its high | SOURCED: «पीवेट के ऊपर है और रेड बन गई» 3EpXq8JC4jU | |
-| 1h variant | after a 1h close above R1 he buys the pull-back near pivot/VWAP | SOURCED: «पीवेट के पास जब आए तो बाइंग हो» 3EpXq8JC4jU | |
-| R3 close setup | 15m closes above R3: breakout order; stop = close below its close or low break, first | SOURCED: «तो अगर कोई R3 के ऊपर क्लोज कर जाए तो 15 मिनट के ऊपर ब्रेकआउट ऑर्डर लगाएंगे» 3EpXq8JC4jU + «मतलब एक क्लोजिंग प्राइस के नीचे क्लोज हो जाए या इस लो को ब्रेक कर दे। दोनों में से जो भी पहले हो हमारा स्टॉप लॉस होगा» 3EpXq8JC4jU | |
+| Sustaining near pivot | he buys a close above R1 with no big tail; near the pivot he does not wait for a breakout | SOURCED: «जैसे ही यह R1 के ऊपर क्लोज कर गया हमारी बाइंग होती है। जहां भी पीवेट के आसपास हो वहां पर हम ब्रेकआउ का वेट फिर नहीं करेंगे» 3EpXq8JC4jU + «यह R1 के ऊपर क्लोज कर गया। बड़ी पूंछ नहीं है» 3EpXq8JC4jU | |
+| Red first candle above pivot | first 15m candle red but above the pivot: the buy order sits just above that candle | SOURCED: «फर्स्ट 15 मिनट की कैंडल ऐसे रेड बनी है» 3EpXq8JC4jU + «पीवेट के ऊपर है और रेड बन गई। अब आपको होना क्या चाहिए? इसके जस्ट ऊपर आपकी बाइंग ऑर्डर होनी चाहिए» 3EpXq8JC4jU | |
+| Strong example in his chart | first 15m candle starts just under the pivot and closes above pivot, R1 and R2 in one candle; he says closing above R1 is useful and above R2 very good | SOURCED: «15 मिनट की फर्स्ट कैंडल में आप देखेंगे जस्ट पीवेट के नीचे से स्टार्ट हुआ है। लेकिन पहले ही कैंडल में इसने पीवेट, R1, R2 सबको ऊपर क्लोज कर गया» 3EpXq8JC4jU + «मोस्टली R1 के ऊपर कर जाए तो अपने लिए काम का है लेकिन R2 कर गया तो बहुत अच्छा है» 3EpXq8JC4jU | |
+| 1h variant | after a 1h close above R1, he says the buy comes when price returns near the pivot or VWAP, since a breakout sometimes comes back | SOURCED: «अगर वन आवर के टाइम फ्रेम में R1 के ऊपर क्लोज करती है तो होना ये चाहिए कि पीवेट के पास जब आए तो बाइंग हो या वीवप के पास प्राइस आए तब बाइंग हो क्योंकि इसमें कभी-कभी होता है कि ब्रेकआउट करके फिर से लौट आता है» 3EpXq8JC4jU | |
+| R3 close setup | 15m closes above R3: a breakout order; stop is a close below its closing price or a break of its low, whichever comes first (the low-break exception is in this row only) | SOURCED: «तो अगर कोई R3 के ऊपर क्लोज कर जाए तो 15 मिनट के ऊपर ब्रेकआउट ऑर्डर लगाएंगे» 3EpXq8JC4jU + «मतलब एक क्लोजिंग प्राइस के नीचे क्लोज हो जाए या इस लो को ब्रेक कर दे। दोनों में से जो भी पहले हो हमारा स्टॉप लॉस होगा» 3EpXq8JC4jU | |
 | Riding after R3 | trail with VWAP or a 10 average | SOURCED: «हमारा स्टॉप लॉस वीवप के साथ फिर या 10 वीएमए के साथ हम राइड करेंगे» 3EpXq8JC4jU | |
-| Avoid: upper tail | big candle with a big UPPER tail (long lower tail is fine) | SOURCED: «नीचे से पूंछ बड़ी हो तो चलेगा लेकिन ऊपर की पूंछ अगर काफी बड़ी है तो नहीं चलेगा» 3EpXq8JC4jU | |
-| Avoid: past R2/R3 | candle already closed past R2/R3: avoid, or small risk near VWAP | SOURCED: «इतनी बड़ी जो R2 के ऊपर R3 के ऊपर भी जाकर क्लोज कर गई» 3EpXq8JC4jU + «अवॉइड ही कर दे या वीव» 3EpXq8JC4jU | |
-| Crypto mentions | names Bitcoin twice and crypto once; in a falling market the pivot is 'the best example' | SOURCED (HIS CLAIM, untested): «सिल्वर हो, गोल्ड हो, बिटकॉइन हो, क्रिप्टो हो» 3EpXq8JC4jU + «बिटकॉइन डाउन हो रहे हैं। सब वहां पे आपको जब ट्रेड करना हो तो पीवेट सबसे अच्छा उदाहरण होता है» 3EpXq8JC4jU | |
+| Upper-tail caution | he says to avoid a big candle with a tail: a big lower tail is fine, a big upper tail is not | SOURCED: «खास करके जब अगर कैंडल बड़ी हो और पूंछ वाली हो तो उसको अवॉइड करते हैं» 3EpXq8JC4jU + «नीचे से पूंछ बड़ी हो तो चलेगा लेकिन ऊपर की पूंछ अगर काफी बड़ी है तो नहीं चलेगा» 3EpXq8JC4jU | |
+| Past R2/R3 caution | a candle already closed above R2 and R3: he says to avoid it, or take some risk near 'वीव' (garbled), since moves there are not very big | SOURCED: «इतनी बड़ी जो R2 के ऊपर R3 के ऊपर भी जाकर क्लोज कर गई» 3EpXq8JC4jU + «अवॉइड ही कर दे या वीव के पास थोड़ा सा रिस्क ले क्योंकि उसमें भी मूव बहुत बड़े नहीं होते हैं» 3EpXq8JC4jU | |
+| Bitcoin as market context | he names Bitcoin and crypto among assets and says Bitcoin is down along with the others; no crypto-specific pivot rule is spoken | SOURCED: «सिल्वर हो, गोल्ड हो, बिटकॉइन हो, क्रिप्टो हो» 3EpXq8JC4jU + «गोल्ड सिल्वर भी डाउन हो रहे हैं। बिटकॉइन डाउन हो रहे हैं» 3EpXq8JC4jU | |
+| Pivot momentum (his view) | he says that when trading in this all-down market the pivot is the best example, because it has momentum | SOURCED (HIS CLAIM, untested): «सब वहां पे आपको जब ट्रेड करना हो तो पीवेट सबसे अच्छा उदाहरण होता है। क्योंकि इसमें मोमेंटम होती है» 3EpXq8JC4jU | |
+| His disclaimer | he says: educational, for teaching, no buy/sell recommendation, directly or indirectly; he also says to backtest | SOURCED (HIS CLAIM, untested): «तो जो भी चीजें यहां डिस्कस होगी वो सिर्फ एजुकेशनल है। पढ़ाने के लिए है। किसी भी प्रकार से बाइंग सेलिंग रेमेंडेशन नहीं है» 3EpXq8JC4jU + «वैसे आप बैक टेस्ट कीजिएगा» 3EpXq8JC4jU | |
 | BTC port | NSE rule, NOT tested on BTC | OURS: BTC has no NSE close; pivot input would be a UTC daily close (untested) | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
@@ -134,23 +141,27 @@ Page English rendering of the quote: In pivots, S3 and R3 are quite good support
 
 ## butterfly: Butterfly hedge (pivot video) (video 3EpXq8JC4jU)
 
-Claim on the page: He builds 1:2:1 option butterflies (buy, sell two, buy the wing) in a basket and adjusts intraday below his stop level.
+Claim on the page: He builds call butterflies (buy an ATM/ITM call, sell a higher strike, buy the wing just beyond) in a basket and adjusts intraday below his stop level.
 
-Page English rendering of the quote: Butterfly hedging is a hedge in which we cut our option risk a lot.
+Page English rendering of the quote: Butterfly hedging is a hedge in which we cut our option risk by a great deal.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
 | View first | bullish or bearish, plus an adjustment area | SOURCED: «पहले व्यू निकाला जाता है बटरफाई में कि आपका व्यू क्या है? बुलिश है या बेरिश है? और एडजस्टमेंट एरिया भी निकाला जाता है» 3EpXq8JC4jU | |
-| Long leg | ATM or ITM; his example asks ATM or near-OTM | SOURCED: «जनरली हम एक लॉट को कोई भी एटीएम या आईटीएम को बाइंग करते हैं» 3EpXq8JC4jU + «500 का जो एटीएम है उसको मैंने बाय किया या नियर ओटीएम है» 3EpXq8JC4jU | |
-| Short legs | twice the long leg; combined premium above the long's (his 13 + 13 example) | SOURCED: «तो यहां पे दो लॉट में प्रीमियम कम से कम इससे ज्यादा होना चाहिए» 3EpXq8JC4jU + «कितने पे 13 + 13 पे 15 भी हो सकते हैं» 3EpXq8JC4jU | |
+| Long leg | he buys any ATM or ITM; his example asks whether 500 is the ATM, or a near-OTM | SOURCED: «कोई भी एटीएम या आईटीएम को बाइंग करते हैं» 3EpXq8JC4jU + «500 का जो एटीएम है उसको मैंने बाय किया या नियर ओटीएम है» 3EpXq8JC4jU | |
+| Short legs | the sold premium should be at least above the bought premium (his example 13 + 13, 15 also possible) | SOURCED: «प्रीमियम कम से कम इससे ज्यादा होना चाहिए जितना ज्यादा हो उतना अच्छा है» 3EpXq8JC4jU + «कितने पे 13 + 13 पे 15 भी हो सकते हैं» 3EpXq8JC4jU | |
 | Wing | the strike just beyond the sold one | SOURCED: «और उसके आगे आपको जस्ट इसके आगे जाना है। जस्ट इसके आगे कौन सा होगा» 3EpXq8JC4jU | |
-| Wing spacing | the bought wing is the strike nearest the sold one; far = problems | SOURCED: «उस बटरफ्लाई में जो हम सेलिंग के बाद बाइंग कर रहे हैं उसके जस्ट नियरेस्ट का हो। ज्यादा दूर का नहीं हो» 3EpXq8JC4jU | |
-| Strike choice by date | month start: OTM vs OTM; after the 15th: ATM vs OTM (premium decays fast) | SOURCED: «लेकिन मंथ के स्टार्टिंग में बना रहे हैं तो हम क्या करेंगे» 3EpXq8JC4jU + «ओटीएम वर्सेस ओटीएम में बटरफ्लाई बनाएंगे» 3EpXq8JC4jU + «अगर जैसे एक्सपायरी नजदीक आ रही है 15 तारीख के बाद हम एटीएम वर्सेस में बनाएंगे। एटीएम वर्सेस ओटीएम में क्योंकि 15 के बाद प्रीमियम फास्ट गलता है» 3EpXq8JC4jU | |
+| Wing spacing | the bought wing is the strike nearest the sold one, not far; he says a far one can cause trouble | SOURCED: «उस बटरफ्लाई में जो हम सेलिंग के बाद बाइंग कर रहे हैं उसके जस्ट नियरेस्ट का हो। ज्यादा दूर का नहीं हो» 3EpXq8JC4jU + «अगर ज्यादा दूर का होगा तो आपको समस्या उत्पन्न कर सकती है» 3EpXq8JC4jU | |
+| Strike choice by date | month start: OTM vs OTM, strikes about 5-7% above; after the 15th: ATM vs OTM (premium decays fast) | SOURCED: «लेकिन मंथ के स्टार्टिंग में बना रहे हैं तो हम क्या करेंगे» 3EpXq8JC4jU + «ओटीएम वर्सेस ओटीएम में बटरफ्लाई बनाएंगे» 3EpXq8JC4jU + «5% 7% ऊपर बनाएंगे» 3EpXq8JC4jU + «अगर जैसे एक्सपायरी नजदीक आ रही है 15 तारीख के बाद हम एटीएम वर्सेस में बनाएंगे। एटीएम वर्सेस ओटीएम में क्योंकि 15 के बाद प्रीमियम फास्ट गलता है» 3EpXq8JC4jU | |
 | Risk | bought premium minus sold premium | SOURCED: «तो टोटल रिस्क ये क्या हुआ? बाइंग माइनस सेलिंग» 3EpXq8JC4jU | |
 | Ideal | no loss anywhere on the chosen side | SOURCED: «जिस डायरेक्शन में मैं बटरफ्लाई बना रहा हूं उस साइड मार्केट कहीं भी जाए मुझे लॉस नहीं» 3EpXq8JC4jU | |
-| Basket | never a single butterfly; a basket spread over the month | SOURCED: «बटरफ्लाई अकेले करने की चीज नहीं है» 3EpXq8JC4jU | |
-| Adjustment | below his stop level (470 in the example), an extra short, intraday only | SOURCED: «तो 470 के नीचे हमें एडजस्ट करना है» 3EpXq8JC4jU + «कब? इंट्राडे बेसिस पर शॉर्ट करेंगे। याद रखिएगा इंट्राडे बेसिस पे और इंट्राडे में ही निकल जाएंगे। मिडनाइट होल्ड नहीं करेंगे» 3EpXq8JC4jU | |
-| Reversal during adjustment | he books the short strike in profit | SOURCED: «520 वाले में एक लॉट प्रॉफिट बुक» 3EpXq8JC4jU | |
+| Basket | never a single butterfly; he says it is done as a herd (झुंड), i.e. a basket | SOURCED: «बटरफ्लाई अकेले करने की चीज नहीं है» 3EpXq8JC4jU + «झुंड में करने की चीज है» 3EpXq8JC4jU | |
+| Basket mix | some on the buying side and some on the selling side, since the market moves both ways | SOURCED: «कुछ बाइंग के हो, कुछ सेलिंग के भी हो कि मार्केट दोनों साइड होते हैं तो वहां पे आपको बचाएगा» 3EpXq8JC4jU | |
+| Basket result | he says a few may lose, but the whole basket gives overall profit; the whole basket losing is very rare | SOURCED (HIS CLAIM, untested): «बाकी पूरी बास्केट देखेंगे तो आपको ओवरऑल प्रॉफिट रखेगा। पूरी बास्केट» 3EpXq8JC4jU + «बहुत कम केसेस में होगा कि पूरी बास्केट हमारी लॉस में चली जाए» 3EpXq8JC4jU | |
+| Ratio rejected | he says he does not go into a ratio (it has its own risk) and converts it into a butterfly | SOURCED: «लेकिन हमें रेशियो में नहीं जाना है भाई। रेशियो का अपना एक रिस्क है। हमें वो रिस्क नहीं लेता। हम क्या करेंगे? इसको बटरफ्लाई में कन्वर्ट करेंगे» 3EpXq8JC4jU | |
+| Adjustment | below his stop level (470 in the example) he shorts, intraday only: he exits within the day, no midnight hold; the aim is to eat as much of the 4-point risk as he can | SOURCED: «तो 470 के नीचे हमें एडजस्ट करना है» 3EpXq8JC4jU + «इस चार पॉइंट में से जितना ज्यादा हम खा सके तो खाने के लिए क्या करेंगे» 3EpXq8JC4jU + «कब? इंट्राडे बेसिस पर शॉर्ट करेंगे। याद रखिएगा इंट्राडे बेसिस पे और इंट्राडे में ही निकल जाएंगे। मिडनाइट होल्ड नहीं करेंगे» 3EpXq8JC4jU | |
+| Reversal during adjustment | if the market turns, the short shows a loss; he books profit on the 520 leg (the caption mixes strikes 520/510) | SOURCED: «बाजार पलट गई तो ये सात में तो आपको लॉस दिखने लगेगा» 3EpXq8JC4jU + «520 वाले में» 3EpXq8JC4jU + «प्रॉफिट बुक कर लेना है» 3EpXq8JC4jU; garbled: strikes 520 and 510 are mixed in the passage | |
+| His disclaimer | he says: only educational, for teaching, no buy/sell recommendation, directly or indirectly | SOURCED (HIS CLAIM, untested): «तो जो भी चीजें यहां डिस्कस होगी वो सिर्फ एजुकेशनल है। पढ़ाने के लिए है। किसी भी प्रकार से बाइंग सेलिंग रेमेंडेशन नहीं है» 3EpXq8JC4jU + «डायरेक्टली इनडायरेक्टली आप इसको नोट कर लें» 3EpXq8JC4jU | |
 | BTC port | NSE rule, NOT tested on BTC | OURS: Deribit testnet options are the only route; untested | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
@@ -165,34 +176,38 @@ Page English rendering of the quote: Butterfly hedging is a hedge in which we cu
 | flash_deep | 58 | जैसे एक्सपायरी नजदीक आ रही है 15 तारीख के बाद हम एटीएम वर्सेस में बनाएंगे | "As expiry approaches after the 15th, we will create ATM versus [OTM]." | |
 | flash_deep | 65 | जहां पे प्रत्येक एसेट क्लास आपको ट्रैप करने के लिए तैयार किया गया सिल्वर हो, गोल्ड हो, बिटकॉइन हो, क्रिप्टो हो | "Where every asset class is primed to trap you—whether Silver, Gold, Bitcoin, or Crypto." | |
 
-## nifty-h23: Nifty Hedge 2-3 expiry setup (video ZuVWAu_MR2Q)
+## nifty-h23: Nifty H23 expiry setup (spoken हेज टू थ्री) (video ZuVWAu_MR2Q)
 
-Claim on the page: On expiry day, VIX 15 or below, he buys the ATM call and put after 2 PM when their sum is under 50, laddering in at 50, 30, under 20.
+Claim on the page: On expiry day, VIX 15, he buys the ATM call and put after 2 PM when their sum is under 50, laddering in at 50, 30, under 20 (the 50 is the CE+PE sum).
 
-Page English rendering of the quote: How do we design Hedge 2-3 according to the CAS that has come in.
+Page English rendering of the quote: How do we design H23 (spoken Hedge two-three) according to the CAS that has come in.
 
 | Param | Page value | Label | Reviewer: caption says |
 |---|---|---|---|
+| Name | he says people know it by the name 23; the number he now says is 33 (ATM, new rules), and he keeps the old name to avoid confusion | SOURCED: «अभी 23 अब ये 33 भी कह दें तो कोई बुराई नहीं है» ZuVWAu_MR2Q + «बट नए नाम रखने पे कंफ्यूजन आएगी क्योंकि आप इसको 23 नाम से ही जानते हैं» ZuVWAu_MR2Q + «क्योंकि हम एटीएम में जा रहे हैं और नए रूल बदले हैं» ZuVWAu_MR2Q; he does not say aloud that 23 is a premium sum; the spoken name is हेज टू थ्री | |
 | What it is | an option design he calls low-capital | SOURCED: «हेज टू थ्री एक ऐसी ऑप्शन की डिजाइन है जिसमें कि जिनकी कैपिटल साइज लो है» ZuVWAu_MR2Q | |
 | Day | expiry day only | SOURCED: «सिर्फ एक्सपायरी के दिन ही» ZuVWAu_MR2Q | |
-| Index | Nifty only; Sensex needs 1-2 more months | SOURCED: «सेंसेक्स के बारे में अभी एक-दो महीने और लग सकता है» ZuVWAu_MR2Q | |
+| Index | he says Sensex may take 1-2 more months to understand fully; this video is about Nifty | SOURCED: «आज जो हम लोग सीखने वाले हैं हैश टू थ्री निफ्टी के बारे में» ZuVWAu_MR2Q + «सेंसेक्स के बारे में अभी एक-दो महीने और लग सकता है पूरी चीजों को समझने में» ZuVWAu_MR2Q | |
 | Legs | he buys both the ATM call and put (spot, not futures) | SOURCED: «एटीएम स्ट्राइक मतलब एट द मनी स्ट्राइक जहां स्पॉट है और स्पॉट को देखेंगे फ्यूचर को नहीं» ZuVWAu_MR2Q + «25000 के कॉल और पुट बोथ मतलब सी ई और प्लस पी ई दोनों का जोड़ 50 से नीचे» ZuVWAu_MR2Q | |
 | Look time | after 2:00 PM; not in the morning | SOURCED: «जब भी आपको देखना है तो 2:00 बजे के बाद देखना है» ZuVWAu_MR2Q + «मॉर्निंग में नहीं होगा» ZuVWAu_MR2Q | |
 | Premium filter | call + put sum under 50 | SOURCED: «जोड़ 50 से नीचे» ZuVWAu_MR2Q | |
-| VIX filter | holds while VIX is 15 or below; above 15, another video | SOURCED: «जब तक विक्स 15 है तब तक यह रूल है 15 के ऊपर हम एक और वीडियो आप लोगों के लिए बनानी होगी» ZuVWAu_MR2Q | |
+| VIX filter | he says the rule holds while VIX is 15; above 15 needs another video | SOURCED: «जब तक विक्स 15 है तब तक यह रूल है 15 के ऊपर हम एक और वीडियो आप लोगों के लिए बनानी होगी» ZuVWAu_MR2Q | |
 | Why | momentum 3:20 to 3:30 | SOURCED: «3:20 से 3:30 के बीच में मोमेंटम» ZuVWAu_MR2Q | |
-| Entry ladder | 50, 30, under 20 | SOURCED: «पहली एंट्री 50 पे, दूसरी एंट्री 30 पे, तीसरी एंट्री एंट्री 20 के नीचे» ZuVWAu_MR2Q | |
+| Entry ladder (combined CE+PE) | 50, 30, under 20; the 50 is the CE+PE sum he defined just before | SOURCED: «25000 के कॉल और पुट बोथ मतलब सी ई और प्लस पी ई दोनों का जोड़ 50 से नीचे आ रहा हो» ZuVWAu_MR2Q + «पहली एंट्री 50 पे, दूसरी एंट्री 30 पे, तीसरी एंट्री एंट्री 20 के नीचे» ZuVWAu_MR2Q; he does not restate the unit for the 30 and 20 rungs | |
 | Rung times | 50 after 2:00, 30 after 3:00, 20 after 3:21 (rare) | SOURCED: «ये तीनों 20 मिलेगा 3:21 के बाद, 30 मिलेगा 3:00 के बाद, 50 मिलेगा 2:00 के बाद। लेकिन, ये रेयरली मिलेगा» ZuVWAu_MR2Q | |
+| Rung frequency | he says the 30 rung has about a 50% chance, and the 20 rung comes rarely | SOURCED (HIS CLAIM, untested): «20 वाला रेयरली मिलेगा। 50% चांस है कि 30 वाला ज़ोन मिल जाएगा आपको» ZuVWAu_MR2Q | |
 | Defined range | '33' is the defined range; the ladder averages about 33.3 | SOURCED: «हमने 33 डिफाइन किया है» ZuVWAu_MR2Q + «आपकी जो एवरेज आएगी 33.33 आएगी» ZuVWAu_MR2Q | |
-| Stop | premium below 9 or 10 (his math uses 8): about 25 points of risk | SOURCED: «नाइन से नीचे या 10 से नीचे» ZuVWAu_MR2Q + «मतलब आठ का आपका एसएल है» ZuVWAu_MR2Q + «लगभग 25 पॉइंट का आपका रिस्क हो गया» ZuVWAu_MR2Q | |
-| Exit from the 50 rung | first partial exit near 100 | SOURCED: «अगर 50 से निकला तो पहली जो हमारी एग्जिट होगी वो 100 के पास होगी» ZuVWAu_MR2Q | |
-| After that exit | stop to cost | SOURCED: «यह एसएल हमारा कॉस्ट हो जाएगा» ZuVWAu_MR2Q | |
-| Re-entry | only when 30 comes again, never back at 50 | SOURCED: «फिर 50 पे एंट्री नहीं लेंगे। फिर 30 आएगा तब लेंगे, नहीं तो जाने दो» ZuVWAu_MR2Q | |
+| Stop | stop below 9 or 10 (his math uses 8): 33 minus 8 is about 25 points, which he calls the extreme-case loss, not the usual | SOURCED: «नाइन से नीचे या 10 से नीचे» ZuVWAu_MR2Q + «मतलब आठ का आपका एसएल है तो 33 - 8 यह आपका होता है लगभग 25 पॉइंट का आपका रिस्क हो गया» ZuVWAu_MR2Q + «रिस्क जो यहां है एक्सट्रीम कंडीशन में 25 पॉइंट है» ZuVWAu_MR2Q; units: only the 33 average ties it to the CE+PE ladder | |
+| Stop frequency | he says about 3 of 10 trades may stop out, and he has not seen more | SOURCED (HIS CLAIM, untested): «10 में से लगभग तीन के हो सकते हैं कि स्टॉप लॉस जाएं» ZuVWAu_MR2Q + «इससे ज्यादा के स्टॉप लॉस अभी तक नहीं मिला है» ZuVWAu_MR2Q | |
+| Exit from the 50 rung | first exit near 100 | SOURCED: «अगर 50 से निकला तो पहली जो हमारी एग्जिट होगी वो 100 के पास होगी» ZuVWAu_MR2Q | |
+| Stop to cost | after the first exit at 100 the stop becomes cost; he later says the rest keeps a stop near cost | SOURCED: «एक बार 100 पे निकल गए, तो यह एसएल हमारा कॉस्ट हो जाएगा» ZuVWAu_MR2Q + «बाकी हमारा कॉस्ट के पास एसएल रहेगा» ZuVWAu_MR2Q; stated for the 50 rung and in the 20-rung passage; not stated for the 30 rung | |
+| Re-entry | he says no new entry at 50 after that; he enters if 30 comes, otherwise he lets it go | SOURCED: «फिर 50 पे एंट्री नहीं लेंगे। फिर 30 आएगा तब लेंगे, नहीं तो जाने दो» ZuVWAu_MR2Q | |
 | Exit from the 30 rung | half out in the 65-70 zone | SOURCED: «दूसरा जो 30 आ जाता है, तो पहली जो आपकी एग्जिट होगी, वह आपको 70 के ज़ोन में होनी चाहिए। 65 से 70 का ज़ोन में आधी निकल जाएंगे» ZuVWAu_MR2Q | |
-| Exit from the 20 rung | half out near 45; a second tier later | SOURCED: «लेकिन अगर 20 पे होता है, तो 45 के पास आधा निकल जाएंगे। हमेशा याद रखिए, आधा मतलब आधा» ZuVWAu_MR2Q + «तीन में से क्या करना है दो को निकाल» ZuVWAu_MR2Q | |
+| Exit from the 20 rung | half out near 45; he says half means half | SOURCED: «लेकिन अगर 20 पे होता है, तो 45 के पास आधा निकल जाएंगे। हमेशा याद रखिए, आधा मतलब आधा» ZuVWAu_MR2Q | |
 | Reward floor | at least 1:1 against the risk; the market gives the rest | SOURCED (HIS CLAIM, untested): «वन बाय वन मिनिमम रिवार्ड रखा गया उसके बाद तो बाकी हमें देगा ही 50 का 100 30 का 65 से 70 20 का 45» ZuVWAu_MR2Q | |
-| Last exit | 1-2 min after the 3:30 closing-session candle | SOURCED: «वो एक्सपायर होने देंगे मतलब 3:30 तक जो मैं सीएस का कैंडल वो बन जाती है» ZuVWAu_MR2Q + «उससे एक-दो मिनट के बाद निकल जाएंगे» ZuVWAu_MR2Q | |
+| Last exit | he lets it run to expiry, i.e. to 3:30 when the 'CS' (garbled) candle forms, and exits 1-2 minutes after | SOURCED: «वो एक्सपायर होने देंगे मतलब 3:30 तक जो मैं सीएस का कैंडल वो बन जाती है» ZuVWAu_MR2Q + «उससे एक-दो मिनट के बाद निकल जाएंगे» ZuVWAu_MR2Q | |
 | Targets and stops | ranges of about +/-10-15%, not points; the levels above are his examples | SOURCED: «मार्केट में टारगेट कोई पॉइंट नहीं होता, एक रेंज होता है। स्टॉप लॉस कोई पॉइंट नहीं होता» ZuVWAu_MR2Q + «प्लस माइनस 10-15% लेना है» ZuVWAu_MR2Q | |
+| His disclaimer | he says to backtest it 50 times before real money, and that nothing in the market is guaranteed | SOURCED (HIS CLAIM, untested): «इसको पहले बैक टेस्ट कीजिए एक नहीं 50 बार कीजिए। तभी रियल मनी लगाना है» ZuVWAu_MR2Q + «बाजार में कुछ भी गारंटीड नहीं है» ZuVWAu_MR2Q | |
 | CAS meaning | NOT_SEEN | NOT_SEEN (never expanded) | |
 | BTC port | NSE rule, NOT tested on BTC | OURS: no BTC expiry-hour equivalent tested; Deribit testnet options only route | |
 
@@ -221,26 +236,30 @@ Page English rendering of the quote: It touches the 30 zone; RSI of which period
 |---|---|---|---|
 | RSI | 14 period, 15 min | SOURCED: «14 पीरियड की आरएसआई 15 मिनट के टाइम फ्रेम» cmH38Uo4sYM | |
 | Zone | 15m RSI in the 70 or 30 zone | SOURCED: «आरएसआई 15 मिनट की 70 या 30 के जोन» cmH38Uo4sYM | |
-| Three conditions | 15m RSI zone + 10m and 5m HM, at closing time | SOURCED: «याद रखिएगा अगर ये तीन कंडीशन मैच कर जाती है क्लोजिंग टाइम पे» cmH38Uo4sYM | |
+| Three conditions | if the three match at closing time (3:00 to 3:30): the 15m RSI in the 70 or 30 zone, then 10m and 5m buying or selling | SOURCED: «याद रखिएगा अगर ये तीन कंडीशन मैच कर जाती है क्लोजिंग टाइम पे मतलब 3:00 बजे से लेके 3:30 की ट्रेडिंग के दौरान आरएसआई 15 मिनट की 70 या 30 के जोन और उसके बाद 10 मिनट और 5 मिनट की बाइंग या सेलिंग में» cmH38Uo4sYM | |
 | Window | 3:00 to 3:30 PM | SOURCED: «3:00 बजे से लेके 3:30 की ट्रेडिंग के दौरान» cmH38Uo4sYM | |
 | Primary confirm | the index's own 10m HM in buying, then the 5m | SOURCED: «तो अगर यह 10 मिनट पर बाइंग में है। यहां पर देखेंगे रेड लाइन नीचे है। ग्रीन ऊपर है» cmH38Uo4sYM + «उसी तरह से फिर 5 मिनट के टाइम फ्रेम पे चार्ट पे जाएंगे» cmH38Uo4sYM | |
-| Second confirm (option charts) | weekly-expiry put's 15m RSI over 70, then the call's RSI at 30; call HM buying, put HM sell | SOURCED: «वीकली एक्सपायरी की पीसी» cmH38Uo4sYM + «25800 की पुट ये आरएसआई है कहां टच कर गई है 70 के ऊपर क्रॉस कर गई है ना तो कन्फर्मेशन दे दिया कि हां जी हम है तो कॉल की आरएसआई 30 आनी चाहिए दूसरी कन्फर्मेशन के लिए» cmH38Uo4sYM + «कॉल को 10 मिनट 5 मिनट में हिलेगा मिलेगा बाइंग देके जाएगा और 10 मिनट 5 मिनट पे हिलेगा मिलेगा सेल देके जाएगा पुट» cmH38Uo4sYM | |
-| Stated odds | if HM is in buying, 60-70% gap up; max 70% | SOURCED (HIS CLAIM, untested): «अगर ये बाइंग में है तो अगले दिन 60 टू 70% संभावना है कि गैप अप होगी» cmH38Uo4sYM + «लेकिन फिर भी मैक्सिमम 70%» cmH38Uo4sYM | |
+| Gap can be a trap | he says a gap up is possible but not certain, and may be a trap for us; to confirm he goes to the option charts | SOURCED: «और अगर हुआ है तो गैप अप करवा दे। संभावना है। जरूरी नहीं है» cmH38Uo4sYM + «ये गैप अप करवा देगा कि हमारे लिए ट्रैप है» cmH38Uo4sYM + «तो हम उसके लिए चले जाएंगे ऑप्शन के चार्ट» cmH38Uo4sYM | |
+| Second confirm (option charts) | weekly-expiry put's RSI over 70, then the call's RSI at 30; call HM buying, put HM sell | SOURCED: «वीकली एक्सपायरी की पीसी» cmH38Uo4sYM + «25800 की पुट ये आरएसआई है कहां टच कर गई है 70 के ऊपर क्रॉस कर गई है ना तो कन्फर्मेशन दे दिया कि हां जी हम है तो कॉल की आरएसआई 30 आनी चाहिए दूसरी कन्फर्मेशन के लिए» cmH38Uo4sYM + «कॉल को 10 मिनट 5 मिनट में हिलेगा मिलेगा बाइंग देके जाएगा और 10 मिनट 5 मिनट पे हिलेगा मिलेगा सेल देके जाएगा पुट» cmH38Uo4sYM | |
+| Stated odds (conditional) | if HM is buying, 60-70% chance of a gap up the next day, max 70%; conditions he gives: RSI 30 on the 15m and the market stopping at a support; he also says it is not certain | SOURCED (HIS CLAIM, untested): «आरएसआई 30 कहां देखेंगे? 15 मिनट पे और बाकी इन दोनों में देखेंगे हमारी हिलेगा मिलेगा सिस्टम बाइंग में हो अगर ये बाइंग में है इसका संभावना है कि अगले दिन 60 टू 70% संभावना है कि गैप अप होगी» cmH38Uo4sYM + «लेकिन फिर भी मैक्सिमम 70%» cmH38Uo4sYM + «और अगर हुआ है तो गैप अप करवा दे। संभावना है। जरूरी नहीं है» cmH38Uo4sYM | |
+| After RSI 30 | he says that once the gap up has come and 15m RSI had hit 30, it will try to go near 70 once | SOURCED (HIS CLAIM, untested): «आरएसआई 30 आया है 15 मिनट पे तो इसका मतलब कि एक बार वो आरएसआई 70 के पास जाने की कोशिश करेगा» cmH38Uo4sYM | |
 | Oversold alone | he says it is not a buy | SOURCED: «ओवरसोल्ड कंडीशन बन जाना ही बाइंग नहीं होती है» cmH38Uo4sYM | |
-| Works best | when price stops at support | SOURCED: «कोई सपोर्ट पे आके बाजार रुकता है» cmH38Uo4sYM | |
+| Works best | he says these show up mainly when the market stops at a support | SOURCED (HIS CLAIM, untested): «खास करके कोई सपोर्ट पे आके बाजार रुकता है तब जाकर देखने को मिलती है» cmH38Uo4sYM | |
+| Why the close | his reason: opening is done by retailers, closing by smart money, so closing price matters more than the open and he says his SL is on a closing basis (caption garbles it as एएसएल) | SOURCED: «जो ओपनिंग होती है वो रिटेलर करवाते हैं बट जो क्लोजिंग होता है बाजार का वो स्मार्ट मनी करवाते तो ओपनिंग से ज्यादा क्लोजिंग प्राइस मैटर करता है» cmH38Uo4sYM + «एएसएल क्लोजिंग बेसिस कभी ओपनिंग बेसिस तो नहीं होता है» cmH38Uo4sYM | |
 | Scope | indices only, not commodities or stocks | SOURCED: «इसकी बात सिर्फ इंडेक्स में होगी आप कमोडिटी वगैरह में नहीं चले जाइएगा» cmH38Uo4sYM + «आप स्टॉक में नहीं चले जाइएगा» cmH38Uo4sYM | |
 | Three conditions met | he says never fight the market | SOURCED: «बाजार से कभी भी लड़ना नहीं है» cmH38Uo4sYM | |
 | Stop | 'the lowest point' (his chart example gives a price pair) | SOURCED: «ये जो लोएस्ट पॉइंट है हमारा वो हमारा एसएल होगा» cmH38Uo4sYM | |
 | Stop chart | for an option buyer, based on the spot chart (बिहाफ = 'based on') | SOURCED: «अगर आप बयर हो» cmH38Uo4sYM + «ऑप्शन के चार्ट पे आपकी एसएल नहीं होनी चाहिए» cmH38Uo4sYM + «वहां पे आपका जो स्टॉप लॉस होगी वो स्पॉट के चार्ट के बिहाफ में होगी» cmH38Uo4sYM | |
+| Option exit | he says to exit if the option cuts the lowest point of the previous one or two days; he calls the spot-chart exit the better way | SOURCED: «या वो ऑप्शन बिल्कुल जो लोएस्ट पॉइंट है उसको काट देती है पिछले एक दो दिन का तो निकलेंगे» cmH38Uo4sYM + «लेकिन बेटर वे होता है स्टॉक का चार्ट निकले जो स्पॉट का चार्ट निकल जाता है» cmH38Uo4sYM | |
 | On the gap | he says not to book yet | SOURCED: «अभी आपको बुक नहीं करनी है» cmH38Uo4sYM | |
 | Trailing stop | after the gap holds and breaks the opening range: a CLOSE below the 5m low (to 9:35), then 10m (to 10:15), then 1h | SOURCED: «5 मिनट के टाइम फ्रेम अगर सस्टेन किया और उसके वो आरवी ब्रेक कर गई ओपनिंग रेंज» cmH38Uo4sYM + «तो उसका लो के नीचे क्लोज कर जाता है। हमारा एसएल हो जाएगा» cmH38Uo4sYM + «पहला जो होगा 20 मिनट उसमें हम 5 मिनट का कैंडल देखेंगे उसके बाद पहला मिनट मतलब कब कि 9:15 से 9:35 35 तक 935 तक उसके बाद हम लोग 10 मिनट का कैंडल देखना शुरू कर देंगे» cmH38Uo4sYM + «फर्स्ट वन आवर तक मतलब 10:15 तक 10:15 के बाद वन आवर का कैंडल देखने लगेंगे» cmH38Uo4sYM | |
-| Profit lock | a short option above the bought one locks part of the gain (spread) | SOURCED: «150 वाली ऑप्शन को शॉर्ट सेल करेंगे ताकि 50 पॉइंट को हम घर लेके जाएंगे» cmH38Uo4sYM | |
+| Profit lock | he shorts the 150 option so as to take 50 points home (a spread) | SOURCED: «150 वाली ऑप्शन को शॉर्ट सेल करेंगे ताकि 50 पॉइंट को हम घर लेके जाएंगे» cmH38Uo4sYM | |
 | Exit | at previous resistance | SOURCED: «प्रीवियस रेजिस्टेंस आ जाता है तो भी हम एग्जिट» cmH38Uo4sYM | |
-| Trend-change warning | gap up above the close holding 15-20 min | SOURCED: «गैप अप होकर करीब 15 से 20 मिनट तक सस्टेन ना हो जाए और सस्टेन हो जाता है तो बताता है कि ट्रेंड कहीं ना कहीं चेंज कर जाएगा» cmH38Uo4sYM | |
+| Trend-change warning | a gap up that sustains about 15-20 min tells him the trend will somewhere change | SOURCED: «गैप अप होकर करीब 15 से 20 मिनट तक सस्टेन ना हो जाए और सस्टेन हो जाता है तो बताता है कि ट्रेंड कहीं ना कहीं चेंज कर जाएगा» cmH38Uo4sYM | |
 | Low-volume caveat | NOT_SEEN | NOT_SEEN (garbled: «वॉल्यूम नहीं हो और आरएसआई 70 से क्रॉस कर रहा हो बाजार नीचे की तरफ» cmH38Uo4sYM; direction not stated) | |
-| His disclaimer | generic: '99% it will fail', take no trade, not advice | SOURCED (HIS CLAIM, untested): «99% संभावना है कि फेल कर जाएगा। इसलिए इस पर कोई भी ट्रेड मत लेना» cmH38Uo4sYM + «ट्रेडिंग एडवाइस नहीं है» cmH38Uo4sYM; a disclaimer, not a measured rate | |
+| His disclaimer | he says: 99% chance it fails, so no trade on it; not trading advice; also to backtest everything, not on his word alone | SOURCED (HIS CLAIM, untested): «99% संभावना है कि फेल कर जाएगा। इसलिए इस पर कोई भी ट्रेड मत लेना» cmH38Uo4sYM + «ट्रेडिंग एडवाइस नहीं है» cmH38Uo4sYM + «सारी चीजों को बैक टेस्ट भी करनी है। सिर्फ मेरे कहने पे नहीं रहेंगे» cmH38Uo4sYM; a disclaimer, not a measured rate | |
 | Gap-down odds (70 side) | NOT_SEEN | NOT_SEEN (only the gap-up figure is spoken) | |
-| BTC port | NSE rule, NOT tested on BTC | OURS: BTC trades 24/7: a session open would stand in for the gap; untested | |
+| BTC port | NSE rule, NOT tested on BTC | OURS: BTC trades 24/7 and has no session gap or NSE close; no BTC equivalent of this read is claimed | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
 |---|---|---|---|---|
@@ -271,11 +290,14 @@ Page English rendering of the quote: All the events should happen within the fir
 | 1h candle | green, closes above VWAP | SOURCED: «ग्रीन वीवप के ऊपर बन गई» JLcDdrHkB5M | |
 | Entry | near VWAP | SOURCED: «एंट्री वीवप के पास» JLcDdrHkB5M | |
 | Entry style | he calls waiting for the exact touch foolish | SOURCED: «बेवकूफी» JLcDdrHkB5M + «टच का वेट» JLcDdrHkB5M | |
-| Strike | skip the nearest strike, take the next one out | SOURCED: «960 है तो 970 नहीं 980 का» JLcDdrHkB5M | |
-| Stop | 1h close below VWAP or the low break, whichever first | SOURCED: «आपका एसएल होगा 1 आवर वीवप के नीचे या यह लो ब्रेक कर दे दोनों में से जो भी पहले» JLcDdrHkB5M | |
+| Strike (his example) | in his example: 960 spot, the 980 call, not 970; in a second example (entries near 526-527) he considers the 530 or 540 strikes, i.e. the nearest | SOURCED: «960 है तो 970 नहीं 980 का हम कॉल ऑप्शन को परचेज करते हैं» JLcDdrHkB5M + «526 27 पे बनाते तो आपके पास जो स्ट्राइक होती 530 या 540 के स्ट्राइक को आप कंसीडर करते» JLcDdrHkB5M; caption says only «960 है»; he calls the first one 'the rule' | |
+| Stop | the 1h under VWAP, or the low breaks (on the 5m chart), whichever comes first | SOURCED: «आपका एसएल होगा 1 आवर वीवप के नीचे या यह लो ब्रेक कर दे दोनों में से जो भी पहले» JLcDdrHkB5M + «1 आवर वी अप के नीचे या लो ब्रेक कर दे 5 मिनट के ही चार्ट में तो दोनों में से जो भी पहले हो» JLcDdrHkB5M | |
 | Stop chart | buys: spot or futures; sells: the option strike | SOURCED: «बाइंग में हम स्पॉट का या फ्यूचर का एसएल रखते हैं ना कि ऑप्शन का» JLcDdrHkB5M + «सेलिंग में सिर्फ ऑप्शन स्ट्राइक का रखते हैं» JLcDdrHkB5M | |
-| Avoid | open = low or a big candle: a 1-2 candle move | SOURCED: «कभी भी ओपन लो या कोई भी बड़ी कैंडल पे अगर आप लेते हैं तो उसका जो मूव होगा एक कैंडल दो कैंडल से ज्यादा नहीं होगा» JLcDdrHkB5M | |
-| Profit lock | he locks at 60-70% profit (base not stated) | SOURCED (HIS CLAIM, untested): «60 70 प्रॉफिट आ गया 70% हो गया तो लॉक कर दो» JLcDdrHkB5M | |
+| Cost of the stop | he says that when buying, 30-40% goes to the stop, and the reward is large | SOURCED (HIS CLAIM, untested): «30 40% एसएल चला जाता है बाइंग में» JLcDdrHkB5M + «लेकिन रिवार्ड भी उसके अनुकूल होता है और आप देखेंगे कि रिवार्ड काफी बड़ा है» JLcDdrHkB5M | |
+| Basket of positions | he says to make a basket of 4-5 options or stocks; if 4-5 are not there, at least three | SOURCED (HIS CLAIM, untested): «एक बास्केट बनाओ उस बास्केट को कम से कम चार से पांच ऑप्शन को रखो चार से पांच स्टॉक को रखो» JLcDdrHkB5M + «अगर चार पांच नहीं हो रहे हैं तो कम से कम तीन तो कर लो» JLcDdrHkB5M; a count of positions, not a size | |
+| Open or big-candle caution | he says a trade on open = low or on a big candle moves no more than one or two candles | SOURCED: «कभी भी ओपन लो या कोई भी बड़ी कैंडल पे अगर आप लेते हैं तो उसका जो मूव होगा एक कैंडल दो कैंडल से ज्यादा नहीं होगा» JLcDdrHkB5M | |
+| Profit lock | he says to lock when profit reaches 60-70% (base not stated) | SOURCED (HIS CLAIM, untested): «60 70 प्रॉफिट आ गया 70% हो गया तो लॉक कर दो» JLcDdrHkB5M | |
+| His disclaimer | he says: only educational, no trading advice, 99% loss if traded; to backtest his words first | SOURCED (HIS CLAIM, untested): «वो सिर्फ एजुकेशनल पर्पस से है। इसमें कोई ट्रेडिंग एडवाइस नहीं है» JLcDdrHkB5M + «99% लॉस हो जाएगा ट्रेड कर लिए। वह आपको बैक टेस्ट करनी है हमारी बातों को तभी आगे बढ़ना है» JLcDdrHkB5M | |
 | BTC port | NSE rule, NOT tested on BTC | OURS: a session open would stand in for the NSE open; untested | |
 
 | Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |
