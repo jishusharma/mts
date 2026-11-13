@@ -1,0 +1,1 @@
+{"t": "20261113T171503Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "broadcast", "text": "CI RED on trunk 1c3f3730: test_make_layer_map 384 != None for RSI-EXTREME-CONFIRM-1H. Breaking commit cf596930a (rsi_extreme_confirm FAIL). First to see reverts it; Supervisor A is not shipping.", "login": "A", "id": "b-3d1f71", "prio": "high", "cmd": ""}
