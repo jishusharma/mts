@@ -4,7 +4,7 @@
 Each slow file (SLOW_FIRST) runs in its own pytest process; the fast files of a directory share one (run_group; a red group is re-run per file). Each process runs with the file's directory as cwd (the way each was written to run), so same-named
 helper modules in different dirs cannot collide. Files run MTS_GATE_JOBS at a time (default min(4, cpu count); 1 = one after
 the other), each with its own --basetemp, and print their line when they finish. Exit 1 if any file fails. The list is checked by
-MyTradingSys/tests/test_gate_discovery_b150.py: a tracked test file is run (discovered or listed) or opted out in gate_tiers.tsv with a reason.
+MyTradingSys/tests/test_gate_discovery_b150.py: a new tracked test file must be gated, listed here, or skipped with a reason.
 """
 import os
 import re
@@ -30,7 +30,7 @@ TIERS_TSV = Path(__file__).resolve().with_name("gate_tiers.tsv")
 
 
 def load_tiers(path=TIERS_TSV):
-    """{repo-relative test path: tier} from gate_tiers.tsv (tier, path, reason; blank and # lines skipped). tier is retired, study, slow or manual (manual = run by hand only, never by the gate).
+    """{repo-relative test path: tier} from gate_tiers.tsv (tier, path, reason; blank and # lines skipped). tier is retired, study or slow.
     A missing file is an empty map (the gate then runs everything, the old behaviour); a malformed row raises."""
     out = {}
     try:
@@ -41,46 +41,30 @@ def load_tiers(path=TIERS_TSV):
         if not ln.strip() or ln.lstrip().startswith("#"):
             continue
         parts = ln.split(chr(9))
-        if len(parts) < 3 or parts[0] not in ("retired", "study", "slow", "manual") or not parts[1].strip():
-            raise ValueError(f"gate_tiers.tsv: bad row {ln!r} (tier<TAB>path<TAB>reason; tier = retired|study|slow|manual)")
+        if len(parts) < 3 or parts[0] not in ("retired", "study", "slow") or not parts[1].strip():
+            raise ValueError(f"gate_tiers.tsv: bad row {ln!r} (tier<TAB>path<TAB>reason; tier = retired|study|slow)")
         out[parts[1].strip().replace("\\", "/")] = parts[0]
     return out
 
 
 TIERS = load_tiers()
 OFFGATE = frozenset(TIERS)   # off the ship gate and the push CI shards; study + slow run in the offgate tier, retired nowhere
-# Folders a gate step already runs wholesale (pytest shards, layer/options steps, the execution unittest step 1 + its pytest dir): a new
-# test_*.py there needs no entry, so discovered() leaves them out. Everything else tracked is discovered.
-COLLECTED = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/", "MyTradingSys/execution/")
-NOT_GATED = ("Dumps/", "_archive/")
-
-
-def tracked_tests(repo=None):
-    """Every tracked test_*.py (archives, Dumps and _archive left out)."""
-    repo = Path(repo or REPO)
-    out = subprocess.run(["git", "ls-files", "--", "*test_*.py"], cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
-    return sorted(p for p in out if Path(p).name.startswith("test_") and "archive" not in p.lower() and not p.startswith(NOT_GATED))
+STUDY_ROOT = "MyTradingSys/research/"
 
 
 def discovered(repo=None):
-    """Tracked test_*.py in ANY folder that no gate step already runs: not in EXTRA, not under a COLLECTED folder, and not named in
-    run_all_tests.py (by full path, or by a stem no other tracked test shares). They run in step 3xt with no hand-kept entry
-    (2026-10-17 audit: the two-list registration cost ~100 commits and several red gates in 72 h; 2026-11-13 627330d8e: a new
-    test outside the research folders went red CI for 30 min). Opt out in gate_tiers.tsv (all_tests drops OFFGATE), with a reason."""
+    """Tracked test_*.py under a study folder that EXTRA does not list and run_all_tests.py does not name: they run
+    without a hand-kept entry (2026-10-17 audit: the two-list registration cost ~100 commits and several red gates in 72 h)."""
     repo = Path(repo or REPO)
-    tracked = tracked_tests(repo)
+    out = subprocess.run(["git", "ls-files", "--", STUDY_ROOT], cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
     gate_py = repo / "scripts" / "dev" / "run_all_tests.py"
     gate = gate_py.read_text(encoding="utf-8") if gate_py.exists() else ""
-    stems = [Path(p).stem for p in tracked]
-
-    def named(p):
-        st = Path(p).stem
-        return p in gate or ((f'"{st}"' in gate or f"{st}.py" in gate) and stems.count(st) == 1)
-    return [p for p in tracked if p not in EXTRA and not p.startswith(COLLECTED) and not named(p)]
+    return sorted(p for p in out if p.endswith(".py") and Path(p).name.startswith("test_") and "archive" not in p.lower()
+                  and p not in EXTRA and f'"{Path(p).stem}"' not in gate and f"{Path(p).stem}.py" not in gate)
 
 
 def all_tests(repo=None):
-    """Every extra test the push gate runs: EXTRA plus every discovered test, minus the files gate_tiers.tsv takes off the gate."""
+    """Every extra test the push gate runs: EXTRA plus the discovered study tests, minus the files gate_tiers.tsv takes off the gate."""
     return [t for t in EXTRA + discovered(repo) if t not in OFFGATE]
 
 

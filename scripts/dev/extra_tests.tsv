@@ -152,6 +152,9 @@ MyTradingSys/tools/live_aid/test_base_rates.py
 MyTradingSys/tools/live_aid/test_live_aid_replay.py
 MyTradingSys/tools/live_aid/test_live_aid_map.py
 MyTradingSys/tools/live_aid/test_live_aid_layout.py
+MyTradingSys/tools/live_aid/test_news_flash.py
+MyTradingSys/tools/live_aid/test_liq_rates.py
+MyTradingSys/tools/live_aid/test_analyst_note.py
 scripts/dev/test_sync_push_race.py
 scripts/dev/test_announcements_ids.py
 scripts/dev/test_status_board.py
