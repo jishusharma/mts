@@ -117,6 +117,17 @@ def test_signal_and_entry_do_not_look_ahead():
     assert np.allclose(L.wilder_rsi(tr2["c"])[:s + 2], rsi[:s + 2], equal_nan=True)
 
 
+def test_sma_and_adx_trend():
+    assert np.allclose(L.sma([1, 2, 3, 4], 2)[1:], [1.5, 2.5, 3.5]) and np.isnan(L.sma([1, 2, 3, 4], 2)[0])
+    c = 100 + np.arange(80, dtype=float)
+    adx, pdi, mdi = L.adx_di(c + 1, c - 1, c)
+    assert adx[-1] > 90 and pdi[-1] > mdi[-1]
+    adx2, pdi2, mdi2 = L.adx_di(-c + 300 + 1, -c + 300 - 1, -c + 300)
+    assert mdi2[-1] > pdi2[-1]
+    # warm-up bars are nan: no value uses data it does not have
+    assert np.isnan(adx[:27]).all() and not np.isnan(adx[27])
+
+
 if __name__ == "__main__":
     for k, fn in list(globals().items()):
         if k.startswith("test_"):

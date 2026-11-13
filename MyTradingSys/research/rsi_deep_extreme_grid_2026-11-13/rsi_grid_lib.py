@@ -126,3 +126,43 @@ def fwd_exit(entry, stop, O, H, L, C, R50, kind, param, taker):
     fill = np.where(reason == 0, np.minimum(stop, O[rows, fi]), np.where(reason == 1, tgt_fill, C[rows, fi]))
     net_pct = (fill - entry) / entry - 2 * taker
     return dict(net_pct=net_pct, net_r=net_pct / stopdist, hold=first + 1, reason=reason)
+
+
+def sma(c, n):
+    """Simple moving average of the last n values; nan before index n-1."""
+    c = np.asarray(c, float)
+    out = np.full(len(c), np.nan)
+    if len(c) >= n:
+        cs = np.cumsum(np.insert(c, 0, 0.0))
+        out[n - 1:] = (cs[n:] - cs[:-n]) / n
+    return out
+
+
+def adx_di(h, l, c, n=14):
+    """Wilder ADX, +DI, -DI (bar i uses bars <= i only). nan before warm-up."""
+    h, l, c = (np.asarray(x, float) for x in (h, l, c))
+    m = len(c)
+    adx, pdi, mdi = (np.full(m, np.nan) for _ in range(3))
+    if m < 2 * n + 1:
+        return adx, pdi, mdi
+    tr = np.maximum(h[1:] - l[1:], np.maximum(np.abs(h[1:] - c[:-1]), np.abs(l[1:] - c[:-1])))
+    up, dn = h[1:] - h[:-1], l[:-1] - l[1:]
+    pdm = np.where((up > dn) & (up > 0), up, 0.0)
+    mdm = np.where((dn > up) & (dn > 0), dn, 0.0)
+    st, sp, sm = tr[:n].sum(), pdm[:n].sum(), mdm[:n].sum()
+    dx = np.full(m, np.nan)
+    for i in range(n, m):
+        if i > n:
+            st = st - st / n + tr[i - 1]
+            sp = sp - sp / n + pdm[i - 1]
+            sm = sm - sm / n + mdm[i - 1]
+        pdi[i] = 100.0 * sp / st
+        mdi[i] = 100.0 * sm / st
+        s = pdi[i] + mdi[i]
+        dx[i] = 0.0 if s == 0 else 100.0 * abs(pdi[i] - mdi[i]) / s
+    a = np.nanmean(dx[n:2 * n])
+    adx[2 * n - 1] = a
+    for i in range(2 * n, m):
+        a = (a * (n - 1) + dx[i]) / n
+        adx[i] = a
+    return adx, pdi, mdi

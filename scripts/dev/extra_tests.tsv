@@ -297,3 +297,4 @@ MyTradingSys/research/rsi_extreme_confirm_2026-11-13/test_engine.py
 scripts/dev/test_ship_timing_report.py
 MyTradingSys/research/rsi_range_census_2026-11-13/test_census_lib.py
 MyTradingSys/research/adx_1d_through25_2026-11-13/test_run_1113.py
+MyTradingSys/research/rsi_deep_extreme_grid_2026-11-13/test_rsi_grid.py
