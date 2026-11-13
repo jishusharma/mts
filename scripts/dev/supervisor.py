@@ -1319,6 +1319,9 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
     if me_any:   # cbp-pipe-fix-1112: new analyst uploads reached the board only when a session ran cbp_run; now every wake checks
         L.append("RUN python scripts/dev/cbp_run.py --due --quick-new   (CBP NEW lines = uploads not on the board; fetch obeys the YouTube lock; "
                  "ends with REPUBLISH when rows were added)")
+    if me_any and claude_ok:   # routines-plan-wiring-1113: due routines (ROUTINES.md), one RUN line each, built by routines_due.py
+        L.extend(ctx.get("routine_runs") or [])
+    L.extend(ctx.get("routine_notes") or [])
     if ctx.get("refine_raw") and claude_ok:
         L.append(f"RUN Session_Planner (Agent, sonnet): refine {ctx['refine_raw']} raw cards")
     cx = ctx.get("codex_ready", 0)
@@ -1653,6 +1656,11 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
     except Exception as e:
         notes.append(f"NOTE bg_watch failed ({type(e).__name__}: {str(e)[:80]}): run `python scripts/dev/bg_watch.py report` by hand")
     notes += republish_notes(login)
+    try:
+        import routines_due
+        ctx["routine_runs"], ctx["routine_notes"] = routines_due.lines(repo, loop_home(home), now)
+    except Exception as e:
+        notes.append(f"NOTE routines_due failed ({type(e).__name__}: {str(e)[:60]})")
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
@@ -2259,6 +2267,9 @@ def main(argv: list[str] | None = None) -> int:
     p_ho.add_argument("--fold-target", action="store_true", help="print the file the ship-time fold writes (the card, else the hand-over)")
     p_ho.add_argument("--card", default=None, help="with --fold-target: the claimed card id")
 
+    p_rd = sub.add_parser("routine-done", help="mark a daily routine done for today (the tail of its plan RUN line)")
+    p_rd.add_argument("id")
+
     p_sl = sub.add_parser("session-log", help="add one line to SUPER_SESSION.md's Session log (last 5 kept), dropping the oldest entry")
     p_sl.add_argument("line", help="the one-line session record")
     p_sl.add_argument("--repo", default=None, help="repo root (default: the checkout this script is in)")
@@ -2301,6 +2312,10 @@ def main(argv: list[str] | None = None) -> int:
         if not args.no_send:
             record_plan_timing(args.login, time.monotonic() - t_plan, len(lines), args.context_tokens, args.running)
         print(json.dumps(data, indent=1, sort_keys=True, default=str) if args.json else chr(10).join(lines))
+        return 0
+    if args.cmd == "routine-done":
+        import routines_due
+        print(f"routine {args.id} marked done: {routines_due.write_marker(loop_home(), args.id, _now_utc())}")
         return 0
     if args.cmd == "session-log":
         repo = Path(args.repo) if args.repo else (Path.cwd() if (Path.cwd() / "MyTradingSys").is_dir() else REPO)
