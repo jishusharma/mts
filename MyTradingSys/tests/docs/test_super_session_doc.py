@@ -88,5 +88,24 @@ class SuperSessionDoc(unittest.TestCase):
         self.assertIn("handover/SUPERVISOR_<L>.md", d5)
         self.assertIn("never from memory", d5)
 
+    @report_only
+    def test_checklist_has_idle_wake_and_plan_writer_rules(self):
+        """Audit 2026-11-13: a Haiku coordinator ticked ~80 times with 0 ships while 96 cards were ready."""
+        body = section(self.text, "Sonnet checklist")
+        self.assertIn("Idle wake", body)
+        self.assertIn("tasks.py next --lane HAIKU", body)
+        self.assertIn("Link rows per login", body)
+
+    @report_only
+    def test_newest_plan_24h_has_a_link_row_per_login(self):
+        """The newest PLAN_24H gives every login A, B, C its own row (model, cards, fallback lane)."""
+        plans = sorted((REPO / "MyTradingSys" / "system").glob("PLAN_24H_*.md"))
+        text = plans[-1].read_text(encoding="utf-8")
+        body = text.split("Link rows per login", 1)
+        self.assertEqual(len(body), 2, f"{plans[-1].name}: no Link rows per login section")
+        for login in "ABC":
+            self.assertTrue(re.search(rf"^\| {login} \|", body[1], re.M), f"{plans[-1].name}: no row for login {login}")
+
+
 if __name__ == "__main__":
     unittest.main()
