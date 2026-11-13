@@ -1,0 +1,6 @@
+E       assert np.float64(97.8205013463498) != np.float64(97.8205013463498)
+
+test_lib.py:23: AssertionError
+=========================== short test summary info ===========================
+FAILED test_lib.py::test_pivot_level_known_only_from_confirmation_bar - asser...
+1 failed, 6 passed in 1.18s
