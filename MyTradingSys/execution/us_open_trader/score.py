@@ -35,25 +35,39 @@ def _symbol(plan):
     return plan["ref_feed"].rsplit("_", 1)[-1]  # "binance_spot_BTCUSDT" -> "BTCUSDT"
 
 
-def fetch_bars(plan, fetch=None):
-    """1m bars from arm through the first bar at/after flat (flat+1 bar). Tries HOSTS in order."""
+def parse_klines(rows):
+    """Binance kline rows -> engine bars {"t","o","h","l","c"}. The one parser for score.py AND the runner (V2-4)."""
+    return [{"t": int(k[0]), "o": float(k[1]), "h": float(k[2]), "l": float(k[3]), "c": float(k[4])}
+            for k in rows]
+
+
+def fetch_klines(symbol, start_ms, end_ms, fetch=None):
+    """Public 1m klines [start_ms, end_ms] as bars, trying HOSTS in order. RuntimeError if every host fails
+    or returns nothing. Reusable by the runner (V2-4); the last bar may still be open: use closed_bars()."""
     fetch = fetch or http_fetch
-    st = engine.new_state(plan)
-    start, end = st["arm_ms"], st["flat_ms"] + BAR_MS
     last_err = None
     for host in HOSTS:
         url = ("https://%s/api/v3/klines?symbol=%s&interval=1m&startTime=%d&endTime=%d&limit=1000"
-               % (host, _symbol(plan), start, end))
+               % (host, symbol, start_ms, end_ms))
         try:
-            rows = fetch(url)
-            bars = [{"t": int(k[0]), "o": float(k[1]), "h": float(k[2]), "l": float(k[3]), "c": float(k[4])}
-                    for k in rows]
+            bars = parse_klines(fetch(url))
             if not bars:
                 raise ValueError("no klines returned")
             return bars
         except Exception as e:  # try the next host
             last_err = e
     raise RuntimeError("all kline hosts failed: %r" % (last_err,))
+
+
+def closed_bars(bars, now_ms):
+    """Only bars whose whole minute is over at now_ms (the runner steps the engine on closed 1m klines only)."""
+    return [b for b in bars if b["t"] + BAR_MS <= now_ms]
+
+
+def fetch_bars(plan, fetch=None):
+    """1m bars from arm through the first bar at/after flat (flat+1 bar)."""
+    st = engine.new_state(plan)
+    return fetch_klines(_symbol(plan), st["arm_ms"], st["flat_ms"] + BAR_MS, fetch)
 
 
 def summarize(plan, trades):

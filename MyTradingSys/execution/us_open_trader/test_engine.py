@@ -333,7 +333,8 @@ class TestEngine(unittest.TestCase):
         res = run([Q, bar(1, 69600, 69700, 69300)])
         self.assertEqual(set(res["trades"][0]), {
             "order_id", "side", "kind", "level", "confluence", "entry_t", "entry", "exit_t", "exit",
-            "exit_reason", "r_gross", "r_net", "stop_moved"})
+            "exit_reason", "r_gross", "r_net", "stop_moved", "mode"})  # v2: mode added
+        self.assertEqual(res["trades"][0]["mode"], "replay")
         self.assertEqual(res["trades"][0]["confluence"], ["live_aid:EU_HIGH"])
         self.assertEqual(res["trades"][0]["level"], "Europe high 69,571")
 
@@ -373,6 +374,227 @@ class TestEngine(unittest.TestCase):
         st = engine.new_state(PLAN)
         st["plan"]["orders"][0]["trigger"] = 1
         self.assertEqual(PLAN["orders"][0]["trigger"], 69620)
+
+
+def live_state(p=None, **kw):
+    return engine.new_state(p or PLAN, live=True, **kw)
+
+
+def feed(st, bars):
+    evs = []
+    for b in bars:
+        st, ev = engine.step(st, b)
+        evs += ev
+    return st, evs
+
+
+def etypes(evs):
+    return [(e["type"], e["order_id"], e["reason"]) for e in evs]
+
+
+class TestV2Fade(unittest.TestCase):
+    """V2-3: fade arms from the bar AFTER its arm_after order closed; approach-side open or it is void."""
+
+    # A (buy 69620, target_dist 360 -> target 69980) enters bar1; bar2 hits the target 69980 == C trigger.
+    HEAD = [Q, bar(1, 69500, 69625, 69450), bar(2, 69800, 70150, 69800)]
+
+    def test_fade_not_filled_in_the_exit_bar_of_its_arm_after(self):
+        res = run(self.HEAD)  # bar2 high 70150 >= C 69980 but C only arms from bar3
+        self.assertEqual(types(res), [("enter", "A", "breakout"), ("exit", "A", "target"),
+                                      ("cancel", "B", "breakout_target_hit")])
+        self.assertEqual(res["state"]["status"]["C"], "pending")
+        self.assertIsNone(res["state"]["position"])
+
+    def test_fade_void_when_next_bar_opens_beyond_trigger(self):
+        res = run(self.HEAD + [bar(3, 70100, 70200, 70050)])  # opens 70100 > 69980 (sell fade needs open below)
+        self.assertIn(("void", "C", "not_on_approach_side"), types(res))
+        self.assertEqual(res["state"]["status"]["C"], "void")
+        # a later bar opening at 69900 and touching 69990 can no longer fill C
+        res = run(self.HEAD + [bar(3, 70100, 70200, 70050), bar(4, 69900, 69990, 69800)])
+        self.assertEqual(len(res["trades"]), 1)
+        self.assertEqual(res["state"]["status"]["C"], "void")
+
+    def test_fade_fills_when_next_bar_opens_on_approach_side(self):
+        res = run(self.HEAD + [bar(3, 69900, 69990, 69800)])
+        self.assertEqual(types(res)[-1], ("enter", "C", "fade"))
+        self.assertEqual(res["state"]["position"]["entry"], 69980)
+        self.assertEqual(res["state"]["position"]["stop"], 70230)
+
+    def test_fade_open_exactly_at_trigger_is_void(self):
+        res = run(self.HEAD + [bar(3, 69980, 70000, 69900)])  # "below the trigger" is strict
+        self.assertEqual(res["state"]["status"]["C"], "void")
+
+    def test_buy_fade_mirror(self):
+        # B enters 68490 (bar1), bar2 hits target 68120 == D trigger (low 68000); D arms bar3.
+        head = [Q, bar(1, 68600, 68650, 68485), bar(2, 68300, 68400, 68000)]
+        res = run(head)
+        self.assertEqual(res["trades"][0]["exit"], 68120)
+        self.assertEqual(res["state"]["status"]["D"], "pending")  # low 68000 <= 68120 but not armed that bar
+        res = run(head + [bar(3, 68100, 68200, 68050)])  # opens 68100 < 68120: wrong side for a buy fade
+        self.assertEqual(res["state"]["status"]["D"], "void")
+        res = run(head + [bar(3, 68200, 68300, 68110)])  # opens 68200 > 68120, low 68110 touches
+        self.assertEqual(types(res)[-1], ("enter", "D", "fade"))
+
+    def test_gate_check_happens_even_while_another_position_is_open(self):
+        # A stops (bar2) -> C gate checked at bar3 open 70100 (void) although B enters in that same bar
+        res = run([Q, bar(1, 69500, 69625, 69450), bar(2, 69500, 69600, 69360), bar(3, 70100, 70120, 68480)])
+        self.assertEqual(res["state"]["status"]["C"], "void")
+
+    def test_gate_state_survives_json_roundtrip(self):
+        st = engine.new_state(PLAN)
+        st, _ = feed(st, self.HEAD)
+        st = json.loads(json.dumps(st))
+        st, ev = feed(st, [bar(3, 70100, 70200, 70050)])
+        self.assertEqual(etypes(ev), [("void", "C", "not_on_approach_side")])
+
+
+class TestV2Live(unittest.TestCase):
+    """V2-1 / V2-2 / mode."""
+
+    def entered(self):
+        st = live_state()
+        st, ev = feed(st, [Q, bar(1, 69500, 69625, 69450)])
+        return st, ev
+
+    def test_live_enter_waits_for_fill_no_position_no_stop_check(self):
+        # entry bar also reaches the (would-be) stop 69370: live does nothing about it
+        st, ev = feed(live_state(), [Q, bar(1, 69600, 69700, 69300)])
+        self.assertEqual(etypes(ev), [("enter", "A", "breakout")])
+        self.assertIsNone(st["position"])
+        self.assertEqual(st["status"]["A"], "entering")
+        self.assertEqual(st["entering"], {"order_id": "A", "t": ARM + MIN})
+        self.assertEqual(st["entries"], 1)
+        self.assertEqual(st["trades"], [])
+
+    def test_no_second_entry_while_entering(self):
+        st, ev = feed(live_state(), [Q, bar(1, 69500, 69625, 69450), bar(2, 68600, 68700, 68400)])  # B touched
+        self.assertEqual(etypes(ev), [("enter", "A", "breakout")])
+        self.assertEqual(st["status"]["B"], "pending")
+
+    def test_fill_rebases_stop_target_and_be_on_the_fill(self):
+        st, _ = self.entered()
+        st, ev = engine.fill(st, "A", ARM + MIN, 69640)  # fill 20 above trigger
+        self.assertEqual(etypes(ev), [("fill", "A", "fill")])
+        pos = st["position"]
+        # entry 69640; stop 69640-250; target 69640+360
+        self.assertEqual((pos["entry"], pos["stop"], pos["target"]), (69640, 69390, 70000))
+        self.assertEqual(st["status"]["A"], "open")
+        self.assertIsNone(st["entering"])
+        # break-even level is entry + 1R = 69890 (trigger-based would be 69870): 69885 no move, 69890 moves
+        st2, ev2 = feed(json.loads(json.dumps(st)), [bar(2, 69700, 69885, 69600)])
+        self.assertEqual(ev2, [])
+        st3, ev3 = feed(st, [bar(2, 69700, 69890, 69600)])
+        self.assertEqual([(e["type"], e["price"]) for e in ev3], [("move_stop", 69640)])
+        self.assertEqual(st3["position"]["stop"], 69640)
+
+    def test_fill_sell_side_rebase(self):
+        st = live_state()
+        st, _ = feed(st, [Q, bar(1, 68600, 68650, 68485)])
+        st, _ = engine.fill(st, "B", ARM + MIN, 68470)
+        pos = st["position"]
+        self.assertEqual((pos["entry"], pos["stop"], pos["target"]), (68470, 68720, 68100))
+
+    def test_fill_requires_entering_order(self):
+        st, _ = self.entered()
+        with self.assertRaises(ValueError):
+            engine.fill(st, "B", ARM + MIN, 68490)
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        with self.assertRaises(ValueError):  # second fill of the same order
+            engine.fill(st, "A", ARM + MIN, 69620)
+        with self.assertRaises(ValueError):
+            engine.fill(engine.new_state(PLAN, live=True), "A", ARM, 69620)
+
+    def test_reject_cancels_order_gives_back_entry_and_never_refills(self):
+        st, _ = self.entered()
+        st, ev = engine.reject(st, "A", ARM + MIN, "slippage_guard")
+        self.assertEqual(etypes(ev), [("cancel", "A", "slippage_guard")])
+        self.assertEqual((st["status"]["A"], st["entries"], st["entering"], st["position"]),
+                         ("cancelled", 0, None, None))
+        st, ev = feed(st, [bar(2, 69500, 69700, 69450)])  # A trigger touched again: no refill
+        self.assertEqual(ev, [])
+        # reject released C's gate: next bar opens 69900 and touches 69990 -> C enters
+        st, ev = feed(st, [bar(3, 69900, 69990, 69800)])
+        self.assertEqual(etypes(ev), [("enter", "C", "fade")])
+        with self.assertRaises(ValueError):
+            engine.reject(st, "A", ARM, "x")
+
+    def test_stop_hint_no_state_change_one_hint_per_bar(self):
+        st, _ = self.entered()
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        before = json.loads(json.dumps(st))
+        st, ev = feed(st, [bar(2, 69500, 69600, 69360)])  # low 69360 <= stop 69370
+        self.assertEqual(ev, [{"t": ARM + 2 * MIN, "type": "stop_hint", "order_id": "A", "price": 69370,
+                               "reason": "stop"}])
+        self.assertEqual(st, before)  # no state change at all
+        self.assertIsNotNone(st["position"])
+        st, ev = feed(st, [bar(3, 69500, 69600, 69300)])  # next bar again: one more hint, still in position
+        self.assertEqual(etypes(ev), [("stop_hint", "A", "stop")])
+        self.assertEqual(st, before)
+        self.assertEqual(st["trades"], [])
+
+    def test_stop_hint_wins_same_bar_tie_with_target(self):
+        st, _ = self.entered()
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        st, ev = feed(st, [bar(2, 69600, 69990, 69360)])  # stop and target both touched
+        self.assertEqual(etypes(ev), [("stop_hint", "A", "stop")])
+        self.assertIsNotNone(st["position"])
+
+    def test_stop_hint_after_be_move_names_be_stop(self):
+        st, _ = self.entered()
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        st, _ = feed(st, [bar(2, 69700, 69880, 69500)])  # move_stop
+        st, ev = feed(st, [bar(3, 69700, 69750, 69610)])
+        self.assertEqual([(e["type"], e["price"], e["reason"]) for e in ev], [("stop_hint", 69620, "be_stop")])
+
+    def test_live_target_and_time_still_exit(self):
+        st, _ = self.entered()
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        st, ev = feed(st, [bar(2, 69800, 69985, 69800)])
+        self.assertEqual(etypes(ev)[0], ("exit", "A", "target"))
+        st, _ = self.entered()
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        st, ev = feed(st, [{"t": FLAT, "o": 69700, "h": 69800, "l": 69000, "c": 69700}])
+        self.assertEqual(etypes(ev)[0], ("exit", "A", "time"))
+        self.assertEqual(st["trades"][0]["exit"], 69700)
+
+    def test_force_exit_is_the_only_stop_exit_and_rows_scored_from_fill(self):
+        st, _ = self.entered()
+        st, _ = engine.fill(st, "A", ARM + MIN, 69640)
+        st, ev = engine.force_exit(st, ARM + 3 * MIN, 69390, "stop")
+        tr = st["trades"][0]
+        self.assertEqual((tr["entry"], tr["exit"], tr["exit_reason"], tr["mode"]), (69640, 69390, "stop", "paper"))
+        # r_gross = (69390-69640)/250 = -1; r_net = -1 - 0.001*69640/250 = -1.27856
+        self.assertAlmostEqual(tr["r_gross"], -1.0, places=9)
+        self.assertAlmostEqual(tr["r_net"], -1.27856, places=9)
+
+    def test_mode_labels(self):
+        self.assertEqual(engine.new_state(PLAN)["mode"], "replay")
+        self.assertEqual(live_state()["mode"], "paper")
+        st = live_state(mode="testnet")
+        st, _ = feed(st, [Q, bar(1, 69500, 69625, 69450)])
+        st, _ = engine.fill(st, "A", ARM + MIN, 69620)
+        st, _ = engine.force_exit(st, ARM + 2 * MIN, 69370, "stop")
+        self.assertEqual(st["trades"][0]["mode"], "testnet")
+        with self.assertRaises(ValueError):
+            engine.new_state(PLAN, mode="mainnet")
+
+    def test_live_state_json_roundtrip_through_entering(self):
+        st = live_state()
+        st, _ = feed(st, [Q, bar(1, 69500, 69625, 69450)])
+        st = json.loads(json.dumps(st))
+        st, ev = engine.fill(st, "A", ARM + MIN, 69620)
+        self.assertEqual(st["position"]["entry"], 69620)
+
+    def test_unknown_plan_keys_ignored(self):
+        p = plan(leverage=50, risk_usd=18, something_new={"x": 1})
+        self.assertEqual(run([Q, bar(1, 69600, 69700, 69300)], p)["trades"][0]["exit_reason"], "stop")
+
+    def test_flat_time_leaves_entering_order_for_the_runner(self):
+        st, _ = self.entered()
+        st, ev = feed(st, [{"t": FLAT, "o": 69700, "h": 69800, "l": 69000, "c": 69700}])
+        self.assertTrue(st["done"])
+        self.assertEqual(st["status"]["A"], "entering")
+        self.assertNotIn(("cancel", "A", "flat_time"), etypes(ev))
 
 
 if __name__ == "__main__":

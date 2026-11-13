@@ -143,5 +143,54 @@ class TestScore(unittest.TestCase):
         self.assertIn("usage", err.getvalue())
 
 
+class TestKlineHelpers(unittest.TestCase):
+    """V2-4: score.py exposes fetch + parse for the runner."""
+
+    def test_parse_klines(self):
+        self.assertEqual(score.parse_klines([kl(ARM, "69000.5", 69100, 68900, 69000.25)]),
+                         [{"t": ARM, "o": 69000.5, "h": 69100.0, "l": 68900.0, "c": 69000.25}])
+
+    def test_fetch_klines_url_and_bars(self):
+        urls = []
+
+        def fetch(url):
+            urls.append(url)
+            return ROWS[:2]
+
+        bars = score.fetch_klines("BTCUSDT", ARM, ARM + 5 * MIN, fetch)
+        self.assertEqual([b["t"] for b in bars], [ARM, ARM + MIN])
+        self.assertEqual(urls, ["https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m"
+                                "&startTime=%d&endTime=%d&limit=1000" % (ARM, ARM + 5 * MIN)])
+
+    def test_fetch_klines_fallback_and_failure(self):
+        seen = []
+
+        def fetch(url):
+            seen.append(url)
+            if "vision" in url:
+                raise OSError("down")
+            return ROWS[:1]
+
+        self.assertEqual(len(score.fetch_klines("BTCUSDT", ARM, ARM + MIN, fetch)), 1)
+        self.assertEqual(len(seen), 2)
+        with self.assertRaises(RuntimeError):
+            score.fetch_klines("BTCUSDT", ARM, ARM + MIN, lambda u: [])
+
+    def test_closed_bars_drops_the_open_minute(self):
+        bars = score.parse_klines(ROWS[:3])  # t = ARM, ARM+1m, ARM+2m
+        self.assertEqual([b["t"] for b in score.closed_bars(bars, ARM + 2 * MIN)], [ARM, ARM + MIN])
+        self.assertEqual(len(score.closed_bars(bars, ARM + 2 * MIN + 59999)), 2)  # bar 3 still open 1 ms before its end
+        self.assertEqual(len(score.closed_bars(bars, ARM + 3 * MIN)), 3)
+
+    def test_trade_rows_carry_mode(self):
+        with tempfile.TemporaryDirectory() as d:
+            pp = Path(d) / "plan.json"
+            pp.write_text(json.dumps(PLAN))
+            r, _ = run_score(pp, bars=score.parse_klines(ROWS), out_dir=Path(d) / "o")
+            self.assertEqual(r["trades"][0]["mode"], "replay")  # engine row key (v2)
+            first = json.loads(Path(r["path"]).read_text().splitlines()[0])
+            self.assertEqual(first["mode"], "replay")
+
+
 if __name__ == "__main__":
     unittest.main()
