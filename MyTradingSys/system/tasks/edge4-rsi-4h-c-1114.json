@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13 -q"
+  ],
+  "created": "2026-11-13T18:33:32Z",
+  "depends_on": [
+    "edge4-rsi-4h-b-1114"
+  ],
+  "done_when": "REPORT.md, summary.json, layer_map row (trials null) exist; tests pass",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "4h RSI<=12 + daily RSI<30 (edge4-rsi-4h-le12-daily-lt30-1113 part c): run, placebo, report.",
+  "id": "edge4-rsi-4h-c-1114",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:33:33Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "public data only, no keys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "session-planner split of edge4-rsi-4h-le12-daily-lt30-1113"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run the engine on all 20 perps for 4h/8h/12h, pool; placebo (random-date matched count) control; write REPORT.md, summary.json (n, fee-net expectancy per exit, placebo gap) and layer_map row with trials null; verdict vs PLAN_EDGE_5H pass rule",
+    "Run the named tests, commit in MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/, ship docs/research only"
+  ],
+  "tests": "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_run_1113.py::test_summary_json_schema_and_trials_null and ::test_placebo_same_trade_count, written first and failing before the run script exists",
+  "title": "4h RSI<=12 + daily RSI<30 part c: run, placebo, report",
+  "weight": "",
+  "worker": "agent"
+}

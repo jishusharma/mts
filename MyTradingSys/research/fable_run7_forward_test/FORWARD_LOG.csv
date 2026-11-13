@@ -1,0 +1,2 @@
+week,asof,n,mean_net_r,se,lower90,upper90,dd_r,streak,fail,parity,missed,non_replay,contaminated,skipped_busy,skipped_floor,skipped_brake,same_bar_both,entered_unrecorded,mean_slip_bp,phase
+2026-11-09,2026-11-13,0,n/a,n/a,n/a,n/a,0.00,0,none,unknown,0,0,0,0,0,0,0,0,n/a,"post-bottom recovery (cycle low 2026-07-01 57,800; BIBLE.md s3/s5, FORWARD_PREREG context)"

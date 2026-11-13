@@ -1,0 +1,65 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T18:33:46Z",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_run_1113.py -q"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T18:33:45Z",
+    "misses": 17,
+    "reads": [
+      "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md",
+      "MyTradingSys/system/LOGIN_PLAN_2026-11-13.md"
+    ],
+    "session": "agent-a843660379d02d557"
+  },
+  "created": "2026-11-13T18:18:12Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/PRE_REG.md (with ## Context and Regime mix:), REPORT.md and summary.json exist, tests pass, fee-net and placebo results stated for 4h/8h/12h across 1R/2R/3R/time, layer_map row added with trials null",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fee-net, placebo-controlled test of 4h RSI(14)<=12 with daily RSI<30, next 4h candle closing higher (entry), stop at signal-candle low, exits 1R/2R/3R/time, pooled over 20 perps since 2020; repeat for 8h and 12h RSI extremes; verdict plus layer_map row with trials null.",
+  "id": "edge4-rsi-4h-le12-daily-lt30-1113",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "split into size-S cards a/b/c-1114 (agent-runnable)",
+  "pinned": false,
+  "prio": 1,
+  "reason": "split into size-S cards a/b/c-1114 (agent-runnable)",
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:26:58Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/",
+    "MyTradingSys/backtest/layer_map*"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "no mainnet, no keys; public Bybit / data-api.binance.vision klines only"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C, operator order 2026-11-13 18:15Z"
+  ],
+  "state": "dropped",
+  "steps": [
+    "Copy PRE_REG_TEMPLATE.md to MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/PRE_REG.md; fill it with a '## Context' section (BTC seen: 4 of 5 episodes reached 2-3R, too few, so pool coins) and a 'Regime mix:' line; label every parameter SOURCED or OURS; freeze before running",
+    "Write fetch_klines.py after the adx_1d_through25_2026-11-13 pattern: 20 perps since 2020, 4h/8h/12h plus 1d from public Bybit or data-api.binance.vision",
+    "Write run_1113.py: RSI(14), signal = RSI<=12 and daily RSI<30, entry at close of next candle if it closes higher, stop = signal candle low, exits 1R/2R/3R/time, fees+slippage, placebo (shifted/random-date) control; for 4h, 8h, 12h",
+    "Run, write REPORT.md and summary.json with pooled n, fee-net expectancy per exit, placebo comparison; add layer_map row with trials null; ship docs/research only"
+  ],
+  "tests": "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_run_1113.py: test_signal_requires_daily_rsi_lt30 and test_stop_is_signal_candle_low, written first and failing on the stub, formula values per FORMULAS.md computed independently",
+  "title": "Wave 2: 4h RSI <=12 with daily RSI <30 and next candle closing higher, stop = low of signal candle, exits 1R/2R/3R/time; 20 perps since 2020; also 8h and 12h RSI extremes; fee-net, placebo, PRE_REG Context + Regime mix; layer_map row trials null",
+  "weight": "",
+  "worker": "session"
+}
