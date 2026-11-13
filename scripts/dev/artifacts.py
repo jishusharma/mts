@@ -83,13 +83,17 @@ def put_banner(text, reg, slug, strict=True):
     return text  # a test fragment with no page wrapper
 
 
+def stamp_text(when):
+    """'2026-11-13 12:06 UTC · 17:36 IST' for one instant: the single clock behind every page stamp and every Home tile (IST has no DST)."""
+    utc = when.astimezone(timezone.utc)
+    ist = utc + timedelta(hours=5, minutes=30)
+    return f'{utc.strftime("%Y-%m-%d %H:%M")} UTC · {ist.strftime("%H:%M")} IST{"" if ist.date() == utc.date() else " " + ist.strftime("%d %b")}'
+
+
 def stamp_block(now=None):
     """The 'Updated <UTC> · <IST>' line every generated page shows first (operator 2026-11-07 pages follow builds; 2026-11-13 both zones, one clock)."""
-    now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    ist = now + timedelta(hours=5, minutes=30)           # IST has no DST: a fixed +05:30 from the same instant
     style = "margin:0;padding:6px 14px;font:600 .8rem/1.4 ui-monospace,Consolas,monospace;color:var(--muted,#666)"
-    return (f'{STAMP_START}{chr(10)}<p class="mts-updated" style="{style}">Updated {now.strftime("%Y-%m-%d %H:%M")} UTC'
-            f' · {ist.strftime("%H:%M")} IST{"" if ist.date() == now.date() else " " + ist.strftime("%d %b")}</p>{STAMP_END}')
+    return f'{STAMP_START}{chr(10)}<p class="mts-updated" style="{style}">Updated {stamp_text(now or datetime.now(timezone.utc))}</p>{STAMP_END}'
 
 
 def put_stamp(text, now=None):

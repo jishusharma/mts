@@ -1,0 +1,43 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 9,
+    "folded": "2026-11-13T13:01:36Z",
+    "misses": 7,
+    "reads": [
+      "scripts/dev/test_artifacts.py"
+    ],
+    "session": "299472a4-8ff5-48f1-a8f0-f7f746899e61"
+  },
+  "created": "2026-11-13T13:01:11Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "mts-pages-cleanup-1113",
+  "lane": "",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "MTS pages cleanup 1113 follow-ups",
+  "weight": "",
+  "worker": ""
+}
