@@ -1,9 +1,26 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T21:21:35Z",
   "commands": [
     "python -m pytest MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13 -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T21:18:43Z",
+    "misses": 64,
+    "reads": [
+      "scripts/dev/lookahead_allowlist.tsv",
+      "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/PRE_REG.md",
+      "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md",
+      "MyTradingSys/system/layer_map.json",
+      "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/fetch_klines.py",
+      "MyTradingSys/backtest/fees.py",
+      "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_fetch_klines.py",
+      "MyTradingSys/system/OPERATOR_DECISIONS.md"
+    ],
+    "session": "agent-af5cb131e22ecbc56"
+  },
   "created": "2026-11-13T18:33:36Z",
   "depends_on": [
     "edge4-malkan-a-1114"
@@ -17,17 +34,30 @@
   "id": "edge4-malkan-b-1114",
   "kind": "build",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "engine run_1113.py shipped, 6 tests pass, hand-computed R",
+      "ref": "94d3cf36c",
+      "utc": "2026-11-13T21:21:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "edge4-malkan-c-1114",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T18:33:37Z",
   "refs": [],
-  "result": "",
+  "result": "engine run_1113.py shipped, 6 tests pass, hand-computed R",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/"
   ],
@@ -40,11 +70,12 @@
   "sources": [
     "session-planner split of edge4-malkan-divergence-r03-r04-1113"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Write run_1113.py engine only: RSI(14) on closes, regular divergence (R03 bearish: price higher high, RSI lower high; R04 bullish: price lower low, RSI higher low) across 12 or 18 bars using closes only, confirm candle, stop = signal candle extreme, target = point C; fees+slippage; hand-computed expected values",
     "Run the named tests, commit in MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/, ship docs/research only"
   ],
+  "taken": "2026-11-13T21:21:35Z",
   "tests": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_run_1113.py::test_r03_detects_on_closes_only_not_wicks and ::test_r04_stop_below_signal_low_target_point_c, written first and failing on the stub",
   "title": "Malkan MAL-R03/R04 part b: divergence detector and trade engine",
   "weight": "",

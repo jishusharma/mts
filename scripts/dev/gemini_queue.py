@@ -1,7 +1,7 @@
 """Queue task cards onto Gemini through the Antigravity CLI (`agy`), one throwaway worktree per card.
 
   python scripts/dev/gemini_queue.py run <card-id>[:<effort>][:<model>] ...  run the jobs one after another
-    effort in low|medium|high (default low); model in flash|argon|opus|sonnet|gpt (default flash; gpt = gpt-oss-120b-medium, effort ignored);
+    effort in low|medium|high (default low); model in flash|argon|hydrogen|opus|sonnet|gpt (default flash; gpt = gpt-oss-120b-medium, effort ignored);
     tokens may appear in either order
   python scripts/dev/gemini_queue.py status                                state per job (DONE, FAILED, RUNNING, STALE, SKIPPED) and last log line
   python scripts/dev/gemini_queue.py review-list                           branches waiting for a Claude review (REVIEW mode)
@@ -201,8 +201,8 @@ def add_worktree(card: str, wt: Path, tries: int = 3, sleep=time.sleep):
         return subprocess.CompletedProcess([], 124, '', str(e))
 
 
-MODELS = ('flash', 'argon', 'opus', 'sonnet', 'gpt')
-MODEL_PREFIX = {'flash': 'gemini-3.8-flash', 'argon': 'gemini-4-argon', 'opus': 'claude-opus-5-5', 'sonnet': 'claude-sonnet-5-5'}
+MODELS = ('flash', 'argon', 'hydrogen', 'opus', 'sonnet', 'gpt')
+MODEL_PREFIX = {'flash': 'gemini-3.8-flash', 'argon': 'gemini-4-argon', 'hydrogen': 'gemini-4-hydrogen', 'opus': 'claude-opus-5-5', 'sonnet': 'claude-sonnet-5-5'}
 GPT_ID = 'gpt-oss-120b-medium'   # no effort variants
 
 
