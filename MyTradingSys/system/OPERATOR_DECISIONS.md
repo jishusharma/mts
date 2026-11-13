@@ -2495,3 +2495,7 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator order (~16:00Z, login C desktop): both Gemini accounts expire in about 24 h. Use 100% of their 5-hour limits now for the edge push: any work (YouTube, reviews, refinement, edge cases, edge tests). Owner: gemini-yt session. Cards tagged [GEMINI]. The operator starts the laptop Gemini by hand.
 - Nitish Kumar (NK StockTalk) ideas, RSI use first, are to be understood and applied to crypto. Study edge-nk-rsi-hilega-1113 started; the remaining 55 catalog videos go to Gemini.
 - For this window Sonnet and Haiku workers run in bulk ("ultra mode") and work locally. The supervisor verifies the numbers and ships what needs shipping.
+
+## 2026-11-13 ~17:10Z: a rule book for every indicator (voice, JIS-NB)
+- Operator order (sense, verbatim in spirit): "we have so many indicators ... we need to know from the basics of these indicators and the developers like Lazy Bear, and what the internet says, what MTS says, what research we do, so there is a rule book for every indicator on how to read it and when it should be applied, like confluence, a confidence builder or a position builder. Every layer needs to be doing this, not just ADX and DI. Every indicator needs this feature."
+- Mechanism: `MyTradingSys/research/indicator_rulebooks/` (TEMPLATE.md, INDEX.md, one file per indicator); Gemini cards `gemini-rulebook-<name>-1113` fill sections 2-4, 6-8; a Sonnet pass fills section 5. Model: `research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md`. Labels SOURCED vs OURS as in that doc.
