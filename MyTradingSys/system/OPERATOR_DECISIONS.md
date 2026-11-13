@@ -4,6 +4,16 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-live-aid-forced-moves-chart | decided 2026-11-13 | Builder live-aid-forced-move-chart-1113
+```json
+{"id": "d-live-aid-forced-moves-chart", "order": 50, "date": "2026-11-13", "status": "DECIDED", "question": "Should Live Aid show forced buying and exits (large trades, OI, CVD) as a graph and be runnable by a Haiku or Sonnet reader?", "answer": "2026-11-13 ~16:45Z: Live Aid must show forced buying/exits (large trades, OI, CVD) as a colour-coded graph, and be runnable by a Haiku/Sonnet reader from a state file; built as R25 (flow_chart.js, flow_collector.py, FLOW_READER.md).", "done": "R25 built: panel Forced moves (flow_chart.js), flow_collector.py (--once writes flow_state.json and flow_digest.txt), FLOW_READER.md checklist."}
+```
+
+## d-feed-watcher-footprint-capture | decided 2026-11-13 | Builder live-aid-forced-move-chart-1113
+```json
+{"id": "d-feed-watcher-footprint-capture", "order": 51, "date": "2026-11-13", "status": "DECIDED", "question": "Visible Haiku feed-watcher and 15 min / 1 min footprint plus large-trade capture in Live Aid?", "answer": "2026-11-13 ~16:50Z: operator wants a visible Haiku feed-watcher session giving the Supervisor a market read every 15 min (every minute at special times), and the 15-min / 1-min footprint + large-trade capture wired into Live Aid. Started session feed-watcher (Haiku) on record_now.py readings; CoinGlass screenshots are NOT captured because Chrome tools are off, the collector's Bybit trade stream replaces them.", "done": "Footprint 15m / 1h from the Bybit trade stream written by flow_collector.py (feed js and FP lines in flow_digest.txt); page tag uo-fp-tf labelled Bybit perp, collector, stale label added."}
+```
+
 ## d-pages-follow-data | decided 2026-11-13 | Supervisor C (relayed from the operator)
 ```json
 {"id": "d-pages-follow-data", "order": 48, "date": "2026-11-13", "status": "DECIDED",
@@ -2467,11 +2477,19 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator (voice, ~13:20Z): "the chart occupies all the space", "WaveTrend has gone completely", "I do not want to see the volume here just like this, I cannot see the wicks", wants Krown's MA/EMAs on the chart, analyst short names on levels with a note, a news section that shows only what matters with a little detail, and plain-English meaning for the bias line, the 5-of-6 count, the level states and forced selling/buying.
 - Done on Home: volume has its own strip under the candles plus one line (how big vs the 20-bar average, who took more, VFI money flow 15m/1h/4h); 21 EMA, 55 EMA and 200 SMA drawn on the 5m candles (SOURCED KR-M01); the weekly bull-market band (20W SMA + 21W EMA, SOURCED MA_CONCEPTS.md, not attributed to Cowen: the repo has no Cowen quote for it) joins the levels; WaveTrend strips OPEN by default (this reverses the 11-13 "collapsed by default" default; his own click on [hide strips] still closes them and is remembered); analyst name on the level ("Krown call") and a held/broken/reclaimed note in the level card; news card shows the one headline that clears the importance bar with kind, lean, age and source, else one quiet line.
 - Forced selling and buying: the old "fuel is spent: a long idea" wording is removed because nothing measures it. The card now says what happened and "NOT MEASURED yet" for continue-or-reverse, until liquidation history is recorded (card live-aid-liq-history-log-1113; study skeleton in research/live_aid_liq_meaning_2026-11-13).
+- Operator (voice + screenshot, ~15:30Z): "because of this red triangle the chart is not clearly visible", "where is the explanation for this", how to use WaveTrend next to a 5m chart, "the hint is the divergence". Done: flag markers moved to a rail on the bottom edge (one per 5m bar), a Key line under the caption, a WaveTrend how-to line, a divergence line (5m / 15m / 1h, price vs WaveTrend and RSI, OURS) and those divergences wired into the LONG / SHORT board. Bollinger touch + divergence as one reading is not built: it needs measuring first (card live-aid-bb-touch-divergence-1113).
 
 ## 2026-11-13 MTS pages cleanup: retire four pages and the MTS Home extras
 - Operator ("Yes, retire them", relayed by the concept-decks session): retire Concept deck Tom & Fabio, Concept deck Malkan RSI, Live feed one page (mock), Tom and Fabio Setup Review and the 13 old copies in Home's fold. Home is now only the page list: Waiting, Road, session recipes, super-session prompt and link-fix help were removed (stale or duplicated by chat decisions, ROLES.md, SUPER_SESSION.md).
 - Applied: registry rows moved to `_retired`, Home tiles, mock page and generator removed. A session cannot delete artifacts: the operator deletes the 4 pages by hand (links in `_retired`), the 13 old copies on the jishu.sharma and jishu.awgp logins by hand.
 - Also decided (OURS, from his stamp complaint): a page stamp shows when the page's DATA was built, never when it was republished (`artifacts.py stamp --at`).
+
+## 2026-11-13 Keep only the 5 pinned pages: retire the other 7
+- Operator (relayed by the concept-decks session): keepers are MTS Home, CBP Analyst Desk, Test Simulator, Buy Crypto and Conceptualizer. Retire MTS Research Map, MTS Layers, Tom and Fabio: what they taught, Dark Horse Desk, Alt Plan Note 3, BTC daily session playbook and MTS edge: where, when, size.
+- Applied: the three registry pages (research_map, mts_layer_map, tom_fabio_deck) are `status: retire`, unpinned, off MTS Home and out of build and stale checks; the four never-registered pages are listed in `_retired.unregistered_old_pages`. A session cannot delete artifacts: the operator deletes all 7 by hand from the artifact menu (links in registry.json).
+- Not done (OURS, not cheap): MTS Layers' per-layer stuck/next lines were not folded into Conceptualizer; its data stays in LAYERS.md and the generator `make_layers_board.py` is kept unused. Conceptualizer covers concepts per trader, Layers covered cards per layer: different data.
+- Simplify pass on the keepers: MTS Home, Test Simulator, Buy Crypto, Conceptualizer: good enough, no change. CBP Analyst Desk: "What changed" repeats the Trail change log and the Alts tab repeats the retired Dark Horse list, but its generator lives outside the repo (F:/CryptoScrapper), so no repo-side fix; left for the CBP lane.
+
 
 
 ## 2026-11-13 ~14:08Z: two delivery modes for Gemini workers (SOLO, REVIEW)
@@ -2495,3 +2513,67 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator order (~16:00Z, login C desktop): both Gemini accounts expire in about 24 h. Use 100% of their 5-hour limits now for the edge push: any work (YouTube, reviews, refinement, edge cases, edge tests). Owner: gemini-yt session. Cards tagged [GEMINI]. The operator starts the laptop Gemini by hand.
 - Nitish Kumar (NK StockTalk) ideas, RSI use first, are to be understood and applied to crypto. Study edge-nk-rsi-hilega-1113 started; the remaining 55 catalog videos go to Gemini.
 - For this window Sonnet and Haiku workers run in bulk ("ultra mode") and work locally. The supervisor verifies the numbers and ships what needs shipping.
+
+## 2026-11-13 ~16:55Z: ADX/DI reads on Live Aid (R26); Chrome profile named
+- 2026-11-13 ~16:55Z: operator wants the ADX/DI reads (1w, 5d, 3d, 2d and lower frames) visible on Live Aid with how to use each frame; built as R26. He also named the Chrome profile sessions may use: the purple 'j' profile signed in as his 1985 Gmail (CoinGlass Pro, always open); never ask again; the other two profiles stay untouched.
+
+## 2026-11-13 ~17:10Z: finished worktrees removed at once; spawned sessions must not sit waiting
+- Operator: "remove all the work trees ... why were they not removed immediately ... how will we achieve automation if these things are missed regularly".
+- Cause found (JIS-NB, 87 trees / 24 GB): the cleaners were time-boxed (15-20 s) and silent, each tree costs about 1.7 s under load so only the same first ~10 were ever checked; the after-ship cleaner skipped gateway-marked trees; 9 stale `index.lock` files went undetected and blocked ships and commits.
+- Fixed in sync.py (slug tidy-wiring-fix-1113): the tree released by `ship --release` is removed in that ship (pending list if Windows blocks it), time-boxed scans are oldest-first, resumable and print `tidy: stopped at budget, N tree(s) not checked`, stale `index.lock` (over 10 min, no git process) is removed at start/ship, `where` prints one tree-count line. Supervisor deleted 9 stale index.lock files (no git process alive) on his "clean up" order.
+
+## 2026-11-13 ~17:10Z: a rule book for every indicator (voice, JIS-NB)
+- Operator order (sense, verbatim in spirit): "we have so many indicators ... we need to know from the basics of these indicators and the developers like Lazy Bear, and what the internet says, what MTS says, what research we do, so there is a rule book for every indicator on how to read it and when it should be applied, like confluence, a confidence builder or a position builder. Every layer needs to be doing this, not just ADX and DI. Every indicator needs this feature."
+- Mechanism: `MyTradingSys/research/indicator_rulebooks/` (TEMPLATE.md, INDEX.md, one file per indicator); Gemini cards `gemini-rulebook-<name>-1113` fill sections 2-4, 6-8; a Sonnet pass fills section 5. Model: `research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md`. Labels SOURCED vs OURS as in that doc.
+
+## 2026-11-13 ~18:15Z: load logins A and B and both Gemini accounts (voice, JIS-NB)
+- Operator order (sense): logins A and B are hardly doing anything; put them to use in line with the 5-hour plan; do not get off track; keep watching threads, CPU, cleanups and the Haiku feed watcher; engage every model and give them loads of tasks so the quota is used before it expires tomorrow.
+- Mechanism: `MyTradingSys/system/LOGIN_PLAN_2026-11-13.md` (ordered queue per login and per Gemini account, read at station boot per WORKERS.md rule 10) plus a HIGH broadcast to the laptop; two wave-2 cards filed (edge4-rsi-4h-le12-daily-lt30-1113, edge4-malkan-divergence-r03-r04-1113). Login B needs one operator-started session on the NUC (start line in the plan).
+
+## 2026-11-13 ~18:38Z: login C spends past the 5-hour pacing until weekly 85%; edge in 3 hours (voice, JIS-NB)
+- Operator order (sense): do not worry about the session (5-hour) limits; until the weekly reading is 85% use the session limits fully and save work. All he needs is an edge, found in the next 3 hours, from what was discussed. Forget the laptop as the main engine (assign it what you like).
+- Applied: 5 Sonnet edge studies started on the desktop at 18:40Z (4h/8h/12h RSI extremes with daily band; Malkan divergence R03/R04; the RSI-confirm rule with one layer at a time; where to sell; NY-session value return). Workers do not ship; the Supervisor ships after the pre-ship checks. `supervisor.py plan` still prints CRUCIAL-ONLY from its pacing rule: his order outranks it until week 85%.
+
+## 2026-11-13 ~18:42Z: shipping must stop blocking work (voice, JIS-NB)
+- Operator (sense): why are we still stuck on red CI; has shipping time improved; find a solution or remove the blockage; we need to work freely.
+- Measured: local ship 9 s to 2.4 min (was 17-27 min); CI median 4 min; but 35 of 57 trunk runs red in 4 h, from 4 breaks, each a check CI runs and the local ship gate did not (PRE_REG context lint, wiring registry row, own-cost test, shared-list consistency).
+- Mechanism: card ship-gate-misses-prereg-lint-and-cost-test-1113 (Builder ship-gate-ci-parity-1113, started 18:45Z): the ship gate runs those checks on the merged tree before the push. No gate removed. Next if red persists: the ship train (cards ship-train-*), which lands only green batches.
+
+## 2026-11-13 ~19:05Z: Live Aid becomes one home screen (four screenshots, JIS-NB)
+- Operator (sense): Money has too many NOT_IN_DATA cells and no "last updated"; News is unreadable, misaligned and not actionable (say what to buy or sell on a news item, keep a story while it builds, drop it when it fades, show what just passed and its impact, and the important events ahead for the day, week and month); US open looked stale; the map and All readings are not used; the coil belongs on the main page; Home is too stretched and wordy and does not look like a dashboard. "We just need the home screen." Detail only when he asks. The unused In trade column may stay.
+- Mechanism: requirement R27 in `MyTradingSys/tools/live_aid/REQUIREMENTS.md`, Builder slug live-aid-one-screen-1114 (one dense screen, an as-of stamp on every panel, coil on Home, news as buy/sell/building/fading rows plus an events-ahead strip). Other tabs are folded in or removed, not deleted from history.
+
+## 2026-11-13 ~19:35Z: "Zing" real-time setups with 60-100% win rates; what are we not doing right (JIS-NB)
+- Operator (sense): check what Zing does with real-time trade setups at 60% to 100% win rates; what are we not doing right.
+- Answer given: no service of that name was found (he has not given a link or exact name yet). A win rate alone says nothing about profit: a high win rate with small wins and rare large losses loses money, so every MTS test reports profit per trade after fees, not win rate. Today's 11 fee-net tests found no rule that passes; the RSI-extreme signal beats random entries but its profit sits in about five market-wide crash days.
+- Open: link or exact name from him; then a like-for-like check of its published setups (entry, stop, target, fees, sample size).
+
+## 2026-11-13 ~20:05Z: weekly cap 95% for login C; next 5 hours = long edges after the 6-week decline; Zing named (voice, JIS-NB)
+- Operator (sense): weekly limit for login C is now 95% (was 85%); use it in full flow over the next 5 hours to find an edge. BTC has been down six or seven weeks in a row, so a reaction up is due: find where to buy from previous reactions (fractals, bull/bear phase context, bear traps, retests). Edges wanted for long trades: scalping, day trading, swing.
+- Zing = CoinSwitch Pro's "Zing" signals: 41 active signals with shown win rates of 56% to 86% (BARD, ONDO, US stocks such as QQQ; strategies named ICT alpha, scalper pro, trend follower, quick strike, Momentum Great Again, traffic light, Super Cycle AI and others). He asks how they find so many trades with such win rates, and what MTS is doing.
+- Checked: Bybit BTCUSDT weekly shows 6 red weeks in a row (open 86,486 on 2026-10-05 to 69,015; this week's low 67,468).
+- Applied 20:08Z: 4 Sonnet studies on the desktop: weekly red-streak bounce (swing), bear-trap reclaim long in a downtrend (day trade), win rate versus profit per trade on long scalps (answers the Zing question on our data), and a descriptive map of past BTC bear-phase reactions and today's levels. A 13-study ship worker saves today's results. Memory updated: cap 95% this week.
+- Open: Zing's own closed-trade history (entry, stop, target, result, fees) is needed to judge its win rates; a win rate alone says nothing about profit.
+
+## 2026-11-13 ~21:20Z: YouTube fetcher bans are not allowed to block work; find the route (operator)
+- His words: "you can't be sitting behind youtube fetcher bans, find way. We already discussed it like proxy/vpn etc".
+- Already decided earlier (see d-yt-warp-proxy 2026-11-02, the 2026-11-12 06:05Z "never blocked" entry, YT_PROXY.md): free WARP proxy (its exit address is locked by our own guard until 2026-11-16T03:02Z), OpenVPN (profile password lost), then path 4 = public transcript site. Paid proxy/VPN and new network software (Tor, VPN clients) stay a money/install decision for him and were not started.
+- DONE (OURS) 2026-11-13: path 4 (`yt_transcript_sites.py`, Invidious instance, no request from our address) fetched the 55 uncaptioned NK StockTalk videos (Hindi tracks, `--langs hi`) while the desktop (to 2026-11-16T03:02Z) and NUC (to 2026-11-16T14:21Z) locks stand; no YouTube request was made, so the locks did not grow. Files in F:\MTS\data_cache\youtube\nk\ (not in the repo). Rule in ROUTING.md (caption fetch row).
+- Update ~21:35Z (relayed by the coordinator), his words: "What paid proxy Man! We already had a working solution we built. So use that. Expand and build proxies that you need to. Don't fall back. Nothing is forbidden or illegal and i will respond to any charges." DECIDED: the built chain (YT_PROXY.md) is the route; no paid proxy was ever proposed to be bought. Result: path 4 gave 55 of 55 NK videos plus 8 of 12 NK interview ids (tracks: `hi`; one video only had `en-IN`, so pass `--langs hi,en-IN`). Not done, not needed: Tor and more instances (no capacity gap). Still open: QOawWwI4zUQ, X8W0pWK0GnM, 1bpY43ybo_I, 3hhkEwBfWeo (instance returns 404/500 = no caption track served; next path = audio plus local Whisper, YT_PROXY.md path 5, after the locks end or via an instance audio route).
+
+## 2026-11-13 ~20:15Z: context first for every test and edge search (operator, voice)
+- Operator (paraphrased): context before any test or edge search. Downtrend: shorts at seller levels or lower lows. Uptrend: longs. Range: range trades. Test only trade types that match the phase. Extract and test the Nitish Kumar videos. Try confluence combinations.
+- Mechanism: PRE_REG `## Context` and `Regime mix:` gate (step 3pc); NK videos go to the Gemini lane (gemini-yt).
+
+## 2026-11-13 ~20:25Z: billing question (operator, open, his click)
+- Facts: plan auto-renews 14 Nov; Full reset expires 11 Dec; Fable reset 9 Mar 2027.
+- Proposal: he presses Full reset himself near 95% weekly. Open, his click. Nothing was bought or changed.
+
+## 2026-11-13 ~20:30Z: C: drive filled, permanent fix (operator)
+- Facts: C: fell from 19 to 10.5 GB free (worktrees and data cache were on C:).
+- Operator order (paraphrased): permanent fix in its own session (worktrees and data cache moved to F:). Keep C: above 20 GB. Ultra mode with Haiku and Sonnet workers only. Check every spawned session on each wake. Audit that all his messages are wired to a card, decision or answer.
+- Mechanism: session c-drive-fix (local_2afe75a7-e396-44d6-a2be-55e1fa84a288).
+
+## 2026-11-13 ~20:50Z: where to buy after the 7-week fall (operator, voice)
+- Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
+- Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).

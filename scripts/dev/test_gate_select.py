@@ -29,9 +29,9 @@ class Select(unittest.TestCase):
 
     def test_docs_only_selects_no_steps(self):
         # gate-tiers-by-path: docs/research/pages push with no local gate; CI gates behind (cards: DOC_MUST below)
-        mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/research/x/notes.json")
+        mode, steps = self.sel("MyTradingSys/system/RELAY.md", "MyTradingSys/research/x/notes.md")
         self.assertEqual(mode, "docs")
-        self.assertEqual(steps, [])
+        self.assertEqual(steps, [])   # plain .md; research data (.json) brings the parity steps (ci-parity-1113)
 
     # gate_gap_2026-11-03: docs/data-only ships that ran no local step and went red on trunk, each a revert
     def test_gap_prereg_md_selects_the_prereg_context_lint(self):
@@ -410,7 +410,7 @@ class DataOnlyMustExtras(unittest.TestCase):
         self.assertEqual(gs.must_extras([f], tests), tests[:1])
 
     def test_other_research_data_stays_docs(self):
-        self.assertEqual(self.sel("MyTradingSys/research/other/results/x.json"), ("docs", []))
+        self.assertEqual(self.sel("MyTradingSys/research/other/results/x.json"), ("docs", ["3pc", "3x", "4e"]))   # ci-parity-1113
 
     # ship-gate-misses-test-no-own-costs-for-r: a research .py with FEE = 0.0004 went red at step 4e (test_no_own_costs) only in CI
     def test_research_or_backtest_code_brings_the_cost_shard_4e(self):
@@ -420,8 +420,30 @@ class DataOnlyMustExtras(unittest.TestCase):
             self.assertTrue({"3x", "3cm"} <= set(nums), nums)   # only adds: ALWAYS steps stay
 
     def test_cost_shard_4e_not_added_for_test_files_or_other_code(self):
-        self.assertNotIn("4e", self.sel("MyTradingSys/research/x/test_study.py")[1])
+        self.assertNotIn("4e", self.sel("scripts/dev/test_foo.py")[1])
         self.assertNotIn("4e", self.sel("scripts/dev/foo.py")[1])
+
+
+class CiParity(unittest.TestCase):
+    """ci-parity-1113: the checks CI runs that a ship skipped (3pc, 3x, 4e, test_make_layer_map, extra_tests.tsv rows) always run for these paths."""
+    def test_parity_paths_bring_the_ci_steps_even_in_a_data_ship(self):
+        for f in ("MyTradingSys/research/s/results.json", "MyTradingSys/backtest/layers/x.json", "MyTradingSys/tools/live_aid/a.js",
+                  "scripts/dev/extra_tests.tsv", "MyTradingSys/system/layer_map.json", "MyTradingSys/system/wiring_registry.json"):
+            nums = gs.select([f], STEPS, mentioned=mentioned)[1]
+            for n in gs.PARITY_STEPS:
+                self.assertIn(n, nums, f)
+
+    def test_shared_list_tests_are_must_extras_for_layer_map_and_the_tsv(self):
+        tests = list(gs.PARITY_MUST) + ["scripts/dev/test_other.py"]
+        for f in ("MyTradingSys/system/layer_map.json", "scripts/dev/extra_tests.tsv", "MyTradingSys/backtest/x.py"):
+            self.assertEqual(gs.must_extras([f], tests), list(gs.PARITY_MUST), f)
+        self.assertEqual(gs.must_extras(["MyTradingSys/research/s/NOTES.md"], tests), [])
+
+    def test_a_plain_study_note_stays_cheap(self):
+        self.assertEqual(self.sel_docs("MyTradingSys/research/s/NOTES.md"), ("docs", []))
+
+    def sel_docs(self, f):
+        return gs.select([f], STEPS, mentioned=mentioned)
 
 
 if __name__ == "__main__":
