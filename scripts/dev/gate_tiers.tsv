@@ -28,3 +28,4 @@ slow	scripts/dev/test_refresh_main_checkout_errors.py	slow infra, 27 CI file-s, 
 slow	scripts/dev/test_context_gap.py	slow infra, 54 CI file-s, 0 failures in 14 d
 slow	MyTradingSys/tests/test_aibridge_e2e_bridge.py	slow infra, 49 CI file-s, 0 failures in 14 d
 slow	MyTradingSys/tests/test_generated_files_untracked.py	slow infra, 32 CI file-s, 0 failures in 14 d
+slow	scripts/dev/test_mts_signal_slow.py	28 signal tests of >5 s each split from test_mts_signal.py (gate keeps 45 fast tests, one smoke per signals function); runs once in offgate-tier on Linux CI
