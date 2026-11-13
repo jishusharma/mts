@@ -3,7 +3,7 @@
   python scripts/dev/gemini_queue.py run <card-id>[:<effort>][:<model>] ...  run the jobs one after another
     effort in low|medium|high (default low); model in flash|argon|opus|sonnet|gpt (default flash; gpt = gpt-oss-120b-medium, effort ignored);
     tokens may appear in either order
-  python scripts/dev/gemini_queue.py status                                last log line per job
+  python scripts/dev/gemini_queue.py status                                state per job (DONE, FAILED, RUNNING, STALE, SKIPPED) and last log line
 
 Each job: worktree F:/MTS/gq/<id> on branch gemini-q/<id> cut from origin/fast-track, `agy --print` with the
 chosen Antigravity model, prompt = the card brief plus the lane rules. Gemini commits on its branch only: it never ships,
@@ -245,6 +245,22 @@ def run_job(card: str, effort: str, model: str = 'flash') -> None:
             f.write(f'RELEASE FAILED/TIMEOUT {card}: {r.stderr}\n')
 
 
+STALE_S = 2 * 3600   # a START with no EXIT line older than this is a dead run (crash, reboot, killed process)
+
+
+def job_state(lines: list[str], age_s: float) -> str:
+    """One word per job log: DONE or FAILED once an EXIT line exists (exit code 0 or not); RUNNING while a START has no EXIT
+    and is under 2 h old; STALE past 2 h; SKIPPED or FAILED when the run never started (skip, claim or worktree failure)."""
+    exits = [l for l in lines if l.startswith('EXIT ')]
+    if exits:
+        return 'DONE' if exits[-1].startswith('EXIT 0 ') else 'FAILED'
+    if any(l.startswith('START ') for l in lines):
+        return 'STALE' if age_s > STALE_S else 'RUNNING'
+    if any(l.startswith('SKIP ') for l in lines):
+        return 'SKIPPED'
+    return 'FAILED'
+
+
 def main(argv: list[str]) -> int:
     if not argv or argv[0] not in ('run', 'status'):
         print(__doc__)
@@ -252,7 +268,8 @@ def main(argv: list[str]) -> int:
     if argv[0] == 'status':
         for lg in sorted(root().glob('*.log')):
             lines = lg.read_text(encoding='utf-8', errors='replace').strip().splitlines()
-            print(lg.stem, '|', lines[-1][:120] if lines else '')
+            age = time.time() - lg.stat().st_mtime
+            print(lg.stem, '|', job_state(lines, age), '|', lines[-1][:120] if lines else '')
         return 0
     if not AGY.is_file():   # no local agy (JIS-DESKTOP): the NUC runs it as a one-shot /IT task over the SSH gate (ROUTING.md Gemini access)
         import nuc_lab
