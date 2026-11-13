@@ -2504,6 +2504,9 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Nitish Kumar (NK StockTalk) ideas, RSI use first, are to be understood and applied to crypto. Study edge-nk-rsi-hilega-1113 started; the remaining 55 catalog videos go to Gemini.
 - For this window Sonnet and Haiku workers run in bulk ("ultra mode") and work locally. The supervisor verifies the numbers and ships what needs shipping.
 
+## 2026-11-13 ~16:55Z: ADX/DI reads on Live Aid (R26); Chrome profile named
+- 2026-11-13 ~16:55Z: operator wants the ADX/DI reads (1w, 5d, 3d, 2d and lower frames) visible on Live Aid with how to use each frame; built as R26. He also named the Chrome profile sessions may use: the purple 'j' profile signed in as his 1985 Gmail (CoinGlass Pro, always open); never ask again; the other two profiles stay untouched.
+
 ## 2026-11-13 ~17:10Z: finished worktrees removed at once; spawned sessions must not sit waiting
 - Operator: "remove all the work trees ... why were they not removed immediately ... how will we achieve automation if these things are missed regularly".
 - Cause found (JIS-NB, 87 trees / 24 GB): the cleaners were time-boxed (15-20 s) and silent, each tree costs about 1.7 s under load so only the same first ~10 were ever checked; the after-ship cleaner skipped gateway-marked trees; 9 stale `index.lock` files went undetected and blocked ships and commits.
