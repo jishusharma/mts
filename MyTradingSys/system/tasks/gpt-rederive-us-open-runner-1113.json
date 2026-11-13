@@ -2,11 +2,11 @@
   "approved_by": "",
   "asks": "",
   "commands": [
-    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/us_open_trader_2026-11-13/gpt_rederive_us_open_runner_1113.md"
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/gpt_rederive_us_open_runner_1113.md"
   ],
   "created": "2026-11-13T14:11:40Z",
   "depends_on": [],
-  "done_when": "MyTradingSys/research/us_open_trader_2026-11-13/gpt_rederive_us_open_runner_1113.md has one row per fail-closed path: | spec clause | expected behaviour | runner.py file:line | match OK / MISMATCH / MISSING |, and verify_extract_quotes.py exits 0 on it",
+  "done_when": "MyTradingSys/research/layer_lab/gpt_rederive_us_open_runner_1113.md has one row per fail-closed path: | spec clause | expected behaviour | runner.py file:line | match OK / MISMATCH / MISSING |, and verify_extract_quotes.py exits 0 on it",
   "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
@@ -15,6 +15,22 @@
   "id": "gpt-rederive-us-open-runner-1113",
   "kind": "audit",
   "lane": "CODEX",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "us_open_trader re-land: module + safety fixes, with wiring fixes (CI red e4b85e12 was the ",
+      "ref": "c122e6f4400a",
+      "utc": "2026-11-13T15:04:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "61c8f76e6456 us_open_trader: design v2 (Opus design check, 10 findings accepted) + plan co",
+      "ref": "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md",
+      "utc": "2026-11-13T13:52:37Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,6 +38,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T17:39:43Z",
   "refs": [
     "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md"
   ],
@@ -33,17 +50,18 @@
   "scope_out": [
     "no edit to any source file; no live-tree change; no .secrets or .env read"
   ],
+  "scope_sha": "c122e6f4400a",
   "size": "S",
   "sources": [
     "MyTradingSys/system/ANNOUNCEMENTS.md A-20261104-1"
   ],
-  "state": "raw",
+  "state": "ready",
   "steps": [
     "Read DESIGN.md and list fail-closed paths from the spec only",
     "Then read runner.py and match each path to a line",
     "Write the findings file"
   ],
-  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/us_open_trader_2026-11-13/gpt_rederive_us_open_runner_1113.md",
+  "tests": "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/layer_lab/gpt_rederive_us_open_runner_1113.md",
   "title": "gpt rederive: us_open_trader runner fail-closed paths from DESIGN.md",
   "weight": "ROUTINE",
   "worker": "agent"

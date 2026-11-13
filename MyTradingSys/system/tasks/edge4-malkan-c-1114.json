@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13 -q"
+  ],
+  "created": "2026-11-13T18:33:38Z",
+  "depends_on": [
+    "edge4-malkan-b-1114"
+  ],
+  "done_when": "REPORT.md, summary.json, layer_map row (trials null) exist; tests pass",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Malkan MAL-R03/R04 (edge4-malkan-divergence-r03-r04-1113 part c): run, placebo, report.",
+  "id": "edge4-malkan-c-1114",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:33:39Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "public data only, no keys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "session-planner split of edge4-malkan-divergence-r03-r04-1113"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run both rules x 1h/4h x 12/18 bars on 20 perps, pool; placebo control; write REPORT.md, summary.json and layer_map row with trials null; verdict vs PLAN_EDGE_5H pass rule",
+    "Run the named tests, commit in MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/, ship docs/research only"
+  ],
+  "tests": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_run_1113.py::test_summary_json_schema_and_trials_null and ::test_placebo_same_trade_count, written first and failing before the run script exists",
+  "title": "Malkan MAL-R03/R04 part c: run, placebo, report",
+  "weight": "",
+  "worker": "agent"
+}

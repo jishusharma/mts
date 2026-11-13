@@ -263,8 +263,29 @@ MUST_EXTRAS = {
 }
 
 
+# ci-parity-1113: trunk CI was red on 35 of 57 runs in 4 h; every red run was a check CI runs that the ship gate skipped for that change
+# (3pc PRE_REG context, 3x wiring row, 4e own cost constant, test_make_layer_map trials, a dead extra_tests.tsv row). These paths ALWAYS bring
+# those checks, in a docs/data ship too; a new .py always gets 3x (ALWAYS). Run on the merged tree.
+PARITY_RE = re.compile(r"^(MyTradingSys/(research|backtest|tools)/|scripts/dev/extra_tests\.tsv$|" + re.escape(WIRING_REGISTRY) + r"$|"
+                       r".*layer_map[^/]*$)")
+PARITY_STEPS = ("3pc", "3x", "4e")      # 3w re-runs 3x (see ALWAYS note), so it is left out: 76 s local
+PARITY_MUST = ("scripts/dev/test_make_layer_map.py", "scripts/dev/test_shared_lists.py")   # trials shape; every extra_tests.tsv row names a file
+# plain .md is exempt (a study note cannot break these; 3pc already covers PRE_REG/RESULT .md via DOC_MUST); layer_map.json and the tsv are
+# data, not docs: they bring the shared-list tests as must-pass 3xm in any ship.
+
+
+def parity_relevant(f):
+    f = f.replace("\\", "/")
+    return (bool(PARITY_RE.match(f)) and not f.endswith(".md"))
+
+
+def parity_must_relevant(f):
+    f = f.replace("\\", "/")
+    return bool(PARITY_RE.match(f)) and not f.endswith(".md") and (not _is_doc(f) or "layer_map" in f or f.endswith("extra_tests.tsv"))
+
+
 def _must_triggered(files):
-    return any(rx.match(f) for rx in MUST_EXTRAS.values() for f in files)
+    return any(rx.match(f) for rx in MUST_EXTRAS.values() for f in files) or any(parity_must_relevant(f) for f in files)
 
 
 def must_extras(files, tests):
@@ -272,6 +293,8 @@ def must_extras(files, tests):
     whatever the time budget, and a timeout fails the ship (run_all_tests.NO_DEFER_CMDS)."""
     files = [f.replace("\\", "/") for f in files if f]
     picked = {t for t, rx in MUST_EXTRAS.items() if any(rx.match(f) for f in files)} | set(files)
+    if any(parity_must_relevant(f) for f in files):
+        picked |= set(PARITY_MUST)
     return [t for t in tests if t in picked]
 
 
@@ -321,12 +344,16 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
         # GATE_SPEED review: the wiring registry is data under system/, but 3x/3w are its only readers (a bad entry would go red only in CI)
         reg = {"3x", "3w"} if any(f == WIRING_REGISTRY for f in files) else set()
         must = set(doc_must(files, all_nums))
+        if any(parity_relevant(f) for f in files):
+            must |= {n for n in PARITY_STEPS if n in all_nums}
         nums = [n for n in all_nums if n in DOC_STEPS or n in reg or n in must]
         return "docs", nums, f"docs: {len(files)} doc/data file(s) only; no local gate" + (f" except {','.join(nums)}" if nums else "")
     picked = {n for n in ALWAYS if n in all_nums} | subset_steps
     if DEPS_STEP in all_nums and any(deps_relevant(f) for f in files):
         picked.add(DEPS_STEP)
     picked.update(doc_must(files, all_nums))
+    if any(parity_relevant(f) for f in files):
+        picked.update(n for n in PARITY_STEPS if n in all_nums)
     always = [n for n in all_nums if n in ALWAYS]
     if len(code) < len(files):                    # docs ride along: their invariants too
         picked |= {n for n in DOC_STEPS if n in all_nums}

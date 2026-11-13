@@ -1,0 +1,50 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13 -q"
+  ],
+  "created": "2026-11-13T18:33:29Z",
+  "depends_on": [],
+  "done_when": "PRE_REG.md has ## Context and Regime mix:, klines for 20 perps present, fetch tests pass",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "4h RSI<=12 + daily RSI<30 (edge4-rsi-4h-le12-daily-lt30-1113 part a): PRE_REG and kline data.",
+  "id": "edge4-rsi-4h-a-1114",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:33:30Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "public data only, no keys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "session-planner split of edge4-rsi-4h-le12-daily-lt30-1113"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write PRE_REG.md (## Context incl. BTC 4 of 5 episodes reached 2-3R so pool coins; Regime mix: line; SOURCED/OURS labels; rule: 4h/8h/12h RSI(14)<=12, daily RSI<30, next candle closes higher, stop = signal low, exits 1R/2R/3R/time) and fetch_klines.py for 20 perps since 2020 (4h/8h/12h/1d, public Bybit or data-api.binance.vision only), data under the dir",
+    "Run the named tests, commit in MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/, ship docs/research only"
+  ],
+  "tests": "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_fetch_klines.py::test_resample_8h_12h_boundaries_utc and ::test_no_gap_or_duplicate_bars, written first and failing on the stub",
+  "title": "4h RSI<=12 + daily RSI<30 part a: PRE_REG and kline data",
+  "weight": "",
+  "worker": "agent"
+}

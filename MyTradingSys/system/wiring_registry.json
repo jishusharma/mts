@@ -1097,6 +1097,16 @@
    "disp": "WIRE",
    "ref": "t06-paper-forward-build-1110",
    "why": "T06 paper forward adapter; built, not yet wired into live_runner_cli.py (make_layer stub); a separate builder card wires it, the operator deploys."
+  },
+  "MyTradingSys/tools/live_aid/adx_now.py": {
+   "disp": "TOOL",
+   "ref": "live-aid-adx-strip-1113",
+   "why": "Live Aid ADX/DI reader: run by hand (python MyTradingSys/tools/live_aid/adx_now.py); prints the 1w-5m ADX/DI table of the Live Aid strip as text and writes the gitignored runtime_data/live_aid/adx_state.json for a Haiku reader; named in tools/live_aid/REQUIREMENTS.md R26. No scheduler by policy."
+  },
+  "MyTradingSys/tools/live_aid/flow_collector.py": {
+   "disp": "TOOL",
+   "ref": "live-aid-forced-move-chart-1113",
+   "why": "Live Aid forced-move collector: run by hand (python MyTradingSys/tools/live_aid/flow_collector.py); Bybit public trades, OI and klines into the gitignored flow_feed.js the Forced moves panel reloads and runtime_data/live_aid/flow_digest.txt read via FLOW_READER.md; named in tools/live_aid/REQUIREMENTS.md R25. No scheduler by policy."
   }
  }
 }
