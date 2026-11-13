@@ -12,6 +12,7 @@ import argparse
 import csv
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -63,9 +64,39 @@ def load_tables_md(path):
     return rows
 
 
-def load_log(path):
+def load_klines(path):
+    """1m closes as {open_ms: close}; accepts a bare kline list or the fixture shape {"klines": [...]}."""
+    d = json.loads(Path(path).read_text(encoding="utf-8"))
+    return {int(k[0]): float(k[4]) for k in (d["klines"] if isinstance(d, dict) else d)}
+
+
+def _ms(t):
+    s = str(t).replace("Z", "+00:00")
+    if re.fullmatch(r"\d{9,}", s):
+        return int(s)
+    d = datetime.fromisoformat(s)
+    return int((d if d.tzinfo else d.replace(tzinfo=timezone.utc)).timestamp() * 1000)
+
+
+def load_log(path, klines=None):
+    """Old header kind,side,state,at,r1h, or the page header t,kind,side,level,evidence,price (home.js FLAG_COLS):
+    level->at, evidence->state, r1h = close 60 min after t vs price, sign flipped for SHORT, None without a kline."""
     with open(path, newline="", encoding="utf-8") as f:
-        return [{**r, "r1h": float(r["r1h"]) if r.get("r1h") else None} for r in csv.DictReader(f)]
+        out = []
+        for r in csv.DictReader(f):
+            if "r1h" not in r and "t" in r and "price" in r:
+                r = {**r, "at": r.get("level", ""), "state": r.get("evidence", "")}
+                r1h = None
+                try:
+                    c, px = (klines or {}).get(_ms(r["t"]) // 60000 * 60000 + 3600000), float(r["price"])
+                    if c is not None and px:
+                        r1h = round((c / px - 1) * 100 * (-1 if r.get("side") == "SHORT" else 1), 4)
+                except (ValueError, TypeError):
+                    pass
+                out.append({**r, "r1h": r1h})
+            else:
+                out.append({**r, "r1h": float(r["r1h"]) if r.get("r1h") else None})
+        return out
 
 
 def parse_prev(text):
@@ -99,13 +130,18 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", required=True)
     ap.add_argument("--log")
+    ap.add_argument("--klines", help="1m closes json (page-header CSV needs it for r1h)")
+    ap.add_argument("--since", help="MM-DD: score only replay events from this day on (replay events.json only)")
     ap.add_argument("--out-dir", default=str(OUT))
     a = ap.parse_args(argv)
     ev = REVIEW / "events.json"
     if a.log:
-        rows, src = score(load_log(a.log)), "flag log " + Path(a.log).name
+        rows, src = score(load_log(a.log, load_klines(a.klines) if a.klines else None)), "flag log " + Path(a.log).name
     elif ev.exists():
-        rows, src = score(json.loads(ev.read_text())), "replay events.json"
+        evs = json.loads(ev.read_text())
+        if a.since:
+            evs = [e for e in evs if e["t"][:5] >= a.since]
+        rows, src = score(evs), "replay events.json" + (" from " + a.since if a.since else "")
     else:
         rows, src = load_tables_md(REVIEW / "tables.md"), "replay aggregates (live_aid_review_2026-11-11/tables.md)"
     out = Path(a.out_dir)

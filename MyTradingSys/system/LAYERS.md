@@ -183,9 +183,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-board-core-1111` ready p1 SONNET: Live Aid setup board core: pure function returning LONG and SHORT evidence lists and a strength score from exi
   - `live-aid-board-rates-1111` ready p1 SONNET: Live Aid setup board hit rate per evidence mix from replay.js, printed with n
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
-  - `live-aid-flag-log-1111` ready p1 SONNET: Live Aid keeps no record of what it flashed: log every banner (time, kind, side, level, evidence, price) to lo
-  - `live-aid-learning-loop-1111` ready p1 SONNET: Live Aid learning loop: a daily model run scores what Live Aid flagged against what price did and writes a poi
   - `live-aid-board-value-area-not-wired-1111` ready p2 SONNET: Live Aid setup board gets the value area from one definition
+  - `live-aid-flag-log-autoexport-1113` raw p2 SONNET: Live Aid flag log is browser-only: add an automatic export to a file the learner can read (page posts rows to 
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
   - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave
@@ -193,7 +192,8 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
   - `live-aid-closed-bars-sweep-1110` ready p3 SONNET: Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP ca
-  - `live-aid-flag-log-learner-header-1113` ready p3 SONNET: Live Aid flag-log CSV header does not match live_aid_learn.py (rows=0, r1h never computed)
+  - `live-aid-learn-daily-trigger-1113` raw p3 SONNET: Live Aid learner has no named daily trigger: us_prep.py P4 is the only hook and no pass ran for 11-12; wire a 
+  - `live-aid-liq-history-log-1113` raw p3 SONNET: Live Aid liquidation layer history survives reload but is never written to a scoreable log; add a log (time, s
   - `live-aid-script-paths-404-1113` ready p3 SONNET: Live Aid page script URLs 404: oi_snapshot.js and toast script not served
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
 

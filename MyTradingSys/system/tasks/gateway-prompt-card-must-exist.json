@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:06:09Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: brief fails loud (f49ca80ae), test_prompt_with_missing_card_fails passes",
+      "ref": "8b2272cc6",
+      "utc": "2026-11-13T12:06:09Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Merge remote-tracking branch 'origin/fast-track' into claude/kind-einstein-1c2d9c",
@@ -37,6 +44,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk",
   "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: tooling/housekeeping, no D7 exit or news/auction dependency; supervisor.py changed in 5b2506ea2 REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "pinned": false,
   "prio": 3,
@@ -44,7 +52,12 @@
   "refined_by": "",
   "refreshed": "2026-11-13T03:31:11Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk: brief fails loud (f49ca80ae), test_prompt_with_missing_card_fails passes, 3 gateway cards exist",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/supervisor.py",
     "scripts/dev/nuc_wake.py"
@@ -57,12 +70,13 @@
   "sources": [
     "operator ask 2026-10-28 gap 7"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read the gap text and linked files",
     "Implement the smallest change",
     "Run the test on old and new code; record output"
   ],
+  "taken": "2026-11-13T12:06:09Z",
   "tests": "scripts/dev/test_supervisor.py::test_prompt_with_missing_card_fails (new, fails on old code)",
   "title": "A prompt that names a card fails loudly if the card file is missing; create the missing gateway cards",
   "weight": "",

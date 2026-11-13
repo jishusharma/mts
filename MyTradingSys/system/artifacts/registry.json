@@ -234,7 +234,10 @@
       ],
       "max_age_h": 36,
       "publish_file": "F:/CryptoScrapper/cbp_v2/cbp_board.html",
-      "published_at": "2026-11-13T05:18:40Z"
+      "published_at": "2026-11-13T11:58:57Z",
+      "feed_hashes": {
+        "F:/CryptoScrapper/cbp_v2/cbp_board.html": "092f4dbb76e7ab3ff2c2033eb005dadc28202f9d57a8bb249ebcb5cf508bad76"
+      }
     },
     {
       "slug": "mts_home",
@@ -468,7 +471,7 @@
         "jishusharma1985": "https://claude.ai/artifact/DYVmHWGuLuZkftSjHtudPc"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "Live crypto buying page: BTC phases, coins by bucket, his position and split, studies. Replaces Dark Horse Desk.",
       "notes_go_to": "BUY_CRYPTO_PAGE.md",
@@ -483,7 +486,11 @@
         "~/.mts_private/buy_crypto_analysts.json"
       ],
       "max_age_h": 36,
-      "published_at": "2026-11-12T21:07:14Z"
+      "published_at": "2026-11-13T12:01:45Z",
+      "feed_hashes": {
+        "C:/Users/E-ngineers/.mts_private/buy_crypto.json": "f436d9bd235ff5ed7b38d6735541be9cfe842e7edfb699fb0e67bf0bdd5d7503",
+        "C:/Users/E-ngineers/.mts_private/buy_crypto_analysts.json": "90724220b4edae14b1c95dcba7eacb8a378d06d3b25380fe96d267692feca956"
+      }
     },
     {
       "slug": "concept_deck_tom_fabio",
