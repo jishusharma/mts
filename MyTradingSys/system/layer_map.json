@@ -1733,6 +1733,25 @@
    "verdict": "Rule A FAIL (VALIDATION fee-net excess -1.71%, CI [-5.8%,+1.9%], n=30; BTC-alone DEV +2.98% did not carry to 4 more symbols or VALIDATION); Rule B UNDERPOWERED (VALIDATION n=0; the frozen filter and touch almost never coincide)",
    "report": "MyTradingSys/research/adx_1d_through25_2026-11-13/REPORT.md",
    "read": "summary"
+  },
+  {
+   "id": "MALKAN-R03-R04-RSI-DIV-20261114",
+   "trials": null,
+   "title": "Malkan regular RSI divergence (MAL-R03 short, MAL-R04 long), closes-only swings, 1h/4h, 12/18-bar lookback, 20 perps",
+   "date": "2026-11-14",
+   "market": "Bybit linear USDT perps, 20 coins, 1h and 4h, 2020+",
+   "layers": [
+    "rsi_divergence"
+   ],
+   "params": "SOURCED: divergence, confirm candle, stop beyond signal candle, target point C, RSI 14; OURS: closes-only swings, 12/18 lookback, 1h/4h, 2x lookback time cap",
+   "split": "DEV 2020-01..2024-06 / VAL 2024-07..2025-06 / RECENT 2025-07+",
+   "fees": "fee-net: 2 x BINANCE_TAKER + SLIPPAGE_RT_S13 from fees.py, no funding",
+   "interaction": "day-cluster bootstrap CI; placebo (any bar closing in trade direction, same stop and C-style target); BH 10% over 8 VALIDATION cells",
+   "effects": "R03 1h 12: VAL n=1752 mean -0.333 R; R03 1h 18: VAL n=1754 mean -0.334 R; R04 1h 12: VAL n=1651 mean -0.320 R; R04 1h 18: VAL n=1652 mean -0.315 R; R03 4h 12: VAL n=379 mean -0.167 R; R03 4h 18: VAL n=379 mean -0.167 R; R04 4h 12: VAL n=383 mean -0.074 R; R04 4h 18: VAL n=382 mean -0.083 R",
+   "n": "VALIDATION n by cell 379..1754",
+   "verdict": "FAIL: 0 of 8 VALIDATION cells PASS; rule in PRE_REG.md frozen before any outcome",
+   "report": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md",
+   "read": "summary"
   }
  ]
 }
