@@ -55,22 +55,22 @@ def impulses(t, o, h, l, c, v, oi):
     return dict(atr=atr, med=med, dir=d, rng=rng, volx=volx, doi=z / a - 1)
 
 
-def fwd_sim(t, o, h, l, c, ft, fr, e, side, stop, target, hold):
+def fwd_sim(t, o, h, l, c, ft, fr, e, side, stop, target, hold, bar=BAR):
     """Enter at close of bar e; walk bars e+1..e+hold. Returns fee-net return or None if data gap."""
     n = len(c)
-    if e + hold >= n or t[e + hold] - t[e] != hold * BAR:
+    if e + hold >= n or t[e + hold] - t[e] != hold * bar:
         return None
     p0 = c[e]
     px, k = None, hold
     for j in range(e + 1, e + hold + 1):
         if side > 0:
-            if l[j] <= stop: px, k = min(stop, o[j]), j - e; break
+            if stop is not None and l[j] <= stop: px, k = min(stop, o[j]), j - e; break
             if target is not None and h[j] >= target: px, k = target, j - e; break
         else:
-            if h[j] >= stop: px, k = max(stop, o[j]), j - e; break
+            if stop is not None and h[j] >= stop: px, k = max(stop, o[j]), j - e; break
             if target is not None and l[j] <= target: px, k = target, j - e; break
     if px is None:
         px = c[e + hold]
-    t0, t1 = t[e] + BAR, t[e] + BAR * (1 + k)
+    t0, t1 = t[e] + bar, t[e] + bar * (1 + k)
     f = sum(fr[bisect.bisect_right(ft, t0):bisect.bisect_right(ft, t1)])
     return side * (px / p0 - 1) - RT_FEE - side * f
