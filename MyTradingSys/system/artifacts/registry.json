@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "5ad8f6289004a275b0cf0dd91d029063717ecfa505ba6de43f9562b7c7b39f1b",
-      "published_at": "2026-11-13T06:42:49Z"
+      "published_sha": "6ec9a0541fef809fdcf60fcebbf4dea9bcbe1e16c7aad9e08354f32cfe394b33",
+      "published_at": "2026-11-13T12:21:57Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -263,12 +263,12 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "112f64f8d787ca35dad057047af7f335d55470da3d9d400021efb497f6444668",
+      "published_sha": "22db068ff06c7fdfa4614eb44b744893265fcf7fd41d4bc928397fac4c43bd5a",
       "feeds": [
         "MyTradingSys/system/artifacts/registry.json"
       ],
       "max_age_h": 24,
-      "published_at": "2026-11-13T06:42:49Z",
+      "published_at": "2026-11-13T12:21:58Z",
       "feed_hashes": {
         "MyTradingSys/system/artifacts/registry.json": "bfce6578c0d2789e5409dff4c58a063249889c7762eed73aa2e707c11d8b9dc3"
       }
@@ -562,8 +562,8 @@
       "purpose": "One app for every layer's concepts: diagram, his rule vs ours (SOURCED/OURS), fidelity, support layers, tests, sim check, ideas, gaps. Replaces the two concept decks.",
       "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
       "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
-      "published_sha": "62981a1ba4eb65fcbd5a4a24626a0263638679eb30ce1655b4e55008264eac5a",
-      "published_at": "2026-11-13T05:14:39Z"
+      "published_sha": "46ac5c61d0c90cde751322b5dee1401a28bd8229a85e8d0fb39ec5fe47d7fb12",
+      "published_at": "2026-11-13T12:26:38Z"
     }
   ],
   "unpinned_old": {
