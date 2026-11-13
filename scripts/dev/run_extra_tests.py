@@ -26,29 +26,6 @@ def load_extra(path=EXTRA_TSV):
 
 
 EXTRA = load_extra()
-TIERS_TSV = Path(__file__).resolve().with_name("gate_tiers.tsv")
-
-
-def load_tiers(path=TIERS_TSV):
-    """{repo-relative test path: tier} from gate_tiers.tsv (tier, path, reason; blank and # lines skipped). tier is retired, study or slow.
-    A missing file is an empty map (the gate then runs everything, the old behaviour); a malformed row raises."""
-    out = {}
-    try:
-        lines = Path(path).read_text(encoding="utf-8").splitlines()
-    except OSError:
-        return out
-    for ln in lines:
-        if not ln.strip() or ln.lstrip().startswith("#"):
-            continue
-        parts = ln.split(chr(9))
-        if len(parts) < 3 or parts[0] not in ("retired", "study", "slow") or not parts[1].strip():
-            raise ValueError(f"gate_tiers.tsv: bad row {ln!r} (tier<TAB>path<TAB>reason; tier = retired|study|slow)")
-        out[parts[1].strip().replace("\\", "/")] = parts[0]
-    return out
-
-
-TIERS = load_tiers()
-OFFGATE = frozenset(TIERS)   # off the ship gate and the push CI shards; study + slow run in the offgate tier, retired nowhere
 STUDY_ROOT = "MyTradingSys/research/"
 
 
@@ -64,13 +41,7 @@ def discovered(repo=None):
 
 
 def all_tests(repo=None):
-    """Every extra test the push gate runs: EXTRA plus the discovered study tests, minus the files gate_tiers.tsv takes off the gate."""
-    return [t for t in EXTRA + discovered(repo) if t not in OFFGATE]
-
-
-def offgate_tests(tiers=("study", "slow")):
-    """The off-gate tier: gate_tiers.tsv files of the given tiers (default study + slow; retired never runs), in file order, that exist on disk."""
-    return [p for p, t in TIERS.items() if t in tiers and (REPO / p).exists()]
+    return EXTRA + discovered(repo)
 
 
 JOBS_MAX = 8   # OURS 2026-11-11: default cap; half the logical CPUs above 8 (12 on JIS-NUC -> 6), never under the old min(4, cpu)
@@ -251,13 +222,13 @@ def main(argv=None):
         sys.stdout.reconfigure(line_buffering=True, errors="replace")
     except (AttributeError, ValueError):
         pass
-    tests = offgate_tests() if "--offgate" in argv else pick(argv, all_tests())
+    tests = pick(argv, all_tests())
     tmp = Path(tempfile.mkdtemp(prefix="mts_xt_"))
     try:
         bad = run_files(tests, jobs(), tmp=tmp, many=run_group)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    print(f"{'off-gate tier' if '--offgate' in argv else 'extra tests'} ({len(tests)} files): " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
+    print(f"extra tests ({len(tests)} files): " + ("FAIL " + ", ".join(bad) if bad else "PASS"))
     return 1 if bad else 0
 
 

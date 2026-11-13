@@ -194,37 +194,3 @@ def test_files_writing_shared_interpreter_state_stay_single(tmp_path, monkeypatc
     assert ("group", "d", ["d/test_clean1.py", "d/test_clean2.py"]) in units
     assert {u[1] for u in units if u[0] == "one"} == {"d/test_cd.py", "d/test_mod.py", "d/test_env.py"}
     assert rx.shares_state("d/missing.py")
-
-
-# test_value_audit_1113: gate_tiers.tsv takes retired / study / slow tests off the push gate; study + slow run in the offgate tier.
-def test_gate_tiers_rows_are_valid_and_every_file_exists():
-    assert rx.TIERS, "gate_tiers.tsv is empty or unreadable"
-    assert set(rx.TIERS.values()) <= {"retired", "study", "slow"}
-    assert [p for p in rx.TIERS if not (rx.REPO / p).exists()] == []
-
-
-def test_offgate_files_are_not_in_the_push_gate_extra_list():
-    gated = set(rx.all_tests())
-    assert not (gated & rx.OFFGATE)
-    assert "MyTradingSys/research/context_factors_2026-10-16/test_context_asof.py" not in gated   # a discovered study test
-
-
-def test_offgate_tier_runs_study_and_slow_but_never_retired():
-    off = set(rx.offgate_tests())
-    assert off and all(rx.TIERS[p] in ("study", "slow") for p in off)
-    assert not any(t == "retired" and p in off for p, t in rx.TIERS.items())
-
-
-def test_a_bad_tier_row_raises(tmp_path):
-    f = tmp_path / "t.tsv"
-    f.write_text("# c" + chr(10) + "weird" + chr(9) + "x.py" + chr(9) + "why" + chr(10), encoding="utf-8")
-    try:
-        rx.load_tiers(f)
-    except ValueError:
-        return
-    raise AssertionError("bad tier accepted")
-
-
-def test_missing_tiers_file_means_everything_runs(tmp_path):
-    assert rx.load_tiers(tmp_path / "nope.tsv") == {}
-

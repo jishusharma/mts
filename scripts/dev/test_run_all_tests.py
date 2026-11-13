@@ -210,6 +210,7 @@ ORIGINAL_LABELS = {
     "Step 3cs: Cloud setup hook tests",
     "Step 3pc: Prompt contract tests",
     "Step 3ds: DSA helper CLI tests",
+    "Step 3cr: Control Room tests",
     "Step 3lh: GPT lane health tests",
     "Step 3rb: Relay board tests",
     "Step 3af: Artifact registry tests",
@@ -277,8 +278,7 @@ class TestShardedPytest(unittest.TestCase):
         shards = [plan[n].cmd_text for n in rat.PYTEST_SHARD_NUMS + ("4d",)]
         for f in (rat.REPO / "MyTradingSys" / "tests").glob("test_*.py"):
             hits = sum(f"MyTradingSys/tests/{f.name}" in c.split() or f"MyTradingSys/tests/{f.name}" in c for c in shards)
-            off = f"MyTradingSys/tests/{f.name}" in rat._offgate()   # gate_tiers.tsv: retired / slow files leave the push gate
-            self.assertEqual(hits, 0 if (f.name in rat.SMOKE_SKIP_FILES or off) else 1, f.name)
+            self.assertEqual(hits, 0 if f.name in rat.SMOKE_SKIP_FILES else 1, f.name)
 
     def test_aibridge_exploratory_is_in_no_smoke_shard_but_in_one_full_shard(self):
         """Card gate-4c-edge-shard-timeout-aibridge-exploratory-1108: the headless-browser file is out of build_plan(True), in one shard of build_plan(False)."""
@@ -882,31 +882,6 @@ class TestShipGateOutputNamesCause(unittest.TestCase):
         tail = buf.getvalue().split("FAILED: 1 step(s)")[1]
         self.assertIn("Step 3xt: extra", tail)
         self.assertIn(str(logs[0]), tail)
-
-
-class TestOffgateTiers(unittest.TestCase):
-    """test_value_audit_1113: files in gate_tiers.tsv run in no push-gate step (quick or full), and --offgate runs only the tier."""
-
-    def test_no_plan_step_names_an_offgate_file(self):
-        import run_extra_tests
-        for quick in (True, False):
-            text = " ".join((s.cmd_text or "") for s in rat.build_plan(quick))
-            for p in run_extra_tests.OFFGATE:
-                self.assertNotIn(Path(p).as_posix(), text, (quick, p))
-
-    def test_control_room_step_is_gone_but_cbp_runner_step_3cr_stays(self):
-        labels = [s.label for s in rat.build_plan(True)]
-        self.assertNotIn("Step 3cr: Control Room tests", labels)
-        self.assertIn("Step 3cr: CBP runner tests", labels)
-
-    def test_offgate_flag_runs_the_tier_not_the_plan(self):
-        for result, rc in (({"7o": True}, 0), ({"7o": False}, 1)):
-            with mock.patch.object(rat, "run_plan", return_value=result) as rp, mock.patch.object(rat, "build_plan") as bp, \
-                    mock.patch.object(rat, "lower_priority"), mock.patch.object(rat, "isolate_pytest_tmp"), contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(rat.main(["--offgate"]), rc)
-            step = rp.call_args.args[0][0]
-            self.assertTrue(step.cmd[-1] == "--offgate" and step.cmd[-2].endswith("run_extra_tests.py"))
-            bp.assert_not_called()
 
 
 if __name__ == "__main__":

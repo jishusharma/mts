@@ -94,7 +94,7 @@ class ShardTest(unittest.TestCase):
         self.assertIn("run_all_tests.py --shard ${{ matrix.shard }}", text)
         self.assertIn("if: startsWith(matrix.shard, '1/')", text[text.index("actions/setup-java"):][:200] + text[:text.index("actions/setup-java")][-300:])
         mark = text[text.index("\n  mark-green:"):]
-        self.assertIn("needs: [offline-gate, offgate-tier]", mark)   # test_value_audit_1113: green also waits for the off-gate tier
+        self.assertIn("needs: offline-gate", mark)
         self.assertIn('compare/$old...$SHA', mark)
         self.assertIn("force=false", mark)
         self.assertIn("group: mark-green", mark)
