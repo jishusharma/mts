@@ -66,17 +66,27 @@ def _lane(side, big=0, zone="mid", wt1=0):
     return {"side": side, "zone": zone, "wt1": wt1, "bars": [{"x": big, "strong": bool(big)}]}
 
 
-def test_wavetrend_is_one_line_that_says_what_to_do():
-    # operator 2026-11-13: six strips collapse into ONE line; 4h is the last CLOSED bar; levels from the ladder (written by hand)
-    f = lambda lanes: html.unescape(_txt(_run("H._wtSoWhat({lanes:j},{lad:" + json.dumps(LAD) + "})", lanes)))
+def _wt(lanes, pre=""):
+    return _run(pre + "H._wtSoWhat({lanes:j},{lad:" + json.dumps(LAD) + "})", lanes)
+
+
+def test_wavetrend_is_one_chip_row_and_keeps_the_sentence_in_the_tooltip():
+    # operator 2026-11-13 (2nd ask): one compact row: six timeframe chips + last cross and age; the full sentence is NOT lost (tooltip)
     lanes = {"1m": _lane(1), "2m": _lane(1), "3m": _lane(1), "15m": _lane(1, zone="cold"), "30m": _lane(1, zone="cold"), "4h": _lane(1, zone="cold", wt1=-62.5)}
-    t = f(lanes)
+    lanes["3m"]["ms"], lanes["3m"]["last"] = 180000, {"side": 1, "ago": 2, "strong": True}      # 6 min ago
+    lanes["15m"]["ms"], lanes["15m"]["last"] = 900000, {"side": 1, "ago": 1, "strong": False}   # 15 min ago
+    h = _wt(lanes)
+    t = html.unescape(_txt(h))
+    assert t.count("WaveTrend") == 1 and "1m▲" in t and "15m▲ OS" in t and "4h▲ OS" in t, t
+    assert "last cross 3m ▲ up (big dot), 6 min ago" in t, t
+    assert "Timing 1-3m" not in t                                           # the long sentence is no longer on the row
+    tip = html.unescape(re.search(r'title="([^"]*)"', h).group(1))
     assert ("Timing 1-3m: all crossed up (long side only) · Frame 15m/30m: rising from oversold · "
-            "4h (last closed bar): -62 oversold (backdrop, not a trigger) -> wait for a big green dot on 1m-3m, or a 15m close above 74,000") in t, t
-    assert t.count("WaveTrend:") == 1
-    dn = f({"1m": _lane(-1), "2m": _lane(-1), "3m": _lane(-1), "15m": _lane(-1), "30m": _lane(-1, 1), "4h": _lane(-1, wt1=10)})
+            "4h (last closed bar): -62 oversold (backdrop, not a trigger) -> wait for a big green dot on 1m-3m, or a 15m close above 74,000") in tip, tip
+    dn = html.unescape(re.search(r'title="([^"]*)"', _wt({"1m": _lane(-1), "2m": _lane(-1), "3m": _lane(-1), "15m": _lane(-1), "30m": _lane(-1, 1), "4h": _lane(-1, wt1=10)})).group(1))
     assert "all crossed down (short side only)" in dn and "4h (last closed bar): 10 (backdrop" in dn and "a 15m close below 73,500" in dn
-    assert "Frame 15m/30m: 15m and 30m disagree" in f({"15m": _lane(1), "30m": _lane(-1)}) and f({"15m": _lane(1), "30m": _lane(-1)}).strip().endswith("-> wait [show strips]")
+    mixed = html.unescape(re.search(r'title="([^"]*)"', _wt({"15m": _lane(1), "30m": _lane(-1)})).group(1))
+    assert "Frame 15m/30m: 15m and 30m disagree" in mixed and "last cross: none in view" in html.unescape(_txt(_wt({"15m": _lane(1)})))
 
 
 def test_wavetrend_strips_are_collapsed_until_clicked():
@@ -84,9 +94,24 @@ def test_wavetrend_strips_are_collapsed_until_clicked():
     if not node:
         pytest.skip("node not installed")
     h = _run("H._wtSoWhat({lanes:{}},{})", {})
-    assert 'data-wttoggle="1"' in h and "[show strips]" in h
+    assert 'data-wttoggle="1"' in h and "[show strips]" in h and "hm-wfull" not in h
     out = _run("(H._wtSetOpen(true),H._wtSoWhat({lanes:{}},{}))", {})
-    assert "[hide strips]" in out
+    assert "[hide strips]" in out and "hm-wfull" in out                     # open: the full sentence appears above the strips
+
+
+def test_wavetrend_open_choice_is_remembered_per_viewer_and_storage_may_fail():
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    run = lambda pre, expr: subprocess.run([node, "-e", pre + "const H=require(process.argv[1]);console.log(" + expr + ")", str(HERE / "home.js")],
+                                           capture_output=True, text=True, encoding="utf-8", timeout=60)
+    mk = "globalThis.localStorage={_d:{%s},getItem(k){return k in this._d?this._d[k]:null},setItem(k,v){this._d[k]=v}};"
+    r = run(mk % "", "(H._wtSetOpen(true),localStorage._d.mts_wt_open)")
+    assert r.returncode == 0 and r.stdout.strip() == "1", r.stderr[-800:]                     # click saved
+    r = run(mk % "mts_wt_open:'1'", "H._wtSoWhat({lanes:{}},{}).includes('[hide strips]')")
+    assert r.stdout.strip() == "true", r.stderr[-800:]                                        # reload: still open
+    r = run("Object.defineProperty(globalThis,'localStorage',{get(){throw new Error('blocked')},configurable:true});", "(H._wtSetOpen(true),H._wtSoWhat({lanes:{}},{}).includes('[hide strips]'))")
+    assert r.returncode == 0 and r.stdout.strip() == "true", r.stderr[-800:]                  # storage blocked: no crash
 
 
 def test_chart_names_its_axes_and_off_frame_levels_are_not_listed():
