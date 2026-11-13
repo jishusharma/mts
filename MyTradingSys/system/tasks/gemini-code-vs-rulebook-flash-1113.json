@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T02:19:07Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/code_vs_rulebook/flash.md"
   ],
@@ -18,6 +18,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "flash second-model run: quote check exit 0",
+      "ref": "3d6951c12",
+      "utc": "2026-11-13T02:19:07Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "research(tf_i3): ny_open (flash) + code_vs_rulebook (argon)",
@@ -28,7 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "END: merged into ITERATION_3 by the plan session",
   "note": "Run as gemini_queue.py run gemini-code-vs-rulebook-flash-1113:low:flash. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply. Second-model twin of the argon card; compare AGREED/SINGLE/CONFLICT afterwards.",
   "prio": 1,
   "refine_tries": 0,
@@ -40,7 +46,7 @@
     "MyTradingSys/backtest/layers/fabio/v3/models.py",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "flash second-model run: quote check exit 0",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -59,7 +65,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Read the code first, then RULEBOOK.md; one row per mismatch with file:line and rule id",

@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T02:19:08Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/refute/flash.md"
   ],
@@ -16,11 +16,18 @@
   "id": "gemini-i2-refute-flash-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "flash second-model run: quote check exit 0",
+      "ref": "3d6951c12",
+      "utc": "2026-11-13T02:19:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "END: merged into ITERATION_3 by the plan session",
   "note": "Run as gemini_queue.py run gemini-i2-refute-flash-1113:low:flash. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply. Second-model twin of the argon card; compare AGREED/SINGLE/CONFLICT afterwards.",
   "prio": 1,
   "refine_tries": 0,
@@ -31,7 +38,7 @@
     "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "flash second-model run: quote check exit 0",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -50,7 +57,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "For each gap row in ITERATION_2.md search for counter-evidence",
