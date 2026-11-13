@@ -1,13 +1,17 @@
 """plan.py - build the US-open plan (JSON + markdown) from gathered levels. TESTNET module, no exchange call here.
 
-build_plan(gathered, day, leverage=50) -> plan dict (DESIGN.md section 1); raises PlanRefused when the stop sits too
-close to liquidation. render_md(plan, gathered) -> markdown. CLI:
-    python MyTradingSys/execution/us_open_trader/plan.py --day YYYY-MM-DD --out-dir <dir> [--now <UTC iso>] [--leverage 50]
+build_plan(gathered, day, risk_usd=18) -> plan dict (DESIGN.md section 1 + V2-5: no leverage input, size from risk);
+raises PlanRefused when the risk-sized amount rounds to zero. render_md(plan, gathered, know=None) -> markdown;
+knowledge_md(day) -> the "What we already know" section (reads files at build time, never crashes). CLI:
+    python MyTradingSys/execution/us_open_trader/plan.py --day YYYY-MM-DD --out-dir <dir> [--now <UTC iso>] [--risk-usd 18]
 """
 import argparse
+import csv
 import datetime as dt
 import json
 import math
+import os
+import re
 import sys
 from pathlib import Path
 
@@ -21,8 +25,12 @@ import risk_guard  # noqa: E402
 ARM_UTC = "13:35"          # OURS: 5 min after PPI-style 13:30Z data, 55 min before the 14:30Z cash open
 FLAT_UTC = "16:30"         # OURS: 2 h after the cash open
 MAX_ENTRIES = 3            # OURS (cotrade "one at a time")
-AMOUNT_USD = 5000          # OURS (cap; actual = min(this, risk_guard.MAX_ACCOUNT_NOTIONAL_USD / 2))
-LEVERAGE = 50              # OURS
+RISK_USD = 18              # OURS (V2-5: loss at the stop; amount_usd = round_down_to_10(risk_usd * price / stop_dist), capped below)
+AMOUNT_CAP_DIV = 2         # OURS: amount capped at risk_guard.MAX_ACCOUNT_NOTIONAL_USD / 2
+AMOUNT_STEP = 10           # SOURCED (Deribit BTC-PERPETUAL contract size is 10 USD)
+KNOW_BIBLE_LINES = 3       # SOURCED (task: quote at most 3 short lines from the Bible)
+KNOW_LEDGER_MAX = 8        # OURS: at most 8 open scenario rows listed
+KNOW_LINE_CHARS = 160      # OURS: every quoted line is cut to this length
 BE_AT_R = 1.0              # SOURCED (research/habib_concept_book_2026-11/HABIB_CONCEPT_BOOK.md:38, C11 break-even after TP1)
 FEE_PER_SIDE = 0.0005      # OURS (taker fee assumption)
 BREAKOUT_ATR = 0.2         # OURS: breakout trigger = session high/low +- 0.2 * ATR15
@@ -32,21 +40,22 @@ STOP_MAX_PCT = 0.0143      # SOURCED (same file, Habib range 1.43 %)
 TARGET_R = 2.0             # OURS: target = 2 * stop_dist unless the next level is nearer
 LEVEL_BUFFER = 20          # OURS: exit / fade 20 USD in front of a level
 MIN_TARGET_R = 1.0         # OURS: skip an order whose target is under 1R
-MAX_STOP_LEVERAGE = 0.5    # OURS: stop_dist/price*leverage must stay below 0.5 (stop far inside liquidation)
 ROUND = 10                 # OURS: trigger and stop rounded to 10 USD
 CONFLUENCE_ATR = 0.5       # OURS: another level within 0.5 * ATR15 of the order's level counts as confluence
 
 
 class PlanRefused(ValueError):
-    """The plan must not be traded (stop too close to liquidation)."""
+    """The plan must not be traded (risk-sized amount rounds to zero)."""
 
 
 def _r10(x):
     return int(round(x / ROUND)) * ROUND
 
 
-def _amount():
-    return min(AMOUNT_USD, risk_guard.MAX_ACCOUNT_NOTIONAL_USD / 2)  # read at call time: one place to tune
+def _amount(risk_usd, price, stop):
+    """V2-5: round_down_to_10(risk_usd * price / stop_dist), capped at half the account notional cap (read at call time)."""
+    raw = int(risk_usd * price / stop // AMOUNT_STEP * AMOUNT_STEP)
+    return int(min(raw, risk_guard.MAX_ACCOUNT_NOTIONAL_USD / AMOUNT_CAP_DIV))
 
 
 def _by_name(levels, name):
@@ -66,15 +75,15 @@ def _fmt(x):
     return format(int(round(x)), ",")
 
 
-def build_plan(gathered, day, leverage=LEVERAGE):
+def build_plan(gathered, day, risk_usd=RISK_USD):
     price, atr15, levels = gathered["price"], gathered["atr15"], gathered["levels"]
     day = day.isoformat() if hasattr(day, "isoformat") else str(day)
     lo_stop = math.ceil(price * STOP_MIN_PCT / ROUND) * ROUND   # floor, kept on the 10 grid, never below the 0.08 %
     hi_stop = math.floor(price * STOP_MAX_PCT / ROUND) * ROUND  # cap, kept on the 10 grid, never above the 1.43 %
     stop = min(max(_r10(STOP_ATR * atr15), lo_stop), hi_stop)
-    if stop / price * leverage >= MAX_STOP_LEVERAGE:
-        raise PlanRefused("stop %d is %.1f %% of price; x%d leverage = %.2f >= %.2f, too close to liquidation"
-                          % (stop, stop / price * 100, leverage, stop / price * leverage, MAX_STOP_LEVERAGE))
+    amount = _amount(risk_usd, price, stop)
+    if amount < AMOUNT_STEP:
+        raise PlanRefused("risk %s USD at stop %d on price %d sizes to %d USD, under one %d USD contract" % (risk_usd, stop, price, amount, AMOUNT_STEP))
     skipped, orders = [], []
     sides = (("A", "buy", "EU_HIGH", 1, "Europe high"), ("B", "sell", "EU_LOW", -1, "Europe low"))
     for oid, side, name, sgn, text in sides:
@@ -112,13 +121,13 @@ def build_plan(gathered, day, leverage=LEVERAGE):
     if gathered.get("analyst_note"):
         notes.append(gathered["analyst_note"])
     return {"day": day, "frozen_utc": gathered.get("frozen_utc", ""), "ref_feed": "binance_spot_BTCUSDT", "instrument": "BTC-PERPETUAL",
-            "arm_utc": ARM_UTC, "flat_utc": FLAT_UTC, "max_entries": MAX_ENTRIES, "amount_usd": _amount(), "leverage": leverage,
+            "arm_utc": ARM_UTC, "flat_utc": FLAT_UTC, "max_entries": MAX_ENTRIES, "risk_usd": risk_usd, "amount_usd": amount,
             "be_at_r": BE_AT_R, "fee_per_side": FEE_PER_SIDE, "orders": sorted(orders, key=lambda o: o["id"]),
             "skipped": skipped, "notes": notes}
 
 
-def render_md(plan, gathered):
-    amt, lev = plan["amount_usd"], plan["leverage"]
+def render_md(plan, gathered, know=None):
+    amt = plan["amount_usd"]
     price, atr15, atr1h = gathered["price"], gathered["atr15"], gathered["atr1h"]
     o = ["# US open plan, %s (us_open_trader, TESTNET)" % plan["day"], "",
          "Frozen %s, before the 14:30Z cash open. BTC %s (Binance spot, public data). Mode: dry run (paper) unless the "
@@ -132,7 +141,7 @@ def render_md(plan, gathered):
                "key": "Live Aid key_levels (OURS)"}[l["source"]]
         o.append("| %s | %s | %s | %s |" % (side, _fmt(l["price"]), l["label"], src))
     o += ["", "Volatility: ATR(14) 15m = %s, 1h = %s (Wilder, closed bars)." % (_fmt(atr15), _fmt(atr1h)), "",
-          "## Orders (one position at a time, %s, %s USD = %s USD margin at %dx)" % (plan["instrument"], _fmt(amt), _fmt(amt / lev), lev), "",
+          "## Orders (one position at a time, %s, %s USD notional, risk %s USD at the stop)" % (plan["instrument"], _fmt(amt), _fmt(plan["risk_usd"])), "",
           "| id | side | kind | trigger | hard stop | target | risk | reward | why this level |", "|---|---|---|---|---|---|---|---|---|"]
     for r in plan["orders"]:
         sg = 1 if r["side"] == "buy" else -1
@@ -146,9 +155,9 @@ def render_md(plan, gathered):
         o += ["", "Not built:", ""] + ["- %s: %s" % (s["id"], s["reason"]) for s in plan["skipped"]]
     stop = plan["orders"][0]["stop_dist"] if plan["orders"] else 0
     if stop:
-        o += ["", "Stop %d = about %.2f x ATR(15m) = %.2f %% of price (Habib range 0.08 - 1.43 %%); at %dx the liquidation distance is about %.1f %%, "
-              "so the stop is %.1f times closer. Loss at the stop = %.0f %% of margin." % (
-                  stop, stop / atr15, stop / price * 100, lev, 100 / lev, (100 / lev) / (stop / price * 100), amt * stop / price / (amt / lev) * 100)]
+        o += ["", "Stop %d = about %.2f x ATR(15m) = %.2f %% of price (Habib range 0.08 - 1.43 %%). Size = risk %s USD x price / stop, rounded down "
+              "to 10 USD, capped at half the account notional cap. No leverage is set: %s is inverse and cross-margined, so leverage is "
+              "reported after the fill as notional / account equity." % (stop, stop / atr15, stop / price * 100, _fmt(plan["risk_usd"]), plan["instrument"])]
     o += ["", "## Rules", "", "| # | rule | label |", "|---|---|---|",
           "| 1 | Armed %sZ to %sZ; nothing new after %sZ | OURS |" % (plan["arm_utc"], plan["flat_utc"], plan["flat_utc"]),
           "| 2 | One position at a time; at most %d entries | OURS (cotrade one at a time) |" % plan["max_entries"],
@@ -159,17 +168,134 @@ def render_md(plan, gathered):
           "| 7 | After a target hit both breakouts are cancelled; after a stop-out the opposite breakout stays armed | OURS |",
           "| 8 | Hard server-side stop on every fill, never widened | SOURCED Habib C11 hard structure stop (`habib_concept_book_2026-11/HABIB_CONCEPT_BOOK.md:38`) |",
           "| 9 | At +1R move the stop to entry | SOURCED Habib C11 break-even after TP1 (same file) |",
-          "| 10 | Size: min(5,000, half of the account notional cap) USD; plan refused when stop/price x leverage >= 0.5 | OURS |",
+          "| 10 | Size: risk %s USD / stop x price, rounded down to 10 USD, capped at half the account notional cap; no leverage input | OURS |" % _fmt(plan["risk_usd"]),
           "| 11 | Time stop: flat at %sZ at market | OURS |" % plan["flat_utc"],
           "| 12 | Levels are read on Binance spot; the order goes on Deribit testnet at the same distances | OURS |", ""]
+    if know:
+        o += [know.rstrip("\n"), ""]
     return "\n".join(o)
 
 
-def write(plan, gathered, out_dir):
+# ---------------------------------------------------------------- "What we already know" (read at build time)
+def prev_weekday(day):
+    d = day - dt.timedelta(days=1)
+    while d.weekday() >= 5:  # OURS: the module trades the US cash open, weekdays only (DESIGN.md section 8)
+        d -= dt.timedelta(days=1)
+    return d
+
+
+def _cut(t, n=KNOW_LINE_CHARS):
+    t = " ".join(str(t).split())
+    return t if len(t) <= n else t[:n - 3] + "..."
+
+
+def _rel(p, root):
+    try:
+        return Path(p).relative_to(root).as_posix()
+    except ValueError:
+        return Path(p).as_posix()
+
+
+def _know_bible(root):
+    p = Path(root) / "MyTradingSys/research/mts_bible/BIBLE.md"
+    if not p.exists():
+        return ["- Bible: %s not found." % _rel(p, root)]
+    rows = []
+    for i, line in enumerate(p.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+        m = re.match(r"^#{2,3}\s.*?(20\d\d-\d\d-\d\d)", line)
+        if m:  # a dated reading heading (OURS: the Bible dates every reading in its heading)
+            rows.append((m.group(1), -i, i, line.lstrip("# ").strip()))
+    rows.sort(reverse=True)  # newest date first, later line first on ties
+    if not rows:
+        return ["- Bible: %s has no dated readings." % _rel(p, root)]
+    return ["- Bible (%s:%d): %s" % (_rel(p, root), i, _cut(t)) for _, _, i, t in rows[:KNOW_BIBLE_LINES]]
+
+
+def _know_ledger(root):
+    p = Path(root) / "MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.csv"
+    if not p.exists():
+        return ["- Scenario ledger: %s not found." % _rel(p, root)]
+    with open(p, encoding="utf-8", errors="replace", newline="") as f:  # read-only
+        rows = [r for r in csv.DictReader(f) if r.get("id") and not (r.get("outcome") or "").strip()]
+    if not rows:
+        return ["- Scenario ledger (%s): no open rows." % _rel(p, root)]
+    out = ["- Scenario ledger (%s, read-only): %d open." % (_rel(p, root), len(rows)),
+           "", "| id | given | likely | up | down | text |", "|---|---|---|---|---|---|"]
+    for r in rows[-KNOW_LEDGER_MAX:]:
+        out.append("| %s | %s | %s | %s | %s | %s |" % (r["id"], r.get("given_utc", ""), r.get("likely", ""), r.get("up", ""), r.get("down", ""),
+                                                       _cut(r.get("text", "")).replace("|", "/")))
+    return out
+
+
+def _know_study(root, rel, what):
+    p = Path(root) / rel
+    if not p.exists():
+        return ["- %s: %s not found." % (what, rel)]
+    lines = [l.strip() for l in p.read_text(encoding="utf-8", errors="replace").splitlines() if l.strip()]
+    title = lines[0].lstrip("# ").strip() if lines else rel
+    body = next((l for l in lines[1:] if not l.startswith(("#", "|"))), "")
+    return ["- %s (%s): %s. %s" % (what, rel, _cut(title, 100), _cut(body, KNOW_LINE_CHARS))]
+
+
+def _jsonl(path):
+    out = []
+    for line in Path(path).read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            v = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(v, dict):
+            out.append(v)
+    return out
+
+
+def _know_yesterday(day, runtime_dir):
+    y = prev_weekday(day).isoformat()
+    sp, rp = Path(runtime_dir) / ("%s.jsonl" % y), Path(runtime_dir) / ("readings_%s.jsonl" % y)
+    out = []
+    if sp.exists():
+        rows = _jsonl(sp)
+        trades = [r for r in rows if "order_id" in r and "summary" not in r]
+        r_sum = sum(float(r["r_net"]) for r in trades if isinstance(r.get("r_net"), (int, float)))
+        out.append("- Yesterday %s score (%s): %d trades, r_net sum %+.2f (from the trade rows)." % (y, sp.name, len(trades), r_sum))
+    if rp.exists():
+        rows = _jsonl(rp)
+        if rows:
+            touched = sorted({str(t) for r in rows for t in (r.get("levels_touched") or [])})
+            gaps = sorted({str(g) for r in rows for g in (r.get("gaps") or [])})
+            hhmm = lambda r: str(r.get("ts_utc", ""))[11:16]
+            last = rows[-1].get("binance_spot")
+            out.append("- Yesterday %s readings (%s): %d readings, %sZ to %sZ, last Binance spot %s; levels touched: %s; gaps: %s." % (
+                y, rp.name, len(rows), hhmm(rows[0]), hhmm(rows[-1]), format(round(last), ",") if isinstance(last, (int, float)) else "n/a",
+                ", ".join(touched) or "none", ", ".join(gaps) or "none"))
+    if not out:
+        out.append("- Yesterday %s: no score or readings in %s." % (y, runtime_dir.name if hasattr(runtime_dir, "name") else runtime_dir))
+    return out
+
+
+def knowledge_md(day, repo_root=None, runtime_dir=None):
+    """The plan's "What we already know" section. Each source is read at build time; a missing or unreadable file gives a line saying so."""
+    root = Path(repo_root) if repo_root else lv.ROOT
+    rt = Path(runtime_dir) if runtime_dir else Path(os.environ.get("US_OPEN_TRADER_DIR") or (root / "runtime_data" / "us_open_trader"))
+    parts = [("Bible", lambda: _know_bible(root)), ("Ledger", lambda: _know_ledger(root)),
+             ("Levels study", lambda: _know_study(root, "MyTradingSys/research/us_open_levels_2026-10-30/RESULT.md", "US-open levels study")),
+             ("First-3-minutes study", lambda: _know_study(root, "MyTradingSys/research/us_open_first3m_2026-11-11/RESULT.md", "US-open first 3 minutes study")),
+             ("Yesterday", lambda: _know_yesterday(day, rt))]
+    out = ["## What we already know", "",
+           "Context for reading the plan, read from the files at build time. None of it is a signal or a measured edge.", ""]
+    for name, fn in parts:
+        try:
+            out += fn() + [""]
+        except Exception as ex:  # one broken source never stops the plan
+            out += ["- %s: could not be read (%s: %s)." % (name, type(ex).__name__, str(ex)[:100]), ""]
+    return "\n".join(out)
+
+
+def write(plan, gathered, out_dir, know=None):
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     (out / ("plan_%s.json" % plan["day"])).write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8", newline="\n")
-    (out / ("PLAN_US_OPEN_%s.md" % plan["day"])).write_text(render_md(plan, gathered), encoding="utf-8", newline="\n")
+    (out / ("PLAN_US_OPEN_%s.md" % plan["day"])).write_text(render_md(plan, gathered, know), encoding="utf-8", newline="\n")
 
 
 def main(argv=None, fetch=None, analysts=None):
@@ -177,18 +303,18 @@ def main(argv=None, fetch=None, analysts=None):
     ap.add_argument("--day", required=True, type=dt.date.fromisoformat)
     ap.add_argument("--out-dir", required=True)
     ap.add_argument("--now", help="UTC time ISO (default: the clock)")
-    ap.add_argument("--leverage", type=int, default=LEVERAGE)
+    ap.add_argument("--risk-usd", type=float, default=RISK_USD, help="loss at the stop in USD (OURS default 18)")
     a = ap.parse_args(argv)
     now = dt.datetime.fromisoformat(a.now.replace("Z", "+00:00")) if a.now else dt.datetime.now(lv.UTC)
     if now.tzinfo is None:
         now = now.replace(tzinfo=lv.UTC)
     g = lv.gather(a.day, now, fetch=fetch, analysts=analysts)
     try:
-        plan = build_plan(g, a.day, leverage=a.leverage)
+        plan = build_plan(g, a.day, risk_usd=a.risk_usd)
     except PlanRefused as ex:
         print("PLAN REFUSED: %s" % ex, file=sys.stderr)
         return 2
-    write(plan, g, a.out_dir)
+    write(plan, g, a.out_dir, knowledge_md(a.day))
     print("plan %s: %d orders (%s), %d not built -> %s" % (plan["day"], len(plan["orders"]), ",".join(o["id"] for o in plan["orders"]),
                                                           len(plan["skipped"]), a.out_dir))
     return 0
