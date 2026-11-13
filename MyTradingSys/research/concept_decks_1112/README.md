@@ -4,8 +4,8 @@ Two slide decks (Slides artifacts, download as .pptx). Every number is SOURCED (
 
 | Deck | Slides | Link |
 |---|---|---|
-| Tom & Fabio layer | 16 | https://claude.ai/artifact/L4A2SBrnC2JrK1iutL18XV |
-| Malkan RSI layer | 15 | https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP |
+| Tom & Fabio layer | 16 | retired 2026-11-13 (see Conceptualizer) |
+| Malkan RSI layer | 15 | retired 2026-11-13 (see Conceptualizer) |
 
 Fact sheets behind them (with file citations): TOM_FABIO_FACTS.md, MALKAN_FACTS.md. These were built by Sonnet readers and are not re-verified line by line.
 

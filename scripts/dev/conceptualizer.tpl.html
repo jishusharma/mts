@@ -188,7 +188,7 @@ a { color: var(--blue-soft); }
     if (L.market_tiles) {
       h += '<div class="kpis" style="margin-top:18px">' + L.market_tiles.map(function (k) { return '<div class="kpi"><div class="big" style="font-size:1.8rem">' + esc(k[0]) + '</div><div class="small">' + esc(k[1]) + ' (OURS)</div></div>'; }).join('') + '</div>';
     }
-    h += '<p class="small" style="margin-top:16px">Slides: <a href="' + esc(L.deck) + '" target="_blank" rel="noopener">concept deck</a> · facts with citations: <span class="code">' + esc(L.facts) + '</span></p>';
+    h += '<p class="small" style="margin-top:16px">' + (L.deck ? 'Slides: <a href="' + esc(L.deck) + '" target="_blank" rel="noopener">concept deck</a> · ' : '') + 'facts with citations: <span class="code">' + esc(L.facts) + '</span></p>';
     return h;
   }
 

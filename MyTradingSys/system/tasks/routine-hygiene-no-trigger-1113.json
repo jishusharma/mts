@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T13:44:32Z",
   "commands": [],
   "created": "2026-11-13T13:30:22Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "wired by routines-plan-wiring-1113: supervisor.py plan prints a due line via routines_due.py (row 5 daily_hygiene); closed as done, not discarded",
+  "pinned": false,
   "prio": 3,
+  "reason": "wired by routines-plan-wiring-1113: supervisor.py plan prints a due line via routines_due.py (row 5 daily_hygiene); closed as done, not discarded",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "ROUTINES row 5: daily_hygiene.py has no trigger (last hygiene_latest.md 2026-10-19 RED). Smallest fix: one supervisor.py plan RUN line when hygiene_latest.md is over 24 h old; done when plan prints it and the file is dated today",
