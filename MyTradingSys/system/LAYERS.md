@@ -131,6 +131,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `turn_of_candle`: no edge, closed | module backtest/layers/turn_of_candle/
 - Layer `session_levels`: no edge | module research/t087_session_levels_2026-10-09
 - Backtests (layer_map.json, newest first):
+  - 2026-11-13 `LA-EUROPE-HIGH-FADE-20261113`: FAIL: BTC VALIDATION n 1327, hit 48.7%, fee-net mean R -0.291 CI [-0.477, -0.098], placebo mean -0.326 (p95 -0.195) not  | `MyTradingSys/research/europe_high_fade_2026-11-13/REPORT.md`
   - 2026-10-18 `EUR-LOW-US-SWEEP-FOLLOWUPS-20261018`: BLOCKED by power gate (A, B, C); legs stay open | `MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md`
   - 2026-10-14 `LC-SIZING-QUICK-20261014`: EXPLORATORY NEGATIVE; full LC hypothesis untested | `MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md`
   - 2026-10-14 `EUR-LOW-US-SWEEP-20261014`: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested | `MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md`

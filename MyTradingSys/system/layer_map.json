@@ -1621,6 +1621,25 @@
    "verdict": "FAIL: pooled fee-net mean R -0.0467, n 1981, CI [-0.1097, +0.0162]; kill scope = this setup/bracket only",
    "report": "MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md",
    "read": "summary"
+  },
+  {
+   "id": "LA-EUROPE-HIGH-FADE-20261113",
+   "trials": null,
+   "title": "Live Aid flag 'idea fade @ Europe high' (levelstory REJECTED / FAILED BREAK at the Europe 07-13Z high), full-history re-test, 60-min time exit",
+   "date": "2026-11-13",
+   "market": "BTCUSDT 5m 2019-01..2026-11 (spot 2019, perp 2020+); ETHUSDT 2022-01..2026-09 and SOLUSDT 2022-01..2024-06 as replication; DEV first 70% of days, VALIDATION last 30%",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "Live Aid code unchanged (levelstory.js P, pulse.js lane, replay.js levels), entry next 5m open, exit 60 min, R = distance to the idea's voidAt floored 10 bp (OURS), day-block bootstrap, placebo = same side at random 5m step 13-23Z same day",
+   "split": "BTC VALIDATION from 2024-07-02 (chosen before run)",
+   "fees": "4 bp maker round trip (auction_context.DEFAULT_MAKER_RT_BPS); 10 bp row reported",
+   "interaction": "none (single flag; both sides pooled, side and regime sub-cuts descriptive)",
+   "effects": "gross hit 51.6% over 4219 events (replay window last 28 days: n 32, 62.5%, reproduces the 60% flag); fee-net mean R -0.168 all, -0.111 DEV",
+   "n": "BTC 4219 events (VALIDATION 1327); ETH 2416; SOL VALIDATION 302",
+   "verdict": "FAIL: BTC VALIDATION n 1327, hit 48.7%, fee-net mean R -0.291 CI [-0.477, -0.098], placebo mean -0.326 (p95 -0.195) not beaten; ETH VALIDATION -0.468 FAIL; SOL VALIDATION +0.094 FAIL; the 60% was chance",
+   "report": "MyTradingSys/research/europe_high_fade_2026-11-13/REPORT.md",
+   "read": "summary"
   }
  ]
 }
