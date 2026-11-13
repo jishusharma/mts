@@ -93,7 +93,7 @@
       "purpose": "Slides: what Tom and Fabio taught.",
       "notes_go_to": "Read only.",
       "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25",
-      "published_at": "2026-11-13T13:12:27Z"
+      "published_at": "2026-11-13T13:27:37Z"
     },
     {
       "slug": "cbp_monday_desk",
@@ -306,7 +306,7 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 72,
-      "published_at": "2026-11-13T13:12:27Z",
+      "published_at": "2026-11-13T13:27:35Z",
       "feed_hashes": {
         "MyTradingSys/research/STATUS.md": "11ef19dd4031d73cdb2a5cfec084c4d6061aa0e4c537a047cd3ef8a819d5055c"
       }
@@ -452,7 +452,7 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 12,
-      "published_at": "2026-11-13T13:12:28Z",
+      "published_at": "2026-11-13T13:27:36Z",
       "feed_hashes": {
         "MyTradingSys/research/STATUS.md": "11ef19dd4031d73cdb2a5cfec084c4d6061aa0e4c537a047cd3ef8a819d5055c"
       }
@@ -493,7 +493,7 @@
         "~/.mts_private/buy_crypto_analysts.json"
       ],
       "max_age_h": 36,
-      "published_at": "2026-11-13T13:12:29Z",
+      "published_at": "2026-11-13T13:27:39Z",
       "feed_hashes": {
         "C:/Users/E-ngineers/.mts_private/buy_crypto.json": "f436d9bd235ff5ed7b38d6735541be9cfe842e7edfb699fb0e67bf0bdd5d7503",
         "C:/Users/E-ngineers/.mts_private/buy_crypto_analysts.json": "90724220b4edae14b1c95dcba7eacb8a378d06d3b25380fe96d267692feca956"
