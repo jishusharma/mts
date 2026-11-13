@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-13T03:49:36Z",
   "commands": [
     "python -m pytest scripts/dev/test_sync.py -k ship_stage -q",
     "python scripts/dev/test_bg_watch.py"
@@ -28,12 +27,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "ship_stage per-stage flushed lines shipped in 77dfec05",
-      "ref": "77dfec054",
-      "utc": "2026-11-13T03:49:36Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "ship: 7 file(s)",
@@ -44,19 +37,13 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: shipped 77dfec05 (ship_stage per-stage flushed lines)",
   "note": "DECISION (OURS 2026-11-12): heartbeat 60 s = the card's own done-test. Not live-path (dev tooling). Refined by planner-raw-1112b.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T03:31:07Z",
   "refs": [],
-  "result": "ship_stage per-stage flushed lines shipped in 77dfec05",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "scripts/dev/sync.py (ship, run_gate: print 'ship stage: <name>' with flush before merge, gate, push, ci)",
     "scripts/dev/test_sync.py (new test)"
@@ -69,13 +56,12 @@
   "scope_sha": "6670219dec33",
   "size": "S",
   "sources": [],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read ship() at sync.py:1394 and mark each phase boundary (fetch+merge, gate, push, wait-ci)",
     "Add print(f'ship stage: ...', flush=True) at each, and one heartbeat 'ship stage: gate still running Ns' every 60 s while run_gate's subprocess runs (thread or poll loop on Popen)",
     "Add the test in test_sync.py: with a fake gate that sleeps, the captured stdout holds the stage lines in order before ship returns"
   ],
-  "taken": "2026-11-13T03:49:36Z",
   "tests": "test_sync.py::test_ship_prints_stage_lines: fake gate, assert 'ship stage: gate' appears in stdout before the gate returns; fails before the change (no such line).",
   "title": "sync.py ship prints nothing until it exits: a 27 min ship looks hung and is flagged STALLED-BG; print a line per gate stage. Done when: a running ship's output file shows the current stage within 60 s",
   "weight": "",
