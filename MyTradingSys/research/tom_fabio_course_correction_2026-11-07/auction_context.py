@@ -44,7 +44,7 @@ SIGMA_K = 2.0 * math.sqrt(2.0 / math.pi)  # 1.5957691216: sigma_bar = ATR14 / SI
 DEFAULT_BIN_SIZE = 50.0
 DEFAULT_VA_SHARE = 0.70
 DEFAULT_TAKER_RT_BPS = _mts_fees.DERIBIT_TAKER * 20000.0  # 2 x 5 bps taker = 10 bps round-trip (from fees.py)
-DEFAULT_MAKER_RT_BPS = _mts_fees.BINANCE_MAKER * 10000.0  # 2 bps per side maker (from fees.py)
+DEFAULT_MAKER_RT_BPS = _mts_fees.BINANCE_MAKER * 20000.0  # 2 x 2 bps maker = 4 bps round-trip (from fees.py scenario D)
 DEFAULT_MAX_FRICTION_R = 0.25    # friction in R > 0.25 R is a tight-stop trap
 DEFAULT_MIN_NET_RR = 1.20    # minimum net R:R after round-trip friction
 
