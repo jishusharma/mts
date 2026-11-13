@@ -293,3 +293,4 @@ MyTradingSys/execution/us_open_trader/test_plan.py
 MyTradingSys/execution/us_open_trader/test_recorder.py
 MyTradingSys/execution/us_open_trader/test_runner.py
 MyTradingSys/execution/us_open_trader/test_score.py
+MyTradingSys/research/extreme_confirm_template_2026-11/test_extreme_confirm.py
