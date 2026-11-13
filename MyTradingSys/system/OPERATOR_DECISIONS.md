@@ -2462,3 +2462,9 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator order (~12:55Z): build a module that trades just before, during and after the US session on TESTNET, 50x with a hard stop like Habib, both directions, from Tom levels + analyst levels + Live Aid confluence; Fable leads, Opus assists, Sonnet and Haiku build.
 - Defaults taken by the lead (OURS): today (11-13) is a dry run scored from public candles, because `cotrade.py place` refuses resting entries; size from risk (5,000 USD notional, about 18 USD at the stop), not from leverage; plan in `research/us_open_trader_2026-11-13/PLAN_US_OPEN_2026-11-13.md`; first testnet run Monday 11-16 after tests and a safety review.
 - Card: us-open-trader-module-1113.
+
+## 2026-11-13 MTS pages cleanup: retire four pages and the MTS Home extras
+- Operator ("Yes, retire them", relayed by the concept-decks session): retire Concept deck Tom & Fabio, Concept deck Malkan RSI, Live feed one page (mock), Tom and Fabio Setup Review and the 13 old copies in Home's fold. Home is now only the page list: Waiting, Road, session recipes, super-session prompt and link-fix help were removed (stale or duplicated by chat decisions, ROLES.md, SUPER_SESSION.md).
+- Applied: registry rows moved to `_retired`, Home tiles, mock page and generator removed. A session cannot delete artifacts: the operator deletes the 4 pages by hand (links in `_retired`), the 13 old copies on the jishu.sharma and jishu.awgp logins by hand.
+- Also decided (OURS, from his stamp complaint): a page stamp shows when the page's DATA was built, never when it was republished (`artifacts.py stamp --at`).
+

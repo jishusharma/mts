@@ -72,9 +72,7 @@ class Registry(unittest.TestCase):
         import make_control_room as mc
         rows = mc.page_index()
         self.assertEqual({r["title"] for r in rows}, {"MTS Layers", "Tom and Fabio: what they taught", "MTS Home", "MTS Research Map",
-                                                      "Test Simulator", "CBP Analyst Desk", "Live feed one page",
-                                                      "Tom and Fabio Setup Review", "Buy Crypto",
-                                                      "Concept deck: Tom & Fabio", "Concept deck: Malkan RSI", "Conceptualizer"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
+                                                      "Test Simulator", "CBP Analyst Desk", "Buy Crypto", "Conceptualizer"})  # 2026-10-31: Control Room, old CBP desks, Planner, BTC Live Aid retired
         own = {r["title"]: r["owner"] for r in rows}
         self.assertEqual(own["Tom and Fabio: what they taught"], "jishusharma1985")
         self.assertEqual(own["MTS Research Map"], "jishusharma1985")
@@ -193,7 +191,7 @@ class Home(unittest.TestCase):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
         import make_home as mh
         titles = [p["title"] for p in mh.build(self.reg)["pages"]]
-        for t in ("Test Simulator", "CBP Analyst Desk", "MTS Layers", "Tom and Fabio Setup Review"):
+        for t in ("Test Simulator", "CBP Analyst Desk", "MTS Layers", "Buy Crypto"):
             self.assertIn(t, titles)
         reg = copy.deepcopy(self.reg)
         extra = copy.deepcopy(next(p for p in reg["pages"] if p["slug"] == "sim_desk"))
@@ -504,7 +502,7 @@ class FeedStaleTests(unittest.TestCase):
     def test_real_registry_data_pages_declare_feeds(self):
         reg = af.load()
         by = {p["slug"]: p for p in reg["pages"]}
-        for slug in ("cbp_analyst_desk", "buy_crypto", "live_feed_onepage_mock", "research_map"):
+        for slug in ("cbp_analyst_desk", "buy_crypto", "research_map"):
             self.assertTrue(by[slug].get("max_age_h"), slug)
         self.assertIn("cbp", by["buy_crypto"]["producer"])
 
