@@ -378,6 +378,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="live_aid_indicators.js"></script>
 <script src="news_feed.js"></script>
 <script src="news_weight.js"></script>
+<script src="news_flash.js"></script>
 <script src="events_strip.js"></script>
 <script src="events_strip_data.js"></script>
 <script src="analyst_data.js"></script>
@@ -396,6 +397,8 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>
 <script src="map.js"></script>
+<script src="analyst_note.js"></script>
+<script src="liq_rates.js"></script>
 <script src="home.js"></script>
 <script src="flag_autosave.js"></script>
 <script src="pulse.js"></script>
@@ -1142,9 +1145,9 @@ main>#p-pos:not(.off){flex:0 0 auto}
       try { PULSE.ind = window.LAIND ? window.LAIND.table(TF.k, now) : null; } catch (e) { PULSE.ind = null; }
       PULSE.lanes = {}; ['1m', '2m', '3m', '15m', '30m', '4h'].forEach(function (tf) { try { PULSE.lanes[tf] = PU.lane(TF.k, tf, 60, now); } catch (e) { PULSE.lanes[tf] = null; } });
     }
-    var news = (S.news.items || []).slice(0, 80).map(function (x) { return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag }; });
+    var news = (S.news.items || []).slice(0, 80).map(function (x) { var nb = S.nw && S.nw.by && S.nw.by[x._id] || {}; return { id: x._id || x.time, t: +x.time, score: +x.importance || 0, head: headline(x), tag: A.newsRead(x).tag, source: x.source || '', cls: nb.cls, w: nb.w, k: nb.k }; });
     if (S.view !== 'home') { window.LAHOME.flashes({ now: now, news: news, onFlag: flagAdd, liq: liq, pulse: PULSE.g, lanes: PULSE.lanes, k15: TF.k['15m'], money: S.moneyHead || null }, window.LAHOME.model({ now: now, px: px, map: mm, votes: votes })); return; }
-    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], liq: liq, onFlag: flagAdd, flagRows: FLAGLOG.rows, flagStats: window.LA_FLAGSTATS || {}, money: S.moneyHead || null, news: news,
+    window.LAHOME.render($('p-home'), { now: now, px: px, rows5: S.tf['5m'], votes: votes, map: mm, mom: MOM, pulse: PULSE.g, ind: PULSE.ind, lanes: PULSE.lanes, k5: TF.k['5m'], k15: TF.k['15m'], k1h: TF.k['1h'], liq: liq, onFlag: flagAdd, flagRows: FLAGLOG.rows, flagStats: window.LA_FLAGSTATS || {}, money: S.moneyHead || null, news: news,
       ev: ev ? { name: EV_WORDS[ev.cls] || ev.cls, inTxt: M.countdown(ev.t0 - now) } : null, scen: M && pd ? M.scenarios(pd, now) : [] });
   }
 

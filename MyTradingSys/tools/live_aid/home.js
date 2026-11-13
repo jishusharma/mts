@@ -22,7 +22,8 @@
     return m[3] + '-' + per + ' average';
   }
   function itemWord(it) {
-    if (it.src === 'analyst') return 'Analyst call';
+    if (it.src === 'analyst') return it.who ? it.who + ' call' : 'Analyst call';   // short analyst name on the level (operator 11-13)
+    if (it.badge === '1WS20' || it.badge === '1WE21') return 'Bull market band (weekly)';   // 20-week SMA + 21-week EMA, SOURCED MA_CONCEPTS.md
     return WORDS[it.badge] || maWord(it.badge) || it.label || it.badge;
   }
   // zone -> plain-words name: up to 2 distinct names, then "+N more"
@@ -75,6 +76,49 @@
   }
 
   // ---------- drawing ----------
+  var MA5 = [['ema', 21, '21 EMA'], ['ema', 55, '55 EMA'], ['sma', 200, '200 SMA']];   // SOURCED: Krown KR-M01 (MA_CONCEPTS.md)
+  function smaS(c, n) { var out = [], s = 0; for (var i = 0; i < c.length; i++) { s += c[i]; if (i >= n) s -= c[i - n]; out.push(i >= n - 1 ? s / n : null); } return out; }
+  // EMA: alpha 2/(N+1) (SOURCED maths), seeded with the mean of the first N closes (OURS, same as ma_strip.js)
+  function emaS(c, n) { var out = [], a = 2 / (n + 1), e = null, s = 0; for (var i = 0; i < c.length; i++) { if (i < n) { s += c[i]; e = i === n - 1 ? s / n : null; } else e = c[i] * a + e * (1 - a); out.push(e); } return out; }
+  // Volume strip under the chart, on the same time axis as the candles: one bar per 5m bar (Binance spot), green = buyers took more,
+  // red = sellers took more, white line = the 20-bar average. Nothing overlaps the candles any more.
+  var VOL_AVG = 20, VOL_HI = 1.5, VOL_LO = 0.7;   // OURS: "busy" at 1.5x the 20-bar average, "thin" under 0.7x; not backtested
+  function volPane(ctx, md, W, H) {
+    var rows = (ctx.rows5 || []).slice(-144), k = ctx.k5 || [];
+    if (rows.length < 5 || k.length < 4) return '<div class="hm-nid" style="flex:none">Volume NOT_IN_DATA</div>';
+    var L = 8, R = W - 270, cw = (R - L) / (rows.length + 8), t0 = +rows[0][0], x = function (t) { return L + ((t - t0) / 300000 + 0.5) * cw; };
+    var vol = k.map(function (r) { return +r[5]; }), avg = smaS(vol, VOL_AVG), vmax = 0, T = 14, B = H - 2;
+    k.forEach(function (r) { if (+r[0] >= t0) vmax = Math.max(vmax, +r[5]); });
+    var yv = function (v) { return B - (vmax ? v / vmax : 0) * (B - T); }, s = '<svg class="hm-vol" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" style="height:' + H + 'px">', pts = [];
+    k.forEach(function (r, i) {
+      if (+r[0] < t0) return;
+      var d = 2 * +r[9] - +r[5], xx = x(+r[0]);
+      s += '<rect x="' + (xx - cw * 0.36) + '" y="' + yv(+r[5]) + '" width="' + (cw * 0.72) + '" height="' + Math.max(0, B - yv(+r[5])) + '" class="hm-vb ' + (d >= 0 ? 'up' : 'down') + '"/>';
+      if (avg[i] != null) pts.push(xx.toFixed(1) + ',' + yv(Math.min(avg[i], vmax)).toFixed(1));
+    });
+    if (pts.length > 1) s += '<polyline points="' + pts.join(' ') + '" class="hm-vavg"/>';
+    return s + '<text x="' + (L + 4) + '" y="11" class="hm-vlt">Volume per 5m bar: green = buyers took more, red = sellers took more, white line = normal (20-bar average)</text></svg>';
+  }
+  // One line that says what the volume means now (operator 11-13: "if it is increasing or decreasing, what does it mean?").
+  // From CLOSED 5m bars only. Words are OURS and describe, they do not forecast. VFI = LazyBear Volume Flow Indicator from indread.js.
+  function volRead(ctx) {
+    var k = (ctx.k5 || []).filter(function (r) { return +r[0] + 300000 <= ctx.now; }), n = k.length;
+    if (n < VOL_AVG + 1) return { ratio: null, cls: 'dim', txt: 'Volume: not enough closed bars yet', html: '<div class="hm-sw hm-vr2 dim"><b>Volume</b> not enough closed bars yet</div>' };
+    var v = function (i) { return +k[i][5]; }, sum = 0; for (var i = n - 1 - VOL_AVG; i < n - 1; i++) sum += v(i);
+    var last = k[n - 1], ratio = v(n - 1) / (sum / VOL_AVG), buy = 2 * +last[9] - +last[5] >= 0, up = +last[4] >= +last[1];
+    var a3 = (v(n - 1) + v(n - 2) + v(n - 3)) / 3, b3 = (v(n - 4) + v(n - 5) + v(n - 6)) / 3, tr = b3 > 0 && a3 / b3 >= 1.25 ? 'rising' : b3 > 0 && a3 / b3 <= 0.8 ? 'falling' : 'steady';
+    var size = ratio >= VOL_HI ? 'busy' : ratio < VOL_LO ? 'thin' : 'normal', cls = size === 'busy' ? (buy ? 'up' : 'down') : 'dim';
+    var mean = size === 'busy' ? (up === buy ? 'the ' + (up ? 'rise' : 'fall') + ' had real ' + (buy ? 'buying' : 'selling') + ' behind it' : 'heavy ' + (buy ? 'buying' : 'selling') + ' but the bar closed ' + (up ? 'up' : 'down') + ': the other side soaked it up')
+      : size === 'thin' ? 'few traders took part in the last move' : 'nothing unusual';
+    var T = ctx.ind, chips = ['15m', '1h', '4h'].map(function (tf) {
+      var c = T && T.r && T.r[tf] && T.r[tf].cells && T.r[tf].cells.vfi; if (!c || c.v == null) return '';
+      return '<span class="hm-wc ' + (c.v > 0 ? 'up' : c.v < 0 ? 'down' : 'dim') + '"><i>' + tf + '</i>' + (c.v > 0 ? 'in' : c.v < 0 ? 'out' : 'flat') + (c.rising > 0 ? ' ▲' : c.rising < 0 ? ' ▼' : '') + '</span>';
+    }).join('');
+    var txt = 'Volume: last closed 5m bar ' + ratio.toFixed(1) + 'x normal (' + size + '), ' + (buy ? 'buyers' : 'sellers') + ' took more, 3-bar trend ' + tr + ': ' + mean;
+    var tip = 'Busy = 1.5x the 20-bar average or more, thin = under 0.7x (our thresholds, not backtested). Money flow = LazyBear Volume Flow Indicator on closed bars: in = above zero, out = below zero, arrow = rising or falling.';
+    return { ratio: ratio, size: size, buy: buy, trend: tr, cls: cls, txt: txt,
+      html: '<div class="hm-sw hm-vr2 ' + cls + '" title="' + esc(tip) + '"><b>Volume</b> ' + esc(txt.slice(8)) + (chips ? ' <span class="hm-wl">Money flow (VFI):</span> ' + chips : '') + '</div>' };
+  }
   function chart(ctx, md, W, H) {
     var rows = (ctx.rows5 || []).slice(-144);
     if (rows.length < 5 || !(md.px > 0)) return '<div class="hm-nid">Candles NOT_IN_DATA (no feed yet)</div>';
@@ -152,20 +196,22 @@
       s += '<line x1="' + xx + '" x2="' + xx + '" y1="' + y(h) + '" y2="' + y(l) + '" class="hm-wk ' + col + '"/>' +
            '<rect x="' + (xx - cw * 0.36) + '" y="' + Math.min(y(o), y(c)) + '" width="' + (cw * 0.72) + '" height="' + Math.max(1, Math.abs(y(o) - y(c))) + '" class="hm-bd ' + col + '"/>';
     });
-    // volume (operator 11-10): Binance spot 5m bars in the bottom band, green = buyers took more (taker buy > sell), red = sellers;
-    // yellow line = cumulative delta (CVD) over the bars shown. Same time axis as the candles.
-    var kv = (ctx.k5 || []).filter(function (r) { return +r[0] >= t0; });
-    if (kv.length > 3) {
-      var vb = B - 2, vh = (B - T) * 0.16, vmax = 0, cum = 0, cmin = 0, cmax = 0, pts = [];
-      kv.forEach(function (r) { vmax = Math.max(vmax, +r[5]); cum += 2 * +r[9] - +r[5]; cmin = Math.min(cmin, cum); cmax = Math.max(cmax, cum); pts.push([x(+r[0]), cum]); });
-      s += '<text x="' + (L + 2) + '" y="' + (vb - vh - 3) + '" class="hm-vlt">Volume 5m (green buyers, red sellers) · yellow = CVD</text>';
-      kv.forEach(function (r) {
-        var hh = vmax ? +r[5] / vmax * vh : 0, d = 2 * +r[9] - +r[5];
-        s += '<rect x="' + (x(+r[0]) - cw * 0.36) + '" y="' + (vb - hh) + '" width="' + (cw * 0.72) + '" height="' + hh + '" class="hm-vb ' + (d >= 0 ? 'up' : 'down') + '"/>';
+    // Volume left the price pane (operator 11-13: "I cannot see the wicks properly"): it has its own strip under the chart, volPane().
+    // Moving averages on the 5m candles (operator 11-13: "the MA/EMAs Krown uses"). Lengths SOURCED: 21 EMA, 55 EMA, 200 simple
+    // (research/ma_layer_2026-11/MA_CONCEPTS.md, KR-M01). Drawn only where the average exists and sits inside the price range.
+    var all5 = ctx.rows5 || [], cl5 = all5.map(function (r) { return +r[4]; }), off = all5.length - rows.length, leg = '';
+    MA5.forEach(function (m, mi) {
+      var ser = m[0] === 'ema' ? emaS(cl5, m[1]) : smaS(cl5, m[1]), seg = [], d = '';
+      rows.forEach(function (r, j) {
+        var v = ser[off + j];
+        if (v != null && v >= lo && v <= hi) seg.push(x(+r[0]).toFixed(1) + ',' + y(v).toFixed(1));
+        else { if (seg.length > 1) d += '<polyline points="' + seg.join(' ') + '" class="hm-ma m' + mi + '"/>'; seg = []; }
       });
-      var cy2 = function (v) { return vb - (cmax > cmin ? (v - cmin) / (cmax - cmin) : 0.5) * vh; };
-      s += '<polyline points="' + pts.map(function (p) { return p[0].toFixed(1) + ',' + cy2(p[1]).toFixed(1); }).join(' ') + '" class="hm-cvd"/>';
-    }
+      if (seg.length > 1) d += '<polyline points="' + seg.join(' ') + '" class="hm-ma m' + mi + '"/>';
+      var lastV = ser[ser.length - 1];
+      s += d; leg += '<tspan class="hm-mal m' + mi + '" dx="10">━ ' + m[2] + (lastV != null ? ' ' + n0(lastV) : ' needs ' + m[1] + ' bars') + '</tspan>';
+    });
+    s += '<text x="' + (L + 4) + '" y="' + (T + 13) + '" class="hm-ax">Averages on 5m (Krown’s set)' + leg + '</text>';
     // now line + tag
     var py = y(md.px);
     s += '<line x1="' + L + '" x2="' + R + '" y1="' + py + '" y2="' + py + '" class="hm-now"/>';
@@ -219,22 +265,36 @@
   }
   // Indicator read: ONE verdict row per timeframe in plain words (indread.js verdict()), then the so-what line.
   function indCard(ctx, md) {
-    var T = ctx.ind, sub = '<span class="hm-sub" title="Six closed-bar readings per timeframe (Volume Flow, Squeeze, ADX/DI, WaveTrend, RSI, buy-vs-sell volume) counted; a lead of 2 or more wins. Our rule, not backtested.">closed bars, 6 readings counted</span>';
+    var T = ctx.ind, sub = '<span class="hm-sub" title="Six closed-bar readings per timeframe (Volume Flow, Squeeze, ADX/DI, WaveTrend, RSI, buy-vs-sell volume) counted; a lead of 2 or more wins. Our rule, not backtested.">closed bars only</span>';
     if (!T) return '<div class="hm-card"><div class="hm-h">Who is winning</div><div class="hm-nid">Binance candles NOT_IN_DATA (indread.js or feed missing)</div></div>';
     var V = T.ver || {}, coil = false;
     var rows = (T.tfs || []).map(function (x) {
       var v = V[x[0]];
       if (!v) return '<div class="hm-vr dim"><b>' + x[0] + '</b><span>no candles</span></div>';
       if (v.coiled) coil = true;
-      return '<div class="hm-vr ' + (v.side > 0 ? 'up' : v.side < 0 ? 'down' : 'dim') + '"><b>' + x[0] + '</b><span>' + esc(v.word) + '</span><small>' + (v.side < 0 ? v.dn : v.up) + ' of ' + v.n + (v.coiled ? ' <em>COILED</em>' : '') + '</small></div>';
+      return '<div class="hm-vr ' + (v.side > 0 ? 'up' : v.side < 0 ? 'down' : 'dim') + '"><b>' + x[0] + '</b><span>' + esc(v.word) + '</span><small>' + (v.side < 0 ? v.dn + ' of ' + v.n + ' say down' : v.side > 0 ? v.up + ' of ' + v.n + ' say up' : v.up + ' up, ' + v.dn + ' down of ' + v.n) + (v.coiled ? ' <em>COILED</em>' : '') + '</small></div>';
     }).join('');
     var s15 = V['15m'] ? V['15m'].side : 0, s1 = V['1h'] ? V['1h'].side : 0, side = s15 && s1 && s15 !== s1 ? 0 : (s1 || s15);
-    var legend = coil ? '<div class="hm-lg">COILED = quiet before a move; direction unknown.</div>' : '';
+    var legend = '<div class="hm-lg">6 readings vote per timeframe: money flow, squeeze, trend strength, WaveTrend, RSI, buy vs sell volume. A lead of 2 wins.' + (coil ? ' COILED = quiet before a move; direction unknown.' : '') + '</div>';
     var stale = T.stale ? '<div class="hm-is amber">STALE: last 15m candle closed ' + Math.round(T.age / 60000) + ' min ago (feed stalled?) - these readings are old</div>' : '';
     return '<div class="hm-card"><div class="hm-h">Who is winning' + sub + '</div>' + stale + rows + legend + soWhat(side, md) + '</div>';
   }
   // Liquidations: one column per window; red part = longs forced out, green part = shorts; height = share, total under it.
   var LIQ_WIN = [['1m', 60000], ['2m', 120000], ['3m', 180000], ['5m', 300000], ['7m', 420000], ['10m', 600000], ['15m', 900000], ['30m', 1800000], ['1h', 3600000], ['2h', 7200000], ['4h', 14400000]];
+  // Does a 1m / 2m burst continue or reverse? Only a measured share with its n is ever shown (liq_rates.js, LIQ_RATES.read); with no
+  // history recorded yet the card says so instead of guessing (operator 11-13: "how much is signaling is not known to me").
+  var LR = (typeof module !== 'undefined' && module.exports) ? (function () { try { return require('./liq_rates.js'); } catch (e) { return null; } })() : root.LIQ_RATES;
+  function liqMeaning(l) {
+    var out = [];
+    ['1m', '2m'].forEach(function (w) {
+      var s = l.win[w]; if (!s || !(s.long + s.short)) return;
+      var side = s.long >= s.short ? 'long' : 'short', amt = Math.max(s.long, s.short), r = null;
+      try { r = LR && LR.read ? LR.read(w, side, amt) : null; } catch (e) { r = null; }
+      if (r && r.n) out.push(w + ': ' + usd(amt) + ' of ' + side + 's forced out. In the past, ' + Math.round(r.cont15 * 100) + '% of bursts this size kept going 15 min later (n ' + r.n + ')');
+    });
+    if (out.length) return '<div class="hm-sw"><b>Measured:</b> ' + esc(out.join('; ')) + '</div>';
+    return '<div class="hm-lg">Continue or reverse after a 1-2 min burst: NOT MEASURED yet (no liquidation history is recorded). Treat a burst as "something happened here", not as a direction.</div>';
+  }
   function liqCard(ctx, md) {
     var l = ctx.liq; if (!l || !l.win) return '<div class="hm-card"><div class="hm-h">Liquidations</div><div class="hm-nid">no feed</div></div>';
     var cols = LIQ_WIN.map(function (w) {
@@ -244,8 +304,8 @@
         '<b>' + w[0] + '</b><small>' + (tot ? usd(tot) : '0') + '</small></div>';
     }).join('');
     var w15 = l.win['15m'] || { long: 0, short: 0 }, a = md && md.lad && md.lad.above[0], b = md && md.lad && md.lad.below[0], lvl = function (z) { return z ? ' at ' + n0(z.price) + ' (' + esc(z.name) + ')' : ''; };
-    var sw = !(w15.long + w15.short) ? 'quiet, ignore' : w15.long >= 2 * w15.short ? 'longs were forced out, selling fuel is spent: a long idea only if price holds the floor' + lvl(b) : w15.short >= 2 * w15.long ? 'shorts were forced out, buying fuel is spent: a short idea only if price holds the ceiling' + lvl(a) : 'both sides hit, no lean: wait';
-    return '<div class="hm-card"><div class="hm-h">Forced selling and buying <span class="hm-sub">red = longs forced out, green = shorts; last 15 min</span></div><div class="hm-lcs">' + cols + '</div><div class="hm-sw"><b>So what:</b> ' + sw + '</div></div>';
+    var sw = !(w15.long + w15.short) ? 'quiet in the last 15 min' : w15.long >= 2 * w15.short ? usd(w15.long) + ' of longs were forced to sell in 15 min (that selling pushed price down)' + (b ? '; next floor' + lvl(b) : '') : w15.short >= 2 * w15.long ? usd(w15.short) + ' of shorts were forced to buy in 15 min (that buying pushed price up)' + (a ? '; next ceiling' + lvl(a) : '') : 'both sides were hit in 15 min, no lean';
+    return '<div class="hm-card"><div class="hm-h">Forced selling and buying <span class="hm-sub">red = longs forced to sell, green = shorts forced to buy</span></div><div class="hm-lcs">' + cols + '</div><div class="hm-sw"><b>What it shows:</b> ' + sw + '</div>' + liqMeaning(l) + '</div>';
   }
   // Venues that answered this cycle with their share of the open positions in BTC (shown as a footnote, it is a share, not a change): "Bybit 38% + Hyperliquid 27% + ..." (operator 11-10)
   function venueWords(m) {
@@ -268,7 +328,12 @@
     return '<div class="hm-card"><div class="hm-h">Positions <span class="hm-sub" title="' + esc((m.missing && m.missing.length ? 'Not read: ' + m.missing.join('; ') : 'All venues read') + '. Reading words: our rule, not backtested.') + '">open positions vs price</span></div>' +
       '<div class="hm-mon">' + arrow + '<span class="hm-say">' + esc(say) + '</span></div><div class="hm-from">from: ' + esc(venueWords(m)) + ' (each venue’s share of the total)</div></div>';
   }
+  var NF = (typeof module !== 'undefined' && module.exports) ? (function () { try { return require('./news_flash.js'); } catch (e) { return null; } })() : root.NEWSFLASH;
   function newsCard(ctx) {
+    if (NF && NF.html) {
+      var ev0 = ctx.ev ? '<span class="hm-ev">' + esc(ctx.ev.name) + ' in ' + esc(ctx.ev.inTxt) + '</span>' : '';
+      return '<div class="hm-card hm-news"><div class="hm-h">News that matters <span class="hm-sub">last hour; the rest is on the News page</span>' + ev0 + '</div>' + NF.html(ctx.news || [], ctx.now) + '</div>';
+    }
     var list = (ctx.news || []).filter(function (x) { return ctx.now - x.t <= 3600000; }).sort(function (a, b) { return b.score - a.score || b.t - a.t; }).slice(0, 4);
     var rows = list.map(function (x) {
       var c = x.tag === 'POSITIVE' ? 'up' : x.tag === 'NEGATIVE' ? 'down' : 'dim';
@@ -335,7 +400,8 @@
   // tooltip and, when opened, above the strips (no information lost). Open/closed is remembered per viewer in localStorage (try/catch).
   var WT_KEY = 'mts_wt_open';
   function wtStore() { try { return (typeof globalThis !== 'undefined' && globalThis.localStorage) || root.localStorage || null; } catch (e) { return null; } }
-  function wtLoad() { try { var st = wtStore(); return !!st && st.getItem(WT_KEY) === '1'; } catch (e) { return false; } }
+  // Open by default (operator 11-13: "WaveTrend has gone completely"); only his own click on [hide strips] closes it, and that is remembered.
+  function wtLoad() { try { var st = wtStore(); return !st || st.getItem(WT_KEY) !== '0'; } catch (e) { return true; } }
   function wtSave(v) { try { var st = wtStore(); if (st) st.setItem(WT_KEY, v ? '1' : '0'); } catch (e) { /* storage blocked: choice lives for this page only */ } }
   var wtOpen = wtLoad();   // strips behind a click, collapsed by default; kept across the 1 s re-render
   // operator 11-13 "Yes, fold them": seven low-evidence readings behind ONE click on the Home rail, collapsed by default, remembered per viewer.
@@ -392,10 +458,21 @@
     if (md.lad.at) lv.push(md.lad.at);
     if (md.lad.above[0] && lv.indexOf(md.lad.above[0]) < 0) lv.push(md.lad.above[0]);
     if (md.lad.below[0] && lv.length < 2) lv.push(md.lad.below[0]);
-    var v = lv.map(function (z) { try { return LS.story(z, ctx.k15, ctx.now, ex); } catch (e) { return null; } });
+    var v = lv.map(function (z) { try { var st = LS.story(z, ctx.k15, ctx.now, ex); if (st) st.zone = z; return st; } catch (e) { return null; } });
     ctx._st = { md: md, v: v }; return v;
   }
   var ST_CLS = { 'REJECTED': 'turn', 'FAILED BREAK': 'turn', 'ACCEPTED': 'thru', 'BREAKING': 'thru', 'TESTING': 'amber', 'APPROACHING': 'amber', 'AWAY': 'dim' };
+  var ST_SAY = { 'AWAY': 'far from it, nothing to read yet', 'APPROACHING': 'close, not touched yet', 'TESTING': 'touching it now', 'REJECTED': 'touched it and turned back',
+    'FAILED BREAK': 'closed beyond it, then came back', 'BREAKING': 'one 15m close beyond it', 'ACCEPTED': 'two 15m closes beyond it: it gave way' };
+  var AN = (typeof module !== 'undefined' && module.exports) ? (function () { try { return require('./analyst_note.js'); } catch (e) { return null; } })() : root.ANOTE;
+  // What the analyst said at this level and what price did to it since (operator 11-13: "after it has been broken or reclaimed, how do I know what the analyst meant?")
+  function analystLines(ctx, z) {
+    if (!AN || !z || !z.items) return '';
+    return z.items.filter(function (it) { return it.src === 'analyst' && it.who; }).slice(0, 2).map(function (it) {
+      var r = null; try { r = AN.status({ price: it.price, published: it.published, bias: it.bias, who: it.who, said: it.said }, ctx.k1h || ctx.k15, ctx.now); } catch (e) { r = null; }
+      return r && r.text ? '<div class="hm-an ' + (r.state === 'BROKEN' ? 'down' : r.state === 'RECLAIMED' || r.state === 'HELD' ? 'up' : 'dim') + '">' + esc(r.text) + '</div>' : '';
+    }).join('');
+  }
   function storyCard(ctx, md) {
     var v = stories(ctx, md);
     if (!v) return '<div class="hm-card"><div class="hm-h">At the level</div><div class="hm-nid">15m candles NOT_IN_DATA</div></div>';
@@ -403,8 +480,8 @@
       var sc = ST_CLS[st.state] || 'dim', idea = st.idea ? '<b class="hm-idea ' + (st.idea === 'SHORT' ? 'down' : 'up') + '">' + st.idea + ' IDEA</b>' : '';
       var chips = st.ev.map(function (e) { return '<span class="hm-ec ' + e.cls + '" title="' + esc(e.t) + '">' + esc(e.k) + '</span>'; }).join('');
       return '<div class="hm-st"><div class="hm-st1"><span class="hm-stp ' + (st.res ? 'down' : 'up') + '">' + n0(st.price) + '</span> <span class="hm-stn">' + esc(st.name) + '</span>' +
-        '<span class="hm-sts ' + sc + '">' + st.state + '</span>' + idea + '</div>' +
-        '<div class="hm-ecs">' + (chips || '<em>no evidence yet</em>') + '<span class="hm-sc2">turn ' + st.turn + ' / through ' + st.thru + '</span></div>' +
+        '<span class="hm-sts ' + sc + '">' + st.state + '</span>' + idea + '</div>' + '<div class="hm-stm">' + esc(st.state) + ' = ' + esc(ST_SAY[st.state] || '') + '</div>' + analystLines(ctx, st.zone) +
+        '<div class="hm-ecs">' + (chips || '<em>no evidence yet</em>') + '<span class="hm-sc2" title="Each chip is one piece of evidence on 15m closes: green = for a turn back at the level, red = for a break through it.">evidence: ' + st.turn + ' for a turn back, ' + st.thru + ' for a break</span></div>' +
         '<div class="hm-stv">' + esc(st.valid) + (st.crowd ? '<br><span class="amber">' + esc(st.crowd) + '</span>' : '') + '</div></div>';
     }).join('');
     var id2 = v.filter(function (st) { return st && st.idea; }), mx = id2.length > 1 && id2.some(function (st) { return st.idea !== id2[0].idea; });
@@ -504,10 +581,10 @@
       var cdec = (a ? ' Close above ' + lvl(a) + ' = long, ' : ' ') + (b ? (a ? 'below ' : 'Close below ') + lvl(b) + ' = short.' : '');
       return '<div class="hm-card hm-bias conflict" title="' + esc(ctxt + '.' + cdec.replace(/<[^>]*>/g, '')) + '"><div class="hm-h">Bias <b class="amber">STAND ASIDE</b></div><div class="hm-say amber">' + esc(ctxt) + '.' + cdec + '</div></div>';
     }
-    var cl = '<span class="' + c(gw) + '">gauge ' + md.dir + ' ' + Math.max(md.bull, md.bear) + '/' + md.n + '</span> | <span class="' + c(pw) + '">1h-4h pulse ' + pw + '</span> | <span class="' + c(lw) + '">level card ' + lw + '</span>';
+    var cl = '<span class="' + c(gw) + '">now (minutes) ' + gw + ' ' + Math.max(md.bull, md.bear) + '/' + md.n + '</span> | <span class="' + c(pw) + '">bigger trend (1h-4h) ' + pw + '</span> | <span class="' + c(lw) + '">at the level ' + lw + '</span>';
     var dec = (a ? '<span class="up">15m close above ' + n0(a.price) + ' (' + esc(a.name) + '): long confirmed</span>' : '') + (a && b ? ' ' : '') +
       (b ? '<span class="down">15m close below ' + n0(b.price) + ' (' + esc(b.name) + '): short confirmed</span>' : '');
-    var why = agree ? 'All clocks agree.' : (gw !== 'WAIT' ? 'The live gauge (minutes) leads, 1h-4h is the backdrop.' : (pw === 'UP' || pw === 'DOWN' ? 'Gauge is waiting: the 1h-4h lean leads.' : 'No clock leads yet.'));
+    var why = agree ? 'Short term, bigger trend and the level all agree.' : (gw !== 'WAIT' ? 'The next few minutes lean ' + gw + '; the bigger 1h-4h trend is ' + (pw === 'NO DATA' ? 'not read' : pw) + '. The short-term lean covers the next 15m candle only.' : (pw === 'UP' || pw === 'DOWN' ? 'No short-term lean; the bigger 1h-4h trend (' + pw + ') is the guide.' : 'Nothing leans yet.'));
     var txt = 'Bias ' + (win === 'WAIT' ? 'none yet' : win) + ': ' + cl.replace(/<[^>]*>/g, '') + '. ' + why + ' ' + dec.replace(/<[^>]*>/g, '');
     return '<div class="hm-card hm-bias ' + c(win) + '" title="' + esc(txt) + '"><div class="hm-h">Bias <b class="' + c(win) + '">' + (win === 'WAIT' ? 'none yet' : win) + '</b><span class="hm-sub">' + esc(why) + '</span></div>' +
       '<div class="hm-say">' + dec + '</div></div>';
@@ -522,11 +599,12 @@
       (md.lad.above[0] && inFrame(md, md.lad.above[0]) ? '<span class="hm-nx down">▲ ' + n0(md.lad.above[0].price) + ' <small>' + esc(md.lad.above[0].name) + ', ' + ((md.lad.above[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (md.lad.below[0] && inFrame(md, md.lad.below[0]) ? '<span class="hm-nx up">▼ ' + n0(md.lad.below[0].price) + ' <small>' + esc(md.lad.below[0].name) + ', ' + ((md.lad.below[0].price / md.px - 1) * 100).toFixed(2) + '%</small></span>' : '') +
       (ctx.scen && ctx.scen[0] ? '<span class="hm-nx dim">playbook: if up ' + n0(ctx.scen[0].up) + ' / if down ' + n0(ctx.scen[0].down) + '</span>' : '') + '</div>';
-    var wh = wtOpen ? Math.round(Math.min(300, Math.max(150, (H - 34) * 0.32))) : 0;
+    // Height budget (operator 11-13: "the chart occupies all the space"): candles, then the volume strip, then WaveTrend (open by default).
+    var wh = wtOpen ? Math.round(Math.min(300, Math.max(150, (H - 34) * 0.30))) : 0, vh = 78;
     if (!el._wtl) { el._wtl = true; var tg = function (e) { if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return; if (e.target.closest && e.target.closest('[data-wttoggle]')) { e.preventDefault(); wtOpen = !wtOpen; wtSave(wtOpen); render(el, el._ctx); } else if (e.target.closest && e.target.closest('[data-foldtoggle]')) { e.preventDefault(); foldOpen = !foldOpen; foldSave(foldOpen); render(el, el._ctx); } }; el.addEventListener('click', tg); el.addEventListener('keydown', tg); }
     el._ctx = ctx;
     ctx._tm = null;   // trigger row removed 11-12 (he could not select or read it); timingStrip/timingOf stay for tests
-    el.innerHTML = '<div class="hm-chart">' + head + caption(ctx, md) + chart(ctx, md, W, H - 102 - wh) + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + newsCard(ctx) + foldCard(ctx, md) + '</div>';
+    el.innerHTML = '<div class="hm-chart">' + head + caption(ctx, md) + chart(ctx, md, W, Math.max(220, H - 102 - 26 - vh - wh)) + volPane(ctx, md, W, vh) + volRead(ctx).html + wtSoWhat(ctx, md) + (wtOpen ? wtLanes(ctx, W, wh) : '') + '</div><div class="hm-rail">' + biasLine(ctx, md) + boardCard(ctx, md) + storyCard(ctx, md) + indCard(ctx, md) + liqCard(ctx, md) + newsCard(ctx) + foldCard(ctx, md) + '</div>';
   }
   var CSS = '#p-home{display:grid;grid-template-columns:70% 30%;gap:8px;padding:6px!important;overflow:hidden!important}' +
     '.hm-chart{position:relative;min-width:0;display:flex;flex-direction:column}.hm-svg{width:100%;flex:1;min-height:0}' +
@@ -559,7 +637,8 @@
     '.hm-idea{font:700 12px system-ui!important;padding:0 6px;border-radius:4px;color:#111}.hm-idea.down{background:var(--down);color:#fff}.hm-idea.up{background:var(--up)}' +
     '.hm-ecs{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;align-items:center}.hm-ec{font:700 10px system-ui;padding:0 5px;border-radius:3px;background:var(--line);color:var(--fg)}.hm-ec.turn{background:#166534;color:#dcfce7}.hm-ec.thru{background:#7f1d1d;color:#fee2e2}.hm-sc2{margin-left:auto;color:var(--dim);font-size:10px}.hm-ecs em{color:var(--dim);font-size:11px}' +
     '.hm-stv{font-size:11px;color:var(--fg);margin-top:2px}.amber{color:var(--amber)}' +
-    '.hm-vb{opacity:.55}.hm-vb.up{fill:var(--up)}.hm-vb.down{fill:var(--down)}.hm-cvd{fill:none;stroke:#facc15;stroke-width:1.5}.hm-vlt{fill:var(--dim);font:11px system-ui}' +
+    '.hm-vb{opacity:.75}.hm-vb.up{fill:var(--up)}.hm-vb.down{fill:var(--down)}.hm-vavg{fill:none;stroke:var(--fg);stroke-width:1.2;opacity:.8}.hm-vlt{fill:var(--dim);font:11px system-ui}.hm-vol{width:100%;flex:none;border-top:1px solid var(--line)}' +
+    '.hm-ma{fill:none;stroke-width:1.6}.hm-ma.m0{stroke:#38bdf8}.hm-ma.m1{stroke:#c084fc}.hm-ma.m2{stroke:var(--fg);stroke-dasharray:6 3}.hm-mal{font-weight:700}.hm-mal.m0{fill:#38bdf8}.hm-mal.m1{fill:#c084fc}.hm-mal.m2{fill:var(--fg)}.hm-vr2.up b,.hm-vr2.down b{color:inherit}.hm-vr2.up{border-left:3px solid var(--up)}.hm-vr2.down{border-left:3px solid var(--down)}' +
     '.hm-wts{width:100%;flex:none;border-top:1px solid var(--line)}.hm-wth{fill:var(--dim);font:700 10px system-ui}.hm-wtl{fill:var(--fg);font:700 13px var(--mono,monospace)}.hm-wtk{fill:var(--dim);font:10px system-ui}' +
     '.hm-wt0{stroke:var(--dim);stroke-width:.5;opacity:.6}.hm-wtb{stroke:var(--down);stroke-width:.5;stroke-dasharray:3 3;opacity:.6}.hm-wtsep{stroke:var(--line);stroke-width:1}' +
     '.hm-w1{fill:none;stroke:#22c55e;stroke-width:2}.hm-w2{fill:none;stroke:#ef4444;stroke-width:1.5}.hm-wx.up{fill:#22c55e}.hm-wx.down{fill:#ef4444}.hm-wx{stroke:#111;stroke-width:.5}' +
@@ -577,9 +656,9 @@
     '.hm-bias.up{border-color:var(--up)}.hm-bias.down{border-color:var(--down)}.hm-say .up{color:var(--up)}.hm-say .down{color:var(--down)}' +
     '.hm-vr{display:grid;grid-template-columns:34px 1fr auto;gap:6px;align-items:baseline;font-size:13px;margin-top:3px;padding-left:6px;border-left:4px solid var(--dim)}.hm-vr.up{border-left-color:var(--up)}.hm-vr.down{border-left-color:var(--down)}.hm-vr b{font:700 13px var(--mono,monospace);color:var(--fg)}.hm-vr.up span{color:var(--up)}.hm-vr.down span{color:var(--down)}.hm-vr small{color:var(--dim);font-size:11px}.hm-vr em{font-style:normal;font-weight:700;color:var(--amber)}' +
     '.hm-lg{font-size:11px;color:var(--dim);margin-top:2px}.hm-fold{max-height:60vh;overflow:auto}.hm-cap{font-size:12px;margin:2px 0 0;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-sl{stroke:var(--dim);stroke-width:1;stroke-dasharray:2 4;opacity:.8}.hm-fm.up{fill:var(--up)}.hm-fm.down{fill:var(--down)}.hm-fm.amber{fill:var(--amber)}.hm-fm{stroke:var(--bg,#000);stroke-width:1}.hm-sw{font-size:12px;margin-top:4px;padding:2px 6px;border-radius:4px;background:var(--line);color:var(--fg)}.hm-wc{display:inline-block;margin-right:8px;font-size:11px;font-weight:600}.hm-wc i{font-style:normal;font-weight:400;color:var(--dim);margin-right:2px}.hm-wc.up{color:var(--up)}.hm-wc.down{color:var(--down)}.hm-wc.dim{color:var(--dim)}.hm-wl{font-size:11px;color:var(--dim);margin-left:4px}.hm-wfull{font-weight:400}.hm-sw b{color:var(--amber)}.hm-sw small{color:var(--dim);font-size:10px}.hm-wts+.hm-sw{margin:0}.hm-wsw{cursor:pointer}div.hm-sw{flex:none}' +
-    '.hm-bias.conflict{border-color:var(--amber)}' +
+    '.hm-bias.conflict{border-color:var(--amber)}.hm-stm{font-size:11px;color:var(--dim)}.hm-an{font-size:11px;margin-top:1px;padding-left:6px;border-left:2px solid currentColor}.hm-an.dim{color:var(--fg);border-left-color:var(--dim)}' +
     '@keyframes hmfl{50%{opacity:.35}}';
-  function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS; doc.head.appendChild(st); }
+  function injectCss(doc) { if (!doc || doc.getElementById('hm-css')) return; var st = doc.createElement('style'); st.id = 'hm-css'; st.textContent = CSS + (NF && NF.CSS || ''); doc.head.appendChild(st); }
   // Flag log helpers (pure, tested in node): append with cap, and CSV for the Download button.
   var FLAG_COLS = ['t', 'kind', 'side', 'level', 'evidence', 'price'];
   function flagLogAdd(log, row, cap) { var out = (log || []).concat([row]); return out.length > cap ? out.slice(out.length - cap) : out; }
@@ -587,6 +666,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _foldCard: foldCard, _boardLog: boardLog, _boardLogReset: function () { FLB.sig = null; }, _foldSetOpen: function (v) { foldOpen = !!v; foldSave(foldOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _inFrame: inFrame, _boardCard: boardCard };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _foldCard: foldCard, _boardLog: boardLog, _boardLogReset: function () { FLB.sig = null; }, _foldSetOpen: function (v) { foldOpen = !!v; foldSave(foldOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _inFrame: inFrame, _boardCard: boardCard, _volPane: volPane, _volRead: volRead, _emaS: emaS, _smaS: smaS, _storyCard: storyCard, _newsCard: newsCard, _liqMeaning: liqMeaning, MA5: MA5 };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);
