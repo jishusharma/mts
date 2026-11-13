@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T05:08:25Z",
   "commands": [
     "gh run view 43278279491 --json conclusion,event,jobs",
     "gh run view 43275791086 --json conclusion,event,jobs"
@@ -18,6 +19,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "8 of 60 runs cancelled: 6 by 30-min test-hang timeout (fixed 11-12), 2 mark-green pending-",
+      "ref": "4fd12cdd1",
+      "utc": "2026-11-13T05:08:25Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert \"Revert e9de2fb4 (off-gate tier): CI red, test_ci_deps_lint fails on the new offgat",
@@ -28,13 +35,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no cancels since 20:37Z 11-12",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T03:31:26Z",
   "refs": [],
-  "result": "",
+  "result": "8 of 60 runs cancelled: 6 by 30-min test-hang timeout (fixed 11-12), 2 mark-green pending-cancel (fixed 4fd12cdd)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     ".github/workflows/ci.yml"
   ],
@@ -46,12 +59,13 @@
   "sources": [
     "Supervisor C"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "gh run view 43278279491 and 43275791086 --json (conclusion, event, jobs) and check workflow events",
     "Find the cancelling actor (concurrency group, another workflow, manual cancel, timeout)",
     "Fix and verify with gh run list"
   ],
+  "taken": "2026-11-13T05:08:25Z",
   "tests": "Workflow/CI config change; verify by gh run list after a burst of pushes.",
   "title": "ci-fast-track-runs-cancelled-1113",
   "weight": "",
