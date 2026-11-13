@@ -80,7 +80,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `rsi_levels`: D3 tolerance study done | module backtest/layers/rsi; rsi_events
 - Layer `rsi_divergence`: no edge, all TFs | module backtest/layers/rsi/run_divergence_mtf.py
 - Backtests (layer_map.json, newest first):
-  - 2026-11-13 `RSI-EXTREME-CONFIRM-1H-20261113`: FAIL: 0/384 pass, 0 BH-significant on DEV or VALIDATION; only VAL-positive pocket is negative in DEV and RECENT | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md`
   - 2026-11-05 `KURISKO-QR-DEV-20261105`: BLOCKED: PRE_REG froze 0 of 8 cells (fee-dominated or underpowered); run_dev.py guard refused, no outcome read | `MyTradingSys/research/kurisko_2026-10-18/RESULT.md`
   - 2026-11-04 `RSI-DEEP-PRESTUDIES`: no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/ | `MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md`
   - 2026-10-09 `RSI-DIV-MTF`: no edge on any timeframe that reached 300 events; 31 of 32 net negative; 6h and 2d leads have n 6-54 | `MyTradingSys/research/rsi_divergence_mtf_2026-10-09/RESULT.md`

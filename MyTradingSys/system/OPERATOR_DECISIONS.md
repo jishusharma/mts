@@ -2474,6 +2474,13 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Applied: registry rows moved to `_retired`, Home tiles, mock page and generator removed. A session cannot delete artifacts: the operator deletes the 4 pages by hand (links in `_retired`), the 13 old copies on the jishu.sharma and jishu.awgp logins by hand.
 - Also decided (OURS, from his stamp complaint): a page stamp shows when the page's DATA was built, never when it was republished (`artifacts.py stamp --at`).
 
+## 2026-11-13 Keep only the 5 pinned pages: retire the other 7
+- Operator (relayed by the concept-decks session): keepers are MTS Home, CBP Analyst Desk, Test Simulator, Buy Crypto and Conceptualizer. Retire MTS Research Map, MTS Layers, Tom and Fabio: what they taught, Dark Horse Desk, Alt Plan Note 3, BTC daily session playbook and MTS edge: where, when, size.
+- Applied: the three registry pages (research_map, mts_layer_map, tom_fabio_deck) are `status: retire`, unpinned, off MTS Home and out of build and stale checks; the four never-registered pages are listed in `_retired.unregistered_old_pages`. A session cannot delete artifacts: the operator deletes all 7 by hand from the artifact menu (links in registry.json).
+- Not done (OURS, not cheap): MTS Layers' per-layer stuck/next lines were not folded into Conceptualizer; its data stays in LAYERS.md and the generator `make_layers_board.py` is kept unused. Conceptualizer covers concepts per trader, Layers covered cards per layer: different data.
+- Simplify pass on the keepers: MTS Home, Test Simulator, Buy Crypto, Conceptualizer: good enough, no change. CBP Analyst Desk: "What changed" repeats the Trail change log and the Alts tab repeats the retired Dark Horse list, but its generator lives outside the repo (F:/CryptoScrapper), so no repo-side fix; left for the CBP lane.
+
+
 
 ## 2026-11-13 ~14:08Z: two delivery modes for Gemini workers (SOLO, REVIEW)
 - Operator (voice): "it is much faster to work with Gemini models if they can just ship their work ... to you directly, so that you can directly review it and then based on that go to the trunk ... Gemini and similar models can push their work to the trunk when they are working alone, but when you are running super sessions, you can always ask them to provide everything to you directly without going to the trunk. They run whatever local tests and reviews they want ... and then it is shipped to you for review and implementation and then to trunk."
