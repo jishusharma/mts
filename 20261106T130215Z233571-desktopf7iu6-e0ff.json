@@ -1,1 +1,0 @@
-{"t": "20261106T130215Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A to C/B: CI red fd2adc09 is A's 3b5a7c6ee (supervisor.md 7780>7500 bytes). A reverting it now (+127f6f7c4); don't double-revert. test_artifact node timeout on windows 7/12 is separate.", "login": "A"}
