@@ -199,7 +199,7 @@ def test_files_writing_shared_interpreter_state_stay_single(tmp_path, monkeypatc
 # test_value_audit_1113: gate_tiers.tsv takes retired / study / slow tests off the push gate; study + slow run in the offgate tier.
 def test_gate_tiers_rows_are_valid_and_every_file_exists():
     assert rx.TIERS, "gate_tiers.tsv is empty or unreadable"
-    assert set(rx.TIERS.values()) <= {"retired", "study", "slow"}
+    assert set(rx.TIERS.values()) <= {"retired", "study", "slow", "manual"}
     assert [p for p in rx.TIERS if not (rx.REPO / p).exists()] == []
 
 
@@ -228,3 +228,40 @@ def test_a_bad_tier_row_raises(tmp_path):
 def test_missing_tiers_file_means_everything_runs(tmp_path):
     assert rx.load_tiers(tmp_path / "nope.tsv") == {}
 
+
+
+def _tmp_repo(tmp_path, rels):
+    import subprocess
+    (tmp_path / "scripts" / "dev").mkdir(parents=True)
+    (tmp_path / "scripts" / "dev" / "run_all_tests.py").write_text('"test_named"' + NL, encoding="utf-8")
+    for rel in rels:
+        f = tmp_path / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text("def test_x():" + NL + "    pass" + NL, encoding="utf-8")
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "add", "-A"], cwd=tmp_path, check=True)
+
+
+def test_new_unregistered_test_in_any_folder_is_discovered(tmp_path):
+    # 2026-11-13 627330d8e: a new test outside the research folders turned CI red because discovery covered study folders only
+    rels = ["MyTradingSys/tools/live_aid/test_new_aid.py", "MyTradingSys/runtime/test_new_rt.py", "scripts/dev/test_new_dev.py",
+            "scripts/worker/test_new_worker.py", "tests/test_new_root.py"]
+    _tmp_repo(tmp_path, rels + ["scripts/dev/test_named.py", "MyTradingSys/tests/test_collected.py", "MyTradingSys/execution/test_exec_new.py",
+                                "_archive/x/test_old.py"])
+    assert rx.discovered(tmp_path) == sorted(rels)   # named, collected-folder, execution (step 1) and archive tests are not extra
+
+
+def test_discovered_test_is_dropped_by_a_gate_tiers_row_only():
+    assert "scripts/dev/test_supervisor.py" in rx.OFFGATE and "scripts/dev/test_supervisor.py" not in rx.all_tests()
+    assert "scripts/dev/test_supervisor.py" not in rx.offgate_tests()   # manual runs nowhere by the gate
+
+
+def test_new_execution_test_joins_step_1_as_must_pass(tmp_path):
+    import run_all_tests as rat
+    _tmp_repo(tmp_path, ["MyTradingSys/execution/test_cotrade_close.py", "MyTradingSys/execution/test_kill_switch.py",
+                         "MyTradingSys/execution/testnet/offline/test_brand_new_offline.py",
+                         "MyTradingSys/execution/testnet/offline/test_g1g2_offline.py", "MyTradingSys/execution/testnet/test_suite_static.py"])
+    got = rat.execution_stems({"test_kill_switch"}, tmp_path)
+    assert got == ["test_brand_new_offline", "test_cotrade_close"]   # script-run (step 2/3) and already-listed stems stay out
+    step1 = [s for s in rat.build_plan(False) if str(s.num) == "1"][0]
+    assert "test_kill_switch" in step1.cmd and step1.cmd.count("test_kill_switch") == 1

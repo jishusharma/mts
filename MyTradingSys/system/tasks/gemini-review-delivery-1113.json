@@ -1,8 +1,9 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T14:12:43Z",
   "commands": [],
-  "created": "2026-11-13T14:02:32Z",
+  "created": "2026-11-13T14:11:43Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,13 +11,15 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "ship-remeasure-7day-1120",
+  "id": "gemini-review-delivery-1113",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
-  "prio": 3,
+  "note": "done in this commit: mechanism built and tested, no further work",
+  "pinned": false,
+  "prio": 2,
+  "reason": "done in this commit: mechanism built and tested, no further work",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -25,12 +28,12 @@
   "scope_out": [],
   "size": "",
   "sources": [
-    "ship-remeasure-1113"
+    "Lead 11-13 operator decision"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
-  "title": "2026-11-20: run scripts/dev/ship_timing_report.py for the 7 days after 2026-11-12T18:43:39Z and the 7 before; fill the 7-day verdict into SHIP_REMEASURE_2026-11-13.md (command at its end); do not start before 2026-11-20T18:44Z",
+  "title": "Gemini delivery modes SOLO/REVIEW: gemini_queue :review token + review-list",
   "weight": "",
   "worker": ""
 }
