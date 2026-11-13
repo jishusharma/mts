@@ -16,7 +16,15 @@
   "id": "gemini-i3-management-flash-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "i3: management flash (21 verbatim statements)",
+      "ref": "23f90b4ccf79",
+      "utc": "2026-11-12T21:01:50Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T20:45:00Z",
+  "refreshed": "2026-11-13T19:22:28Z",
   "refs": [
     "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md",
     "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
@@ -45,6 +53,7 @@
     "no numbers from our docs or your own knowledge: unstated = NOT_SEEN",
     "no YouTube or web fetch"
   ],
+  "scope_sha": "23f90b4ccf79",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"

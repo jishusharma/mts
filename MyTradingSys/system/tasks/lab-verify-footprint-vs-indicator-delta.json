@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "claim": "JIS-NUC",
   "commands": [
     "python scripts/dev/shot.py status"
   ],
@@ -20,13 +21,18 @@
     "session": "agent-ae86ceb045ca1dad3"
   },
   "created": "2026-10-26T14:56:57Z",
-  "depends_on": [],
+  "depends_on": [
+    "lab-verify-footprint-vs-indicator-delta-need-7-shots-exist-o"
+  ],
   "done_when": "per-bar table 13:00-14:30Z with indicator, footprint and spot delta, units and bar alignment stated, sign agreement counted (spot vs footprint was 3 of 6), one-line rule for which source Eagle_Eyes quotes",
   "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
   "goal": "Settle which delta the CoinGlass Net Delta indicator, the Legend footprint and spot taker flow each measure, because Eagle_Eyes read the 13:30Z 2026-10-26 bar as selling (indicator) and the footprint showed +2.13K buying",
+  "hosts": [
+    "JIS-NB"
+  ],
   "id": "lab-verify-footprint-vs-indicator-delta",
   "lane": "SONNET",
   "latest": [
@@ -60,12 +66,13 @@
   "scope_sha": "",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "active",
   "steps": [
     "From the 7 listed shots tabulate Net Delta indicator, footprint delta and spot taker delta (2*taker_buy-volume from data-api.binance.vision klines) per 15m bar 13:00-14:30Z",
     "State units and bar-label alignment for each source",
     "Write the one-line quoting rule into MyTradingSys/methodology/screenshot_intake.md section on CoinGlass"
   ],
+  "taken": "2026-11-13T18:33:32Z",
   "tests": "doc-only: per-bar table in the report; python scripts/dev/tasks.py lint passes",
   "title": "LAB-VERIFY: CoinGlass Net Delta indicator vs Legend footprint delta vs spot taker delta (units, bar alignment, sign agreement)",
   "weight": "",
