@@ -1447,6 +1447,16 @@ class SyncTest(unittest.TestCase):
         with self.assertRaisesRegex(sync.SyncError, r"index\.lock exists \(age 1m"):
             sync.lock_guard(self.a, fail=True, now=now, running=lambda: False)
 
+    def test_pending_retry_removes_the_empty_folder_a_process_held_open(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "held")
+        sh(self.a, "worktree", "remove", "--force", str(wt))
+        wt.mkdir()                                   # what Windows leaves when a shell sits inside the tree
+        (self.a / ".git" / sync.TIDY_PENDING).write_text(str(wt) + chr(10), encoding="utf-8")
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.retry_pending_removals(self.a)
+        self.assertFalse(wt.exists())
+
     def test_where_prints_one_tree_count_line(self):
         with contextlib.redirect_stdout(io.StringIO()):
             sync.new_worktree(self.a, "cnt-done")
