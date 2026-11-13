@@ -187,7 +187,7 @@ def test_announce_republish_prints_line_and_asks_when_not_a_publisher(tmp_path, 
     cbp_run.announce_republish(out=out.append, ask=asks.append, login="A")
     slugs = [x.split()[1] for x in out]
     assert out[0].startswith("REPUBLISH cbp_analyst_desk ") and "https://claude.ai/artifact/" in out[0]
-    assert {"cbp_analyst_desk", "buy_crypto", "live_feed_onepage_mock"} <= set(slugs)      # the pages CBP feeds, from registry producer
+    assert {"cbp_analyst_desk", "buy_crypto"} <= set(slugs)      # the pages CBP feeds, from registry producer
     assert len(asks) == 1 and "jishusharma1985" in asks[0]
     out2, asks2 = [], []
     cbp_run.announce_republish(out=out2.append, ask=asks2.append, login="C")      # the publisher login asks nobody

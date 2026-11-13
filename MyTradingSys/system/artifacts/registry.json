@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "f06c6e09bf56e161d6b465622bae9099bd78f5f30ce6ed50fe53550e151bae11",
-      "published_at": "2026-11-13T13:12:25Z"
+      "published_sha": "1bb0cf888845c131c30869e5d86b2d16644264e02a1de24368abd1d9ea6c7068",
+      "published_at": "2026-11-13T13:52:00Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -264,14 +264,14 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "da3c8fae9efb2d9b22a01159b5633eb0099fa5f77320d13deee6cd41a35cdb28",
+      "published_sha": "dbe435b32751b0c3159517222078ee6b08685285f00741e40c84cef951f817bb",
       "feeds": [
         "MyTradingSys/system/artifacts/registry.json"
       ],
       "max_age_h": 24,
-      "published_at": "2026-11-13T13:12:24Z",
+      "published_at": "2026-11-13T13:51:57Z",
       "feed_hashes": {
-        "MyTradingSys/system/artifacts/registry.json": "bfce6578c0d2789e5409dff4c58a063249889c7762eed73aa2e707c11d8b9dc3"
+        "MyTradingSys/system/artifacts/registry.json": "08a0fa23c58b461453b48edb296591928cb4bbc7f0deeaf7a5f05bdff4c340e7"
       }
     },
     {
@@ -344,30 +344,6 @@
       }
     },
     {
-      "slug": "tom_fabio_setup_review",
-      "status": "canonical",
-      "pinned": false,
-      "generator": "hand-made",
-      "single_owner": "jishusharma1985",
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/3ZV8nmv52mvW4FTQi5WLGQ"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-10-31"
-      },
-      "title": "Tom and Fabio Setup Review",
-      "html": null,
-      "owner_app": "jishusharma1985",
-      "refresh": "manual (session that edits it)",
-      "db": [],
-      "purpose": "Review of the Tom and Fabio setups.",
-      "notes_go_to": "Read only.",
-      "note": "Registered 2026-10-31 (was published but unlisted).",
-      "published_sha": null
-    },
-    {
       "slug": "btc_live_aid",
       "status": "retire",
       "pinned": false,
@@ -422,42 +398,6 @@
       }
     },
     {
-      "slug": "live_feed_onepage_mock",
-      "title": "Live feed one page",
-      "status": "canonical",
-      "pinned": true,
-      "generator": "hand-made (session live-onepage-c, branch claude/live-feed-onepage-1104)",
-      "html": "MyTradingSys/system/artifacts/LIVE_ONEPAGE_MOCK_2026-11-04.html",
-      "single_owner": "jishusharma1985",
-      "owner_app": "jishusharma1985",
-      "refresh": "rebuild with python MyTradingSys/system/artifacts/_gen_live_onepage_mock.py (public Binance klines + CBP store at build), then republish; stale flags it after 12 h",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-13"
-      },
-      "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
-      "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
-      "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": "a6462497661eb599be958b591802ef66a67b9f8a6c697e8b382e8a8182dc7c79",
-      "producer": [
-        "live_onepage",
-        "cbp"
-      ],
-      "feeds": [
-        "MyTradingSys/research/STATUS.md"
-      ],
-      "max_age_h": 12,
-      "published_at": "2026-11-13T13:27:36Z",
-      "feed_hashes": {
-        "MyTradingSys/research/STATUS.md": "11ef19dd4031d73cdb2a5cfec084c4d6061aa0e4c537a047cd3ef8a819d5055c"
-      }
-    },
-    {
       "slug": "buy_crypto",
       "title": "Buy Crypto",
       "status": "canonical",
@@ -500,54 +440,6 @@
       }
     },
     {
-      "slug": "concept_deck_tom_fabio",
-      "title": "Concept deck: Tom & Fabio",
-      "status": "canonical",
-      "pinned": false,
-      "generator": null,
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "owner_app": "opus-concept-decks-1112 (C)",
-      "refresh": "re-run the card MyTradingSys/research/concept_decks_1112",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/L4A2SBrnC2JrK1iutL18XV"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-12"
-      },
-      "purpose": "Slides deck of the concept layer with cited fact sheets (context, not trade advice).",
-      "notes_go_to": "MyTradingSys/research/concept_decks_1112/README.md",
-      "note": "Registered 2026-11-12 by lead B to fix CI Step 3af; published by login C.",
-      "published_sha": ""
-    },
-    {
-      "slug": "concept_deck_malkan_rsi",
-      "title": "Concept deck: Malkan RSI",
-      "status": "canonical",
-      "pinned": false,
-      "generator": null,
-      "html": null,
-      "single_owner": "jishusharma1985",
-      "owner_app": "opus-concept-decks-1112 (C)",
-      "refresh": "re-run the card MyTradingSys/research/concept_decks_1112",
-      "db": [],
-      "urls": {
-        "jishu.sharma": "",
-        "jishu.awgp": "",
-        "jishusharma1985": "https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP"
-      },
-      "last_published": {
-        "jishusharma1985": "2026-11-12"
-      },
-      "purpose": "Slides deck of the concept layer with cited fact sheets (context, not trade advice).",
-      "notes_go_to": "MyTradingSys/research/concept_decks_1112/README.md",
-      "note": "Registered 2026-11-12 by lead B to fix CI Step 3af; published by login C.",
-      "published_sha": ""
-    },
-    {
       "slug": "conceptualizer",
       "title": "Conceptualizer",
       "status": "canonical",
@@ -569,8 +461,8 @@
       "purpose": "One app for every layer's concepts: diagram, his rule vs ours (SOURCED/OURS), fidelity, support layers, tests, sim check, ideas, gaps. Replaces the two concept decks.",
       "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
       "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
-      "published_sha": "46ac5c61d0c90cde751322b5dee1401a28bd8229a85e8d0fb39ec5fe47d7fb12",
-      "published_at": "2026-11-13T13:12:25Z"
+      "published_sha": "ca1b0e0f27848a7f1581bdcd1190b7f23adb97883ff2d9bf70fc1801dd40b6ed",
+      "published_at": "2026-11-13T13:51:59Z"
     }
   ],
   "unpinned_old": {
@@ -599,7 +491,11 @@
     ]
   },
   "_retired": {
-    "cbp_dashboard": "deleted by Jis 2026-10-12 (one-off 2026-10-07 snapshot, https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS)"
+    "cbp_dashboard": "deleted by Jis 2026-10-12 (one-off 2026-10-07 snapshot, https://claude.ai/artifact/SYxhvYx9iTBp2UeGs9X4XS)",
+    "tom_fabio_setup_review": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/3ZV8nmv52mvW4FTQi5WLGQ",
+    "live_feed_onepage_mock": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9",
+    "concept_deck_tom_fabio": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/L4A2SBrnC2JrK1iutL18XV",
+    "concept_deck_malkan_rsi": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP"
   },
   "home_login": "jishusharma1985",
   "publishers": [
