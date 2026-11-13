@@ -2457,3 +2457,8 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 
 ## 2026-11-13 Live Aid: fold seven low-evidence readings
 - Operator ("Yes, fold them"), on REVIEW.md remove-candidates (research/live_aid_review_2026-11-13): Direction gauge, Verdict and watch list, Same data other readings, Big candle story, Level approach prep, Money (OI) card, Forced selling on other exchanges go behind ONE click on the Home rail, collapsed by default, choice saved per viewer (localStorage mts_fold_open). Fold only: nothing deleted. The four pages with no route (antic, bc, lap, xliq) got one. Card live-aid-fold-seven-readings-1113. Reaches his screen only after a deploy.
+
+## 2026-11-13 us_open_trader: testnet module for the hours around the US open
+- Operator order (~12:55Z): build a module that trades just before, during and after the US session on TESTNET, 50x with a hard stop like Habib, both directions, from Tom levels + analyst levels + Live Aid confluence; Fable leads, Opus assists, Sonnet and Haiku build.
+- Defaults taken by the lead (OURS): today (11-13) is a dry run scored from public candles, because `cotrade.py place` refuses resting entries; size from risk (5,000 USD notional, about 18 USD at the stop), not from leverage; plan in `research/us_open_trader_2026-11-13/PLAN_US_OPEN_2026-11-13.md`; first testnet run Monday 11-16 after tests and a safety review.
+- Card: us-open-trader-module-1113.
