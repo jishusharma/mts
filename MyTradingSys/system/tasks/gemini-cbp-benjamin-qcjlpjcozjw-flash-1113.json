@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T11:49:59Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp_gap_1112/QcJlPjcOZjw/EXTRACT.md"
   ],
@@ -14,7 +15,14 @@
   "id": "gemini-cbp-benjamin-qcjlpjcozjw-flash-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Benjamin QcJlPjcOZjw extract, verify exit 0",
+      "ref": "22b2fbd8c",
+      "utc": "2026-11-13T11:49:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -27,6 +35,12 @@
   "refs": [
     "MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md"
   ],
+  "result": "Benjamin QcJlPjcOZjw extract, verify exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cbp_gap_1112/QcJlPjcOZjw/"
   ],
@@ -40,12 +54,13 @@
   "sources": [
     "Supervisor C 2026-11-13 CBP update pass"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only raw_transcripts_canonical/QcJlPjcOZjw_raw.txt (Hindi captions) and MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md as the format example",
     "Write MyTradingSys/research/cbp_gap_1112/QcJlPjcOZjw/EXTRACT.md: one block per call, > \"exact line from the caption file\", Source GPS: QcJlPjcOZjw | BEGIN|MIDDLE|END; no numbers not quoted",
     "Run verify_extract_quotes.py until exit 0; commit on your branch"
   ],
+  "taken": "2026-11-13T11:49:59Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] CBP call extract, Benjamin QcJlPjcOZjw, model flash",
   "weight": "ROUTINE",
