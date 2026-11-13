@@ -20,13 +20,15 @@ sys.path.insert(0, os.path.join(ROOT, "backtest", "layers", "adx"))
 sys.path.insert(0, os.path.join(ROOT, "backtest", "layers", "timeframe"))
 from adx import adx_di  # noqa: E402
 from tf_resample import resample  # noqa: E402
+sys.path.insert(0, os.path.join(ROOT, "backtest"))
+import fees as _fees  # noqa: E402
 
 DAILY = os.path.join(ROOT, "research", "btc_cycles_2026-11", "btc_daily.csv")
 REGISTRY = os.path.join(ROOT, "backtest", "layers", "timeframe", "registry.json")
 N = 14
 LV_LO, LV_MID, LV_HI = 20.0, 25.0, 40.0
 HORIZONS = (3, 6, 12)
-FEE = 0.0004                    # 4 bps round trip, intraday frames only
+FEE = _fees.BINANCE_MAKER * 2   # 4 bps round trip, intraday frames only
 INTRADAY = ("5m", "15m", "1h", "4h")
 TFS = ("5m", "15m", "1h", "4h", "1d", "2d", "5d", "1w")
 MIN_N = 30
