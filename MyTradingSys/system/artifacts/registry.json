@@ -42,8 +42,8 @@
     {
       "slug": "mts_layer_map",
       "title": "MTS Layers",
-      "status": "canonical",
-      "pinned": true,
+      "status": "retire",
+      "pinned": false,
       "generator": "scripts/dev/make_layers_board.py",
       "html": "MyTradingSys/system/artifacts/layers_board.html",
       "single_owner": "jishusharma1985",
@@ -65,13 +65,14 @@
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
       "published_sha": "1bb0cf888845c131c30869e5d86b2d16644264e02a1de24368abd1d9ea6c7068",
-      "published_at": "2026-11-13T13:52:00Z"
+      "published_at": "2026-11-13T13:52:00Z",
+      "why_retire": "operator 2026-11-13: retire, keep only 5 pinned (delete by hand)"
     },
     {
       "slug": "tom_fabio_deck",
       "title": "Tom and Fabio: what they taught",
-      "status": "canonical",
-      "pinned": true,
+      "status": "retire",
+      "pinned": false,
       "generator": "hand-made",
       "html": "MyTradingSys/system/artifacts/tom_fabio_deck.html",
       "single_owner": "jishusharma1985",
@@ -93,7 +94,8 @@
       "purpose": "Slides: what Tom and Fabio taught.",
       "notes_go_to": "Read only.",
       "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25",
-      "published_at": "2026-11-13T13:27:37Z"
+      "published_at": "2026-11-13T13:27:37Z",
+      "why_retire": "operator 2026-11-13: retire, keep only 5 pinned (delete by hand)"
     },
     {
       "slug": "cbp_monday_desk",
@@ -264,20 +266,20 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "dbe435b32751b0c3159517222078ee6b08685285f00741e40c84cef951f817bb",
+      "published_sha": "bee01cfc0ac5b74ca7543f7636bea3c2efedb56490f22e679e5efa4f601e03f4",
       "feeds": [
         "MyTradingSys/system/artifacts/registry.json"
       ],
       "max_age_h": 24,
-      "published_at": "2026-11-13T13:51:57Z",
+      "published_at": "2026-11-13T14:09:05Z",
       "feed_hashes": {
-        "MyTradingSys/system/artifacts/registry.json": "08a0fa23c58b461453b48edb296591928cb4bbc7f0deeaf7a5f05bdff4c340e7"
+        "MyTradingSys/system/artifacts/registry.json": "ef8651cadb1b4a60b719f03862a5fe8201c8b258e03ef019ea52d880ee980fa6"
       }
     },
     {
       "slug": "research_map",
-      "status": "canonical",
-      "pinned": true,
+      "status": "retire",
+      "pinned": false,
       "generator": "hand-made",
       "single_owner": "jishusharma1985",
       "urls": {
@@ -309,7 +311,8 @@
       "published_at": "2026-11-13T13:27:35Z",
       "feed_hashes": {
         "MyTradingSys/research/STATUS.md": "11ef19dd4031d73cdb2a5cfec084c4d6061aa0e4c537a047cd3ef8a819d5055c"
-      }
+      },
+      "why_retire": "operator 2026-11-13: retire, keep only 5 pinned (delete by hand)"
     },
     {
       "slug": "session_planner",
@@ -495,7 +498,8 @@
     "tom_fabio_setup_review": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/3ZV8nmv52mvW4FTQi5WLGQ",
     "live_feed_onepage_mock": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9",
     "concept_deck_tom_fabio": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/L4A2SBrnC2JrK1iutL18XV",
-    "concept_deck_malkan_rsi": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP"
+    "concept_deck_malkan_rsi": "operator 2026-11-13: retire (delete by hand, then drop this note); was https://claude.ai/artifact/2UHJdZMC3Eoh3E1Jq4GBGP",
+    "unregistered_old_pages": "operator 2026-11-13: retire, keep only 5 pinned (never in the registry; delete by hand): Dark Horse Desk https://claude.ai/artifact/KfWz31XwUtBJWaxFhm4hc5, Alt Plan Note 3 https://claude.ai/artifact/7rBijXLe53rzYJe25u4ma6, BTC daily session playbook https://claude.ai/artifact/85ayeP6NZGmUHoVzrC21Qp, MTS edge: where, when, size https://claude.ai/artifact/WjoWkz4VRLvzgE64LF7Uk5"
   },
   "home_login": "jishusharma1985",
   "publishers": [
