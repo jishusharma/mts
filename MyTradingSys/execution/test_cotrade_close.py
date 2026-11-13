@@ -147,8 +147,61 @@ class TestClose(CloseBase):
         self.assertFalse(r["ok"])
         self.assertTrue(self.halt.exists())
         self.assertEqual(self.states()[-1], "unknown")
-        self.assertIn("cancel_by_label", c.names())   # _flatten_and_halt ran
-        self.assertEqual(c.names().count("close_position"), 2)   # close + the flatten's own close
+        # F2: the stop is NEVER cancelled while the position is open: HALT, one more close attempt, stop stays
+        self.assertNotIn("cancel_by_label", c.names())
+        self.assertEqual(c.names().count("close_position"), 2)   # close + one retry
+        self.assertEqual(c.position, -100)
+        self.assertEqual([o["order_type"] for o in c.orders], ["stop_market"])
+
+    def test_close_fails_once_retry_flattens_then_stop_cancelled(self):
+        class Once(CloseClient):
+            def close_position(self, token, instrument_name="BTC-PERPETUAL"):
+                if not getattr(self, "_failed", False):
+                    self._failed = True
+                    self.calls.append(("close_position",))
+                    raise RuntimeError("503")
+                return super().close_position(token, instrument_name)
+        c = self.open_trade(Once)
+        r = self.close(c)
+        self.assertFalse(r["ok"])
+        self.assertTrue(self.halt.exists())
+        self.assertEqual(c.position, 0)
+        self.assertEqual(c.orders, [])   # cancelled only after the re-read proved flat
+        self.assertLess(c.names().index("close_position"), c.names().index("cancel_by_label"))
+        self.assertEqual(self.states()[-1], "closed")
+
+    def test_step1_read_failure_halts_with_no_exchange_writes(self):
+        class Down(CloseClient):
+            fail = False
+
+            def get_position(self, token, instrument_name="BTC-PERPETUAL"):
+                if self.fail:
+                    raise RuntimeError("position api down")
+                return super().get_position(token, instrument_name)
+        c = self.open_trade(Down)
+        orig = cotrade.rebuild
+        cotrade.rebuild = lambda **kw: {"slots": []}   # step (0) reads are not the subject here
+        try:
+            c.fail = True
+            r = self.close(c)
+        finally:
+            cotrade.rebuild = orig
+        self.assertFalse(r["ok"])
+        self.assertTrue(self.halt.exists())
+        self.assertEqual([n for n in c.names() if n in WRITES], [])   # stop untouched, nothing sent
+        self.assertEqual(c.position, -100)
+        self.assertEqual(self.states()[-1], "unknown")
+
+    def test_position_not_matching_last_place_is_refused_untouched(self):
+        for size in (-300, 100):   # wrong size, wrong sign: not the position this place made
+            c = self.open_trade()
+            c.position = size
+            before = list(c.orders)
+            self.assert_refused_reads_only(c, self.close(c), "does not match")
+            self.assertEqual(c.position, size)
+            self.assertEqual(c.orders, before)
+            self.tearDown()
+            self.setUp()
 
     def test_close_raises_but_position_flat_continues_no_halt(self):
         c = self.open_trade(close_raises_but_flat=True)   # stop filled in the race before close_position

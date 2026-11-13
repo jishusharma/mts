@@ -741,10 +741,16 @@ def close_trade(client=None, account=None, journal_dir=None, halt_path=None, env
         token = client.authenticate(account)
         size = float(client.get_position(token, INSTRUMENT).get("size", 0))
     except Exception as e:  # noqa: BLE001 - state unreadable: cannot prove anything
-        return _close_fail(client, None, jdir, halt_path, base, f"exchange state unreadable: {e!r}")
+        return _close_unreadable(jdir, halt_path, base, f"exchange state unreadable: {e!r}")
     if size == 0:
         was_flat = True
     else:
+        pa = last.get("action") or {}   # F4: only the position that the last place made is ours to close
+        if pa.get("side") in ("buy", "sell") and _num(pa.get("amount_usd")):
+            want = float(pa["amount_usd"]) * (1 if pa["side"] == "buy" else -1)
+            if abs(size - want) > 1e-9:
+                return refuse(f"position {size} does not match the last co-trade place ({pa['side']} "
+                              f"{pa['amount_usd']}): not ours, left untouched")
         closed_size = size
         err = None
         try:
@@ -760,8 +766,8 @@ def close_trade(client=None, account=None, journal_dir=None, halt_path=None, env
                 executor.write_manual_halt(f"cotrade close: order state unknown: {err!r}", halt_path)
                 _append(jdir, {**base, "result": {"state": "unknown", "error": repr(err), "flatten_errors": []}})
                 return {"ok": False, "reasons": [f"close order state unknown, not retried, HALT written: {err}"]}
-            return _close_fail(client, token, jdir, halt_path, base,
-                               f"close_position failed: {err!r}" if err else f"position still {left} after close")
+            return _close_fail_open(client, token, jdir, halt_path, base,
+                                    f"close_position failed: {err!r}" if err else f"position still {left} after close")
         # flat (also when close_position raised but the position is gone: the stop filled in the race): no HALT
     try:
         client.cancel_by_label(token, LABEL)
@@ -778,16 +784,41 @@ def close_trade(client=None, account=None, journal_dir=None, halt_path=None, env
     return {"ok": True, "closed_size": closed_size, "was_flat": was_flat, "seq": rec["seq"]}
 
 
-def _close_fail(client, token, jdir, halt_path, base, why) -> dict:
+def _close_unreadable(jdir, halt_path, base, why) -> dict:
+    """F2: the position could not be read, so nothing is proven: HALT only, ZERO exchange writes (the stop stays)."""
+    executor.write_manual_halt(f"cotrade close: {why}", halt_path)
+    _append(jdir, {**base, "result": {"state": "unknown", "error": why, "flatten_errors": []}})
+    return {"ok": False, "reasons": [f"close failed, HALT written, no exchange writes: {why}"]}
+
+
+def _close_fail_open(client, token, jdir, halt_path, base, why) -> dict:
+    """F2: close_position failed with the position still open. HALT, ONE more close_position, re-read; the labelled
+    orders (the stop) are cancelled ONLY when the re-read proves the position flat. Otherwise the stop stays."""
     errs = []
+    executor.write_manual_halt(f"cotrade: close failed: {why}", halt_path)
+    left = None
     try:
-        token = token or client.authenticate(_acct(base["account"]))
-        errs = _flatten_and_halt(client, token, halt_path, f"close failed: {why}")
-    except Exception as e2:  # noqa: BLE001
-        executor.write_manual_halt(f"cotrade close failed and flatten impossible: {e2!r}", halt_path)
-        errs = [{"op": "authenticate", "error": repr(e2)}]
+        try:
+            client.close_position(token, INSTRUMENT)
+        except Exception as e:  # noqa: BLE001 - the re-read decides
+            errs.append({"op": "close_position", "error": repr(e)})
+        left = float(client.get_position(token, INSTRUMENT).get("size", 0))
+    except Exception as e:  # noqa: BLE001 - unreadable counts as still open
+        errs.append({"op": "get_position", "error": repr(e)})
+    if left == 0:
+        try:
+            client.cancel_by_label(token, LABEL)
+            leftover = [o.get("order_id") for o in client.get_open_orders(token, INSTRUMENT) if o.get("label") == LABEL]
+            cerr = f"labelled orders still open: {leftover}" if leftover else None
+        except Exception as e:  # noqa: BLE001
+            cerr = repr(e)
+        state = "closed_cancel_failed" if cerr else "closed"
+        _append(jdir, {**base, "result": {"state": state, "error": why, "position_flat": True,
+                                          "flatten_errors": errs, "cancel_error": cerr}})
+        return {"ok": False, "position_flat": True,
+                "reasons": [f"close failed first, flat on the second try, HALT written: {why}"]}
     _append(jdir, {**base, "result": {"state": "unknown", "error": why, "flatten_errors": errs}})
-    return {"ok": False, "reasons": [f"close failed, flatten attempted and HALT written: {why}"]}
+    return {"ok": False, "reasons": [f"close failed, position still open, stop kept, HALT written: {why}"]}
 
 
 # ---------------------------------------------------------------- kill
