@@ -1,0 +1,1 @@
+{"t": "20261113T233349Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED since ddad0598: buy-zone test2 test read a local cache file + PRE_REG lint. A reverts it (--fix-ci ship running). Also red: test_yt_freedom raw fapi call (yt-freedom-1114, C): needs binance_doh", "login": "A", "id": "b-e58e44", "prio": "high", "cmd": "", "aud": "top"}
