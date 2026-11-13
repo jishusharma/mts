@@ -23,14 +23,7 @@ import artifacts as af  # noqa: E402
 
 OUT = af.REPO / "MyTradingSys" / "system" / "artifacts" / "mts_home.html"
 WRITE_FIRST = ("research_map",)  # pages where Jis writes, shown first
-AMBER_DAYS, RED_BEHIND_DAYS = 14, 3  # OURS: age at which a published page turns amber; a page behind its repo this long turns red
-
-
-def health(behind, age_days):
-    """green / amber / red for a page tile: red = behind the repo for RED_BEHIND_DAYS+, amber = behind, unknown or older than AMBER_DAYS, else green."""
-    if behind and age_days is not None and age_days >= RED_BEHIND_DAYS:
-        return "red"
-    return "amber" if behind or age_days is None or age_days > AMBER_DAYS else "green"
+AMBER_DAYS, RED_BEHIND_DAYS = 14, 3  # OURS: age at which a published page turns amber; a page behind its repo this long turns red (applied in the page script)
 
 
 def build(reg, now=None, repo=None):
@@ -47,11 +40,10 @@ def build(reg, now=None, repo=None):
         if pg["status"] != "canonical" or not url or pg["slug"] == reg["home_slug"]:
             continue
         when = af.published_at(pg)
-        age = (now - when).total_seconds() / 86400 if when else None
         behind = (af.behind(reg, pg, repo or af.REPO) if pg.get("html") else False) or bool(af.feed_reasons(pg, now, repo or af.REPO))  # repo html or a feed moved on
         pages.append({"slug": pg["slug"], "title": pg["title"], "url": url, "owner": own, "purpose": pg.get("purpose", ""),
-                      "db": bool(pg.get("db")), "write": pg["slug"] in WRITE_FIRST, "behind": behind, "health": health(behind, age),
-                      "pub": af.stamp_text(when) if when else "never published", "ageH": round(age * 24) if age is not None else None})
+                      "db": bool(pg.get("db")), "write": pg["slug"] in WRITE_FIRST, "behind": behind,
+                      "pub": af.stamp_text(when) if when else "never published", "pubIso": when.strftime("%Y-%m-%dT%H:%M:%SZ") if when else ""})
         if pg.get("single_owner"):
             for a, u in pg["urls"].items():
                 if u and a != own and a not in (pg.get("deleted") or {}):
@@ -60,8 +52,7 @@ def build(reg, now=None, repo=None):
         for r in rows if isinstance(rows, list) else []:
             retire.append({"login": a, "title": r["title"], "url": r["url"]})
     pages.sort(key=lambda p: (not p["write"], WRITE_FIRST.index(p["slug"]) if p["write"] else 0))
-    return {"generated": af.stamp_text(now), "home": home, "pages": pages, "retire": retire,
-            "counts": {h: sum(p["health"] == h for p in pages) for h in ("green", "amber", "red")}}
+    return {"generated": af.stamp_text(now), "home": home, "pages": pages, "retire": retire, "amberDays": AMBER_DAYS, "redDays": RED_BEHIND_DAYS}
 
 
 TPL = r"""<title>MTS Home</title>
@@ -156,14 +147,18 @@ const DATA = __DATA__;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 const $ = id => document.getElementById(id);
 $("stamp").textContent = "Built " + DATA.generated;
-const C = DATA.counts;
+// colour and age are worked out here from the absolute publish time, so the built page (and its stale hash) never depends on the build clock
+const hrs = p => p.pubIso ? (Date.now() - Date.parse(p.pubIso)) / 3600000 : null;
+const health = p => { const h = hrs(p); return p.behind && h !== null && h >= DATA.redDays * 24 ? "red" : (p.behind || h === null || h > DATA.amberDays * 24) ? "amber" : "green"; };
+const ago = h => h === null ? "" : h < 48 ? Math.round(h) + "h ago" : Math.round(h / 24) + "d ago";
+const C = {green: 0, amber: 0, red: 0};
+DATA.pages.forEach(p => { p.h = health(p); C[p.h]++; });
 $("sum").innerHTML = `<span class="pill green">${C.green} current</span><span class="pill old">${C.amber} amber</span><span class="pill red">${C.red} red</span>`;
-const ago = h => h == null ? "" : h < 48 ? h + "h ago" : Math.round(h / 24) + "d ago";
 $("pages").innerHTML = DATA.pages.map(p => `
-  <article class="tile ${p.health}">
+  <article class="tile ${p.h}">
     <a class="name" href="${esc(p.url)}" target="_blank" rel="noopener"><span class="dot"></span>${esc(p.title)}</a>
     <span class="why">${esc(p.purpose)}</span>
-    <span class="meta">${p.db ? `<span class="pill db">saves notes</span>` : ""}${p.behind ? `<span class="pill old">behind repo</span>` : ""}<span>${esc(p.pub)}</span><span>${ago(p.ageH)}</span></span>
+    <span class="meta">${p.db ? `<span class="pill db">saves notes</span>` : ""}${p.behind ? `<span class="pill old">behind repo</span>` : ""}<span>${esc(p.pub)}</span><span>${ago(hrs(p))}</span></span>
   </article>`).join("");
 $("nretire").textContent = DATA.retire.length;
 $("retire").innerHTML = DATA.retire.length ? DATA.retire.map(r => `<div class="ritem"><span>${esc(r.login)}</span><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a><span class="url">${esc(r.url)}</span></div>`).join("") : `<p class="sub">Nothing to delete.</p>`;
@@ -182,7 +177,7 @@ def main(argv=None):
     data = build(af.load())
     out = Path(a.out)
     af.write_stamped(out, render(data))
-    print(f"wrote {out} ({len(data['pages'])} pages {data['counts']}, {len(data['retire'])} old copies to delete)")
+    print(f"wrote {out} ({len(data['pages'])} pages, {len(data['retire'])} old copies to delete)")
     return 0
 
 
