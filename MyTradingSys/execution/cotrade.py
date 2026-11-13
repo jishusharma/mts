@@ -25,6 +25,7 @@ Usage (all testnet):
   python cotrade.py ladder --said "<verbatim>" --side sell --from 110500 --to 111500 --steps 5 --x 100 --stop 112000 [--dry-run]
       # P2: doubling-total ladder (adds 1,2,3,6,12 X), all rungs resting limits; spacing: --to | --spacing-pct | --spacing-pts
   python cotrade.py ladder-sync [--watch SECS --max-polls N]   # stop over the filled size; stop hit -> cancel unfilled rungs
+  python cotrade.py close [--reason "..."]   # reduce-only market close, verify flat, then cancel the stop; no HALT
   python cotrade.py net      # net size across the co-trade slots, rebuilt from exchange positions
 """
 import sys
@@ -104,8 +105,10 @@ def _acct(name):
     return None if name in (None, "main") else name
 
 
-UNRECONCILED = ("unknown", "hedge_pending", "hedge_placed", "ladder_pending", "ladder_placed")   # hedge_pending/placed = half-placed hedge = unknown
-RECONCILED = ("stop_placed", "stop_failed_flattened", "killed", "hedge_failed", "ladder_failed", "ladder_stopped")
+UNRECONCILED = ("unknown", "hedge_pending", "hedge_placed", "ladder_pending", "ladder_placed",
+                "closed_cancel_failed")   # hedge_pending/placed = half-placed hedge = unknown; closed_cancel_failed = flat but label orders unproven (re-run close)
+RECONCILED = ("stop_placed", "stop_failed_flattened", "killed", "hedge_failed", "ladder_failed", "ladder_stopped",
+              "closed")   # closed = close_trade verified flat + label orders cancelled
 
 
 def _unknown_state(recs: list):
@@ -195,6 +198,16 @@ def _flatten_and_halt(client, token, halt_path, why: str) -> list:
 
 # ---------------------------------------------------------------- stop
 
+def _lineage_stop(recs: list, last: dict, account):
+    """Newest journaled stop_placed trigger for this account after the last real place (the current position lineage)."""
+    i = next(i for i, r in enumerate(recs) if r is last)
+    for r in reversed(recs[i + 1:]):
+        if ((r.get("action") or {}).get("kind") == "stop" and (r.get("result") or {}).get("state") == "stop_placed"
+                and r.get("account") == _nm(account) and _num((r.get("action") or {}).get("stop"))):
+            return r["action"]["stop"]
+    return None
+
+
 def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, halt_daily_loss_path=None,
                 token=None, stop_px=None, extra=None, env=None) -> dict:
     """Reduce-only server-side stop over the FULL filled size. No stop for a flat account. Idempotent.
@@ -208,7 +221,10 @@ def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, hal
     last = _last_real_place(recs)
     if last is None:
         return {"ok": False, "reasons": ["no co-trade order in the journal"]}
-    stop_px = stop_px if stop_px is not None else (last.get("action") or {}).get("stop")
+    if stop_px is None:   # V2-6: default = newest journaled stop of this lineage (e.g. a break-even move), else the place stop
+        stop_px = _lineage_stop(recs, last, account)
+        if stop_px is None:
+            stop_px = (last.get("action") or {}).get("stop")
     extra = dict(extra or {})
     try:
         token = token or client.authenticate(account)
@@ -220,10 +236,17 @@ def ensure_stop(client=None, account=None, journal_dir=None, halt_path=None, hal
         mine = [o for o in orders if o.get("label") == LABEL and o.get("order_type") == "stop_market"
                 and o.get("reduce_only", True)]
         want_amt = int(abs(size))
+        tightened = False
+        if _num(stop_px):   # V2-6 never loosen: a live stop tighter than the requested one wins (long: higher, short: lower)
+            tighter = [o["trigger_price"] for o in mine if _num(o.get("trigger_price"))
+                       and (o["trigger_price"] > stop_px + 1e-9 if size > 0 else o["trigger_price"] < stop_px - 1e-9)]
+            if tighter:
+                stop_px, tightened = (max(tighter) if size > 0 else min(tighter)), True
         have = [o for o in mine if _same_num(o.get("amount"), want_amt) and _same_num(o.get("trigger_price"), stop_px)]
         wrong = [o for o in mine if o not in have]
         if have:
-            return {"ok": True, "stop_pending": False, "stop_order_id": have[0].get("order_id"), "note": "stop exists"}
+            return {"ok": True, "stop_pending": False, "stop_order_id": have[0].get("order_id"),
+                    "note": "kept tighter stop" if tightened else "stop exists"}
         res = client.stop_market(token, INSTRUMENT, _stop_side(size), want_amt, stop_px, LABEL)
         oid = ((res or {}).get("order") or {}).get("order_id")
         if not oid:
@@ -671,6 +694,102 @@ def hedge(of="last", pct=50, stop=None, at=None, dry_run=False, client=None, hed
             "legs": legs, "net_usd": psigned + hsigned, "seq": rec["seq"]}
 
 
+def close_trade(client=None, account=None, journal_dir=None, halt_path=None, env=None, reason="",
+                secret_exists=None) -> dict:
+    """Normal close of ONE co-trade position (us_open_trader DESIGN V2-7). Order:
+    (0) refuse (journal 'refused', reads only) a ladder or hedge lineage, an unreconciled journal state, or any OTHER
+        co-trade slot holding a position: use kill.
+    (1) read the position; flat -> (3).  (2) close_position (reduce-only market); on ANY exception re-read: flat ->
+        (3) with no HALT; open after OrderStateUnknown -> HALT + 'unknown', never resent, the server stop stays; open
+        after another error -> _flatten_and_halt + 'unknown'.
+    (3) cancel_by_label, then get_open_orders must show no labelled order: ok -> 'closed' (reconciled); else
+        'closed_cancel_failed' (unreconciled, no HALT, ok False; a re-run reconciles). A normal close writes NO HALT.
+    Non-testnet: zero client calls, nothing journaled."""
+    client = client or do
+    env = env or do.active_env()
+    if env != "test":
+        return {"ok": False, "reasons": [_NOT_TESTNET]}   # zero client calls, nothing journaled
+    jdir = Path(journal_dir) if journal_dir else globals()["journal_dir"]()
+    halt_path = halt_path or executor.HALT_PATH
+    recs = _records(jdir)
+    last = _last_real_place(recs)
+    if last is None:
+        return {"ok": False, "reasons": ["no co-trade order in the journal"]}
+    base = {"said": last.get("said"), "heard": f"close_trade: {reason}".strip(), "env": env,
+            "account": _nm(account), "market": {}, "action": {"kind": "close", "reason": reason}}
+
+    def refuse(why):
+        _append(jdir, {**base, "result": {"state": "refused", "reasons": [why]}})
+        return {"ok": False, "reasons": [why]}
+
+    # (0) closed_cancel_failed is what a re-run exists to reconcile: judge the journal without it
+    why = _unknown_state([r for r in recs if (r.get("result") or {}).get("state") != "closed_cancel_failed"])
+    if why:
+        return refuse(f"{why} - close_trade does not handle this: use kill")
+    if (last.get("action") or {}).get("kind") == "ladder":
+        return refuse("the last placement is a ladder: close_trade does not handle it - use kill")
+    li = next(i for i, r in enumerate(recs) if r is last)
+    if any((r.get("action") or {}).get("kind") == "hedge" and (r.get("result") or {}).get("state")
+           in ("hedge_pending", "hedge_placed") for r in recs[li + 1:]):
+        return refuse("a hedge lineage exists: close_trade does not handle it - use kill")
+    rb = rebuild(client=client, journal_dir=jdir, secret_exists=secret_exists, env=env)
+    others = [v["account"] for v in rb.get("slots", []) if v["account"] != _nm(account) and v["size"] != 0]
+    if others or rb.get("errors") or "slots" not in rb:
+        return refuse(f"another co-trade slot holds a position or is unreadable ({others or rb.get('errors')}): use kill")
+    closed_size, was_flat = 0.0, False
+    try:
+        token = client.authenticate(account)
+        size = float(client.get_position(token, INSTRUMENT).get("size", 0))
+    except Exception as e:  # noqa: BLE001 - state unreadable: cannot prove anything
+        return _close_fail(client, None, jdir, halt_path, base, f"exchange state unreadable: {e!r}")
+    if size == 0:
+        was_flat = True
+    else:
+        closed_size = size
+        err = None
+        try:
+            client.close_position(token, INSTRUMENT)
+        except Exception as e:  # noqa: BLE001 - the re-read decides
+            err = e
+        try:
+            left = float(client.get_position(token, INSTRUMENT).get("size", 0))
+        except Exception as e:  # noqa: BLE001 - unreadable counts as still open
+            left, err = None, err or e
+        if left is None or left != 0:
+            if isinstance(err, do.OrderStateUnknown):   # never resent: the stop stays, HALT, unknown
+                executor.write_manual_halt(f"cotrade close: order state unknown: {err!r}", halt_path)
+                _append(jdir, {**base, "result": {"state": "unknown", "error": repr(err), "flatten_errors": []}})
+                return {"ok": False, "reasons": [f"close order state unknown, not retried, HALT written: {err}"]}
+            return _close_fail(client, token, jdir, halt_path, base,
+                               f"close_position failed: {err!r}" if err else f"position still {left} after close")
+        # flat (also when close_position raised but the position is gone: the stop filled in the race): no HALT
+    try:
+        client.cancel_by_label(token, LABEL)
+        leftover = [o.get("order_id") for o in client.get_open_orders(token, INSTRUMENT) if o.get("label") == LABEL]
+        cerr = f"labelled orders still open: {leftover}" if leftover else None
+    except Exception as e:  # noqa: BLE001
+        cerr = repr(e)
+    if cerr:   # flat, leftovers unproven: unreconciled (blocks place_order), no HALT (a reduce-only stop on a flat account is harmless)
+        _append(jdir, {**base, "result": {"state": "closed_cancel_failed", "error": cerr, "position_flat": True,
+                                          "closed_size": closed_size, "was_flat": was_flat}})
+        return {"ok": False, "position_flat": True, "was_flat": was_flat, "closed_size": closed_size,
+                "reasons": [f"position is flat but cancelling the stop is unproven: {cerr} - re-run close or kill"]}
+    rec = _append(jdir, {**base, "result": {"state": "closed", "closed_size": closed_size, "was_flat": was_flat}})
+    return {"ok": True, "closed_size": closed_size, "was_flat": was_flat, "seq": rec["seq"]}
+
+
+def _close_fail(client, token, jdir, halt_path, base, why) -> dict:
+    errs = []
+    try:
+        token = token or client.authenticate(_acct(base["account"]))
+        errs = _flatten_and_halt(client, token, halt_path, f"close failed: {why}")
+    except Exception as e2:  # noqa: BLE001
+        executor.write_manual_halt(f"cotrade close failed and flatten impossible: {e2!r}", halt_path)
+        errs = [{"op": "authenticate", "error": repr(e2)}]
+    _append(jdir, {**base, "result": {"state": "unknown", "error": why, "flatten_errors": errs}})
+    return {"ok": False, "reasons": [f"close failed, flatten attempted and HALT written: {why}"]}
+
+
 # ---------------------------------------------------------------- kill
 
 def kill(client=None, account=None, journal_dir=None, halt_path=None, secret_exists=None, env=None) -> dict:
@@ -1037,6 +1156,8 @@ def main(argv=None) -> int:
     ls.add_argument("--watch", type=float, help="poll every SECS seconds until the ladder is done")
     ls.add_argument("--max-polls", type=int, default=1000)
     sub.add_parser("net", help="net size across the co-trade slots from exchange positions")
+    cl = sub.add_parser("close", help="reduce-only market close, verify flat, cancel the stop; no HALT")
+    cl.add_argument("--reason", default="", help="why (journaled)")
     sub.add_parser("stop")
     sub.add_parser("kill")
     a = ap.parse_args(argv)
@@ -1057,6 +1178,8 @@ def main(argv=None) -> int:
         r = ladder_watch(a.watch, a.max_polls, account=acct) if a.watch else ladder_sync(account=acct)
     elif a.cmd == "net":
         r = net()
+    elif a.cmd == "close":
+        r = close_trade(account=acct, reason=a.reason, secret_exists=secret_exists)
     elif a.cmd == "stop":
         r = ensure_stop(account=acct)
     else:
