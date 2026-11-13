@@ -1,4 +1,4 @@
-"""Fetch Binance spot 5m klines (data-api.binance.vision) into the shared cache F:\MTS\data_cache\binance\<SYM>_5m.npz.
+"""Fetch Binance spot 5m klines (data-api.binance.vision) into the shared cache F:/MTS/data_cache/binance/<SYM>USDT_5m.npz.
 cols: t_ms,o,h,l,c,v. Resumes from existing file. tmp then os.replace."""
 import json, os, sys, time, urllib.request
 import numpy as np
