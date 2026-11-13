@@ -98,6 +98,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Tracks: Claude
 - Layer `cryptocred`: adapter + stop sweep run | module backtest/layers/cryptocred/
 - Backtests (layer_map.json, newest first):
+  - 2026-11-06 `CC-S3-10SYM-4H-20261106`: FAIL: pooled fee-net mean R -0.0467, n 1981, CI [-0.1097, +0.0162]; kill scope = this setup/bracket only | `MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md`
   - 2026-10-09 `BIGTRADE-EXIT`: first row negative both splits; full table not read for this map | `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md`
   - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
   - 2026-09-27 `L1-D3`: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 | `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md`
@@ -106,7 +107,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-cryptocred-gpt-rederive` blocked p2 SONNET: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
-  - `layers-md-cryptocred-4h-fail-1113` ready p4 HAIKU: LAYERS.md CryptoCred line misses the 4h 10-symbol FAIL (RESULT_10SYM, n 1981, -0.0467R); Krown S8 RESULT says 
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
 - Status: T055 C1 FAIL; OI/long-short unused as filters.
@@ -181,13 +181,16 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
   - `live-aid-board-value-area-not-wired-1111` ready p2 SONNET: Live Aid setup board gets the value area from one definition
+  - `live-aid-flag-hitrate-grey-1113` raw p2 SONNET: Live Aid: show hit rate and n next to each flag/level story (from live_aid_learn.py, SOURCED replay now, real 
   - `live-aid-flag-log-autoexport-1113` raw p2 SONNET: Live Aid flag log is browser-only: add an automatic export to a file the learner can read (page posts rows to 
+  - `live-aid-log-idea-setup-rows-1113` raw p2 SONNET: Live Aid flag log records only news/liq/touch since IDEA/SETUP banners were removed; log the board LONG/SHORT 
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
   - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
   - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
+  - `live-aid-cbp-mts-state-on-home-1113` raw p3 SONNET: Live Aid Home: one row for CBP analyst levels (age, call) and MTS layer state (fired/silent per layer, R15) wh
   - `live-aid-closed-bars-sweep-1110` ready p3 SONNET: Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP ca
   - `live-aid-learn-daily-trigger-1113` raw p3 SONNET: Live Aid learner has no named daily trigger: us_prep.py P4 is the only hook and no pass ran for 11-12; wire a 
   - `live-aid-liq-history-log-1113` raw p3 SONNET: Live Aid liquidation layer history survives reload but is never written to a scoreable log; add a log (time, s
@@ -222,6 +225,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` refined p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
+  - `krown-s8-result-fail-means-stop-wording-1113` raw p4 HAIKU: Krown S8 RESULT (research/fable_run6_powered_prereg/RESULT.md line 23) says 'FAIL means stop' incl. R1 section
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
 - Status: Causal observation module and parity fixtures exist. BTC DEV atlas remains exploratory: W01-W03/W09 FAIL; W04-W08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector. No validated edge or live integration.

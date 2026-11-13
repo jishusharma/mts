@@ -25,9 +25,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "wiring audit builder: restore full tree after an index slip; lint-clean quote parsing",
-      "ref": "89619dbe5f66",
-      "utc": "2026-10-28T22:03:30Z"
+      "line": "analysts: Roman Trading volume-absorption call ingestion adapter",
+      "ref": "fd31f8f6b491",
+      "utc": "2026-10-25T22:16:32Z"
     }
   ],
   "layers": [
@@ -40,7 +40,7 @@
   "prio": 3,
   "refine_tries": 1,
   "refined_by": "gemini-4-argon",
-  "refreshed": "2026-11-05T10:27:36Z",
+  "refreshed": "2026-11-13T12:15:14Z",
   "refs": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md",
     "MyTradingSys/research/analysts/REVIEW_AND_INGESTION_EVALUATION_2026-10-18.md",
@@ -58,7 +58,7 @@
     "paid Twitter API credentials",
     "fabricated or unverified sample calls"
   ],
-  "scope_sha": "89619dbe5f66",
+  "scope_sha": "fd31f8f6b491",
   "size": "M",
   "sources": [
     "MyTradingSys/research/_archive/loose_2026-10/IMBALANCE_AND_FREE_SETUP_ANALYSTS_2026-10-18.md:116-135"

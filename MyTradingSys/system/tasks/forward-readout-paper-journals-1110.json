@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:15:04Z",
   "commands": [],
   "created": "2026-11-10T19:35:14Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already on trunk: forward_readout.py --paper built in d65d17633; fixture test per kind plu",
+      "ref": "6b22ac394",
+      "utc": "2026-11-13T12:15:04Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "forward readout: move into the study folder so the gate discovers its test",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: shipped, closed by stale refresh",
   "note": "",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-10T19:35:32Z",
   "refs": [],
-  "result": "",
+  "result": "Already on trunk: forward_readout.py --paper built in d65d17633; fixture test per kind plus ledger-only golden added in 72b7ddc6b (23 tests)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope": [
     "MyTradingSys/research/fable_run7_forward_test/forward_readout.py",
     "MyTradingSys/research/fable_run7_forward_test/test_forward_readout.py"
@@ -45,13 +58,14 @@
   "sources": [
     "Lead B"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read malkan_level_short_live.py journal row shapes",
     "add --paper input and per-kind handling",
     "fixture per kind, tests",
     "ship"
   ],
+  "taken": "2026-11-13T12:15:04Z",
   "tests": [
     "test_forward_readout.py::test_malkan_outcome_rows_scored (fail first)"
   ],

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:14:59Z",
   "commands": [
     "python MyTradingSys/research/adx_di_2026-11/census.py",
     "python -m pytest MyTradingSys/research/adx_di_2026-11/test_census.py -q"
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already on trunk in 27a64f9ac: census median lead prints days (4.0/8.5/13.0), TV_CROSSCHEC",
+      "ref": "6b22ac394",
+      "utc": "2026-11-13T12:14:59Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "adx-di: VERIFIED-TV (TradingView DMI 14/14 daily, 6/6 historical cells to 0.01); last csv ",
@@ -43,13 +50,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: done on trunk, closed by stale refresh",
   "note": "If regenerating changes other numbers, edit only the three cells by hand.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T15:57:17Z",
   "refs": [],
-  "result": "",
+  "result": "Already on trunk in 27a64f9ac: census median lead prints days (4.0/8.5/13.0), TV_CROSSCHECK line 31 relabelled raw note",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/adx_di_2026-11/TV_CROSSCHECK.md",
     "MyTradingSys/research/adx_di_2026-11/CENSUS.md",
@@ -65,11 +78,12 @@
   "sources": [
     "four-model review 2026-11-11"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "census.py line ~177 passes the median through a percent formatter; print it as days and regenerate CENSUS.md without changing other numbers",
     "TV_CROSSCHECK.md: keep the line-3 verdict VERIFIED-TV (closed bars match; last bar was a partial csv; FORMULAS.md agrees) and relabel line 31 as the worker raw note: 7/9 cells, both failures on the partial 2026-11-06 bar (DECISION OURS)"
   ],
+  "taken": "2026-11-13T12:14:59Z",
   "tests": "New test in test_census.py: the cascade table median lead cell has no percent sign (fails on old code); existing census tests unchanged",
   "title": "ADX/DI cross-check: one verdict, census lead in days",
   "weight": "",
