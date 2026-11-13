@@ -1,0 +1,54 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-14T19:30:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge5-rsi-4h-exits-newcoins/REVIEW.md exists",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind review of the study result in MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/edge5-rsi-4h-exits-newcoins_RESULTS.md (the study itself is not on trunk; the result text is all you have). Check look-ahead risk, fee/slippage handling, placebo validity, clustering/independence, and whether the verdict follows from the table.",
+  "id": "gemini-edge-blind-edge5-rsi-4h-exits-newcoins-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-14, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "Blind: do not trust the author's conclusion.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:30:00Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge5-rsi-4h-exits-newcoins/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file, a computation you ran, or a verbatim quote, never memory",
+    "do not run sync.py ship",
+    "Gemini always low effort"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13/14 operator order: use Gemini flash quota fully before it expires"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/edge5-rsi-4h-exits-newcoins_RESULTS.md. Do not read other reviews. Do not invent data.",
+    "Table: claim, where in the text, internally consistent? (YES / NO / CANNOT-TELL). Recompute any arithmetic that can be recomputed from the text (means, counts, percentages, sums).",
+    "List concrete look-ahead, fee, placebo, clustering and multiple-testing risks the text itself exposes, quoting the sentence; do not speculate beyond the text.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1114/blind-edge5-rsi-4h-exits-newcoins/REVIEW.md with a one-line verdict first (SOUND / FLAWED / UNVERIFIABLE) and what would change it; commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind review of edge5-rsi-4h-exits-newcoins",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
