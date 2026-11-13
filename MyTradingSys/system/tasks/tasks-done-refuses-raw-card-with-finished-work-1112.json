@@ -16,9 +16,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "chain n reads (5 Gemini scans) + fix sync.py/tasks.py docstring drift",
-      "ref": "bab3a11097a3",
-      "utc": "2026-11-11T20:39:28Z"
+      "line": "Ship pipeline: apply Fable review changes 1-8 (operator yes 11-12)",
+      "ref": "7a23bdd1603a",
+      "utc": "2026-11-12T18:43:39Z"
     }
   ],
   "layers": [],
@@ -28,7 +28,7 @@
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T15:46:16Z",
+  "refreshed": "2026-11-13T00:41:08Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -38,7 +38,7 @@
   "scope_out": [
     "ready/active done path unchanged; flow cards; bug-conflict cards; any other tasks.py command"
   ],
-  "scope_sha": "bab3a11097a3",
+  "scope_sha": "7a23bdd1603a",
   "size": "S",
   "sources": [
     "3 Builders 2026-11-12 Noticed"

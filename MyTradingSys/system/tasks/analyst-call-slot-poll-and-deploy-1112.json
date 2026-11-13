@@ -5,6 +5,15 @@
     "python MyTradingSys/research/analyst_call_slot_2026-11-11/call_paper_log.py --once",
     "python MyTradingSys/research/fable_run7_forward_test/forward_readout_all.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T00:41:07Z",
+    "misses": 3,
+    "reads": [
+      "MyTradingSys/system/roles/session_planner.md"
+    ],
+    "session": "agent-a7215e2da4575403d"
+  },
   "created": "2026-11-11T19:40:49Z",
   "depends_on": [],
   "done_when": "Report names the call_paper_log.py --once output line and the four-row forward_readout_all.py table (trades, net R, state, stop rule); nothing written outside git-ignored runtime_data/.",
