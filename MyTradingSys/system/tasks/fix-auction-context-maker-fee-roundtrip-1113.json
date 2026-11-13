@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T11:58:33Z",
   "commands": [
     "python -m pytest MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py -q"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "DEFAULT_MAKER_RT_BPS 2.0 -> 4.0; 14 tests pass",
+      "ref": "f11f0e6af",
+      "utc": "2026-11-13T11:58:33Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "auction_context: prior NY cash-session VAH/VAL/POC, DST-aware (tf-ny-session-va-profile-11",
@@ -26,13 +33,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: fix shipped",
   "note": "Latent bug, no current number affected (verified: only the definition references it). Next: END fix shipped; any future maker-fill study must read this constant.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T20:19:31Z",
   "refs": [],
-  "result": "",
+  "result": "DEFAULT_MAKER_RT_BPS 2.0 -> 4.0; 14 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/test_auction_context.py"
@@ -45,12 +58,13 @@
   "sources": [
     "MyTradingSys/backtest/fees.py:23,37 (SOURCED); gap-hunt 1113 via Supervisor C"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Change line 47 to BINANCE_MAKER * 20000.0 with comment 4 bps round trip (2 x 2 bps, fees.py D)",
     "Add the test; run it red on old line, green on new",
     "grep repo for DEFAULT_MAKER_RT_BPS callers (none at refinement time); if any appear, name them in the result"
   ],
+  "taken": "2026-11-13T11:58:33Z",
   "tests": "New test_maker_rt_is_two_legs in test_auction_context.py asserts DEFAULT_MAKER_RT_BPS == 4.0 (expected from fees.py:23 'D Binance maker both legs 4 bp'); fails on current code (2.0)",
   "title": "[SONNET] auction_context.py:47 comment says maker fee is per side but code uses it as the round trip: maker cost understated by half",
   "weight": "ROUTINE",

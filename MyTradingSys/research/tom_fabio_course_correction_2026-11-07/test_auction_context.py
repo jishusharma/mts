@@ -383,3 +383,8 @@ def test_prior_ny_session_profile_dst_and_causal():
     # weekend: on Sunday 2026-07-19 the prior session is Friday 07-17, not Saturday
     wk = [{"t": u(2026, 7, 17) + k * 300_000, "o": 200.0, "h": 201.0, "l": 199.0, "c": 200.0, "v": 5.0} for k in range(3 * 288)]
     assert ac.prior_ny_session_profile(wk, u(2026, 7, 19, 18, 0), bin_size=1.0)["date"] == "2026-07-17"
+
+
+def test_maker_rt_is_two_legs():
+    # fees.py:23 scenario D: Binance maker both legs = 4 bp round trip (2 x 2 bp)
+    assert ac.DEFAULT_MAKER_RT_BPS == pytest.approx(4.0)
