@@ -124,7 +124,8 @@ def ci_stats(since, until):
     cmd = ["gh", "run", "list", "--branch", "fast-track", "--limit", "1500", "--created", ">=" + since.strftime("%Y-%m-%d"),
            "--json", "databaseId,conclusion,createdAt,updatedAt,event,headSha"]
     try:
-        runs = json.loads(subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=True).stdout)
+        runs = json.loads(subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=True,
+                             creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0)).stdout)
     except Exception as e:
         return {"error": "NOT MEASURED (" + type(e).__name__ + ")"}
     runs = [r for r in runs if r.get("conclusion") in ("success", "failure") and _in(r["createdAt"], since, until)]
@@ -148,7 +149,8 @@ def git_stats(repo, since, until):
     cmd = ["git", "-C", str(repo), "log", "origin/fast-track", "--since=" + since.isoformat(), "--until=" + until.isoformat(),
            "--name-only", "--format=%x01%H%x09%P%x09%s"]
     try:
-        out = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=True).stdout
+        out = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=True,
+                             creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0)).stdout
     except Exception as e:
         return {"error": "NOT MEASURED (" + type(e).__name__ + ")"}
     total = merges = admin = 0
