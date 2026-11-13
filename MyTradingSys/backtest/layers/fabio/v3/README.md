@@ -25,6 +25,8 @@ Required config (NS-grid, no defaults): `N, p, z_hi, m_c, f, g, entry_mode, mgmt
 Optional: `k_bal` 0.8, `bin_size` 50, `open_idx` 0, `as_of`, `models`, `target_mode` ("edge"), `slip_bps`, `tier`,
 `prior_vols` (S4 tier), `prior_ranges` (callable `elapsed -> list`, day gate).
 
+Function defaults (`mgmt="dist"`, `be_k` 1.0) in `walk_trade`/`simulate_trade`/`model_*_trade` are test-only (they keep T01-T50 valid) and are not grid values; the v3.1 default is `mgmt="event"`. Every non-test caller passes `mgmt` explicitly (guard: `tests/test_mgmt_explicit.py`).
+
 ## Tests
 `tests/*.py.new` (93 tests): costs+fill, day gates, management, signals, models+engine. Expected numbers come from the
 spec test plan (T-ids in comments) or hand arithmetic written next to the assert; none from repo code. Staged run:
