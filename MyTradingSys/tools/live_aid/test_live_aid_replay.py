@@ -568,14 +568,14 @@ def test_liquidation_history_survives_reload(browser):
     try:
         page.add_init_script("window.LIVEAID_REPLAY = " + json.dumps(KLINES) + ";")
         page.clock.set_fixed_time(datetime.datetime.fromtimestamp(NOW_MS / 1000, tz=datetime.timezone.utc))
-        url = PAGE.resolve().as_uri() + "?replay=fixture#home"
+        url = PAGE.resolve().as_uri() + "?replay=fixture#homeold"
         page.goto(url, wait_until="load", timeout=30000)
         ev = [{"t": NOW_MS - 120_000, "venue": "BYBIT", "side": "long", "usd": 250000, "px": 77777.5},
               {"t": NOW_MS - 5 * 3600_000, "venue": "BYBIT", "side": "short", "usd": 111000, "px": 55555.5}]
         page.evaluate("v => localStorage.setItem('liveaid.liq.v1', v)", json.dumps({"t0": NOW_MS - 3600_000, "ev": ev}))
         page.reload(wait_until="load")
         page.wait_for_timeout(1300)
-        titles = page.eval_on_selector_all("#p-home .hm-lc", "cs => cs.map(c => c.title)")
+        titles = page.eval_on_selector_all("#p-home-old .hm-lc", "cs => cs.map(c => c.title)")
         assert titles, "no liquidation card on Home"
         t5 = [t for t in titles if t.startswith("5m:")][0]
         t4h = [t for t in titles if t.startswith("4h:")][0]
