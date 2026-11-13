@@ -97,7 +97,9 @@ class Select(unittest.TestCase):
         self.assertEqual(mode, "smoke")
         self.assertIn("3ds", steps)          # name match survives the "(file, N shards)" command text
         self.assertNotIn("3k", steps)
-        self.assertTrue({"3w", "3x", "4b"} <= set(steps))
+        self.assertTrue({"3x", "4b"} <= set(steps))
+        self.assertNotIn("3w", steps)        # test_value_audit_1113: 3w left ALWAYS (its test_real_repo_passes re-runs the 3x check)
+        self.assertNotIn("3dl", steps)       # and 3dl runs only for ci.yml / requirements / a test file
         self.assertNotIn("4", steps)         # a shard none of whose tests mention the module is not run
 
     def test_mentions_reads_the_tests_named_in_the_command(self):
@@ -156,6 +158,18 @@ class Select(unittest.TestCase):
         mode, steps = self.sel("MyTradingSys/research/x_2026-10-16/test_x.py")
         self.assertEqual(mode, "smoke")
         self.assertIn("3dl", steps)
+
+    def test_3w_is_not_always_and_3dl_runs_only_for_ci_yml_requirements_or_a_test_file(self):
+        # test_value_audit_1113: 3w duplicated 3x in every smoke ship; 3dl had 0 failures in 173 executions
+        self.assertNotIn("3w", gs.ALWAYS)
+        self.assertNotIn("3dl", gs.ALWAYS)
+        for f in (".github/workflows/ci.yml", "requirements.txt", "MyTradingSys/requirements-dev.in", "pyproject.toml", "scripts/dev/test_x.py"):
+            self.assertTrue(gs.deps_relevant(f), f)
+        for f in ("scripts/dev/dsa.py", "MyTradingSys/research/x/study.py", "README.md"):
+            self.assertFalse(gs.deps_relevant(f), f)
+        self.assertIn("3dl", self.sel(".github/workflows/ci.yml")[1])
+        self.assertIn("3dl", self.sel("scripts/dev/test_x.py")[1])
+        self.assertNotIn("3dl", self.sel("scripts/dev/dsa.py")[1])
 
     def test_always_steps_exist_in_the_real_plan(self):
         import run_all_tests
@@ -387,7 +401,8 @@ class DataOnlyMustExtras(unittest.TestCase):
     def test_sim_desk_results_json_alone_is_not_docs_and_keeps_the_always_steps(self):
         mode, nums = self.sel("MyTradingSys/research/sim_desk/results/x.json")
         self.assertEqual(mode, "smoke")
-        self.assertTrue({"3w", "3x", "3dl"} <= set(nums), nums)
+        self.assertTrue({"3x", "3cm"} <= set(nums), nums)
+        self.assertNotIn("3w", nums)
 
     def test_must_extras_is_triggered_for_that_ship(self):
         f = "MyTradingSys/research/sim_desk/results/x.json"
@@ -402,7 +417,7 @@ class DataOnlyMustExtras(unittest.TestCase):
         for f in ("MyTradingSys/research/x/study.py", "MyTradingSys/backtest/foo.py", "MyTradingSys/backtest/layers/L/mod.py"):
             mode, nums = self.sel(f)
             self.assertIn("4e", nums, f)
-            self.assertTrue({"3w", "3x", "3dl", "3cm"} <= set(nums), nums)   # only adds: ALWAYS steps stay
+            self.assertTrue({"3x", "3cm"} <= set(nums), nums)   # only adds: ALWAYS steps stay
 
     def test_cost_shard_4e_not_added_for_test_files_or_other_code(self):
         self.assertNotIn("4e", self.sel("MyTradingSys/research/x/test_study.py")[1])

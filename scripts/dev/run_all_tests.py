@@ -926,7 +926,7 @@ def targeted_tests(files, root=REPO):
 
 
 FAST_JOBS_MAX = 6
-FAST_COSTLY_ALWAYS = ("3w", "3tl", "3dl")   # gate_select.ALWAYS steps of 3-9 s that a fast gate runs only when the change can matter to them
+FAST_COSTLY_ALWAYS = ("3tl",)   # costly ride-along steps a fast gate runs only when the change can matter to them (3w and 3dl left gate_select.ALWAYS: test_value_audit_1113)
 LOOKAHEAD_MUST = "3la"   # picked by gate_select.LOOKAHEAD_RE; in a fast ship it is must-pass (NO_DEFER_CMDS)
 FAST_ALWAYS = ("4d", "3qn")   # 4d: the doc/tree-scanning pytest tests, 3qn: the quarantine list stays valid (both seconds)
 fast_applied = False
@@ -978,7 +978,7 @@ def apply_fast(plan, files, nums, jobs, live=False):
     needed = set()
     for f in files:
         needed.update(gate_select._name_matches(f, steps_list))
-        if f.endswith(".py") or f.endswith("ci.yml") or gate_impact.is_test_file(f):
+        if gate_select.deps_relevant(f):
             needed.add("3dl")
     if any(gate_select._is_doc(f) for f in files):
         needed.update(gate_select.DOC_STEPS)
