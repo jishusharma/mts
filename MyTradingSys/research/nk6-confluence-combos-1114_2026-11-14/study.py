@@ -10,7 +10,9 @@ BUG = bool(os.environ.get("STUDY_BUG"))
 
 def load(sym):
     d = np.load(f"{CACHE}\\{sym}USDT_15m.npz")
-    return {k: d[k] for k in ("ts", "o", "h", "l", "c", "v")}
+    out = {k: d[k] for k in ("o", "h", "l", "c", "v")}
+    out["ts"] = d["ts"] if "ts" in d.files else d["t"]   # sibling workers write key t
+    return out
 
 
 def rsi(c, n):
