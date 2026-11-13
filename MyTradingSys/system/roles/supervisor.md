@@ -24,7 +24,7 @@ Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
    (`n` = workers of yours still running). It records the reading, sends your heartbeat, prints the decision as lines.
 2. Do what the lines say in ONE message: `RUN` lines (one Bash call; background where marked), `SPAWN` lines (background Agents, model sonnet,
    2 chained cards each; never start_session: needs operator approval), verify notes (below), mark_completed/archive.
-   `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. Copy `OPERATOR` lines into your one-line reply. `RUN US session (Agent, haiku)`: start that background Haiku Agent, then `sync.py claim us-session-<date>`.
+   `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. Copy `OPERATOR` lines into your one-line reply.
 3. Watcher via run_in_background (no `&`), then `supervisor.py watchcheck --login <L>` as the LAST call (SUPER_SESSION.md step 5): exit 4 -> restart it, recheck; end only on exit 0; no sleep loops, second watcher or schedulers.
    Never end a turn idle while READY cards or unread signals wait: dispatch a worker or arm `supervisor.py wait`.
 SUPER_SESSION.md rules 11-14 apply (review Agent before a live-path/gate ship; spend inside the weekly cap; a defect blocks only its readers;
