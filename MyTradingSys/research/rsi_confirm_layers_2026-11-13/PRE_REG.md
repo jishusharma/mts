@@ -6,7 +6,10 @@ Written and committed before any outcome (stop/target/return) is computed. Only 
 The bare rule (RSI(14) on 1h or 4h closes <= 20; next bar green and closing above the signal close = entry at that close; stop = signal-bar low) fails alone (base study edge3-rsi-deep-extreme-grid-1113: 1h RSI<=20 pooled 545 trades, 41 % reach 1R, signal low broken within 7 days in 82 %). Hypothesis: ONE closed-data layer measured at the signal bar separates winners from losers well enough to give positive fee-net expectancy out of sample.
 
 ## Context
-Regime/phase: the rule is a counter-trend dip buy (long into an oversold flush), so the layers ask which kind of flush (trend state, capitulation volume, positioning unwind, funding, time of day, depth) is a bounce rather than a continuation. Session: all 24 h; session of the signal bar is itself a layer. Entry: close of the confirming bar (SOURCED, operator). Prior family result: 0 of 60 grid cells passed (edge3) and 0 of 384 (edge-rsi-extreme-confirm); this study only adds filters to the same trades and cannot create new ones.
+Regime: the layers (trend state, ADX) are the regime question itself; no outer regime gate.
+Phase: the rule is a counter-trend dip buy (long into an oversold flush), so the layers ask which kind of flush (trend state, capitulation volume, positioning unwind, funding, time of day, depth) is a bounce rather than a continuation.
+Session: all 24 h; session of the signal bar is itself a layer.
+Entry: close of the confirming bar (SOURCED, operator). Prior family result: 0 of 60 grid cells passed (edge3) and 0 of 384 (edge-rsi-extreme-confirm); this study only adds filters to the same trades and cannot create new ones.
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %): DEV 2020-01-01..2023-12-31 bull 51 % / bear 40 % / range 10 %; VALIDATION 2024-01-01..now bull 56 % / bear 30 % / range 15 % (first 18 months bull 74 % / bear 7 %; from 2025-07 bull 36 % / bear 54 %).
 
 ## Data, universe, splits

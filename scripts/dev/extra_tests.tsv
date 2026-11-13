@@ -305,3 +305,4 @@ MyTradingSys/tools/live_aid/test_home_one.py
 MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_run_1113.py
 scripts/dev/test_shared_lists.py
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/test_htf.py
+MyTradingSys/research/rsi_confirm_layers_2026-11-13/test_study.py
