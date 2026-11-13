@@ -30,7 +30,7 @@ Files: `news_events.csv` (one row per event), `control_windows.csv` (same-clock 
 | TRUMP_POLICY | OURS | 11 | 3 | 8 | 3 | 1/2 |
 | **all** | | 191 | 142 | 49 | 142 | 52/90 |
 
-Own-grouping (OURS) rows verified this run: 15 of 64, from primary or archive pages with the minute (exchange rule, protocol timestamp, block header, EDGAR acceptance time, executive-order text, Truth Social post time). Per class verified / rows: BOJ_JAPAN 0/4, COURT_LEGAL 0/10, ETF_REGULATORY 2/8, GEOPOLITICS 2/6, HACK_EXPLOIT 2/8, MACRO_OTHER 2/8, TARIFF_TRADE 4/9, TRUMP_POLICY 3/11. Classes under 8 verified events stay UNKNOWN in every table; the other 49 OURS rows are marked `UNFIT:` with a reason in `verify_note`.
+Own-grouping (OURS) rows verified this run: 15 of 64 (SOURCED-label rows counted apart: 127 of 127; all labels 142 of 191; commit 8ce5a1c28's subject "19" was these 15 OURS rows plus the 4 PROTOCOL rows, label SOURCED, verified in the same commit), from primary or archive pages with the minute (exchange rule, protocol timestamp, block header, EDGAR acceptance time, executive-order text, Truth Social post time). Per class verified / rows: BOJ_JAPAN 0/4, COURT_LEGAL 0/10, ETF_REGULATORY 2/8, GEOPOLITICS 2/6, HACK_EXPLOIT 2/8, MACRO_OTHER 2/8, TARIFF_TRADE 4/9, TRUMP_POLICY 3/11. Classes under 8 verified events stay UNKNOWN in every table; the other 49 OURS rows are marked `UNFIT:` with a reason in `verify_note`.
 
 ## 3. Class table (verified rows; classes with fewer than 8 verified events are UNKNOWN)
 

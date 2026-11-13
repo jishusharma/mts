@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T14:20:06Z",
   "commands": [
     "python MyTradingSys/research/news_effects_2026-11/check_catalogue.py"
   ],
@@ -16,6 +17,12 @@
   "kind": "build",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "REPORT.md counts were right (142/191, OURS 15/64); 8ce5a1c28's 19 = 15 OURS + 4 PROTOCOL (",
+      "ref": "cddb6e4c1",
+      "utc": "2026-11-13T14:20:06Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: counts reconciled",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T01:53:38Z",
   "refs": [],
-  "result": "",
+  "result": "REPORT.md counts were right (142/191, OURS 15/64); 8ce5a1c28's 19 = 15 OURS + 4 PROTOCOL (SOURCED). Basis stated in REPORT.md; check_catalogue.py derives counts from the CSV, OURS and SOURCED apart; GREEN, RED on the old report",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/news_effects_2026-11/REPORT.md",
     "MyTradingSys/research/news_effects_2026-11/check_catalogue.py",
@@ -55,12 +68,13 @@
     "MyTradingSys/research/news_effects_2026-11/REPORT.md lines 9, 33, 163",
     "git show 8ce5a1c28 (message: 19 own-grouping rows)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Count verified Y per class_label (OURS, SOURCED) from news_events.csv with a small script",
     "Compare with REPORT.md lines 9, 33, 163; explain the 19 in 8ce5a1c28 (15 OURS + 4 PROTOCOL if so) in line 163",
     "Add the CSV-derived check to check_catalogue.py; show it failing on a doctored copy"
   ],
+  "taken": "2026-11-13T14:20:06Z",
   "tests": "In check_catalogue.py add the REPORT-vs-CSV count check; run it first against a copy of REPORT.md with 15 changed to 19 and see it fail, then against the real file",
   "title": "news-effect REPORT.md stale counts: says 15 of 64 OURS rows verified but CSV has 19; recheck the 142 of 191 count at lines 9 and 163",
   "weight": "ROUTINE",
