@@ -51,12 +51,16 @@ Formula pointer: `backtest/layers/FORMULAS.md` section 22 (`VERIFIED-TV 2026-10-
 | Habib / CBP | NO-SOURCE: no extract mentions Bollinger Bands | none found |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (no numbers in this section per task instruction):
-- `MyTradingSys/research/bb_range_to_range_2026-11-04/` (RESULT.md, PRE_REG.md): Bollinger band-to-band move in a range regime, across sessions (Asia, London, NY) on 15m BTCUSDT.
-- `MyTradingSys/research/bb_dance_2026-10-30/` (RESULT.md, study.py): Bollinger band dance analysis on 5m BTCUSDT, examining persistence of band walk via %B thresholds and exit comparison.
-- `MyTradingSys/research/wlow_bounce_bbrsi60_2026-10-16/` (PRE_REG.md, VERDICTS.csv): Weekly-low break, bounce, and hold under RSI 60 near the upper Bollinger band.
-- `MyTradingSys/research/bollinger_2026-10-14/` (SOURCES.md): Source survey and synthesis on band walk, setups, and BTC settings.
-- `MyTradingSys/research/volume_2026-10-09/` (PRE_REG_VOLUME_2026-10-09.md, VOLUME_RESEARCH_REPORT_2026-10-09.md): Bollinger squeeze breakout with/without volume.
+All rows OURS, copied from the named file. BTCUSDT, DEV only; no HOLDOUT read.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/bb_range_to_range_2026-11-04/RESULT.md` | BB(20,2) close beyond band, trade to opposite band, 2:1 bracket, 24-bar time-out, range regime, 15m, 0.14% round trip, DEV 2022-01..2024-06 | asia 1200 / london 951 / ny 1634 (signal entry) | 6 of 6 cells net negative: asia -0.122% [-0.177, -0.067], london -0.138% [-0.200, -0.076], ny -0.153% [-0.206, -0.100]; target hit 17% / 28% / 21% | 15m: DO NOT USE |
+| same file | range gate vs ungated, 15m all sessions, signal entry | 4256 range vs 5311 ungated | -0.130% [-0.161, -0.099] vs -0.127% [-0.154, -0.099]; difference t -0.5 | gate adds nothing |
+| same file | 1h and 4h range signals (descriptive, power BLOCKED) | 1h 1080; 4h 252 | 1h -0.157% [-0.278, -0.036]; 4h -0.449% [-0.919, +0.020] | 1h, 4h: UNDERPOWERED |
+| `research/bb_dance_2026-10-30/RESULT.md` | 5m shorts after a close back below the mid then a lower-band touch; chance of a new low before a close above the mid; gross, no fees, descriptive | 11,051 | Close near band (%b < 0.25): 59% to 64% new low first (k 1 to 6; n 6,360 down to 1,474). Away from band (%b >= 0.25): 32% to 26%. Exit means gross +0.168% to +0.178% per short against 0.12% round trip (file's own statement) | 5m: CONTEXT ONLY (descriptive, no edge claim) |
+| `research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md` | Weekly-low break, bounce, hold under RSI 60 near upper BB, 1h, long, h=4 | 8 events | net long -0.433% (mean R4 -0.293%, SE 0.116) | 1h: UNDERPOWERED (n 8 < 10; VERDICTS.csv INCONCLUSIVE) |
+| `research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md` (pooled row) | BB squeeze breakout, volume-confirmed minus unconfirmed, 6 pairs pooled, 4h | 6 pairs | DEV +88 bp [+15, +155] p 0.008; VALIDATION -13 bp [-109, +81] p 0.60 | 4h: DO NOT USE (not supported on VALIDATION) |
+Regime mix (bb_range_to_range): 130 weeks DEV: bull 25 (19%), bear 0, range 105 (81%) (`bb_range_to_range_2026-11-04/RESULT.md`). 1d, 1w: NOT_MEASURED. Maker-fill cost (0.09%) and midline exits: NOT_MEASURED (stated untested in the same RESULT.md).
 
 ## 6. How to read it now on Live Aid
 - **Timeframe strip panel** (`tools/live_aid/live_aid.html` table `#tfs-rows`, `tools/live_aid/tf_strip.js`): Shows "Bollinger" column computing Bollinger(20,2) position (0 to 100, where 0 = lower band, 50 = mid, 100 = upper band) on closes including forming bar. Tagged "near" when within outer 20% of the band (OURS).

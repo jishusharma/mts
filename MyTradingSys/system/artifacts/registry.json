@@ -65,7 +65,7 @@
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
       "published_sha": "1bb0cf888845c131c30869e5d86b2d16644264e02a1de24368abd1d9ea6c7068",
-      "published_at": "2026-11-13T13:52:00Z",
+      "published_at": "2026-11-13T19:43:30Z",
       "why_retire": "operator 2026-11-13: retire, keep only 5 pinned (delete by hand)"
     },
     {
@@ -271,7 +271,7 @@
         "MyTradingSys/system/artifacts/registry.json"
       ],
       "max_age_h": 24,
-      "published_at": "2026-11-13T14:09:05Z",
+      "published_at": "2026-11-13T19:43:31Z",
       "feed_hashes": {
         "MyTradingSys/system/artifacts/registry.json": "ef8651cadb1b4a60b719f03862a5fe8201c8b258e03ef019ea52d880ee980fa6"
       }

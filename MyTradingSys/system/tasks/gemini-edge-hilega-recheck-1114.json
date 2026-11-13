@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-14T19:30:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1114/hilega-recheck/RECHECK.md exists",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula/FORMULA.md (Hilega-Milega as NK uses it: RSI9, WMA21 red, EMA3 green, blue line unsettled) against at least 2 sources NOT already cited there (web: TradingView script pages, Indian trading blogs/YouTube descriptions).",
+  "id": "gemini-edge-hilega-recheck-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-14, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:30:00Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1114/hilega-recheck/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file, a computation you ran, or a verbatim quote, never memory",
+    "do not run sync.py ship",
+    "Gemini always low effort"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13/14 operator order: use Gemini flash quota fully before it expires"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read FORMULA.md and list its claims. Find at least 2 new web sources; fetch each page (if a page cannot be fetched say NOT FETCHED and do not quote it).",
+    "Table: claim, new source, URL, verbatim quote or NOT FETCHED, AGREE / CONFLICT / SILENT. Say what the blue line is, if any source says.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1114/hilega-recheck/RECHECK.md; run scripts/dev/verify_extract_quotes.py is NOT applicable to web pages, so mark every web quote UNVERIFIED unless the page was fetched in this run; commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Check Hilega formula result against 2 more sources",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
