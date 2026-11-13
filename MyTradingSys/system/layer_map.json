@@ -769,6 +769,25 @@
  ],
  "backtests": [
  {
+  "id": "MALKAN-R03-R04-DIVERGENCE-20261113",
+  "trials": null,
+  "title": "Malkan MAL-R03 bearish / MAL-R04 bullish RSI divergence on closes, swings 12/18 bars apart, confirm candle, 1h + 4h, 20 perps, exits 1R/2R/12-bar",
+  "date": "2026-11-13",
+  "market": "Bybit linear 1h and 4h (folded), 20 USDT perps; DEV / VALIDATION / RECENT",
+  "layers": [
+   "rsi_divergence"
+  ],
+  "params": "SOURCED: Malkan R03/R04 divergence on closes with confirming candle (quoted in PRE_REG); OURS: swing spacing 12/18, stop beyond swing extreme, exits, 20-coin universe",
+  "split": "DEV / VALIDATION / RECENT, VALIDATION 150 weeks",
+  "fees": "fee-net: 2 x BINANCE_TAKER + SLIPPAGE_RT_S13 = 12 bp round trip from fees.py",
+  "interaction": "day-cluster bootstrap CI, matched placebo, BH 10% over 24 cells; UTC hour-block table descriptive",
+  "effects": "none: 1h cells -0.22..-0.25 R; best R03 4h T12 VALIDATION +0.030 R CI [-0.125,+0.210] not significant",
+  "n": "24 cells; 1h n ~6200 and 4h n ~1360 per cell on VALIDATION",
+  "verdict": "FAIL: 0 of 24 cells pass; R03 4h short is the only near-zero family",
+  "report": "MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/RESULT.md",
+  "read": "summary"
+ },
+ {
   "id": "EDGE4-RSI-4H-LE12-DAILY-LT30-20261113",
   "trials": null,
   "title": "4h/8h/12h RSI(14)<=12 + daily RSI<30 + next candle closes higher, entry at its close, stop = signal low, exits 1R/2R/3R/12-bar time, 20 perps",
