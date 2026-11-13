@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:51:50Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/doc-contradiction-deploy-ship/FINDINGS.md exists, first line is N contradictions, and each row quotes both sides with file:line",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find steps, gates, timings and commands that differ between DEPLOY_RUNBOOK.md, SHIP_TRAIN.md, QUICK_ANSWERS.md and the Gates section of CLAUDE.md (use git show HEAD:CLAUDE.md), plus scripts they name that do not exist.",
+  "id": "doc-contradiction-deploy-ship-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:51:56Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/doc-contradiction-deploy-ship/FINDINGS.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/system/DEPLOY_RUNBOOK.md, SHIP_TRAIN.md and QUICK_ANSWERS.md.",
+    "List every checkable claim (machine names, paths, numbers, command names, owners). Verify command names exist (ls scripts/dev) and paths exist on disk.",
+    "Table: claim A (file:line, verbatim), claim B (file:line, verbatim), type (CONTRADICTION / STALE / BROKEN_PATH), proposed fix text.",
+    "Write FINDINGS.md. Do not edit the docs (a later Sonnet pass applies fixes). Commit on your gemini-q branch only."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py",
+  "title": "[GEMINI] Contradiction scan: MyTradingSys/system/DEPLOY_RUNBOOK.md, SHIP_TRAIN.md and QUICK_ANSWERS.md",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
