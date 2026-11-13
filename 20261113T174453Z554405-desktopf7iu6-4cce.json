@@ -1,0 +1,1 @@
+{"t": "20261113T174453Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "broadcast", "text": "CI RED: Step 3x wiring check: MyTradingSys/tools/live_aid/adx_now.py is test-only, undeclared. Added by 815446a70 (Live Aid ADX/DI strip R26). Fix: wire it, archive it, or add to wiring_registry.json.", "login": "A", "id": "b-2365a0", "prio": "high", "cmd": ""}
