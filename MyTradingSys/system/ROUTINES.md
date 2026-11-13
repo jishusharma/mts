@@ -1,0 +1,41 @@
+# ROUTINES: the regular work of MTS, one row each (checked 2026-11-13 on JIS-NB)
+New file: no earlier index existed (ROUTING.md says where work goes, HOW_MTS_RUNS.md who runs what; neither lists recurring commands).
+Run every command from your WORKTREE (`sync.py start <slug>` prints it). A Haiku worker can follow any row: run START, run CHECK, compare to EXPECT.
+Triggers today: `supervisor.py plan` prints RUN lines (a coordinator runs them); 2 Windows tasks exist on JIS-NB; hooks in `.claude/settings.json`; the rest nobody.
+No scheduler may be added (SCHEDULING_POLICY.md): a missing trigger is fixed by a `plan` RUN line, never a timer.
+
+| # | Routine | START (one command) | CHECK -> EXPECT | Cadence | Trigger today | Model | Doc | STATE |
+|---|---|---|---|---|---|---|---|---|
+| 1 | CBP analyst calls: fetch, extract, board | `python scripts/dev/cbp_run.py --due --quick-new` | `F:/CryptoScrapper/cbp_store/stamp.json` has today's `<date>:EU` and `:PRE_US` in `done` -> both present; `cbp_run.py --new-check` -> `CBP NEW` lines or none | 2x/day | plan RUN line (lane owner) + Windows task MTS-CBP-Ingestion | T0 script | research/cbp/README.md | BROKEN: task ran 11-13 05:00Z rc 0 but stamp last_run is 11-12 15:05Z; `--new-check` hung over 100 s |
+| 2 | Analyst levels table | `python scripts/dev/analyst_levels.py` (`--offline` = no price) | first line `ANALYST LEVELS (CBP, N BTC rows)` -> N > 0, level rows follow | on demand | nobody (read tool) | Haiku | scripts/dev/analyst_levels.py | OK |
+| 3 | Page republish | `python scripts/dev/artifacts.py stale` then Artifact publish + `artifacts.py publish-record` | stale -> no `STALE` lines (4 now); `artifacts.py check` -> `artifacts: 19 pages ok` | each wake | plan prints `PLAN pages-stale` + REPUBLISH lines (publisher logins only) | Sonnet (publish) | SUPER_SESSION.md step 3b | OK (checked; `stale` takes over 100 s here) |
+| 4 | Worktree cleanup | `python scripts/dev/wt_maint.py` (dry run; `--apply` removes) | `python scripts/dev/wt_maint.py status` -> `state Ready ... last result 0` | daily 07:15 | Windows task MTS-WorktreeMaint-JIS-NB | T0 script | STATION_CLEANUP.md | OK (ignores `--help`: runs the dry run) |
+| 5 | Daily hygiene (gate, tidy, where, desk assign, status) | `python scripts/dev/daily_hygiene.py` (runs the full gate, minutes; ignores `--help`) | `MyTradingSys/runtime/sched/hygiene_latest.md` first line date is today, `STATUS: GREEN` | daily | nobody: not registered, last file 2026-10-19 RED (gate) | T0 script | scripts/sched/register_cicd_tasks.ps1 | NO TRIGGER |
+| 6 | Status board | `python scripts/dev/status_board.py` | prints `**Status: ...` then Resources table | when operator says "status" | operator word | Haiku | status_board.py | OK |
+| 7 | Live Aid daily learner | `python scripts/dev/live_aid_learn.py --date <YYYY-MM-DD> --log runtime_data/live_aid/flag_log_*.csv --klines auto` | file `MyTradingSys/research/live_aid_learning/<date>.md` exists (latest 2026-11-13) | daily after US close | only `us_prep.py --phase P4` by hand; no pass ran 11-12 | Sonnet | research/live_aid_learning/ | NO TRIGGER (card live-aid-learn-daily-trigger-1113) |
+| 8 | Gemini queue | `python scripts/dev/gemini_queue.py run <card>:low` | `gemini_queue.py status` -> last line per job `DONE`/`COMMIT`, not `START` | per ready GEMINI card | plan SPAWN Lab_Guy, NUC supervisor only | Gemini low | GEMINI_START.md | NO CHECK: job gpt-mutation-trendline-core-1031 shows `START` with no end |
+| 9 | Screenshot intake and read | `python scripts/dev/shot.py status` (ingest is the hook) | `SHOTS landed N: ... overdue(>24h) 0`, exit 0 -> now 450 overdue, exit 1 | every image | hook ingests; nobody reads or closes | Haiku (classify) | shot.py | NO TRIGGER for read/done |
+| 10 | Scenario ledger scoring | `python MyTradingSys/research/eagle_eyes_picture_2026-10-28/scenario_ledger.py score` | `... summary` -> `maps 26 \| open 3` falls as maps close | each market day | nobody | Haiku | same folder, README | NO TRIGGER |
+| 11 | MTS doctor | `python scripts/dev/mts_doctor.py --no-process` | exits 0, prints WARN/RED rows; `--heal` dry-runs fixes | each session start | `sync.py start` prints its checklist | T0 script | MTS_DOCTOR.md | OK (checked: exit 0 in under 280 s, 4 WARN) |
+| 12 | Stale-card check | `python scripts/dev/tasks.py stale` | no output, exit 0 -> now 63 stale `ready` cards, exit 1 | daily | nobody | T0 script | TASK_REFINEMENT.md | NO TRIGGER |
+| 13 | Card lint | `python scripts/dev/tasks.py lint` | exit 0, no error lines | before a ship that adds cards | nobody | T0 script | TASK_REFINEMENT.md | BROKEN: no output after 40 s |
+| 14 | CI watch | `python scripts/dev/ci_watch.py` | `CI ok: fewer than 2 failed runs in a row` | every prompt | hooks (all sessions) + plan | T0 script | DEBUGGING.md | OK |
+| 15 | Quote check (extractions) | `python scripts/dev/verify_extract_quotes.py <extract.md>` | exit 0; every quote found in its transcript | per extract | Gates rule in CLAUDE.md, run by the extractor | Haiku | scripts/dev/verify_extract_quotes.py | OK |
+| 16 | Live mirror | `python scripts/dev/live_mirror.py brief` | a `LIVE OWNER: <host>` line with heartbeat under 180 s | each session start | `sync.py start` (pull); no timer registered | T0 script | LIVE_MIRROR.md | NO CHECK: owner heartbeat 581149 s old, mirror refuses; nobody told |
+| 17 | US session prep | `python scripts/dev/us_prep.py --phase P1` (P1 09:00Z, P2 13:15Z, P3 14:45Z, P4 21:15Z) | `MyTradingSys/runtime/us_prep/<date>_<phase>.md` exists | 4x per US day | doc line SUPER_SESSION.md 7a only; plan prints nothing | Sonnet | SUPER_SESSION.md 7a | NO TRIGGER |
+| 18 | Desk assign (DSA cards to desk board) | `python -u scripts/dev/desk.py assign` | `desk.py sweep` -> counts; no ready DSA card without a row | each wake | plan RUN line | T0 script | DSA_DELEGATION.md | NO CHECK: `desk.py sweep` gave nothing in 40 s |
+| 19 | Codex lab tick | `python scripts/dev/codex_run.py tick` (NUC) / `nuc_lab.py tick` | `codex_run.py status` -> ready count falls | each wake | plan RUN line | T0 script | LAYER_LAB.md | BROKEN: last scheduler check 2026-11-04 IDLE, Codex 401 on this host |
+| 20 | Main checkout refresh | `python scripts/dev/refresh_main_checkout.py` | `git -C <main> rev-list --count HEAD..origin/fast-track` -> 0 (now 727) | daily | nobody; doctor warns HOOK-REG | T0 script | scripts/dev/refresh_main_checkout.py | NO TRIGGER |
+| 21 | Klines and calendar top-up | `python scripts/dev/kline_gap_check.py ETHUSDT 2022-01 2026-09 [--fetch]`; `python scripts/dev/ff_calendar_snapshot.py` (writes a file even on `--help`) | gap check -> no gaps; calendar file next to live_aid.html is this week's | daily / weekly | nobody (only us_prep reads them) | T0 script | scripts/dev/kline_gap_check.py | NO TRIGGER (calendar run OK: 106 events) |
+| 22 | C: drive guard | `python scripts/dev/c_drive_guard.py` | first line `C: free <N> GB` (17.44 now) | every prompt | hook | T0 script | DISK_CARE.md | OK |
+| 23 | Budget plan (5 h / week; not run here, needs get_usage) | `python scripts/dev/supervisor.py plan --login <L> --five <%> --five-reset <UTC> --week <%> --week-reset <UTC>` | first line `PLAN login=... mode=...` | each wake | coordinator, by hand after get_usage | Sonnet | roles/supervisor.md | OK |
+
+## How to run a row (Haiku rules)
+1. Work only in the worktree. Never run anything that trades, deploys, publishes by script, deletes outside the script's own rules, or stops a process.
+2. Run START, then CHECK. Report the EXPECT line you saw, or the first error line. Do not retry more than once.
+3. STATE other than OK: do not fix it; a gap card exists (`python scripts/dev/tasks.py list | grep <id>`).
+4. Scripts that ignore `--help` and act (rows 4, 5, 21): read the script's docstring first.
+
+## Wiring rule for the gaps
+A routine is wired when (a) one named command starts it, (b) one command shows it worked, (c) a `plan` RUN line or a hook calls it. Rows 5, 7, 9, 10, 12, 17, 20, 21 lack (c); 1, 8, 13, 16, 18 lack (b); row 19 fails (a).
+Gap cards: cbp-daily-firing-gap (row 1, exists), live-aid-learn-daily-trigger-1113 (row 7, exists), and the `routine-*-1113` cards filed with this index.
