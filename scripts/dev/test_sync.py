@@ -1354,6 +1354,108 @@ class SyncTest(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(sync.tidy_after_ship(mine, tidy_fn=boom), [])
 
+    # 2026-11-13: 87 trees piled up (gateway marker kept them, the time-boxed scans were silent, stale index.lock files went unseen)
+    def test_ship_release_removes_the_gateway_marked_own_tree_even_from_inside_it(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "own-rel")
+        (wt / sync.GATEWAY_MARKER).write_text("x", newline=chr(10))
+        sync.claim(wt, "Own rel", area="scripts/dev", gate=self.gate)
+        commit(wt, "own.py", "o" + chr(10))
+        real_ship = sync.ship
+        old_cwd = os.getcwd()
+        os.chdir(wt)
+        try:
+            with mock.patch.object(sync, "ship", lambda repo, **kw: real_ship(repo, gate=self.gate, **kw)),                     mock.patch.object(sync, "check_route_tags"), mock.patch.object(sync, "stage_layers"),                     mock.patch.object(sync, "refuse_shared_main"), contextlib.redirect_stdout(io.StringIO()) as out:
+                rc = sync.main(["ship", "--release", "own-rel"])
+            self.assertEqual(rc, 0, out.getvalue())
+        finally:
+            os.chdir(old_cwd)
+        self.assertFalse(wt.exists(), out.getvalue())
+        self.assertIn("own.py", self.head_files(self.a))
+        self.assertNotIn(wt.name, sh(self.a, "worktree", "list").stdout)
+
+    def test_own_tree_with_uncommitted_files_or_unshipped_commits_is_never_removed(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            dirty = sync.new_worktree(self.a, "dirty-own")
+            ahead = sync.new_worktree(self.a, "ahead-own")
+        (dirty / "wip.txt").write_text("wip" + chr(10), newline=chr(10))
+        (dirty / sync.GATEWAY_MARKER).write_text("x", newline=chr(10))
+        commit(ahead, "u.py", "u" + chr(10))
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertFalse(sync.retire_own_tree(dirty))
+            self.assertFalse(sync.retire_own_tree(ahead))
+            self.assertFalse(sync.retire_own_tree(self.a))          # primary
+        self.assertTrue(dirty.exists() and ahead.exists() and self.a.exists())
+
+    def test_failed_own_removal_is_queued_and_the_next_start_retries_it(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            wt = sync.new_worktree(self.a, "stuck")
+            other = sync.new_worktree(self.a, "other-run")
+        with mock.patch.object(sync, "remove_tree_now", return_value=False), contextlib.redirect_stdout(io.StringIO()):
+            sync.retire_own_tree(wt)
+        pending = self.a / ".git" / sync.TIDY_PENDING
+        self.assertIn(wt.name, pending.read_text(encoding="utf-8"))
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.retry_pending_removals(other)        # runs from another tree
+        self.assertFalse(wt.exists())
+        self.assertFalse(pending.exists())
+
+    def test_deadline_cut_scan_says_so_and_the_next_call_resumes_past_the_stop(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            for i in range(4):
+                sync.new_worktree(self.a, f"t{i}")
+        later = time.time() + 48 * 3600
+        checked = []
+        real_git = sync.git
+
+        def spy(repo, *a, **k):
+            if a[:1] == ("status",) and Path(repo).resolve() != self.a.resolve():
+                checked.append(Path(repo).name)
+            return real_git(repo, *a, **k)
+
+        def cut_after_two(deadline):
+            return len(set(checked)) >= 2
+        with mock.patch.object(sync, "git", spy), mock.patch.object(sync, "tidy_cutoff", cut_after_two),                 mock.patch.object(sync, "open_claims", return_value=[]), contextlib.redirect_stdout(io.StringIO()) as out:
+            sync.tidy(self.a, now=later, fetch=False, deadline=1)
+        self.assertRegex(out.getvalue(), r"tidy: stopped at budget, 2 tree\(s\) not checked")
+        seen_first = set(checked)
+        checked.clear()
+        with mock.patch.object(sync, "git", spy), mock.patch.object(sync, "tidy_cutoff", cut_after_two),                 mock.patch.object(sync, "open_claims", return_value=[]), contextlib.redirect_stdout(io.StringIO()):
+            sync.tidy(self.a, now=later, fetch=False, deadline=1)
+        self.assertTrue(seen_first.isdisjoint(set(checked)), (seen_first, checked))
+
+    def test_stale_index_lock_is_removed_fresh_or_git_alive_is_not(self):
+        gd = Path(sh(self.a, "rev-parse", "--absolute-git-dir").stdout.strip())
+        lock = gd / "index.lock"
+        now = time.time()
+        lock.write_text("", encoding="utf-8")
+        os.utime(lock, (now - 3000, now - 3000))
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.stale_lock_state(self.a, now=now, running=lambda: True)
+            self.assertTrue(lock.exists())           # git alive
+            sync.stale_lock_state(self.a, now=now, running=lambda: None)
+            self.assertTrue(lock.exists())           # cannot tell: fail closed
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            sync.stale_lock_state(self.a, now=now, running=lambda: False)
+        self.assertFalse(lock.exists())
+        self.assertIn("removed stale index.lock (age 50m)", out.getvalue())
+        lock.write_text("", encoding="utf-8")
+        os.utime(lock, (now - 60, now - 60))
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.stale_lock_state(self.a, now=now, running=lambda: False)
+        self.assertTrue(lock.exists())               # fresh
+        with self.assertRaisesRegex(sync.SyncError, r"index\.lock exists \(age 1m"):
+            sync.lock_guard(self.a, fail=True, now=now, running=lambda: False)
+
+    def test_where_prints_one_tree_count_line(self):
+        with contextlib.redirect_stdout(io.StringIO()):
+            sync.new_worktree(self.a, "cnt-done")
+            dirty = sync.new_worktree(self.a, "cnt-dirty")
+        (dirty / "wip.txt").write_text("wip" + chr(10), newline=chr(10))
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            sync.where(self.a)
+        self.assertIn("trees: total 3 / removable now 1 / uncommitted 1 / unshipped commits 0 / locked 0", out.getvalue())
+
     def test_tidy_deadline_stops_the_walk(self):
         with contextlib.redirect_stdout(io.StringIO()):
             wt = sync.new_worktree(self.a, "late")
