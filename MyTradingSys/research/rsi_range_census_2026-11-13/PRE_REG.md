@@ -11,7 +11,7 @@ Entry: none, because descriptive census
 Regime mix: all regimes pooled (2020-2026 Bybit linear, BTC also daily/weekly back to 2013 from the repo csv); no regime filter applied.
 
 ## Method (fixed before any output is read)
-- RSI = Wilder 14 on closes via `MyTradingSys/backtest/layers/rsi/rsi_core.py::rsi_core` (SOURCED: TradingView default). First 150 bars of each series dropped (seed warm-up, OURS).
+- RSI = Wilder 14 on closes via `MyTradingSys/backtest/layers/rsi/rsi_core.py::rsi_core` (SOURCED: TradingView default). First 150 bars of each series dropped (50 for 1w), seed warm-up, OURS.
 - Data: Bybit v5 public linear 5m klines BTC/ETH/SOL; 15m/1h/4h/1d built from 5m on UTC boundaries, 1w from days on Monday-UTC boundaries (OURS). Only closed bars.
 - Bands (OURS, operator words): rarely hit = below own 1st pct; sometimes hit = 1st-5th pct; common = above 5th.
 - Episode = run of consecutive closed bars below a threshold; counted by start year.
