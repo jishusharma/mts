@@ -16,10 +16,10 @@ class Coin:
         a = np.array(rows, float)
         a = a[np.argsort(a[:, 0])]
         t = (a[:, 0] // DAY).astype(int)
-        keep = np.ones(len(t), bool)
-        if (np.diff(t) != 1).any():  # drop everything up to the last gap
-            g = np.where(np.diff(t) != 1)[0][-1] + 1
-            keep[:g] = False
+        keep = np.zeros(len(t), bool)
+        br = np.r_[0, np.where(np.diff(t) != 1)[0] + 1, len(t)]   # longest contiguous run
+        i = int(np.argmax(np.diff(br)))
+        keep[br[i]:br[i + 1]] = True
         a, t = a[keep], t[keep]
         mon = (t + 3) % 7 == 0     # epoch day 0 = Thursday; Monday when (t+3)%7==0
         first = int(np.argmax(mon))
