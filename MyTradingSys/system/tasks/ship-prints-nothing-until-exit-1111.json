@@ -7,13 +7,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-12T12:13:31Z",
-    "misses": 2,
+    "folded": "2026-11-13T03:39:21Z",
+    "misses": 24,
     "reads": [
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/test_run_all_tests.py"
+      "scripts/dev/test_sync.py"
     ],
-    "session": "agent-aa51d6578eb4a47d0"
+    "session": "agent-abecd9f8f1dfafe69"
   },
   "created": "2026-11-11T18:45:44Z",
   "depends_on": [],
