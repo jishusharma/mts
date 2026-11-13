@@ -1640,6 +1640,26 @@
    "verdict": "FAIL: 0 of 30 cells pass (CI lower bound < 0 in every cell, smallest BH-input p 0.415); no idea-flag group earns a testnet-forward run; setup and timing not covered",
    "report": "MyTradingSys/research/live_aid_flags_full_2026-11-13/REPORT.md",
    "read": "summary"
+  },
+  {
+   "id": "EDGE-CROWDING-REVERSAL-20261113",
+   "trials": 24,
+   "title": "Positioning crowding as contrarian signal (funding extreme, account long/short ratio extreme, funding+3d push, OI surge with flat price), 4h and 1d, hold 1/3/7 days, pooled over 10 Bybit USDT perps",
+   "date": "2026-11-13",
+   "market": "Bybit USDT perps BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, 4h klines 2020-03..2026-11; DEV 2020-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, RECENT 2025-07-01..",
+   "layers": [
+    "funding_cvd_fade",
+    "oi_delta"
+   ],
+   "params": "trailing 90d top/bottom 5%, 3d ATR multiple 1.0, OI >2 sd, flat 0.5 x X, holds 1/3/7 d, next bar open, one position per coin, placebo same coin/month/side 200 draws, weekly cluster bootstrap 4000 (all OURS)",
+   "split": "VALIDATION 2024-07-01..2025-06-30 (chosen before run)",
+   "fees": "fees.BINANCE_TAKER x 2 round trip plus funding paid while held",
+   "interaction": "none; 24 cells, BH 10% over VALIDATION",
+   "effects": "VALIDATION fee-net negative in 21 of 24 cells; best OIFLAT 4h/7d +8.7 bp n=57 CI [-315,+334]; ratio fade 1d/7d is +196 bp DEV and +131 bp RECENT but -86 bp VALIDATION",
+   "n": "VALIDATION cells n 23 to 1676",
+   "verdict": "FAIL: 0 of 24 cells pass (smallest VALIDATION p 0.48; CI lower bound < 0 in every cell)",
+   "report": "MyTradingSys/research/edge_crowding_reversal_1113/REPORT.md",
+   "read": "summary"
   }
  ]
 }

@@ -113,6 +113,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `funding_cvd_fade`: FAIL, closed | module backtest/layers/positioning/funding_cvd_fade.py
 - Layer `oi_delta`: descriptive study | module research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md
 - Backtests (layer_map.json, newest first):
+  - 2026-11-13 `EDGE-CROWDING-REVERSAL-20261113`: FAIL: 0 of 24 cells pass (smallest VALIDATION p 0.48; CI lower bound < 0 in every cell) | `MyTradingSys/research/edge_crowding_reversal_1113/REPORT.md`
   - 2026-11-05 `BIGCANDLE-STORY-1H-20261105`: descriptive: stories are readable, odds are near baseline; no trade rule | `MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md`
   - 2026-10-14 `PRICE-CVD-DIV-1M5M-20261014`: NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m | `MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md`
   - 2026-09-29, rerun 2026-10-07 (full funding) `T055-C1`: FAIL (rerun OOS net -0.0453%, Sharpe -0.035); closed | `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md`

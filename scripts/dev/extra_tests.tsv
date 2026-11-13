@@ -293,3 +293,4 @@ MyTradingSys/execution/us_open_trader/test_plan.py
 MyTradingSys/execution/us_open_trader/test_recorder.py
 MyTradingSys/execution/us_open_trader/test_runner.py
 MyTradingSys/execution/us_open_trader/test_score.py
+MyTradingSys/research/edge_crowding_reversal_1113/test_crowd.py
