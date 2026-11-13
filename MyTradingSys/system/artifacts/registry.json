@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "179ef9d61e53c7a76a5b6b3ba8f0e1222cca1ae031a9e9dcc5ec2295c523cc0c",
-      "published_at": "2026-11-13T13:01:39Z"
+      "published_sha": "f06c6e09bf56e161d6b465622bae9099bd78f5f30ce6ed50fe53550e151bae11",
+      "published_at": "2026-11-13T13:12:25Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -87,12 +87,13 @@
       "last_published": {
         "jishu.sharma": "2026-10-12",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-10-31"
+        "jishusharma1985": "2026-11-13"
       },
       "note": "Rebuilt from TOM_FABIO_STORY_2026-10-05.md and tom_fabio_guidance_2026-10-12/. Old jishu.sharma url 2DXWot is an old copy and not found.",
       "purpose": "Slides: what Tom and Fabio taught.",
       "notes_go_to": "Read only.",
-      "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25"
+      "published_sha": "8253a2a48068db94c423c21384ed548b8cb24abe205e229336070a4aeecf3b25",
+      "published_at": "2026-11-13T13:12:27Z"
     },
     {
       "slug": "cbp_monday_desk",
@@ -195,13 +196,13 @@
         "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
       "published_sha": "4cf19fa8f804b561a270f6f377a9b3da996a02bbc144e2db3f89b19b6430eeb6",
-      "published_at": "2026-11-12T19:52:35Z"
+      "published_at": "2026-11-13T13:12:31Z"
     },
     {
       "slug": "cbp_analyst_desk",
@@ -263,12 +264,12 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "2000596b9a5653a43db8d61f7072061b7ba10fd6a73990451105cf3188d447be",
+      "published_sha": "da3c8fae9efb2d9b22a01159b5633eb0099fa5f77320d13deee6cd41a35cdb28",
       "feeds": [
         "MyTradingSys/system/artifacts/registry.json"
       ],
       "max_age_h": 24,
-      "published_at": "2026-11-13T13:01:38Z",
+      "published_at": "2026-11-13T13:12:24Z",
       "feed_hashes": {
         "MyTradingSys/system/artifacts/registry.json": "bfce6578c0d2789e5409dff4c58a063249889c7762eed73aa2e707c11d8b9dc3"
       }
@@ -305,7 +306,10 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 72,
-      "published_at": "2026-11-13T05:18:40Z"
+      "published_at": "2026-11-13T13:12:27Z",
+      "feed_hashes": {
+        "MyTradingSys/research/STATUS.md": "11ef19dd4031d73cdb2a5cfec084c4d6061aa0e4c537a047cd3ef8a819d5055c"
+      }
     },
     {
       "slug": "session_planner",
@@ -448,7 +452,10 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 12,
-      "published_at": "2026-11-13T05:18:41Z"
+      "published_at": "2026-11-13T13:12:28Z",
+      "feed_hashes": {
+        "MyTradingSys/research/STATUS.md": "11ef19dd4031d73cdb2a5cfec084c4d6061aa0e4c537a047cd3ef8a819d5055c"
+      }
     },
     {
       "slug": "buy_crypto",
@@ -486,7 +493,7 @@
         "~/.mts_private/buy_crypto_analysts.json"
       ],
       "max_age_h": 36,
-      "published_at": "2026-11-13T12:01:45Z",
+      "published_at": "2026-11-13T13:12:29Z",
       "feed_hashes": {
         "C:/Users/E-ngineers/.mts_private/buy_crypto.json": "f436d9bd235ff5ed7b38d6735541be9cfe842e7edfb699fb0e67bf0bdd5d7503",
         "C:/Users/E-ngineers/.mts_private/buy_crypto_analysts.json": "90724220b4edae14b1c95dcba7eacb8a378d06d3b25380fe96d267692feca956"
@@ -563,7 +570,7 @@
       "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
       "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
       "published_sha": "46ac5c61d0c90cde751322b5dee1401a28bd8229a85e8d0fb39ec5fe47d7fb12",
-      "published_at": "2026-11-13T12:26:38Z"
+      "published_at": "2026-11-13T13:12:25Z"
     }
   ],
   "unpinned_old": {
