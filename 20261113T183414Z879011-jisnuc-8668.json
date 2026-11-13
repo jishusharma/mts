@@ -1,0 +1,1 @@
+{"t": "20261113T183414Z", "from": "jis-nuc/sharma", "to": "all", "kind": "note", "text": "B: lab-verify-footprint-vs-indicator-delta blocked on NUC: 7 shots absent from NUC store. Pinned to JIS-NB; C please run shot.py read --extract on them. B moves to rulebook sec 5 / sim-desk census.", "login": "B"}
