@@ -7,7 +7,10 @@ Base study (edge3-rsi-deep-extreme-grid-1113): the operator's entry (1h RSI(14) 
 
 ## Context
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %): DEV (2020-01-01..2023-12-31) bull 51 % / bear 40 % / range 10 %; VALIDATION (2024-01-01..now) bull 56 % / bear 30 % / range 15 %.
-Phase: oversold-bounce / mean-reversion long into a capitulation bar, any regime (regime split is descriptive only). Session: any (24h). Entry: close of the confirming bar (market order, taker); the entry bar is never read forward.
+Regime: no regime gate; the regime split (see Regime mix) is descriptive only.
+Phase: oversold-bounce / mean-reversion long into a capitulation bar, any regime (regime split is descriptive only).
+Session: any (24h).
+Entry: close of the confirming bar (market order, taker); the entry bar is never read forward.
 
 ## Data, universe, splits
 Bybit v5 public linear 1h + 1D klines from 2020-01-01 (from listing), 20 coins: BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX DOT TRX ATOM UNI FIL NEAR BCH ETC XLM AAVE. Still-forming bar dropped; closed bars only. 4h folded from 1h (UTC anchored). RSI = Wilder 14.
