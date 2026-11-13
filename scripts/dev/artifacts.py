@@ -37,6 +37,7 @@ URL_PREFIX = "https://claude.ai/artifact/"
 
 BANNER_START, BANNER_END = "<!--mts-home:start-->", "<!--mts-home:end-->"
 STAMP_START, STAMP_END = "<!--mts-stamp:start-->", "<!--mts-stamp:end-->"
+IST_STAMP = re.compile(r"Updated \d{4}-\d\d-\d\d \d\d:\d\d UTC · \d\d:\d\d IST")
 STAMP_RE = re.compile(re.escape(STAMP_START) + ".*?" + re.escape(STAMP_END), re.S)
 # registry account of each login letter (CLOUD_ACCOUNTS.md LOGINS); a session publishes only when its account is in registry["publishers"]
 LOGIN_ACCOUNT = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}
@@ -97,14 +98,13 @@ def stamp_block(now=None):
 
 
 def put_stamp(text, now=None):
-    """Insert or refresh the stamp: between its markers, else right after <body ...>, else before the first <main>/<div class=wrap>, else at the very top."""
+    """Insert or refresh the stamp: between its markers, after any old stamp is dropped, right after <body ...>, else before the first <main>/<div class=wrap>, else at the very top."""
     b = stamp_block(now)
-    if STAMP_START in text:
-        return STAMP_RE.sub(lambda m: b, text, count=1)
-    m = re.search(r"<body[^>]*>", text, re.I)
+    text = STAMP_RE.sub("", text, count=1)      # always re-seat it: a stamp that sat before <!doctype> (old bug) moves inside <body>
+    m = re.search(r"<body\b[^>]*>", text, re.I)
     if m:
         return text[:m.end()] + b + text[m.end():]
-    m = re.search(r'<main|<div class="wrap"', text)      # a page with no <body>: before its first wrapper, after <title>/<style>
+    m = re.search(r'<main\b|<div class="wrap"', text)      # a page with no <body>: before its first wrapper, after <title>/<style>
     return text[:m.start()] + b + text[m.start():] if m else b + text
 
 
@@ -117,7 +117,7 @@ def write_stamped(path, text, now=None):
         old = path.read_text(encoding="utf-8")
     except OSError:
         old = None
-    if old is not None and content_hash(old) == content_hash(new):
+    if old is not None and content_hash(old) == content_hash(new) and IST_STAMP.search(old):   # an old UTC-only stamp is rewritten once
         return False
     path.write_text(new, encoding="utf-8", newline=chr(10))
     return True
@@ -227,7 +227,7 @@ def cmd_list(reg):
 
 
 # build timestamp / head sha, clock-derived ages, and the registry publish dates the Control Room embeds: they change on every build or record, not content
-VOLATILE = re.compile(r'"(?:generated|commit|pub)":\s*"[^"]*"|"(?:[a-z_]*age_h|minutes)":\s*-?[0-9.]+|"behind":\s*(?:true|false)')
+VOLATILE = re.compile(r'"(?:generated|commit|pub|pubIso)":\s*"[^"]*"|"(?:[a-z_]*age_h|minutes)":\s*-?[0-9.]+|"behind":\s*(?:true|false)')
 
 
 def content_hash(text):

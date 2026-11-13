@@ -162,18 +162,32 @@ class Home(unittest.TestCase):
             self.assertNotIn(gone, html)
         self.assertLess(len(html.encode("utf-8")), 15000)
 
-    def test_tile_health_colours_and_ist_utc_stamp(self):
-        """Green current, amber behind the repo or over 14 days, red behind for 3+ days; each tile shows UTC and IST of the last publish."""
+    def test_home_build_is_deterministic_and_tiles_show_absolute_ist_utc_time(self):
+        """Operator 2026-11-13: Home must not go stale on its own. Tiles carry the absolute publish time (UTC and IST); colour and age are
+        worked out in the page script, so two builds hours apart hash the same."""
+        from datetime import datetime, timedelta, timezone
         import make_home as mh
-        self.assertEqual(mh.health(False, 1), "green")
-        self.assertEqual(mh.health(True, 1), "amber")
-        self.assertEqual(mh.health(False, 15), "amber")
-        self.assertEqual(mh.health(True, 3), "red")
-        self.assertEqual(mh.health(False, None), "amber")
-        d = mh.build(self.reg)
-        self.assertTrue(all(p["health"] in ("green", "amber", "red") for p in d["pages"]))
-        self.assertEqual(sum(d["counts"].values()), len(d["pages"]))
-        self.assertTrue(all(" UTC · " in p["pub"] and " IST" in p["pub"] for p in d["pages"] if p["ageH"] is not None))
+        t0 = datetime(2026, 11, 13, 12, 0, tzinfo=timezone.utc)
+        a = mh.render(mh.build(self.reg, now=t0))
+        b = mh.render(mh.build(self.reg, now=t0 + timedelta(days=9)))
+        self.assertEqual(af.content_hash(a), af.content_hash(b))
+        d = mh.build(self.reg, now=t0)
+        self.assertTrue(all(" UTC · " in p["pub"] and " IST" in p["pub"] for p in d["pages"] if p["pubIso"]))
+        self.assertNotIn("health", d["pages"][0])
+        self.assertIn("Date.now()", a)
+
+    def test_old_utc_only_stamp_is_rewritten_once_then_kept(self):
+        import tempfile
+        from datetime import datetime, timezone
+        page = "<html><body><main>x</main></body></html>"
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "p.html"
+            f.write_text(af.put_stamp(page).replace(" · 21:30 IST", ""), encoding="utf-8")
+            old = datetime(2026, 11, 7, 16, 0, tzinfo=timezone.utc)
+            f.write_text(af.put_stamp(page, old).replace(" · 21:30 IST", ""), encoding="utf-8")
+            self.assertTrue(af.write_stamped(f, page))                  # UTC-only stamp: rewritten with IST
+            self.assertIn(" IST", f.read_text(encoding="utf-8"))
+            self.assertFalse(af.write_stamped(f, page))                 # already two-zone and same content: file kept
 
     def test_new_pages_are_wired_into_home(self):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
@@ -315,6 +329,17 @@ class PagesFollowBuilds(unittest.TestCase):
         self.assertNotEqual(af.stamp_block(datetime(2026, 11, 13, 12, 6, tzinfo=timezone.utc)),
                             af.stamp_block(datetime(2026, 11, 13, 12, 7, tzinfo=timezone.utc)))
         self.assertIn("12:06 UTC · 17:36 IST", af.stamp_block(datetime(2026, 11, 13, 12, 6, tzinfo=timezone.utc)))
+
+    def test_stamp_sits_inside_body_never_before_doctype_and_old_one_moves(self):
+        """Regression: a stray control char in the <body regex made every stamp land before <!doctype> (quirks mode)."""
+        page = "<!doctype html><html><head><title>t</title></head><body><p>a</p></body></html>"
+        once = af.put_stamp(page)
+        self.assertTrue(once.startswith("<!doctype"))
+        self.assertGreater(once.index("mts-updated"), once.index("<body>"))
+        old = af.STAMP_START + "<p>Updated 2026-11-01 00:00 UTC</p>" + af.STAMP_END + page          # the old misplaced stamp
+        moved = af.put_stamp(old)
+        self.assertTrue(moved.startswith("<!doctype"))
+        self.assertEqual(moved.count("mts-stamp:start"), 1)
 
     def test_stamp_alone_never_makes_a_page_stale(self):
         page = "<html><body><main>x</main></body></html>"
