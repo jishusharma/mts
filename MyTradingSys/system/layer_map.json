@@ -769,6 +769,42 @@
  ],
  "backtests": [
  {
+  "id": "MALKAN-R03-R04-DIVERGENCE-20261113",
+  "trials": null,
+  "title": "Malkan MAL-R03 bearish / MAL-R04 bullish RSI divergence on closes, swings 12/18 bars apart, confirm candle, 1h + 4h, 20 perps, exits 1R/2R/12-bar",
+  "date": "2026-11-13",
+  "market": "Bybit linear 1h and 4h (folded), 20 USDT perps; DEV / VALIDATION / RECENT",
+  "layers": [
+   "rsi_divergence"
+  ],
+  "params": "SOURCED: Malkan R03/R04 divergence on closes with confirming candle (quoted in PRE_REG); OURS: swing spacing 12/18, stop beyond swing extreme, exits, 20-coin universe",
+  "split": "DEV / VALIDATION / RECENT, VALIDATION 150 weeks",
+  "fees": "fee-net: 2 x BINANCE_TAKER + SLIPPAGE_RT_S13 = 12 bp round trip from fees.py",
+  "interaction": "day-cluster bootstrap CI, matched placebo, BH 10% over 24 cells; UTC hour-block table descriptive",
+  "effects": "none: 1h cells -0.22..-0.25 R; best R03 4h T12 VALIDATION +0.030 R CI [-0.125,+0.210] not significant",
+  "n": "24 cells; 1h n ~6200 and 4h n ~1360 per cell on VALIDATION",
+  "verdict": "FAIL: 0 of 24 cells pass; R03 4h short is the only near-zero family",
+  "report": "MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/RESULT.md",
+  "id": "RSI-CONFIRM-LAYERS-20261113",
+  "trials": null,
+  "title": "RSI(14)<=20 + green confirm candle long, one layer at a time (daily ADX/DI, 4h ADX, OI unwind, volume capitulation, BTC 200d, BTC/ETH, session, funding, depth, stop size), 1h and 4h, 20 perps",
+  "date": "2026-11-13",
+  "market": "Bybit linear 1h/4h, 20 USDT perps from listing; DEV <=2023 / VALIDATION 2024+",
+  "layers": [
+   "rsi_levels",
+   "oi_delta"
+  ],
+  "params": "SOURCED: operator rule (RSI extreme, green confirm, stop = signal low); OURS: RSI<=20, layer thresholds, exits 1R/2R with 72 h cap",
+  "split": "DEV 2020-01-01..2023-12-31 / VALIDATION 2024-01-01..now",
+  "fees": "fee-net: 2 x BINANCE_TAKER (10 bp round trip), no slippage, no funding",
+  "interaction": "single-layer splits vs unfiltered base, week-block bootstrap CI, random-subset placebo, BH 10% over 56, pairs",
+  "effects": "none: OI-unwind 1h +1R VAL +0.117R but -0.222R in DEV; 4h dADX20-25 closest, fails BH and flips sign in DEV",
+  "n": "56 layer tests; 975 1h and 265 4h base trades",
+  "verdict": "FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass",
+  "report": "MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md",
+  "read": "summary"
+ },
+ {
   "id": "RSI-HTF-EXTREME-20261113",
   "trials": null,
   "title": "4h/8h/12h RSI(14) extreme + next bar closes above, stop = signal low, exits 1R/2R/3R/10-bar, 20 perps, daily RSI<30 gate on 4h<=12",
@@ -1696,6 +1732,25 @@
    "n": "Rule A 124 / 30 / 42 events (DEV / VAL / RECENT, hold 6); Rule B 1 / 0 / 5 trades",
    "verdict": "Rule A FAIL (VALIDATION fee-net excess -1.71%, CI [-5.8%,+1.9%], n=30; BTC-alone DEV +2.98% did not carry to 4 more symbols or VALIDATION); Rule B UNDERPOWERED (VALIDATION n=0; the frozen filter and touch almost never coincide)",
    "report": "MyTradingSys/research/adx_1d_through25_2026-11-13/REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "MALKAN-R03-R04-RSI-DIV-20261114",
+   "trials": null,
+   "title": "Malkan regular RSI divergence (MAL-R03 short, MAL-R04 long), closes-only swings, 1h/4h, 12/18-bar lookback, 20 perps",
+   "date": "2026-11-14",
+   "market": "Bybit linear USDT perps, 20 coins, 1h and 4h, 2020+",
+   "layers": [
+    "rsi_divergence"
+   ],
+   "params": "SOURCED: divergence, confirm candle, stop beyond signal candle, target point C, RSI 14; OURS: closes-only swings, 12/18 lookback, 1h/4h, 2x lookback time cap",
+   "split": "DEV 2020-01..2024-06 / VAL 2024-07..2025-06 / RECENT 2025-07+",
+   "fees": "fee-net: 2 x BINANCE_TAKER + SLIPPAGE_RT_S13 from fees.py, no funding",
+   "interaction": "day-cluster bootstrap CI; placebo (any bar closing in trade direction, same stop and C-style target); BH 10% over 8 VALIDATION cells",
+   "effects": "R03 1h 12: VAL n=1752 mean -0.333 R; R03 1h 18: VAL n=1754 mean -0.334 R; R04 1h 12: VAL n=1651 mean -0.320 R; R04 1h 18: VAL n=1652 mean -0.315 R; R03 4h 12: VAL n=379 mean -0.167 R; R03 4h 18: VAL n=379 mean -0.167 R; R04 4h 12: VAL n=383 mean -0.074 R; R04 4h 18: VAL n=382 mean -0.083 R",
+   "n": "VALIDATION n by cell 379..1754",
+   "verdict": "FAIL: 0 of 8 VALIDATION cells PASS; rule in PRE_REG.md frozen before any outcome",
+   "report": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md",
    "read": "summary"
   }
  ]
