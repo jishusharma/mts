@@ -1,6 +1,6 @@
 task: gemini-i3-balance-shape-argon-1113
-host: JIS-NUC
-account: sharma
+host: DESKTOP-F7IU69N
+account: gemini-queue
 area: -
-epoch: 1794594601
-expires_at: 1794605401
+epoch: 1794609391
+expires_at: 1794620191
