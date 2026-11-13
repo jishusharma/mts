@@ -9,13 +9,13 @@ def name(r):
 
 def tables(res, key):
     rows = res[key]["rows"]
-    o = ["### Count table", "", "| cell | n | days | reach-POC % | reach-stop % | median RR | mean R gross | mean R net | top-10-days share of total R | per-year mean net R (n) |",
+    o = ["### Count table", "", "| cell | n | days | reach-POC % | reach-stop % | median RR | mean R gross | mean R net | best 10 days R / total R (sum over trades) | per-year mean net R (n) |",
          "|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         if not r["n"]:
             o.append(f"| {name(r)} | 0 | 0 | | | | | | | |"); continue
         yrs = " ".join(f"{y}:{f(v[1], 2)}({v[0]})" for y, v in r["years"].items())
-        o.append(f"| {name(r)} | {r['n']} | {r['days']} | {f(r['reach_poc'], 1)} | {f(r['reach_stop'], 1)} | {f(r['rr_med'], 2)} | {f(r['gross'])} | {f(r['net'])} | {f(r['top10_share'], 2)} | {yrs} |")
+        o.append(f"| {name(r)} | {r['n']} | {r['days']} | {f(r['reach_poc'], 1)} | {f(r['reach_stop'], 1)} | {f(r['rr_med'], 2)} | {f(r['gross'])} | {f(r['net'])} | {f(r["top10_sum"], 1)} / {f(r["total_sum"], 1)} | {yrs} |")
     o += ["", "### Trade table", "", "| cell | n | days | reach-POC % | median RR | mean R gross | mean R net | trade CI | day CI | placebo p (mean / p95) | 2024+ mean (n) | verdict |",
           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
