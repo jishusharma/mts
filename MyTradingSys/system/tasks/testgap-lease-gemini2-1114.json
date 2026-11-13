@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:50:01Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/testgap-lease/test_lease.py exists, python -m pytest on it passes with at least 3 tests, and its docstring names the mutation that made one test fail",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "scripts/dev/lease.py has no test named for it (grep for other tests importing it first). Write 3-5 hand-computed cases (normal, empty, malformed) in the lab folder, importing via sys.path insert of scripts/dev, and show one fails on a deliberately broken scratch copy (mutation). No network.",
+  "id": "testgap-lease-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:52:21Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/testgap-lease/test_lease.py"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read scripts/dev/lease.py; list public functions and what each returns; grep for existing tests.",
+    "Write MyTradingSys/research/layer_lab/gemini_1114b/testgap-lease/test_lease.py: one assert per behaviour, expected values worked by hand from inputs, never copied from running the code. No network, no real git remote, tmp_path only.",
+    "Copy the module to a scratch file, break one branch (flip a comparison), point the test at it, record the failing line in the test docstring; then run on the real module and see it pass.",
+    "Run pytest on the new file only; paste the pass count in the commit message. A later builder moves it to scripts/dev. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Test-gap: new tests for lease.py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

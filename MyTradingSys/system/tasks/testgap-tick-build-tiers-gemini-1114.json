@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T22:13:56Z",
   "commands": [
     "git status --short"
   ],
@@ -14,7 +15,14 @@
   "id": "testgap-tick-build-tiers-gemini-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "7 passed in MyTradingSys/backtest/layers/tick/test_build_tiers.py",
+      "ref": "64babc0f0",
+      "utc": "2026-11-13T22:13:56Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,6 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-11-13T21:47:32Z",
   "refs": [],
+  "result": "7 passed in MyTradingSys/backtest/layers/tick/test_build_tiers.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/layers/tick/test_build_tiers.py"
   ],
@@ -38,13 +52,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 2026-11-14 (planner-gemini-refill-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/backtest/layers/tick/build_tiers.py; list its public functions and what each returns.",
     "Write MyTradingSys/backtest/layers/tick/test_build_tiers.py: one assert per behaviour, expected values worked by hand from the code docstring or inputs, never copied from running it.",
     "Copy MyTradingSys/backtest/layers/tick/build_tiers.py to a scratch file, break one branch (flip a comparison), point the test at it, record the failure line in the test docstring; then run on the real module and see it pass.",
     "Run python -m pytest on the new test file only; paste the pass count in the commit message. Commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-13T22:13:56Z",
   "tests": "MyTradingSys/backtest/layers/tick/test_build_tiers.py",
   "title": "[GEMINI] Test-gap: new tests for build_tiers.py",
   "weight": "ROUTINE",
