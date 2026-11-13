@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T21:32:55Z",
   "commands": [
     "git status --short"
   ],
@@ -14,7 +15,28 @@
   "id": "gemini-edge-hilega-formula-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula-argon/FORMULA.md",
+      "ref": "8f0c7d46b",
+      "utc": "2026-11-13T21:32:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research(hilega): public formula definition and parameter extraction (argon twin)",
+      "ref": "8f0c7d46b546",
+      "utc": "2026-11-13T21:32:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8f0c7d46b546 research(hilega): public formula definition and parameter extraction (argon t",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-13_gemini-edge-hilega-formula-argon-1113.md",
+      "utc": "2026-11-13T21:32:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,10 +45,16 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-13T15:58:03Z",
+  "refreshed": "2026-11-13T23:14:16Z",
   "refs": [
     "MyTradingSys/research/nk_stocktalk_1113/flash_deep/"
   ],
+  "result": "MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula-argon/FORMULA.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula-argon/"
   ],
@@ -36,17 +64,18 @@
     "every number must trace to a file or a verbatim quote, never memory",
     "do not run sync.py ship"
   ],
-  "scope_sha": "",
+  "scope_sha": "8f0c7d46b546",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Use web search only (no YouTube caption fetch). Collect at least 3 independent public sources (TradingView scripts or descriptions, Indian trading blogs, broker pages).",
     "Write MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula-argon/FORMULA.md: one table (line, formula, length, source URL, exact quoted sentence). Mark each parameter SOURCED (URL + quote) or UNKNOWN; never fill a gap from memory.",
     "Add a comparison per parameter: AGREED / SINGLE / CONFLICT across sources, and read MyTradingSys/research/nk_stocktalk_1113/flash_deep/*/EXTRACT.md to say which parameters NK states himself (quote)."
   ],
+  "taken": "2026-11-13T21:32:55Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] argon twin: Hilega Milega public formula with source URLs",
   "weight": "ROUTINE",
