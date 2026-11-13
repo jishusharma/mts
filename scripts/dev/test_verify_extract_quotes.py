@@ -77,6 +77,45 @@ class VerifyQuotesTest(unittest.TestCase):
         self.assertEqual(bad, 1)
         self.assertIn("POSITION", out)
 
+    def _stamped(self, quote, stamp, where="gps", pos="END"):
+        ex = self.root / "extract.md"
+        gps = f"**Source GPS: {VID} | {pos}**" + (f" ({stamp})" if where == "gps" else "")
+        q = f'> "{quote}"' + (f" {stamp}" if where == "quote" else "")
+        ex.write_text(f"{q}\n{gps}\n", encoding="utf-8")
+        with redirect_stdout(io.StringIO()) as out:
+            bad = v.check(ex)
+        return bad, out.getvalue()
+
+    TIMED = "[0:00] alpha beta gamma\n[76:01] delta epsilon zeta\n[1:30:45] eta theta iota\n"
+
+    def test_stamp_far_from_marker_fails(self):
+        # IR-09 case: stamp [76:01] but the quote sits at the 1:30:45 marker
+        self._transcript(self.TIMED)
+        bad, out = self._stamped("eta theta iota", "[76:01]")
+        self.assertEqual(bad, 1, out)
+        self.assertIn("STAMP-OFF", out)
+        bad, out = self._stamped("eta theta iota", "[76:01]", "quote")
+        self.assertIn("STAMP-OFF", out)
+
+    def test_correct_stamp_passes_within_tolerance(self):
+        self._transcript(self.TIMED)
+        for st in ("[1:30:45]", "[90:45]", "[90:50]"):
+            bad, out = self._stamped("eta theta iota", st)
+            self.assertEqual(bad, 0, out)
+            self.assertNotIn("STAMP", out)
+
+    def test_stamp_in_untimed_transcript_is_unchecked_not_failed(self):
+        self._transcript("alpha beta gamma delta epsilon\n")
+        bad, out = self._stamped("beta gamma", "[76:01]", pos="BEGIN")
+        self.assertEqual(bad, 0, out)
+        self.assertIn("STAMP-UNCHECKED", out)
+
+    def test_no_stamp_means_no_stamp_check(self):
+        self._transcript(self.TIMED)
+        bad, out = self._check("eta theta iota", "END")
+        self.assertEqual(bad, 0, out)
+        self.assertNotIn("STAMP", out)
+
     def test_empty_gps_quote_fails(self):
         """Reject an empty GPS quote instead of treating it as a valid dummy quote."""
         self._transcript("[0:00] alpha beta gamma\n")

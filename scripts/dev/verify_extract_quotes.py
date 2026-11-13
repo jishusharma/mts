@@ -20,7 +20,8 @@ import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-QUOTE = re.compile(r'^>\s*"(.*)"\s*$')
+QUOTE = re.compile(r'^>\s*"(.*)"(?:\s*\[\d+:\d{2}(?::\d{2})?\])?\s*$')  # optional trailing [m:ss] stamp
+STAMP_TOL = 120  # seconds a written stamp may sit from the transcript marker at the quote
 TIMESTAMP = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")
 CBP_EVIDENCE = re.compile(r'^(?:-\s*)?evidence:\s*"(.*)"\s*$')
 CBP_HEAD = re.compile(r"^###\s*[^|]*\|[^|]*\|\s*([A-Za-z0-9_-]{11})\s*\|")
@@ -34,16 +35,47 @@ def norm(s: str) -> str:
     """Lowercase alphanumerics (Latin and Devanagari); auto-captions keep spoken fillers (uh, um) and stutters ("is is"),
     which a clean quote drops, so both sides lose fillers and immediate word repeats."""
     out = []
-    s = unicodedata.normalize("NFC", s).replace("‌", "").replace("‍", "")  # joiners are not speech
     # Devanagari (U+0900-U+097F) is compared too, so pure-Hindi quotes can pass; the danda (U+0964/0965) is punctuation.
-    for w in re.sub(r"[^a-z0-9%ऀ-ॣ०-ॿ]+", " ", s.lower()).split():
+    for w in norm_tokens(s):
         if w in FILLERS or (out and out[-1] == w):
             continue
         out.append(w)
     return " ".join(out)
 
 
-def transcript_body(vid: str) -> str:
+def stamp_secs(tok: str) -> int:
+    parts = [int(x) for x in tok.strip("[]").split(":")]
+    return sum(n * 60 ** k for k, n in enumerate(reversed(parts)))
+
+
+def word_times(text: str):
+    """Per-word seconds of the marker preceding each word, in the same filtered order as norm(); None if no markers."""
+    marks = list(TIMESTAMP.finditer(text))
+    if not marks:
+        return None
+    out, last, t = [], None, 0
+    segs = [(0, text[:marks[0].start()])]
+    for a, b in zip(marks, marks[1:] + [None]):
+        segs.append((stamp_secs(a.group()), text[a.end():b.start() if b else len(text)]))
+    for t, seg in segs:
+        for w in norm_tokens(seg):
+            if w in FILLERS or (last is not None and last == w):
+                continue
+            out.append(t)
+            last = w
+    return out
+
+
+def norm_tokens(s: str):
+    s = unicodedata.normalize("NFC", s).replace("‌", "").replace("‍", "")
+    return re.sub(r"[^a-z0-9%ऀ-ॣ०-ॿ]+", " ", s.lower()).split()
+
+
+def transcript_raw(vid: str) -> str:
+    return transcript_body(vid, keep_markers=True)
+
+
+def transcript_body(vid: str, keep_markers: bool = False) -> str:
     p = ROOT / "raw_transcripts_canonical" / f"{vid}_raw.txt"
     text = p.read_text(encoding="utf-8", errors="replace")
     body = text.split("# ---", 1)[1] if "# ---" in text else text
@@ -58,7 +90,7 @@ def transcript_body(vid: str) -> str:
         if i < len(lines) and lines[i].strip() == "# ---":
             i += 1
         body = "\n".join(lines[i:])
-    return TIMESTAMP.sub(" ", body)  # [m:ss] caption markers split verbatim quotes
+    return body if keep_markers else TIMESTAMP.sub(" ", body)  # [m:ss] caption markers split verbatim quotes
 
 
 def cbp_transcript_body(vid: str, folder: Path) -> str:
@@ -176,6 +208,37 @@ def check_doc_line(name: str, n: int, line: str) -> int:
     return bad
 
 
+_times_cache = {}
+
+
+def word_times_cached(vid: str):
+    if (ROOT, vid) not in _times_cache:
+        try:
+            _times_cache[(ROOT, vid)] = word_times(transcript_raw(vid))
+        except OSError:
+            _times_cache[(ROOT, vid)] = None
+    return _times_cache[(ROOT, vid)]
+
+
+def check_stamp(name, i, lines, m, vid, body, at, times) -> int:
+    """A [m:ss]/[h:mm:ss] stamp after the quote or on the next 2 lines (the GPS line) must sit within STAMP_TOL s of the
+    transcript marker in force where the quote starts. Stamps are advisory (the thirds tag stays the authority):
+    no stamp = nothing to check; a transcript without markers = STAMP-UNCHECKED (note, never a failure)."""
+    tail = m.group(0)[m.group(0).rindex('"') + 1:]
+    stamp = TIMESTAMP.search(tail) or next((TIMESTAMP.search(l) for l in lines[i + 1:i + 3] if TIMESTAMP.search(l)), None)
+    if not stamp:
+        return 0
+    if not times:
+        print(f"STAMP-UNCHECKED {name}:{i + 1} {stamp.group()} ({vid} transcript has no time markers)")
+        return 0
+    idx = min(body.count(" ", 0, at), len(times) - 1)
+    want, got = times[idx], stamp_secs(stamp.group())
+    if abs(want - got) > STAMP_TOL:
+        print(f"STAMP-OFF {name}:{i + 1} stamp {stamp.group()} ({got}s) vs transcript marker {want}s (>{STAMP_TOL}s off)")
+        return 1
+    return 0
+
+
 def check(path: Path) -> int:
     lines = path.read_text(encoding="utf-8").splitlines()
     bad = 0
@@ -205,6 +268,7 @@ def check(path: Path) -> int:
             print(f"NO-TRANSCRIPT {path.name}:{i + 1} {vid}")
             bad += 1
             continue
+        times = word_times_cached(vid)
         q = norm(m.group(1))
         if not q:
             print(f"MISSING  {path.name}:{i + 1} {m.group(1)[:60]!r}")
@@ -223,6 +287,7 @@ def check(path: Path) -> int:
             bad += 1
         else:
             print(f"OK       {path.name}:{i + 1}")
+        bad += check_stamp(path.name, i, lines, m, vid, body, at, times)
     return bad
 
 
