@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T21:44:35Z",
   "commands": [
     "git status --short"
   ],
@@ -14,11 +15,18 @@
   "id": "gemini-rulebook-squeeze-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Output file already on trunk with 8 sections (checked by planner 1114); card was stale bec",
+      "ref": "ae47fa07b",
+      "utc": "2026-11-13T21:44:35Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: Gemini rule-book fill 11-13; a later Sonnet pass fills section 5 and sets INDEX status",
+  "next": "END: output shipped; INDEX status and sourcecheck cards cover the rest",
   "note": "Docs only. No code change. Web quotes are UNVERIFIED unless the page was fetched and read; never invent a quote. Section 5 numbers are filled by a later Sonnet pass.",
   "prio": 2,
   "refine_tries": 0,
@@ -32,6 +40,12 @@
     "MyTradingSys/research/tv_favorites_2026-11/SQUEEZE_STATE.md",
     "MyTradingSys/research/fable_run6_powered_prereg"
   ],
+  "result": "Output file already on trunk with 8 sections (checked by planner 1114); card was stale because the file shipped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/indicator_rulebooks/SQUEEZE.md"
   ],
@@ -46,7 +60,7 @@
   "sources": [
     "Operator order 2026-11-13 ~17:10Z (OPERATOR_DECISIONS.md): rule book for every indicator"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/indicator_rulebooks/TEMPLATE.md and research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md (the model).",
     "Open the developer's original source and 2-3 independent public sources for Squeeze Momentum (LazyBear after Carter TTM Squeeze) (web search / fetch). Mark each claim SOURCED (URL, fetched) or UNVERIFIED.",
@@ -54,6 +68,7 @@
     "Write research/indicator_rulebooks/SQUEEZE.md: sections 1-4 and 6-8; section 5 = pointers to our studies found by grep (study folder, no numbers).",
     "Update the INDEX.md row status only if all eight sections are present."
   ],
+  "taken": "2026-11-13T21:44:35Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Rule book sections 2-4, 6-8: Squeeze Momentum (LazyBear after Carter TTM Squeeze)",
   "weight": "ROUTINE",
