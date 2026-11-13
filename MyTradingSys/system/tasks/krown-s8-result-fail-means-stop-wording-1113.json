@@ -1,0 +1,38 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-13T12:14:10Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "krown-s8-result-fail-means-stop-wording-1113",
+  "lane": "HAIKU",
+  "layers": [
+    "krown"
+  ],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 4,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "Builder layers-md-cryptocred-4h-fail-1113"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Krown S8 RESULT (research/fable_run6_powered_prereg/RESULT.md line 23) says 'FAIL means stop' incl. R1 section 5 STOP list; check against its verdict word (INCONCLUSIVE?) and reword to the PRE_REG rule",
+  "weight": "",
+  "worker": ""
+}

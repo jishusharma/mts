@@ -1602,6 +1602,25 @@
    "verdict": "BLOCKED: PRE_REG froze 0 of 8 cells (fee-dominated or underpowered); run_dev.py guard refused, no outcome read",
    "report": "MyTradingSys/research/kurisko_2026-10-18/RESULT.md",
    "read": "summary"
+  },
+  {
+   "id": "CC-S3-10SYM-4H-20261106",
+   "trials": null,
+   "title": "CryptoCred 4h Setup 1 (sr_flip, ATR 1.0, 1.5 R bracket), ten USD-M symbols pooled, DEV",
+   "date": "2026-11-06",
+   "market": "10 USD-M symbols (BTC ETH SOL BNB XRP DOGE ADA AVAX LINK LTC) 4h, DEV 2022-01..2024-06; VALIDATION and HOLDOUT not loaded",
+   "layers": [
+    "cryptocred"
+   ],
+   "params": "setup1_sr_flip, ATR buffer 1.0, fixed 1.5 R bracket, resting limit entry at retest level (OURS)",
+   "split": "DEV per backtest/splits.py",
+   "fees": "Deribit all_taker 10 bp, no funding (OURS)",
+   "interaction": "none (single setup, ten symbols pooled; day-block CI)",
+   "effects": "gross mean R +0.0040; 2 of 10 symbols fee-net > 0",
+   "n": "1981 fills (gate needed 586)",
+   "verdict": "FAIL: pooled fee-net mean R -0.0467, n 1981, CI [-0.1097, +0.0162]; kill scope = this setup/bracket only",
+   "report": "MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md",
+   "read": "summary"
   }
  ]
 }

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:14:19Z",
   "commands": [],
   "created": "2026-11-12T20:39:15Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "kind": "audit",
   "lane": "HAIKU",
   "latest": [
+    {
+      "kind": "ship",
+      "line": "Added backtest row CC-S3-10SYM-4H-20261106 to layer_map.json (FAIL, n 1981, -0.0467 R, DEV",
+      "ref": "6b22ac394",
+      "utc": "2026-11-13T12:14:19Z"
+    },
     {
       "auto": true,
       "kind": "ship",
@@ -34,13 +41,19 @@
   ],
   "live_path": false,
   "mutation_check": "",
+  "next": "krown-s8-result-fail-means-stop-wording-1113",
   "note": "REVIEWED:2026-11-13 T0-ONLY. Refined by Session_Planner 1113.",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T03:31:28Z",
   "refs": [],
-  "result": "",
+  "result": "Added backtest row CC-S3-10SYM-4H-20261106 to layer_map.json (FAIL, n 1981, -0.0467 R, DEV, dated 2026-11-06 = freeze/commit date; RESULT_10SYM.md carries no date, card text said 11-07). trials null: test requires match with item8_minbtl TRIALS (a .py, out of scope). Regenerated LAYERS.md + layer_map.html; layer-map/board/md tests pass. Note: Krown S8 'FAIL means stop' wording (fable_run6_powered_prereg/RESULT.md line 23, verdict INCONCLUSIVE) left unedited, out of scope; raw card krown-s8-result-fail-means-stop-wording-1113 filed.",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/system/LAYERS.md",
     "MyTradingSys/research/krown_audit_2026-10-22"
@@ -54,13 +67,14 @@
     "MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md:5",
     "MyTradingSys/research/edge_views_2026-11-11/TESTED_MAP.md:46"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read cryptocred_s3_pooled_2026-11/RESULT_10SYM.md lines 1-5 and 30-34 (verdict, n, mean R, kill scope)",
     "check whether layer_map.json or LAYERS.md is generated: grep LAYERS.md header; if generated, edit the source map entry instead",
     "add one Backtests line dated 2026-11-07: 4h sr_flip 10 symbols pooled FAIL -0.0467 R n 1981 DEV, path to RESULT_10SYM.md",
     "grep -rn 'FAIL means stop' in krown folders; if a Krown S8 RESULT says it but verdict is INCONCLUSIVE, reword to the pre-reg rule; else write Note: not found"
   ],
+  "taken": "2026-11-13T12:14:19Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py passes (docs-only edit, existing gate, no new test)",
   "title": "LAYERS.md CryptoCred line misses the 4h 10-symbol FAIL (RESULT_10SYM, n 1981, -0.0467R); Krown S8 RESULT says 'FAIL means stop' but verdict INCONCLUSIVE",
   "weight": "ROUTINE",

@@ -99,6 +99,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Tracks: Claude
 - Layer `cryptocred`: adapter + stop sweep run | module backtest/layers/cryptocred/
 - Backtests (layer_map.json, newest first):
+  - 2026-11-06 `CC-S3-10SYM-4H-20261106`: FAIL: pooled fee-net mean R -0.0467, n 1981, CI [-0.1097, +0.0162]; kill scope = this setup/bracket only | `MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md`
   - 2026-10-09 `BIGTRADE-EXIT`: first row negative both splits; full table not read for this map | `MyTradingSys/research/bigtrade_2026-10-09/EXIT_POLICIES_REPORT.md`
   - 2026-10-09 `FIRES-B1`: parity PASS on spot rerun | `MyTradingSys/research/bigtrade_2026-10-09/FIRES_B1_REPORT.md`
   - 2026-09-27 `L1-D3`: mixed: 1h support PBO 0.030, everything else PBO 0.39-0.91 | `MyTradingSys/backtest/layers/BACKTEST_L1_REPORT.md`
@@ -107,7 +108,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Other results: `MyTradingSys/research/cryptocred_stop_2026-10-10`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `lf-cryptocred-gpt-rederive` blocked p2 SONNET: Layer re-derive: cryptocred (independent recount of the headline numbers behind the fact sheet)
-  - `layers-md-cryptocred-4h-fail-1113` ready p4 HAIKU: LAYERS.md CryptoCred line misses the 4h 10-symbol FAIL (RESULT_10SYM, n 1981, -0.0467R); Krown S8 RESULT says 
 
 ## Positioning (funding, OI, whale / FlowHorse) (`positioning`)
 - Status: T055 C1 FAIL; OI/long-short unused as filters.
@@ -225,6 +225,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` refined p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
+  - `krown-s8-result-fail-means-stop-wording-1113` raw p4 HAIKU: Krown S8 RESULT (research/fable_run6_powered_prereg/RESULT.md line 23) says 'FAIL means stop' incl. R1 section
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
 - Status: Causal observation module and parity fixtures exist. BTC DEV atlas remains exploratory: W01-W03/W09 FAIL; W04-W08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector. No validated edge or live integration.
