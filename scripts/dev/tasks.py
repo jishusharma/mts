@@ -1445,7 +1445,8 @@ def cmd_drop(a):
 def on_trunk(sha):
     """True when `sha` is already an ancestor of origin/fast-track, i.e. its work has shipped."""
     import subprocess
-    return subprocess.run(["git", "merge-base", "--is-ancestor", sha, "origin/fast-track"], cwd=REPO, capture_output=True).returncode == 0
+    return subprocess.run(["git", "merge-base", "--is-ancestor", sha, "origin/fast-track"], cwd=REPO, capture_output=True,
+                          creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).returncode == 0
 
 
 def cmd_done(a):
