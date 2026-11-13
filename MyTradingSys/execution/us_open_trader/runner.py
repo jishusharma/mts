@@ -38,7 +38,8 @@ SLIPPAGE_FRAC = 0.25                   # refuse the entry when ref is more than 
 LIQ_STOP_MULT = 2.0                    # stop must sit >= 2*stop_dist inside the liquidation price (SOURCED V2-8)
 TICK = 0.5                             # BTC-PERPETUAL price tick (SOURCED execution/cotrade.py TICK)
 BE_MIN_TICKS = 2                       # a moved stop must be >= 2 ticks on the protective side of the mark (SOURCED V2-8)
-MAX_FINAL_CLOSE_TRIES = 3              # close_trade attempts after flat time, then give up (server stop stays) (OURS)
+FINAL_CLOSE_GIVE_UP_MS = 10 * 60000    # keep retrying the flat-time close this long, then write HALT and report failure (OURS, F6)
+MAX_ENTRY_AGE_BARS = 2                 # an entry bar older than this many bars when it is acted on is not traded (OURS, F3)
 MID_SESSION_AFTER_MS = BAR_MS          # state missing/corrupt once the first armed bar has closed = mid-session (OURS)
 INSTRUMENT = "BTC-PERPETUAL"           # SOURCED execution/cotrade.py INSTRUMENT
 STATE_VERSION = 1                      # OURS
@@ -144,6 +145,15 @@ class PaperExchange:
     def settle_entering(self, intent):
         return ("reject", "paper_restart")
 
+    def placed_since(self, ms, said):
+        return True
+
+    def kill(self):
+        return {"ok": True}
+
+    def write_halt(self, reason):
+        pass
+
 
 class DeribitExchange:
     """Testnet exchange. Writes go ONLY through cotrade (place_order / ensure_stop / close_trade); the client is used
@@ -243,32 +253,97 @@ class DeribitExchange:
                 val += t["amount"] * t["price"]
         return val / qty if qty > 0 else None
 
+    def kill(self):
+        kw = self._kw()
+        if self.secret_exists is not None:
+            kw["secret_exists"] = self.secret_exists
+        try:
+            return self.cot.kill(**kw)
+        except Exception as e:  # noqa: BLE001
+            return {"ok": False, "reasons": ["kill raised %r" % (e,)]}
+
+    def write_halt(self, reason):
+        """The HALT file the cotrade module itself writes (executor.write_manual_halt)."""
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+            import executor
+            executor.write_manual_halt("us_open_trader: %s" % reason, Path(self.halt_path) if self.halt_path else None)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _journal(self):
+        jdir = self.journal_dir if self.journal_dir is not None else self.cot.journal_dir()
+        return self.cot._records(Path(jdir))
+
+    def placed_since(self, ms, said):
+        """True when the cotrade journal holds a place record (any state that may have produced an order) written
+        after `ms` with this run's `said`. Unreadable journal: True (fail toward managing the position)."""
+        try:
+            recs = self._journal()
+        except Exception:  # noqa: BLE001
+            return True
+        for r in recs:
+            if (r.get("action") or {}).get("kind") != "place":
+                continue
+            if (r.get("result") or {}).get("state") not in ("placed", "unknown", "error", "resting_refused"):
+                continue
+            if said and r.get("said") != said:
+                continue
+            try:
+                ts = datetime.fromisoformat(r["ts_utc"]).timestamp() * 1000
+            except Exception:  # noqa: BLE001
+                continue
+            if ts >= ms:
+                return True
+        return False
+
     def settle_entering(self, intent):
         """Restart with a write-ahead `entering` intent: decide from the exchange position and the cotrade journal.
-        Returns ("fill", exchange_price) | ("reject", reason) | ("mismatch", reason)."""
+        An intent is adopted ONLY when the exchange position and a journal `placed` record both match its side and
+        amount (F7). Returns ("fill", exchange_price) | ("fill_flat", entry_price_or_None) | ("reject", reason) |
+        ("mismatch", reason) | ("unreadable", reason)."""
+        side, amount = intent.get("side"), intent.get("amount")
+        if side not in ("buy", "sell") or not _num(amount) or amount <= 0:
+            return ("mismatch", "no usable intent (side/amount): a position is never adopted without one")
         try:
             pos = self.position()
         except Exception as e:  # noqa: BLE001
             return ("unreadable", "position unreadable: %r" % (e,))
-        if pos["size"] == 0:
-            return ("reject", "restart_no_position")
         try:
-            jdir = self.journal_dir if self.journal_dir is not None else self.cot.journal_dir()
-            recs = self.cot._records(Path(jdir))
+            recs = self._journal()
         except Exception as e:  # noqa: BLE001
             return ("mismatch", "journal unreadable: %r" % (e,))
         lo = intent.get("wall_ms", 0) - 60000   # OURS: journal clock vs runner clock tolerance
         placed = []
         for r in recs:
-            if (r.get("action") or {}).get("kind") == "place" and (r.get("result") or {}).get("state") == "placed":
+            a = r.get("action") or {}
+            if a.get("kind") == "place" and (r.get("result") or {}).get("state") == "placed" \
+                    and a.get("side") == side and _num(a.get("amount_usd")) and a["amount_usd"] == amount:
                 try:
                     ts = datetime.fromisoformat(r["ts_utc"]).timestamp() * 1000
                 except Exception:  # noqa: BLE001
                     continue
                 if ts >= lo:
                     placed.append(r)
+        size = pos["size"]
+        if size == 0:
+            if not placed:
+                return ("reject", "restart_no_position")
+            px = None   # F8: it did fill and was stopped out while the runner was down
+            try:
+                oid = (placed[-1].get("result") or {}).get("order_id")
+                st = self._read(lambda tok: self.client.get_order_state(tok, oid))
+                v = st.get("average_price") if isinstance(st, dict) else None
+                px = float(v) if _num(v) and v > 0 else None
+            except Exception:  # noqa: BLE001
+                px = None
+            return ("fill_flat", px)
+        if (size > 0) != (side == "buy"):
+            return ("mismatch", "exchange position %s is on the other side of the intent (%s)" % (size, side))
+        if abs(size) != amount:
+            return ("mismatch", "exchange position %s != intent amount %s" % (size, amount))
         if not placed:
-            return ("mismatch", "position on the exchange but no placed record for this intent")
+            return ("mismatch", "position on the exchange but no matching placed record for this intent")
         px = pos.get("avg")
         if not (_num(px) and px > 0):
             return ("mismatch", "position average price unreadable")
@@ -309,7 +384,7 @@ class Runner:
         return {"last_bar_t": None, "halted_reason": None, "basis": None, "basis_t": None, "last_price": None,
                 "last_price_ts": None, "last_price_ok_ms": None, "last_kline_ok_ms": None, "pending_stop": None,
                 "pending_close": None, "paper_pending": None, "final_tries": 0, "final_close": None,
-                "intent": None, "paper": None, "basis_at_fill": None}
+                "intent": None, "paper": None, "basis_at_fill": None, "placed_today": False}
 
     def load_or_new(self, now_ms):
         """Returns None, or a refusal string."""
@@ -325,11 +400,14 @@ class Runner:
                 if self.paper:
                     self.ex.restore(self.rn.get("paper"))
                 return None
-            except ValueError as e:   # JSON errors are ValueError too
+            except (ValueError, TypeError, AttributeError, KeyError) as e:   # JSON errors are ValueError too (F10)
                 aside = self.state_path.with_name(self.state_path.name + ".corrupt")
-                os.replace(str(self.state_path), str(aside))
                 self._fresh(now_ms)
-                self.halt("state_corrupt: %s (moved to %s)" % (e, aside.name))
+                try:
+                    os.replace(str(self.state_path), str(aside))
+                    self.halt("state_corrupt: %r (moved to %s)" % (e, aside.name))
+                except OSError as e2:   # locked file: still no new entries, and the run continues
+                    self.halt("state_corrupt: %r (could not move it aside: %r)" % (e, e2))
                 return None
         self._fresh(now_ms)
         if now_ms >= self.st["arm_ms"] + MID_SESSION_AFTER_MS:
@@ -427,7 +505,7 @@ class Runner:
         self.save()
         for ev in events:
             if ev["type"] == "enter":
-                self._enter(ev, now_ms)
+                self._enter(ev, now_ms, bar)
         self._act_pending(now_ms)
         if self.paper:
             self._check_position(now_ms)
@@ -442,12 +520,17 @@ class Runner:
         self.rn["paper_pending"] = None
         self.save()
 
-    def _enter(self, ev, now_ms):
+    def _enter(self, ev, now_ms, bar=None):
         st, rn = self.st, self.rn
         oid, t = ev["order_id"], ev["t"]
         o = _find_order(st, oid)
         if rn["halted_reason"]:
             return self._reject(oid, t, "halted: %s" % rn["halted_reason"])
+        if not self.paper:   # F3: replayed bars after a restart / kline gap never open a real position
+            if now_ms >= st["flat_ms"]:
+                return self._reject(oid, t, "after_flat_time")
+            if now_ms - (t + BAR_MS) > MAX_ENTRY_AGE_BARS * BAR_MS:
+                return self._reject(oid, t, "stale_entry_bar: closed %ds ago" % ((now_ms - t - BAR_MS) // 1000))
         if rn["last_price"] is None or now_ms - rn["last_price_ok_ms"] > STALE_MS:
             return self._reject(oid, t, "stale_price")
         if not self._basis_fresh(now_ms):
@@ -456,6 +539,13 @@ class Runner:
         beyond = (px - o["trigger"]) if engine._goes_up(o) else (o["trigger"] - px)
         if beyond > SLIPPAGE_FRAC * o["stop_dist"]:
             return self._reject(oid, t, "slippage_guard: ref %s is %.1f beyond trigger %s" % (px, beyond, o["trigger"]))
+        if not self.paper:   # F5: price already reversed through the stop level after the entry bar closed
+            adverse = (o["trigger"] - px) if o["side"] == "buy" else (px - o["trigger"])
+            if adverse > SLIPPAGE_FRAC * o["stop_dist"]:
+                return self._reject(oid, t, "adverse_guard: ref %s is %.1f against trigger %s" % (px, adverse, o["trigger"]))
+            if bar is not None and ((bar["l"] <= o["trigger"] - o["stop_dist"]) if o["side"] == "buy"
+                                    else (bar["h"] >= o["trigger"] + o["stop_dist"])):
+                return self._reject(oid, t, "entry_bar_hit_stop: the entry bar already reached the stop level")
         sign = 1 if o["side"] == "buy" else -1
         amount = o.get("amount_usd") or st["plan"]["amount_usd"]
         rn["intent"] = {"order_id": oid, "t": t, "side": o["side"], "amount": amount, "wall_ms": now_ms}
@@ -471,22 +561,21 @@ class Runner:
         except Exception as e:  # noqa: BLE001
             return self._reject(oid, t, "mark_unreadable: %r" % (e,))
         stop = _tick(mark - sign * o["stop_dist"])
+        rn["placed_today"] = True   # F4: from here on the runner may have a position of its own
         self.save()   # write-ahead: engine `entering` + intent are on disk before the order goes out
         r = self.ex.place(self.said, o["side"], amount, stop)
         if not r.get("ok"):
             self.halt("cotrade: place refused/failed: %s" % (r.get("reasons"),))
             try:
-                if self.ex.position()["size"] != 0:   # something filled before the failure: take it off
-                    rn["pending_close"] = {"reason": "place_failed", "engine_exit": False}
-                    self._act_pending(now_ms)
+                if self.ex.position()["size"] != 0:   # something filled before the failure: protect, then take it off
+                    self._secure_and_close(now_ms, "place_failed")
             except Exception as e:  # noqa: BLE001
                 self.halt("cotrade: position unreadable after failed place: %r" % (e,))
             return self._reject(oid, t, "cotrade_refused")
         fp = r.get("fill_price")
         if not (_num(fp) and fp > 0):
             self.halt("cotrade: fill price unreadable")
-            rn["pending_close"] = {"reason": "fill_unreadable", "engine_exit": False}
-            self._act_pending(now_ms)
+            self._secure_and_close(now_ms, "fill_unreadable")
             return self._reject(oid, t, "fill_unreadable")
         self._after_fill(o, t, fp - rn["basis"], stop, now_ms)
 
@@ -514,6 +603,8 @@ class Runner:
             self._liq_check(o, st["position"]["stop"] + rn["basis"], now_ms)
 
     def _liq_check(self, o, ex_stop, now_ms):
+        # F11 (open, needs one real testnet get_position read): if Deribit returns estimated_liquidation_price as null
+        # for a well-collateralised position, this fails closed on every entry. Check a real read before the first run.
         need = LIQ_STOP_MULT * o["stop_dist"]
         try:
             pos = self.ex.position()
@@ -556,6 +647,35 @@ class Runner:
         self.save()
 
     # ---- closing
+    def _placed_today(self):
+        """F4: did THIS run (or an earlier run of today's state) place an order? Only then is a position the runner's."""
+        if self.paper or self.rn.get("placed_today"):
+            return True
+        try:
+            return bool(self.ex.placed_since(self.st["arm_ms"], self.said))
+        except Exception:  # noqa: BLE001
+            return True
+
+    def _secure(self, now_ms):
+        """F1: an exchange position the engine does not hold gets its stop first (idempotent, never loosens)."""
+        r = self.ex.ensure_stop(None)
+        if not r.get("ok"):
+            self.halt("cotrade: ensure_stop failed: %s" % (r.get("reasons"),))
+        return r
+
+    def _secure_and_close(self, now_ms, reason):
+        self._secure(now_ms)
+        self.rn["pending_close"] = {"reason": reason, "engine_exit": False}
+        self._act_pending(now_ms)
+
+    def _kill_until_flat(self):
+        k = self.ex.kill()
+        self.log("cotrade kill: %r" % (k,))
+        try:
+            return self.ex.position()["size"] == 0
+        except Exception:  # noqa: BLE001
+            return False
+
     def _act_pending(self, now_ms):
         rn = self.rn
         self._apply_pending_stop(now_ms)
@@ -565,8 +685,12 @@ class Runner:
         r = self.ex.close(pc["reason"])
         if not r.get("ok"):
             self.halt("cotrade: close_trade failed: %s" % (r.get("reasons"),))
-            self.save()
-            return   # retried on the next poll
+            text = " ".join(str(x) for x in (r.get("reasons") or []))
+            # F1: a refusal that says "use kill" is never retried forever: kill (HALT + cancel + flatten). A foreign
+            # co-trade slot (a trade that is not ours) is the exception: that one is not ours to flatten.
+            if not ("use kill" in text and "another co-trade slot" not in text and self._kill_until_flat()):
+                self.save()
+                return   # retried on the next poll
         rn["pending_close"] = None
         if pc["engine_exit"] and self._in_position():
             self._engine_exit(pc["reason"], now_ms)
@@ -600,7 +724,12 @@ class Runner:
                 moved = st["position"]["moved"]
                 rn["pending_close"] = {"reason": "be_stop" if moved else "stop", "engine_exit": True}
         elif size != 0:
+            mine = self._placed_today()
+            if st["done"] and mine:
+                return   # the engine closed it by time at flat: the flat-time close below takes it off, nothing is wrong
             self.halt("position_without_state: exchange holds %s but the engine has no position" % size)
+            if mine:   # F1/F4: ours (we placed today): stop first, then take it off; else never touched
+                self._secure_and_close(now_ms, "position_without_state")
 
     # ---- restart: settle a write-ahead intent
     def _settle_entering(self, now_ms):
@@ -608,18 +737,31 @@ class Runner:
         ent = st["entering"]
         if ent is None or self.paper or not self._basis_fresh(now_ms):
             return
-        intent = rn["intent"] or {"order_id": ent["order_id"], "t": ent["t"], "wall_ms": 0}
-        verdict, val = self.ex.settle_entering(intent)
         o = _find_order(st, ent["order_id"])
+        intent = rn["intent"]
+        if not intent:   # F7: the intent is saved before any order goes out, so no intent = no order: never adopt
+            self.halt("restart: entering without an intent record")
+            return self._reject(ent["order_id"], ent["t"], "restart: no_intent")
+        verdict, val = self.ex.settle_entering(intent)
         if verdict == "fill":
             self._after_fill(o, ent["t"], val - rn["basis"], None, now_ms)
             r = self.ex.ensure_stop(None)    # keep / verify the stop of the adopted position (never loosens)
             if not r.get("ok"):
                 self.halt("cotrade: ensure_stop failed: %s" % (r.get("reasons"),))
+        elif verdict == "fill_flat":   # F8: filled, then stopped out while down: keep the entry, exit price unknown
+            ref = (val - rn["basis"]) if _num(val) else float(o["trigger"])
+            _, ev = engine.fill(st, o["id"], ent["t"], ref)
+            self._emit(ev)
+            rn["intent"] = None
+            self._engine_exit("stopped_while_down", now_ms)
+            if not _num(val):
+                st["trades"][-1]["entry_price_known"] = False
+            rn["pending_close"] = {"reason": "restart_cleanup", "engine_exit": False}   # leftover stop, if any
+            self.save()
         else:
             if verdict != "reject":
                 self.halt("%s: %s" % ("position_without_state" if verdict == "mismatch" else "cotrade", val))
-            self._reject(ent["order_id"], ent["t"], "restart: %s" % val)
+            self._reject(ent["order_id"], ent["t"], "restart: %s" % val)   # a held position: _check_position secures it
 
     # ---- one poll
     def poll(self):
@@ -635,8 +777,8 @@ class Runner:
         self.cur_t = None
         if not self.paper:
             self._check_position(now_ms)
-        if st["done"] and rn["pending_close"] is None and rn["final_close"] is None:
-            rn["pending_close"] = {"reason": "flat_time", "engine_exit": False}   # unconditional, whatever the engine thinks
+        if st["done"] and rn["pending_close"] is None and rn["final_close"] is None and self._placed_today():
+            rn["pending_close"] = {"reason": "flat_time", "engine_exit": False}   # whatever the engine thinks, once WE placed
         self._act_pending(now_ms)
         if st["done"] and rn["pending_close"] is not None:
             rn["final_tries"] += 1
@@ -649,8 +791,11 @@ class Runner:
         if rn["pending_close"] is None:
             rn["final_close"] = "ok"
             return True
-        if rn["final_tries"] >= MAX_FINAL_CLOSE_TRIES:
-            rn["final_close"] = "failed"   # the position (if any) stays under its server stop; the operator is told
+        if self.now_ms() >= st["flat_ms"] + FINAL_CLOSE_GIVE_UP_MS:   # F6: retried every poll until flat + 10 min
+            rn["final_close"] = "failed"   # the position (if any) stays under its server stop; HALT + non-zero exit
+            why = "final_close_failed: position may still be open after flat time + %d min" % (FINAL_CLOSE_GIVE_UP_MS // 60000)
+            self.halt(why)
+            self.ex.write_halt(why)
             return True
         return False
 
@@ -705,8 +850,11 @@ def run(plan_path, mode="paper", poll_secs=5, clock=None, sleep=None, price_fn=N
             import cotrade as cot  # noqa: F811
         if client is None:
             import deribit_orders as client  # noqa: F811
-        if env is None:
-            env = client.active_env() if hasattr(client, "active_env") else "test"
+        fn = getattr(client, "active_env", None)
+        client_env = fn() if callable(fn) else None   # F9: the client's own environment is the truth
+        if client_env != "test" or (env is not None and env != client_env):
+            return {"ok": False, "reasons": ["REFUSED: us_open_trader runs on the Deribit test environment only"]}
+        env = client_env
         if env != "test":
             return {"ok": False, "reasons": ["REFUSED: us_open_trader runs on the Deribit test environment only"]}
         ex = DeribitExchange(cot, client, account, journal_dir, halt_path, env, secret_exists)
@@ -758,6 +906,8 @@ def main(argv=None):
         return 2
     print(json.dumps({k: res[k] for k in ("how", "trades", "halted_reason", "final_close", "polls")}, indent=2,
                      default=str))
+    if res["final_close"] != "ok" or "position_without_state" in (res["halted_reason"] or ""):
+        return 3   # F6: a position may be open with nothing watching it: not a success
     return 0
 
 

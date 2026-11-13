@@ -167,6 +167,11 @@ class FakeCot:
             return self.w.stop_results.pop(0)
         return {"ok": True, "stop_pending": False}
 
+    def kill(self, **kw):
+        self.w.calls.append(("kill", kw))
+        self.w.size = 0
+        return {"ok": True, "errors": [], "slots": ["main"]}
+
     def close_trade(self, **kw):
         w = self.w
         w.calls.append(("close_trade", kw))
@@ -181,8 +186,12 @@ class FakeCot:
 
 class FakeClient:
     """Fake Deribit client: only the reads the runner is allowed. Anything else fails the test."""
-    def __init__(self, w):
+    def __init__(self, w, env="test"):
         self.w = w
+        self.env = env
+
+    def active_env(self):   # not an exchange call: the module-level environment switch
+        return self.env
 
     def authenticate(self, account=None):
         self.w.client_calls.append("authenticate")
@@ -218,6 +227,12 @@ class RecordingClient:
     """Every attribute access is a failure: used to prove paper mode makes zero client calls."""
     def __getattr__(self, name):
         raise AssertionError("paper mode touched client.%s" % name)
+
+
+def placed_record(ts_ms, side="buy", amount=5000, said="buy the breakout", state="placed"):
+    """A fake cotrade journal row for a place made by this run."""
+    return {"ts_utc": datetime.fromtimestamp(ts_ms / 1000, timezone.utc).isoformat(), "said": said,
+            "action": {"kind": "place", "side": side, "amount_usd": amount}, "result": {"state": state, "order_id": "O9"}}
 
 
 class Base(unittest.TestCase):
@@ -354,7 +369,7 @@ class TestEntryGuards(Base):
     def test_sell_side_slippage(self):
         p = make_plan([order("B", "sell", "breakout", 68490)])
         # ref 68400: 90 beyond the sell trigger 68490 -> refused
-        w = self.start(p, series({0: (69000, 69010, 68990, 69000), 1: (69000, 69010, 68480, 68400)}))
+        w = self.start(p, series({0: (69000, 69010, 68990, 69000), 1: (68600, 68610, 68480, 68400)}))
         self.go()
         self.assertEqual(w.calls_named("place_order"), [])
 
@@ -394,7 +409,7 @@ class TestEntryGuards(Base):
         res = self.go()
         self.assertEqual(w.calls_named("place_order"), [])
         self.assertTrue(res["halted_reason"].startswith("halt_file"))
-        self.assertEqual(w.calls_named("close_trade")[-1][1]["reason"], "flat_time")   # still closes at flat time
+        self.assertEqual(w.calls_named("close_trade"), [])   # F4: this run placed nothing, so it closes nothing
 
     def test_halt_file_midway_keeps_managing_the_open_position(self):
         w = self.start(A_ONLY, s1_bars())
@@ -557,7 +572,7 @@ class TestPosition(Base):
 
     def test_short_liquidation_side(self):
         p = make_plan([order("B", "sell", "breakout", 68490, td=370)])
-        w = self.start(p, series({0: (69000, 69010, 68990, 69000), 1: (69000, 69010, 68480, 68470),
+        w = self.start(p, series({0: (69000, 69010, 68990, 69000), 1: (68600, 68610, 68480, 68470),
                                   2: (68470, 68480, 68460, 68470)}))
         w.liq = 69160.0
         res = self.go()
@@ -566,26 +581,47 @@ class TestPosition(Base):
         self.assertEqual(w.calls_named("close_trade")[0][1]["reason"], "liq_check")
         self.assertTrue(res["halted_reason"].startswith("liquidation"))
 
-    def test_flat_time_close_is_unconditional_even_with_no_trade(self):
+    def test_flat_time_close_runs_when_this_run_placed_a_trade_in_the_journal(self):
         w = self.start(A_ONLY, series({}))
+        w.records = [placed_record(ARM + MIN)]   # e.g. the state file was lost, the journal still knows
         res = self.go()
         self.assertEqual(res["trades"], [])
         self.assertEqual([c[1]["reason"] for c in w.calls_named("close_trade")], ["flat_time"])
         self.assertEqual(res["final_close"], "ok")
 
-    def test_flat_time_close_failing_is_retried_then_reported(self):
+    def test_flat_time_close_skipped_when_this_run_placed_nothing(self):
+        # F4: a position that is not ours (operator's own cotrade) at flat time is never closed by the runner
         w = self.start(A_ONLY, series({}))
+        w.size, w.avg = -300, 69000.0
+        res = self.go()
+        self.assertEqual(w.calls_named("close_trade"), [])
+        self.assertEqual(w.calls_named("ensure_stop"), [])
+        self.assertEqual(w.size, -300)
+        self.assertEqual(res["final_close"], "ok")
+
+    def test_journal_place_by_other_said_or_before_arm_does_not_count(self):
+        w = self.start(A_ONLY, series({}))
+        w.records = [placed_record(ARM + MIN, said="the operator's own trade"), placed_record(ARM - 5 * MIN)]
+        self.go()
+        self.assertEqual(w.calls_named("close_trade"), [])
+
+    def test_flat_time_close_failing_is_retried_until_flat_plus_10_min_then_halt_and_report(self):
+        w = self.start(A_ONLY, series({}))
+        w.records = [placed_record(ARM + MIN)]
         fail = {"ok": False, "reasons": ["close failed, flatten attempted and HALT written"]}
-        w.close_results = [dict(fail), dict(fail), dict(fail), dict(fail)]
+        w.close_results = [dict(fail) for _ in range(500)]
         res = self.go()
         n = len(w.calls_named("close_trade"))
-        self.assertEqual(n, 3)                      # MAX_FINAL_CLOSE_TRIES, then it stops (server stop stays)
+        self.assertGreaterEqual(n, 25)               # every 20 s poll for 10 minutes (F6), not 3 tries
         self.assertEqual(res["final_close"], "failed")
         self.assertTrue(res["ok"])
-        self.assertTrue(res["halted_reason"].startswith("cotrade"))
+        self.assertTrue((self.dir / "HALT_UNUSED").exists())   # HALT written through the cotrade halt path
+        self.assertIn("final_close_failed", (self.dir / "HALT_UNUSED").read_text())
+        self.assertGreaterEqual(self.clock() * 1000, ARM + FLAT_MIN * MIN + 10 * MIN)
 
     def test_flat_time_close_fails_once_then_succeeds(self):
         w = self.start(A_ONLY, series({}))
+        w.records = [placed_record(ARM + MIN)]
         w.close_results = [{"ok": False, "reasons": ["x"]}]
         res = self.go()
         self.assertEqual(len(w.calls_named("close_trade")), 2)
@@ -625,7 +661,7 @@ class TestRestart(Base):
         self.assertEqual(w.calls_named("place_order"), [])
         self.assertTrue(res["halted_reason"].startswith("state_corrupt"), res["halted_reason"])
         self.assertTrue((self.state_dir / "state_2026-11-13.json.corrupt").exists())   # kept for the audit
-        self.assertEqual(w.calls_named("close_trade")[-1][1]["reason"], "flat_time")
+        self.assertEqual(w.calls_named("close_trade"), [])   # F4: nothing in the journal says this run placed
 
     def test_missing_state_mid_session_means_no_entries(self):
         w = self.start(A_ONLY, s1_bars(), clock_ms=ARM + 3 * MIN)
@@ -645,7 +681,20 @@ class TestRestart(Base):
         res = self.go()
         self.assertEqual(w.calls_named("place_order"), [])
         self.assertTrue(res["halted_reason"].startswith("position_without_state"))
-        self.assertEqual(w.calls_named("close_trade")[-1][1]["reason"], "flat_time")   # closed at flat time
+        self.assertEqual(w.calls_named("close_trade"), [])   # F4: not ours (this run placed nothing): never touched
+        self.assertEqual(w.calls_named("ensure_stop"), [])
+        self.assertEqual(w.size, 5000)
+
+    def test_exchange_position_without_state_after_our_place_gets_stop_then_close(self):
+        # F1: the journal says we placed today, the engine lost it: stop first, then the close
+        w = self.start(A_ONLY, series({}))
+        w.records = [placed_record(ARM + MIN)]
+        w.size, w.avg = 5000, 69000.0
+        res = self.go()
+        names = [c[0] for c in w.calls if c[0] in ("ensure_stop", "close_trade")]
+        self.assertEqual(names[:2], ["ensure_stop", "close_trade"])
+        self.assertEqual(w.calls_named("close_trade")[0][1]["reason"], "position_without_state")
+        self.assertEqual(w.size, 0)
 
     def test_write_ahead_entering_is_on_disk_before_place_order(self):
         w = self.start(A_ONLY, s1_bars())
@@ -668,7 +717,8 @@ class TestRestart(Base):
         # the order did go through before the process died: exchange holds the position, journal has the placed row
         w.size, w.avg = 5000, 69645.0
         w.records = [{"ts_utc": datetime.fromtimestamp(self.clock() - 1, timezone.utc).isoformat(),
-                      "action": {"kind": "place", "side": "buy"}, "result": {"state": "placed", "order_id": "O9"}}]
+                      "action": {"kind": "place", "side": "buy", "amount_usd": 5000},
+                      "result": {"state": "placed", "order_id": "O9"}}]
         res = self.go()
         self.assertEqual(len(w.calls_named("place_order")), 1)       # not placed again
         t = res["trades"][0]
@@ -763,6 +813,328 @@ class TestParity(Base):
         self.assertEqual(strip(res["trades"]), strip(rep))
         self.assertEqual({t["mode"] for t in res["trades"]}, {"paper"})
         self.assertEqual({t["mode"] for t in rep}, {"replay"})
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Safety review fixes F1..F10 (US_OPEN_TRADER_SAFETY_REVIEW). Real cotrade + test_cotrade.FakeClient where marked.
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import cotrade  # noqa: E402
+import deribit_orders as do  # noqa: E402
+from test_cotrade import FakeClient as CotFakeClient  # noqa: E402
+from unittest import mock  # noqa: E402
+
+
+class RealClient(CotFakeClient):
+    """test_cotrade.FakeClient plus the reads the runner needs. Prices follow the World's bars."""
+    def __init__(self, w, **kw):
+        super().__init__(**kw)
+        self.w = w
+        self.avg = None
+        self.fill_then_unknown = False
+
+    def active_env(self):
+        return "test"
+
+    def get_ticker(self, instrument_name="BTC-PERPETUAL"):
+        m = self.w.mark()
+        return {"mark_price": m, "best_bid_price": m - 0.5, "best_ask_price": m + 0.5}
+
+    def get_position(self, token, instrument_name="BTC-PERPETUAL"):
+        liq = None
+        if self.position and self.avg:
+            liq = self.avg * (0.5 if self.position > 0 else 1.5)
+        return {"size": self.position, "average_price": self.avg, "estimated_liquidation_price": liq}
+
+    def get_order_state(self, token, order_id):
+        return {"average_price": self.avg, "order_id": order_id}
+
+    def cancel_by_label(self, token, label, currency="BTC"):
+        self.orders = [o for o in self.orders if o.get("label") != label]
+        return super().cancel_by_label(token, label, currency)
+
+    def get_user_trades_by_instrument_and_time(self, token, instrument_name, start_ms, end_ms, count=100):
+        return []
+
+    def place(self, token, side, instrument_name, amount, order_type="limit", price=None, label=None,
+              post_only=False, reduce_only=False):
+        self.avg = self.w.mark() + FILL_SLIP
+        if self.fill_then_unknown:   # the order fills at the exchange, the answer never arrives
+            self.calls.append(("place", side, amount, order_type, price, label))
+            self.position = amount if side == "buy" else -amount
+            raise do.OrderStateUnknown("private/buy", label, "timeout")
+        return super().place(token, side, instrument_name, amount, order_type, price, label, post_only, reduce_only)
+
+
+class TestF1RealCotrade(Base):
+    def go_real(self, rc, **over):
+        kw = dict(cot=cotrade, client=rc, journal_dir=self.dir / "journal", halt_path=self.dir / "HALT_C",
+                  secret_exists=lambda a: False)
+        kw.update(over)
+        return self.go(**kw)
+
+    def states(self):
+        out = []
+        for p in sorted((self.dir / "journal").glob("*.jsonl")):
+            out += [json.loads(x)["result"].get("state") for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+        return out
+
+    def test_place_unknown_but_filled_gets_a_stop_then_is_closed(self):
+        w = self.start(A_ONLY, s1_bars())
+        rc = RealClient(w)
+        rc.halt_path = self.dir / "HALT_C"
+        rc.fill_then_unknown = True
+        res = self.go_real(rc)
+        self.assertEqual(rc.position, 0)                                  # not left open
+        names = [c[0] for c in rc.calls if c[0] in ("stop_market", "close_position")]
+        self.assertEqual(names[:2], ["stop_market", "close_position"])    # stop first, close second
+        self.assertEqual(self.states()[:3], ["unknown", "stop_placed", "closed"])
+        self.assertEqual(res["trades"], [])
+        self.assertEqual(res["final_close"], "ok")
+
+    def test_ensure_stop_failure_after_unknown_place_flattens_and_halts(self):
+        w = self.start(A_ONLY, s1_bars())
+        rc = RealClient(w, stop_exc=RuntimeError("stop api down"))
+        rc.halt_path = self.dir / "HALT_C"
+        rc.fill_then_unknown = True
+        self.go_real(rc)
+        self.assertEqual(rc.position, 0)
+        self.assertTrue((self.dir / "HALT_C").exists())
+
+    def test_close_refused_use_kill_is_killed_not_retried_forever(self):
+        w = self.start(A_ONLY, series({0: M0, 1: M1}, filler=69630))
+        rc = RealClient(w)
+        rc.halt_path = self.dir / "HALT_C"
+        jdir = self.dir / "journal"
+
+        def poison():   # an unreconciled place state appears in the journal while the trade is open
+            cotrade._append(jdir, {"said": "x", "heard": "x", "env": "test", "account": "main", "market": {},
+                                   "action": {"kind": "place", "side": "buy", "amount_usd": 5000, "stop": 69000.0},
+                                   "result": {"state": "unknown"}})
+        self.clock.hooks.append((ARM / 1000 + 4 * 60, poison))
+        res = self.go_real(rc)
+        self.assertEqual(rc.position, 0)                       # kill flattened it, no endless refusals
+        self.assertIn("killed", self.states())
+        self.assertTrue((self.dir / "HALT_C").exists())
+        self.assertEqual(res["final_close"], "ok")
+        self.assertLess(self.states().count("refused"), 3)
+
+
+class TestF1FakeCot(Base):
+    USE_KILL = "journal: an order state is unknown - close_trade does not handle this: use kill"
+
+    def test_refusal_with_use_kill_calls_kill_once(self):
+        w = self.start(A_ONLY, s1_bars())
+        w.close_results = [{"ok": False, "reasons": [self.USE_KILL]}]
+        res = self.go()
+        self.assertEqual(len(w.calls_named("kill")), 1)
+        self.assertEqual(res["trades"][0]["exit_reason"], "target")   # the engine exit still booked
+        self.assertEqual(w.size, 0)
+
+    def test_foreign_slot_refusal_is_not_killed(self):
+        w = self.start(A_ONLY, series({}))
+        w.records = [placed_record(ARM + MIN)]
+        text = "another co-trade slot holds a position (['jishu_1']): use kill"
+        w.close_results = [{"ok": False, "reasons": [text]} for _ in range(500)]
+        self.go()
+        self.assertEqual(w.calls_named("kill"), [])
+
+    def test_position_after_failed_place_is_secured_before_close(self):
+        w = self.start(A_ONLY, s1_bars())
+        w.place_results = [{"ok": False, "reasons": ["order state unknown"], "_fill": True}]
+        self.go()
+        order_ = [c[0] for c in w.calls if c[0] in ("ensure_stop", "close_trade")]
+        self.assertEqual(order_[:2], ["ensure_stop", "close_trade"])
+        self.assertIsNone(w.calls_named("ensure_stop")[0][1]["stop_px"])
+
+
+class TestF3StaleEntryBars(Base):
+    BARS = series({0: M0, 1: M1}, filler=69630)   # A triggers on minute 1; price sits at 69630 afterwards
+
+    def _restart_at(self, minutes_after_arm):
+        w = self.start(A_ONLY, self.BARS)
+        self.go(max_polls=8)                       # processes minute 0 only, leaves state last_bar_t = ARM
+        self.assertEqual(self.state_file()["runner"]["last_bar_t"], ARM)
+        self.clock.t = (ARM + minutes_after_arm * MIN) / 1000.0
+        res = self.go()
+        return w, res
+
+    def test_restart_after_flat_time_never_places(self):
+        w, res = self._restart_at(FLAT_MIN + 1)     # state last_bar_t 13:35, restart 13:51 (flat 13:50)
+        self.assertEqual(w.calls_named("place_order"), [])
+        ev = [e for e in res["events"] if e["type"] == "cancel" and e["order_id"] == "A"]
+        self.assertIn("after_flat_time", ev[0]["reason"])
+
+    def test_restart_mid_session_with_old_entry_bar_never_places(self):
+        w, res = self._restart_at(9)                # entry bar closed 13:37, now 13:44: 7 minutes old
+        self.assertEqual(w.calls_named("place_order"), [])
+        ev = [e for e in res["events"] if e["type"] == "cancel" and e["order_id"] == "A"]
+        self.assertIn("stale_entry_bar", ev[0]["reason"])
+
+    def test_entry_bar_two_polls_old_still_trades(self):
+        w = self.start(A_ONLY, self.BARS)
+        self.go()
+        self.assertEqual(len(w.calls_named("place_order")), 1)
+
+
+class TestF5AdverseGuards(Base):
+    def test_price_already_reversed_against_the_trade_is_refused(self):
+        # buy breakout 69620, stop_dist 250: ref 69550 is 70 below the trigger > 0.25 * 250 = 62.5
+        w = self.start(A_ONLY, series({0: M0, 1: (69520, 69640, 69400, 69550)}, filler=69550))
+        res = self.go()
+        self.assertEqual(w.calls_named("place_order"), [])
+        ev = [e for e in res["events"] if e["type"] == "cancel" and e["order_id"] == "A"]
+        self.assertIn("adverse_guard", ev[0]["reason"])
+
+    def test_entry_bar_that_already_reached_the_stop_level_is_refused(self):
+        # low 69360 <= 69620 - 250 = 69370: replay would stop this entry in its own bar; price is back at the trigger
+        w = self.start(A_ONLY, series({0: M0, 1: (69520, 69640, 69360, 69625)}, filler=69625))
+        res = self.go()
+        self.assertEqual(w.calls_named("place_order"), [])
+        ev = [e for e in res["events"] if e["type"] == "cancel" and e["order_id"] == "A"]
+        self.assertIn("entry_bar_hit_stop", ev[0]["reason"])
+
+    def test_sell_side_mirror(self):
+        p = make_plan([order("B", "sell", "breakout", 68490)])
+        # high 68740 >= 68490 + 250: the entry bar reached the stop level
+        w = self.start(p, series({0: (69000, 69010, 68990, 69000), 1: (68700, 68740, 68480, 68480)}, filler=68480))
+        self.go()
+        self.assertEqual(w.calls_named("place_order"), [])
+
+
+class TestF6MainExitCode(Base):
+    def _main(self, final_close, halted):
+        self.start(A_ONLY, series({}))
+        res = {"ok": True, "how": "finished", "trades": [], "halted_reason": halted, "final_close": final_close,
+               "polls": 1}
+        with mock.patch.object(runner, "run", return_value=res):
+            return runner.main([str(self.plan_path), "--mode", "paper"])
+
+    def test_ok_exits_zero(self):
+        self.assertEqual(self._main("ok", None), 0)
+
+    def test_failed_final_close_exits_nonzero(self):
+        self.assertNotEqual(self._main("failed", "cotrade: close_trade failed"), 0)
+
+    def test_position_without_state_exits_nonzero(self):
+        self.assertNotEqual(self._main("ok", "position_without_state: exchange holds 5000"), 0)
+
+
+class TestF7F8Settle(Base):
+    def _crashed(self):
+        w = self.start(A_ONLY, s1_bars())
+        w.place_results = [Crash()]
+        with self.assertRaises(Crash):
+            self.go()
+        self.assertEqual(self.state_file()["runner"]["intent"]["side"], "buy")
+        return w
+
+    def _rec(self, **kw):
+        return placed_record(self.clock() * 1000 - 1000, **kw)
+
+    def test_position_on_the_other_side_is_not_adopted(self):
+        w = self._crashed()
+        w.size, w.avg = -5000, 69645.0
+        w.records = [self._rec()]
+        res = self.go()
+        self.assertEqual(res["trades"], [])
+        self.assertTrue(res["halted_reason"].startswith("position_without_state"), res["halted_reason"])
+
+    def test_position_of_another_size_is_not_adopted(self):
+        w = self._crashed()
+        w.size, w.avg = 3000, 69645.0
+        w.records = [self._rec()]
+        res = self.go()
+        self.assertEqual(res["trades"], [])
+        self.assertTrue(res["halted_reason"].startswith("position_without_state"))
+
+    def test_placed_record_of_another_side_or_amount_or_age_does_not_match(self):
+        for rec in (lambda: self._rec(side="sell"), lambda: self._rec(amount=1000),
+                    lambda: placed_record(ARM - 30 * MIN)):
+            self.tearDown()
+            self.setUp()
+            w = self._crashed()
+            w.size, w.avg = 5000, 69645.0
+            w.records = [rec()]
+            res = self.go()
+            self.assertEqual(res["trades"], [], rec)
+
+    def test_no_intent_means_no_order_and_nothing_is_adopted(self):
+        w = self._crashed()
+        d = self.state_file()
+        d["runner"]["intent"] = None            # crash between the engine save and the intent save
+        (self.state_dir / "state_2026-11-13.json").write_text(json.dumps(d))
+        w.size, w.avg = 5000, 69645.0
+        w.records = [self._rec()]
+        res = self.go()
+        self.assertEqual(res["trades"], [])
+        self.assertTrue(res["halted_reason"].startswith("restart: entering without an intent"))
+        self.assertEqual(self.state_file()["engine"]["status"]["A"], "cancelled")
+
+    def test_filled_then_stopped_out_while_down_keeps_the_entry_with_unknown_exit(self):
+        w = self._crashed()
+        w.size = 0
+        w.order_avg["O9"] = 69645.0
+        w.records = [self._rec()]
+        res = self.go()
+        self.assertEqual(len(w.calls_named("place_order")), 1)
+        self.assertEqual(len(res["trades"]), 1)
+        t = res["trades"][0]
+        self.assertEqual(t["entry"], 69635.0)           # 69645 - basis 10
+        self.assertIsNone(t["exit"])
+        self.assertFalse(t["exit_price_known"])
+        self.assertEqual(self.state_file()["engine"]["entries"], 1)    # the entry count is kept
+
+
+class TestF9EnvFromClient(Base):
+    def test_client_on_mainnet_refuses_even_when_env_test_is_passed(self):
+        w = self.start(A_ONLY, s1_bars())
+        self.client.env = "mainnet"
+        res = self.go(env="test")
+        self.assertFalse(res["ok"])
+        self.assertEqual((w.calls, w.client_calls), ([], []))
+
+    def test_client_on_mainnet_refuses_with_no_env_passed(self):
+        w = self.start(A_ONLY, s1_bars())
+        self.client.env = "mainnet"
+        res = self.go(env=None)
+        self.assertFalse(res["ok"])
+        self.assertEqual((w.calls, w.client_calls), ([], []))
+
+    def test_env_is_read_from_the_client_when_not_passed(self):
+        w = self.start(A_ONLY, s1_bars())
+        res = self.go(env=None)
+        self.assertTrue(res["ok"])
+        self.assertEqual(w.calls_named("place_order")[0][1]["env"], "test")
+
+
+class TestF10CorruptState(Base):
+    def _write(self, text):
+        self.state_dir.mkdir(parents=True)
+        (self.state_dir / "state_2026-11-13.json").write_text(text)
+
+    def test_valid_json_with_wrong_inner_types_is_corrupt_not_a_crash(self):
+        w = self.start(A_ONLY, s1_bars(), clock_ms=ARM + 90 * 1000)
+        self._write(json.dumps({"engine": {"plan": "not a dict"}, "runner": {}, "mode": "testnet"}))
+        res = self.go()
+        self.assertTrue(res["ok"])
+        self.assertTrue(res["halted_reason"].startswith("state_corrupt"), res["halted_reason"])
+        self.assertEqual(w.calls_named("place_order"), [])
+
+    def test_move_aside_failure_halts_and_continues(self):
+        w = self.start(A_ONLY, s1_bars(), clock_ms=ARM + 90 * 1000)
+        self._write('{"engine": {broken')
+        real = os.replace
+
+        def locked(src, dst):
+            if str(dst).endswith(".corrupt"):
+                raise PermissionError("file is locked")
+            return real(src, dst)
+        with mock.patch.object(runner.os, "replace", side_effect=locked):
+            res = self.go()
+        self.assertTrue(res["ok"])
+        self.assertIn("could not move it aside", res["halted_reason"])
+        self.assertEqual(w.calls_named("place_order"), [])
 
 
 if __name__ == "__main__":
