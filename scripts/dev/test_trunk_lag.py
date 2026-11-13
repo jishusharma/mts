@@ -29,7 +29,7 @@ def commit(repo, name, when):
 
 class TrunkLagTest(unittest.TestCase):
     def setUp(self):
-        self.d = tempfile.TemporaryDirectory()
+        self.d = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)   # Windows: read-only git objects must not fail the test at teardown
         base = Path(self.d.name)
         self.origin, self.tree = base / "origin", base / "tree"
         sh(base, "init", "-q", str(self.origin))          # no `init -b`: JIS-NUC runs git 2.24 (the option came in 2.28)
@@ -47,6 +47,13 @@ class TrunkLagTest(unittest.TestCase):
             with self.assertRaises(subprocess.TimeoutExpired):
                 T.git(self.tree, "status")
         self.assertEqual(run.call_args.kwargs["timeout"], 0.5)
+        # test_value_audit_1113: an explicit per-call limit is a floor, the env override can only raise it
+        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "120"}),                 unittest.mock.patch.object(T.subprocess, "run") as run:
+            T.git(self.tree, "fetch", timeout=30)
+        self.assertEqual(run.call_args.kwargs["timeout"], 120)
+        with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "2"}), unittest.mock.patch.object(T.subprocess, "run") as run:
+            T.git(self.tree, "fetch", timeout=30)
+        self.assertEqual(run.call_args.kwargs["timeout"], 30)
         with unittest.mock.patch.dict(os.environ, {"MTS_TRUNK_LAG_GIT_TIMEOUT": "junk"}):
             self.assertEqual(T.git_timeout(), 8)
         env = {k: v for k, v in os.environ.items() if k != "MTS_TRUNK_LAG_GIT_TIMEOUT"}

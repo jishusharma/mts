@@ -213,7 +213,7 @@ def stale_rows(bucket, paths, cutoff, why):
     return out
 
 
-def rescue_cache_rows(main):
+def rescue_cache_rows(main, now=None):
     """Regenerable caches wt_maint copied into Dumps/wt_rescue (wt_maint.RESCUE_SKIP); the rest of a rescue is kept."""
     from wt_maint import RESCUE_SKIP
     ends = tuple("/" + s.lower() for s in RESCUE_SKIP)    # any depth: older rescues sit under <tree>/files/
@@ -226,10 +226,10 @@ def rescue_cache_rows(main):
                 paths.append(e.path)
             else:
                 todo.append(e.path)
-    return stale_rows("rescue-cache", paths, time.time(), "regenerable cache copied by wt_maint")
+    return stale_rows("rescue-cache", paths, now or time.time(), "regenerable cache copied by wt_maint")
 
 
-def browser_rows(local, run=None):
+def browser_rows(local, run=None, now=None):
     run = run or running
     out = []
     for rel, image in BROWSERS:
@@ -242,7 +242,7 @@ def browser_rows(local, run=None):
         for prof in scan(root):
             if prof.is_dir(follow_symlinks=False):
                 dirs += [Path(prof.path) / c for c in BROWSER_CACHES]
-        out += stale_rows("browser-cache", [d for d in dirs if dir_not_reparse(d)], time.time(), image + " not running")
+        out += stale_rows("browser-cache", [d for d in dirs if dir_not_reparse(d)], now or time.time(), image + " not running")
     return out
 
 

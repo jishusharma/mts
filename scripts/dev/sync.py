@@ -1309,6 +1309,13 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
+def home_timing_path():
+    """The per-machine ship timing log that outlives any work tree: MTS_GATE_TIMING_HOME, else ~/.mts/gate_timing.jsonl (the ~/.mts home dir the
+    signal hook and yt guards already use). runtime_data/gate_timing.jsonl is gitignored and dies with its work tree (test_value_audit_1113:
+    rows from 8 of 14 days were gone)."""
+    return Path(os.environ.get("MTS_GATE_TIMING_HOME") or (Path.home() / ".mts" / "gate_timing.jsonl"))
+
+
 def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None, gate_reason="", gate_mode="", phases=None):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
     (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
@@ -1339,6 +1346,16 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
         }
         with open(p, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(row) + "\n")
+        # also the per-machine home log, so a removed work tree does not take its rows along. Skipped when the caller chose the path (a test, a
+        # MTS_GATE_TIMING override) unless MTS_GATE_TIMING_HOME names the home log too. Never raises.
+        if os.environ.get("MTS_GATE_TIMING_HOME") or not (path or os.environ.get("MTS_GATE_TIMING")):
+            try:
+                hp = home_timing_path()
+                hp.parent.mkdir(parents=True, exist_ok=True)
+                with open(hp, "a", encoding="utf-8", newline="\n") as fh:
+                    fh.write(json.dumps({**row, "tree": str(repo)}) + "\n")
+            except Exception:
+                pass
     except Exception:
         pass
 
