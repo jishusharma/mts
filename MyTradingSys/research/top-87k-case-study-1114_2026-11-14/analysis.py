@@ -24,10 +24,21 @@ def pivots(df,k,kind):
         if kind=='L' and x[i]==w.min() and (w==x[i]).sum()==1: out.append(i)
     return out
 
-def div_events(df,k,L,osc,thr,side,usebb):
+def div_events(df,k,L,osc,thr,side,usebb,anyp=False):
     ev=[]; kind='H' if side=='S' else 'L'
     P=pivots(df,k,kind); o=df[osc].values; bu=df.bu.values; bl=df.bl.values; h=df.h.values; l=df.l.values
-    for a,bi in zip(P[:-1],P[1:]):
+    pairs=list(zip(P[:-1],P[1:]))
+    if anyp:
+        pairs=[]
+        for j,bi in enumerate(P):
+            best=None
+            for a in reversed(P[:j]):
+                if bi-a>L: break
+                if side=='S': good=h[bi]>h[a] and o[bi]<o[a] and o[a]>thr
+                else: good=l[bi]<l[a] and o[bi]>o[a] and o[a]<((100-thr) if osc=='rsi' else -thr)
+                if good and (best is None or (o[a]>o[best] if side=='S' else o[a]<o[best])): best=a
+            if best is not None: pairs.append((best,bi))
+    for a,bi in pairs:
         if bi-a>L: continue
         if side=='S':
             ok=h[bi]>h[a] and o[bi]<o[a] and o[a]>thr and (not usebb or (h[bi]>bu[bi] or h[a]>bu[a]))
@@ -41,8 +52,8 @@ EVS=[]
 def step(tf): return {'1D':pd.Timedelta(days=1),'1W':pd.Timedelta(days=7),'4H':pd.Timedelta(hours=4)}[tf]
 for side in ('S','L'):
     for tf,df,k,L in (('1D',d,3,60),('1W',W,2,40),('4H',H4,5,120)):
-        for nm,osc,thr,bbq in (('DIV_RSI_BB','rsi',60,True),('DIV_WT_BB','wt',40,True),('DIV_RSI_noBB','rsi',60,False)):
-            for (f,a,bi) in div_events(df,k,L,osc,thr,side,bbq):
+        for nm,osc,thr,bbq,anyp in (('DIV_RSI_BB','rsi',60,True,False),('DIV_WT_BB','wt',40,True,False),('DIV_RSI_noBB','rsi',60,False,False),('DIV_RSI_ANY_BB','rsi',60,True,True),('DIV_WT_ANY_BB','wt',40,True,True)):
+            for (f,a,bi) in div_events(df,k,L,osc,thr,side,bbq,anyp):
                 if f>=len(df): continue
                 EVS.append(dict(sig=nm+('' if side=='S' else '_UP'),tf=tf,date=df.index[f],ent_t=df.index[f]+step(tf),price=df.c.iloc[f],side=side,p1=a,p2=bi))
 
@@ -98,34 +109,35 @@ ev=pd.DataFrame(EVS)
 # sequences
 mdi_x=dix; pdi_x=dix2
 out=[]
-base=ev[ev.sig.isin(['DIV_RSI_BB','DIV_WT_BB','DIV_RSI_BB_UP','DIV_WT_BB_UP'])&ev.tf.isin(['1D','1W'])].sort_values('ent_t')
-for _,r in base.iterrows():
-    side=r.side; tfdf=d if r.tf=='1D' else W
-    t1,t2=tfdf.index[int(r.p1)],tfdf.index[int(r.p2)]
-    seg=d.loc[t1:t2+(pd.Timedelta(days=6) if r.tf=='1W' else pd.Timedelta(0))]
-    if side=='S': lvl=seg.l.min(); ext=seg.h.max()
-    else: lvl=seg.h.max(); ext=seg.l.min()
-    start=r.ent_t.normalize(); win=d.loc[start:start+pd.Timedelta(days=40)]
-    trig=None;trig2=None
-    for t,row in win.iterrows():
-        if side=='S':
-            if row.h>ext: break
-            if trig is None and row.c<lvl: trig=t
-            if trig2 is None and mdi_x.get(t,False) and (t-start).days<=30: trig2=t
-        else:
-            if row.l<ext: break
-            if trig is None and row.c>lvl: trig=t
-            if trig2 is None and pdi_x.get(t,False) and (t-start).days<=30: trig2=t
-    nm='' if side=='S' else '_UP'
-    def mk(sig,t): return dict(sig=sig,tf='1D',date=t,ent_t=t+pd.Timedelta(days=1),price=d.c[t],side=side,p1=None,p2=None,src=r.sig+'/'+r.tf)
-    if trig is not None:
-        out.append(mk('SEQ_A'+nm,trig))
-        wk=W[W.index+pd.Timedelta(days=7)<=trig+pd.Timedelta(days=1)]
-        sm=wk.sma20.iloc[-1]
-        wc=pd.notna(sm) and ((wk.c.iloc[-1]<sm) if side=='S' else (wk.c.iloc[-1]>sm))
-        di=(d.mdi[trig]>d.pdi[trig]) if side=='S' else (d.pdi[trig]>d.mdi[trig])
-        if wc or di: out.append(mk('SEQ_B'+nm,trig))
-    if trig2 is not None: out.append(mk('SEQ_C'+nm,trig2))
+for TAG,SIGS in (('',['DIV_RSI_BB','DIV_WT_BB','DIV_RSI_BB_UP','DIV_WT_BB_UP']),('_ANY',['DIV_RSI_ANY_BB','DIV_WT_ANY_BB','DIV_RSI_ANY_BB_UP','DIV_WT_ANY_BB_UP'])):
+  base=ev[ev.sig.isin(SIGS)&ev.tf.isin(['1D','1W'])].sort_values('ent_t')
+  for _,r in base.iterrows():
+      side=r.side; tfdf=d if r.tf=='1D' else W
+      t1,t2=tfdf.index[int(r.p1)],tfdf.index[int(r.p2)]
+      seg=d.loc[t1:t2+(pd.Timedelta(days=6) if r.tf=='1W' else pd.Timedelta(0))]
+      if side=='S': lvl=seg.l.min(); ext=seg.h.max()
+      else: lvl=seg.h.max(); ext=seg.l.min()
+      start=r.ent_t.normalize(); win=d.loc[start:start+pd.Timedelta(days=40)]
+      trig=None;trig2=None
+      for t,row in win.iterrows():
+          if side=='S':
+              if row.h>ext: break
+              if trig is None and row.c<lvl: trig=t
+              if trig2 is None and mdi_x.get(t,False) and (t-start).days<=30: trig2=t
+          else:
+              if row.l<ext: break
+              if trig is None and row.c>lvl: trig=t
+              if trig2 is None and pdi_x.get(t,False) and (t-start).days<=30: trig2=t
+      nm=TAG+('' if side=='S' else '_UP')
+      def mk(sig,t): return dict(sig=sig,tf='1D',date=t,ent_t=t+pd.Timedelta(days=1),price=d.c[t],side=side,p1=None,p2=None,src=r.sig+'/'+r.tf)
+      if trig is not None:
+          out.append(mk('SEQ_A'+nm,trig))
+          wk=W[W.index+pd.Timedelta(days=7)<=trig+pd.Timedelta(days=1)]
+          sm=wk.sma20.iloc[-1]
+          wc=pd.notna(sm) and ((wk.c.iloc[-1]<sm) if side=='S' else (wk.c.iloc[-1]>sm))
+          di=(d.mdi[trig]>d.pdi[trig]) if side=='S' else (d.pdi[trig]>d.mdi[trig])
+          if wc or di: out.append(mk('SEQ_B'+nm,trig))
+      if trig2 is not None: out.append(mk('SEQ_C'+nm,trig2))
 sq=pd.DataFrame(out).sort_values(['sig','date']).drop_duplicates(['sig','date'])
 ev=pd.concat([ev,sq],ignore_index=True)
 
