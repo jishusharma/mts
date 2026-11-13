@@ -1,4 +1,4 @@
-VERDICT: FAIL. No primary row of the NK pivot S/R reclaim (15m, 1h; 20 coins; VALIDATION 2024+) has positive fee-net R; 0 of 8 pass (mean net R > 0 fails everywhere, 7 of 8 also lose at the 6 bp maker fee). Best row: 1h SHORT-P, net -0.009 R at 12 bp (+0.046 at 6 bp) but CI low -0.054 and ex-best-5 -0.041.
+VERDICT: FAIL. No primary row of the NK pivot S/R reclaim (15m, 1h; 20 coins; VALIDATION 2024+) has positive fee-net R; 0 of 8 pass (mean net R > 0 fails everywhere, 6 of 8 also lose at the 6 bp maker fee; only the two 1h shorts are slightly positive there). Best row: 1h SHORT-P, net -0.009 R at 12 bp (+0.046 at 6 bp) but CI low -0.054 and ex-best-5 -0.041.
 
 PRE_REG sha c07a835 (committed before any outcome). All parameters fixed in PRE_REG.md (SOURCED vs OURS labelled there); nothing tuned on DEV.
 
