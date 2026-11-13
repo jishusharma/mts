@@ -17,7 +17,15 @@
   "id": "tf-g2-tom-feed-triage-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "tf-g2-tom-feed-triage-1113: record caption lockout blocker in NOT_IN_DATA.md",
+      "ref": "bd7f7ed4ef62",
+      "utc": "2026-11-12T20:19:58Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,7 +33,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T18:59:03Z",
+  "refreshed": "2026-11-13T14:17:18Z",
   "refs": [
     "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
     "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
@@ -38,7 +46,7 @@
     "no repo code change",
     "no invented numbers: a number the trader did not say is NOT_SEEN"
   ],
-  "scope_sha": "",
+  "scope_sha": "bd7f7ed4ef62",
   "size": "S",
   "sources": [
     "tf-extract-plan 2026-11-13 (operator order 11-13)"
