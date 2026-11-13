@@ -16,7 +16,9 @@ KL = os.path.join(ROOT, "market_data", "klines")
 BTC_CSV = os.path.join(ROOT, "research", "btc_cycles_2026-11", "btc_daily.csv")
 SYMS = ("BTCUSDT", "ETHUSDT", "SOLUSDT", "LINKUSDT", "LTCUSDT")
 N = 14
-FEE = 0.0010
+sys.path.insert(0, os.path.abspath(os.path.join(ROOT, "..")))
+from MyTradingSys.backtest import fees  # noqa: E402
+FEE = fees.BINANCE_TAKER * 2  # round trip, both legs taker (backtest/fees.py)
 HOLDS = (3, 6, 12)
 PRIMARY_H = 6
 WARM = 100
