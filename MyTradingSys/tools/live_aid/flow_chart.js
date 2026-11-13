@@ -262,6 +262,16 @@
     root.innerHTML = h; wire(root);
     var age = document.getElementById('age-flow'); if (age) { var t0 = st.T[st.tf]; age.textContent = t0 ? Math.round((Date.now() - t0) / 1000) + 's' : '--'; age.classList.toggle('stale', !!v.stale); }
   }
+  /* tile(): the Forced moves picture for the one-screen Home (R27): two compact state chips + the same SVG, no buttons. {ok, t, stale, html} */
+  api.tile = function () {
+    var v = view(), c = TFS[st.tf];
+    if (!v.bars) return { ok: false, t: 0, html: '' };
+    var ser = series(v.bars), last = ser.length ? ser[ser.length - 1] : null; if (v.stale) last = null;
+    var five = st.data['5m'] ? mergeBars(st.data['5m'].kl, st.data['5m'].oi, st.data['5m'].cv, 300000, Date.now()) : null, hr = five && !stale(five, 300000, Date.now()) ? windowState(five, 12) : null;
+    var mini = function (e, lab) { var col = e && e.state !== 'NO_DATA' ? STATES[e.state][1] : '#5b6674'; return '<span class="fl-chip2" style="background:' + col + '">' + esc(lab + ' ' + (e && e.state !== 'NO_DATA' ? STATES[e.state][0] + ' ' + sgnTxt(e.dpx) + '% px, ' + sgnTxt(e.doi) + '% OI' : 'no data')) + '</span>'; };
+    var h = '<div class="fl-row">' + mini(last, st.tf + ' bar') + mini(hr, 'last hour') + '</div>' + renderSvg({ tf: st.tf, bars: v.bars, runs: v.runs, trades: v.trades, cvdLabel: v.cvdLabel });
+    return { ok: true, t: st.T[st.tf] || 0, stale: !!v.stale, html: h };
+  };
   function wire(root) {
     Array.prototype.forEach.call(root.querySelectorAll('[data-tf]'), function (b) { b.onclick = function () { st.tf = b.getAttribute('data-tf'); save(); if (!st.data[st.tf]) loadTf(st.tf).then(draw); draw(); }; });
     Array.prototype.forEach.call(root.querySelectorAll('[data-cvd]'), function (b) { b.onclick = function () { st.cvd = b.getAttribute('data-cvd'); save(); draw(); }; });
@@ -271,7 +281,7 @@
     css();
     if (o && o.views) o.views.flow = ['p-flow', 'Forced moves'];
     var tabs = document.getElementById('tabs');
-    if (tabs && !tabs.querySelector('a[href="#flow"]')) { var a = document.createElement('a'); a.href = '#flow'; a.textContent = 'Forced moves'; var m = tabs.querySelector('a[href="#money"]'); tabs.insertBefore(a, m ? m.nextSibling : null); }
+    if (tabs && !tabs.hasAttribute('data-onescreen') && !tabs.querySelector('a[href="#flow"]')) { var a = document.createElement('a'); a.href = '#flow'; a.textContent = 'Forced moves'; var m = tabs.querySelector('a[href="#money"]'); tabs.insertBefore(a, m ? m.nextSibling : null); }
     var src = document.querySelector('#p-flow .hd .src'); if (src) src.title = SRC;
     if (/[?&]replay=fixture(&|$)/.test(location.search)) { draw(); return; }
     function cycle() { Object.keys(TFS).forEach(function (k) { if (k === st.tf || k === '5m') loadTf(k).then(draw); }); }

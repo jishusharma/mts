@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-14T19:30:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_edge_1114/synthesis/IDEAS.md exists",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read all result files in MyTradingSys/research/layer_lab/gemini_edge_1114/inputs/ (11 recent edge studies, all FAIL; profit concentrated in about 5 market-wide crash days; operator rule 4h RSI<=12 + daily RSI<30 positive but underpowered; NY value-to-POC fails at 12 bp cost). Then read MyTradingSys/research/layer_lab/gemini_edge_1113/mine-*/RULES.md (rules mined from analysts: MAL-R05, NK-R04/R05/R11, CBP-R05, TF-R03/R04 and others). List the 10 most promising UNTESTED ideas, each a one-paragraph pre-registration sketch with data needed, instrument/timeframe, entry, stop, exit, cost model, split, and what result would kill it.",
+  "id": "gemini-edge-synthesis-ideas-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-14, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:30:00Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1114/synthesis/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file, a computation you ran, or a verbatim quote, never memory",
+    "do not run sync.py ship",
+    "Gemini always low effort"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13/14 operator order: use Gemini flash quota fully before it expires"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read all files in the inputs folder and the four mine-*/RULES.md files. Exclude any idea already tested in those results.",
+    "For each of 10 ideas: id, source rule id, the paragraph, data needed (Bybit/Binance public only), and a one-line reason it is not already refuted by the 11 FAILs.",
+    "Write MyTradingSys/research/layer_lab/gemini_edge_1114/synthesis/IDEAS.md, rank 1..10; commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Synthesis: 10 most promising untested edge ideas",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

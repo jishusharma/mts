@@ -55,12 +55,14 @@ Formula pointer: `backtest/layers/FORMULAS.md` section 3 (SMA: rolling arithmeti
 | Habib / CBP | NO-SOURCE: no extract mentions moving average crossover systems or 21/55 ribbons | none found |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (study folders and design pointers, no numbers per task instructions):
-- `MyTradingSys/research/ma_layer_2026-11/` (`MA_CONCEPTS.md`, `ma_state.py`, `cycle_ma_clock.py`, `test_spec_ma_state.py`): Formal implementation and multi-timeframe state definition of price vs 21/55 EMA, 200 SMA, 200 EMA, distance percent, ATR distance, slope, pullback detection, and Bull Market Support Band across 5m, 15m, 1h, 4h, 1d, 1w, and 1M bars.
-- `MyTradingSys/research/setup_alpha_beta_v2_2026-10/` (`RESULT.md`, `PRE_REG.md`): Pre-registered backtest of Setup Alpha (daily close > 200 SMA long-flat system) with frozen DEV and VALIDATION periods on BTCUSDT.
-- `MyTradingSys/research/btc_ma_2026-10-03/` (`Q_ALL_ma_findings.md`, `WORKER_BRIEFS.md`): Consolidated evidence survey evaluating peer-reviewed literature, out-of-sample predictability, data snooping controls, and transaction fee floors across classic MA crossover rules on Bitcoin.
-- `MyTradingSys/research/btc_50w_ma_j-JVi02_1112/` (`CHECK.md`, `EXTRACT.md`, `ma50w_breaks.py`): Empirical event study tracking every weekly close below the 50-week moving average on Binance spot BTCUSDT (2017-2026) and forward multi-week trajectory.
-- `MyTradingSys/research/edge_hunt_2026-11-09/results/eh-h5-rsi-ma-cross-trigger/` (`rsi_ma_cross.py`, `test_rsi_ma_cross.py`): Systematic test of RSI moving average cross triggers and momentum filtering.
+All rows OURS, copied from the named file. BTCUSDT unless stated. No study tests the 21/55 EMA or the 200 EMA as an entry; those rows are NOT_MEASURED.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/setup_alpha_beta_v2_2026-10/RESULT.md` | Alpha: daily close > SMA200 long-flat vs buy-and-hold, 0.05% per side taker, funding included, DEV 2022-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, HOLDOUT never loaded | DEV 4 entries (912 days); VAL 11 entries (365 days) | DEV: Alpha CAGR 45.4%, Sharpe 1.22, max DD 21.5%, in market 52% vs buy-and-hold 6.1%, 0.38, 68.0%. VAL: Alpha 5.3%, 0.32, 32.1%, 70% vs buy-and-hold 62.7%, 1.23, 29.0%. Mean R DEV 6.178, VAL 0.146 | 1d: CONTEXT ONLY (file verdict FAIL: beats buy-and-hold in DEV, loses in VALIDATION; per-trade n < 30 so UNDERPOWERED as an edge claim; cut drawdown in DEV only) |
+| `research/edge_hunt_2026-11-09/results/eh-h5-rsi-ma-cross-trigger/RESULT.md` | RSI14 crossing back under/over its SMA14 (an MA of RSI, not of price), 4h, BTC+ETH spot pooled, 12 bp round trip plus funding, DEV 2017-08..2024-06 | 1,322 | mean net +0.048 R, 95% CI -0.029..+0.126 (MDE 0.111 R); long +0.105 R CI -0.024..+0.233; short -0.002 R; VALIDATION not read | 4h: UNDERPOWERED (file verdict INCONCLUSIVE) |
+| `research/btc_50w_ma_j-JVi02_1112/CHECK.md` | Weekly close below the 50W MA, forward return, descriptive, fee-free, no trade rule, weekly data 2017-08 to 2026-11 (it spans the HOLDOUT window, so treat as a cycle note, not evidence) | file states n=7 first breaks | 26 weeks later up in 4 of 7 (file); from the pre-2025 rows of its table: 4 of 6 up, range -55.9% to +77.4%; file's own reading: a phase marker, "n=7, no verdict possible" | 1w: UNTESTED (CONTEXT ONLY, no fee-net result) |
+| `research/btc_ma_2026-10-03/Q_ALL_ma_findings.md` | Literature survey, not our data (peer-reviewed MA tests, abstracts only for several) | none ours | none ours | not a measurement; see section 3 |
+Regime mix: Alpha rows have none; eh-h5 DEV spans 2017-08..2024-06 with no split table in the quoted summary (NOT_MEASURED). MTS state code `research/ma_layer_2026-11/` (MA_CONCEPTS.md, ma_state.py) is a specification and state reader, with no outcome study (UNTESTED).
 
 ## 6. How to read it now on Live Aid
 - **Moving averages panel** (`tools/live_aid/live_aid.html` container `#mas-panel`, rows `#mas-rows`, logic `tools/live_aid/ma_strip.js`):
