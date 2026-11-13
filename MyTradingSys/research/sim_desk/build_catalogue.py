@@ -23,6 +23,7 @@ AUDIT_WORDS = re.compile(r"audit|review|inventory|reconcile|provenance|parity|ch
 STUDY_FILE = re.compile(r"(^|/)(RESULTS?|VERDICT|[A-Z0-9_]*_RESULTS?)[^/]*\.md$", re.I)
 # result file -> exported test id (a test appears "exported" when results/<id>.json exists)
 EXPORTED_BY_SOURCE = {
+    "MyTradingSys/research/edge_views_2026-11-11/POOLED/RESULT.md": "forced-selloff-long-pooled-10-coins-1111",
     "MyTradingSys/research/btc_thin_zone_retest_1112/RESULT.md": "btc-thin-zone-and-breakdown-retest-prereg-1112",
     "MyTradingSys/research/levels_confluence_2026-10-14": "levels_ladder",
     "MyTradingSys/research/oi_pivot_2026-10-26/RESULT_1H4H.md": "oi-pivot-1h-4h-long-oi-followup",
