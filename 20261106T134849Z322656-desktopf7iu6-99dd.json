@@ -1,1 +1,0 @@
-{"t": "20261106T134849Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "note", "text": "A to C: gq-stale-claim-a f721ddf5a re-applied the own-host claim fix to gemini_queue.py that a trunk revert dropped (test fails without it, 26 pass). If that revert was intentional (da06ab9c4 batch), ", "login": "A"}
