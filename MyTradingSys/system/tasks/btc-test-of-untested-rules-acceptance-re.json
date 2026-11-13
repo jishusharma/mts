@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T14:50:14Z",
   "commands": [
     "python scripts/dev/sync.py ship --release btc-untested-rules-1112"
   ],
@@ -15,10 +16,18 @@
   "id": "btc-test-of-untested-rules-acceptance-re",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "already on trunk af16c249b: PREREG.md before results, RESULT.md with n/mean bp/t, halves, ",
+      "ref": "a3d6c402d",
+      "utc": "2026-11-13T14:50:14Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: all four rules fail or inconclusive on DEV",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
@@ -27,7 +36,12 @@
   "refs": [
     "MyTradingSys/research/orderflow_extracts_1112/ORDERFLOW_RULES.md"
   ],
-  "result": "",
+  "result": "already on trunk af16c249b: PREREG.md before results, RESULT.md with n/mean bp/t, halves, placebo per rule; A/B/C FAIL, D inconclusive",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/btc_untested_rules_1112/"
   ],
@@ -37,13 +51,14 @@
   "scope_sha": "",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "file PREREG",
     "code + tests",
     "run DEV, RESULT",
     "ship"
   ],
+  "taken": "2026-11-13T14:50:14Z",
   "tests": "test_untested_rules.py hand-computed cases, fail-first",
   "title": "BTC test of untested rules: acceptance/return to liquidity, thin close to POC, naked POC",
   "weight": "ROUTINE",
