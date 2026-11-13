@@ -5,8 +5,10 @@ Written and committed BEFORE any outcome is computed. Only the kline download (`
 writes the detector and trade engine, part c runs and reports; this file fixes the rule and the data.
 
 ## Context
-Regime: none as an entry gate (R04 is described "in a downtrend", R03 mirrors it, but no trend filter is applied; the trend is reported, not gated). Phase: none, no cycle input.
-Session: none, crypto trades 24h; no hour filter. Entry: the close of the confirming candle (see Rule).
+Regime: none as an entry gate (R04 is described "in a downtrend", R03 mirrors it, but no trend filter is applied; the trend is reported, not gated).
+Phase: none, no cycle input.
+Session: none, crypto trades 24h; no hour filter.
+Entry: the close of the confirming candle (see Rule).
 Regime mix: reported in the part-c REPORT.md as the share of days BTC closed above / below / within 5% of its 200-day SMA per split (DEV / VALIDATION / RECENT) and the share of signal trades per regime; a split over 85% one regime is flagged ONE-REGIME and cannot carry a PASS alone.
 
 ## Rule (both sides; R03 short, R04 long)
