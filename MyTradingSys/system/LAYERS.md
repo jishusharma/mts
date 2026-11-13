@@ -223,7 +223,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `krown-s8-forward-weekly-readout` ready p3 SONNET: Krown S8 forward test: weekly testnet readout, FAIL rule A/B/C + parity week check (run-and-report)
   - `layer-state-snapshot-causal` refined p3 SONNET: S0 park. Meta-label phase 2 (ROADMAP P2 + 2.0): causal layer_state_at(ts) snapshot in sim_desk/studies/_bars.p
   - `trendline-ledger-registry-hygiene` refined p3 SONNET: Trend-line daily ledger schema v2 enforcement + register the module in layer_index and wiring_registry (audit 
-  - `krown-s8-result-fail-means-stop-wording-1113` ready p4 HAIKU: Krown S8 RESULT (research/fable_run6_powered_prereg/RESULT.md line 23) says 'FAIL means stop' incl. R1 section
 
 ## WaveTrend (LazyBear oscillator) (`wavetrend`)
 - Status: Causal observation module and parity fixtures exist. BTC DEV atlas remains exploratory: W01-W03/W09 FAIL; W04-W08 INCONCLUSIVE per the MTS re-gate; W07/W08 also use an invalid C1 detector. No validated edge or live integration.
