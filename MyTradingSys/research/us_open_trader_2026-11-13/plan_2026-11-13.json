@@ -1,0 +1,23 @@
+{
+  "day": "2026-11-13",
+  "frozen_utc": "2026-11-13T13:10Z",
+  "ref_feed": "binance_spot_BTCUSDT",
+  "instrument": "BTC-PERPETUAL",
+  "arm_utc": "13:35",
+  "flat_utc": "16:30",
+  "max_entries": 3,
+  "amount_usd": 5000,
+  "leverage": 50,
+  "be_at_r": 1.0,
+  "fee_per_side": 0.0005,
+  "orders": [
+    {"id": "A", "side": "buy", "kind": "breakout", "trigger": 69620, "stop_dist": 250, "target_dist": 360,
+     "level": "Europe high 69,571", "confluence": ["live_aid:EU_HIGH", "live_aid:S026_up_69846"], "arm_after": null},
+    {"id": "B", "side": "sell", "kind": "breakout", "trigger": 68490, "stop_dist": 250, "target_dist": 370,
+     "level": "Europe low 68,516", "confluence": ["live_aid:EU_LOW", "live_aid:S026_down_68529"], "arm_after": null},
+    {"id": "C", "side": "sell", "kind": "fade", "trigger": 69980, "stop_dist": 250, "target_dist": 500,
+     "level": "analyst cluster 70,000", "confluence": ["analyst:Michael_70000", "analyst:Qriptal_70000_invalidation"], "arm_after": "A"},
+    {"id": "D", "side": "buy", "kind": "fade", "trigger": 68120, "stop_dist": 250, "target_dist": 500,
+     "level": "200-week area 68,000-68,100", "confluence": ["analyst:Krown_68100", "analyst:Krown_68000_200w", "analyst:Jala_68000"], "arm_after": "B"}
+  ]
+}
