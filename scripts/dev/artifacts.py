@@ -24,7 +24,7 @@ import sys
 import tempfile
 import time
 from collections import namedtuple
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 sys.dont_write_bytecode = True
@@ -84,10 +84,12 @@ def put_banner(text, reg, slug, strict=True):
 
 
 def stamp_block(now=None):
-    """The 'Updated <UTC>' line every generated page shows first (operator 2026-11-07: pages follow builds)."""
-    now = now or datetime.now(timezone.utc)
+    """The 'Updated <UTC> · <IST>' line every generated page shows first (operator 2026-11-07 pages follow builds; 2026-11-13 both zones, one clock)."""
+    now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    ist = now + timedelta(hours=5, minutes=30)           # IST has no DST: a fixed +05:30 from the same instant
     style = "margin:0;padding:6px 14px;font:600 .8rem/1.4 ui-monospace,Consolas,monospace;color:var(--muted,#666)"
-    return f'{STAMP_START}{chr(10)}<p class="mts-updated" style="{style}">Updated {now.strftime("%Y-%m-%d %H:%M")} UTC</p>{STAMP_END}'
+    return (f'{STAMP_START}{chr(10)}<p class="mts-updated" style="{style}">Updated {now.strftime("%Y-%m-%d %H:%M")} UTC'
+            f' · {ist.strftime("%H:%M")} IST{"" if ist.date() == now.date() else " " + ist.strftime("%d %b")}</p>{STAMP_END}')
 
 
 def put_stamp(text, now=None):
