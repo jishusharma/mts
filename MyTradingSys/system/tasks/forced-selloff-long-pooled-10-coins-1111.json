@@ -35,9 +35,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Merge origin/fast-track; edge views re-land with fees.py import",
-      "ref": "7fddba40a43b",
-      "utc": "2026-11-11T17:31:50Z"
+      "line": "POOLED: FLOW cascade long and TREND 4h Donchian on ten coins, both FAIL validation",
+      "ref": "de6b495be812",
+      "utc": "2026-11-11T18:14:37Z"
     },
     {
       "auto": true,
@@ -50,11 +50,11 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Frozen rules (OURS, from FLOW/PREREG.md b and TREND/PREREG.md); a Builder agent is already running this card, refined text only. Twin check: none (no other pooled forced-flow card).",
+  "note": "Refresh 2026-11-13 (login B): scope commit de6b495be is the run itself; POOLED/RESULT.md is on trunk (both rules FAIL VALIDATION). Left: the sim_desk/results/forced-selloff-long-pooled-10-coins-1111.json export (export_results.py has no function for it yet), then done.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T18:04:44Z",
+  "refreshed": "2026-11-13T14:50:17Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -67,7 +67,7 @@
     "new rule families (OPERATOR_DECISIONS 16:15Z)",
     "live tree"
   ],
-  "scope_sha": "7fddba40a43b",
+  "scope_sha": "de6b495be812",
   "size": "M",
   "sources": [
     "operator 2026-11-11 16:15Z edge views; OPERATOR_DECISIONS 16:15Z"
