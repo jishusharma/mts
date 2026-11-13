@@ -1,0 +1,75 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T21:44:29Z",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T17:19:24Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/indicator_rulebooks/HILEGA_MILEGA.md exists with sections 1-8 of TEMPLATE.md; every web claim has a URL and a SOURCED or UNVERIFIED mark; section 5 lists our studies as pointers only",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Write the rule book for Hilega Milega (NK StockTalk) from the template: developer's own rules, what the internet says, what our analysts say, how to read it on Live Aid, confluence role, open tests. Focus sources: NK's own statements (extracts under nk_stocktalk_1113), public formula claims, Indian trading material.",
+  "id": "gemini-rulebook-hilega-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "Output file already on trunk with 8 sections (checked by planner 1114); card was stale bec",
+      "ref": "ae47fa07b",
+      "utc": "2026-11-13T21:44:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: output shipped; INDEX status and sourcecheck cards cover the rest",
+  "note": "Docs only. No code change. Web quotes are UNVERIFIED unless the page was fetched and read; never invent a quote. Section 5 numbers are filled by a later Sonnet pass.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T17:19:24Z",
+  "refs": [
+    "MyTradingSys/research/indicator_rulebooks/TEMPLATE.md",
+    "MyTradingSys/research/indicator_rulebooks/INDEX.md",
+    "MyTradingSys/research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md",
+    "MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula/FORMULA.md",
+    "MyTradingSys/research/nk_stocktalk_1113/"
+  ],
+  "result": "Output file already on trunk with 8 sections (checked by planner 1114); card was stale because the file shipped",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/indicator_rulebooks/HILEGA_MILEGA.md"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output file",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order 2026-11-13 ~17:10Z (OPERATOR_DECISIONS.md): rule book for every indicator"
+  ],
+  "state": "done",
+  "steps": [
+    "Read research/indicator_rulebooks/TEMPLATE.md and research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md (the model).",
+    "Open the developer's original source and 2-3 independent public sources for Hilega Milega (NK StockTalk) (web search / fetch). Mark each claim SOURCED (URL, fetched) or UNVERIFIED.",
+    "grep our extracts (research/**/extract_*.md, krown_ta101_2026-10-13, nk_stocktalk_1113, yt_feed_2026-10-31) for Hilega Milega (NK StockTalk); one row per analyst with file + timestamp pointer.",
+    "Write research/indicator_rulebooks/HILEGA_MILEGA.md: sections 1-4 and 6-8; section 5 = pointers to our studies found by grep (study folder, no numbers).",
+    "Update the INDEX.md row status only if all eight sections are present."
+  ],
+  "taken": "2026-11-13T21:44:29Z",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Rule book sections 2-4, 6-8: Hilega Milega (NK StockTalk)",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

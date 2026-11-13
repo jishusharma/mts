@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13 -q"
+  ],
+  "created": "2026-11-13T18:33:31Z",
+  "depends_on": [
+    "edge4-rsi-4h-a-1114"
+  ],
+  "done_when": "engine tests pass on synthetic series; no real-data run yet",
+  "est_turns": 12,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "4h RSI<=12 + daily RSI<30 (edge4-rsi-4h-le12-daily-lt30-1113 part b): signal and trade engine.",
+  "id": "edge4-rsi-4h-b-1114",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T18:33:31Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/"
+  ],
+  "scope_out": [
+    "no product or live-path code change",
+    "public data only, no keys"
+  ],
+  "scope_sha": "",
+  "size": "S",
+  "sources": [
+    "session-planner split of edge4-rsi-4h-le12-daily-lt30-1113"
+  ],
+  "state": "ready",
+  "steps": [
+    "Write run_1113.py engine only: RSI(14) Wilder, signal (RSI<=12 and daily RSI<30 using the last CLOSED daily bar only), entry at close of next candle if it closes higher, stop = signal candle low, 1R/2R/3R/time exits, fees+slippage; expected values hand-computed per FORMULAS.md, not from code",
+    "Run the named tests, commit in MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/, ship docs/research only"
+  ],
+  "tests": "MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/test_run_1113.py::test_daily_rsi_uses_closed_bar_only and ::test_stop_is_signal_low_r_multiples, written first and failing on the stub",
+  "title": "4h RSI<=12 + daily RSI<30 part b: signal and trade engine",
+  "weight": "",
+  "worker": "agent"
+}

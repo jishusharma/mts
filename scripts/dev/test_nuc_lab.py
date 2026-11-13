@@ -143,5 +143,19 @@ class NucLabTimeoutTest(unittest.TestCase):
         self.assertEqual(nuc_lab.VERB_TIMEOUT_S["gemini"], 2700)
 
 
+class GeminiLauncherTest(unittest.TestCase):
+    """gemini-queue-parallel-runs-fight-over-gi: parallel launchers must not show console windows or die on ref locks."""
+
+    def test_launcher_task_runs_hidden(self):
+        s = nuc_lab.task_script(["c1:low:flash"])
+        self.assertIn("powershell -WindowStyle Hidden -NoProfile", s)
+
+    def test_launcher_retries_fetch_on_ref_lock_before_merge(self):
+        s = nuc_lab.task_script(["c1:low:flash"])
+        self.assertIn("for ($i = 1; $i -le 6; $i++) { git fetch -q origin", s)
+        self.assertIn("git merge -q --ff-only origin/fast-track", s)
+        self.assertLess(s.index("git fetch -q origin"), s.index("git merge -q --ff-only"))
+
+
 if __name__ == "__main__":
     unittest.main()
