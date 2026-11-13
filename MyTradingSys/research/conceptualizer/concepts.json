@@ -266,7 +266,7 @@
           "params": [
             [
               "“Almost zero” result",
-              "undefined",
+              "never defined in numbers (\"almost zero\")",
               "SOURCED"
             ],
             [
@@ -517,7 +517,7 @@
           "id": "swing",
           "name": "Swing: daily-close breakout",
           "who": "Tom",
-          "status": "promising",
+          "status": "untested",
           "diagram": "tf_swing.svg",
           "quote": {
             "text": "wait for daily closing prices, we can trade much, much more patiently",
@@ -1990,7 +1990,7 @@
           "id": "stop",
           "name": "Stop = invalidation point",
           "who": "CryptoCred",
-          "status": "inconclusive",
+          "status": "failed",
           "diagram": "cc_stop.svg",
           "quote": {
             "text": "stop placement is inextricably linked with the trade idea itself your stop reflects your invalidation and we know that your invalidation is derived from the trade idea",
@@ -4031,7 +4031,7 @@
           "id": "low_sweep",
           "name": "Retested low breaks in US window",
           "who": "Operator idea",
-          "status": "inconclusive",
+          "status": "failed",
           "diagram": "st_low_sweep.svg",
           "quote": {
             "text": "",
@@ -5035,7 +5035,7 @@
           "id": "bodyveto",
           "name": "Large body = strength, never fade",
           "who": "Habib",
-          "status": "promising",
+          "status": "untested",
           "diagram": "cl_bodyveto.svg",
           "quote": {
             "text": "a short because it has a very large body",
@@ -6723,7 +6723,7 @@
           "fee-net PASS"
         ],
         [
-          "14 / 18",
+          "12 / 14",
           "SOURCED / OURS params"
         ]
       ],

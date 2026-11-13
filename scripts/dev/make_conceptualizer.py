@@ -27,33 +27,58 @@ OUT = REPO / "MyTradingSys" / "system" / "artifacts" / "conceptualizer.html"
 STATUSES = ("failed", "inconclusive", "promising", "untested")
 FIDELITY = ("match", "simplified", "distorted", "untested")
 TAGS = ("SOURCED", "OURS", "NOT_SEEN")  # NOT_SEEN = a slot of the trader's that no verified source states
-SIZE = re.compile(r"\blots?\b|₹|\brupees?\b", re.I)  # public repo, context only: no position sizes in rows
+TAG = re.compile(r"(SOURCED|OURS|NOT_SEEN)(?=$|[\s:(*;,])")  # the whole word: "OURSELVES" is not a tag
+# public repo, context only: no position sizes in rows ("10lots", "lot_size", Hindi लॉट, Rs/INR included)
+SIZE = re.compile(r"(?<![a-z])lots?(?![a-z])|लॉट|₹|\brupees?\b|\b(?:rs|inr)\.?\s*\d", re.I)
 NEEDED = ("id", "name", "who", "status", "quote", "rule", "ours", "params", "code", "fidelity", "support", "test", "sim", "ideas", "question")
+TEXT = ("id", "name", "who", "rule", "ours")  # must be non-empty strings
 
 
 def problems(data, src=SRC):
-    """Every row the page cannot render, as text (empty list = ok)."""
+    """Every row the page cannot render, as text (empty list = ok). Never raises on odd input."""
     out = []
-    for L in data.get("layers", []):
+    layers = data.get("layers") if isinstance(data, dict) else None
+    if not isinstance(layers, list):
+        return ["layers is not a list"]
+    lids = set()
+    for L in layers:
+        if not isinstance(L, dict) or not isinstance(L.get("concepts"), list):
+            out.append(f"layer {L.get('id') if isinstance(L, dict) else L!r}: concepts is not a list")
+            continue
+        if L.get("id") in lids:
+            out.append(f"{L.get('id')}: duplicate layer id")
+        lids.add(L.get("id"))
         seen = set()
-        for c in L.get("concepts", []):
-            cid = f"{L.get('id')}/{c.get('id')}"
+        for n, c in enumerate(L["concepts"]):
+            if not isinstance(c, dict):
+                out.append(f"{L.get('id')}/#{n}: concept is not an object")
+                continue
+            cid = f"{L.get('id')}/{c.get('id') or '#' + str(n)}"
             out += [f"{cid}: no {k}" for k in NEEDED if k not in c]
-            if c.get("id") in seen:
+            out += [f"{cid}: empty {k}" for k in TEXT if k in c and not (isinstance(c[k], str) and c[k].strip())]
+            if c.get("id") and c["id"] in seen:
                 out.append(f"{cid}: duplicate id")
             seen.add(c.get("id"))
             if c.get("status") not in STATUSES:
                 out.append(f"{cid}: status {c.get('status')!r} not one of {STATUSES}")
-            if (c.get("fidelity") or [None])[0] not in FIDELITY:
+            fid = c.get("fidelity")
+            if not (isinstance(fid, list) and fid and fid[0] in FIDELITY):
                 out.append(f"{cid}: fidelity grade not one of {FIDELITY}")
-            for p in c.get("params", []):
-                if len(p) != 3 or not p[2].startswith(TAGS):
-                    out.append(f"{cid}: param {p!r} needs a SOURCED, OURS or NOT_SEEN tag")
-                if SIZE.search(" ".join(map(str, p))):
+            if not isinstance(c.get("quote"), dict):
+                out.append(f"{cid}: quote is not an object")
+            params = c.get("params", [])
+            if not isinstance(params, list):
+                out.append(f"{cid}: params is not a list")
+                params = []
+            for p in params:
+                if not (isinstance(p, list) and len(p) == 3 and all(isinstance(x, str) for x in p) and TAG.match(p[2])):
+                    out.append(f"{cid}: param {p!r} needs 3 strings and a SOURCED, OURS or NOT_SEEN tag")
+                    continue
+                if SIZE.search(" ".join(p)):
                     out.append(f"{cid}: param {p[0]!r} carries a size word (lot, rupee)")
             d = c.get("diagram")
-            if d and not (src / "diagrams" / d).is_file():
-                out.append(f"{cid}: diagram {d} missing")
+            if d and not (isinstance(d, str) and d.endswith(".svg") and "/" not in d and "\\" not in d and (src / "diagrams" / d).is_file()):
+                out.append(f"{cid}: diagram {d} missing (a .svg file name in diagrams/)")
     return out
 
 

@@ -59,3 +59,50 @@ def test_size_words_in_rows_are_caught():
     c["params"].append(["Risk", "₹9,750", "SOURCED: x"])
     text = "\n".join(mc.problems(data))
     assert text.count("size word") == 2
+
+
+def _real():
+    import json
+    return json.loads((mc.SRC / "concepts.json").read_text(encoding="utf-8"))
+
+
+def test_odd_types_are_reported_not_raised():
+    data = _real()
+    c = data["layers"][0]["concepts"]
+    c[0]["params"] = None
+    c[1]["params"] = [{"a": 1}, ["a", "b", 5], ["a", "b", None]]
+    c[2]["fidelity"] = {"a": 1}
+    c[3]["diagram"] = 5
+    c.append("x")
+    text = "\n".join(mc.problems(data))
+    assert "params is not a list" in text and "fidelity grade" in text and "diagram 5" in text and "not an object" in text
+    assert text.count("needs 3 strings") == 3
+    assert mc.problems({"layers": None}) == ["layers is not a list"]
+
+
+def test_tag_must_be_the_whole_word():
+    data = _real()
+    p = data["layers"][0]["concepts"][0]["params"]
+    p[:] = [["a", "b", "SOURCEDX"], ["a", "b", "OURSELVES"], ["a", "b", "OURS: x"], ["a", "b", "NOT_SEEN (y)"], ["a", "b", "SOURCED"]]
+    assert "\n".join(mc.problems(data)).count("needs 3 strings") == 2
+
+
+def test_size_variants_are_caught():
+    data = _real()
+    p = data["layers"][0]["concepts"][0]["params"]
+    p[:] = [["a", "10lots", "OURS"], ["lot_size", "1", "OURS"], ["a", "2 लॉट", "OURS"], ["a", "Rs 5000", "OURS"], ["a", "INR 500", "OURS"],
+            ["Slot", "pilot run", "OURS"]]
+    assert "\n".join(mc.problems(data)).count("size word") == 5
+
+
+def test_empty_text_duplicate_layer_fidelity_and_diagram_escape_are_caught():
+    data = _real()
+    c = data["layers"][0]["concepts"]
+    c[0]["rule"] = ""
+    c[1]["id"] = c[2]["id"]
+    c[3]["fidelity"] = ["great", "x"]
+    c[4]["diagram"] = "../concepts.json"
+    data["layers"].append(data["layers"][1])
+    text = "\n".join(mc.problems(data))
+    for want in ("empty rule", "duplicate id", "fidelity grade", "diagram ../concepts.json", "duplicate layer id"):
+        assert want in text, want
