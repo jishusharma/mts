@@ -20,7 +20,7 @@ Freeze bar passed before any outcome: 807 events on 539 days (expected 807 / 539
 | C7 DEV 2022-01..2024-06 | 245 | +0.1665 | 0.0972 | - |
 | C8 BTCUSDT x DEV 2022-01..2024-06 | 78 | +0.1005 | 0.1583 | - |
 
-FAIL means stop: no detector, chart, layer or management work on the Krown S8 squeeze-break family on 4h BTC, ETH or SOL with this 10-bar stop; and, this being the last powered family of R1 E1, the R1 section 5 STOP list applies to the BTC trading-edge program.
+INCONCLUSIVE is not FAIL and implies no stop. The stop applies only to a FAIL under PRE_REG item 0f: no detector, chart, layer or management work on the Krown S8 squeeze-break family on 4h BTC, ETH or SOL with this 10-bar stop; and, this being the last powered family of R1 E1, the R1 section 5 STOP list applies to the BTC trading-edge program.
 
 Strata (C1-C8) carry no verdict word and can neither rescue nor kill C0.
 
