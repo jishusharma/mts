@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-13T12:12:31Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "Home shows one row with analyst level age + call and a fired/silent chip per layer; layout test passes",
+  "est_turns": 22,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "One Home row showing CBP analyst level age and call plus MTS per-layer state (fired/silent, R15)",
   "id": "live-aid-cbp-mts-state-on-home-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 16 file(s)",
+      "ref": "0be17fc4ae09",
+      "utc": "2026-11-13T13:52:41Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:54Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/home.js",
+    "MyTradingSys/tools/live_aid/build_analyst_data.py",
+    "MyTradingSys/tools/live_aid/test_live_aid_layout.py"
+  ],
+  "scope_out": [
+    "no new data source, no trading logic"
+  ],
+  "scope_sha": "0be17fc4ae09",
+  "size": "M",
   "sources": [
     "live-aid-declutter-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read home.js row builders and analyst data fields",
+    "Add the row; layers fired/silent from existing feeds"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_live_aid_layout.py::test_home_cbp_mts_row (fails first)",
   "title": "Live Aid Home: one row for CBP analyst levels (age, call) and MTS layer state (fired/silent per layer, R15) where he looks, instead of tabs",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

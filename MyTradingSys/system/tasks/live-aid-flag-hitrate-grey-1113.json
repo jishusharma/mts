@@ -4,33 +4,54 @@
   "commands": [],
   "created": "2026-11-13T12:12:29Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "each flag/level story shows 'hit X% n=N'; unproven ones carry the grey class; new tests in test_levelstory.py pass and fail on pre-change code",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Show hit rate and n next to each flag/level story on Live Aid; grey out as unproven when n<30 or hit within 10 pts of 50%",
   "id": "live-aid-flag-hitrate-grey-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: Live Aid Home shows LONG and SHORT board cards (strength bar, n and rate of the cu",
+      "ref": "b8c801095f7d",
+      "utc": "2026-11-11T05:06:28Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:56:54Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/levelstory.js",
+    "scripts/dev/live_aid_learn.py",
+    "MyTradingSys/tools/live_aid/test_levelstory.py"
+  ],
+  "scope_out": [
+    "no live tree, no trading logic, no new data source"
+  ],
+  "scope_sha": "b8c801095f7d",
+  "size": "M",
   "sources": [
     "live-aid-declutter-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read live_aid_learn.py output shape",
+    "Write failing test: story with n=10 or hit 55% renders unproven class, n=50 hit 70% does not",
+    "Implement render in levelstory.js; label replay numbers SOURCED replay"
+  ],
+  "tests": "python -m pytest MyTradingSys/tools/live_aid/test_levelstory.py -q (new test_unproven_grey fails first)",
   "title": "Live Aid: show hit rate and n next to each flag/level story (from live_aid_learn.py, SOURCED replay now, real log later); grey out flags with n<30 or hit within 10 pts of 50% as unproven",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

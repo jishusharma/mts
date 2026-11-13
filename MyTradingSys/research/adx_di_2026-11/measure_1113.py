@@ -241,7 +241,7 @@ def write(out_path, COV, CUR, A, B, D, n_csv, n_top, n5):
          "`t` = (event mean - baseline) / (event sd / sqrt n): OURS, overlapping bars inflate it, rough only. "
          "n<30 = UNDERPOWERED. Everything below is OURS (inference from these runs).", "",
          "## Data", "", "| Item | Value |", "|---|---|",
-         "| 5m source | Bybit v5 `api.bybit.com/v5/market/kline` BTCUSDT linear, %d 5m bars (public data; fapi.binance.com unreachable). "
+         "| 5m source | Bybit v5 `api.bybit.com/v5/market/kline` BTCUSDT linear, %d 5m bars (public data; Binance futures API unreachable from here). "
          "Bybit perp, not Binance: prices differ a few bps, shape does not |" % n5,
          "| 15m / 1h / 4h | resampled from the 5m bars with `tf_resample` (UTC buckets) |",
          "| 1d / 2d / 5d / 1w | `research/btc_cycles_2026-11/btc_daily.csv` from 2017-01-01 (%d days) + %d top-up days from Bybit; 2d/5d registry epoch-day buckets, 1w Monday-anchored |" % (n_csv, n_top),

@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-13T11:56:28Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "a day of events yields runtime_data/live_aid/liq_log_<date>.csv rows with the four fields, no duplicates after reload; tests pass",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Write each Live Aid liquidation event (time, side, size, price) to a scoreable local log so trust can be measured",
   "id": "live-aid-liq-history-log-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 8 file(s)",
+      "ref": "05b8d1f42bc2",
+      "utc": "2026-11-12T18:55:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:52Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/tools/live_aid/xliq.js",
+    "MyTradingSys/tools/live_aid/xliq_collector.py",
+    "MyTradingSys/tools/live_aid/test_xliq.py"
+  ],
+  "scope_out": [
+    "no order data, nothing committed from runtime (repo is public); log under runtime_data/ gitignored"
+  ],
+  "scope_sha": "05b8d1f42bc2",
+  "size": "M",
   "sources": [
     "live-aid-learn-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Locate the in-page history and collector feed",
+    "Append csv rows time,venue,side,size,price on each event; dedupe on reload"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_xliq.py::test_liq_log_rows_dedup (fails first)",
   "title": "Live Aid liquidation layer history survives reload but is never written to a scoreable log; add a log (time, side, size, price) so its trust can be measured",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }
