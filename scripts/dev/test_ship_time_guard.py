@@ -16,7 +16,8 @@ import sync
 class GateCap(unittest.TestCase):
     # Every function in run_all_tests.py that starts a process. exec_step honours STEP_TIMEOUT_S/GATE_DEADLINE (the 90 s cap); the
     # others are listed on purpose: adding a new runner fails here until its author checks it sits under the cap and adds its name.
-    KNOWN_RUNNERS = {"_short_sha", "exec_step", "exec_layer_chunks", "exec_unittest_shards", "run_mvn", "_git_out"}
+    KNOWN_RUNNERS = {"_short_sha", "exec_step", "exec_layer_chunks", "exec_unittest_shards", "run_mvn", "_git_out",
+                     "execution_stems"}   # execution_stems: one local `git ls-files`, ms, timeout=20, fails closed (not a test step)
 
     def test_time_cap_constants_stay_inside_the_two_minute_ship(self):
         self.assertLessEqual(rat.GATE_HARD_STEP_S, 60)      # 90 gave a 171 s ship on a loaded JIS-NB (2026-10-25)
