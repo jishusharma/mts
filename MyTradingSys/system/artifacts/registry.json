@@ -64,8 +64,8 @@
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "6ec9a0541fef809fdcf60fcebbf4dea9bcbe1e16c7aad9e08354f32cfe394b33",
-      "published_at": "2026-11-13T12:21:57Z"
+      "published_sha": "179ef9d61e53c7a76a5b6b3ba8f0e1222cca1ae031a9e9dcc5ec2295c523cc0c",
+      "published_at": "2026-11-13T13:01:39Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -263,12 +263,12 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "22db068ff06c7fdfa4614eb44b744893265fcf7fd41d4bc928397fac4c43bd5a",
+      "published_sha": "2000596b9a5653a43db8d61f7072061b7ba10fd6a73990451105cf3188d447be",
       "feeds": [
         "MyTradingSys/system/artifacts/registry.json"
       ],
       "max_age_h": 24,
-      "published_at": "2026-11-13T12:21:58Z",
+      "published_at": "2026-11-13T13:01:38Z",
       "feed_hashes": {
         "MyTradingSys/system/artifacts/registry.json": "bfce6578c0d2789e5409dff4c58a063249889c7762eed73aa2e707c11d8b9dc3"
       }
