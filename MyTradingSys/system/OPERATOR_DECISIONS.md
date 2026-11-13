@@ -2538,3 +2538,12 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator (sense): why are we still stuck on red CI; has shipping time improved; find a solution or remove the blockage; we need to work freely.
 - Measured: local ship 9 s to 2.4 min (was 17-27 min); CI median 4 min; but 35 of 57 trunk runs red in 4 h, from 4 breaks, each a check CI runs and the local ship gate did not (PRE_REG context lint, wiring registry row, own-cost test, shared-list consistency).
 - Mechanism: card ship-gate-misses-prereg-lint-and-cost-test-1113 (Builder ship-gate-ci-parity-1113, started 18:45Z): the ship gate runs those checks on the merged tree before the push. No gate removed. Next if red persists: the ship train (cards ship-train-*), which lands only green batches.
+
+## 2026-11-13 ~19:05Z: Live Aid becomes one home screen (four screenshots, JIS-NB)
+- Operator (sense): Money has too many NOT_IN_DATA cells and no "last updated"; News is unreadable, misaligned and not actionable (say what to buy or sell on a news item, keep a story while it builds, drop it when it fades, show what just passed and its impact, and the important events ahead for the day, week and month); US open looked stale; the map and All readings are not used; the coil belongs on the main page; Home is too stretched and wordy and does not look like a dashboard. "We just need the home screen." Detail only when he asks. The unused In trade column may stay.
+- Mechanism: requirement R27 in `MyTradingSys/tools/live_aid/REQUIREMENTS.md`, Builder slug live-aid-one-screen-1114 (one dense screen, an as-of stamp on every panel, coil on Home, news as buy/sell/building/fading rows plus an events-ahead strip). Other tabs are folded in or removed, not deleted from history.
+
+## 2026-11-13 ~19:35Z: "Zing" real-time setups with 60-100% win rates; what are we not doing right (JIS-NB)
+- Operator (sense): check what Zing does with real-time trade setups at 60% to 100% win rates; what are we not doing right.
+- Answer given: no service of that name was found (he has not given a link or exact name yet). A win rate alone says nothing about profit: a high win rate with small wins and rare large losses loses money, so every MTS test reports profit per trade after fees, not win rate. Today's 11 fee-net tests found no rule that passes; the RSI-extreme signal beats random entries but its profit sits in about five market-wide crash days.
+- Open: link or exact name from him; then a like-for-like check of its published setups (entry, stop, target, fees, sample size).
