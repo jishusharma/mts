@@ -4,6 +4,15 @@
   "commands": [
     "python -m pytest MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13 -q"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T20:05:40Z",
+    "misses": 32,
+    "reads": [
+      "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-malkan/RULES.md"
+    ],
+    "session": "agent-a5325d7d689d0289c"
+  },
   "created": "2026-11-13T18:33:34Z",
   "depends_on": [],
   "done_when": "PRE_REG.md has ## Context and Regime mix:, klines for 20 perps 1h/4h present, tests pass",
