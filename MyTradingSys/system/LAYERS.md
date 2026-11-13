@@ -81,6 +81,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `rsi_divergence`: no edge, all TFs | module backtest/layers/rsi/run_divergence_mtf.py
 - Backtests (layer_map.json, newest first):
   - 2026-11-14 `MALKAN-R03-R04-RSI-DIV-20261114`: FAIL: 0 of 8 VALIDATION cells PASS; rule in PRE_REG.md frozen before any outcome | `MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md`
+  - 2026-11-13 `RSI-CONFIRM-EXITS-20261113`: FAIL: 0 of 48 exit rules pass; no S1 exit has a positive fee-net VALIDATION mean | `MyTradingSys/research/rsi_confirm_exits_2026-11-13/RESULT.md`
   - 2026-11-13 `RSI-HTF-EXTREME-20261113`: FAIL/UNDERPOWERED: 0 of 40 cells pass (24 FAIL, 16 UNDERPOWERED); no edge claim | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/RESULT.md`
   - 2026-11-13 `EDGE4-RSI-4H-LE12-DAILY-LT30-20261113`: UNDERPOWERED: no cell reaches VALIDATION n>=30 (max 12, 4h), 0/12 PASS; the 4h VALIDATION pocket is not confirmed in DEV | `MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/REPORT.md`
   - 2026-11-13 `RSI-EXTREME-CONFIRM-1H-20261113`: FAIL: 0/384 pass, 0 BH-significant on DEV or VALIDATION; only VAL-positive pocket is negative in DEV and RECENT | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md`
