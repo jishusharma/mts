@@ -234,3 +234,4 @@ MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o1-confluence-dose-respons
 MyTradingSys/research/edge_hunt_2026-11-09/results/eh-o2-phase-lens/phase_trials.py,42,COST_RT_A,2,fraction,round_trip,taker,fee in edge_hunt,1,assign,COST_RT_A = 2 * fees.DERIBIT_TAKER + fees.SLIPPAGE_RT_S13
 MyTradingSys/research/level_story_1110/study.py,18,FEE_BP,2,other,round_trip,taker,fee in level_story,1,assign,FEE_BP = BINANCE_TAKER * 2 * 1e4
 MyTradingSys/research/adx_di_2026-11/measure_1113.py,31,FEE,2,other,round_trip,maker,fee in adx measure,1,assign,FEE = _fees.BINANCE_MAKER * 2   # 4 bps round trip
+MyTradingSys/research/extreme_confirm_template_2026-11/core.py,12,RT_FEE,2,other,round_trip,taker,fee in extreme_confirm_template,1,assign,RT_FEE = 2 * fees.BINANCE_TAKER
