@@ -27,9 +27,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "FIX signal hub: one cross-process lock on the shared clone, fetch into a named ref instead",
-      "ref": "1dc45606c2ae",
-      "utc": "2026-11-11T00:02:31Z"
+      "line": "ship: 7 file(s)",
+      "ref": "6670219dec33",
+      "utc": "2026-11-13T00:10:03Z"
     }
   ],
   "layers": [],
@@ -39,7 +39,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T02:52:24Z",
+  "refreshed": "2026-11-13T03:31:31Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -51,7 +51,7 @@
   "scope_out": [
     "no change to STOP, HOLD, HALT or red-CI hook lines; no live tree; no settings.json edit"
   ],
-  "scope_sha": "1dc45606c2ae",
+  "scope_sha": "6670219dec33",
   "size": "M",
   "sources": [
     "MyTradingSys/system/ARCH_REVIEW_2026-11-10.md row 4"

@@ -59,13 +59,13 @@
       "last_published": {
         "jishu.sharma": "2026-10-13",
         "jishu.awgp": "2026-10-14",
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "note": "2026-10-13: the old Layer Map (backtest matrix + configurator, make_layer_map.py) was replaced at the SAME url by MTS Layers (per-layer road, stuck days, missing steps, decisions waiting on Jis, How MTS runs). make_layer_map.py still builds the old page if wanted. Published on all three logins.",
       "purpose": "Every trading layer's road and where it is stuck.",
       "notes_go_to": "Read only. Put notes on the Research Map.",
-      "published_sha": "c4b0b1b058df66c49b111b69c3fcd4d046f11b2f836bdbebb7725b8932132ca4",
-      "published_at": "2026-11-12T21:15:36Z"
+      "published_sha": "e3a5033503dfa21cffc32befe5b1dd7a13ac47dc604a5f5dbaee3745c269203b",
+      "published_at": "2026-11-13T05:18:39Z"
     },
     {
       "slug": "tom_fabio_deck",
@@ -220,7 +220,7 @@
         "jishusharma1985": "https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
@@ -234,7 +234,7 @@
       ],
       "max_age_h": 36,
       "publish_file": "F:/CryptoScrapper/cbp_v2/cbp_board.html",
-      "published_at": "2026-11-12T21:15:37Z"
+      "published_at": "2026-11-13T05:18:40Z"
     },
     {
       "slug": "mts_home",
@@ -250,7 +250,7 @@
       "last_published": {
         "jishu.sharma": "never",
         "jishu.awgp": "never",
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "title": "MTS Home",
       "html": "MyTradingSys/system/artifacts/mts_home.html",
@@ -260,9 +260,12 @@
       "purpose": "This list: every MTS page, its owner login, where your notes go, and how to open it from any login.",
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
-      "published_sha": "3d756a3f172c469660536c3237280e963704556e29e4295752e8a67175726d64",
+      "published_sha": "54c67beea3398cd78bea71900b125a596a0d5f3bffcd89c7fbeaf53bd370fb2f",
+      "feeds": [
+        "MyTradingSys/system/artifacts/registry.json"
+      ],
       "max_age_h": 24,
-      "published_at": "2026-11-12T21:07:13Z"
+      "published_at": "2026-11-13T05:18:39Z"
     },
     {
       "slug": "research_map",
@@ -276,7 +279,7 @@
         "jishu.awgp": ""
       },
       "last_published": {
-        "jishusharma1985": "2026-11-06",
+        "jishusharma1985": "2026-11-13",
         "jishu.sharma": "never",
         "jishu.awgp": "never"
       },
@@ -291,11 +294,12 @@
       "purpose": "Where the research stands: what was tested, each trader's gate, what you can change.",
       "notes_go_to": "the Note / ask button. It saves to this page's own list (db \"requests\"); the next super session answers there.",
       "note": "Capabilities db + user (keep them: republish without passing capabilities). Other sessions edit DATA: read the live version first, never an old saved copy.",
-      "published_sha": "52b500b479fdca0c50cf9a92fb5f36350928b5862f707eb21bef3dd5bd70321d",
+      "published_sha": "dc1623b8c26ad973ef5e8b6d1e2a72e027af150d40b8beec25c666788f71e0ff",
       "feeds": [
         "MyTradingSys/research/STATUS.md"
       ],
-      "max_age_h": 72
+      "max_age_h": 72,
+      "published_at": "2026-11-13T05:18:40Z"
     },
     {
       "slug": "session_planner",
@@ -424,12 +428,12 @@
         "jishusharma1985": "https://claude.ai/artifact/DBQFxH79QsFSCVxmGqvSU9"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "MOCK of the live feed as one page; awaiting the operator's wire-or-change verdict (OPERATOR_DECISIONS / NEXT_SESSION).",
       "notes_go_to": "Answer in chat: wire it, change it, or drop it.",
       "note": "MOCK (status canonical only so check passes; not a keeper yet). Listed 2026-11-04 so Home shows it; operator decides wire / change / drop; then retire or make it real.",
-      "published_sha": "bd521da5f4ae7d16b802e3a3b89b0efe36a50714fa881af8184e719338210af0",
+      "published_sha": "a6462497661eb599be958b591802ef66a67b9f8a6c697e8b382e8a8182dc7c79",
       "producer": [
         "live_onepage",
         "cbp"
@@ -438,7 +442,7 @@
         "MyTradingSys/research/STATUS.md"
       ],
       "max_age_h": 12,
-      "published_at": "2026-11-12T21:07:14Z"
+      "published_at": "2026-11-13T05:18:41Z"
     },
     {
       "slug": "buy_crypto",
@@ -543,13 +547,13 @@
         "jishusharma1985": "https://claude.ai/artifact/Y5YTBaMQcbfBZgigJyLhNL"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-12"
+        "jishusharma1985": "2026-11-13"
       },
       "purpose": "One app for every layer's concepts: diagram, his rule vs ours (SOURCED/OURS), fidelity, support layers, tests, sim check, ideas, gaps. Replaces the two concept decks.",
       "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
       "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
-      "published_sha": "577211764c13113c0b7575972263cda279a87ec05eb5d76b7c9aef69bea4ce3c",
-      "published_at": "2026-11-12T20:54:49Z"
+      "published_sha": "62981a1ba4eb65fcbd5a4a24626a0263638679eb30ce1655b4e55008264eac5a",
+      "published_at": "2026-11-13T05:14:39Z"
     }
   ],
   "unpinned_old": {

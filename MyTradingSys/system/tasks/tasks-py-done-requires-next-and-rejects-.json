@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:50Z",
   "commands": [
     "python scripts/dev/test_desk.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "desk finish commit body carries Next: END (test_desk 31 pass here)",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:50Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: 5-day wiring audit & fixes (4b2 successor_wake, 48h exhaust radar, 6 coordination ",
@@ -26,13 +33,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk 7cf6fdea5",
   "note": "Planner 2026-11-10: PARKED 2026-11-08 marker dropped, now UNPARKED (S, small). The 'rejects raw state' half is by design (cmd_done l.1444), not changed. If test_desk.py does not exist, create it in scope.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T19:34:27Z",
   "refs": [],
-  "result": "",
+  "result": "desk finish commit body carries Next: END (test_desk 31 pass here)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/desk.py",
     "scripts/dev/test_desk.py"
@@ -45,13 +58,14 @@
   "scope_sha": "eb305a9f043c",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read desk.py finish (:156-168) and the Next: grammar (route_audit.parse_next, sync.NEXT_FIX)",
     "Write the failing test on the commit body (monkeypatch commit_ship)",
     "Append 'Next: END: desk task <id> <status>' to body in finish()",
     "Run python scripts/dev/test_desk.py"
   ],
+  "taken": "2026-11-13T03:30:50Z",
   "tests": "scripts/dev/test_desk.py: finish() body has a Next: END line (fails on current code)",
   "title": "tasks.py done requires --next and rejects raw state; desk.py done lacks --next causing Next line ship refusals",
   "weight": "",

@@ -2,7 +2,7 @@
 
 Covered when ANY of: the stem is named in run_all_tests.py; the file is in scripts/dev/run_extra_tests.py EXTRA; it sits under
 a directory the gate collects wholesale (MyTradingSys/tests pytest step, MyTradingSys/backtest rglob steps, options tests step);
-or it is in SKIP with a reason. Archives are ignored.
+or it is in SKIP with a reason, or it is a row of scripts/dev/gate_tiers.tsv (retired / study / slow tier). Archives are ignored.
 """
 import subprocess
 import sys
@@ -50,7 +50,8 @@ class GateDiscoveryTest(unittest.TestCase):
         gate = (ROOT / "scripts" / "dev" / "run_all_tests.py").read_text(encoding="utf-8")
         extra = set(run_extra_tests.all_tests())          # EXTRA plus every study-folder test (discovered, no entry to keep)
         tracked = tracked_tests()
-        missing = [rel for rel in tracked if not is_gated(rel, gate, extra, tracked, SKIP)]
+        skip = set(SKIP) | set(run_extra_tests.OFFGATE)   # gate_tiers.tsv rows carry their reason: off the push gate on purpose
+        missing = [rel for rel in tracked if not is_gated(rel, gate, extra, tracked, skip)]
         self.assertEqual(missing, [], "add to run_all_tests.py, to run_extra_tests.EXTRA, or to SKIP with a reason")
         self.assertTrue(all(isinstance(v, str) and v for v in SKIP.values()))
 

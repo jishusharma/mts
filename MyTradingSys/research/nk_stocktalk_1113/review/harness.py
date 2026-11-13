@@ -15,10 +15,12 @@ import sys
 import unicodedata
 from pathlib import Path
 
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')  # Devanagari on a cp1251/cp1252 console
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 CONCEPTS = json.loads((HERE / "concepts.json").read_text(encoding="utf-8"))
-MODELS = ("flash", "argon")
+MODELS = ("flash", "flash_deep", "argon")
 QUOTE = re.compile(r'^>\s*"(.*)"\s*$')
 GPS = re.compile(r"Source GPS:\s*([A-Za-z0-9_-]{11})")
 TS = re.compile(r"\[\d+:\d{2}(?::\d{2})?\]")
@@ -54,25 +56,55 @@ def quotes(model, vid):
     return out
 
 
+LAYER = ROOT / "MyTradingSys/research/conceptualizer/concepts.json"
+SPAN = re.compile(r"«(.+?)»\s*([A-Za-z0-9_-]{11})")
+
+
+def verdict(q, vid):
+    body = caption(vid)
+    if body is None:
+        return "NO-CAPTION"
+    if not norm(q):
+        return "EMPTY"
+    nb = f" {norm(body)} "
+    return "OK" if all(f" {norm(f)} " in nb for f in re.split(r"\.{3}|…", q) if norm(f)) else "MISSING"
+
+
+def layer_items():
+    """(where, text, vid) for the nk-stocktalk layer: each concept quote and every «span» VID in a param label."""
+    if not LAYER.is_file():
+        return []
+    L = next((x for x in json.loads(LAYER.read_text(encoding="utf-8"))["layers"] if x["id"] == "nk-stocktalk"), None)
+    out = []
+    for c in (L or {}).get("concepts", []):
+        q = c.get("quote", {})
+        vid = next(iter(re.findall(r"\b([A-Za-z0-9_-]{11})\b", q.get("src", "").split("|", 1)[-1])), "")
+        if q.get("text"):
+            out.append((f"layer {c['id']} quote", q["text"], vid))
+        for n, _, lab in c.get("params", []):
+            out += [(f"layer {c['id']} / {n}", s, v) for s, v in SPAN.findall(lab)]
+    return out
+
+
 def check():
     bad = total = 0
+    seen = set()
     for c in CONCEPTS:
         for model in MODELS:
+            if (model, c["video"]) in seen:
+                continue
+            seen.add((model, c["video"]))
             for ln, q, _, vid in quotes(model, c["video"]):
                 total += 1
-                body = caption(vid)
-                nq = norm(q)
-                if body is None:
-                    verdict = "NO-CAPTION"
-                elif not nq:
-                    verdict = "EMPTY"
-                elif all(f" {norm(f)} " in f" {norm(body)} " for f in re.split(r"\.{3}|…", q) if norm(f)):
-                    verdict = "OK"
-                else:
-                    verdict = "MISSING"
-                bad += verdict != "OK"
-                print(f"{verdict:10} {model}/{c['video']}/EXTRACT.md:{ln} {q[:50]!r}")
-    print(f"hindi-check: {total} quotes, {bad} not OK" if total else "hindi-check: no extracts yet")
+                v = verdict(q, vid)
+                bad += v != "OK"
+                print(f"{v:10} {model}/{c['video']}/EXTRACT.md:{ln} {q[:50]!r}")
+    for where, q, vid in layer_items():
+        total += 1
+        v = verdict(q, vid)
+        bad += v != "OK"
+        print(f"{v:10} {where} [{vid}] {q[:50]!r}")
+    print(f"hindi-check: {total} quotes and spans, {bad} not OK" if total else "hindi-check: no extracts yet")
     return 1 if bad or not total else 0
 
 
@@ -81,6 +113,7 @@ def fill():
     for c in CONCEPTS:
         out += [f"## {c['id']}: {c['name']} (video {c['video']})", "",
                 f"Claim on the page: {c['rule']}", "",
+                f"Page English rendering of the quote: {c.get('page_en') or 'none yet'}", "",
                 "| Param | Page value | Label | Reviewer: caption says |", "|---|---|---|---|"]
         out += [f"| {n} | {v} | {lab} | |" for n, v, lab in c["params"]]
         out += ["", "| Model | Line | Hindi quote (caption) | English rendering | Reviewer verdict |", "|---|---|---|---|---|"]

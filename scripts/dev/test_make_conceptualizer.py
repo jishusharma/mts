@@ -29,7 +29,33 @@ def test_problems_are_caught():
     del c["question"]
     text = "\n".join(mc.problems(bad))
     assert "status 'maybe'" in text
-    assert "SOURCED or OURS" in text
+    assert "SOURCED, OURS or NOT_SEEN" in text
     assert "diagram nope.svg missing" in text
     assert "no question" in text
     assert mc.problems(data) == []
+
+
+def test_not_seen_is_a_valid_tag():
+    import json
+    data = json.loads((mc.SRC / "concepts.json").read_text(encoding="utf-8"))
+    c = data["layers"][0]["concepts"][0]
+    c["params"][0][2] = "NOT_SEEN (never stated)"
+    assert mc.problems(data) == []
+
+
+def test_each_tag_has_its_own_css_class_and_unknown_tags_are_flagged():
+    tpl = mc.TPL.read_text(encoding="utf-8")
+    for cls in ("t-SOURCED", "t-OURS", "t-NOT_SEEN", "t-BAD"):
+        assert "." + cls + " {" in tpl
+    assert "/^NOT_SEEN/.test(t) ? 't-NOT_SEEN'" in tpl
+    assert "/^OURS/.test(t) ? 't-OURS' : 't-BAD'" in tpl
+
+
+def test_size_words_in_rows_are_caught():
+    import json
+    data = json.loads((mc.SRC / "concepts.json").read_text(encoding="utf-8"))
+    c = data["layers"][0]["concepts"][0]
+    c["params"][0][1] = "two lots per rung"
+    c["params"].append(["Risk", "₹9,750", "SOURCED: x"])
+    text = "\n".join(mc.problems(data))
+    assert text.count("size word") == 2

@@ -65,7 +65,7 @@ def norm_dist(name):
 
 
 def ci_distributions(text):
-    """Distribution names on every `pip install ...` line of the workflow text (versions, extras, options dropped), in order."""
+    """Distribution names on every `pip install ...` line of the workflow text (versions, extras, options dropped), in order, each once."""
     dists = []
     for line in text.splitlines():
         m = PIP_RE.search(line)
@@ -83,7 +83,9 @@ def ci_distributions(text):
                 continue
             n = re.match(r"[A-Za-z0-9][A-Za-z0-9._-]*", t)
             if n:
-                dists.append(norm_dist(n.group(0)))
+                d = norm_dist(n.group(0))
+                if d not in dists:   # a second CI job (offgate-tier) repeats the same install line: each distribution once
+                    dists.append(d)
     return dists
 
 

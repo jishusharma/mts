@@ -1,0 +1,79 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "2026-11-13T02:19:07Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/code_vs_rulebook/flash.md"
+  ],
+  "created": "2026-11-13T01:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_iteration3_1113/code_vs_rulebook/flash.md exists with one row per finding in the table | topic | trader | exact quote | video id [mm:ss] | rule in his words | number: SOURCED value or NOT_SEEN | in our code? file:line or NONE |, a TOP 5 and SINGLE BIGGEST HOLE section, and verify_extract_quotes.py exits 0",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read the code without our docs first; list every place the code differs from RULEBOOK.md rules (trigger, stop, target, filters, session).",
+  "id": "gemini-code-vs-rulebook-flash-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "flash second-model run: quote check exit 0",
+      "ref": "3d6951c12",
+      "utc": "2026-11-13T02:19:07Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research(tf_i3): ny_open (flash) + code_vs_rulebook (argon)",
+      "ref": "3d6b9ba230f1",
+      "utc": "2026-11-12T20:56:56Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: merged into ITERATION_3 by the plan session",
+  "note": "Run as gemini_queue.py run gemini-code-vs-rulebook-flash-1113:low:flash. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply. Second-model twin of the argon card; compare AGREED/SINGLE/CONFLICT afterwards.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T01:50:17Z",
+  "refs": [
+    "MyTradingSys/research/tom_fabio_rebuild_2026-11-09/RULEBOOK.md",
+    "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/auction_context.py",
+    "MyTradingSys/backtest/layers/fabio/v3/models.py",
+    "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
+  ],
+  "result": "flash second-model run: quote check exit 0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tf_iteration3_1113/code_vs_rulebook/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no numbers from our docs or your own knowledge: unstated = NOT_SEEN",
+    "no YouTube or web fetch"
+  ],
+  "scope_sha": "3d6b9ba230f1",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
+    "Read the code first, then RULEBOOK.md; one row per mismatch with file:line and rule id",
+    "Write MyTradingSys/research/tf_iteration3_1113/code_vs_rulebook/flash.md; every quote copied exactly from the named transcript; run verify_extract_quotes.py until exit 0; commit on your branch and ship"
+  ],
+  "taken": "",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind read: auction_context.py and fabio v3 against RULEBOOK.md, model flash",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

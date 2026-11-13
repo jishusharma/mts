@@ -1309,6 +1309,13 @@ def wait_after(repo, slug, timeout=3600, poll=2.0, sleep=time.sleep, now_fn=time
         sleep(poll)
 
 
+def home_timing_path():
+    """The per-machine ship timing log that outlives any work tree: MTS_GATE_TIMING_HOME, else ~/.mts/gate_timing.jsonl (the ~/.mts home dir the
+    signal hook and yt guards already use). runtime_data/gate_timing.jsonl is gitignored and dies with its work tree (test_value_audit_1113:
+    rows from 8 of 14 days were gone)."""
+    return Path(os.environ.get("MTS_GATE_TIMING_HOME") or (Path.home() / ".mts" / "gate_timing.jsonl"))
+
+
 def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=None, failed_steps=None, gate_reason="", gate_mode="", phases=None):
     """Append one JSON line {step, name, wait_s, run_s, retry_s, ok, utc, sha} to runtime_data/gate_timing.jsonl
     (MTS_GATE_TIMING overrides the path). SV7: logs wait, run and retry seconds per ship, plus failed_steps (gate step ids that failed). Never raises."""
@@ -1339,6 +1346,16 @@ def record_ship_timing(repo, wait_s, run_s, retry_s, ok=True, sha=None, path=Non
         }
         with open(p, "a", encoding="utf-8", newline="\n") as fh:
             fh.write(json.dumps(row) + "\n")
+        # also the per-machine home log, so a removed work tree does not take its rows along. Skipped when the caller chose the path (a test, a
+        # MTS_GATE_TIMING override) unless MTS_GATE_TIMING_HOME names the home log too. Never raises.
+        if os.environ.get("MTS_GATE_TIMING_HOME") or not (path or os.environ.get("MTS_GATE_TIMING")):
+            try:
+                hp = home_timing_path()
+                hp.parent.mkdir(parents=True, exist_ok=True)
+                with open(hp, "a", encoding="utf-8", newline="\n") as fh:
+                    fh.write(json.dumps({**row, "tree": str(repo)}) + "\n")
+            except Exception:
+                pass
     except Exception:
         pass
 
@@ -1470,6 +1487,18 @@ def stage_layers(repo, fold=False):
     return True
 
 
+@contextlib.contextmanager
+def ship_stage(name, clock=time.monotonic):
+    """One flushed line when a ship stage starts and one when it ends, with elapsed seconds: a pipe or background shell
+    shows the current stage at once, and the end lines give the shipping times (ship-prints-nothing-until-exit-1111)."""
+    t0 = clock()
+    print(f"ship stage {name}: start", flush=True)
+    try:
+        yield
+    finally:
+        print(f"ship stage {name}: end {clock() - t0:.1f}s", flush=True)
+
+
 def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_slug=None, sleep=time.sleep, push_ref=None):
     """release_slug (traffic buster B4): the claim file is deleted in a commit on this branch, so the release rides the
     same push as the work (no separate fetch + push). Nothing to ship: falls back to the plumbing release.
@@ -1503,7 +1532,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
         for attempt in range(1, SHIP_PUSH_TRIES + 1):
             before = git(repo, "rev-parse", "HEAD").stdout.strip()
             t_phase = time.monotonic()
-            merge_trunk(repo)
+            with ship_stage("merge"):
+                merge_trunk(repo)
             phases["merge_s"] += time.monotonic() - t_phase
             shipped_before, files = files, outgoing_files(repo)
             if not files:
@@ -1520,11 +1550,13 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                     print("pure revert: no local gate (the tree goes back to code CI already ran); CI checks the push")
                 elif code_ship(files):
                     t_gate_0 = time.monotonic()
-                    call_gate(gate, repo, files)
+                    with ship_stage("gate"):
+                        call_gate(gate, repo, files)
                     run_s += time.monotonic() - t_gate_0
                 elif docs_gate:
                     t_gate_0 = time.monotonic()
-                    docs_gate(repo, files)
+                    with ship_stage("gate"):
+                        docs_gate(repo, files)
                     run_s += time.monotonic() - t_gate_0
                 enforce_ci(ci)
             else:
@@ -1534,7 +1566,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
                     regates += 1
                     print(f"incoming commits touch what we ship ({', '.join(hit[:5])}); re-running the gate")
                     t_gate_0 = time.monotonic()
-                    call_gate(gate, repo, files)
+                    with ship_stage("regate"):
+                        call_gate(gate, repo, files)
                     run_s += time.monotonic() - t_gate_0
                 elif hit:
                     print(f"incoming commits touch {', '.join(hit[:5])}; re-gate limit reached, CI checks the merge")
@@ -1545,7 +1578,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
             pages = StalePages(repo)       # overlaps the push
             dest = push_ref or TRUNK
             t_phase = time.monotonic()
-            r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{dest}", check=False)
+            with ship_stage("push"):
+                r = git(repo, "push", "--quiet", "origin", f"HEAD:refs/heads/{dest}", check=False)
             phases["push_s"] += time.monotonic() - t_phase
             if r.returncode == 0:
                 ok = True
@@ -2546,7 +2580,9 @@ def main(argv):
                 print(f"shipped {pushed.sha[:8]}; CI not awaited: `python scripts/dev/sync.py ci` waits for its verdict (red exits {CI_RED_EXIT}); `ship --wait-ci` waits here")
             if isinstance(pushed, Pushed) and wait_ci:
                 try:
-                    return CI_RED_EXIT if wait_own_ci(pushed, globs=ci_path_filter(repo)) == "red" else 0
+                    with ship_stage("ci-wait"):
+                        verdict = wait_own_ci(pushed, globs=ci_path_filter(repo))
+                    return CI_RED_EXIT if verdict == "red" else 0
                 except KeyboardInterrupt:
                     print("stopped waiting for CI; the push is done")
         except SyncError as e:

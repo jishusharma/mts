@@ -14,6 +14,10 @@ import c_drive_guard as g
 import wt_maint
 
 BARS = "MyTradingSys/research/sim_desk/cache/bars"
+# The guard's "stale" cutoff is `now`; a file written this tick has mtime == now on a coarse-clock runner (Windows ~16 ms, some Linux fs 1-2 s) and
+# an mtime equal to the cutoff is NOT stale: the result then depended on the machine's clock (29 red CI runs, 2026-10-30..11-11). Every
+# test here passes a `now` an hour ahead of the real clock, so the fresh fixture files are stale on every machine.
+LATER = lambda: time.time() + 3600   # noqa: E731
 
 
 def make(root, rel, age_d=0, size=10):
@@ -54,13 +58,20 @@ class BucketTest(unittest.TestCase):
         make(self.root, "repo/main/Dumps/wt_rescue/t0/files/" + BARS + "/old.npy", size=3000, age_d=1)   # older rescue layout
         make(self.root, r + "MyTradingSys/research/sim_desk/cache/results/a.json", age_d=1)
         make(self.root, r + "uncommitted.patch", age_d=1)
-        rows = g.rescue_cache_rows(g.MAIN)
+        rows = g.rescue_cache_rows(g.MAIN, now=LATER())
         self.assertEqual(self.paths(rows), {r + BARS, "repo/main/Dumps/wt_rescue/t0/files/" + BARS})
         self.assertEqual(sum(s for _, _, s, _ in rows), 5000)
         g.prune_buckets(True, rows)
         self.assertFalse((self.root / r / BARS).exists())
         self.assertTrue((self.root / r / "uncommitted.patch").exists())
         self.assertTrue((self.root / r / "MyTradingSys/research/sim_desk/cache/results/a.json").exists())
+
+    def test_a_file_written_this_tick_is_stale_only_against_a_later_now(self):
+        """Fail-first for the machine-dependence: the same fixture is not stale at its own mtime (equal = fresh) and is stale one hour on."""
+        make(self.root, "repo/main/Dumps/wt_rescue/t9/" + BARS + "/x.npy", size=10)
+        stamp = os.stat(self.root / "repo/main/Dumps/wt_rescue/t9" / BARS).st_mtime
+        self.assertEqual(g.rescue_cache_rows(g.MAIN, now=stamp), [])
+        self.assertEqual(len(g.rescue_cache_rows(g.MAIN, now=stamp + 3600)), 1)
 
     def test_wt_maint_rescue_does_not_copy_the_bar_cache(self):
         tree = self.root / "repo" / "mts-x"
@@ -77,8 +88,8 @@ class BucketTest(unittest.TestCase):
         for rel in ("Default/Cache/f", "Profile 5/Code Cache/f", "GrShaderCache/f", "Default/Service Worker/CacheStorage/f",
                     "Default/Cookies", "Default/Login Data"):
             make(self.root, u + rel)
-        self.assertEqual(g.browser_rows(g.LOCALAPPDATA, run=lambda image: True), [])
-        got = self.paths(g.browser_rows(g.LOCALAPPDATA, run=lambda image: False))
+        self.assertEqual(g.browser_rows(g.LOCALAPPDATA, run=lambda image: True, now=LATER()), [])
+        got = self.paths(g.browser_rows(g.LOCALAPPDATA, run=lambda image: False, now=LATER()))
         self.assertEqual(got, {u + "Default/Cache", u + "Profile 5/Code Cache", u + "GrShaderCache"})
 
     def test_claude_logs_old_sessions_only_never_memory(self):

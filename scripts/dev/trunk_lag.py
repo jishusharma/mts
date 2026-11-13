@@ -43,7 +43,9 @@ def git_timeout():
 
 
 def git(repo, *args, timeout=None):
-    timeout = git_timeout() if timeout is None else timeout
+    # an explicit per-call limit (fetch 30 s, checkout 60 s) is a floor: MTS_TRUNK_LAG_GIT_TIMEOUT raises it too, so a loaded CI runner
+    # (test_trunk_lag, 3 timeout flakes in the 2026-11 audit) is not killed by a hard-coded 30 s. Unset, the limits are what they were.
+    timeout = git_timeout() if timeout is None else max(timeout, git_timeout())
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=timeout,
                           env={**os.environ, **GIT_NOPROMPT}, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
 

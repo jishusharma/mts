@@ -242,12 +242,16 @@ class FastPlan(unittest.TestCase):
         self.assertTrue({"1", "2", "3"} <= {s.num for s in plan if not s.skip})
         self.assertTrue(any(str(s.skip).startswith("fast:") for s in plan))
 
-    def test_fast_gate_runs_3dl_on_any_py_or_ci_yml_change(self):
+    def test_fast_gate_runs_3dl_only_on_ci_yml_requirements_or_test_file_change(self):
+        # test_value_audit_1113: 3dl (0 failures in 173 runs) left the always-run set; a plain .py change no longer runs it
         plan, mode, _ = self.select(["scripts/dev/nowin.py"])
         self.assertEqual(mode, "smoke")
         self.assertTrue(rat.fast_applied)
         run_nums = [s.num for s in plan if not s.skip]
-        self.assertIn("3dl", run_nums)
+        self.assertNotIn("3dl", run_nums)
+        self.assertNotIn("3w", run_nums)
+        plan_t, _, _ = self.select(["scripts/dev/test_nowin.py"])
+        self.assertIn("3dl", [s.num for s in plan_t if not s.skip])
 
         plan_ci = rat.build_plan(True)
         new_plan, _ = rat.apply_fast(plan_ci, [".github/workflows/ci.yml"], nums=[s.num for s in plan_ci], jobs=2)

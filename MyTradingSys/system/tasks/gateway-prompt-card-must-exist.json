@@ -29,9 +29,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
-      "ref": "05d8d613782f",
-      "utc": "2026-11-08T12:33:55Z"
+      "line": "Merge remote-tracking branch 'origin/fast-track' into claude/kind-einstein-1c2d9c",
+      "ref": "c87e8db4536d",
+      "utc": "2026-11-12T20:18:24Z"
     }
   ],
   "layers": [],
@@ -42,7 +42,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:20:41Z",
+  "refreshed": "2026-11-13T03:31:11Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -52,7 +52,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "05d8d613782f",
+  "scope_sha": "c87e8db4536d",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 7"

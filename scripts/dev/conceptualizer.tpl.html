@@ -47,6 +47,7 @@ h3 { font: 600 .8rem var(--text); letter-spacing: 1.5px; text-transform: upperca
 .side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .quote { background: var(--panel); border-left: 5px solid var(--blue); border-radius: 8px; padding: 14px 18px; }
 .quote p { margin: 0; font: italic 1.15rem/1.4 var(--text); }
+.quote .en { margin: 6px 0 0; font: 1rem/1.4 var(--text); color: var(--muted, #9AA4AE); }
 .quote .src { font: .82rem var(--mono); color: var(--blue-soft); margin-top: 6px; font-style: normal; }
 .rule { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 4px 12px; font-size: 1rem; }
 .rule b { font: 700 .75rem var(--mono); text-transform: uppercase; padding-top: 3px; }
@@ -55,6 +56,8 @@ table { width: 100%; border-collapse: collapse; font-size: .95rem; font-variant-
 th { text-align: left; font: 600 .75rem var(--text); letter-spacing: 1px; text-transform: uppercase; color: var(--dim); padding: 6px 10px; border-bottom: 1px solid var(--line); }
 td { padding: 7px 10px; border-bottom: 1px solid #1E2733; vertical-align: top; }
 td.num { text-align: right; font-family: var(--mono); }
+.t-BAD { color: #E5534B; font: 700 .78rem var(--mono); }
+.t-NOT_SEEN { color: var(--muted, #8B949E); font: 700 .78rem var(--mono); }
 .t-SOURCED { color: var(--blue-soft); font: 700 .78rem var(--mono); } .t-OURS { color: var(--orange-soft); font: 700 .78rem var(--mono); }
 .code { font: .82rem var(--mono); color: var(--muted); background: var(--panel2); border-radius: 6px; padding: 8px 10px; overflow-wrap: anywhere; }
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
@@ -129,7 +132,7 @@ a { color: var(--blue-soft); }
 
   function layer() { return D.layers.filter(function (l) { return l.id === state.layer; })[0] || D.layers[0]; }
   function vcls(v) { return 'v-' + String(v).split(/[ .]/)[0]; }
-  function tagCls(t) { return /^SOURCED/.test(t) ? 't-SOURCED' : 't-OURS'; }
+  function tagCls(t) { return /^SOURCED/.test(t) ? 't-SOURCED' : /^NOT_SEEN/.test(t) ? 't-NOT_SEEN' : /^OURS/.test(t) ? 't-OURS' : 't-BAD'; }
   function chip(status) { return '<span class="chip c-' + status + '">' + esc(LABEL[status] || status) + '</span>'; }
 
   function readHash() {
@@ -192,7 +195,7 @@ a { color: var(--blue-soft); }
     var h = '<div class="eyebrow">' + esc(L.name) + ' · concept ' + (i + 1) + ' of ' + L.concepts.length + ' · ' + esc(c.who) + '</div><h2>' + esc(c.name) + '</h2>';
     h += '<div class="chips">' + chip(c.status) + '<span class="chip f-' + c.fidelity[0] + '">Fidelity: ' + esc(c.fidelity[0]) + '</span><span class="small" style="align-self:center">' + esc(c.fidelity[1]) + '</span></div>';
     h += '<div class="hero"><div class="diagram">' + (c.svg || '<div class="small" style="padding:40px">No diagram yet</div>') + '</div><div class="side">';
-    h += '<div class="quote"><p>“' + esc(c.quote.text) + '”</p><div class="src">' + esc(c.quote.src) + ' · ' + esc(c.quote.check) + '</div></div>';
+    h += '<div class="quote"><p>“' + esc(c.quote.text) + '”</p>' + (c.quote.en ? '<p class="en">' + esc(c.quote.en) + '</p>' : '') + '<div class="src">' + esc(c.quote.src) + ' · ' + esc(c.quote.check) + '</div></div>';
     h += '<div class="rule"><b class="his">His rule</b><span>' + esc(c.rule) + '</span><b class="ours">MTS rule</b><span>' + esc(c.ours) + '</span></div>';
     h += '<table><tr><th>Parameter</th><th>Value</th><th>Tag</th></tr>' + c.params.map(function (p) {
       return '<tr><td>' + esc(p[0]) + '</td><td>' + esc(p[1]) + '</td><td class="' + tagCls(p[2]) + '">' + esc(p[2]) + '</td></tr>';

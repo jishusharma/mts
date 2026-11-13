@@ -83,7 +83,7 @@ class CiConcurrency(unittest.TestCase):
         text = CI_YML.read_text(encoding="utf-8")
         self.assertIn("group: ci-${{ github.ref }}", text)   # a PR run never queues behind (or cancels) a fast-track run
         mark = text[text.index("\n  mark-green:"):]
-        self.assertIn("needs: offline-gate", mark)
+        self.assertIn("needs: [offline-gate, offgate-tier]", mark)   # test_value_audit_1113: green also waits for the off-gate tier
         self.assertIn("github.ref == 'refs/heads/fast-track'", mark)
 
 

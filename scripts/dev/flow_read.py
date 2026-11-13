@@ -246,6 +246,39 @@ def fetch_thresholds(sym, now_ms, low_window_ms, fetch=http_json):
     return perp4, spot4, oi4, spot_fine
 
 
+# ---------------------------------------------------------------- cross-exchange liquidations (card live-aid-xliq-1113)
+XLIQ_FEED = Path(__file__).resolve().parents[2] / "MyTradingSys" / "tools" / "live_aid" / "xliq_feed.js"   # written by xliq_collector.py (run by hand)
+
+
+def xliq_line(path=None, now_ms=None, max_age_ms=90_000) -> str:
+    """ONE line: 15 m forced-liquidation sums per venue from the collector feed. Missing/stale feed says so (never a guess).
+    BIG only when the feed marks it (venue p99 over 7 d); 'baseline building' is passed through. Context, label rule OURS."""
+    path = Path(path or XLIQ_FEED)
+    now_ms = now_ms or int(time.time() * 1000)
+    try:
+        txt = path.read_text(encoding="utf-8")
+        feed = json.loads(txt[txt.index("=") + 1:].strip().rstrip(";"))
+    except (OSError, ValueError):
+        return "xliq: no liquidation feed (xliq_collector.py not running); no cross-exchange read"
+    if now_ms - int(feed.get("t", 0)) > max_age_ms:
+        return f"xliq: feed stale ({(now_ms - int(feed.get('t', 0))) // 1000} s old); collector not running, no cross-exchange read"
+
+    def m(x):
+        return f"${x / 1e6:.2f}M" if x >= 1e6 else f"${x / 1e3:.0f}k" if x >= 1e3 else f"${x:.0f}"
+    parts, big, build = [], [], []
+    for v, s in (feed.get("venues") or {}).items():
+        if s.get("err") and not s.get("n15") and not s.get("n7d"):
+            parts.append(f"{v.title()} n/a")
+            continue
+        parts.append(f"{v.title()} long {m(s['long15'])} / short {m(s['short15'])}")
+        if s.get("baseline") != "ready":
+            build.append(v.title())
+        elif s.get("big"):
+            big.append(f"{v.title()} {s.get('bigside')}")
+    tail = ("BIG: " + ", ".join(big)) if big else ("no BIG print" + (f" (baseline building: {', '.join(build)})" if build else ""))
+    return "xliq 15m forced liquidations: " + " | ".join(parts) + " | " + tail
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--since", default="9h")
@@ -267,6 +300,7 @@ def main(argv=None) -> int:
               f" | OI change {sum(r['oi_chg'] for r in rows if r['oi_chg'] is not None):+.0f} BTC")
         if isinstance(fund, list) and fund:
             print("funding (last): " + ", ".join(f"{fmt_t(int(x['fundingTime']))}Z {float(x['fundingRate']) * 100:+.4f}%" for x in fund[-3:]))
+        print(xliq_line())
         if a.thresholds:
             p4, s4, o4, sf = fetch_thresholds(a.symbol, now, parse_dur(a.low_window))
             print("\nTHRESHOLDS (bottom_signatures.md, 4h basis; context, not a signal)")

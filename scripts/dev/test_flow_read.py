@@ -93,5 +93,39 @@ class FapiNeedsDoh(unittest.TestCase):
         self.assertFalse(bad, f"calls fapi.binance.com without binance_doh (DNS is blocked here; use MyTradingSys/runtime/binance_doh): {bad}")
 
 
+class XliqLine(unittest.TestCase):
+    """card live-aid-xliq-1113: one cross-exchange liquidation line per wake, from the collector feed."""
+    NOW = 1_794_600_000_000
+
+    def _feed(self, tmp, t, venues):
+        p = Path(tmp) / "xliq_feed.js"
+        p.write_text("window.LIVEAID_XLIQ = " + __import__("json").dumps({"t": t, "venues": venues}) + ";", encoding="utf-8")
+        return p
+
+    def _v(self, **k):
+        d = {"long15": 0, "short15": 0, "n15": 0, "baseline": "building", "n7d": 5, "big": 0, "bigside": None, "err": ""}
+        d.update(k)
+        return d
+
+    def test_building_line_never_says_big(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            p = self._feed(tmp, self.NOW - 5000, {"BYBIT": self._v(long15=1_250_000, short15=40_000), "OKX": self._v(long15=900)})
+            line = fr.xliq_line(p, self.NOW)
+        self.assertEqual(line, "xliq 15m forced liquidations: Bybit long $1.25M / short $40k | Okx long $900 / short $0 | no BIG print (baseline building: Bybit, Okx)")
+
+    def test_big_line_and_missing_or_stale_feed(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            p = self._feed(tmp, self.NOW, {"BYBIT": self._v(baseline="ready", long15=3_000_000, big=2, bigside="long")})
+            self.assertIn("BIG: Bybit long", fr.xliq_line(p, self.NOW))
+            self.assertIn("feed stale (200 s old)", fr.xliq_line(p, self.NOW + 200_000))
+            self.assertIn("no liquidation feed", fr.xliq_line(Path(tmp) / "absent.js", self.NOW))
+
+    def test_main_prints_the_line(self):
+        src = (ROOT / "scripts" / "dev" / "flow_read.py").read_text(encoding="utf-8")
+        self.assertIn("print(xliq_line())", src)
+
+
 if __name__ == "__main__":
     unittest.main()

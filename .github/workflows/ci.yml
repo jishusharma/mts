@@ -116,11 +116,48 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: python scripts/dev/run_all_tests.py --shard ${{ matrix.shard }}
 
+  # test_value_audit_1113: the off-gate tier (scripts/dev/gate_tiers.tsv, study + slow files: 0 failures in the 14-day audit) leaves the 15 push shards
+  # and runs here once, on Linux only, in parallel with them (mark-green still needs it, so green keeps the same meaning). The retired tier runs nowhere.
+  offgate-tier:
+    name: offgate tier (ubuntu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Git identity
+        run: git config --global user.name ci && git config --global user.email ci@users.noreply.github.com
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: .github/workflows/ci.yml
+
+      - name: Install pytest
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: uv pip install pytest numpy pandas tzdata
+
+      - name: Create runtime folders
+        run: mkdir -p MyTradingSys/execution/plans MyTradingSys/execution/journal MyTradingSys/execution/halt_history
+
+      - name: Off-gate tier
+        env:
+          PYTHONIOENCODING: utf-8
+        run: python scripts/dev/run_all_tests.py --offgate
+
   # Operator 2026-10-07: a PR into fast-track merges itself once the gate is green on both OSes.
   # Opt out with the "no-automerge" label or by keeping the PR a draft. Merging here does not deploy:
   # JIS-NB still pulls by hand (stop, merge, test, restart). Fork PRs never get a write token, so they never merge.
   auto-merge:
-    needs: offline-gate
+    needs: [offline-gate, offgate-tier]
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.base.ref == 'fast-track' &&
@@ -144,15 +181,18 @@ jobs:
   # The supervisor deploy to the live tree (JIS-NB) is `git merge --ff-only origin/green/fast-track` + restart, so a
   # half-tested push can never be deployed. This job restarts nothing and touches no exchange or secret.
   mark-green:
-    needs: offline-gate
+    needs: [offline-gate, offgate-tier]
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/fast-track'
     runs-on: ubuntu-latest
     permissions:
       contents: write
     # Runs are per commit now, so an older commit can finish after a newer one: publish only when the current green is an
-    # ancestor of this SHA (green never moves backwards), one mark-green at a time, with a lease on the green we checked.
+    # ancestor of this SHA (green never moves backwards), with a lease on the green we checked. NOT one shared group: a shared
+    # group keeps one running + one PENDING job and cancels the older pending one, so a commit whose gate passed ended
+    # "cancelled" with no verdict (runs 43300471907, 43299262054; card ci-fast-track-runs-cancelled-1113). Races are settled by
+    # force=false below; a lost race re-reads the ref and passes when green already covers this SHA.
     concurrency:
-      group: mark-green
+      group: mark-green-${{ github.sha }}
       cancel-in-progress: false
     # No checkout (a full-history fetch cost seconds): the ancestry check is the compare API, the move is a ref update that
     # GitHub refuses unless it is a fast-forward (force=false), so green never moves backwards even when two runs race.
@@ -171,4 +211,9 @@ jobs:
           if [ "$st" != "ahead" ]; then
             echo "green/fast-track is at $old ($st vs $SHA): left as is"; exit 0
           fi
-          gh api -X PATCH "repos/$REPO/git/refs/heads/green/fast-track" -f sha="$SHA" -F force=false >/dev/null
+          if ! gh api -X PATCH "repos/$REPO/git/refs/heads/green/fast-track" -f sha="$SHA" -F force=false >/dev/null; then
+            now=$(gh api "repos/$REPO/git/ref/heads/green/fast-track" -q .object.sha)
+            st=$(gh api "repos/$REPO/compare/$now...$SHA" -q .status)
+            if [ "$st" = "behind" ] || [ "$st" = "identical" ]; then echo "lost the race to $now ($st): green already covers $SHA"; exit 0; fi
+            exit 1
+          fi

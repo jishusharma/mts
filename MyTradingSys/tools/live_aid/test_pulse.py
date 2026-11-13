@@ -114,21 +114,33 @@ def test_short_setup_when_price_pokes_through_a_level():
     assert s["side"] == "SHORT" and s["level"] == 75450
 
 
-def test_positions_subtitle_in_plain_words():
-    # operator 2026-11-10: "15 min, 2 venues (Deribit, Bybit; Binance blocked here)" read as "versions"; the blocked note goes to the tooltip
+def _money(doi, dp, label="15 min"):
     node = shutil.which("node")
     if not node:
         pytest.skip("node not installed")
-    js = ("const H=require(process.argv[1]);console.log(H._moneyCard({money:{label:'15 min',n:3,dp:0.001,doi:-0.002,text:'x',"
-          "venues:[{name:'Bybit',btc:50,share:0.5},{name:'Hyperliquid',btc:30,share:0.3},{name:'Deribit',btc:20,share:0.2}],missing:['Binance: blocked']}}))")
+    js = ("const H=require(process.argv[1]);console.log(H._moneyCard({money:{label:'" + label + "',n:4,dp:" + str(dp) + ",doi:" + str(doi) + ",text:'x',"
+          "venues:[{name:'Bybit',btc:47,share:0.47},{name:'Hyperliquid',btc:26,share:0.26},{name:'Gate',btc:21,share:0.21},{name:'Deribit',btc:6,share:0.06}],missing:['Binance: blocked']}}))")
     out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=120)
     assert out.returncode == 0, out.stderr[-1500:]
+    return out.stdout
+
+
+def test_positions_is_one_sentence_one_arrow_and_shares_in_a_footnote():
+    # operator 2026-11-13: venue shares read like a change; both triangles shown. Expected words written by hand from the card.
     import re
-    m = re.search(r'<span class="hm-sub" title="([^"]*)">([^<]*)</span>', out.stdout)
-    assert m, out.stdout
-    # operator 11-10: list only the venues that answered, biggest first, with their share; the missing ones go to the tooltip
-    assert m.group(2) == "change over the last 15 min " + chr(183) + " from Bybit 50% + Hyperliquid 30% + Deribit 20%"
-    assert "Binance: blocked" in m.group(1) and "Binance" not in m.group(2)
+    import html
+    t = lambda h: html.unescape(re.sub(r"<[^>]*>", "", h))
+    h = _money(0.0004, 0.003)
+    assert "Open positions (4 venues): +0.0% in 15 min (flat) while price +0.3% -> the rise is not fed by new money" in t(h)
+    assert h.count("▲") + h.count("▼") + h.count("◆") == 1, "only the active arrow"
+    # price up, positions down: shorts covering, one down arrow
+    d = _money(-0.004, 0.003)
+    assert "-0.4% in 15 min while price +0.3% -> shorts covering, no new money" in t(d) and d.count("▼") == 1 and d.count("▲") == 0
+    # shares only in the grey footnote, never in the headline sentence
+    m = re.search(r'<div class="hm-from">([^<]*)</div>', h)
+    assert m and m.group(1).startswith("from: Bybit 47% + Hyperliquid 26% + Gate 21% + Deribit 6%")
+    assert "Bybit" not in re.search(r'<span class="hm-say">([^<]*)</span>', h).group(1)
+    assert "Not read: Binance: blocked" in h
 
 
 def _vee(n_down=100, n_up=5):

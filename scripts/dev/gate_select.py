@@ -56,7 +56,22 @@ CODE_DIRS = ("scripts/dev/", "scripts/worker/", "MyTradingSys/tests/", "MyTradin
              "MyTradingSys/options/", "MyTradingSys/observation/", "MyTradingSys/tools/")   # tools/: operator pages and helpers, off the live path (change 1)
 LIVE_STEPS = ("1", "2", "3")   # execution tests, g1g2 offline test, static suite: must-pass in a live-path ship
 
-ALWAYS = ("3w", "3x", "3dl", "3cm")   # wiring, CI deps lint, conflict markers: seconds, catch the usual merge-time breaks (3gd, test-file discovery, went in change 4)
+ALWAYS = ("3x", "3cm")   # wiring check, conflict markers: seconds, catch the usual merge-time breaks (3gd, test-file discovery, went in change 4)
+# test_value_audit_1113: 3w (test_wiring_scan, 41 s on a CI runner, 76 s local) left ALWAYS because its test_real_repo_passes re-runs exactly the 3x check
+# (both failed together in 20 of 20 failing runs); it still runs when wiring_scan.py / test_wiring_scan.py / the registry change (name match).
+# 3dl (CI deps lint, 0 failures in 93 local + 80 CI runs) runs only when it can matter: ci.yml, a requirements/pyproject file, or a test file
+# (the 2026-10-16 case: a new research test imported pandas, missing from the ci.yml pip line).
+DEPS_STEP = "3dl"
+DEPS_RE = re.compile(r"^(?:.*/)?(?:ci\.yml|requirements[^/]*\.(?:txt|in)|pyproject\.toml)$")
+
+
+def deps_relevant(f):
+    """True when a changed path can break the CI deps lint: ci.yml, requirements*.txt/.in, pyproject.toml, or a test_*.py / *_test.py file."""
+    f = f.replace("\\", "/")
+    name = PurePosixPath(f).name
+    return bool(DEPS_RE.match(f)) or (name.endswith(".py") and (name.startswith("test_") or name.endswith("_test.py")))
+
+
 DOC_STEPS = ()   # gate-tiers-by-path (operator q-v1-gate-tiers, 2026-10-20): a docs ship runs no local step; CI gates behind
 CARD_RE = re.compile(r"^MyTradingSys/system/tasks/[^/]+\.json$")   # a card in the diff brings step 3tl (task-card lint) with it
 # gate_gap_2026-11-03 (MyTradingSys/research/gate_gap_2026-11-03.md): docs/data-only ships ran no local step and went red on trunk,
@@ -309,6 +324,8 @@ def explain(files, steps, mentioned=mentions, named=names_file, step_files=None)
         nums = [n for n in all_nums if n in DOC_STEPS or n in reg or n in must]
         return "docs", nums, f"docs: {len(files)} doc/data file(s) only; no local gate" + (f" except {','.join(nums)}" if nums else "")
     picked = {n for n in ALWAYS if n in all_nums} | subset_steps
+    if DEPS_STEP in all_nums and any(deps_relevant(f) for f in files):
+        picked.add(DEPS_STEP)
     picked.update(doc_must(files, all_nums))
     always = [n for n in all_nums if n in ALWAYS]
     if len(code) < len(files):                    # docs ride along: their invariants too

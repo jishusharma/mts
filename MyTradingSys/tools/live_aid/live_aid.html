@@ -244,6 +244,14 @@ main>#p-pos:not(.off){flex:0 0 auto}
     <span class="tag">Reach odds fall with distance; a touch holding is a coin flip at every distance. Context for what to expect, never a signal; no size, no orders.</span>
   </section>
 
+  <!-- 2c1x. CROSS-EXCHANGE LIQUIDATIONS (card live-aid-xliq-1113; xliq.js reads xliq_feed.js from xliq_collector.py) -->
+  <section id="p-xliq">
+    <div class="hd"><h2>Forced selling on other exchanges</h2><span class="src" title="BTC perp liquidations from public feeds: Bybit allLiquidation websocket, Binance forceOrder websocket, OKX liquidation-orders REST (Hyperliquid has no public market-wide feed). 15 min sums in USD notional, long side = longs forced out (forced selling), short side = shorts forced out (forced buying). BIG = a 15 min print above that venue's p99 over the last 7 days of stored prints; until a venue has 7 days of history and 100 prints it says baseline building and nothing is marked BIG. Window, p99 and wording OURS. Collector: python MyTradingSys/tools/live_aid/xliq_collector.py, run by hand.">OURS</span></div>
+    <div class="scroll"><table><thead><tr><th>Venue</th><th>15 m long liq</th><th>15 m short liq</th><th>Prints</th><th>Largest</th><th>BIG?</th></tr></thead><tbody id="xl-rows"></tbody></table></div>
+    <span class="sub" id="xl-sowhat"></span>
+    <span class="tag">Context, never a signal; no size, no orders. Needs xliq_collector.py running; otherwise the rows say so.</span>
+  </section>
+
   <!-- 2c2. ANTICIPATION MAP (card anticipation-map-from-current-layer-stat; research/anticipation_map_2026-11-05; descriptive) -->
   <section id="p-antic">
     <div class="hd"><h2>Same data, other readings</h2><span class="src" title="Price x Binance OI over the last 60 min (flat under 0.1 %, OURS), split by Binance taker delta over the same 60 min. Odds = MEASURED fee-free descriptive base rates, Binance USD-M BTCUSDT 1m + metrics 5m OI, DEV 2022-01..2024-06, 21855 hourly events (research/anticipation_map_2026-11-05). Other-venue reading = UNMEASURED (no history on disk).">MEASURED + UNMEASURED</span><span class="age" id="age-am">--</span></div>
@@ -383,6 +391,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="playbook_data.js"></script>
 <script src="footprint_bias_data.js"></script>
 <script src="footprint_cadence.js"></script>
+<script src="xliq.js"></script>
 <script src="../../runtime/live_aid_toasts.js"></script>
 <script src="toast.js"></script>
 <script src="level_registry.js"></script>

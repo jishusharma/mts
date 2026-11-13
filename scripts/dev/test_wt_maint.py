@@ -23,6 +23,9 @@ def g(cwd, *a):
 _TEMPLATE = {}
 
 
+NO_MAINTENANCE = (("maintenance.auto", "false"), ("gc.auto", "0"), ("gc.autoDetach", "false"))   # git's background maintenance leaves a transient objects/maintenance.lock
+
+
 def _template():
     """Build the bare origin + primary clone once per run; each test copies it (a fresh repo per test, ~0.1 s instead of ~0.6 s)."""
     if "dir" not in _TEMPLATE:
@@ -30,9 +33,11 @@ def _template():
         origin = t / "origin.git"
         subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True)
         g(origin, "symbolic-ref", "HEAD", "refs/heads/fast-track")
+        for k, v in NO_MAINTENANCE:
+            g(origin, "config", k, v)
         prim = t / "primary"
         subprocess.run(["git", "clone", "-q", str(origin), str(prim)], check=True, capture_output=True)
-        for k, v in (("user.email", "t@t"), ("user.name", "t")):
+        for k, v in (("user.email", "t@t"), ("user.name", "t"), *NO_MAINTENANCE):
             g(prim, "config", k, v)
         g(prim, "checkout", "-q", "-b", "fast-track")
         (prim / "a.txt").write_text("a")
@@ -57,8 +62,11 @@ class Env(unittest.TestCase):
         src = _template()
         self.origin = t / "origin.git"
         self.prim = t / "primary"
-        shutil.copytree(src / "origin.git", self.origin)
-        shutil.copytree(src / "primary", self.prim)
+        # CI flake (test_dirty_shipped_tree_idle_a_day..., shutil.Error on objects/maintenance.lock, 2026-11-11): a detached git maintenance
+        # run from the template build deleted its lock mid-copy. The template now disables maintenance; a lock file is never copied.
+        skip_locks = shutil.ignore_patterns("*.lock")
+        shutil.copytree(src / "origin.git", self.origin, ignore=skip_locks)
+        shutil.copytree(src / "primary", self.prim, ignore=skip_locks)
         g(self.prim, "remote", "set-url", "origin", str(self.origin))   # the copy must push to its own origin, not the template's
         self.t = t
 
@@ -344,6 +352,15 @@ class SharedConstants(unittest.TestCase):
         """dedupe CODE 25: one SUPERVISOR_LOG_REL (cicd_run owns it); wt_maint imports it."""
         import cicd_run
         self.assertIs(wt_maint.SUPERVISOR_LOG_REL, cicd_run.SUPERVISOR_LOG_REL)
+
+
+class TemplateIsQuiet(Env):
+    def test_template_repos_disable_git_background_maintenance(self):
+        """Flake fix (test_value_audit_1113): a detached `git maintenance` left objects/maintenance.lock that vanished mid-copytree."""
+        for repo in (self.origin, self.prim):
+            for k, v in NO_MAINTENANCE:
+                self.assertEqual(g(repo, "config", "--get", k), v, (repo.name, k))
+        self.assertEqual(list(self.origin.rglob("*.lock")), [])
 
 
 if __name__ == "__main__":

@@ -2429,6 +2429,43 @@ class GateReaderNonUtf8Test(unittest.TestCase):
             self.assertTrue(r.stdout.startswith("ok ") and r.stdout.endswith(" end"))
 
 
+class ShipStagePrintTest(unittest.TestCase):
+    """ship-prints-nothing-until-exit-1111: each stage prints a flushed start line before it runs and an end line with seconds."""
+
+    class Pipe(io.StringIO):
+        def __init__(self):
+            super().__init__()
+            self.flushed = ""
+
+        def flush(self):
+            self.flushed = self.getvalue()
+
+    def test_stage_lines_appear_before_exit_and_are_flushed(self):
+        ticks = iter([0.0, 12.5, 12.5, 40.0, 40.0, 41.0])
+        clock = lambda: next(ticks)
+        pipe = self.Pipe()
+        seen_during = []
+        with mock.patch.object(sys, "stdout", pipe):
+            for name in ("merge", "gate", "push"):
+                with sync.ship_stage(name, clock=clock):
+                    seen_during.append(pipe.flushed)   # what a background shell could already read mid-stage
+        self.assertIn("ship stage merge: start", seen_during[0])
+        self.assertNotIn("ship stage merge: end", seen_during[0])
+        self.assertIn("ship stage gate: start", seen_during[1])
+        self.assertIn("ship stage merge: end 12.5s", seen_during[1])
+        out = pipe.flushed
+        self.assertIn("ship stage gate: end 27.5s", out)
+        self.assertIn("ship stage push: end 1.0s", out)
+
+    def test_end_line_printed_when_step_raises(self):
+        pipe = self.Pipe()
+        with mock.patch.object(sys, "stdout", pipe):
+            with self.assertRaises(ValueError):
+                with sync.ship_stage("gate"):
+                    raise ValueError("red")
+        self.assertIn("ship stage gate: end", pipe.flushed)
+
+
 if __name__ == "__main__":
     unittest.main()
 

@@ -99,6 +99,37 @@ class Timing(unittest.TestCase):
             self.assertEqual(row["gate_mode"], "live")
             self.assertEqual(row["phases"], {"merge_s": 1.23, "push_s": 0.5})
 
+    def test_ship_row_also_lands_in_the_per_machine_home_log(self):
+        # test_value_audit_1113: runtime_data/gate_timing.jsonl dies with its work tree; the home log survives it
+        import os
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as home:
+            tree, hp = Path(d), Path(home) / ".mts" / "gate_timing.jsonl"
+            old = {k: os.environ.pop(k, None) for k in ("MTS_GATE_TIMING", "MTS_GATE_TIMING_HOME")}
+            os.environ["MTS_GATE_TIMING_HOME"] = str(hp)
+            try:
+                sync.record_ship_timing(tree, wait_s=1, run_s=2, retry_s=0, sha="abc123", gate_mode="smoke")
+            finally:
+                os.environ.pop("MTS_GATE_TIMING_HOME", None)
+                os.environ.update({k: v for k, v in old.items() if v is not None})
+            local = json.loads((tree / "runtime_data" / "gate_timing.jsonl").read_text().splitlines()[-1])
+            home_row = json.loads(hp.read_text().splitlines()[-1])
+            self.assertEqual(home_row["sha"], local["sha"])
+            self.assertEqual(home_row["tree"], str(tree))
+            self.assertEqual(home_row["run_s"], 2)
+
+    def test_an_explicit_path_does_not_touch_the_home_log(self):
+        import os
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d, tempfile.TemporaryDirectory() as home:
+            hp = Path(home) / "h.jsonl"
+            old = {k: os.environ.pop(k, None) for k in ("MTS_GATE_TIMING", "MTS_GATE_TIMING_HOME")}
+            try:
+                with mock.patch.object(sync, "home_timing_path", return_value=hp):
+                    sync.record_ship_timing(d, wait_s=1, run_s=2, retry_s=0, path=Path(d) / "t.jsonl", sha="abc")
+            finally:
+                os.environ.update({k: v for k, v in old.items() if v is not None})
+            self.assertFalse(hp.exists())
+
     def test_slot_wrapper_records_wait(self):
         with tempfile.TemporaryDirectory() as d:
             import os

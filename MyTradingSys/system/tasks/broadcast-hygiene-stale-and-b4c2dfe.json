@@ -28,9 +28,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"events wire test: batch JS evals into one runtime launch (Edge timeout on loaded g",
-      "ref": "05d8d613782f",
-      "utc": "2026-11-08T12:33:55Z"
+      "line": "Result: sender_note says Cut to 200 only on real truncation; redaction gets its own line N",
+      "ref": "71d5cbd545b7",
+      "utc": "2026-11-11T09:01:09Z"
     }
   ],
   "layers": [],
@@ -41,7 +41,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:20:34Z",
+  "refreshed": "2026-11-13T03:31:16Z",
   "refs": [],
   "result": "2026-11-12 hub listing (counts only, no runtime data): BEFORE 41 HIGH broadcasts recorded, 2 not closed everywhere (both told by the ACTIVE host jis-laptop with a note, 0 stale pairs: `mts_signal.py expire --dry` printed 'before: 0 stale'); the earlier stale ones (host c, others) were already state expired/done. AFTER: unchanged, 2 told by an active host (not stale; told goes loud again after TOLD_TTL_H; a live deploy broadcast is never closed from a worktree). New test test_expire_command_closes_stale_pairs_and_prints_before_after (fails when stale_open is disabled; test_stale_broadcast_expires fails the same way). b-4c2dfe blocker (wip 0ac18c3fb, ff-only pull on the jis-desktop main checkout): OWNER = Supervisor C (login C, who sent b-4c2dfe; STATION_DISK_2026-10-30.md line 24), live-tree reset step = operator via card main-checkout-stale-hooks-2026-10-24. Measured 2026-11-12: main checkout is 0 commits behind origin/fast-track and 0ac18c3fb is gone from refs, so the blocker is cleared; nothing left to run.",
   "scope_in": [
@@ -50,7 +50,7 @@
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "05d8d613782f",
+  "scope_sha": "71d5cbd545b7",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 15"

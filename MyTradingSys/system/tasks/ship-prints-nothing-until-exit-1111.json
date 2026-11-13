@@ -7,13 +7,12 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-12T12:13:31Z",
-    "misses": 2,
+    "folded": "2026-11-13T03:39:21Z",
+    "misses": 24,
     "reads": [
-      "scripts/dev/run_all_tests.py",
-      "scripts/dev/test_run_all_tests.py"
+      "scripts/dev/test_sync.py"
     ],
-    "session": "agent-aa51d6578eb4a47d0"
+    "session": "agent-abecd9f8f1dfafe69"
   },
   "created": "2026-11-11T18:45:44Z",
   "depends_on": [],
@@ -30,9 +29,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "chain n reads (5 Gemini scans) + fix sync.py/tasks.py docstring drift",
-      "ref": "bab3a11097a3",
-      "utc": "2026-11-11T20:39:28Z"
+      "line": "ship: 7 file(s)",
+      "ref": "6670219dec33",
+      "utc": "2026-11-13T00:10:03Z"
     }
   ],
   "layers": [],
@@ -42,7 +41,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T21:00:48Z",
+  "refreshed": "2026-11-13T03:31:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -54,7 +53,7 @@
     "ship gate selection and train mode",
     "bg_watch.py thresholds"
   ],
-  "scope_sha": "bab3a11097a3",
+  "scope_sha": "6670219dec33",
   "size": "S",
   "sources": [],
   "state": "ready",

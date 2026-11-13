@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:53Z",
   "commands": [
     "python scripts/dev/test_mts_signal.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "acks view counts host/login alias; test_acks_view_counts_ack_from_host_login_alias passes",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "signal-hook-every-session-1109: signals reach sessions outside a clone",
@@ -26,13 +33,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk ea1541be1",
   "note": "Planner 2026-11-10: filled from the title only; reproduce first, if the fixture already passes, close as not-reproducible with the evidence. PARKED 2026-11-08 (housekeeping) stays; UNPARKED 2026-11-10 only when a ready buffer is short.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T19:34:05Z",
   "refs": [],
-  "result": "",
+  "result": "acks view counts host/login alias; test_acks_view_counts_ack_from_host_login_alias passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/mts_signal.py",
     "scripts/dev/test_mts_signal.py"
@@ -45,13 +58,14 @@
   "scope_sha": "f56d163dc0f2",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Reproduce with a fixture: rows = broadcast + ack from 'jis-nb/C'; run main(['acks', id]) and see the host missing (cmd == 'acks', mts_signal.py:1428; targets() l.665 uses hosts.key, ack lookup uses hosts.same_host)",
     "Write the failing test",
     "Make ack_state and targets use one host key function (hosts.key) for sender and target",
     "Run python scripts/dev/test_mts_signal.py"
   ],
+  "taken": "2026-11-13T03:30:53Z",
   "tests": "scripts/dev/test_mts_signal.py: acks view with alias host 'jis-nb/C' (fails on current code)",
   "title": "mts_signal.py acks view misses ack present in read log (jis-nb/C b-9656a0 shown in read, absent from acks)",
   "weight": "",

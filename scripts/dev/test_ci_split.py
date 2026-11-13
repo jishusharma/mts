@@ -94,10 +94,13 @@ class ShardTest(unittest.TestCase):
         self.assertIn("run_all_tests.py --shard ${{ matrix.shard }}", text)
         self.assertIn("if: startsWith(matrix.shard, '1/')", text[text.index("actions/setup-java"):][:200] + text[:text.index("actions/setup-java")][-300:])
         mark = text[text.index("\n  mark-green:"):]
-        self.assertIn("needs: offline-gate", mark)
+        self.assertIn("needs: [offline-gate, offgate-tier]", mark)   # test_value_audit_1113: green also waits for the off-gate tier
         self.assertIn('compare/$old...$SHA', mark)
         self.assertIn("force=false", mark)
-        self.assertIn("group: mark-green", mark)
+        # one shared group cancels the older pending mark-green (ended "cancelled", no verdict): per-SHA group, race-tolerant PATCH
+        self.assertIn("group: mark-green-${{ github.sha }}", mark)
+        self.assertNotIn("group: mark-green\n", mark)
+        self.assertIn("lost the race", mark)
         self.assertNotIn("fetch-depth: 0", mark)
 
 

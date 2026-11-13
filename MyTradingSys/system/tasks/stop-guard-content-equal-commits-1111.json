@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Result: sync.py health prints NOTE OLD-SHELL for any bash/sh over 30 min (extends bg_watch",
-      "ref": "f6824b1ef8a7",
-      "utc": "2026-11-11T09:15:39Z"
+      "line": "ship: 7 file(s)",
+      "ref": "6670219dec33",
+      "utc": "2026-11-13T00:10:03Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T18:06:38Z",
+  "refreshed": "2026-11-13T03:31:09Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -43,7 +43,7 @@
     "live tree",
     "any rule that lets unshipped content stop"
   ],
-  "scope_sha": "f6824b1ef8a7",
+  "scope_sha": "6670219dec33",
   "size": "S",
   "sources": [
     "Builder Noticed 2026-11-11: main checkout jis-nb-trunk ahead 8, ship says nothing to ship"

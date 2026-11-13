@@ -980,11 +980,6 @@
    "disp": "TOOL",
    "why": "OI-delta 4-state backtest over archived snapshots, hand-run; cited as implemented in MyTradingSys/research/fast_track_2026-09-27/T055a_POSITIONING_FLOW.md:48 and items/T063_stop_run_oi_flush_signature.md:18 (misplaced in runtime/ per items/T057_simplify_declutter.md:14)."
   },
-  "MyTradingSys/runtime/doh_http.py": {
-   "disp": "TOOL",
-   "ref": "live-aid-oi-poller-all-venues-1110",
-   "why": "Host-agnostic DoH + pinned-IP HTTPS GET imported lazily by oi_poller.py (a by-hand tool); binance_doh.py stays unchanged for the live runner."
-  },
   "MyTradingSys/runtime/log_decision.py": {
    "disp": "TOOL",
    "why": "One-line decision logger documented for hand use in COMMANDS.md:51."
