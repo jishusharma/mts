@@ -1287,6 +1287,26 @@ def us_session_lines(now, claims) -> list:
     return [US_SESSION_LINE]
 
 
+HYGIENE_DIR = "MyTradingSys/system/hygiene"   # station_disk_report.py output lands here (report only, OURS)
+
+
+def _hygiene_due(repo, login: str, five_reset: str, now: datetime):
+    """One Haiku hygiene Agent per login per 5 h window, keyed by the window's reset time (done_when of
+    supervisor-wake-haiku-hygiene-disk-1111). Returns the UTC date the report is written under, or None when this window already spawned it."""
+    if not five_reset:
+        return None
+    d = Path(repo) / HYGIENE_DIR
+    mark = d / f".window_{login}.txt"
+    try:
+        if mark.exists() and mark.read_text(encoding="utf-8").strip() == five_reset:
+            return None
+        d.mkdir(parents=True, exist_ok=True)
+        mark.write_text(five_reset, encoding="utf-8")
+    except OSError:
+        return None
+    return now.strftime("%Y-%m-%d")
+
+
 def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_key: bool) -> list:
     """Pure: the text a supervisor reads each wake. PLAN/PEER/BOARD lines are state; RUN lines are commands to run now in one Bash call;
     SPAWN is who to start; NOTE needs nothing from you; OPERATOR is the only thing the operator must do."""
@@ -1391,6 +1411,9 @@ def plan_lines(login: str, host: str, plan: dict, live: dict, ctx: dict, gate_ke
         for ih, logins, n in ctx.get("idle_hosts", []):
             L.append(f"OPERATOR start a Supervisor on {ih}: no heartbeat < {HEARTBEAT_MIN} min, {n} card(s) ready for it, budget on "
                      f"login {'/'.join(logins)}: `You are Supervisor. Login {logins[0]}.`")
+    if ctx.get("hygiene_due"):
+        L.append(f"SPAWN haiku hygiene: one Haiku Agent runs python scripts/dev/station_disk_report.py on {h}, lists clean-up candidates, "
+                 f"writes MyTradingSys/system/hygiene/{ctx['hygiene_due']}_{login}.md; report only, no removal")
     wk = ctx.get("work") or {}
     if ctx.get("transit_now"):
         L.append(f"TRANSIT NOW ({ctx['transit_now']}): write the hand-over (7 fixed sections), ship it, reply with the successor line, "
@@ -1625,6 +1648,7 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["ready_here"] = len(pick_cards(snap.get("dispatch", []), host, 99, pl["mode"] == "CRUCIAL-ONLY"))
         if not ctx.get("peers_unknown"):
             ctx["idle_hosts"] = _idle_nag_due(idle_hosts(live, snap.get("dispatch", []), now), now, home)
+        ctx["hygiene_due"] = _hygiene_due(repo, login, pl.get("five_reset", ""), now)
     except (Exception, SystemExit) as e:
         ctx["picks"] = []
         notes.append(f"NOTE dispatch failed ({type(e).__name__}: {str(e)[:80]})")

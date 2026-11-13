@@ -788,6 +788,44 @@
    "read": "summary"
   },
   {
+   "id": "RSI-EXTREME-CONFIRM-1H-20261113",
+   "trials": 384,
+   "title": "Hourly RSI extreme (<=10/15/20/25, mirror >=75-90) + next candle closes beyond prior close, daily-RSI bucket, 4 stops x 3 exits, 10 coins",
+   "date": "2026-11-13",
+   "market": "Bybit linear 1h, BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, 2020+",
+   "layers": [
+    "rsi_levels"
+   ],
+   "params": "SOURCED: operator rule; OURS: T grid, buckets, stops (ATR .25/1.0, 1%, low-1%), exits (2R, RSI50, 24h)",
+   "split": "DEV 2020-01..2024-06 / VAL 2024-07..2025-06 / RECENT 2025-07+",
+   "fees": "fee-net, taker both legs + funding",
+   "interaction": "daily RSI bucket context; matched placebo (confirm only)",
+   "effects": "none",
+   "n": "384 cells",
+   "verdict": "FAIL: 0/384 pass, 0 BH-significant on DEV or VALIDATION; only VAL-positive pocket is negative in DEV and RECENT",
+   "report": "MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md",
+   "read": "summary"
+  },
+  {
+   "id": "BIGCANDLE-STORY-1H-20261105",
+   "trials": null,
+   "title": "Big BTC 1h/5m candles (price, OI or taker delta |z|>=3): 8 stories x Binance top-trader class x phase, what followed",
+   "date": "2026-11-05",
+   "market": "Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader positions and accounts ratio)",
+   "layers": [
+    "oi_delta"
+   ],
+   "params": "OURS: |z|>=3 vs trailing 30d, 12-bar lockout (5m), top-trader flat 0.2%, band +-10%/30d, weekly streak R3+/R1-2/G1-2/G3+; horizons 1h/4h/24h",
+   "split": "DEV 2022-01-03..2024-06-30 only; holdout not read",
+   "fees": "fee-free descriptive",
+   "interaction": "story x top-trader class x phase vs same-direction baseline",
+   "effects": "continuation 43-60% vs 45-50% baseline; size-long/accounts-short after a big up candle not different from baseline (1h n=51: 45/53/51%); UP/UP/BUY 4h 59% [51-66] a lead",
+   "n": "843 big 1h events, 3991 big 5m events, 21831 baseline 1h bars",
+   "verdict": "descriptive: stories are readable, odds are near baseline; no trade rule",
+   "report": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
+   "read": "summary"
+  },
+  {
    "id": "RSI-DEEP-PRESTUDIES",
    "trials": 662,
    "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
@@ -1638,6 +1676,25 @@
    "verdict": "FAIL",
    "report": "MyTradingSys/research/extreme_confirm_template_2026-11/REPORT.md",
    "read": "cells.csv + REPORT.md"
-  }
+  },
+ {
+  "id": "ADX-1D-THROUGH25-20261113",
+  "trials": null,
+  "title": "1d ADX(14) rising through 25 (DI leader side, hold 3/6/12d) and Raschke Holy Grail, BTC ETH SOL LINK LTC",
+  "date": "2026-11-13",
+  "market": "5 USDT-linear symbols 1d (Bybit, BTC csv back-fill pre 2020-03-25); DEV 2020-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, RECENT 2025-07-01..2026-11-12",
+  "layers": [
+   "ma_daily"
+  ],
+  "params": "Rule A: ADX14 crosses up through 25, side = leading DI, next-open entry, fixed hold 6d primary (3/12 robustness) (OURS); Rule B: ADX>30 rising + EMA20 touch + 3d break, stop = touch bar extreme, prior-20-bar target, 12d cap (Raschke SOURCED, mechanics OURS)",
+  "split": "DEV / VALIDATION / RECENT per adx_di_2026-11/CENSUS.md",
+  "fees": "10 bp round trip (OURS)",
+  "interaction": "none (single rule each; month-cluster bootstrap CI, symbols pooled)",
+  "effects": "Rule A pooled excess vs same-hold baseline: DEV -0.01%, VALIDATION -1.71%, RECENT +2.62% (hold 6); Rule B only 6 trades in 5 years",
+  "n": "Rule A 124 / 30 / 42 events (DEV / VAL / RECENT, hold 6); Rule B 1 / 0 / 5 trades",
+  "verdict": "Rule A FAIL (VALIDATION fee-net excess -1.71%, CI [-5.8%,+1.9%], n=30; BTC-alone DEV +2.98% did not carry to 4 more symbols or VALIDATION); Rule B UNDERPOWERED (VALIDATION n=0; the frozen filter and touch almost never coincide)",
+  "report": "MyTradingSys/research/adx_1d_through25_2026-11-13/REPORT.md",
+  "read": "summary"
+ }
  ]
 }
