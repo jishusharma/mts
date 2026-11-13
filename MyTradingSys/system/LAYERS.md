@@ -182,6 +182,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Roadmap: `MyTradingSys/system/NEXT_SESSION.md`
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
+  - `live-aid-artifact-copy-lacks-home-1114` raw p2 SONNET: Live Aid published page lacks Home: build_artifact.py must inline home_one.js, then republish and check in a b
   - `live-aid-board-value-area-not-wired-1111` ready p2 SONNET: Live Aid setup board gets the value area from one definition
   - `live-aid-flag-hitrate-grey-1113` ready p2 SONNET: Live Aid: show hit rate and n next to each flag/level story (from live_aid_learn.py, SOURCED replay now, real 
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
