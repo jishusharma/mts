@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Forward readout (4 slots), C30 paper logger, with-trend session census (Shape A FAIL, Shap",
-      "ref": "8601c65fb228",
-      "utc": "2026-11-11T15:59:06Z"
+      "line": "Analyst-call paper slot: logger with two placebos, Habib 72-73k long seeded, line in the c",
+      "ref": "574d83b8e80e",
+      "utc": "2026-11-11T18:32:37Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T18:06:42Z",
+  "refreshed": "2026-11-13T12:14:40Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -45,7 +45,7 @@
     "live tree",
     "judging an edge"
   ],
-  "scope_sha": "8601c65fb228",
+  "scope_sha": "574d83b8e80e",
   "size": "S",
   "sources": [
     "EDGE_PLAN.md s(b), PLAN_24H_2026-11-10 T1"

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:15:04Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: setup_board.js + test_setup_board.py (commit 98741ac18); card stale-refr",
+      "ref": "6b22ac394",
+      "utc": "2026-11-13T12:15:04Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "live_aid Home: indicator lean grid (RSI, WaveTrend, Binance spot CVD, divergences) on 11 t",
@@ -37,13 +44,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: board core shipped",
   "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T02:53:26Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk: setup_board.js + test_setup_board.py (commit 98741ac18); card stale-refresh closed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/tools/live_aid/setup_board.js (new)",
     "MyTradingSys/tools/live_aid/test_setup_board.py (new)",
@@ -57,13 +70,14 @@
   "sources": [
     "operator 2026-11-11 chat; research/live_aid_review_2026-11-11/RESULT.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read how pulse.js and indread.js export a pure function and how test_indread.py loads it",
     "Write the failing test with the hand-built input",
     "Implement board(); each item cites its source layer id",
     "Run the test file"
   ],
+  "taken": "2026-11-13T12:15:04Z",
   "tests": "MyTradingSys/tools/live_aid/test_setup_board.py (node harness like test_live_aid.py js fixture; fails first: module missing)",
   "title": "Live Aid setup board core: pure function returning LONG and SHORT evidence lists and a strength score from existing layer outputs",
   "weight": "ROUTINE",

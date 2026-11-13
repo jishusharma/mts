@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:15:06Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -27,6 +28,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "already on trunk: base_rates writer + hand-case test (b7d314db5), base_rates_input/setup_b",
+      "ref": "6b22ac394",
+      "utc": "2026-11-13T12:15:06Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Live Aid review (4-week replay of its flags) + one BOTH SIDES banner",
@@ -37,13 +44,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: rates shipped",
   "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T02:53:30Z",
   "refs": [],
-  "result": "",
+  "result": "already on trunk: base_rates writer + hand-case test (b7d314db5), base_rates_input/setup_board_rates.js generated (f77fa0696)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/live_aid_review_2026-11-11/replay.js (read)",
     "MyTradingSys/tools/live_aid/base_rates.py",
@@ -57,12 +70,13 @@
   "sources": [
     "research/live_aid_review_2026-11-11/RESULT.md (flags right 47-51 percent)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read replay.js and RESULT.md for the flag definition and the 30 min contradiction check",
     "Write the 10-row fixture and failing test",
     "Write the writer and the registry row; run test_base_rates.py"
   ],
+  "taken": "2026-11-13T12:15:06Z",
   "tests": "MyTradingSys/tools/live_aid/test_base_rates.py::test_setup_board_rates_hand_case (fails first: no writer)",
   "title": "Live Aid setup board hit rate per evidence mix from replay.js, printed with n",
   "weight": "ROUTINE",

@@ -32,9 +32,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "codex_run: status prints STALLED with the 401 cause when the host has no Codex login",
-      "ref": "c8aefddd030b",
-      "utc": "2026-11-08T02:04:30Z"
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
     },
     {
       "auto": true,
@@ -51,7 +51,7 @@
   "prio": 2,
   "refine_tries": 3,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:56:00Z",
+  "refreshed": "2026-11-13T12:14:47Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -63,7 +63,7 @@
     "no change to which lane runs a card",
     "no live-tree edit, no deploy, no .secrets or .env read"
   ],
-  "scope_sha": "c8aefddd030b",
+  "scope_sha": "8b71721d87ad",
   "size": "M",
   "sources": [],
   "state": "ready",
