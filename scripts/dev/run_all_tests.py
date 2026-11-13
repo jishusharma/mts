@@ -584,25 +584,6 @@ def _offgate():
         return frozenset()
 
 
-# Execution tests that step 1 must not take as unittest stems: step 2 / step 3 run them as scripts.
-EXEC_SCRIPT_TESTS = ("test_g1g2_offline", "test_suite_static")
-
-
-def execution_stems(listed, repo=None):
-    """Stems of every tracked execution unittest module (execution/ and execution/testnet/offline/) that step 1 does not list yet, so a new
-    execution test is must-pass in step 1 with no registration (2026-11-13: 627330d8e added test_cotrade_close.py unlisted, CI red 30 min).
-    Left out: files step 2/3 run as scripts, files extra_tests.tsv already runs under pytest, and gate_tiers.tsv opt-outs."""
-    repo = Path(repo or REPO)
-    try:
-        import run_extra_tests
-        out = subprocess.run(["git", "ls-files", "--", "MyTradingSys/execution/test_*.py", "MyTradingSys/execution/testnet/offline/test_*.py"],
-                             cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
-        skip = set(run_extra_tests.EXTRA) | set(run_extra_tests.OFFGATE)
-    except Exception:   # fail closed: cannot discover -> the hand list still runs
-        return []
-    return sorted({Path(p).stem for p in out if p not in skip and Path(p).stem not in listed and Path(p).stem not in EXEC_SCRIPT_TESTS})
-
-
 def build_plan(quick):
     """Every step in report order. One step per line: parallel sessions append here (a shared line is a guaranteed conflict)."""
     plan = []
@@ -621,7 +602,6 @@ def build_plan(quick):
         "test_s6_orphan_offline", "test_triggered_stop_offline", "test_soak_report", "test_fix3_offline", "test_margin_drain_offline", "test_fix4_offline",
         "test_plan_compiler", "test_executor_math", "test_auto_trader", "test_dlm_aggregate", "test_b148_reauth_account", "test_b146_fee_to_stop", "test_dlm_failure_cap", "test_dlm_blind_recovery", "test_auto_trader_blocklist", "test_auto_trader_sizes", "test_auto_trader_confirm", "test_auto_trader_failclosed", "test_auto_trader_promotion", "test_orphan_sweep_loop", "test_fabio_slot", "test_fix3_mutants_offline", "test_capture_txlog_settlement", "test_mts_kill_mainnet", "test_pm_heartbeat", "test_pm_heartbeat_wiring", "test_journal_env", "test_mainnet_plan_check", "test_env_wiring", "test_reconciler_env", "test_deribit_read_account", "test_orphan_watchdog", "test_orphan_watchdog_cli", "test_mainnet_pnl", "test_daily_pnl_wiring", "test_xferfix", "test_time_exit_offline", "test_trade_ledger", "test_netretry", "test_r2_runner_exit", "test_r2_breakeven_move", "test_cotrade",  # W2 R2: execution-math tests (FORMULAS.md 11)
     ]
-    cmd1 += execution_stems(set(cmd1))   # auto-discovered execution tests: must-pass, no list to edit
     add(1, "Execution module tests", cmd1, "Step 1: Execution tests")
 
     # Step 2: g1g2 offline script test

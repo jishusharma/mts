@@ -15,15 +15,30 @@
   "goal": "MarketDataSnapshot.bidAskRatioFromDepth asks depth limit=100 yet is labelled +/-1 %. Run depth_band_check.py on the feed host and report the true span for limit=100 vs 1000 (deepest level pct, USD inside the band, imbalance).",
   "id": "depth-band-audit-marketdatasnapshot-bid-",
   "lane": "JIS-NB",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Depth-band audit: fapi.binance.com unreachable from JIS-NUC too",
+      "ref": "91b9ec41eaca",
+      "utc": "2026-11-10T20:37:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "91b9ec41eaca Depth-band audit: fapi.binance.com unreachable from JIS-NUC too",
+      "ref": "MyTradingSys/research/coinglass_field_guide_2026-11-01/DEPTH_BAND_RESULT.md",
+      "utc": "2026-11-10T20:37:01Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REVIEWED:2026-11-02 T0-ONLY | PLANNER 2026-11-02 planner-b-1102 DECISION (OURS): report-only (no edit of Java), so ROUTINE; the Java fix is live-path, a separate card. Run-and-report goes to the feed host (JIS-NB lane).",
+  "note": "Refresh 2026-11-13 (login B): scope commit 91b9ec41e only recorded fapi unreachable from JIS-NUC; re-checked 14:5xZ, curl to fapi.binance.com depth times out (000). Card still needs a host whose egress reaches fapi, or the live-feed-log path named in DEPTH_BAND_RESULT.md Next.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-02T05:49:50Z",
+  "refreshed": "2026-11-13T14:50:15Z",
   "refs": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"
   ],
@@ -34,7 +49,7 @@
   "scope_out": [
     "any edit of MarketDataSnapshot.java or the live tree (the fix is a separate live_path card for the coordinator)"
   ],
-  "scope_sha": "",
+  "scope_sha": "91b9ec41eaca",
   "size": "S",
   "sources": [
     "MyTradingSys/research/coinglass_field_guide_2026-11-01/FIELD_GUIDE.md"

@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-13T13:31:22Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "stamp.json holds today's EU window and cbp_run.py --new-check returns in under 30 s on this host",
+  "est_turns": 25,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "cbp_run.py --new-check hangs over 100 s and task MTS-CBP-Ingestion rc 0 leaves stamp.json unchanged; find why and fix",
   "id": "routine-cbp-new-check-hangs-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Retire 4 pages in the repo: registry rows to _retired, tiles, mock and generator removed",
+      "ref": "83bee59a6a70",
+      "utc": "2026-11-13T13:52:17Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:48Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/cbp_run.py",
+    "scripts/dev/test_cbp_run.py",
+    "scripts/dev/test_cbp_schedule.py"
+  ],
+  "scope_out": [
+    "no scheduler change (SCHEDULING_POLICY.md); no mainnet/account data"
+  ],
+  "scope_sha": "83bee59a6a70",
+  "size": "M",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Time --new-check; find the network call it makes",
+    "Make --new-check offline or add a timeout; find why a rc 0 run does not write_stamp"
+  ],
+  "tests": "scripts/dev/test_cbp_run.py::test_new_check_no_network_and_stamps (fails first)",
   "title": "ROUTINES row 1: cbp_run.py --new-check hung over 100 s (it should need no YouTube request) and task MTS-CBP-Ingestion ran 11-13 05:00Z rc 0 without updating stamp.json (last_run 11-12 15:05Z). Find why the task stamps nothing; done when stamp.json holds today's EU and --new-check returns in under 30 s (see cbp-daily-firing-gap)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

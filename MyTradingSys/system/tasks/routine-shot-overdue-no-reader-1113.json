@@ -1,36 +1,71 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T15:50:41Z",
   "commands": [],
   "created": "2026-11-13T13:30:27Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "shot.py status shows overdue under 20 and exit 0, or the plan prints a sweep RUN line with the count",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "450 screenshots are overdue (classified, never read/done); give the coordinator plan an actionable path",
   "id": "routine-shot-overdue-no-reader-1113",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "routines_due: 20+ overdue screenshots now print a RUN sweep line with the count (cheapest:",
+      "ref": "6da093b9e",
+      "utc": "2026-11-13T15:50:41Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Plan prints a RUN line per due routine (routines_due.py): hygiene, learner, scenario score",
+      "ref": "20b1f52f9150",
+      "utc": "2026-11-13T13:46:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "next": "END: the plan's RUN line now dispatches the sweep",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:15Z",
   "refs": [],
-  "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "result": "routines_due: 20+ overdue screenshots now print a RUN sweep line with the count (cheapest: Haiku) instead of an unread NOTE; under 20 stays a NOTE; test fails first; NUC store has 82 overdue today",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/routines_due.py",
+    "scripts/dev/test_routines_due.py",
+    "scripts/dev/shot.py"
+  ],
+  "scope_out": [
+    "no deleting of shots; no change to ingest hook"
+  ],
+  "scope_sha": "20b1f52f9150",
+  "size": "S",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "done",
+  "steps": [
+    "Read the overdue NOTE in routines_due.py",
+    "Add a Haiku sweep line naming shot.py read/done with the count",
+    "Triage: run shot.py read/done on overdue shots per shot.py usage"
+  ],
+  "taken": "2026-11-13T15:50:41Z",
+  "tests": "scripts/dev/test_routines_due.py::test_shot_overdue_sweep_line (fails first)",
   "title": "ROUTINES row 9: shot.py status shows 450 shots overdue (classified, never read or done). Smallest fix: a plan NOTE line with the overdue count plus a Haiku sweep card that runs shot.py read/done; done when overdue is under 20",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
