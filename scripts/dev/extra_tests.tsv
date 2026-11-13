@@ -279,6 +279,7 @@ MyTradingSys/tools/trade_journal/test_log_trade.py
 scripts/dev/test_cicd_run_per_test_limit.py
 scripts/dev/test_yt_fallback_chain.py
 MyTradingSys/tools/live_aid/test_live_aid_guidance.py
+MyTradingSys/tools/live_aid/test_live_aid_key.py
 scripts/dev/test_footprint_12h.py
 scripts/dev/test_no_browser2_rule.py
 scripts/dev/test_cbp_recheck.py
