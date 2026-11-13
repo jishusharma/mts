@@ -152,10 +152,10 @@ class ModelTokenTest(unittest.TestCase):
         return rc, rj.call_args
 
     def test_token_parsing_each_model(self):
-        for spec, want in (("c1", ("c1", "low", "flash")), ("c1:flash", ("c1", "low", "flash")),
-                           ("c1:high:argon", ("c1", "high", "argon")), ("c1:opus:medium", ("c1", "medium", "opus")),
-                           ("c1:sonnet", ("c1", "low", "sonnet")), ("c1:gpt", ("c1", "low", "gpt")),
-                           ("c1:high:gpt", ("c1", "high", "gpt"))):
+        for spec, want in (("c1", ("c1", "low", "flash", "solo")), ("c1:flash", ("c1", "low", "flash", "solo")),
+                           ("c1:high:argon", ("c1", "high", "argon", "solo")), ("c1:opus:medium", ("c1", "medium", "opus", "solo")),
+                           ("c1:sonnet", ("c1", "low", "sonnet", "solo")), ("c1:gpt", ("c1", "low", "gpt", "solo")),
+                           ("c1:high:gpt", ("c1", "high", "gpt", "solo"))):
             rc, call = self._parse(spec)
             self.assertEqual((rc, call.args), (0, want), spec)
 
