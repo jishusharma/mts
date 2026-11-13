@@ -131,7 +131,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `turn_of_candle`: no edge, closed | module backtest/layers/turn_of_candle/
 - Layer `session_levels`: no edge | module research/t087_session_levels_2026-10-09
 - Backtests (layer_map.json, newest first):
-  - 2026-11-13 `LA-FLAGS-FULL-20261113`: FAIL: 0 of 30 cells pass (CI lower bound < 0 in every cell, smallest BH-input p 0.415); no idea-flag group earns a testn | `MyTradingSys/research/live_aid_flags_full_2026-11-13/REPORT.md`
   - 2026-10-18 `EUR-LOW-US-SWEEP-FOLLOWUPS-20261018`: BLOCKED by power gate (A, B, C); legs stay open | `MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md`
   - 2026-10-14 `LC-SIZING-QUICK-20261014`: EXPLORATORY NEGATIVE; full LC hypothesis untested | `MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md`
   - 2026-10-14 `EUR-LOW-US-SWEEP-20261014`: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested | `MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md`
