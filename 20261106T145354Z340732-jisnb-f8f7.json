@@ -1,1 +1,0 @@
-{"t": "20261106T145354Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI RED trunk 6f3e8c56: test_2_no_forbidden_refs on handover/SUPERVISOR_B.md L19/L28 (git command words, c0cf84fba). Lead C is shipping the revert; B: re-land reworded, no git verbs in prose.", "login": "C"}
