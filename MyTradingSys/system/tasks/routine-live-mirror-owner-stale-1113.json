@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-13T13:31:07Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "supervisor.py plan prints OPERATOR live owner stale when the heartbeat is older than 24 h, silent when fresh",
+  "est_turns": 10,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "live_mirror.py brief refuses when owner heartbeat is stale and nothing tells the coordinator; plan prints an OPERATOR line",
   "id": "routine-live-mirror-owner-stale-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Plan prints a RUN line per due routine (routines_due.py): hygiene, learner, scenario score",
+      "ref": "20b1f52f9150",
+      "utc": "2026-11-13T13:46:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:17Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/routines_due.py",
+    "scripts/dev/test_routines_due.py",
+    "scripts/dev/live_mirror.py"
+  ],
+  "scope_out": [
+    "no live tree access, no process start/stop (builders never touch live)"
+  ],
+  "scope_sha": "20b1f52f9150",
+  "size": "S",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read live_mirror.py owner heartbeat parse",
+    "Add plan OPERATOR line live owner stale when over 180 s for a day"
+  ],
+  "tests": "scripts/dev/test_routines_due.py::test_live_owner_stale_operator_line (fails first)",
   "title": "ROUTINES row 16: live_mirror.py brief refuses (owner heartbeat 581149 s old, 6.7 days) and no session or plan line tells the coordinator. Smallest fix: plan prints OPERATOR line live owner stale when over 180 s for a day; done when plan shows it",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

@@ -4,33 +4,53 @@
   "commands": [],
   "created": "2026-11-13T13:30:59Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "supervisor.py plan prints both RUN lines when due and both commands exit 0",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "kline_gap_check.py and ff_calendar_snapshot.py have no trigger; add one daily plan RUN line for the calendar snapshot and a default-args wrapper for the gap check",
   "id": "routine-klines-calendar-no-trigger-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Plan prints a RUN line per due routine (routines_due.py): hygiene, learner, scenario score",
+      "ref": "20b1f52f9150",
+      "utc": "2026-11-13T13:46:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:18Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/routines_due.py",
+    "scripts/dev/test_routines_due.py",
+    "scripts/dev/kline_gap_check.py"
+  ],
+  "scope_out": [
+    "no scheduler (SCHEDULING_POLICY.md); no Windows task"
+  ],
+  "scope_sha": "20b1f52f9150",
+  "size": "S",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Add RUN line once per UTC day for ff_calendar_snapshot.py",
+    "Add --default flag to kline_gap_check.py (symbols BTCUSDT ETHUSDT, last 3 months)"
+  ],
+  "tests": "scripts/dev/test_routines_due.py::test_calendar_and_gap_run_lines (fails first)",
   "title": "ROUTINES row 21: kline_gap_check.py and ff_calendar_snapshot.py have no trigger and the first needs symbol/months args. Smallest fix: one daily plan RUN line for the calendar snapshot (it takes no args) and a default-args wrapper for the gap check; done when both lines print and succeed",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
