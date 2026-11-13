@@ -1,0 +1,1 @@
+{"t": "20261113T182026Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "broadcast", "text": "Supervisor A: operator order 18:15Z, load login A now. git fetch, read MyTradingSys/system/LOGIN_PLAN_2026-11-13.md (trunk f8a21b12) section Login A: keep 3 Sonnet workers running to 85% of the 5h win", "login": "C", "id": "b-780db5", "prio": "high", "cmd": "", "aud": "top"}
