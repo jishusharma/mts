@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/refute/flash.md"
+  ],
+  "created": "2026-11-13T01:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_iteration3_1113/refute/flash.md exists with one row per finding in the table | topic | trader | exact quote | video id [mm:ss] | rule in his words | number: SOURCED value or NOT_SEEN | in our code? file:line or NONE |, a TOP 5 and SINGLE BIGGEST HOLE section, and verify_extract_quotes.py exits 0",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For each of the 25 ranked gaps in ITERATION_2.md, search the transcripts for a quote that refutes or narrows it; verdict STANDS / NARROWED / REFUTED with quote.",
+  "id": "gemini-i2-refute-flash-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "",
+  "note": "Run as gemini_queue.py run gemini-i2-refute-flash-1113:low:flash. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply. Second-model twin of the argon card; compare AGREED/SINGLE/CONFLICT afterwards.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T01:50:27Z",
+  "refs": [
+    "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md",
+    "MyTradingSys/research/concept_decks_1112/TOM_FABIO_FACTS.md",
+    "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
+  ],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tf_iteration3_1113/refute/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no numbers from our docs or your own knowledge: unstated = NOT_SEEN",
+    "no YouTube or web fetch"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
+    "For each gap row in ITERATION_2.md search for counter-evidence",
+    "Write MyTradingSys/research/tf_iteration3_1113/refute/flash.md; every quote copied exactly from the named transcript; run verify_extract_quotes.py until exit 0; commit on your branch and ship"
+  ],
+  "taken": "",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Adversarial review: try to refute each ITERATION_2 gap from transcripts, model flash",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
