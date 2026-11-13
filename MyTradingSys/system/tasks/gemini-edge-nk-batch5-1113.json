@@ -1,0 +1,57 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/fetch_captions_timed.py --analyst Tom --status",
+    "python scripts/dev/verify_extract_quotes.py <EXTRACT.md>"
+  ],
+  "created": "2026-11-13T16:05:00Z",
+  "depends_on": [],
+  "done_when": "each fetched id has MyTradingSys/research/layer_lab/gemini_edge_1113/nk-batch5/<id>/EXTRACT.md with verify_extract_quotes.py exit 0, or NOT_IN_DATA.md names the lock",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Fetch Hindi captions for NK videos bw_yyi7rrC8, I4rHEfRhEWM and write a verbatim-quote EXTRACT.md per video (titles in note).",
+  "id": "gemini-edge-nk-batch5-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini edge push 11-13, output on a gemini-q branch, reviewed by sup-c-l1 thread",
+  "note": "Titles: bw_yyi7rrC8=Nifty Make or Break ||  @NKStockTalk  #financial # || I4rHEfRhEWM=How To Make Career In Stock Market 📊| Complete Roa. Edge priority: RSI / Hilega Milega / volume / 200 DMA / chart reading / profit lock / pair trade.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T15:55:55Z",
+  "refs": [
+    "MyTradingSys/research/nk_stocktalk_1113/review/BRIEF_DEEP.md",
+    "MyTradingSys/research/nk_stocktalk_1113/CATALOG.md"
+  ],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_edge_1113/nk-batch5/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no edits outside the output folder",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run python scripts/dev/fetch_captions_timed.py --analyst Tom --status first. If BLOCKED fetch nothing, write NOT_IN_DATA.md in the output folder with the unlock time and stop.",
+    "If NOT BLOCKED fetch each id once with the guarded fetcher (max 1 per id; first 429 stops the batch and is logged). No proxies, cookies or YouTube API. Real captions only.",
+    "For each fetched id read raw_transcripts_canonical/<id>_raw.txt and write MyTradingSys/research/layer_lab/gemini_edge_1113/nk-batch5/<id>/EXTRACT.md per MyTradingSys/research/nk_stocktalk_1113/review/BRIEF_DEEP.md (> exact Hindi line, Source GPS, TRANSLATION, 6+ quotes or NOT_STATED).",
+    "Run verify_extract_quotes.py on every EXTRACT.md until exit 0 (PYTHONUTF8=1); commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] NK StockTalk captions + extract, batch 5 (2 videos)",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
