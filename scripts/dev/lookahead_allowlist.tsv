@@ -520,11 +520,9 @@ MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + m]
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + m] = 0.01	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + 620:a + 1220] = 101.0	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + m] = 101.0 - 0.05 * (m - 1219)	reviewed 2026-11-12: synthetic data construction
-MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + m] = 0.01	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a:a + 300] = 100.0	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a:a + 300] = 10.0	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + m] = 100.0 + 0.05 * (m - 299)	reviewed 2026-11-12: synthetic data construction
-MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + m] = 0.01	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	p[a + 320:] = 101.0	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	v[a + 320:] = 10.0	reviewed 2026-11-12: synthetic data construction
 MyTradingSys/research/btc_thin_zone_retest_1112/test_rules.py	fwd-index	o[a:a + 60] = c[a:a + 60] = 100.5	reviewed 2026-11-12: synthetic data construction
@@ -550,6 +548,8 @@ MyTradingSys/research/live_aid_flags_full_2026-11-13/run.py	fwd-index	gr, nt = o
 MyTradingSys/research/live_aid_flags_full_2026-11-13/run.py	fwd-index	_, nt10 = outcome(e["side"], g.o[i], g.c[i + 11], taker)	reviewed false positive: same 12-bar exit outcome, taker fee variant
 MyTradingSys/research/adx_1d_through25_2026-11-13/run_1113.py	fwd-index	return side * (bars[i + h]["c"] / bars[i + 1]["o"] - 1.0) - FEE	reviewed false positive: entry at next open after the signal bar, exit is the fixed-hold outcome label of an already-fired signal, not a signal input
 MyTradingSys/research/adx_1d_through25_2026-11-13/run_1113.py	fwd-index	r = None if j + h >= len(self.b) else side * (self.b[j + h]["c"] / self.b[j]["c"] - 1.0) - FEE	reviewed false positive: c[j+h] is the h-bar forward outcome label of an event already fired at bar j, not a signal input
+MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/mal_div_lib.py	fwd-index	return dict(t=(keys[ok] * tf_h * HOUR).astype(np.int64), o=o[st], c=c[st + tf_h - 1],	SAFE: complete TF-bar fold (only whole groups kept, stamped at open); window is past data of finished bars, no outcome read
+MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/mal_div_lib.py	fwd-index	h=np.array([h[s:s + tf_h].max() for s in st]), l=np.array([l[s:s + tf_h].min() for s in st]))	SAFE: complete TF-bar fold (only whole groups kept, stamped at open); window is past data of finished bars, no outcome read
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/study.py	fwd-index	ids = ids[(co.t[ids + w] - co.t[ids]) == w * HOUR]	SAFE: contiguity check that the w-bar window after a signal has no time gap; no outcome data read
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/rsi_grid_lib.py	fwd-index	return dict(t=ft.astype(np.int64), o=o[st], c=c[st + tf_h - 1],	SAFE: complete TF-bar fold (only whole groups kept, stamped at open) or confirm bar s+1 whose close is the entry; no bar after entry read for the signal
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/rsi_grid_lib.py	fwd-index	h=np.array([h[s:s + tf_h].max() for s in st]), l=np.array([l[s:s + tf_h].min() for s in st]),	SAFE: complete TF-bar fold (only whole groups kept, stamped at open) or confirm bar s+1 whose close is the entry; no bar after entry read for the signal
