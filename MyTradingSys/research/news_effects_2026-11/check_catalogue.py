@@ -121,6 +121,18 @@ def check_v2(rows, ok_rows):
           all(r['verify_note'].startswith('UNFIT: ') for r in unfit if r['ts_quality'] == 'APPROX_INTRADAY'))
     check('verified=N OURS-class rows are counted in REPORT.md Gaps (count quoted)',
           os.path.exists(REPORT_PATH) and ('verified=N): %d' % len(unfit)) in open(REPORT_PATH, encoding='utf8').read(), 'unfit=%d' % len(unfit))
+    # card news-effect-report-md-stale-counts-says-: REPORT.md quotes the verified counts the CSV gives, OURS and SOURCED apart
+    def vcount(label=None):
+        sel = [r for r in rows if label is None or r['class_label'] == label]
+        return sum(r['verified'] == 'Y' for r in sel), len(sel)
+    rep_v = open(REPORT_PATH, encoding='utf8').read() if os.path.exists(REPORT_PATH) else ''
+    va, na = vcount(); vo, no = vcount('OURS'); vs, ns = vcount('SOURCED')
+    check('REPORT.md quotes verified counts from news_events.csv (all, OURS, SOURCED apart)',
+          '(%d of %d rows)' % (va, na) in rep_v
+          and 'verified this run: %d of %d' % (vo, no) in rep_v
+          and '%d of %d OURS rows verified' % (vo, no) in rep_v
+          and 'SOURCED-label rows counted apart: %d of %d' % (vs, ns) in rep_v,
+          'all %d/%d OURS %d/%d SOURCED %d/%d' % (va, na, vo, no, vs, ns))
     cnt = {}
     for r in rows:
         c = cnt.setdefault(r['class'], [0, 0])

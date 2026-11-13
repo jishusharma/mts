@@ -14,7 +14,15 @@
   "id": "gemini-nk-catalog-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Conceptualizer NK layer v7 from the v6 final checks: gloss rule applied, no lot counts in ",
+      "ref": "2b905e11c954",
+      "utc": "2026-11-13T05:14:39Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -22,7 +30,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T20:02:31Z",
+  "refreshed": "2026-11-13T14:17:30Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -33,6 +41,7 @@
     "no YouTube caption request while BLOCKED",
     "no invented titles or ids"
   ],
+  "scope_sha": "2b905e11c954",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13 relaying operator: NK StockTalk"
