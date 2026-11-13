@@ -258,10 +258,10 @@ def test_discovered_test_is_dropped_by_a_gate_tiers_row_only():
 
 def test_new_execution_test_joins_step_1_as_must_pass(tmp_path):
     import run_all_tests as rat
-    _tmp_repo(tmp_path, ["MyTradingSys/execution/test_cotrade_close.py", "MyTradingSys/execution/test_kill_switch.py",
+    _tmp_repo(tmp_path, ["MyTradingSys/execution/test_unregistered_exec.py", "MyTradingSys/execution/test_kill_switch.py",
                          "MyTradingSys/execution/testnet/offline/test_brand_new_offline.py",
                          "MyTradingSys/execution/testnet/offline/test_g1g2_offline.py", "MyTradingSys/execution/testnet/test_suite_static.py"])
     got = rat.execution_stems({"test_kill_switch"}, tmp_path)
-    assert got == ["test_brand_new_offline", "test_cotrade_close"]   # script-run (step 2/3) and already-listed stems stay out
+    assert got == ["test_brand_new_offline", "test_unregistered_exec"]   # script-run (step 2/3) and already-listed stems stay out
     step1 = [s for s in rat.build_plan(False) if str(s.num) == "1"][0]
     assert "test_kill_switch" in step1.cmd and step1.cmd.count("test_kill_switch") == 1

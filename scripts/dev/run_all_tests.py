@@ -596,7 +596,7 @@ def execution_stems(listed, repo=None):
     try:
         import run_extra_tests
         out = subprocess.run(["git", "ls-files", "--", "MyTradingSys/execution/test_*.py", "MyTradingSys/execution/testnet/offline/test_*.py"],
-                             cwd=repo, capture_output=True, text=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
+                             cwd=repo, capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout.splitlines()
         skip = set(run_extra_tests.EXTRA) | set(run_extra_tests.OFFGATE)
     except Exception:   # fail closed: cannot discover -> the hand list still runs
         return []
