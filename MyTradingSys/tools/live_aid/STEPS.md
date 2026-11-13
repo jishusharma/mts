@@ -149,3 +149,4 @@ What confused or annoyed him, in the order it came up. The fix built that day is
 | Text tables where he wanted candles | Home is 70 % candle chart (last 12 h of 5m) with level lines named in the gutter |
 | Money panel only Deribit and Bybit, and no "how do I use it" | One plain sentence on price vs OI; Binance / OKX OI and CVD still open (fapi blocked on JIS-NB): card live-aid-graphical-redesign-1109 |
 | News without impact or weight | Last-hour top 4 with an up/down arrow and a 0-10 weight bar; big news, liquidation bursts and level touches flash on every tab |
+- 2026-11-13 ADX / DI strip (R26): panel under Moving averages, `adx_strip.js` (pure functions + panel driver, self-mounts into `#p-adxs`), `test_adx_strip.py`, text twin `python MyTradingSys/tools/live_aid/adx_now.py` (prints the table, writes runtime_data/live_aid/adx_state.json, gitignored). Refresh 60 s for 4h and lower, 15 min for the rest.
