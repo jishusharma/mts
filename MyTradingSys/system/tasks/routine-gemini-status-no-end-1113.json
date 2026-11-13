@@ -4,33 +4,52 @@
   "commands": [],
   "created": "2026-11-13T13:31:03Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "status prints DONE, FAILED or STALE per job; job gpt-mutation-trendline-core-1031 prints STALE",
+  "est_turns": 8,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "gemini_queue.py status shows START with no end line for stale jobs; classify per job DONE, FAILED or STALE (no end after 2 h)",
   "id": "routine-gemini-status-no-end-1113",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Revert b0e15fa36 (Gemini SOLO/REVIEW modes): CI red on 400f9ce2, 80ee172b, 24cda987",
+      "ref": "7bc6e2e2bb82",
+      "utc": "2026-11-13T14:35:20Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:14Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/gemini_queue.py",
+    "scripts/dev/test_gemini_queue.py"
+  ],
+  "scope_out": [
+    "no change to run"
+  ],
+  "scope_sha": "7bc6e2e2bb82",
+  "size": "S",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Find the status log parser at gemini_queue.py main argv status",
+    "Map last line to DONE/FAILED/STALE (age over 2 h without end)"
+  ],
+  "tests": "scripts/dev/test_gemini_queue.py::test_status_stale_after_2h (fails first)",
   "title": "ROUTINES row 8: gemini_queue.py status shows job gpt-mutation-trendline-core-1031 at START with no end line. Smallest fix: status prints DONE/FAILED/STALE per job (age over 2 h without end = STALE); done when status distinguishes the three",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

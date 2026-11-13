@@ -4,33 +4,52 @@
   "commands": [],
   "created": "2026-11-13T13:31:11Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "desk.py sweep --quick prints counts in under 20 s on this host and plain sweep prints a first progress line within 2 s",
+  "est_turns": 12,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "desk.py sweep prints nothing for 40 s; time its steps and add a --quick count line",
   "id": "routine-desk-sweep-slow-1113",
   "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "AIBridge 0.7.39: release the arm on pagehide, cap one result at 60000 chars, desk post/tak",
+      "ref": "2411379b6ded",
+      "utc": "2026-11-11T13:23:53Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:58:12Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "scripts/dev/desk.py",
+    "scripts/dev/test_desk.py"
+  ],
+  "scope_out": [
+    "no change to assign or board semantics"
+  ],
+  "scope_sha": "2411379b6ded",
+  "size": "S",
   "sources": [
     "routines-index-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Time sweep() steps (git calls on origin/fast-track)",
+    "Add --quick: counts only, no per-card git; progress line otherwise"
+  ],
+  "tests": "scripts/dev/test_desk.py::test_sweep_quick_prints_counts (fails first: flag unknown)",
   "title": "ROUTINES row 18: desk.py sweep printed nothing in 40 s so its check cannot be run. Time the steps, add a --quick count line; done when sweep prints counts in under 20 s",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

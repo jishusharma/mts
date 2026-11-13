@@ -3,33 +3,44 @@
   "asks": "",
   "commands": [],
   "created": "2026-11-13T13:38:41Z",
-  "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "depends_on": [
+    "live-aid-liq-history-log-1113"
+  ],
+  "done_when": "liq_rates.js holds continue/reverse rates with n and a placebo rate beside each; RESULT.md in the folder states the verdict",
+  "est_turns": 20,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "Measure whether a 1m/2m liquidation burst continues or reverses, with a random-time placebo, and fill liq_rates.js",
   "id": "live-aid-liq-burst-followthrough-1113",
   "kind": "run",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113; needs >=24h of log from the depends_on card",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/live_aid_liq_meaning_2026-11-13/liq_meaning.py",
+    "MyTradingSys/tools/live_aid/liq_rates.js",
+    "MyTradingSys/tools/live_aid/test_liq_rates.py"
+  ],
+  "scope_out": [
+    "no rate called a signal without placebo beating"
+  ],
+  "size": "M",
   "sources": [],
   "state": "raw",
-  "steps": [],
-  "tests": "",
+  "steps": [
+    "Run liq_meaning.py on the recorded log",
+    "Add placebo; write rates into liq_rates.js labelled OURS"
+  ],
+  "tests": "MyTradingSys/tools/live_aid/test_liq_rates.py::test_placebo_rate_present (fails first)",
   "title": "Live Aid: measure whether a 1m/2m forced-liquidation burst continues or reverses (run research/live_aid_liq_meaning_2026-11-13/liq_meaning.py once >=24h of liquidation events are recorded by card live-aid-liq-history-log-1113; fill tools/live_aid/liq_rates.js; add a random-time placebo before calling any rate a signal)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "session"
 }

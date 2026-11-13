@@ -4,35 +4,60 @@
   "commands": [],
   "created": "2026-11-13T12:14:10Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "RESULT.md line 23 states INCONCLUSIVE is not FAIL and cites PRE_REG item 0f (PRE_REG ## Context Regime/Phase/Session/Entry lines unchanged, not touched); git diff touches only that line",
+  "est_turns": 4,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "RESULT.md line 23 says FAIL means stop but the E2 verdict is INCONCLUSIVE (332 days < 439); reword so no stop is implied by INCONCLUSIVE and the stop applies only to the PRE_REG item 0f FAIL",
   "id": "krown-s8-result-fail-means-stop-wording-1113",
   "lane": "HAIKU",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "E2: Krown S8 4h frozen pre-reg run once on DEV 2020-01..2024-06: INCONCLUSIVE",
+      "ref": "2b80d7ecfcbc",
+      "utc": "2026-10-28T10:00:54Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2b80d7ecfcbc E2: Krown S8 4h frozen pre-reg run once on DEV 2020-01..2024-06: INCONCLUSIVE",
+      "ref": "MyTradingSys/research/fable_run6_powered_prereg/RESULT.md",
+      "utc": "2026-10-28T10:00:54Z"
+    }
+  ],
   "layers": [
     "krown"
   ],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 4,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T14:57:05Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
+  "scope_in": [
+    "MyTradingSys/research/fable_run6_powered_prereg/RESULT.md"
+  ],
+  "scope_out": [
+    "numbers, PRE_REG.md, e2_run.py unchanged"
+  ],
+  "scope_sha": "2b80d7ecfcbc",
+  "size": "S",
   "sources": [
     "Builder layers-md-cryptocred-4h-fail-1113"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "state": "ready",
+  "steps": [
+    "Read PRE_REG.md item 0f and RESULT.md line 23",
+    "Reword line 23: INCONCLUSIVE is not FAIL, STOP list not triggered; FAIL (0f) would trigger it"
+  ],
+  "tests": "python -m pytest MyTradingSys/tests/docs/test_integrity.py -q (fail-first N/A: wording-only; grep 'FAIL means stop' must return 0 hits after)",
   "title": "Krown S8 RESULT (research/fable_run6_powered_prereg/RESULT.md line 23) says 'FAIL means stop' incl. R1 section 5 STOP list; check against its verdict word (INCONCLUSIVE?) and reword to the PRE_REG rule",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }
