@@ -11,6 +11,7 @@ Registry row: conceptualizer. Publish with the Artifact tool over that url, then
 """
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -26,6 +27,7 @@ OUT = REPO / "MyTradingSys" / "system" / "artifacts" / "conceptualizer.html"
 STATUSES = ("failed", "inconclusive", "promising", "untested")
 FIDELITY = ("match", "simplified", "distorted", "untested")
 TAGS = ("SOURCED", "OURS", "NOT_SEEN")  # NOT_SEEN = a slot of the trader's that no verified source states
+SIZE = re.compile(r"\blots?\b|₹|\brupees?\b", re.I)  # public repo, context only: no position sizes in rows
 NEEDED = ("id", "name", "who", "status", "quote", "rule", "ours", "params", "code", "fidelity", "support", "test", "sim", "ideas", "question")
 
 
@@ -47,6 +49,8 @@ def problems(data, src=SRC):
             for p in c.get("params", []):
                 if len(p) != 3 or not p[2].startswith(TAGS):
                     out.append(f"{cid}: param {p!r} needs a SOURCED, OURS or NOT_SEEN tag")
+                if SIZE.search(" ".join(map(str, p))):
+                    out.append(f"{cid}: param {p[0]!r} carries a size word (lot, rupee)")
             d = c.get("diagram")
             if d and not (src / "diagrams" / d).is_file():
                 out.append(f"{cid}: diagram {d} missing")

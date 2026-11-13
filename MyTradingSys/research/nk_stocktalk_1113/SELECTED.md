@@ -5,17 +5,21 @@
 
 ---
 
+> **Update 2026-11-13 (after captions, Conceptualizer NK layer v6):** the 5 extracted videos are captioned (`raw_transcripts_canonical/<id>_raw.txt`) and quoted in `flash/` and `flash_deep/`. Mapping below is from the captions, not titles.
+
 ## 1. Hilega Milega
-- `JLcDdrHkB5M` | `2025-11-12` | *Intraday Chart How To Analyse #NK Singh #nkstocktalk #nitishsirhilegamilega* — **LISTED-ONLY**
-  - **Reason:** Only video in the 60-video listing explicitly tagged `#nitishsirhilegamilega` for intraday chart analysis.
+- `cmH38Uo4sYM` | `2025-11-12` | *How To Predict GAP UP & GAP DOWN in NIFTY | 15-10-5 Min RSI Strategy* — **CAPTIONED**
+  - **Reason:** the only caption that defines the method (red line under green = buying, red over and into blue = selling, RSI 9 above 50, read on 10m/5m).
+- `JLcDdrHkB5M` | `2025-11-12` | *Intraday Chart How To Analyse #nitishsirhilegamilega* — **CAPTIONED**
+  - **Reason:** tagged for the method but mentions it once, as a hand gesture in a Sensex forecast; its real content is the first-hour day trade.
 
 ## 2. Bollinger Bands
-- *None found in the 60-video listing.*
-  - **Reason:** No title in the 60 videos returned by `list_channel('@NKStockTalk', n=200)` mentions Bollinger Bands or BB.
+- `wrEEf8o9n9E` | `2025-11-12` | *Market Breakout or Fakeout? Breakout vs Fakeout* — **CAPTIONED**
+  - **Reason:** names the band "blast" 4 times (never defined) next to the daily 20 SMA; the lesson is price-action breakout, retest and fakeout. Thin on Bollinger.
 
 ## 3. SRP
-- **What SRP stands for:** *Cannot be determined from the 60 listed titles* — `SRP` does not appear in any of the 60 titles returned by `list_channel('@NKStockTalk', n=200)` (likely in older videos beyond Invidious `/latest` 60-video window).
-- *None found in the 60-video listing.*
+- `3EpXq8JC4jU` | `2026-02-12` | *Pivot Point Use & Butterfly Hedge* — **CAPTIONED**
+  - **Reason:** standard pivot support/resistance (CPR mid-line, R1-R3, S1-S3) plus a butterfly-hedge class. The acronym "SRP" is never spoken in any of the 5 captions; pivot S/R is the nearest match.
 
 ## 4. Nifty use
 - `ZuVWAu_MR2Q` | `2026-09-12` | *NIFTY H23 Strategy After CAS Rule | Smart Entry & Exit  | Low Capital Weekly Expiry Hedge Setup* — **LISTED-ONLY**
