@@ -76,7 +76,7 @@ Forward returns: next Monday open to the close of week +1/+2/+4/+8 (no costs). S
 | 2026-01-19 to 2026-02-23 | 6 | -29.8% | 0.3% | 10.7% | 0.3% | 19.6% | N / N |
 | 2026-10-05 to 2026-11-02 | 5 | -13.6% | - | - | - | - | N / N |
 
-3 BTC streaks of >= 5 weeks in 11 years: far too few to power a test; descriptive only. The ongoing 2026 streak (red weeks from 2026-10-05) is not in the table: its sixth week (from 2026-11-09) was still open when data was pulled.
+3 rows only (Coinbase series is gap-free from 2015-07-20): the last row is the ONGOING streak, 5 completed red weeks (the 6th, from 2026-11-09, was still open at data pull), so it has no forward returns. Two finished streaks in 11 years cannot power any test; descriptive only. Neither reclaimed the last red week's low within 3 weeks (2022 swept it and kept falling; 2026 never swept it).
 
 ## Caveats
 - Survivorship: coins are today's large caps (listed >= 4y), which favours longs; XMR delisted from Binance (data to 2024-02) and is kept for the span it has.

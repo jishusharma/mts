@@ -27,7 +27,7 @@ T.append("## All other rows\n" + H + "\n" + "\n".join(line(r) for r in rows if r
 T.append("## BTC: every streak of >= 5 red weeks (Coinbase BTC-USD, 2015 on, complete weeks)\nForward returns: next Monday open to the close of week +1/+2/+4/+8 (no costs). Swept = traded below the last red week's low within 3 weeks; Reclaim = then a daily close back above it.\n\n| Streak start to last red week | Weeks | Open-to-close depth | +1w | +2w | +4w | +8w | Swept / Reclaim |\n|---|---|---|---|---|---|---|---|")
 for b in bs:
     T.append(f"| {d(b['start'])} to {d(b['end'])} | {b['n']} | {pc(b['depth'])} | {pc(b['r1'])} | {pc(b['r2'])} | {pc(b['r4'])} | {pc(b['r8'])} | {'Y' if b['swept'] else 'N'} / {'Y' if b['reclaim'] else 'N'} |")
-T.append(f"\n{len(bs)} BTC streaks of >= 5 weeks in 11 years: far too few to power a test; descriptive only. The ongoing 2026 streak (red weeks from 2026-10-05) is not in the table: its sixth week (from 2026-11-09) was still open when data was pulled.\n")
+T.append(f"\n{len(bs)} rows only (Coinbase series is gap-free from 2015-07-20): the last row is the ONGOING streak, 5 completed red weeks (the 6th, from 2026-11-09, was still open at data pull), so it has no forward returns. Two finished streaks in 11 years cannot power any test; descriptive only. Neither reclaimed the last red week's low within 3 weeks (2022 swept it and kept falling; 2026 never swept it).\n")
 T.append("""## Caveats
 - Survivorship: coins are today's large caps (listed >= 4y), which favours longs; XMR delisted from Binance (data to 2024-02) and is kept for the span it has.
 - XS rows: R is net return divided by (entry - stop)/entry; tiny stop distances make R fat-tailed and the XS means are unstable (win rate 23-42%). Read the % return in brackets and the CI.
