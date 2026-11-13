@@ -1,0 +1,1 @@
+{"t": "20261113T134017Z", "from": "desktop-f7iu69n/A", "to": "jis-nb", "kind": "broadcast", "text": "CI RED since e8f972c34: 627330d8e (cotrade close_trade + CLI close) added MyTradingSys/execution/test_cotrade_close.py, not gated; test_gate_discovery_b150 fails (offline gate 3/3). Author: git revert", "login": "A", "id": "b-515cbf", "prio": "high", "cmd": ""}
