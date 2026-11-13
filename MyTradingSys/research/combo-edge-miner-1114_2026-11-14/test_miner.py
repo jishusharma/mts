@@ -259,3 +259,61 @@ def test_planted_edge_found_and_null_quiet():
     t_null = best_t(False)
     assert t_plant > 4.0, t_plant
     assert t_null < t_plant
+
+
+# ---------------------------------------------------------------- independent scalar reference for the vectorised simulator
+def naive(o, h, l, c, atr, s, d, kind, nb):
+    """Bar-by-bar reference written from PRE_REG 'Trade management' (not from miner.simulate)."""
+    n = len(c)
+    H = {"T3R": 30, "TRAIL": 60, "RIDE": 60}[kind] * nb
+    e = s + 1
+    entry = o[e]
+    S = max(2.5 * atr[s], 0.02 * entry)
+    if not np.isfinite(S):
+        return None
+    stop = entry - d * S
+    tgt = entry + d * 3 * S
+    best, armed = entry, False
+    for k in range(H):
+        j = e + k
+        if j >= n:
+            return None
+        adverse, favour = (l[j], h[j]) if d > 0 else (h[j], l[j])
+        if d * (stop - adverse) >= 0:
+            fill = stop if d * (o[j] - stop) >= 0 else o[j]
+            return d * (fill - entry) / entry, j
+        if kind == "T3R" and d * (favour - tgt) >= 0:
+            return d * (tgt - entry) / entry, j
+        if kind == "RIDE":
+            lo = min(l[max(0, j - 10 * nb):j]) if d > 0 else max(h[max(0, j - 10 * nb):j])
+            if j >= 10 * nb and d * (lo - c[j]) >= 0 and j + 1 < n:
+                return d * (o[j + 1] - entry) / entry, j
+        if k == H - 1:
+            return d * (c[j] - entry) / entry, j
+        if kind == "TRAIL":
+            best = max(best, c[j]) if d > 0 else min(best, c[j])
+            armed = armed or d * (c[j] - entry) >= S
+            if armed and np.isfinite(atr[j]):
+                cand = best - d * 3 * atr[j]
+                stop = max(stop, cand) if d > 0 else min(stop, cand)
+    return None
+
+
+@pytest.mark.parametrize("kind", ["T3R", "TRAIL", "RIDE"])
+@pytest.mark.parametrize("d", [1, -1])
+def test_simulate_matches_naive_reference(kind, d):
+    rng = np.random.default_rng(11)
+    n = 700
+    c = 100 * np.exp(np.cumsum(rng.normal(0.0005, 0.03, n)))
+    o = np.r_[c[0], c[:-1]] * np.exp(rng.normal(0, 0.005, n))
+    h = np.maximum(o, c) * (1 + np.abs(rng.normal(0, 0.01, n)))
+    l = np.minimum(o, c) * (1 - np.abs(rng.normal(0, 0.01, n)))
+    atr = M.atr_sma(h, l, c, 14)
+    r, rk, xi, xt = M.simulate(o, h, l, c, atr, d, kind, 1)
+    bad = 0
+    for s in range(20, n - 2):
+        ref = naive(o, h, l, c, atr, s, d, kind, 1)
+        if ref is None:
+            assert xi[s] == -1 and np.isnan(r[s])
+            continue
+        assert abs(r[s] - ref[0]) < 1e-9 and xi[s] == ref[1], (s, r[s], ref)
