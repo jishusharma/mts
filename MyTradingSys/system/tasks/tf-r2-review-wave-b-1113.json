@@ -18,7 +18,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gap-driven re-read, not a video summary. Output answers the Q-ids only.",
+  "note": "BLOCKED 11-13 13:50Z (login B): g1 transcripts O5s9zWI0n2s/VHhvg96W6lc not on JIS-NUC (gate 14 NO-TRANSCRIPT); g2, g3 have no ANSWERS. See out/tf-r2-review-wave-b-1113/NOT_IN_DATA.md. Re-run on the host with those transcripts after g2/g3 land.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
