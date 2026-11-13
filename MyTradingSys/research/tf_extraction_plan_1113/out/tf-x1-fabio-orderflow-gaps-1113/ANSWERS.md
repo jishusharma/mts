@@ -156,7 +156,7 @@ Notes: Is1HvdfQm5c is machine transcription (ASR), no speaker labels, viewer cha
 **Source GPS: Is1HvdfQm5c | MIDDLE** [1:29:41] (ASR)
 
 > "with 30 you have more possibility with 60 you have less possibility"
-**Source GPS: Is1HvdfQm5c | END** [52:56] (ASR)
+**Source GPS: Is1HvdfQm5c | END** [1:52:56] (ASR)
 
 > "absorption at the top aggressive sellers 165 contract really strong the market tried to break this level for i think 2000 contract total 1400 contract total fail always"
 **Source GPS: Is1HvdfQm5c | BEGIN** [20:53] (ASR)
