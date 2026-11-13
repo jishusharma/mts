@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python -m pytest MyTradingSys/execution/us_open_trader -k spec -q"
+  ],
+  "created": "2026-11-13T14:11:37Z",
+  "depends_on": [],
+  "done_when": "a spec test file for engine.py exists under MyTradingSys/execution/us_open_trader/, passes against engine.py, fails at least once on a mutated engine.py (mutation noted in the findings file), and MyTradingSys/research/us_open_trader_2026-11-13/gpt_spec_tests_us_open_engine_1113.md records the derived values and the mutation result",
+  "est_turns": 14,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Independent spec tests for us_open_trader engine.py written from MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md sections 2 and 10 only, not from any existing test. Derive expected values by hand from the spec.",
+  "id": "gpt-spec-tests-us-open-engine-1113",
+  "kind": "audit",
+  "lane": "CODEX",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/us_open_trader_2026-11-13/DESIGN.md sections 2 and 10 (read)",
+    "MyTradingSys/execution/us_open_trader/engine.py (read)"
+  ],
+  "scope_out": [
+    "no edit to engine.py itself; no live-tree edit, no deploy, no .secrets or .env read"
+  ],
+  "size": "S",
+  "sources": [
+    "MyTradingSys/system/ANNOUNCEMENTS.md A-20261104-1"
+  ],
+  "state": "raw",
+  "steps": [
+    "Read DESIGN.md sections 2 and 10 only",
+    "Derive 5+ expected values by hand",
+    "Write spec tests and run green",
+    "Mutate engine.py locally once, see red, revert and record it"
+  ],
+  "tests": "python -m pytest MyTradingSys/execution/us_open_trader -k spec -q",
+  "title": "gpt spec tests: us_open_trader engine from DESIGN.md sections 2 and 10",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

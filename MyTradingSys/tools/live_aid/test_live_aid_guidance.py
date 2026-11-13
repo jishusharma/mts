@@ -54,12 +54,13 @@ def test_indicator_so_what_waits_when_15m_and_1h_disagree():
 def test_liquidation_panel_says_what_follows():
     win = {"15m": {"long": 3_000_000, "short": 200_000}}
     t = _txt(_run("H._liqCard({liq:{win:j.w,since:0},now:1e12},j.md)", {"w": win, "md": MD}))
-    assert "So what: longs were forced out, selling fuel is spent: a long idea only if price holds the floor at 73,500 (Yesterday low)" in t
+    # operator 11-13: the card says what happened, never what follows (no follow-through has been measured)
+    assert "What it shows: 3.0M of longs were forced to sell in 15 min (that selling pushed price down); next floor at 73,500 (Yesterday low)" in t, t
     win = {"15m": {"long": 100, "short": 5_000_000}}
     t = _txt(_run("H._liqCard({liq:{win:j.w,since:0},now:1e12},j.md)", {"w": win, "md": MD}))
-    assert "short idea only if price holds the ceiling at 74,000 (Today high)" in t
+    assert "5.0M of shorts were forced to buy in 15 min (that buying pushed price up); next ceiling at 74,000 (Today high)" in t, t
     t = _txt(_run("H._liqCard({liq:{win:j.w,since:0},now:1e12},j.md)", {"w": {"15m": {"long": 0, "short": 0}}, "md": MD}))
-    assert "So what: quiet, ignore" in t
+    assert "What it shows: quiet in the last 15 min" in t
 
 
 def _lane(side, big=0, zone="mid", wt1=0):
@@ -67,7 +68,8 @@ def _lane(side, big=0, zone="mid", wt1=0):
 
 
 def _wt(lanes, pre=""):
-    return _run(pre + "H._wtSoWhat({lanes:j},{lad:" + json.dumps(LAD) + "})", lanes)
+    # the chip-row tests read the CLOSED row; open is the default since 11-13, so close it first unless the test opens it itself
+    return _run("(" + (pre or "H._wtSetOpen(false),") + "H._wtSoWhat({lanes:j},{lad:" + json.dumps(LAD) + "}))", lanes)
 
 
 def test_wavetrend_is_one_chip_row_and_keeps_the_sentence_in_the_tooltip():
@@ -93,7 +95,7 @@ def test_wavetrend_strips_are_collapsed_until_clicked():
     node = shutil.which("node")
     if not node:
         pytest.skip("node not installed")
-    h = _run("H._wtSoWhat({lanes:{}},{})", {})
+    h = _run("(H._wtSetOpen(false),H._wtSoWhat({lanes:{}},{}))", {})
     assert 'data-wttoggle="1"' in h and "[show strips]" in h and "hm-wfull" not in h
     out = _run("(H._wtSetOpen(true),H._wtSoWhat({lanes:{}},{}))", {})
     assert "[hide strips]" in out and "hm-wfull" in out                     # open: the full sentence appears above the strips
@@ -198,3 +200,83 @@ def test_folded_pages_still_exist_and_are_reachable():
     for pid, view in [("p-verdict", "verdict"), ("p-antic", "antic"), ("p-bc", "bc"), ("p-lap", "lap"), ("p-xliq", "xliq"), ("p-money", "money")]:
         assert '<section id="%s">' % pid in page                                       # nothing deleted
         assert re.search(r"\b%s: \['%s'," % (view, pid), page), view                    # and a route reaches it (antic/bc/lap/xliq had none)
+
+
+# ---------- operator 2026-11-13 (2nd pass): volume off the candles, averages drawn, WaveTrend back, plain words ----------
+T0 = 1794300000000   # a 5m boundary
+def _bars(n, vol=100.0, buy=60.0):
+    # 5m rows [t,o,h,l,c,vol,closeTime,quoteVol,trades,takerBuy]; close rises 10 per bar from 70,000
+    return [[T0 + i * 300000, 70000 + i * 10, 70020 + i * 10, 69990 + i * 10, 70010 + i * 10, vol, T0 + (i + 1) * 300000 - 1, 0, 0, buy] for i in range(n)]
+
+
+def test_volume_has_its_own_strip_and_no_bar_sits_on_the_candles():
+    k = _bars(30)
+    k[10][9] = 20.0                                                        # one bar where sellers took more
+    ctx = {"now": T0 + 30 * 300000, "rows5": [r[:5] for r in k], "k5": k}
+    md = {"px": 70300, "zones": [], "lad": {"at": None, "above": [], "below": []}}
+    price = _run("H._chart(j.ctx,j.md,1000,400)", {"ctx": ctx, "md": md})
+    assert "hm-vb" not in price and "hm-cvd" not in price                  # nothing overlaps the wicks any more
+    vol = _run("H._volPane(j.ctx,j.md,1000,78)", {"ctx": ctx, "md": md})
+    assert vol.count('class="hm-vb up"') == 29 and vol.count('class="hm-vb down"') == 1
+    assert 'class="hm-vavg"' in vol and "white line = normal (20-bar average)" in vol
+
+
+def test_volume_line_says_how_big_who_and_what_it_shows():
+    k = _bars(24)
+    k[23][5], k[23][9] = 200.0, 150.0                                      # last closed bar: 200 vs a 20-bar average of 100, buyers 150 of 200, bar up
+    k.append([T0 + 24 * 300000, 1, 1, 1, 1, 9999.0, 0, 0, 0, 0.0])        # forming bar: must be ignored
+    r = json.loads(_run("JSON.stringify(H._volRead(j))", {"now": T0 + 24 * 300000 + 1000, "k5": k}))
+    # by hand: 200/100 = 2.0x >= 1.5 busy; 3-bar (200+100+100)/3 = 133 vs 100 = 1.33 >= 1.25 rising
+    assert r["txt"] == "Volume: last closed 5m bar 2.0x normal (busy), buyers took more, 3-bar trend rising: the rise had real buying behind it", r["txt"]
+    k2 = _bars(24)
+    k2[23][5], k2[23][9] = 50.0, 10.0                                      # 0.5x: thin, sellers; (50+100+100)/3 = 83 vs 100 = 0.83: steady
+    r2 = json.loads(_run("JSON.stringify(H._volRead(j))", {"now": T0 + 24 * 300000, "k5": k2}))
+    assert r2["txt"] == "Volume: last closed 5m bar 0.5x normal (thin), sellers took more, 3-bar trend steady: few traders took part in the last move", r2["txt"]
+    assert "not enough closed bars" in json.loads(_run("JSON.stringify(H._volRead(j))", {"now": T0 + 10 * 300000, "k5": _bars(10)}))["txt"]
+    vfi = {"tfs": [], "r": {"15m": {"cells": {"vfi": {"v": 1, "rising": -1}}}, "1h": {"cells": {"vfi": {"v": -1, "rising": 1}}}}}
+    h = html.unescape(_txt(_run("H._volRead(j).html", {"now": T0 + 24 * 300000, "k5": k2, "ind": vfi})))
+    assert "Money flow (VFI): 15min ▼1hout ▲" in h, h
+
+
+def test_krown_averages_are_drawn_on_the_5m_chart():
+    # by hand, n=3, closes 1..5: seed = mean(1,2,3) = 2, alpha 0.5 -> 3, 4; the simple average gives the same here
+    assert json.loads(_run("JSON.stringify([H._emaS(j,3),H._smaS(j,3)])", [1, 2, 3, 4, 5])) == [[None, None, 2, 3, 4], [None, None, 2, 3, 4]]
+    assert json.loads(_run("JSON.stringify(H.MA5)", {})) == [["ema", 21, "21 EMA"], ["ema", 55, "55 EMA"], ["sma", 200, "200 SMA"]]
+    k = _bars(30)
+    ctx = {"now": T0 + 30 * 300000, "rows5": [r[:5] for r in k]}
+    md = {"px": 70300, "zones": [], "lad": {"at": None, "above": [], "below": []}}
+    svg = html.unescape(_run("H._chart(j.ctx,j.md,1000,400)", {"ctx": ctx, "md": md}))
+    assert 'class="hm-ma m0"' in svg and 'class="hm-ma m1"' not in svg     # 30 bars: the 21 exists, the 55 and 200 do not
+    assert "55 EMA needs 55 bars" in svg and "200 SMA needs 200 bars" in svg and "Averages on 5m (Krown’s set)" in svg
+
+
+def test_wavetrend_is_open_by_default_and_only_his_click_closes_it():
+    assert _run("H._wtLoad()", {}).strip() == "true"                        # no storage at all: open
+    pre = "globalThis.localStorage={getItem(){return '0'},setItem(){}};"
+    assert _rail(pre, "console.log(H._wtLoad())").strip() == "false"       # he hid the strips: stays hidden
+    pre = "globalThis.localStorage={getItem(){throw new Error('blocked')},setItem(){}};"
+    assert _rail(pre, "console.log(H._wtLoad())").strip() == "true"        # storage blocked: open
+
+
+def test_plain_words_votes_bias_forced_flow_and_analyst_name():
+    ind = {"tfs": [["15m", 0, "frame"]], "r": {}, "stale": False, "ver": {"15m": _ver(-1, 1, 5)}}
+    t = _txt(_run("H._indCard({ind:j.ind},j.md)", {"ind": ind, "md": MD}))
+    assert "5 of 6 say down" in t and "6 readings vote per timeframe: money flow, squeeze, trend strength, WaveTrend, RSI, buy vs sell volume. A lead of 2 wins." in t
+    md = dict(MD, dir="SHORT", bull=1, bear=5, n=6)
+    b = html.unescape(_run("H._biasLine({pulse:{hi:0}},j)", md))
+    assert "The next few minutes lean DOWN; the bigger 1h-4h trend is MIXED. The short-term lean covers the next 15m candle only." in b
+    assert "gauge" not in b and "backdrop" not in b and "now (minutes) DOWN 5/6" in b
+    liq = {"win": {"1m": {"long": 2000000, "short": 0}, "15m": {"long": 3000000, "short": 100000}}}
+    lt = html.unescape(_txt(_run("H._liqCard({liq:j.liq,now:1},j.md)", {"liq": liq, "md": MD})))
+    assert "3.0M of longs were forced to sell in 15 min" in lt and "fuel is spent" not in lt
+    assert "NOT MEASURED yet (no liquidation history is recorded)" in lt   # liq_rates.js has no rows: no rate is ever made up
+    assert _run("H.zoneName(j)", {"items": [{"src": "analyst", "who": "Krown"}, {"src": "ma", "badge": "1WS20"}, {"src": "ma", "badge": "1WE21"}]}).strip() == "Krown call + Bull market band (weekly)"
+    assert _run("H.zoneName(j)", {"items": [{"src": "analyst"}]}).strip() == "Analyst call"
+
+
+def test_news_card_is_quiet_unless_something_matters():
+    quiet = html.unescape(_txt(_run("H._newsCard(j)", {"now": 3600000 * 5, "news": [{"id": 1, "t": 3600000 * 5 - 60000, "score": 3, "head": "small thing", "tag": "NEUTRAL"}]})))
+    assert "News that matters" in quiet and "Nothing important in the last hour" in quiet and "small thing" not in quiet
+    long_head = "Fed cuts rates by 50 basis points in a surprise move, chair cites weakening labour market and falling inflation expectations"
+    hot = html.unescape(_txt(_run("H._newsCard(j)", {"now": 3600000 * 5, "news": [{"id": 2, "t": 3600000 * 5 - 120000, "score": 9, "head": long_head, "tag": "POSITIVE"}]})))
+    assert long_head in hot and "2 min ago" in hot                          # the full headline, not a 90-character cut

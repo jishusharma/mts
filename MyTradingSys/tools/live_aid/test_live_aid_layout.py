@@ -126,12 +126,18 @@ def test_home_is_landing_tab_and_page_never_scrolls(browser):
         boxes.sort()
         assert boxes and all(b[0] >= a[1] - 0.5 for a, b in zip(boxes, boxes[1:])), boxes
         # operator 2026-11-10: WaveTrend lanes on Home: 1m 2m 3m timing, 15m 30m frame, 4h context
-        # operator 2026-11-13: ONE WaveTrend line, strips collapsed until clicked
-        assert page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.length") == 0
+        # operator 2026-11-13 (2nd ask, "WaveTrend has gone completely"): the six strips are OPEN by default under a smaller chart;
+        # one click on the WaveTrend row hides them, the next click brings them back
         assert page.eval_on_selector_all("#p-home .hm-wsw", "es => es.length") == 1
-        page.click("#p-home .hm-wsw"); page.wait_for_timeout(300)
         lanes = page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.map(t => t.textContent)")
         assert lanes == ["1m", "2m", "3m", "15m", "30m", "4h"], lanes
+        # volume has its own strip (the replay fixture has no Binance 5m feed, so the strip may be its NOT_IN_DATA note instead)
+        assert page.eval_on_selector_all("#p-home .hm-vol", "es => es.length") == 1 or "Volume NOT_IN_DATA" in page.inner_text("#p-home .hm-chart")
+        assert page.eval_on_selector_all("#p-home .hm-svg .hm-vb", "es => es.length") == 0   # and no volume bar sits on the candles
+        page.click("#p-home .hm-wsw"); page.wait_for_timeout(300)
+        assert page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.length") == 0
+        page.click("#p-home .hm-wsw"); page.wait_for_timeout(300)
+        assert page.eval_on_selector_all("#p-home .hm-wtl", "ts => ts.length") == 6
         for h in ("#home", "#now", "#usopen", "#news"):
             page.evaluate(f"location.hash = '{h}'"); page.wait_for_timeout(200)
             sc = page.evaluate("[Math.max(document.documentElement.scrollHeight, document.body.scrollHeight), window.innerHeight, getComputedStyle(document.body).overflow]")
