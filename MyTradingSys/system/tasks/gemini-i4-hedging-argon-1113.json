@@ -1,0 +1,64 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "claim": "",
+  "closed": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration4_1113/hedging/argon.md"
+  ],
+  "created": "2026-11-13T01:50:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/tf_iteration4_1113/hedging/argon.md exists with one row per finding in the table | topic | trader | exact quote | video id [mm:ss] | rule in his words | number: SOURCED value or NOT_SEEN | in our code? file:line or NONE |, a TOP 5 and SINGLE BIGGEST HOLE section, and verify_extract_quotes.py exits 0",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Hedging: for every video that names it (15 in ITERATION_2.md hedging row, 0 code, no definition anywhere) write what the trader says it is, a number if any, and the trade it feeds.",
+  "id": "gemini-i4-hedging-argon-1113",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "",
+  "note": "Run as gemini_queue.py run gemini-i4-hedging-argon-1113:low:argon. Videos: list in MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md (hedging row) and ITERATION_3.md; find them in raw_transcripts_canonical. Reads disk only, no YouTube request. Same BRIEF.md as iteration 3; twin card on the other model.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T01:50:37Z",
+  "refs": [
+    "MyTradingSys/backtest/layers/FORMULAS.md",
+    "MyTradingSys/research/tf_extraction_plan_1113/ITERATION_2.md",
+    "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
+  ],
+  "result": "",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/tf_iteration4_1113/hedging/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no numbers from our docs or your own knowledge: unstated = NOT_SEEN",
+    "no YouTube or web fetch"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
+    "Find the cryptocred transcripts in raw_transcripts_canonical via the LAYERS.md section; compare with that layer code",
+    "Write MyTradingSys/research/tf_iteration3_1113/hedging/flash.md; every quote copied exactly from the named transcript; run verify_extract_quotes.py until exit 0; commit on your branch and ship"
+  ],
+  "taken": "",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Iteration 4: hedging, every video that names it, model argon",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
