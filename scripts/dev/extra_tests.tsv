@@ -294,6 +294,11 @@ MyTradingSys/execution/us_open_trader/test_plan.py
 MyTradingSys/execution/us_open_trader/test_recorder.py
 MyTradingSys/execution/us_open_trader/test_runner.py
 MyTradingSys/execution/us_open_trader/test_score.py
+MyTradingSys/research/extreme_confirm_template_2026-11/test_extreme_confirm.py
+MyTradingSys/research/rsi_extreme_confirm_2026-11-13/test_engine.py
 scripts/dev/test_ship_timing_report.py
 MyTradingSys/research/rsi_range_census_2026-11-13/test_census_lib.py
 MyTradingSys/research/adx_1d_through25_2026-11-13/test_run_1113.py
+MyTradingSys/tools/live_aid/test_flow_chart.py
+MyTradingSys/tools/live_aid/test_flow_collector.py
+MyTradingSys/tools/live_aid/test_adx_strip.py

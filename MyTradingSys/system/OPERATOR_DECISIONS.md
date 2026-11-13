@@ -4,6 +4,16 @@ The Control Room db holds the live copy (collection `decisions`, one doc per que
 a session that adds a question appends it here; the pickup that applies an answer writes the answer and the note here,
 word for word (CONTROL_ROOM.md step 4). Seed a wiped or second db from the JSON blocks below.
 
+## d-live-aid-forced-moves-chart | decided 2026-11-13 | Builder live-aid-forced-move-chart-1113
+```json
+{"id": "d-live-aid-forced-moves-chart", "order": 50, "date": "2026-11-13", "status": "DECIDED", "question": "Should Live Aid show forced buying and exits (large trades, OI, CVD) as a graph and be runnable by a Haiku or Sonnet reader?", "answer": "2026-11-13 ~16:45Z: Live Aid must show forced buying/exits (large trades, OI, CVD) as a colour-coded graph, and be runnable by a Haiku/Sonnet reader from a state file; built as R25 (flow_chart.js, flow_collector.py, FLOW_READER.md).", "done": "R25 built: panel Forced moves (flow_chart.js), flow_collector.py (--once writes flow_state.json and flow_digest.txt), FLOW_READER.md checklist."}
+```
+
+## d-feed-watcher-footprint-capture | decided 2026-11-13 | Builder live-aid-forced-move-chart-1113
+```json
+{"id": "d-feed-watcher-footprint-capture", "order": 51, "date": "2026-11-13", "status": "DECIDED", "question": "Visible Haiku feed-watcher and 15 min / 1 min footprint plus large-trade capture in Live Aid?", "answer": "2026-11-13 ~16:50Z: operator wants a visible Haiku feed-watcher session giving the Supervisor a market read every 15 min (every minute at special times), and the 15-min / 1-min footprint + large-trade capture wired into Live Aid. Started session feed-watcher (Haiku) on record_now.py readings; CoinGlass screenshots are NOT captured because Chrome tools are off, the collector's Bybit trade stream replaces them.", "done": "Footprint 15m / 1h from the Bybit trade stream written by flow_collector.py (feed js and FP lines in flow_digest.txt); page tag uo-fp-tf labelled Bybit perp, collector, stale label added."}
+```
+
 ## d-pages-follow-data | decided 2026-11-13 | Supervisor C (relayed from the operator)
 ```json
 {"id": "d-pages-follow-data", "order": 48, "date": "2026-11-13", "status": "DECIDED",
@@ -2504,6 +2514,9 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Nitish Kumar (NK StockTalk) ideas, RSI use first, are to be understood and applied to crypto. Study edge-nk-rsi-hilega-1113 started; the remaining 55 catalog videos go to Gemini.
 - For this window Sonnet and Haiku workers run in bulk ("ultra mode") and work locally. The supervisor verifies the numbers and ships what needs shipping.
 
+## 2026-11-13 ~16:55Z: ADX/DI reads on Live Aid (R26); Chrome profile named
+- 2026-11-13 ~16:55Z: operator wants the ADX/DI reads (1w, 5d, 3d, 2d and lower frames) visible on Live Aid with how to use each frame; built as R26. He also named the Chrome profile sessions may use: the purple 'j' profile signed in as his 1985 Gmail (CoinGlass Pro, always open); never ask again; the other two profiles stay untouched.
+
 ## 2026-11-13 ~17:10Z: finished worktrees removed at once; spawned sessions must not sit waiting
 - Operator: "remove all the work trees ... why were they not removed immediately ... how will we achieve automation if these things are missed regularly".
 - Cause found (JIS-NB, 87 trees / 24 GB): the cleaners were time-boxed (15-20 s) and silent, each tree costs about 1.7 s under load so only the same first ~10 were ever checked; the after-ship cleaner skipped gateway-marked trees; 9 stale `index.lock` files went undetected and blocked ships and commits.
@@ -2512,3 +2525,7 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13 ~17:10Z: a rule book for every indicator (voice, JIS-NB)
 - Operator order (sense, verbatim in spirit): "we have so many indicators ... we need to know from the basics of these indicators and the developers like Lazy Bear, and what the internet says, what MTS says, what research we do, so there is a rule book for every indicator on how to read it and when it should be applied, like confluence, a confidence builder or a position builder. Every layer needs to be doing this, not just ADX and DI. Every indicator needs this feature."
 - Mechanism: `MyTradingSys/research/indicator_rulebooks/` (TEMPLATE.md, INDEX.md, one file per indicator); Gemini cards `gemini-rulebook-<name>-1113` fill sections 2-4, 6-8; a Sonnet pass fills section 5. Model: `research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md`. Labels SOURCED vs OURS as in that doc.
+
+## 2026-11-13 ~18:15Z: load logins A and B and both Gemini accounts (voice, JIS-NB)
+- Operator order (sense): logins A and B are hardly doing anything; put them to use in line with the 5-hour plan; do not get off track; keep watching threads, CPU, cleanups and the Haiku feed watcher; engage every model and give them loads of tasks so the quota is used before it expires tomorrow.
+- Mechanism: `MyTradingSys/system/LOGIN_PLAN_2026-11-13.md` (ordered queue per login and per Gemini account, read at station boot per WORKERS.md rule 10) plus a HIGH broadcast to the laptop; two wave-2 cards filed (edge4-rsi-4h-le12-daily-lt30-1113, edge4-malkan-divergence-r03-r04-1113). Login B needs one operator-started session on the NUC (start line in the plan).

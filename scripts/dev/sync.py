@@ -2312,6 +2312,12 @@ def remove_tree_now(repo, p, branch):
     r = git(primary, "worktree", "remove", "--force", str(p), check=False)
     if r.returncode != 0 and p.exists():
         return False
+    if p.exists():   # git emptied it but a process still has the folder as cwd: rmdir fails until that process leaves
+        try:
+            p.rmdir()
+        except OSError:
+            git(primary, "worktree", "prune", check=False)
+            return False
     if git(primary, "branch", "-d", branch, check=False).returncode != 0:
         git(primary, "branch", "-D", branch, check=False)   # already known to be on origin/TRUNK; -d judges against a lagging HEAD
     git(primary, "worktree", "prune", check=False)
@@ -2330,6 +2336,12 @@ def retry_pending_removals(repo):
     for pth in paths:
         p = Path(pth).resolve()
         if str(p) not in by_path:
+            if p.is_dir() and not any(p.iterdir()):   # deregistered but the empty folder was held open
+                try:
+                    p.rmdir()
+                    gone.append(p.name)
+                except OSError:
+                    keep.append(pth)
             continue
         if p == here:
             keep.append(pth)
@@ -2784,9 +2796,8 @@ def main(argv):
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
                 if release_slug:
-                    primary = Path(worktrees(repo)[0][0])
-                    if retire_own_tree(repo):
-                        repo = primary
+                    here_tree, repo = repo, Path(worktrees(repo)[0][0])   # the own tree may be half-removed: later git calls run from the primary
+                    retire_own_tree(here_tree)
                 tidy_after_ship(repo)
             if isinstance(pushed, Pushed) and os.environ.get("SYNC_FIX_CI") and not ci_starts(pushed.files, ci_path_filter(repo)):
                 dispatch_ci()
