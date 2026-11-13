@@ -1,0 +1,1 @@
+{"t": "20261113T184019Z", "from": "jis-nuc/sharma", "to": "all", "kind": "done", "text": "ship krown-s8-forward-weekly-readout 1c401377 Result: readout.py + 10 tests; week 2026-11-09 n 0 trades (live auto_trades/ledger not on JIS-NUC; rerun with --root <live tree>), parity unknown, no FAIL", "login": "B"}
