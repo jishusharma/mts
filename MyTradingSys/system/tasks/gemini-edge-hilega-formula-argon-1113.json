@@ -21,6 +21,20 @@
       "line": "MyTradingSys/research/layer_lab/gemini_edge_1113/hilega-formula-argon/FORMULA.md",
       "ref": "8f0c7d46b",
       "utc": "2026-11-13T21:32:55Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "research(hilega): public formula definition and parameter extraction (argon twin)",
+      "ref": "8f0c7d46b546",
+      "utc": "2026-11-13T21:32:48Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "8f0c7d46b546 research(hilega): public formula definition and parameter extraction (argon t",
+      "ref": "MyTradingSys/research/layer_lab/reports/2026-11-13_gemini-edge-hilega-formula-argon-1113.md",
+      "utc": "2026-11-13T21:32:48Z"
     }
   ],
   "layers": [],
@@ -31,7 +45,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-13T15:58:03Z",
+  "refreshed": "2026-11-13T23:14:16Z",
   "refs": [
     "MyTradingSys/research/nk_stocktalk_1113/flash_deep/"
   ],
@@ -50,7 +64,7 @@
     "every number must trace to a file or a verbatim quote, never memory",
     "do not run sync.py ship"
   ],
-  "scope_sha": "",
+  "scope_sha": "8f0c7d46b546",
   "size": "M",
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
