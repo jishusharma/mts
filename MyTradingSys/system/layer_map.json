@@ -1157,7 +1157,7 @@
   },
   {
    "id": "BIGTRADE-EXIT",
-   "trials": null,
+   "trials": 54,
    "title": "Bigtrade fires x exit policies (backtest C)",
    "date": "2026-10-09",
    "market": "spot bars, TRAIN/VALIDATE; HOLDOUT 2025-07.. not read",
@@ -1675,7 +1675,7 @@
    "n": "VALIDATION n 30-818 per powered cell",
    "verdict": "FAIL",
    "report": "MyTradingSys/research/extreme_confirm_template_2026-11/REPORT.md",
-   "read": "cells.csv + REPORT.md"
+   "read": "summary"
   },
  {
   "id": "ADX-1D-THROUGH25-20261113",
