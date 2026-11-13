@@ -2554,3 +2554,8 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Checked: Bybit BTCUSDT weekly shows 6 red weeks in a row (open 86,486 on 2026-10-05 to 69,015; this week's low 67,468).
 - Applied 20:08Z: 4 Sonnet studies on the desktop: weekly red-streak bounce (swing), bear-trap reclaim long in a downtrend (day trade), win rate versus profit per trade on long scalps (answers the Zing question on our data), and a descriptive map of past BTC bear-phase reactions and today's levels. A 13-study ship worker saves today's results. Memory updated: cap 95% this week.
 - Open: Zing's own closed-trade history (entry, stop, target, result, fees) is needed to judge its win rates; a win rate alone says nothing about profit.
+
+### 2026-11-14 16:53Z and 20:16Z - C: drive filling (operator alarm)
+- Operator: C: went from 19 GB to 10.5 GB free in a day; make it stop for good.
+- Cause: `sync.py` `new_worktree()` put every study tree next to the C: checkout (61 `mts-jis-nb-*` trees = 12 GB) and each study re-downloaded the same coin data into its own `runtime_data`; trees leave only via `sync.py tidy` after a ship.
+- Fix (card c-drive-worktrees-on-f-1114): trees default to `F:\MTS\wt` (env `MTS_WORKTREE_ROOT` or `hosts.py` HOST_PATHS), shared data cache `F:\MTS\data_cache` (`data_cache.py`), c_drive_guard lists unshipped study trees older than 6 h when C: < 15 GB. Existing trees are not migrated.
