@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/yt.py health"
+  ],
+  "created": "2026-11-13T22:48:53Z",
+  "depends_on": [],
+  "done_when": "yt.py health printed; every route is up or locked-until-future, or yt.py doctor ran and a card exists for each route still down (YT_PROXY.md YouTube freedom).",
+  "est_turns": 3,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "STANDING (never closed): at every coordinator load run yt.py health so a dead YouTube route is seen the same hour, not when a caption job fails.",
+  "id": "yt-health-standing-1114",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Chrome rule: no Chrome tool until operator names a deviceId; Browser 2 paths withdrawn",
+      "ref": "605e8a148cb6",
+      "utc": "2026-11-12T16:37:12Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "605e8a148cb6 Chrome rule: no Chrome tool until operator names a deviceId; Browser 2 paths ",
+      "ref": "MyTradingSys/system/YT_PROXY.md",
+      "utc": "2026-11-12T16:37:12Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Standing card: it is a reminder pair with the SUPER_SESSION.md Boot facts line; re-open or re-file after a run. Operator 2026-11-13 YouTube freedom.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:49:13Z",
+  "refs": [
+    "MyTradingSys/system/YT_PROXY.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/yt.py",
+    "MyTradingSys/system/YT_PROXY.md"
+  ],
+  "scope_out": [
+    "scripts/dev/fetch_captions_timed.py"
+  ],
+  "scope_sha": "605e8a148cb6",
+  "size": "S",
+  "sources": [
+    "JIS-NB yt-freedom-1114"
+  ],
+  "state": "ready",
+  "steps": [
+    "python scripts/dev/yt.py health",
+    "if a route is down: python scripts/dev/yt.py doctor, then health again",
+    "card each route that stays down (lane SONNET, ref YT_PROXY.md)"
+  ],
+  "tests": "python -m pytest scripts/dev/test_yt_freedom.py -q passes",
+  "title": "Standing: run python scripts/dev/yt.py health at coordinator load; red routes: yt.py doctor, then a card for what stays down",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
