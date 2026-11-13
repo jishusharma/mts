@@ -284,14 +284,51 @@ def published_at(pg):
         return None
 
 
+REG_RECORD_FIELDS = ("published_at", "published_sha", "last_published", "feed_hashes")
+
+
+def feed_hash(path):
+    """sha256 of a feed file's bytes, volatile stamps blanked as content_hash does. A registry.json feed (MTS Home) is hashed with the fields
+    publish-record rewrites blanked, so recording a publish never re-stales the page that lists the registry."""
+    raw = Path(path).read_bytes()
+    if Path(path).name == "registry.json":
+        try:
+            d = json.loads(raw.decode("utf-8"))
+            for pg in d.get("pages", []):
+                for k in REG_RECORD_FIELDS:
+                    pg.pop(k, None)
+            return hashlib.sha256(json.dumps(d, sort_keys=True).encode("utf-8")).hexdigest()
+        except (ValueError, AttributeError):
+            pass
+    return content_hash(raw.decode("utf-8", "replace"))
+
+
+def feed_key(f, repo=REPO):
+    """Machine-independent key for a feed file (the registry is shared through git): repo-relative when inside the repo."""
+    try:
+        return Path(f).resolve().relative_to(Path(repo).resolve()).as_posix()
+    except ValueError:
+        return Path(f).as_posix()
+
+
+def feed_hashes(pg, repo=REPO):
+    return {feed_key(f, repo): feed_hash(f) for f in feed_files(pg, repo)}
+
+
 def feed_reasons(pg, now=None, repo=REPO):
-    """Why a feed page is stale: a feed file newer than the last publish, or the last publish older than `max_age_h`. [] = current."""
+    """Why a feed page is stale: a feed whose content hash differs from the one stored at publish-record (mtime alone never counts; a page
+    with no stored hashes falls back to feed mtime), or the last publish older than `max_age_h`. [] = current."""
     now = now or datetime.now(timezone.utc)
     pub, why = published_at(pg), []
     if pub is None:
         return ["no publish time recorded"]
     files = feed_files(pg, repo)
-    if files:
+    stored = pg.get("feed_hashes")
+    if files and stored is not None:
+        changed = [f for f in files if stored.get(feed_key(f, repo)) != feed_hash(f)]
+        if changed:
+            why.append(f"feed {changed[0].name} content changed since the last publish")
+    elif files:
         newest = max(files, key=lambda f: f.stat().st_mtime)
         fresh = datetime.fromtimestamp(newest.stat().st_mtime, timezone.utc)
         if (fresh - pub).total_seconds() > 2:     # published_at is whole seconds; a feed written in the same second is not newer
@@ -368,6 +405,8 @@ def publish_record(reg, slug, today=None, repo=REPO, now=None):
         pg["published_sha"] = content_hash(build_html(pg, repo) if generated_only(pg) else repo_html(pg, repo))
     pg["last_published"][owner(pg)] = today or now.date().isoformat()
     pg["published_at"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    if pg.get("feeds"):
+        pg["feed_hashes"] = feed_hashes(pg, repo)
     return pg.get("published_sha") or "(feed page, no sha)"
 
 

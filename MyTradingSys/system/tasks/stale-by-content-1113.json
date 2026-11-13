@@ -1,0 +1,82 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T05:23:01Z",
+  "commands": [
+    "python scripts/dev/artifacts.py stale"
+  ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T05:22:59Z",
+    "misses": 26,
+    "reads": [
+      "scripts/dev/make_home.py",
+      "scripts/dev/test_artifacts.py"
+    ],
+    "session": "agent-afd55e1adbc0b606e"
+  },
+  "created": "2026-11-13T05:22:29Z",
+  "depends_on": [],
+  "done_when": "3 new tests pass and fail on old code; stale settles after publish-record",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "artifacts.py stale flags feed pages by content hash, not mtime",
+  "id": "stale-by-content-1113",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "stale compares feed content hashes",
+      "ref": "878248359",
+      "utc": "2026-11-13T05:23:01Z"
+    },
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 5 file(s)",
+      "ref": "878248359c2a",
+      "utc": "2026-11-13T05:18:55Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: finished",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T05:22:53Z",
+  "refs": [],
+  "result": "stale compares feed content hashes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/artifacts.py",
+    "scripts/dev/test_artifacts.py",
+    "MyTradingSys/system/artifacts/registry.json"
+  ],
+  "scope_out": [
+    "execution tests, live tree"
+  ],
+  "scope_sha": "878248359c2a",
+  "size": "S",
+  "sources": [
+    "Builder job 11-13"
+  ],
+  "state": "done",
+  "steps": [
+    "store feed_hashes at publish-record",
+    "compare hashes in stale"
+  ],
+  "taken": "2026-11-13T05:23:01Z",
+  "tests": "python -m unittest scripts/dev/test_artifacts.py",
+  "title": "artifacts.py stale compares content hashes not mtimes",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

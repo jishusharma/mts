@@ -261,6 +261,9 @@
       "notes_go_to": "Nothing to write here.",
       "note": "The hub (operator 2026-10-16: 'all my artifacts available from one place'). Generated from registry.json; pinned on the home login.",
       "published_sha": "54c67beea3398cd78bea71900b125a596a0d5f3bffcd89c7fbeaf53bd370fb2f",
+      "feeds": [
+        "MyTradingSys/system/artifacts/registry.json"
+      ],
       "max_age_h": 24,
       "published_at": "2026-11-13T05:18:39Z"
     },

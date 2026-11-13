@@ -440,6 +440,57 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class FeedContentTests(unittest.TestCase):
+    """2026-11-13: feed pages go stale on content change, never on mtime alone."""
+
+    def _reg(self, feed):
+        pg = {"slug": "p", "title": "P", "status": "canonical", "pinned": True, "generator": "x", "html": None, "single_owner": "acc",
+              "urls": {"acc": "https://claude.ai/artifact/AAA"}, "last_published": {"acc": "2026-11-07"}, "published_at": "2026-11-07T10:00:00Z",
+              "feeds": [str(feed)]}
+        return {"accounts": {"acc": ""}, "pages": [pg]}
+
+    @staticmethod
+    def _bump(feed):
+        import os, time
+        os.utime(feed, (time.time() + 600, time.time() + 600))   # mtime clearly after any publish
+
+    def test_touch_without_byte_change_not_stale(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            feed = Path(d) / "f.json"
+            feed.write_text("x", encoding="utf-8")
+            reg = self._reg(feed)
+            af.publish_record(reg, "p")
+            feed.write_text("x", encoding="utf-8")      # new mtime, same bytes
+            self._bump(feed)
+            self.assertEqual(af.stale(reg), [])
+
+    def test_changed_bytes_is_stale(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            feed = Path(d) / "f.json"
+            feed.write_text("x", encoding="utf-8")
+            reg = self._reg(feed)
+            af.publish_record(reg, "p")
+            feed.write_text("y", encoding="utf-8")
+            self._bump(feed)
+            self.assertEqual([s for s, _u, _w in af.stale(reg)], ["p"])
+
+    def test_publish_record_then_home_registry_feed_not_stale(self):
+        import json, tempfile
+        with tempfile.TemporaryDirectory() as d:
+            feed = Path(d) / "registry.json"
+            reg = self._reg(feed)
+            feed.write_text(json.dumps(reg), encoding="utf-8")
+            af.publish_record(reg, "p")
+            feed.write_text(json.dumps(reg), encoding="utf-8")   # registry rewritten with the record: published_at, feed_hashes
+            self._bump(feed)
+            self.assertEqual(af.stale(reg), [])
+            af.publish_record(reg, "p", now=__import__("datetime").datetime(2026, 11, 14, tzinfo=__import__("datetime").timezone.utc))
+            feed.write_text(json.dumps(reg), encoding="utf-8")
+            self.assertEqual(af.stale(reg), [])
+
+
 class FeedStaleTests(unittest.TestCase):
     """2026-11-13 root cause A: a page whose generator is not re-run on fresh data never showed as stale."""
 
