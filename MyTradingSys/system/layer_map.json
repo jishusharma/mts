@@ -1640,6 +1640,25 @@
    "verdict": "FAIL: 0 of 30 cells pass (CI lower bound < 0 in every cell, smallest BH-input p 0.415); no idea-flag group earns a testnet-forward run; setup and timing not covered",
    "report": "MyTradingSys/research/live_aid_flags_full_2026-11-13/REPORT.md",
    "read": "summary"
+  },
+  {
+   "id": "EUR-LOW-US-SWEEP-RECLAIM-POOLED-20261113",
+   "trials": null,
+   "title": "Europe-session low swept in the US window, 5m close back above within 60 min, long at next open (mirror short), pooled BTC/ETH/SOL; the untested leg of EUR-LOW-US-SWEEP",
+   "date": "2026-11-13",
+   "market": "Bybit linear 5m BTCUSDT/ETHUSDT/SOLUSDT 2020-03..2026-11 (ETH from 2021-03, SOL from 2021-10), weekdays; DEV to 2024-06-30, VALIDATION 2024-07..2025-06, RECENT after",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "Europe 07-13:30Z low/high, US 13:30-20Z, reclaim <=12 bars, stop at sweep extreme, exits MID/HIGH/2R, time stop 20Z, taker and maker-limit entry (12 cells), day-cluster bootstrap, placebo = random US-window bar above EL, BH 10%",
+   "split": "VALIDATION 2024-07-01..2025-06-30 (chosen before run)",
+   "fees": "taker 5 bp/side; maker cell 2 bp entry + 5 bp exit (fees.py); no funding or slippage",
+   "interaction": "none (sides and exits are separate cells)",
+   "effects": "all 12 cells: DEV and RECENT mostly negative; taker cells VALIDATION fee-net mean R -0.23 to -0.32, all CIs below zero; maker cells -0.12 to +0.11 with CIs spanning zero; events beat the placebo (placebo -0.55 to -0.69 with the same tight stop) but beating a loss-making placebo is not an edge",
+   "n": "VALIDATION per cell: long taker 378-384, long maker 173, short taker 331-336, short maker 148",
+   "verdict": "FAIL: no cell passes (best long HIGH maker VAL n 173, fee-net mean R +0.105 CI [-0.298,+0.577], BH none); power gate BLOCK (MDE ~0.25 R) so small edges not excluded; the 10-18 BLOCKED leg is now run, not killed below 0.25 R",
+   "report": "MyTradingSys/research/eur_low_sweep_reclaim_pooled_2026-11-13/REPORT.md",
+   "read": "summary"
   }
  ]
 }
