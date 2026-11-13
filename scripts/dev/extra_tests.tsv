@@ -282,3 +282,4 @@ scripts/dev/test_cbp_recheck.py
 scripts/dev/test_gate_reason_wait.py
 scripts/dev/test_flow_read.py
 MyTradingSys/tools/live_aid/test_xliq.py
+scripts/dev/test_routines_due.py

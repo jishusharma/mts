@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T13:44:39Z",
   "commands": [],
   "created": "2026-11-13T11:56:31Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "wired by routines-plan-wiring-1113: supervisor.py plan prints a due line via routines_due.py (row 7 live aid learner); closed as done, not discarded",
+  "pinned": false,
   "prio": 3,
+  "reason": "wired by routines-plan-wiring-1113: supervisor.py plan prints a due line via routines_due.py (row 7 live aid learner); closed as done, not discarded",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "live-aid-learn-1113"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Live Aid learner has no named daily trigger: us_prep.py P4 is the only hook and no pass ran for 11-12; wire a run + learnings file per day (no scheduler) with --since last pass",
