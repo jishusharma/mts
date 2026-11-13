@@ -1,8 +1,8 @@
-"""B150: a tracked test_*.py that no gate step runs fails here.
+"""B150: every tracked test_*.py is RUN by the gate or opted out with a reason; adding a test file can never fail this.
 
-Covered when ANY of: the stem is named in run_all_tests.py; the file is in scripts/dev/run_extra_tests.py EXTRA; it sits under
-a directory the gate collects wholesale (MyTradingSys/tests pytest step, MyTradingSys/backtest rglob steps, options tests step);
-or it is in SKIP with a reason, or it is a row of scripts/dev/gate_tiers.tsv (retired / study / slow tier). Archives are ignored.
+Run = named in run_all_tests.py, an execution test (step 1 lists it or run_all_tests.execution_stems adds it), under a folder the gate
+collects wholesale, or picked up by run_extra_tests.all_tests() (EXTRA + discovered(): every other tracked test, any folder, no entry).
+Opt out = a row of scripts/dev/gate_tiers.tsv (retired / study / slow / manual, each with its reason). Archives are ignored.
 """
 import subprocess
 import sys
@@ -11,26 +11,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "dev"))
+import run_all_tests  # noqa: E402
 import run_extra_tests  # noqa: E402
 
-SKIP = {   # relative path -> reason it is deliberately not in the gate. Empty on purpose: add a reason, not a blind skip.
-    "scripts/dev/test_supervisor.py": "SV2/SV5 supervisor CLI test; run directly via pytest scripts/dev/test_supervisor.py (omitted from run_extra_tests.py to avoid FULL_RE gate on supervisor-only ship)",
-    "scratch_r3/test_kill_switch_real_client_r3.py": "fable R3 scratch: pass-audit that kill_switch works against the REAL deribit_orders.get_open_orders signature (passes on current code; finding F-KILL-1 refuted, kept as the audit trail)",
-    "scratch_r3/test_stop_gap_r3.py": "fable R3 scratch: FAILING F-GAP-1 repro (restart with filled entry but no journaled stop leaves the position naked); card fable-r3-stop-gap-early-return moves it into MyTradingSys/execution/ and fixes the code",
-}
-COLLECTED_DIRS = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/")
+COLLECTED_DIRS = ("MyTradingSys/tests/", "MyTradingSys/backtest/", "MyTradingSys/options/tests/", "MyTradingSys/execution/tests/")
 
 
 def tracked_tests():
-    out = subprocess.check_output(["git", "ls-files", "*test_*.py"], cwd=ROOT, text=True).splitlines()
-    return [p for p in out if Path(p).name.startswith("test_") and "archive" not in p.lower()
-            and not p.startswith(("Dumps/", "_archive/"))]
+    return run_extra_tests.tracked_tests(ROOT)
 
 
-def is_gated(rel, gate_text, extra, tracked, skip=()):
-    """Gated when rel is skipped/extra, under a collected dir, named by full path in the gate text,
+def is_gated(rel, gate_text, runs, tracked, execution_stems=()):
+    """Run by the gate: in `runs` (extra tests), an execution stem, under a collected dir, named by full path in the gate text,
     or its bare stem is named AND no other tracked test shares that stem."""
-    if rel in skip or rel in extra or rel.startswith(COLLECTED_DIRS) or rel in gate_text:
+    if rel in runs or rel.startswith(COLLECTED_DIRS) or rel in gate_text or Path(rel).stem in execution_stems:
         return True
     stem = Path(rel).stem
     if f'"{stem}"' in gate_text or f"{stem}.py" in gate_text:
@@ -46,14 +40,17 @@ class GateDiscoveryTest(unittest.TestCase):
         self.assertFalse(is_gated("sim_desk/test_desk.py", gate, set(), tracked))
         self.assertTrue(is_gated("a/test_only.py", "x test_only.py", set(), ["a/test_only.py"]))
 
-    def test_every_tracked_test_file_is_gated_or_skipped_with_a_reason(self):
+    def test_every_tracked_test_file_is_run_or_opted_out_with_a_reason(self):
         gate = (ROOT / "scripts" / "dev" / "run_all_tests.py").read_text(encoding="utf-8")
-        extra = set(run_extra_tests.all_tests())          # EXTRA plus every study-folder test (discovered, no entry to keep)
         tracked = tracked_tests()
-        skip = set(SKIP) | set(run_extra_tests.OFFGATE)   # gate_tiers.tsv rows carry their reason: off the push gate on purpose
-        missing = [rel for rel in tracked if not is_gated(rel, gate, extra, tracked, skip)]
-        self.assertEqual(missing, [], "add to run_all_tests.py, to run_extra_tests.EXTRA, or to SKIP with a reason")
-        self.assertTrue(all(isinstance(v, str) and v for v in SKIP.values()))
+        runs = set(run_extra_tests.all_tests(ROOT))                        # EXTRA + every discovered test, minus the opt-outs
+        step1 = {a for st in run_all_tests.build_plan(False) if str(st.num) == "1" for a in st.cmd}   # the stems step 1 really runs
+        stems = {Path(t).stem for t in tracked if Path(t).stem in step1}
+        missing = [rel for rel in tracked if rel not in run_extra_tests.OFFGATE and not is_gated(rel, gate, runs, tracked, stems)]
+        self.assertEqual(missing, [], "a tracked test no gate step runs and no gate_tiers.tsv row opts out: discovery is broken")
+        reasons = [ln.split(chr(9)) for ln in (ROOT / "scripts" / "dev" / "gate_tiers.tsv").read_text(encoding="utf-8").splitlines()
+                   if ln.strip() and not ln.lstrip().startswith("#")]
+        self.assertTrue(reasons and all(len(r) >= 3 and r[2].strip() for r in reasons), "every opt-out row needs a reason")
 
     def test_extra_list_has_no_dead_entries(self):
         self.assertEqual([p for p in run_extra_tests.EXTRA if not (ROOT / p).exists()], [])
