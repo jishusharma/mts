@@ -13,7 +13,7 @@ Parameter labels:
   Tolerance 0.5: OURS (RSI_TOL of live_layers.rsi_level_layer).
 - Malkan windows (operator spec d-malkan-divergence-window-1104, relay of Malkan; transcript line still to be found by
   the Hindi reads): swing-to-swing 12 bars primary (STRONG), 18 secondary (OK), past 18 = WEAK, NOT a signal (not emitted).
-  12 / 18 SOURCED (operator relay). Divergence is read on CLOSES (line chart), never wicks: pivots are strict local
+  12 / 18 OURS (d-malkan-window-label-1105: no Malkan source in 160 files). Divergence is read on CLOSES (line chart), never wicks: pivots are strict local
   extremes of the close and the RSI at those closes; h / l of a bar are never read (every event carries basis "close").
 - Min bars 3 (SOURCED "minimum three candles"), PRD / NRD min 5 (SOURCED words, GbXnw_tNMtw_raw.txt:460), min_rsi_diff 0.
 - Malkan PRD / NRD: RSI regime 60 / 40 SOURCED.
@@ -45,8 +45,8 @@ MIN_BARS_NEEDED = RSI_PERIOD + 2
 MALKAN_KINDS = ("bullish", "bearish", "prd", "nrd")
 MALKAN_CODE = {"bullish": "R-BULL", "bearish": "R-BEAR", "prd": "PRD", "nrd": "NRD"}
 KROWN_CODE = {"hidden_bullish": "K-HBULL", "hidden_bearish": "K-HBEAR"}
-WINDOW_STRONG = 12   # SOURCED (operator relay of Malkan, d-malkan-divergence-window-1104)
-WINDOW_MAX = 18      # SOURCED (same); past this the window is WEAK and no event is emitted
+WINDOW_STRONG = 12   # OURS (d-malkan-window-label-1105; was relayed as Malkan's, no source found)
+WINDOW_MAX = 18      # OURS (same); past this the window is WEAK and no event is emitted
 REVERSE_MIN_BARS = 5
 REGULAR_MIN_BARS = 3
 TF_MS = {"1h": 3_600_000, "4h": 14_400_000, "1d": 86_400_000, "1w": 604_800_000}
@@ -107,7 +107,7 @@ def confluence_feed_layer(bars):
                           "code": MALKAN_CODE[kind] + ("_OLD" if legacy else ""), "source": "MALKAN", "column": column,
                           "basis": "close", "window_class": window_class(e["bars"]),
                           "label": "OURS (old window, comparison only)" if legacy else
-                                   ("SOURCED window 12/18; PRD/NRD levels SOURCED" if kind in ("prd", "nrd") else "SOURCED"),
+                                   ("OURS window 12/18; PRD/NRD levels SOURCED" if kind in ("prd", "nrd") else "OURS window 12/18; min bars SOURCED"),
                           "bars": e["bars"], "chain": e["chain"], "rsi_a": e["rsi_a"], "rsi_b": e["rsi_b"]}
                     out.append(ev)
         mn, mx, diff = par["krown"]

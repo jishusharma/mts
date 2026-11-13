@@ -12,7 +12,7 @@ K-HBEAR, drawn DOTTED in violet so they cannot be mistaken for Malkan flags.
 Pivots (operator decision d-malkan-divergence-window-1104): the lines are drawn between the exact two CLOSE pivots the
 detector used (strict local extremes of the close; wicks are never read), with the SAME windows as the live feed
 (alerts/live_confluence_feed.py): swing-to-swing up to 12 bars = STRONG (primary), 13..18 = OK (secondary), past 18 =
-WEAK, not a signal and not drawn. 12 / 18 = SOURCED (operator relay of Malkan). The label carries window_class.
+WEAK, not a signal and not drawn. 12 / 18 = OURS (d-malkan-window-label-1105: no Malkan source). The label carries window_class.
 Parameters: min bars 3 (regular, SOURCED) and 5 (PRD/NRD, SOURCED words) and min_rsi_diff 0 = SOURCED; PRD/NRD levels
 60/40 = SOURCED (GbXnw_tNMtw_raw.txt:460). The old windows 3-10 (regular) and 5-14 (PRD/NRD) are OURS, comparison only,
 NOT drawn (params/malkan_divergence_default.json still holds them for the feed's legacy column). Krown hidden window 3-10 = OURS; RSI period 14 = SOURCED default of the layer
@@ -214,9 +214,10 @@ def write_table(rows_by_tf, out_dir, symbol):
             w.writerows(rows)
     lines = ["# %s Malkan RSI divergence flags" % symbol, "",
              "Numbers match the labels on the charts. Malkan flags: R-BULL / R-BEAR regular divergence (close pivots, "
-             "A..B inclusive up to 12 bars STRONG, 13-18 OK, past 18 not a signal; 12/18 SOURCED, operator relay of Malkan); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both "
+             "A..B inclusive up to 12 bars STRONG, 13-18 OK, past 18 not a signal; 12/18 OURS, no Malkan source per d-malkan-window-label-1105); PRD = price higher low + RSI lower low in an uptrend (RSI >= 60 at both "
              "points), NRD = price lower high + RSI higher high in a downtrend (RSI <= 40 at both points); levels "
-             "SOURCED (GbXnw_tNMtw_raw.txt:460), same 12/18 window as the live feed (old 5-14 = OURS, comparison only). "
+             "SOURCED (GbXnw_tNMtw_raw.txt:460). "
+             "Window: the same OURS 12/18 as the live feed (old 5-14 = OURS, comparison only). "
              "KROWN-CONFLUENCE flags: K-HBULL / K-HBEAR = generic hidden divergence with NO trend condition, not "
              "Malkan, window 3-10 OURS. Price = close (Malkan: close to close).", ""]
     for tf, rows in rows_by_tf.items():
