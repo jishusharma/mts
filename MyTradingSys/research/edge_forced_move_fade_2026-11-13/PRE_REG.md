@@ -29,3 +29,15 @@ fees.BINANCE_TAKER * 2 round trip (imported) plus actual funding settlements ins
 Cells: H1 and H2 x k{2,3} x x{0.3,0.6} x exit{T2,T4,T8,BR} = 32 primary cells, VALIDATION split, both directions pooled. Unit = event; events pooled across coins, so inference is day-cluster bootstrap (5000 reps, UTC day clusters), one-sided p for mean > 0; BH 10% over the 32 cells (n < 30 -> p = 1).
 Placebo: per event, 10 random bars same coin, same calendar month, same direction, not themselves impulse bars (range < 1.5 ATR or volume < 2x median or no 16-bar extreme), entered at that bar's close with stop/target distances equal to the event's in ATR units; placebo value = mean of the 10. Event-minus-placebo per event, day-cluster CI.
 PASS (cell) = VALIDATION fee-net mean > 0, day-cluster 95% CI lower > 0, n >= 30, event-minus-placebo CI lower > 0, BH 10% survives. RECENT and DEV shown; a pass whose RECENT mean is negative is flagged non-durable. Verdict per hypothesis: PASS if any cell passes, UNDERPOWERED if best cell n < 30, else FAIL.
+
+---
+# ADDENDUM H4 (operator order 16:35Z): OI build then unwind on 30m and 1h. Committed before ANY outcome is computed (none exist yet).
+Bars: 30m and 1h UTC-aligned, aggregated from the 15m klines (OHLC) with OI at bar close = 15min OI snapshot at (bar open + TF). Same 10 coins, splits, fee/funding rule, day-cluster bootstrap, BH 10%, placebo as above. Params OURS.
+Notation: OI_k = OI at close of bar k; ATR = Wilder ATR14 of that TF through bar j-1; N in {6,12} bars; y in {1,2}%.
+BUILD at bar j: OI_j / OI_(j-N) - 1 >= y% AND |close_j - close_(j-N)| >= 1.0 ATR; built side s = sign(close_j - close_(j-N)) (up = longs built, down = shorts built).
+H4b (follow while building): enter at close of the first bar of a BUILD run (BUILD true, previous bar false), side = s. 
+H4a (unwind fade): at bar j, with a BUILD bar (side s) within bars j-N..j-1, peak = max OI over bars j-N..j-1, unwind start = OI_j <= peak * (1 - 0.5%) and OI_(j-1) > peak * (1 - 0.5%) (first such bar). Enter at close of bar j, side = -s.
+Exits: time only, 4h / 12h / 24h after entry, no stop (OURS; keeps the OI signal the only moving part). Dedup: per coin, drop an event within N bars of the previous kept event of the same cell.
+Cells: {H4a, H4b} x TF{30m,1h} x N{6,12} x y{1,2} x hold{4h,12h,24h} = 96 primary cells, VALIDATION split, BH 10% over 96 (n < 30 -> p = 1).
+Placebo: 10 random bars same coin, same month, same TF, no BUILD true on that bar and no OI move >= 0.5% in the last N bars, same side as the event, same time exit. Event-minus-placebo day-cluster CI.
+PASS and verdict rules as above, per hypothesis (H4a, H4b). Control (descriptive): H4a with side reversed (follow the unwind).
