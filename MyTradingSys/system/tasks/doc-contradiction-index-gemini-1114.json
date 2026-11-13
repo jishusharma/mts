@@ -1,0 +1,52 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T21:47:32Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114/index-contradictions/FINDINGS.md exists with one row per INDEX indicator row marked OK or CONTRADICTION plus the rulebook_check.py output",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "INDEX.md marks Stochastic RSI MISSING and RSI, CVD, Funding, Trend lines, Hilega PARTIAL although STOCH_RSI.md, TREND_LINES.md, CVD.md and others exist with 8 sections. Find every INDEX row whose Status, Pointer or verdict contradicts the file on disk and propose corrected cell text.",
+  "id": "doc-contradiction-index-gemini-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini queue refill 11-14, output on a gemini-q branch",
+  "note": "Planner refill 1114. Every number must trace to a file or verbatim quote. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T21:47:32Z",
+  "refs": [],
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114/index-contradictions/FINDINGS.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2026-11-14 (planner-gemini-refill-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/indicator_rulebooks/INDEX.md and TEMPLATE.md.",
+    "Per indicator row: does its rule-book file exist, does it hold all 8 numbered sections (grep headings), does the Pointer name it.",
+    "Table: row, INDEX says, disk says, proposed cell. Run python scripts/dev/rulebook_check.py and paste its output.",
+    "Write FINDINGS.md, first line N contradictions. Do not edit INDEX.md (a later Sonnet pass applies it). Commit on your gemini-q branch only."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py",
+  "title": "[GEMINI] Contradiction scan: rulebook INDEX status vs files",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}

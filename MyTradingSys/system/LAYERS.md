@@ -80,7 +80,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `rsi_levels`: D3 tolerance study done | module backtest/layers/rsi; rsi_events
 - Layer `rsi_divergence`: no edge, all TFs | module backtest/layers/rsi/run_divergence_mtf.py
 - Backtests (layer_map.json, newest first):
-  - 2026-11-13 `RSI-CONFIRM-LAYERS-20261113`: FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md`
+  - 2026-11-14 `MALKAN-R03-R04-RSI-DIV-20261114`: FAIL: 0 of 8 VALIDATION cells PASS; rule in PRE_REG.md frozen before any outcome | `MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md`
   - 2026-11-13 `RSI-HTF-EXTREME-20261113`: FAIL/UNDERPOWERED: 0 of 40 cells pass (24 FAIL, 16 UNDERPOWERED); no edge claim | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/RESULT.md`
   - 2026-11-13 `EDGE4-RSI-4H-LE12-DAILY-LT30-20261113`: UNDERPOWERED: no cell reaches VALIDATION n>=30 (max 12, 4h), 0/12 PASS; the 4h VALIDATION pocket is not confirmed in DEV | `MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/REPORT.md`
   - 2026-11-13 `RSI-EXTREME-CONFIRM-1H-20261113`: FAIL: 0/384 pass, 0 BH-significant on DEV or VALIDATION; only VAL-positive pocket is negative in DEV and RECENT | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md`
@@ -117,7 +117,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `funding_cvd_fade`: FAIL, closed | module backtest/layers/positioning/funding_cvd_fade.py
 - Layer `oi_delta`: descriptive study | module research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md
 - Backtests (layer_map.json, newest first):
-  - 2026-11-13 `RSI-CONFIRM-LAYERS-20261113`: FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md`
   - 2026-11-05 `BIGCANDLE-STORY-1H-20261105`: descriptive: stories are readable, odds are near baseline; no trade rule | `MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md`
   - 2026-10-14 `PRICE-CVD-DIV-1M5M-20261014`: NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m | `MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md`
   - 2026-09-29, rerun 2026-10-07 (full funding) `T055-C1`: FAIL (rerun OOS net -0.0453%, Sharpe -0.035); closed | `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md`

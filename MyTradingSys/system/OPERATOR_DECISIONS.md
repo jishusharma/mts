@@ -2554,3 +2554,26 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Checked: Bybit BTCUSDT weekly shows 6 red weeks in a row (open 86,486 on 2026-10-05 to 69,015; this week's low 67,468).
 - Applied 20:08Z: 4 Sonnet studies on the desktop: weekly red-streak bounce (swing), bear-trap reclaim long in a downtrend (day trade), win rate versus profit per trade on long scalps (answers the Zing question on our data), and a descriptive map of past BTC bear-phase reactions and today's levels. A 13-study ship worker saves today's results. Memory updated: cap 95% this week.
 - Open: Zing's own closed-trade history (entry, stop, target, result, fees) is needed to judge its win rates; a win rate alone says nothing about profit.
+
+## 2026-11-13 ~21:20Z: YouTube fetcher bans are not allowed to block work; find the route (operator)
+- His words: "you can't be sitting behind youtube fetcher bans, find way. We already discussed it like proxy/vpn etc".
+- Already decided earlier (see d-yt-warp-proxy 2026-11-02, the 2026-11-12 06:05Z "never blocked" entry, YT_PROXY.md): free WARP proxy (its exit address is locked by our own guard until 2026-11-16T03:02Z), OpenVPN (profile password lost), then path 4 = public transcript site. Paid proxy/VPN and new network software (Tor, VPN clients) stay a money/install decision for him and were not started.
+- DONE (OURS) 2026-11-13: path 4 (`yt_transcript_sites.py`, Invidious instance, no request from our address) fetched the 55 uncaptioned NK StockTalk videos (Hindi tracks, `--langs hi`) while the desktop (to 2026-11-16T03:02Z) and NUC (to 2026-11-16T14:21Z) locks stand; no YouTube request was made, so the locks did not grow. Files in F:\MTS\data_cache\youtube\nk\ (not in the repo). Rule in ROUTING.md (caption fetch row).
+- Update ~21:35Z (relayed by the coordinator), his words: "What paid proxy Man! We already had a working solution we built. So use that. Expand and build proxies that you need to. Don't fall back. Nothing is forbidden or illegal and i will respond to any charges." DECIDED: the built chain (YT_PROXY.md) is the route; no paid proxy was ever proposed to be bought. Result: path 4 gave 55 of 55 NK videos plus 8 of 12 NK interview ids (tracks: `hi`; one video only had `en-IN`, so pass `--langs hi,en-IN`). Not done, not needed: Tor and more instances (no capacity gap). Still open: QOawWwI4zUQ, X8W0pWK0GnM, 1bpY43ybo_I, 3hhkEwBfWeo (instance returns 404/500 = no caption track served; next path = audio plus local Whisper, YT_PROXY.md path 5, after the locks end or via an instance audio route).
+
+## 2026-11-13 ~20:15Z: context first for every test and edge search (operator, voice)
+- Operator (paraphrased): context before any test or edge search. Downtrend: shorts at seller levels or lower lows. Uptrend: longs. Range: range trades. Test only trade types that match the phase. Extract and test the Nitish Kumar videos. Try confluence combinations.
+- Mechanism: PRE_REG `## Context` and `Regime mix:` gate (step 3pc); NK videos go to the Gemini lane (gemini-yt).
+
+## 2026-11-13 ~20:25Z: billing question (operator, open, his click)
+- Facts: plan auto-renews 14 Nov; Full reset expires 11 Dec; Fable reset 9 Mar 2027.
+- Proposal: he presses Full reset himself near 95% weekly. Open, his click. Nothing was bought or changed.
+
+## 2026-11-13 ~20:30Z: C: drive filled, permanent fix (operator)
+- Facts: C: fell from 19 to 10.5 GB free (worktrees and data cache were on C:).
+- Operator order (paraphrased): permanent fix in its own session (worktrees and data cache moved to F:). Keep C: above 20 GB. Ultra mode with Haiku and Sonnet workers only. Check every spawned session on each wake. Audit that all his messages are wired to a card, decision or answer.
+- Mechanism: session c-drive-fix (local_2afe75a7-e396-44d6-a2be-55e1fa84a288).
+
+## 2026-11-13 ~20:50Z: where to buy after the 7-week fall (operator, voice)
+- Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
+- Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).
