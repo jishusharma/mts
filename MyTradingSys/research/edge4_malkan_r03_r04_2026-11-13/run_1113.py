@@ -10,7 +10,9 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "backtest")))
 import fees  # noqa: E402
 
-COST = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13  # round trip, fraction of entry price, taker on every fill
+def cost_rt():
+    """Round trip as a fraction of entry price, taker on every fill (fees.py constants, none of my own)."""
+    return 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13
 
 
 def rsi_wilder(closes, n=14):
@@ -72,7 +74,7 @@ def find_signals(bars, lookback, rule, rsi=None):
 def simulate(bars, signals, lookback, iv_ms):
     """One open position per coin: a signal while a trade is open is skipped. Exit at target, stop, or the close of bar
     t + 2*lookback; a bar touching both counts as the stop. Trades whose bars A..exit are not contiguous are dropped.
-    net_r = (gross move - COST * entry) / risk."""
+    net_r = (gross move - cost_rt() * entry) / risk."""
     trades = []
     busy_until = -1
     for s in signals:
@@ -102,5 +104,5 @@ def simulate(bars, signals, lookback, iv_ms):
             continue
         move = (s["entry"] - px) if short else (px - s["entry"])
         trades.append({"t": t, "side": s["side"], "entry": s["entry"], "stop": s["stop"], "target": s["target"],
-                       "exit": ex, "reason": reason, "net_r": (move - COST * s["entry"]) / risk})
+                       "exit": ex, "reason": reason, "net_r": (move - cost_rt() * s["entry"]) / risk})
     return trades
