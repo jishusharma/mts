@@ -1,6 +1,6 @@
 {
  "_doc": "Hand-kept data for the Layer and Backtest Map (scripts/dev/make_layer_map.py -> MyTradingSys/system/artifacts/layer_map.html). One row per backtest or study; one row per layer. A field the repo does not record is null and the page prints 'not recorded'; never fill a guess. 'read' says how much of the source report was read when the row was written: summary = verdict and method read; header = only the top of the file. Append rows; set asof when you touch the file. Params carry src: sourced (trader's own words), grid (swept in the run), NO-SOURCE (flagged by the provenance rule), code (taken from the repo default).",
- "asof": "2026-11-05",
+ "asof": "2026-11-13",
  "layers": [
   {
    "id": "tom_core",
@@ -769,43 +769,43 @@
  ],
  "backtests": [
   {
-    "id": "BIGCANDLE-STORY-1H-20261105",
-    "trials": null,
-    "title": "Big BTC 1h/5m candles (price, OI or taker delta |z|>=3): 8 stories x Binance top-trader class x phase, what followed",
-    "date": "2026-11-05",
-    "market": "Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader positions and accounts ratio)",
-    "layers": [
-      "oi_delta"
-    ],
-    "params": "OURS: |z|>=3 vs trailing 30d, 12-bar lockout (5m), top-trader flat 0.2%, band +-10%/30d, weekly streak R3+/R1-2/G1-2/G3+; horizons 1h/4h/24h",
-    "split": "DEV 2022-01-03..2024-06-30 only; holdout not read",
-    "fees": "fee-free descriptive",
-    "interaction": "story x top-trader class x phase vs same-direction baseline",
-    "effects": "continuation 43-60% vs 45-50% baseline; size-long/accounts-short after a big up candle not different from baseline (1h n=51: 45/53/51%); UP/UP/BUY 4h 59% [51-66] a lead",
-    "n": "843 big 1h events, 3991 big 5m events, 21831 baseline 1h bars",
-    "verdict": "descriptive: stories are readable, odds are near baseline; no trade rule",
-    "report": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
-    "read": "summary"
+   "id": "BIGCANDLE-STORY-1H-20261105",
+   "trials": null,
+   "title": "Big BTC 1h/5m candles (price, OI or taker delta |z|>=3): 8 stories x Binance top-trader class x phase, what followed",
+   "date": "2026-11-05",
+   "market": "Binance USD-M BTCUSDT 1m klines + metrics 5m (OI, top-trader positions and accounts ratio)",
+   "layers": [
+    "oi_delta"
+   ],
+   "params": "OURS: |z|>=3 vs trailing 30d, 12-bar lockout (5m), top-trader flat 0.2%, band +-10%/30d, weekly streak R3+/R1-2/G1-2/G3+; horizons 1h/4h/24h",
+   "split": "DEV 2022-01-03..2024-06-30 only; holdout not read",
+   "fees": "fee-free descriptive",
+   "interaction": "story x top-trader class x phase vs same-direction baseline",
+   "effects": "continuation 43-60% vs 45-50% baseline; size-long/accounts-short after a big up candle not different from baseline (1h n=51: 45/53/51%); UP/UP/BUY 4h 59% [51-66] a lead",
+   "n": "843 big 1h events, 3991 big 5m events, 21831 baseline 1h bars",
+   "verdict": "descriptive: stories are readable, odds are near baseline; no trade rule",
+   "report": "MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md",
+   "read": "summary"
   },
   {
-    "id": "RSI-DEEP-PRESTUDIES",
-    "trials": 662,
-    "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
-    "date": "2026-11-04",
-    "market": "BTCUSDT DEV, VALIDATION read once, HOLDOUT never read",
-    "layers": [
-      "rsi_levels",
-      "rsi_divergence"
-    ],
-    "params": "see research/rsi_deep_buy_2026-10-19/",
-    "split": "DEV / VALIDATION per backtest/splits.py",
-    "fees": "fee-net",
-    "interaction": "context, confirmation and confluence overlays on the RSI deep-buy touch",
-    "effects": "none material",
-    "n": "168 + 230 + 120 + 144 tests",
-    "verdict": "no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/144; grid empty, rsi-deep-prereg/engine/run-dev parked",
-    "report": "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md",
-    "read": "summary"
+   "id": "RSI-DEEP-PRESTUDIES",
+   "trials": 662,
+   "title": "RSI deep-buy prerequisite studies: context tables, confirmations, confluence, divergence context",
+   "date": "2026-11-04",
+   "market": "BTCUSDT DEV, VALIDATION read once, HOLDOUT never read",
+   "layers": [
+    "rsi_levels",
+    "rsi_divergence"
+   ],
+   "params": "see research/rsi_deep_buy_2026-10-19/",
+   "split": "DEV / VALIDATION per backtest/splits.py",
+   "fees": "fee-net",
+   "interaction": "context, confirmation and confluence overlays on the RSI deep-buy touch",
+   "effects": "none material",
+   "n": "168 + 230 + 120 + 144 tests",
+   "verdict": "no surviving cell: 0/150 DEV and 0/80 VAL confirmation rows fee-net CI>0; confluence 10/120 kept, VAL t<1; divergence 0/144; grid empty, rsi-deep-prereg/engine/run-dev parked",
+   "report": "MyTradingSys/research/rsi_deep_buy_2026-10-19/CONFIRMATIONS.md",
+   "read": "summary"
   },
   {
    "id": "L1-D3",
@@ -1639,6 +1639,25 @@
    "n": "BTC 66554 events; VALIDATION cells n 135 to 10669",
    "verdict": "FAIL: 0 of 30 cells pass (CI lower bound < 0 in every cell, smallest BH-input p 0.415); no idea-flag group earns a testnet-forward run; setup and timing not covered",
    "report": "MyTradingSys/research/live_aid_flags_full_2026-11-13/REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "OI-FLUSH-XCOIN-20261113",
+   "trials": 10,
+   "title": "Liquidation-flush reversal: OI drop below own trailing-30d 1st percentile + price move > 2 ATR, fade at next bar open, 10 Bybit perps pooled, 1h and 4h bars, holds 4/12/24/72h and 2R bracket",
+   "date": "2026-11-13",
+   "market": "Bybit USDT perps BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, OI from 2020-07 (per-coin start in REPORT.md); DEV to 2024-06, VALIDATION 2024-07..2025-06, RECENT after",
+   "layers": [
+    "oi_delta"
+   ],
+   "params": "1st percentile, 30d window, 2 ATR(14), 24h dedup, 2R bracket stop at flush extreme (all OURS); fixed holds 4/12/24/72h; placebo = same coin-month same-size move without OI drop",
+   "split": "VALIDATION 2024-07-01..2025-06-30 (chosen before run)",
+   "fees": "fees.BINANCE_TAKER x2 round trip plus actual funding paid",
+   "interaction": "none (single rule, both sides pooled)",
+   "effects": "1h: no fee-net edge any split; 4h bars VALIDATION 12h +3.9% CI +1.5..+6.4 and 24h +4.5% (n 48 events, 19 days) but placebo diff CI spans 0 and RECENT 12h +0.4%, 24h -0.9% (n 37)",
+   "n": "1106 events 1h, 262 events 4h; VALIDATION n 139 and 48",
+   "verdict": "FAIL: 0 of 10 cells pass (4h 12h/24h pass BH and CI but not the placebo test, n 48 over 19 days; shrinks in RECENT)",
+   "report": "MyTradingSys/research/edge_oi_flush_2026-11-13/REPORT.md",
    "read": "summary"
   }
  ]
