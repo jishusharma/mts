@@ -257,7 +257,7 @@ def main(coins=None):
         for tg in ("1R", "2R", "PDH"):
             for filt in ("downtrend", "control"):
                 for oiv in ("none", "flush"):
-                    sub = df[(df.lt == lt) & (df.tg == tg)]
+                    sub = df[(df["lt"] == lt) & (df.tg == tg)]
                     if filt == "downtrend":
                         sub = sub[sub.trend]
                     if oiv == "flush":
