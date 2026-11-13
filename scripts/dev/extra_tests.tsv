@@ -294,3 +294,4 @@ MyTradingSys/execution/us_open_trader/test_recorder.py
 MyTradingSys/execution/us_open_trader/test_runner.py
 MyTradingSys/execution/us_open_trader/test_score.py
 MyTradingSys/research/rsi_extreme_confirm_2026-11-13/test_engine.py
+MyTradingSys/research/adx_1d_through25_2026-11-13/test_run_1113.py

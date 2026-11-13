@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T16:05:08Z",
   "commands": [],
   "created": "2026-11-13T13:31:03Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "HAIKU",
   "latest": [
     {
+      "kind": "ship",
+      "line": "gemini_queue status prints DONE/FAILED/RUNNING/STALE/SKIPPED per job; 6 new tests fail on ",
+      "ref": "25b7be49d",
+      "utc": "2026-11-13T16:05:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Revert b0e15fa36 (Gemini SOLO/REVIEW modes): CI red on 400f9ce2, 80ee172b, 24cda987",
@@ -24,13 +31,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: no follow-up card",
   "note": "REVIEWED:2026-11-13 T0-ONLY planner-refine-1113",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T14:58:14Z",
   "refs": [],
-  "result": "",
+  "result": "gemini_queue status prints DONE/FAILED/RUNNING/STALE/SKIPPED per job; 6 new tests fail on old, 34 pass; shipped 0764caad",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/gemini_queue.py",
     "scripts/dev/test_gemini_queue.py"
@@ -43,11 +56,12 @@
   "sources": [
     "routines-index-1113"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Find the status log parser at gemini_queue.py main argv status",
     "Map last line to DONE/FAILED/STALE (age over 2 h without end)"
   ],
+  "taken": "2026-11-13T16:05:08Z",
   "tests": "scripts/dev/test_gemini_queue.py::test_status_stale_after_2h (fails first)",
   "title": "ROUTINES row 8: gemini_queue.py status shows job gpt-mutation-trendline-core-1031 at START with no end line. Smallest fix: status prints DONE/FAILED/STALE per job (age over 2 h without end = STALE); done when status distinguishes the three",
   "weight": "ROUTINE",

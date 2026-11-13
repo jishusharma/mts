@@ -1640,6 +1640,25 @@
    "verdict": "FAIL: pooled fee-net mean R -0.0467, n 1981, CI [-0.1097, +0.0162]; kill scope = this setup/bracket only",
    "report": "MyTradingSys/research/cryptocred_s3_pooled_2026-11/RESULT_10SYM.md",
    "read": "summary"
-  }
+  },
+ {
+  "id": "ADX-1D-THROUGH25-20261113",
+  "trials": null,
+  "title": "1d ADX(14) rising through 25 (DI leader side, hold 3/6/12d) and Raschke Holy Grail, BTC ETH SOL LINK LTC",
+  "date": "2026-11-13",
+  "market": "5 USDT-linear symbols 1d (Bybit, BTC csv back-fill pre 2020-03-25); DEV 2020-01-01..2024-06-30, VALIDATION 2024-07-01..2025-06-30, RECENT 2025-07-01..2026-11-12",
+  "layers": [
+   "ma_daily"
+  ],
+  "params": "Rule A: ADX14 crosses up through 25, side = leading DI, next-open entry, fixed hold 6d primary (3/12 robustness) (OURS); Rule B: ADX>30 rising + EMA20 touch + 3d break, stop = touch bar extreme, prior-20-bar target, 12d cap (Raschke SOURCED, mechanics OURS)",
+  "split": "DEV / VALIDATION / RECENT per adx_di_2026-11/CENSUS.md",
+  "fees": "10 bp round trip (OURS)",
+  "interaction": "none (single rule each; month-cluster bootstrap CI, symbols pooled)",
+  "effects": "Rule A pooled excess vs same-hold baseline: DEV -0.01%, VALIDATION -1.71%, RECENT +2.62% (hold 6); Rule B only 6 trades in 5 years",
+  "n": "Rule A 124 / 30 / 42 events (DEV / VAL / RECENT, hold 6); Rule B 1 / 0 / 5 trades",
+  "verdict": "Rule A FAIL (VALIDATION fee-net excess -1.71%, CI [-5.8%,+1.9%], n=30; BTC-alone DEV +2.98% did not carry to 4 more symbols or VALIDATION); Rule B UNDERPOWERED (VALIDATION n=0; the frozen filter and touch almost never coincide)",
+  "report": "MyTradingSys/research/adx_1d_through25_2026-11-13/REPORT.md",
+  "read": "summary"
+ }
  ]
 }
