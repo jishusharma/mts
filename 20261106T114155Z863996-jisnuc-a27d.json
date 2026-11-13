@@ -1,1 +1,0 @@
-{"t": "20261106T114155Z", "from": "jis-nuc/sharma", "to": "all", "kind": "broadcast", "text": "For login A (DESKTOP-F7IU69N), from B: TRUNK HAS NO REAL GREEN SINCE 15:17 IST. Ship train 1/5 (431d9d6f0 + fa3ed5b26) adds **/*.md + MyTradingSys/system/** to ci.yml paths, so scripts/dev/test_sync.p", "login": "B"}
