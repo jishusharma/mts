@@ -120,7 +120,7 @@ body.detail .cols { grid-template-columns: 1fr; } body.detail .cols > section { 
 </style>
 
 <main>
-<nav id="tabs"><a href="#home">Home</a><a href="#money">Money</a><a href="#news">News</a><a href="#usopen">US open</a><a href="#intrade">In trade</a><a href="#now" title="Every reading in one table; click a row for its page (Map, Levels, Momentum, Liquidations, Funding, Macro, Coil)">All readings</a><button type="button" id="flag-dl" title="Download every banner Live Aid flashed (kept in this browser, last 2000) as CSV" style="margin-left:auto">Download flag log</button></nav>
+<nav id="tabs"><a href="#home">Home</a><a href="#money">Money</a><a href="#news">News</a><a href="#usopen">US open</a><a href="#intrade">In trade</a><a href="#now" title="Every reading in one table; click a row for its page (Map, Levels, Momentum, Liquidations, Funding, Macro, Coil)">All readings</a><button type="button" id="flag-auto" style="margin-left:auto" title="Pick the folder runtime_data/live_aid once; the flag log is then saved there as flag_log_&lt;day&gt;.csv with no download click (learner reads it)">Auto-save: set folder</button><button type="button" id="flag-dl" title="Download every banner Live Aid flashed (kept in this browser, last 2000) as CSV" style="margin-left:0">Download flag log</button></nav>
 <div id="flash"></div>
 <section id="p-home"></section>
 <style>
@@ -397,6 +397,7 @@ main>#p-pos:not(.off){flex:0 0 auto}
 <script src="level_registry.js"></script>
 <script src="map.js"></script>
 <script src="home.js"></script>
+<script src="flag_autosave.js"></script>
 <script src="pulse.js"></script>
 <script src="indread.js"></script>
 <script src="levelstory.js"></script>
@@ -847,7 +848,26 @@ main>#p-pos:not(.off){flex:0 0 auto}
   function flagAdd(row) {
     FLAGLOG.rows = window.LAHOME.flagLogAdd(FLAGLOG.rows, row, FLAGLOG.cap);
     try { localStorage.setItem('mts_flag_log', JSON.stringify(FLAGLOG.rows)); } catch (e) { /* storage blocked: log stays in memory */ }
+    flagAutoSoon();
   }
+  // Auto-save to a picked folder (flag_autosave.js): handle kept in IndexedDB, written 3 s after the last change. Any failure leaves the log in localStorage.
+  var FAUTO = { dir: null, timer: 0 };
+  function idb(fn) { return new Promise(function (res, rej) { var o = indexedDB.open('mts_flag_autosave', 1); o.onupgradeneeded = function () { o.result.createObjectStore('h'); }; o.onerror = function () { rej(o.error); };
+    o.onsuccess = function () { var st = o.result.transaction('h', 'readwrite').objectStore('h'), r = fn(st); r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }; }); }
+  function flagAutoLabel() {
+    var b = $('flag-auto'); if (!b || !window.LAAUTOSAVE) return;
+    window.LAAUTOSAVE.status(FAUTO.dir).then(function (s) { b.textContent = s === 'on' ? 'Auto-save: on (' + FAUTO.dir.name + ')' : s === 'resume' ? 'Auto-save: click to resume' : 'Auto-save: set folder'; });
+  }
+  function flagAutoSoon() { clearTimeout(FAUTO.timer); FAUTO.timer = setTimeout(flagAutoNow, 3000); }
+  function flagAutoNow() {
+    if (!FAUTO.dir || !window.LAAUTOSAVE) return;
+    window.LAAUTOSAVE.status(FAUTO.dir).then(function (s) { return s === 'on' ? window.LAAUTOSAVE.save(FAUTO.dir, FLAGLOG.rows) : null; }).then(flagAutoLabel).catch(function () { /* folder gone or blocked */ });
+  }
+  try { if (window.indexedDB) idb(function (st) { return st.get('dir'); }).then(function (d) { FAUTO.dir = d || null; flagAutoLabel(); flagAutoNow(); }).catch(function () {}); } catch (e) { /* no IndexedDB */ }
+  $('flag-auto').addEventListener('click', function () {
+    var go = FAUTO.dir ? FAUTO.dir.requestPermission({ mode: 'readwrite' }) : (window.showDirectoryPicker ? window.showDirectoryPicker({ mode: 'readwrite' }).then(function (d) { FAUTO.dir = d; return idb(function (st) { return st.put(d, 'dir'); }); }) : Promise.reject(new Error('no folder picker in this browser')));
+    Promise.resolve(go).then(function () { flagAutoNow(); flagAutoLabel(); }).catch(function () { $('flag-auto').textContent = 'Auto-save: not available here (use Download)'; });
+  });
   $('flag-dl').addEventListener('click', function () {
     var u = URL.createObjectURL(new Blob([window.LAHOME.flagCsv(FLAGLOG.rows)], { type: 'text/csv' })), a = document.createElement('a');
     a.href = u; a.download = 'mts_flag_log.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(u); }, 1000);

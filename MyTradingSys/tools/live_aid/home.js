@@ -467,6 +467,23 @@
     };
     return '<div class="hm-board">' + card('LONG', 'up') + card('SHORT', 'down') + '</div>';
   }
+  // Flag log of the LONG / SHORT board (card live-aid-log-idea-setup-rows-1113): the board replaced the IDEA / SETUP banners, so its state
+  // changes are what the page really shows now. One row (kind 'board') each time the set of live layers per side changes, incl. back to
+  // nothing; evidence carries the layers and the n / rate shown, so the learner can score it against the 1h move.
+  var FLB = { sig: null };
+  function boardLog(ctx, md) {
+    if (typeof ctx.onFlag !== 'function') return;
+    var B = null; try { B = SB ? SB.board(boardInputs(ctx)) : null; } catch (e) { B = null; }
+    if (!B) return;
+    var mix = mixReadings(ctx, md), one = function (side) {
+      var key = side.toLowerCase(), it = B[key] || [], r = rateRow(side, mix);
+      return side + ' ' + it.length + ' live' + (it.length ? ': ' + it.map(function (x) { return x.tf + ' ' + (LAYER_WORDS[x.layer] || x.layer); }).join(', ') : '') + (r ? ' (n ' + Math.round(r.n) + ', right ' + Math.round(r.rate * 100) + '% 1h later)' : ' (NO RATE)');
+    }, nl = (B.long || []).length, ns = (B.short || []).length, sig = one('LONG') + ' | ' + one('SHORT');
+    if (sig === FLB.sig) return;
+    var first = FLB.sig === null; FLB.sig = sig;
+    if (first && !nl && !ns) return;
+    try { ctx.onFlag({ t: ctx.now, kind: 'board', side: nl && !ns ? 'UP' : ns && !nl ? 'DOWN' : 'NEUTRAL', level: '', evidence: sig, price: md.px > 0 ? md.px : '' }); } catch (e) { /* logging must never break the page */ }
+  }
   // One Bias line (operator 11-10: gauge SHORT 5 of 5 while two LONG SETUP banners said "big picture up" and the level card said MIXED).
   // Names the three clocks, which one wins (OURS: the shortest clock governs the next 15m close, the 1h-4h lean is the backdrop; the level
   // card only breaks a tie), then the two 15m-close lines. Observation only: no order, size or entry wording.
@@ -498,6 +515,7 @@
   function render(el, ctx) {
     if (!el) return;
     var md = model(ctx), fl = flashes(ctx, md);
+    boardLog(ctx, md);
     var box = el.getBoundingClientRect(), W = Math.max(600, Math.round(box.width * 0.70)), H = Math.max(360, Math.round(box.height - 8));
     var head = '<div class="hm-top"><b class="hm-px">' + (md.px > 0 ? n0(md.px) : 'Price NOT_IN_DATA') + '</b>' +
       '<span class="hm-nx dim">5-minute candles, last 12 h</span>' +
@@ -569,6 +587,6 @@
     var q = function (v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
     return [FLAG_COLS.join(',')].concat((log || []).map(function (r) { return FLAG_COLS.map(function (c) { return q(c === 't' && isFinite(r.t) ? new Date(r.t).toISOString() : r[c]); }).join(','); })).join('\n') + '\n';
   }
-  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _foldCard: foldCard, _foldSetOpen: function (v) { foldOpen = !!v; foldSave(foldOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _inFrame: inFrame, _boardCard: boardCard };
+  var api = { flagLogAdd: flagLogAdd, flagCsv: flagCsv, model: model, zoneName: zoneName, flashes: flashes, render: render, injectCss: injectCss, WORDS: WORDS, _FL: FL, _moneyCard: moneyCard, _indCard: indCard, _stories: stories, _timingStrip: timingStrip, _nearLevel: nearLevel, _biasLine: biasLine, _liqCard: liqCard, _wtSoWhat: wtSoWhat, _wtSetOpen: function (v) { wtOpen = !!v; wtSave(wtOpen); }, _foldCard: foldCard, _boardLog: boardLog, _boardLogReset: function () { FLB.sig = null; }, _foldSetOpen: function (v) { foldOpen = !!v; foldSave(foldOpen); }, _wtLoad: function () { wtOpen = wtLoad(); return wtOpen; }, _soWhat: soWhat, _chart: chart, _caption: caption, _inFrame: inFrame, _boardCard: boardCard };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LAHOME = api;
 })(typeof window !== 'undefined' ? window : this);
