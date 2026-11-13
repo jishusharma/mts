@@ -99,3 +99,19 @@ def test_plan_lines_emit_routine_runs_for_owner_only():
 def _rd():
     import test_supervisor as T
     return T._rd(10, 20)
+
+
+def test_shot_overdue_sweep_line(tmp_path, monkeypatch):
+    """20+ overdue screenshots: a RUN sweep line with the count (a NOTE had no reader); under 20 stays a NOTE."""
+    import shot
+    tbl = [t for t in R.ROUTINES if t[0] == "shots_overdue"]
+    monkeypatch.setattr(shot, "store_dir", lambda: tmp_path)
+    monkeypatch.setattr(shot, "load_events", lambda s: [])
+    monkeypatch.setattr(shot, "status_line", lambda S_, *a: ("x", list(range(82))))
+    runs, notes = R.lines(tmp_path, tmp_path, WED, tbl)
+    assert notes == [] and len(runs) == 1
+    assert runs[0].startswith("RUN python scripts/dev/shot.py list --status pending") and "sweep 82 overdue" in runs[0]
+    assert "cheapest: Haiku" in runs[0]
+    monkeypatch.setattr(shot, "status_line", lambda S_, *a: ("x", list(range(19))))
+    runs, notes = R.lines(tmp_path, tmp_path, WED, tbl)
+    assert runs == [] and "19 screenshot(s) overdue" in notes[0]
