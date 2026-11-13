@@ -31,7 +31,8 @@ class SignalTest(unittest.TestCase):
         sh(self.tmp, "init", "-q", "--bare", str(self.origin))
         self.keep = {k: os.environ.get(k) for k in
                      ("MTS_SIGNALS_HOME", "MTS_SIGNALS_ORIGIN", "MTS_SIGNALS_HOST", "MTS_SIGNALS_SYNC", "MTS_ACCOUNT", "MTS_SIGNALS",
-                      "MTS_LOGIN", "MTS_CLAUDE_JSON", "MTS_LOGINS_MD", "GIT_CEILING_DIRECTORIES")}
+                      "MTS_LOGIN", "MTS_CLAUDE_JSON", "MTS_LOGINS_MD", "GIT_CEILING_DIRECTORIES", "MTS_SIGNAL_GIT_TIMEOUT_S")}
+        os.environ["MTS_SIGNAL_GIT_TIMEOUT_S"] = "180"      # a loaded box made the real 20 s fetch limit flaky (card mts-signal-tests-flaky-under-load-1111)
         os.environ["GIT_CEILING_DIRECTORIES"] = os.path.realpath(str(self.tmp.parent)).replace(os.sep, "/")   # D5: TEMP may sit inside a git repo (bridge children)
         os.environ.pop("MTS_LOGIN", None)       # no real login detection in tests: a fake claude.json and table when a test needs one
         os.environ["MTS_CLAUDE_JSON"] = str(self.tmp / "none.json")
@@ -589,6 +590,18 @@ class HubLockTest(SignalTest):
     """Operator 2026-11-11 (audit finding 5): every session on a machine shares ONE signals clone, and its fetch / checkout -B / commit /
     push ran with no cross-process lock: index.lock and FETCH_HEAD collisions in hook_errors.log, acks lost. One lock file beside the
     clone serialises them; the fetch lands in a named ref instead of the shared FETCH_HEAD."""
+
+    def test_git_timeout_comes_from_env_not_a_fixed_20s(self):
+        # platform-independent: reads the value only, never waits for a real timeout to fire
+        self.assertEqual(S.git_timeout(), 180)          # setUp sets 180
+        os.environ["MTS_SIGNAL_GIT_TIMEOUT_S"] = "45"
+        self.assertEqual(S.git_timeout(), 45)
+        self.assertIsInstance(S.git_timeout(), int)
+        for bad in ("junk", "", "0", "-5", "inf", "nan"):
+            os.environ["MTS_SIGNAL_GIT_TIMEOUT_S"] = bad
+            self.assertEqual(S.git_timeout(), 20, bad)
+        os.environ.pop("MTS_SIGNAL_GIT_TIMEOUT_S")
+        self.assertEqual(S.git_timeout(), 20)
 
     def test_the_hub_lock_is_exclusive_and_released(self):
         self.machine("jis-nb", "pro")

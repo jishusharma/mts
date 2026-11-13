@@ -252,7 +252,17 @@ def stamp(dt=None):
     return (dt or now()).strftime("%Y%m%dT%H%M%SZ")
 
 
-def git(cwd, *args, check=True, timeout=20):
+def git_timeout():
+    """Seconds a git call may take: 20 by default; MTS_SIGNAL_GIT_TIMEOUT_S raises it (tests on a loaded box must not depend on a 20 s fetch)."""
+    try:
+        v = int(float(os.environ.get("MTS_SIGNAL_GIT_TIMEOUT_S", "")))   # whole seconds; zero, negative or junk = the default
+        return v if v > 0 else 20
+    except (ValueError, OverflowError):
+        return 20
+
+
+def git(cwd, *args, check=True, timeout=None):
+    timeout = git_timeout() if timeout is None else timeout
     try:
         r = subprocess.run(["git", "-C", str(cwd), *args], capture_output=True, text=True, encoding="utf-8",
                            errors="replace", timeout=timeout, creationflags=0x08000000 if os.name == "nt" else 0)
