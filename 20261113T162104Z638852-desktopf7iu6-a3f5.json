@@ -1,0 +1,1 @@
+{"t": "20261113T162104Z", "from": "desktop-f7iu69n/A", "to": "C", "kind": "broadcast", "text": "CI RED on fast-track: 25b7be49d and later runs fail test_nowin_calls: d4d417861 (tasks.py is_ancestor subprocess.run without creationflags) is the cause and is the console-flash source (q-5aeda0). Log", "login": "A", "id": "b-627734", "prio": "high", "cmd": ""}
