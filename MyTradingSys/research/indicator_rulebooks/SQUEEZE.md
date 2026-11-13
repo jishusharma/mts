@@ -48,10 +48,16 @@ Squeeze Momentum measures the cyclical compression and expansion of volatility a
 | CryptoCred | Does not use Squeeze Momentum indicator (uses HTF support/resistance, market structure, trigger candles) | `backtest/layers/cryptocred/TEST_PLAN.md` (no extract mentions it) |
 
 ## 5. OUR measurements
-Pointers to our studies found by repository grep (study folder, no numbers per task instruction):
-- `MyTradingSys/research/fable_run6_powered_prereg/` (`PRE_REG.md`, `RESULT.md`, `e2_run.py`): Systematic evaluation of Krown S8 squeeze break on 4h bars, pooled over BTCUSDT, ETHUSDT and SOLUSDT across DEV and DEV_EXT (2020-01..2024-06).
-- `MyTradingSys/research/pre_us_squeeze_2026-10-29/` (`RESULT.md`, `study.py`): Empirical study of pre-US Bollinger contraction / squeeze on BTCUSDT 15m (2022-01..2026-09), evaluating post-open expansion size, directional hold, and dual-side whipsaw.
-- `MyTradingSys/research/tv_favorites_2026-11/` (`USAGE_squeeze.md`, `SQUEEZE_STATE.md`, `squeeze_state.py`): Multi-timeframe descriptive census of Squeeze Momentum state, run duration, and release forward moves across 15m, 1h, and 1d on BTCUSDT.
+All rows OURS, copied from the named file. The LazyBear Squeeze Momentum indicator itself (BB inside Keltner, momentum histogram) has no outcome study; rows below test the closest squeeze constructs and are labelled by construct.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/fable_run6_powered_prereg/RESULT.md` | Krown S8 squeeze break, 4h, BTC+ETH+SOL pooled, fixed stop floor 0.56%, 2R target, 100-bar time stop, DEV 2020-01..2024-06 (VALIDATION and HOLDOUT not loaded) | C0 420 trades on 332 entry days (needed >= 439) | mean net R +0.1312, SE 0.0760, t +1.73 (needed >= 3.364); gross +0.1527 | 4h: UNDERPOWERED (file verdict INCONCLUSIVE, not FAIL) |
+| same file, strata (descriptive, no verdict) | BTC only 142: +0.0664 R (t +0.57); ETH 153: +0.1529; SOL 125: +0.1782; long only 232: +0.2967 (t +2.86); short only 188: -0.0731 (t -0.65); 2020-01..2021-12 175: +0.0817; 2022-01..2024-06 245: +0.1665; BTC x 2022-01..2024-06 78: +0.1005 | as listed | as listed | file: strata carry no verdict word and cannot rescue C0 |
+| same file, comparator | same bracket at the open of every non-signal 4h bar | 51,831 | mean net R -0.0249 | descriptive |
+| `research/pre_us_squeeze_2026-10-29/RESULT.md` | Pre-US Bollinger squeeze (BandWidth in lowest 20% of prior 30 days) then the US session, 15m BTCUSDT, 2022-01..2026-09 (no DEV cut stated; descriptive, no fees, no out-of-sample) | squeeze 192; middle 800; wide 223 | none (no fees). Squeeze: UP 29%, DOWN 29%, SIDEWAYS 43%, broke both sides 23%, first break held 52%, US range 1.54x box (wide: 0.80x, broke both 4%) | 15m: CONTEXT ONLY (squeeze predicts size, not side) |
+| `research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md` | Bollinger squeeze breakout, volume-confirmed minus unconfirmed, 6 pairs pooled, 4h | 6 pairs | DEV +88 bp [+15, +155] p 0.008; VALIDATION -13 bp [-109, +81] p 0.60 | 4h: DO NOT USE |
+| `research/tv_favorites_2026-11/SQUEEZE_STATE.md` | Squeeze-on share and run length, last 90 days of the window to 2026-11, 15m / 1h / 1d, descriptive | 15m 8,640 bars; 1h 2,160; 1d 90 | none; in squeeze 59.1% / 59.8% / 60.0% of bars; median run 13 / 13.0 / 12.5 bars | CONTEXT ONLY (state census, no outcome; recent window, not evidence) |
+Regime mix: not given in these files (NOT_MEASURED). VALIDATION and RECENT split of the S8 stage: NOT_MEASURED (VALIDATION not read). Momentum-histogram colour changes, release direction fee-net: NOT_MEASURED.
 
 ## 6. How to read it now on Live Aid
 Squeeze Momentum is integrated into Live Aid via the following displays:
