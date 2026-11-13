@@ -185,7 +185,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
   - `live-aid-flag-log-1111` ready p1 SONNET: Live Aid keeps no record of what it flashed: log every banner (time, kind, side, level, evidence, price) to lo
   - `live-aid-learning-loop-1111` ready p1 SONNET: Live Aid learning loop: a daily model run scores what Live Aid flagged against what price did and writes a poi
-  - `live-mirror-follow-live-host-move` refined p1 SONNET: live_mirror.py hard-codes JIS-NB (LIVE_HOST, share \JIS-NB\MTS-Mirror); live loop is on desktop-f7iu69n (Lenov
   - `live-aid-board-value-area-not-wired-1111` ready p2 SONNET: Live Aid setup board gets the value area from one definition
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
   - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann

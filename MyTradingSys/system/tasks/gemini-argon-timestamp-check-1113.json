@@ -1,36 +1,60 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python -m pytest -q scripts/dev/test_verify_extract_quotes.py"
+  ],
   "created": "2026-11-13T01:57:24Z",
   "depends_on": [],
-  "done_when": "",
-  "est_turns": null,
+  "done_when": "verify_extract_quotes.py exits 1 and prints STAMP-OFF for a quote whose adjacent stamp is >120 s from the quote's marker in raw_transcripts_canonical/<id>_raw.txt; exits 0 on a correct stamp; transcript without markers prints STAMP-UNCHECKED and exits 0; new tests in test_verify_extract_quotes.py",
+  "est_turns": 14,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "verify_extract_quotes.py checks a [m:ss]/[h:mm:ss] stamp written next to a quote against the [m:ss] markers in the canonical transcript, so an Argon stamp that is off (IR-09 [76:01] vs 1:30:45) fails instead of being trusted.",
   "id": "gemini-argon-timestamp-check-1113",
-  "lane": "CODEX",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "verify_extract_quotes: compare Devanagari words (Hindi quotes no longer always MISSING)",
+      "ref": "c2f8b7ed54ef",
+      "utc": "2026-11-12T21:13:36Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "Refined by planner-refine-1113b. Stamps are advisory: the Source GPS thirds tag stays the authority.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
+  "refreshed": "2026-11-13T06:36:03Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [
-    "third check 2026-11-13"
+  "scope_in": [
+    "scripts/dev/verify_extract_quotes.py",
+    "scripts/dev/test_verify_extract_quotes.py"
   ],
-  "state": "raw",
-  "steps": [],
-  "tests": "",
+  "scope_out": [
+    "no change to the quote-match or thirds rule",
+    "no YouTube fetch"
+  ],
+  "scope_sha": "c2f8b7ed54ef",
+  "size": "S",
+  "sources": [
+    "third check 2026-11-13: THIRD_CHECK_I2_REFUTE.md IR-09 line 75, IR-18, IR-19 stamps off"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read verify_extract_quotes.py check() lines 179-228 and transcript_body (markers are stripped at line 61: keep an offset map first)",
+    "Write the failing test: fixture raw file with [m:ss] markers, extract line with a stamp 40+ min off",
+    "Parse a stamp on the quote line or the next line; locate the quote's nearest preceding marker; compare, tolerance 120 s; no markers = STAMP-UNCHECKED, never fail",
+    "Run test_verify_extract_quotes.py -q, then the checker on one real extract (tf_extraction_plan_1113) to confirm no false fails; ship"
+  ],
+  "tests": "scripts/dev/test_verify_extract_quotes.py: new test_stamp_far_from_marker_fails (fixture transcript with markers, stamp 76:01 vs 1:30:45) fails on pre-change script; existing tests stay green",
   "title": "[GEMINI] Check every Argon timestamp against the transcript before use: IR-09/18/19 were off (e.g. [76:01] vs 1:30:45)",
-  "weight": "",
-  "worker": ""
+  "weight": "ROUTINE",
+  "worker": "agent"
 }

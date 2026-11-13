@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T06:36:13Z",
   "commands": [],
   "created": "2026-11-07T18:43:25Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "REFINED 2026-11-07 by DSA JIS-NB chat mts-dsa-jis-nb-1107-1658. Dedup: sync-py-ship-reader-thread-unicodedecode is done and covers sync.py only; that fix is in place at :91, :96, :711, :1074, :1643. dsa-block-stdout-utf8-1107 is a different defect (DSA bridge block header, not gate). Harmless to the ship result: still reports PASS and pushes, but stderr carries a full traceback every time, so a real failure in that thread would be invisible.",
+  "note": "DONE on trunk: 52775fb4e utf-8/replace on run_all_tests.py subprocess calls; test_run_all_tests_encoding.py passes (3)",
+  "pinned": false,
   "prio": 1,
+  "reason": "DONE on trunk: 52775fb4e utf-8/replace on run_all_tests.py subprocess calls; test_run_all_tests_encoding.py passes (3)",
   "refine_tries": 1,
   "refined_by": "DSA JIS-NB chat mts-dsa-jis-nb-1107-1658",
   "refs": [],
@@ -39,7 +42,7 @@
     "scripts/dev/sync.py:392 (run_gate launches run_all_tests.py)",
     "DSA chat results #70, #50, #23 (traceback four times on successful ships)"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "Read run_all_tests.py:145-160, :485-495, :1145-1160",
     "Write failing test first and show it fail on unmodified file",

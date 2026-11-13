@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T06:37:04Z",
   "commands": [
     "mvn -q test -Dtest=SpikeFadeCriticalWave1Test+SpikeFadeTest+SpikeFadeProfileTest+SpikeFadePathsTest+SpikeFadeFlagOffGoldenTest"
   ],
@@ -37,9 +38,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105b: twin already on trunk as c4ad479e0 (c2_above_prior_day caveat, not a gate))\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105c: twin already on trunk as c4ad479e0 (c2_above_prior_day caveat, not a gate))\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105d: Twin: A-C2 caveat already on trunk as c4ad479e0 (c2_above_prior_day).)",
+  "note": "DONE on trunk (planner-refine-1113b check): fill-rule: FILL_GAP_FREQUENCY.md+script+test exist; wave1: caseC_c2_above_prior_day_is_recorded_not_gated in SpikeFadeCriticalWave1Test; gate-4c: SMOKE_SKIP_FILES in run_all_tests.py + test_run_all_tests.py:281",
   "pinned": false,
   "prio": 2,
+  "reason": "DONE on trunk (planner-refine-1113b check): fill-rule: FILL_GAP_FREQUENCY.md+script+test exist; wave1: caseC_c2_above_prior_day_is_recorded_not_gated in SpikeFadeCriticalWave1Test; gate-4c: SMOKE_SKIP_FILES in run_all_tests.py + test_run_all_tests.py:281",
   "refine_tries": 1,
   "refined_by": "",
   "refreshed": "2026-10-29T22:04:20Z",
@@ -62,7 +64,7 @@
     "MyTradingSys/research/critical_test_wave1_2026-10-30/ITEM3_SPIKEFADE_CLASSIFYSTATE.md:14,94",
     "MyTradingSys/research/tom_transfer_2026-10-11/TOM_LAYER_V2_SPEC.md:165-168"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "SpikeFadeDetector.java:181-183: replace 'if (!(lastClose > priorHigh)) return null;' with a boolean c2 = lastClose > priorHigh (strict >, as caseC); no early return.",
     "Add c.put(\"c2_above_prior_day\", c2) next to c.put(\"entry_path\",\"A1\") (~line 232) and a comment with the quote k0zm5NYn0IQ:51-56 and 'OURS: gate dropped, fire rate unmeasured'. Add \"A-C2\" to the conditions array (SpikeFadeDetector.java:233-235) only when c2 is true (OURS); SpikeFadeProfileTest:193 expects [A-C1,A-C2,A-C3] on an above-prior-day fixture and must stay green.",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T06:37:22Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -26,9 +27,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
+  "note": "Contradicts SCHEDULING_POLICY (no schedulers/routines anywhere, CLAUDE.md boot step 4); proof file exists, no builder work left",
   "pinned": false,
   "prio": 3,
+  "reason": "Contradicts SCHEDULING_POLICY (no schedulers/routines anywhere, CLAUDE.md boot step 4); proof file exists, no builder work left",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-28T06:49:36Z",
@@ -45,7 +47,7 @@
   "sources": [
     "operator ask 2026-10-28 gap 7"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "Read the done-when and linked files",
     "Verify or complete; record run"

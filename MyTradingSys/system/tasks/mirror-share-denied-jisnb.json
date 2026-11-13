@@ -1,35 +1,66 @@
 {
   "approved_by": "",
   "asks": "",
-  "commands": [],
+  "commands": [
+    "python scripts/dev/live_mirror.py brief"
+  ],
   "created": "2026-10-30T11:02:59Z",
   "depends_on": [],
-  "done_when": "",
+  "done_when": "On JIS-NB 'python scripts/dev/live_mirror.py brief' first line is 'LIVE OWNER: DESKTOP-F7IU69N (heartbeat Ns ago)' with N<180 and live numbers; the command output and the share-grant command used are quoted in the card result; no live-tree file or process touched",
   "est_turns": null,
   "formula_id": "",
   "formula_ids": [],
   "from_inbox": "",
-  "goal": "",
+  "goal": "JIS-NB (desktop) can read the live mirror share published by the live host (DESKTOP-F7IU69N, system/live_host.txt), so live_mirror.py brief on JIS-NB prints a LIVE OWNER line with numbers instead of Permission denied/UNCONFIRMED.",
   "id": "mirror-share-denied-jisnb",
-  "lane": "SONNET",
+  "lane": "JIS-NB",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "live_mirror: on-demand ensure; brief republishes in the live tree when the copy is older t",
+      "ref": "6b61514f7174",
+      "utc": "2026-10-26T17:27:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "6b61514f7174 live_mirror: on-demand ensure; brief republishes in the live tree when the co",
+      "ref": "MyTradingSys/system/LIVE_MIRROR.md",
+      "utc": "2026-10-26T17:27:16Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-31 (planner-refine; DECISION (OURS): conservative default, card serves none of setup-review, storybook-v2, S3 funnel); unpark at S3 first pass or when the operator asks REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
+  "note": "Two causes seen: share ACL denies JIS-NB, and live host heartbeat is stale. Check heartbeat first. Per-machine step goes by broadcast, never via the operator.",
   "pinned": false,
   "prio": 2,
   "refine_tries": 1,
   "refined_by": "",
+  "refreshed": "2026-11-13T06:37:34Z",
   "refs": [],
   "result": "",
-  "scope_in": [],
-  "scope_out": [],
-  "size": "",
-  "sources": [],
-  "state": "refined",
-  "steps": [],
-  "tests": "",
+  "scope_in": [
+    "MyTradingSys/system/LIVE_MIRROR.md"
+  ],
+  "scope_out": [
+    "no change to publish allowlist, live tree, processes, HALT or orders",
+    "no secrets or credentials in the repo"
+  ],
+  "scope_sha": "6b61514f7174",
+  "size": "S",
+  "sources": [
+    "planner-refine-1113b: JIS-NB brief printed REFUSED, UNCONFIRMED, heartbeat 556559 s old (2026-11-13)"
+  ],
+  "state": "ready",
+  "steps": [
+    "On JIS-NB run live_mirror.py brief and net use against the share path; quote the denial and the live owner heartbeat age",
+    "If heartbeat is stale the live host is down: broadcast via mts_signal.py (who, then broadcast) to start publish there; else grant read on the MTS-Mirror share to the JIS-NB mtsworker account via a broadcast --cmd to the live host (Grant-SmbShareAccess read only)",
+    "Re-run brief on JIS-NB, quote first line, add the working grant to LIVE_MIRROR.md troubleshooting"
+  ],
+  "tests": "No code change: the done_when output quoted in the result is the test; test_live_mirror.py stays green",
   "title": "JIS-NB (desktop) gets Permission denied on \\desktop-f7iu69n\\MTS-Mirror; live_mirror brief = UNCONFIRMED, so Eagle_Eyes here cannot read live layers; grant share read for this host or push the mirror to it",
-  "weight": "",
+  "weight": "ROUTINE",
   "worker": ""
 }

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T06:37:04Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -25,9 +26,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105c: twin already on trunk as 2aebf54ae0b9 (FILL_GAP_FREQUENCY.md, DEV gap-through sizing))\nREVIEWED:2026-11-05 DROP (Haiku on API credit, job haiku-review-refined-1105d: Twin: already on trunk as 2aebf54ae0b9 (FILL_GAP_FREQUENCY.md shipped 2026-10-29).)",
+  "note": "DONE on trunk (planner-refine-1113b check): fill-rule: FILL_GAP_FREQUENCY.md+script+test exist; wave1: caseC_c2_above_prior_day_is_recorded_not_gated in SpikeFadeCriticalWave1Test; gate-4c: SMOKE_SKIP_FILES in run_all_tests.py + test_run_all_tests.py:281",
   "pinned": false,
   "prio": 3,
+  "reason": "DONE on trunk (planner-refine-1113b check): fill-rule: FILL_GAP_FREQUENCY.md+script+test exist; wave1: caseC_c2_above_prior_day_is_recorded_not_gated in SpikeFadeCriticalWave1Test; gate-4c: SMOKE_SKIP_FILES in run_all_tests.py + test_run_all_tests.py:281",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-10-29T16:46:11Z",
@@ -49,7 +51,7 @@
     "MyTradingSys/research/dsa_backtest_audit_2026-10-16/FILL_CANARY.md",
     "MyTradingSys/backtest/layers/fabio/v3/manage.py:141-143"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "Load DEV BTCUSDT 1m bars with the loader the fabio v3 golden test uses (MyTradingSys/backtest/layers/fabio/v3/tests/test_fabio_golden.py); run the v3 engine on DEV to get stop exits",
     "For each stop exit: flag gap-through (open beyond stop on a bar after the fill bar, or on the fill bar for the F scenario); report count, share of stop exits, mean and p95 R understatement",

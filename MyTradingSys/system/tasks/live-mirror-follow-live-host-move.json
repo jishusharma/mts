@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T06:36:43Z",
   "commands": [
     "python scripts/dev/live_owner.py check",
     "python scripts/dev/live_mirror.py publish",
@@ -30,9 +31,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Operator 2026-11-03 (lift rules that block for no reason): S0 park lifted. | S0 park 2026-10-30 (D7 roadmap, operator: keep only what is useful): not on the v1 path now; unpark at S3 first pass or when the operator asks",
+  "note": "DONE on trunk: c2b9f0200 live host read from system/live_host.txt (read_live_host, test_live_mirror covers it); no hard-coded JIS-NB",
   "pinned": false,
   "prio": 1,
+  "reason": "DONE on trunk: c2b9f0200 live host read from system/live_host.txt (read_live_host, test_live_mirror covers it); no hard-coded JIS-NB",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-12T06:21:06Z",
@@ -49,7 +51,7 @@
   "sources": [
     "MyTradingSys/system/LIVE_MIRROR.md:69-72; scripts/dev/sync.py start output 'LIVE OWNER: UNCONFIRMED (no owner marker)' on JIS-NUC 2026-10-28"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "On the Lenovo check MTS_LIVE_OWNER_DIR is set and live_owner.py check shows a fresh heartbeat (publish exits 2 otherwise)",
     "On the Lenovo run live_owner.py check then publish; report both lines",
