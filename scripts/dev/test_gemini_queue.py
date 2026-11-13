@@ -342,6 +342,31 @@ class GeminiStatusTest(unittest.TestCase):
         self.assertIn("ok | DONE |", out)
 
 
+class FetchOriginTest(unittest.TestCase):
+    """gemini-queue-parallel-runs-fight-over-gi: parallel runs retry a 'cannot lock ref' fetch instead of failing."""
+    LOCK = cp(1, "error: cannot lock ref 'refs/remotes/origin/fast-track': is at x but expected y")
+
+    def test_retries_a_ref_lock_then_succeeds(self):
+        calls = []
+
+        def fake_git(*a, **kw):
+            calls.append(a)
+            return self.LOCK if len(calls) < 3 else cp(0)
+        with mock.patch.object(gq, "git", side_effect=fake_git):
+            r = gq.fetch_origin(sleep=lambda s: None)
+        self.assertEqual((r.returncode, len(calls)), (0, 3))
+
+    def test_other_error_returns_at_once(self):
+        with mock.patch.object(gq, "git", return_value=cp(128, "fatal: unable to access")) as g:
+            r = gq.fetch_origin(sleep=lambda s: None)
+        self.assertEqual((r.returncode, g.call_count), (128, 1))
+
+    def test_gives_up_after_6_lock_errors(self):
+        with mock.patch.object(gq, "git", return_value=self.LOCK) as g:
+            r = gq.fetch_origin(sleep=lambda s: None)
+        self.assertEqual((r.returncode, g.call_count), (1, 6))
+
+
 if __name__ == "__main__":
     unittest.main()
 

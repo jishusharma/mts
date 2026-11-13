@@ -40,13 +40,14 @@ Formula pointer: `research/layer_lab/gemini_edge_1113/hilega-formula/FORMULA.md`
 | CryptoCred | No extract mentions Hilega Milega (focus on HTF market structure, swing high/low retests) | `MyTradingSys/research/` (none found) |
 
 ## 5. OUR measurements
-Table of studies found by grep (study folder, no numbers per prompt instructions):
-| Study folder | What was tested | Role |
-|---|---|---|
-| `research/layer_lab/gemini_edge_1113/hilega-formula` | Public formula definition & parameter extraction across Indian trading portals | Specification & Pine Script parity study |
-| `research/nk_stocktalk_1113` | Caption-verified primary source extraction of NK StockTalk video corpus | Primary source rule extraction & catalog |
-| `research/layer_lab/gemini_edge_1113/mine-nk` | Rule mining of 15 mechanically testable rules from NK StockTalk extracts | Analyst rule synthesis |
-| Side-session study `NK_RSI_RESULTS.md` (referenced in `research/indicator_rulebooks/INDEX.md` and `RSI.md`) | NK mechanical rules R1-R4 on 10 crypto perpetuals | Quantitative backtest |
+No study in the repo tests the Hilega Milega construction itself (RSI(9), green EMA(RSI,3), red WMA(RSI,21)): every flip, cross, "W" and level-80/20 outcome number is NOT_MEASURED. The only committed numbers are the NK rule family below, copied from `research/indicator_rulebooks/RSI.md` section 5 (row NKR). RSI.md itself cites a side-session file `NK_RSI_RESULTS.md` that is NOT in the repo, so these numbers have no committed primary source yet; re-copy from that file once it is committed.
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/indicator_rulebooks/RSI.md` row NKR (primary `NK_RSI_RESULTS.md`, not in repo) | NK rules R1-R4 (RSI 70/30 at session close style rules) on 10 crypto perpetuals, 5m, 10 bp round trip | 42 cells | 0 of 42 pass; R3 closest +1.16% CI -0.15..+2.41, p 0.047, fails BH, RECENT -0.17% | 5m: DO NOT USE (RSI-family rules; Hilega flip fee-bleed claim in the INDEX row is NOT_MEASURED in a committed file) |
+| `research/layer_lab/gemini_edge_1113/hilega-formula/FORMULA.md` | Formula definition and Pine parity (specification only, web quotes UNVERIFIED) | none | none | UNTESTED |
+| `research/layer_lab/gemini_edge_1113/mine-nk/RULES.md` | Rule mining of mechanically testable NK rules from extracts (no backtest) | none | none | UNTESTED |
+| `research/nk_stocktalk_1113/CATALOG.md` | Caption-verified catalog of NK videos (source extraction, no backtest) | none | none | UNTESTED |
+Regime mix and DEV / VALIDATION / RECENT split: only RECENT -0.17% for R3 is given (RSI.md); the rest NOT_MEASURED. Next step: a pre-registered Hilega-flip study (card not filed here) would fill this section.
 
 ## 6. How to read it now on Live Aid
 Panel: not shown (`tools/live_aid/live_aid.html` has no Hilega Milega column or panel; Live Aid momentum table tracks RSI 14 and WaveTrend wt1/wt2).
