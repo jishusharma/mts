@@ -1052,3 +1052,46 @@ def test_flag_log_records_each_banner():
     assert (touch["kind"], touch["level"]) == ("touch", "Today high 74010") and "TOUCHING" in touch["evidence"]
     assert got["cap"] == 2000
     assert got["csv"].splitlines()[0] == "t,kind,side,level,evidence,price" and len(got["csv"].splitlines()) == 3
+
+
+# ---------- flag log: board rows + auto-save to a folder (cards live-aid-log-idea-setup-rows-1113, live-aid-flag-log-autoexport-1113) ----------
+def _node_json(js):
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node not installed")
+    out = subprocess.run([node, "-e", js, str(HERE / "home.js")], capture_output=True, text=True, encoding="utf-8", timeout=60)
+    assert out.returncode == 0, out.stderr[-1500:]
+    return json.loads(out.stdout)
+
+
+def test_board_state_changes_are_logged_once_each():
+    """Board LONG/SHORT changes -> one 'board' row per change: LONG only (UP), unchanged (no row), both sides (NEUTRAL), cleared (NEUTRAL)."""
+    js = ("const H=require(process.argv[1]);const rows=[];const md={px:74000,zones:[],lad:{above:[],below:[]}};"
+          "const run=(bi,t)=>H._boardLog({now:t,boardInputs:bi,onFlag:r=>rows.push(r)},md);"
+          "const longRsi={'15m':{div:{rsi:1}}}, both={'15m':{div:{rsi:1}},'1h':{div:{wt:-1}}};"
+          "H._boardLogReset();run({},1);run(longRsi,2);run(longRsi,3);run(both,4);run({},5);console.log(JSON.stringify(rows))")
+    rows = _node_json(js)
+    assert [(r["t"], r["kind"], r["side"], r["price"]) for r in rows] == [(2, "board", "UP", 74000), (4, "board", "NEUTRAL", 74000), (5, "board", "NEUTRAL", 74000)]
+    assert rows[0]["evidence"].startswith("LONG 1 live: 15m") and "SHORT 0 live" in rows[0]["evidence"]
+    assert "SHORT 1 live: 1h" in rows[1]["evidence"] and rows[2]["evidence"].startswith("LONG 0 live")
+
+
+def test_autosave_writes_one_csv_per_utc_day_with_the_page_header():
+    js = ("const A=require(process.argv[1].replace('home.js','flag_autosave.js'));const files={};"
+          "const dir={async getFileHandle(n){return{async createWritable(){let b='';return{async write(x){b+=x},async close(){files[n]=b}}}}}};"
+          "const D=Date.UTC(2026,10,13,23,59);const rows=[{t:D,kind:'board',side:'UP',level:'',evidence:'LONG 1 live, x',price:74000},{t:D+120000,kind:'touch',side:'DOWN',level:'Day open 73000',evidence:'TOUCHING',price:73999}];"
+          "A.save(dir,rows).then(n=>console.log(JSON.stringify({n,files})))")
+    got = _node_json(js)
+    assert got["n"] == 2 and sorted(got["files"]) == ["flag_log_2026-11-13.csv", "flag_log_2026-11-14.csv"]
+    assert got["files"]["flag_log_2026-11-13.csv"].splitlines() == ["t,kind,side,level,evidence,price", '2026-11-13T23:59:00.000Z,board,UP,,"LONG 1 live, x",74000']
+    assert got["files"]["flag_log_2026-11-14.csv"].splitlines()[1] == "2026-11-14T00:01:00.000Z,touch,DOWN,Day open 73000,TOUCHING,73999"
+
+
+def test_autosave_wired_in_page_and_export_path_is_not_in_the_repo():
+    page = (HERE / "live_aid.html").read_text(encoding="utf-8")
+    assert '<script src="flag_autosave.js"></script>' in page and 'id="flag-auto"' in page
+    assert page.count("flagAutoSoon();") == 1 and "showDirectoryPicker" in page and "indexedDB" in page and "queryPermission" in (HERE / "flag_autosave.js").read_text(encoding="utf-8")
+    git = shutil.which("git")
+    if git:  # runtime_data/ is git-ignored: the picked folder runtime_data/live_aid never reaches the public repo
+        r = subprocess.run([git, "check-ignore", "-q", "runtime_data/live_aid/flag_log_2026-11-13.csv"], cwd=str(HERE.parents[2]))
+        assert r.returncode == 0

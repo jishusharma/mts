@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:51:36Z",
   "commands": [],
   "created": "2026-11-13T11:56:26Z",
   "depends_on": [],
@@ -15,8 +16,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "done in the ship that adds board-row logging and flag_autosave.js (tests fail on old code, 397 pass)",
+  "pinned": false,
   "prio": 2,
+  "reason": "done in the ship that adds board-row logging and flag_autosave.js (tests fail on old code, 397 pass)",
   "refine_tries": 0,
   "refined_by": "",
   "refs": [],
@@ -27,7 +30,7 @@
   "sources": [
     "live-aid-learn-1113"
   ],
-  "state": "raw",
+  "state": "dropped",
   "steps": [],
   "tests": "",
   "title": "Live Aid flag log is browser-only: add an automatic export to a file the learner can read (page posts rows to a local endpoint or daily CSV drop), so real flags are scored instead of the replay",

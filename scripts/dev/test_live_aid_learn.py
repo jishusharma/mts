@@ -67,3 +67,18 @@ def test_page_csv_header_scores_rows(tmp_path):
     assert [r["r1h"] for r in rows] == [1.0, 1.0, None]  # LONG +1%, SHORT vs 99 = +1%, no kline
     assert rows[0]["at"] == "Day open" and rows[0]["state"] == "REJECTED"
     assert rows_by_name(la.score(rows))["idea"]["n"] == 2
+
+
+def test_autosave_day_files_down_side_flips_and_duplicates_drop(tmp_path):
+    """Files from the page auto-save (flag_log_<day>.csv, side UP/DOWN/NEUTRAL): DOWN scores like SHORT, NEUTRAL is not scored, a repeated row counts once."""
+    t0 = 1794000000000 // 60000 * 60000
+    iso = lambda ms: __import__("datetime").datetime.fromtimestamp(ms / 1000, __import__("datetime").timezone.utc).isoformat()
+    kl = {t0 + 3600000: 99.0, t0 + 3600000 + 60000: 101.0}
+    hdr = "t,kind,side,level,evidence,price"
+    a, b = tmp_path / "flag_log_a.csv", tmp_path / "flag_log_b.csv"
+    row = lambda t, side: "%s,board,%s,,evidence,100" % (iso(t), side)
+    a.write_text("\n".join([hdr, row(t0, "DOWN"), row(t0 + 60000, "NEUTRAL")]) + "\n")
+    b.write_text("\n".join([hdr, row(t0, "DOWN")]) + "\n")                       # same row again in a second file
+    rows = la.load_logs([a, b], kl)
+    assert len(rows) == 2 and rows[0]["r1h"] == 1.0 and rows[1]["r1h"] is None   # DOWN: price 100 -> 99 = +1% for the short side
+    assert rows_by_name(la.score(rows))["board"]["n"] == 1

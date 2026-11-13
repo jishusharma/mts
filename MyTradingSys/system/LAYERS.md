@@ -182,8 +182,6 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-board-render-1111` ready p1 SONNET: Live Aid Home renders the two-sided board (long and short cards, strength bars, n and rate per mix) in place o
   - `live-aid-board-value-area-not-wired-1111` ready p2 SONNET: Live Aid setup board gets the value area from one definition
   - `live-aid-flag-hitrate-grey-1113` raw p2 SONNET: Live Aid: show hit rate and n next to each flag/level story (from live_aid_learn.py, SOURCED replay now, real 
-  - `live-aid-flag-log-autoexport-1113` raw p2 SONNET: Live Aid flag log is browser-only: add an automatic export to a file the learner can read (page posts rows to 
-  - `live-aid-log-idea-setup-rows-1113` raw p2 SONNET: Live Aid flag log records only news/liq/touch since IDEA/SETUP banners were removed; log the board LONG/SHORT 
   - `live-aid-oi-poller-all-venues-1110` ready p2 SONNET: Live Aid OI from every big venue: Python poller (DoH like binance_doh.py) for Binance, OKX, Bitget, BitMEX, Kr
   - `live-aid-one-bias-line-1110` ready p2 SONNET: Live Aid Home: one Bias line that ranks the reads. Today the gauge says SHORT 5 of 5 while two LONG SETUP bann
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave

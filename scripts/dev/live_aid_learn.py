@@ -78,6 +78,32 @@ def _ms(t):
     return int((d if d.tzinfo else d.replace(tzinfo=timezone.utc)).timestamp() * 1000)
 
 
+def fetch_klines(start_ms, end_ms):
+    """Public Binance spot 1m closes {open_ms: close} for [start, end + 2 h] (data-api.binance.vision, same source as the page)."""
+    import urllib.request
+    out, t, end = {}, int(start_ms) // 60000 * 60000, int(end_ms) + 7200000
+    while t < end:
+        u = "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1m&startTime=%d&endTime=%d&limit=1000" % (t, end)
+        r = json.loads(urllib.request.urlopen(u, timeout=30).read())
+        if not r:
+            break
+        out.update({int(k[0]): float(k[4]) for k in r})
+        t = int(r[-1][0]) + 60000
+    return out
+
+
+def load_logs(paths, klines=None):
+    """Several day files (flag_log_<day>.csv from the page auto-save), duplicates (same t, kind, side, level) dropped."""
+    seen, rows = set(), []
+    for p in paths:
+        for r in load_log(p, klines):
+            k = (r.get("t"), r.get("kind"), r.get("side"), r.get("level"), r.get("kind") == "board" and r.get("evidence"))
+            if k not in seen:
+                seen.add(k)
+                rows.append(r)
+    return rows
+
+
 def load_log(path, klines=None):
     """Old header kind,side,state,at,r1h, or the page header t,kind,side,level,evidence,price (home.js FLAG_COLS):
     level->at, evidence->state, r1h = close 60 min after t vs price, sign flipped for SHORT, None without a kline."""
@@ -89,8 +115,8 @@ def load_log(path, klines=None):
                 r1h = None
                 try:
                     c, px = (klines or {}).get(_ms(r["t"]) // 60000 * 60000 + 3600000), float(r["price"])
-                    if c is not None and px:
-                        r1h = round((c / px - 1) * 100 * (-1 if r.get("side") == "SHORT" else 1), 4)
+                    if c is not None and px and r.get("side") != "NEUTRAL":   # NEUTRAL = no direction claimed, nothing to score
+                        r1h = round((c / px - 1) * 100 * (-1 if r.get("side") in ("SHORT", "DOWN") else 1), 4)
                 except (ValueError, TypeError):
                     pass
                 out.append({**r, "r1h": r1h})
@@ -129,14 +155,22 @@ def render(date, rows, src, prev, prev_date):
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", required=True)
-    ap.add_argument("--log")
-    ap.add_argument("--klines", help="1m closes json (page-header CSV needs it for r1h)")
+    ap.add_argument("--log", nargs="+", help="flag log CSV(s); a folder or glob is expanded (runtime_data/live_aid/flag_log_*.csv)")
+    ap.add_argument("--klines", help="1m closes json (page-header CSV needs it for r1h); 'auto' = fetch public Binance 1m for the log's span")
     ap.add_argument("--since", help="MM-DD: score only replay events from this day on (replay events.json only)")
     ap.add_argument("--out-dir", default=str(OUT))
     a = ap.parse_args(argv)
     ev = REVIEW / "events.json"
     if a.log:
-        rows, src = score(load_log(a.log, load_klines(a.klines) if a.klines else None)), "flag log " + Path(a.log).name
+        import glob
+        files = sorted(f for g in a.log for f in (glob.glob(str(Path(g) / "flag_log_*.csv")) if Path(g).is_dir() else glob.glob(g) or [g]))
+        kl = None
+        if a.klines == "auto":
+            ts = [_ms(r["t"]) for f in files for r in load_log(f)]
+            kl = fetch_klines(min(ts), max(ts)) if ts else {}
+        elif a.klines:
+            kl = load_klines(a.klines)
+        rows, src = score(load_logs(files, kl)), "flag log %d file(s)" % len(files)
     elif ev.exists():
         evs = json.loads(ev.read_text())
         if a.since:
