@@ -770,7 +770,7 @@
  "backtests": [
   {
    "id": "RSI-EXTREME-CONFIRM-1H-20261113",
-   "trials": 384,
+   "trials": null,
    "title": "Hourly RSI extreme (<=10/15/20/25, mirror >=75-90) + next candle closes beyond prior close, daily-RSI bucket, 4 stops x 3 exits, 10 coins",
    "date": "2026-11-13",
    "market": "Bybit linear 1h, BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, 2020+",
