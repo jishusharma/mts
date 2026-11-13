@@ -4,19 +4,14 @@
   python scripts/dev/make_home.py --out x.html
   (an ordinary smoke ship: the fast gate runs only the tests its import graph reaches)
 
-Operator 2026-10-16: "all my artifacts available from one place, and how to access them explained". Each row says what the page is for,
-which login owns it, where notes go and when it was last published; a box says how to open the pages from any login; a list names the
-stale copies only Jis can delete. Operator 2026-10-17: "all my questions and the decisions waiting for me available there":
-a "Waiting for you" list reads the open questions from the repo record (OPERATOR_DECISIONS.md: no answer yet; task cards: `asks`
-set, not done) and says where to answer them (the Control Room, the one place for answers, q1/q21). Publish: Artifact tool, url = registry urls[home_login] of mts_home (never a second copy).
-Operator 2026-10-19: "How to use MTS" at the top: seven recipes (when, where, the line to paste, what comes back) and the super-session
-prompt, read from SUPER_SESSION.md at build time so the page never drifts from the doc.
-Operator 2026-10-25: too big, duplicates, too much scrolling: compact page (needs-you strip, page tiles, one row per session role,
-everything rare folded). Every page enters through registry.json (test_every_published_artifact_is_registered keeps it honest).
+Operator 2026-10-16: all artifacts from one place. 2026-11-13 cleanup: Home is only the page list now. Removed as stale or duplicated
+elsewhere: Waiting-for-you (decisions are answered in chat, recorded in OPERATOR_DECISIONS.md), Road to profitability (research status),
+session recipes and the super-session prompt (ROLES.md, SUPER_SESSION.md), link-fix help (one login owns every page). Each tile shows when its
+page was last published in UTC and IST (same clock as the page stamp, af.stamp_text) and a colour: green current, amber behind the repo or
+older than 14 days, red behind the repo for 3+ days. Every page enters through registry.json (test_every_published_artifact_is_registered).
 """
 import argparse
 import json
-import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,102 +23,14 @@ import artifacts as af  # noqa: E402
 
 OUT = af.REPO / "MyTradingSys" / "system" / "artifacts" / "mts_home.html"
 WRITE_FIRST = ("research_map",)  # pages where Jis writes, shown first
-DECISIONS = "MyTradingSys/system/OPERATOR_DECISIONS.md"
-TASKS = "MyTradingSys/system/tasks"
-NO_ANSWER = ("", "(none yet)")
-RECORDED_HEAD = re.compile(r"(?:d-|\d{4}-\d{2}-\d{2})")  # OURS: decision-log headings; open questions are q-* or DECISION NEEDED
-# A parked card is the operator's only when its ask is addressed to him; the rest wait on machines (DSA desks, captions, other cards).
-FOR_OPERATOR = re.compile(r"(?-i:\bJis\b)|operator (to|reader|G3|marks)|the operator G3", re.I)  # "Jis" exact: JIS-NB is a host
-SUPER = "MyTradingSys/system/SUPER_SESSION.md"
-SUPER_HEAD = "## Prompt: start a super session"
-ROAD = "MyTradingSys/research/v1_plan_2026-10-20/D7_ROADMAP.md"   # the road to profitability (Control Room's road retired 2026-10-31)
-PROMOTED = "MyTradingSys/execution/promoted_setups.json"
+AMBER_DAYS, RED_BEHIND_DAYS = 14, 3  # OURS: age at which a published page turns amber; a page behind its repo this long turns red
 
 
-def road(repo):
-    """D7's stage table (under "## Stages") as one line per stage, the stage named on its "Now:" line, and two live counts:
-    ready cards (S0 exit: <= 15) and promoted setups (S3 exit: >= 1). Missing file: no stages."""
-    repo = Path(repo)
-    f = repo / ROAD
-    text = f.read_text(encoding="utf-8") if f.is_file() else ""
-    sec = re.search(r"(?ms)^## Stages\n(.*?)(?=^## |\Z)", text)
-    sec = sec.group(1) if sec else ""
-    now = re.search(r"(?m)^Now: *(S\d+|v\d+)", sec)
-    now = now.group(1) if now else ""
-    stages = []
-    for ln in sec.splitlines():
-        cells = [c.strip() for c in ln.strip().strip("|").split("|")]
-        m = re.match(r"(S\d+|v\d+)\b *(.*)", cells[0]) if len(cells) >= 5 else None
-        if m:
-            stages.append({"id": m.group(1), "name": m.group(2), "exit": cells[3], "expect": cells[4], "now": m.group(1) == now})
-    ready = 0
-    tdir = repo / TASKS
-    for t in tdir.glob("*.json") if tdir.is_dir() else []:
-        try:
-            ready += json.loads(t.read_text(encoding="utf-8")).get("state") == "ready"
-        except ValueError:
-            continue
-    try:
-        promoted = len(json.loads((repo / PROMOTED).read_text(encoding="utf-8")).get("entries", []))
-    except (OSError, ValueError):
-        promoted = 0
-    return {"doc": ROAD, "now": now, "stages": stages, "counts": {"ready_cards": ready, "promoted": promoted}}
-
-
-def super_prompt(repo):
-    """The fenced prompt under SUPER_HEAD in SUPER_SESSION.md, or "" when the file or the block is missing."""
-    f = Path(repo) / SUPER
-    text = f.read_text(encoding="utf-8") if f.is_file() else ""
-    m = re.search(re.escape(SUPER_HEAD) + r"[^\n]*\n```[^\n]*\n(.*?)\n```", text, re.S)
-    return m.group(1).strip() if m else ""
-
-
-def waiting(repo):
-    """Open questions for Jis: decisions in OPERATOR_DECISIONS.md with no answer, and task cards parked on an `asks` question."""
-    repo, out = Path(repo), []
-    dec = repo / DECISIONS
-    text = dec.read_text(encoding="utf-8") if dec.is_file() else ""
-    for sec in re.split(r"(?m)^## ", text)[1:]:
-        head, _, body = sec.partition("\n")
-        if re.search(r"\bdecided\b", head, re.I):
-            continue
-        if RECORDED_HEAD.match(head) or re.search(r"(?m)^Applied:|^Operator \((?:voice|chat)|^Operator:", body):
-            continue  # a recorded operator decision (dated or d- heading, Applied:/Operator body), not an open question
-        ans = re.search(r"(?m)^Answer: *(.*)$", body)
-        if (ans and ans.group(1).strip() not in NO_ANSWER) or '"answer"' in body or '"status": "DECIDED"' in body:
-            continue
-        parts = [x.strip() for x in head.split("|")]
-        title = next((ln.strip() for ln in body.splitlines() if ln.strip()), "")
-        rec = re.search(r"(?m)^Recommended: *(.*)$", body)
-        out.append({"id": parts[0], "kind": "decision", "title": title, "recommended": rec.group(1).strip() if rec else "",
-                    "asked": parts[1].replace("asked", "").strip() if len(parts) > 1 else "",
-                    "topic": parts[2] if len(parts) > 2 else "", "explicit": "NO AUTO-APPLY" in head})
-    tdir = repo / TASKS
-    for f in sorted(tdir.glob("*.json")) if tdir.is_dir() else []:
-        try:
-            c = json.loads(f.read_text(encoding="utf-8"))
-        except ValueError:
-            continue
-        if c.get("asks") and c.get("state") not in ("done", "dropped") and FOR_OPERATOR.search(c["asks"]):
-            out.append({"id": c.get("id", f.stem), "kind": "task", "title": c["asks"], "recommended": "",
-                        "asked": str(c.get("created", ""))[:10], "topic": c.get("title", ""), "explicit": True})
-    return out
-
-
-RECIPES = [  # (name, when, line to paste, what comes back); the Lead covers question, decision and backlog idea in one row
-    ("Ask, decide, add to backlog", "Any time, any machine or login.", "You are Lead.",
-     "then your words (say think / pipeline / doctor / a decision): the answer from the repo, your decision recorded, or one scoped backlog card."),
-    ("Read a chart screenshot", "Market hours; JIS-NB reads live files, other devices a mirror copy.", "You are Eagle_Eyes.",
-     "then the screenshot: a logged read against the engine and a flag if live money looks wrong."),
-    ("Spend spare budget", "Weekly meter says SPEND (used 10+ points below the share of week gone).", "You are Lead. Run pipeline mode.",
-     "shows every login's state; then paste the super-session prompt below with your login letter and tasks."),
-    ("Health check", "About weekly, or when something feels off.", "You are Lead. Run doctor mode.", "a dated report and one task card per defect."),
-    ("Lab work and routing", "Lab_Guy on JIS-NUC; the Lead's pipeline mode anywhere.", "You are Lab_Guy.",
-     "or the Lead in pipeline mode: a flow table or desk-queue drain table, cards for what is wrong."),
-    ("Think: design, optimise, economise", "When a process feels heavy.", "You are Lead. Run think mode.",
-     "then a topic: scan waste, budget, automation, tests, scale, speed, ideas, cut."),
-    ("A page or link is wrong", "On the jishusharma1985 login.", "You are 1985Artifacts_Guy.", "a republished page or a fix card."),
-]
+def health(behind, age_days):
+    """green / amber / red for a page tile: red = behind the repo for RED_BEHIND_DAYS+, amber = behind, unknown or older than AMBER_DAYS, else green."""
+    if behind and age_days is not None and age_days >= RED_BEHIND_DAYS:
+        return "red"
+    return "amber" if behind or age_days is None or age_days > AMBER_DAYS else "green"
 
 
 def build(reg, now=None, repo=None):
@@ -136,13 +43,15 @@ def build(reg, now=None, repo=None):
         if pg["status"] == "retire":
             for a, u in pg["urls"].items():
                 if u and a not in (pg.get("deleted") or {}):   # `deleted`: {login: date} the operator removed it there
-                    retire.append({"login": a, "title": pg["title"], "url": u})   # no "why": the page never renders it (30 KB cap, 2026-11-04)
+                    retire.append({"login": a, "title": pg["title"], "url": u})
         if pg["status"] != "canonical" or not url or pg["slug"] == reg["home_slug"]:
             continue
+        when = af.published_at(pg)
+        age = (now - when).total_seconds() / 86400 if when else None
+        behind = (af.behind(reg, pg, repo or af.REPO) if pg.get("html") else False) or bool(af.feed_reasons(pg, now, repo or af.REPO))  # repo html or a feed moved on
         pages.append({"slug": pg["slug"], "title": pg["title"], "url": url, "owner": own, "purpose": pg.get("purpose", ""),
-                      "notes": pg.get("notes_go_to", ""), "db": bool(pg.get("db")), "refresh": pg["refresh"],
-                      "pub": str(pg["last_published"].get(own, ""))[:10], "write": pg["slug"] in WRITE_FIRST,
-                      "behind": af.behind(reg, pg, repo or af.REPO) if pg.get("html") else False})
+                      "db": bool(pg.get("db")), "write": pg["slug"] in WRITE_FIRST, "behind": behind, "health": health(behind, age),
+                      "pub": af.stamp_text(when) if when else "never published", "ageH": round(age * 24) if age is not None else None})
         if pg.get("single_owner"):
             for a, u in pg["urls"].items():
                 if u and a != own and a not in (pg.get("deleted") or {}):
@@ -151,14 +60,8 @@ def build(reg, now=None, repo=None):
         for r in rows if isinstance(rows, list) else []:
             retire.append({"login": a, "title": r["title"], "url": r["url"]})
     pages.sort(key=lambda p: (not p["write"], WRITE_FIRST.index(p["slug"]) if p["write"] else 0))
-    owners = sorted({p["owner"] for p in pages} | {home})
-    share = [{"owner": o, "titles": [p["title"] for p in pages if p["owner"] == o] + (["MTS Home"] if o == home else []),
-              "invite": [a for a in reg["accounts"] if a != o]} for o in owners]
-    answer = None  # 2026-10-31: decisions are answered in chat and recorded in OPERATOR_DECISIONS.md; the Control Room is retired
-    return {"generated": now.strftime("%Y-%m-%d %H:%M UTC"), "home": home, "homeUrl": af.home_url(reg), "pages": pages,
-            "retire": retire, "share": share, "logins": list(reg["accounts"]), "waiting": waiting(repo or af.REPO), "answerAt": answer,
-            "superPrompt": super_prompt(repo or af.REPO), "road": road(repo or af.REPO),
-            "recipes": [dict(zip(("name", "when", "line", "get"), r)) for r in RECIPES]}
+    return {"generated": af.stamp_text(now), "home": home, "pages": pages, "retire": retire,
+            "counts": {h: sum(p["health"] == h for p in pages) for h in ("green", "amber", "red")}}
 
 
 TPL = r"""<title>MTS Home</title>
@@ -167,8 +70,7 @@ TPL = r"""<title>MTS Home</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: one compact screen. Needs-you strip, a grid of page tiles, one row per session role; everything rare is folded.
-   Operator 2026-10-25: "more compact, little scroll, intuitive". Tokens are the Research Map's. */
+/* One compact screen: a grid of colour-coded page tiles, old copies folded. Tokens are the Research Map's. */
 :root{
   --bg:#eef1f4; --surface:#ffffff; --sunk:#f6f8fa; --ink:#14202b; --muted:#566371; --line:#d6dde4;
   --accent:#2f43c4; --accent-soft:#e7eafb; --on-accent:#ffffff;
@@ -191,12 +93,12 @@ TPL = r"""<title>MTS Home</title>
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);margin:0}
 .wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px;display:grid;gap:18px}
-h1,h2,h3{font-family:var(--f-display);font-stretch:88%;text-wrap:balance;margin:0;line-height:1.2}
+h1,h2{font-family:var(--f-display);font-stretch:88%;text-wrap:balance;margin:0;line-height:1.2}
 h1{font-size:1.7rem;font-weight:800;font-stretch:80%}
 h2{font-size:1.1rem;font-weight:750}
 p{margin:0}
 a{color:var(--accent)}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 code{font-family:var(--f-mono);font-size:.84em;overflow-wrap:anywhere}
 .sub{color:var(--muted)}
 .small{font-size:.86rem}
@@ -206,82 +108,42 @@ section{display:grid;gap:8px;min-width:0}
 .sechead{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;justify-content:space-between}
 .pill{font:700 .68rem var(--f-body);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
 .pill.old{background:var(--warn-soft);color:var(--warn);border-color:transparent}
-.pill.db{background:var(--pass-soft);color:var(--pass);border-color:transparent}
-.need{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--warn);border-radius:var(--r);padding:12px 16px;display:grid;gap:6px}
-.need.none{border-left-color:var(--pass)}
-.q{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:baseline}
-.q .id{font:600 .74rem var(--f-mono);color:var(--muted)}
-.q .t{overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pill.db{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.pill.green{background:var(--pass-soft);color:var(--pass);border-color:transparent}
+.pill.red{background:var(--fail-soft);color:var(--fail);border-color:transparent}
+.sum{display:flex;flex-wrap:wrap;gap:6px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
 .tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:11px 14px;display:grid;gap:4px;align-content:start;min-width:0;border-left:5px solid var(--line)}
-.tile.w{border-left-color:var(--accent)}
+.tile.green{border-left-color:var(--pass)}
+.tile.amber{border-left-color:var(--warn)}
+.tile.red{border-left-color:var(--fail)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;background:var(--line)}
+.green .dot{background:var(--pass)} .amber .dot{background:var(--warn)} .red .dot{background:var(--fail)}
 .tile a.name{font:750 1.02rem var(--f-display);font-stretch:90%;text-decoration:none;overflow-wrap:anywhere}
 .tile a.name:hover{text-decoration:underline}
 .tile .why{font-size:.88rem;color:var(--muted)}
-.tile .meta{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:.76rem;color:var(--muted)}
-.rows{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.row{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr) auto;gap:2px 14px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
-.row b{font-family:var(--f-display);font-stretch:92%}
-.row .when{font-size:.86rem;color:var(--muted);min-width:0}
-.row .get{grid-column:1/-1;font-size:.86rem;color:var(--muted)}
-.paste{font-family:var(--f-mono);font-size:.8rem;background:var(--accent-soft);color:var(--ink);border-radius:6px;padding:2px 8px;overflow-wrap:anywhere}
-button.copy{font:700 .76rem var(--f-body);padding:4px 11px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);cursor:pointer;white-space:nowrap}
+.tile .meta{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;font:.72rem var(--f-mono);color:var(--muted)}
 details.fold{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 14px}
 details.fold>summary{cursor:pointer;padding:9px 0;font:700 .95rem var(--f-display);font-stretch:92%;list-style:none;display:flex;justify-content:space-between;gap:10px}
 details.fold>summary::-webkit-details-marker{display:none}
 details.fold>summary::after{content:"Show";font:600 .76rem var(--f-body);color:var(--muted)}
 details.fold[open]>summary::after{content:"Hide"}
 details.fold .in{padding:0 0 12px;display:grid;gap:8px}
-details.fold pre{margin:0;padding:10px;background:var(--sunk);border:1px solid var(--line);border-radius:8px;font:.76rem/1.5 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere}
-.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:6px}
-.stg{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--line);border-radius:8px;padding:7px 9px;display:grid;gap:2px;align-content:start;min-width:0}
-.stg.done{border-top-color:var(--pass);opacity:.75}
-.stg.now{border-top-color:var(--warn);background:var(--warn-soft)}
-.stg b{font:750 .86rem var(--f-display);font-stretch:90%}
-.stg .x{font-size:.74rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.stg.now .x{-webkit-line-clamp:unset}
 .ritem{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;font-size:.88rem}
 .ritem .url{font:.72rem var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
-@media (max-width:640px){
-  .row{grid-template-columns:minmax(0,1fr) auto}
-  .row .when{grid-column:1/-1}
-}
 </style>
 
-<main class="wrap">
+<main class="wrap" id="main">
   <header>
     <h1>MTS Home</h1>
     <span class="stamp" id="stamp"></span>
   </header>
 
-  <section aria-labelledby="h-wait">
-    <div class="need" id="need"></div>
-  </section>
-
-  <section aria-labelledby="h-road">
-    <div class="sechead"><h2 id="h-road">Road to profitability</h2><span class="sub small" id="roadsub"></span></div>
-    <div class="road" id="road"></div>
-  </section>
-
   <section aria-labelledby="h-pages">
-    <div class="sechead"><h2 id="h-pages">Pages</h2><span class="sub small">Blue edge: you write there. One link per page, all owned by <b id="homelogin"></b>.</span></div>
+    <div class="sechead"><h2 id="h-pages">Pages</h2><div class="sum" id="sum"></div></div>
+    <p class="sub small">Green: current. Amber: behind the repo or published over 14 days ago. Red: behind the repo for 3+ days. Time shown is the last publish (UTC and IST). "Saves notes": you write there.</p>
     <div class="grid" id="pages"></div>
   </section>
-
-  <section aria-labelledby="h-use">
-    <div class="sechead"><h2 id="h-use">Start a session</h2><span class="sub small">New session in the Claude Code app, model Sonnet. The reply must start with <code>ROLE LOADED</code>; if not, close it and open a new one.</span></div>
-    <div class="rows" id="recipes"></div>
-    <details class="fold" id="superbox"><summary>Super-session prompt (spend spare budget: your login letter and tasks)</summary>
-      <div class="in"><pre id="sprompt"></pre><div><button class="copy" id="scopy" type="button">Copy the prompt</button></div></div></details>
-  </section>
-
-  <details class="fold" id="linkfix"><summary>A link fails, or you use another login</summary>
-    <div class="in small">
-      <p id="whyfail"></p>
-      <div id="share"></div>
-      <p class="sub">Not shared: "not found". Shared read-only: notes do not save. Shared with edit: the normal case. Pin MTS Home on every login.</p>
-    </div></details>
 
   <details class="fold" id="retirebox"><summary>Old copies to delete (<span id="nretire"></span>)</summary>
     <div class="in small"><p class="sub">Claude cannot delete artifacts: open each on the login named and delete it from the page menu.</p><div id="retire"></div></div></details>
@@ -293,40 +155,16 @@ details.fold pre{margin:0;padding:10px;background:var(--sunk);border:1px solid v
 const DATA = __DATA__;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 const $ = id => document.getElementById(id);
-const copyText = async (btn, text) => {
-  try { await navigator.clipboard.writeText(text); btn.textContent = "Copied"; }
-  catch (e) { btn.textContent = "Select it by hand"; }
-};
 $("stamp").textContent = "Built " + DATA.generated;
-$("homelogin").textContent = DATA.home;
-const W = DATA.waiting, A = DATA.answerAt;
-const ans = A ? `<a href="${esc(A.url)}" target="_blank" rel="noopener">Answer in the ${esc(A.title)}</a>` : "answer in the chat session";
-const qrow = w => `<div class="q"><span class="id">${esc(w.id)}</span><span class="t">${esc(w.title)}</span></div>`;
-$("need").className = "need" + (W.length ? "" : " none");
-$("need").innerHTML = W.length
-  ? `<div class="sechead"><h2 id="h-wait">${W.length} waiting for you</h2><span class="small">${ans}</span></div>`
-    + W.slice(0, 3).map(qrow).join("")
-    + (W.length > 3 ? `<details><summary class="small sub" style="cursor:pointer">${W.length - 3} more</summary>${W.slice(3).map(qrow).join("")}</details>` : "")
-  : `<div class="sechead"><h2 id="h-wait">Nothing waiting for you</h2><span class="small">${ans}</span></div>`;
-const R = DATA.road, ni = R.stages.findIndex(s => s.now);
-$("roadsub").innerHTML = `Now <b>${esc(R.now || "?")}</b> · ready cards ${R.counts.ready_cards} (S0 bar ≤ 15) · promoted setups ${R.counts.promoted} (S3 needs ≥ 1) · <code>${esc(R.doc.split("/").pop())}</code>`;
-$("road").innerHTML = R.stages.length ? R.stages.map((s, i) => `
-  <div class="stg${s.now ? " now" : ni >= 0 && i < ni ? " done" : ""}"><b>${esc(s.id)} ${esc(s.name)}</b><span class="x">Exit: ${esc(s.exit)}</span><span class="x">${esc(s.expect)}</span></div>`).join("")
-  : `<p class="sub small">Roadmap missing: ${esc(R.doc)}</p>`;
+const C = DATA.counts;
+$("sum").innerHTML = `<span class="pill green">${C.green} current</span><span class="pill old">${C.amber} amber</span><span class="pill red">${C.red} red</span>`;
+const ago = h => h == null ? "" : h < 48 ? h + "h ago" : Math.round(h / 24) + "d ago";
 $("pages").innerHTML = DATA.pages.map(p => `
-  <article class="tile${p.write ? " w" : ""}">
-    <a class="name" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>
+  <article class="tile ${p.health}">
+    <a class="name" href="${esc(p.url)}" target="_blank" rel="noopener"><span class="dot"></span>${esc(p.title)}</a>
     <span class="why">${esc(p.purpose)}</span>
-    <span class="meta">${p.db ? `<span class="pill db">saves notes</span>` : ""}${p.behind ? `<span class="pill old">behind repo</span>` : ""}<span>${esc(p.pub)}</span><span>${esc(p.refresh.split(";")[0])}</span></span>
+    <span class="meta">${p.db ? `<span class="pill db">saves notes</span>` : ""}${p.behind ? `<span class="pill old">behind repo</span>` : ""}<span>${esc(p.pub)}</span><span>${ago(p.ageH)}</span></span>
   </article>`).join("");
-$("recipes").innerHTML = DATA.recipes.map((r, i) => `
-  <div class="row"><b>${esc(r.name)}</b><span class="when">${esc(r.when)}</span><button class="copy" type="button" data-i="${i}">Copy line</button>
-    <span class="get"><span class="paste">${esc(r.line)}</span> ${esc(r.get)}</span></div>`).join("");
-document.querySelectorAll("#recipes button.copy").forEach(b => b.addEventListener("click", () => copyText(b, DATA.recipes[+b.dataset.i].line)));
-$("sprompt").textContent = DATA.superPrompt || "Missing: see SUPER_SESSION.md, section \"Prompt: start a super session\".";
-$("scopy").addEventListener("click", () => copyText($("scopy"), DATA.superPrompt || ""));
-$("whyfail").innerHTML = `Pages are private to the login that owns them. Every page here is owned by <b>${esc(DATA.home)}</b>; another login opens a link only after the owner shares it (Share, edit access, once per page).`;
-$("share").innerHTML = DATA.share.map(s => `<p><b>On ${esc(s.owner)}</b>: share ${s.titles.map(esc).join(", ")} with ${s.invite.map(esc).join(" and ")}.</p>`).join("");
 $("nretire").textContent = DATA.retire.length;
 $("retire").innerHTML = DATA.retire.length ? DATA.retire.map(r => `<div class="ritem"><span>${esc(r.login)}</span><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a><span class="url">${esc(r.url)}</span></div>`).join("") : `<p class="sub">Nothing to delete.</p>`;
 </script>
@@ -344,7 +182,7 @@ def main(argv=None):
     data = build(af.load())
     out = Path(a.out)
     af.write_stamped(out, render(data))
-    print(f"wrote {out} ({len(data['pages'])} pages, {len(data['waiting'])} questions waiting, {len(data['retire'])} old copies to delete)")
+    print(f"wrote {out} ({len(data['pages'])} pages {data['counts']}, {len(data['retire'])} old copies to delete)")
     return 0
 
 

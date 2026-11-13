@@ -137,81 +137,12 @@ class Home(unittest.TestCase):
         self.assertIn("<title>MTS Home</title>", html)
         self.assertNotIn("</script><", html.split("const DATA = ")[1].split(";\n")[0])
 
-    def test_hub_lists_open_questions_and_where_to_answer(self):
-        """Operator 2026-10-17: every question waiting for Jis on MTS Home, with the place to answer it."""
-        import tempfile
-        import make_home as mh
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / "MyTradingSys/system/tasks").mkdir(parents=True)
-            (root / mh.DECISIONS).write_text(
-                "# OPERATOR DECISIONS\n\n"
-                "## q-open | asked 2026-10-15 | Process | NO AUTO-APPLY\n\nRetire old tasks?\n\nRecommended: Yes\nAnswer: (none yet)\n\n"
-                "## q-done | asked 2026-10-13 | Process\n\nDone one?\n\nRecommended: Yes\nAnswer: Yes\n\n"
-                "## q-json | asked 2026-10-16 | Research\n\nOnly json?\n\n```json\n{\"answer\": \"No\"}\n```\n\n"
-                "## q-decided (2026-10-22, Admin_Guy)\n```json\n{\"id\": \"q-decided\", \"status\": \"DECIDED\"}\n```\n", encoding="utf-8")
-            (root / mh.TASKS / "c1.json").write_text('{"id": "c1", "state": "raw", "asks": "Jis, may the monitor clear it?", "title": "Halt"}', encoding="utf-8")
-            (root / mh.TASKS / "c3.json").write_text('{"id": "c3", "state": "raw", "asks": "Waiting on DSA-NB desk for data from JIS-NB", "title": "m"}', encoding="utf-8")  # a machine wait, not his
-            (root / mh.TASKS / "c2.json").write_text('{"id": "c2", "state": "done", "asks": "Old?", "title": "x"}', encoding="utf-8")
-            d = mh.build(self.reg, repo=root)
-        self.assertEqual([w["id"] for w in d["waiting"]], ["q-open", "c1"])
-        self.assertEqual(d["waiting"][0]["title"], "Retire old tasks?")
-        self.assertTrue(d["waiting"][0]["explicit"])
-        self.assertIsNone(d["answerAt"])  # decisions are answered in chat (Control Room retired 2026-10-31)
-        self.assertIn("waiting for you", mh.render(d))
-
-    def test_waiting_skips_recorded_decisions(self):
-        """Recorded decisions (dated/d- headings, Applied:/Operator bodies) are not open questions; DECISION NEEDED stays."""
-        import tempfile
-        import make_home as mh
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / mh.TASKS).mkdir(parents=True)
-            (root / mh.DECISIONS).write_text(
-                "# D\n\n\n\n## 2026-11-02 - Live aid wanted\nOperator (voice): build it.\n\n\n\n"
-                "## d-api-1104 (2026-11-04, Lead)\nOperator: go.\nApplied: told all.\n\n\n\n"
-                "## q-x | asked 2026-10-13 | P\n\nBody?\nApplied: 2026-10-14 done.\n\n\n\n"
-                "## DECISION NEEDED 2026-10-21 (Lab): review_by\nPick (a) or (b).\n", encoding="utf-8")
-            ids = [w["id"] for w in mh.waiting(root)]
-        self.assertEqual(ids, ["DECISION NEEDED 2026-10-21 (Lab): review_by"])
-
-    def test_home_shows_road_to_v1_with_current_stage_and_counts(self):
-        """Operator 2026-10-31: the road to profitability left with the Control Room; Home shows D7's one line per stage."""
-        import json
-        import tempfile
-        import make_home as mh
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / mh.TASKS).mkdir(parents=True)
-            (root / mh.ROAD).parent.mkdir(parents=True)
-            (root / mh.ROAD).write_text(
-                "# D7\n\n## Stages\nNow: S1 (test)\n\n| Stage | Entry | Work | Exit (measured) | EXPECT |\n|---|---|---|---|---|\n"
-                "| S0 Freeze and clean | a | b | ready cards <= 15 | now |\n| S1 Spec signed | S0 exit | c | D2 signed | 10-29 |\n"
-                "| v2 | S6 | d | separate spec | later |\n\n## Order\n| S9 Not a stage | x | x | x | x |\n", encoding="utf-8")
-            for i, st in enumerate(("ready", "ready", "done")):
-                (root / mh.TASKS / f"k{i}.json").write_text(json.dumps({"id": f"k{i}", "state": st}), encoding="utf-8")
-            (root / mh.PROMOTED).parent.mkdir(parents=True)
-            (root / mh.PROMOTED).write_text('{"version": 1, "entries": [{"id": "x"}]}', encoding="utf-8")
-            d = mh.build(self.reg, repo=root)
-        road = d["road"]
-        self.assertEqual([s["id"] for s in road["stages"]], ["S0", "S1", "v2"])
-        self.assertEqual(road["stages"][1], {"id": "S1", "name": "Spec signed", "exit": "D2 signed", "expect": "10-29", "now": True})
-        self.assertEqual(road["now"], "S1")
-        self.assertEqual(road["counts"], {"ready_cards": 2, "promoted": 1})
-        self.assertIn('id="road"', mh.render(d))
-
     def test_session_planner_retired_and_listed_for_delete(self):
         """Operator 2026-10-31: planning happens in the sessions; the Planner page leaves Home and waits for his delete."""
         import make_home as mh
         d = mh.build(self.reg)
         self.assertNotIn("session_planner", [p["slug"] for p in d["pages"]])
         self.assertNotIn("https://claude.ai/artifact/2Ti4CGqsFwhWpP1jwmw7UU", [r["url"] for r in d["retire"]])  # he deleted it 2026-10-31
-
-    def test_road_reads_the_real_roadmap(self):
-        import make_home as mh
-        road = mh.road(af.REPO)
-        self.assertEqual([s["id"] for s in road["stages"]][:2], ["S0", "S1"])
-        self.assertEqual(sum(s["now"] for s in road["stages"]), 1)  # D7 carries one "Now:" line
 
     def test_every_page_opens_on_the_home_login(self):
         """Operator 2026-10-17: 'make a copy of everything from GitHub and publish everything from this account'."""
@@ -220,47 +151,29 @@ class Home(unittest.TestCase):
         off = [p["title"] for p in d["pages"] if p["owner"] != self.reg["home_login"]]
         self.assertEqual(off, [])
 
-    def test_hub_needs_you_lists_only_open_questions_and_leaves_room(self):
-        """Card hub-waiting-list-stale-decisions-1106: recorded decisions (Applied:/Operator bodies, dated headings) are not open
-        questions; the hub carried 16 waiting items and broke its size test. Pinned on the real decisions file."""
-        import make_home as mh
-        waiting = mh.waiting(Path(__file__).resolve().parents[2])
-        self.assertLessEqual(len(waiting), 6, [w["id"] for w in waiting])
-        html = mh.render(mh.build(self.reg))
-        self.assertLess(len(html.encode("utf-8")), 27000)
-
-    def test_hub_folds_link_help_and_stays_compact(self):
-        """Operator 2026-10-25: MTS Home was too big to navigate. The link-failure help and the old copies are folded, and the
-        three live blocks (needs you, pages, sessions) come before them."""
+    def test_hub_is_only_the_page_list_and_stays_compact(self):
+        """Operator 2026-11-13: Waiting, Road, session recipes, super prompt and link-fix were removed from Home (stale or duplicated
+        elsewhere); what stays is the colour-coded page grid, the old copies fold and the registry note."""
         import make_home as mh
         html = mh.render(mh.build(self.reg))
-        self.assertLess(html.index('aria-labelledby="h-wait"'), html.index('id="h-pages"'))
-        self.assertLess(html.index('id="h-pages"'), html.index('id="h-use"'))
-        self.assertLess(html.index('id="h-use"'), html.index('id="linkfix"'))
-        self.assertIn('<details class="fold" id="linkfix">', html)
+        self.assertLess(html.index('id="h-pages"'), html.index('id="retirebox"'))
         self.assertIn('<details class="fold" id="retirebox">', html)
-        self.assertLess(len(html), 30000)  # the 2026-10-19 page was 31 KB and five screens tall
-        self.assertNotIn('id="where"', html)  # the duplicate "where to answer" box is gone: one link in the needs-you strip
+        for gone in ("h-wait", "h-road", "h-use", "linkfix", "superbox", "recipes"):
+            self.assertNotIn(gone, html)
+        self.assertLess(len(html.encode("utf-8")), 15000)
 
-    def test_home_has_session_recipes_without_duplicates(self):
-        """One row per role; the Lead covers question, decision and backlog (they were two rows). The super-session prompt is the
-        one in SUPER_SESSION.md and line 1 loads the Supervisor role."""
+    def test_tile_health_colours_and_ist_utc_stamp(self):
+        """Green current, amber behind the repo or over 14 days, red behind for 3+ days; each tile shows UTC and IST of the last publish."""
         import make_home as mh
+        self.assertEqual(mh.health(False, 1), "green")
+        self.assertEqual(mh.health(True, 1), "amber")
+        self.assertEqual(mh.health(False, 15), "amber")
+        self.assertEqual(mh.health(True, 3), "red")
+        self.assertEqual(mh.health(False, None), "amber")
         d = mh.build(self.reg)
-        html = mh.render(d)
-        lines = [r["line"] for r in d["recipes"]]
-        self.assertEqual(len(lines), len(set(lines)))
-        self.assertEqual(len(lines), 7)
-        for line in ("You are Lead.", "You are Eagle_Eyes.", "You are Lead. Run doctor mode.", "You are Lab_Guy.",
-                     "You are Lead. Run pipeline mode.", "You are Lead. Run think mode.", "You are 1985Artifacts_Guy."):
-            self.assertIn(line, lines)
-            self.assertIn(line, html)
-        self.assertIn("backlog", d["recipes"][0]["name"].lower())
-        self.assertTrue(d["superPrompt"].startswith("You are Supervisor."), d["superPrompt"][:60])
-        self.assertIn("SUPER_SESSION.md", d["superPrompt"])   # one-line start (SUPER_SESSION.md 2026-10-24)
-        import tempfile
-        with tempfile.TemporaryDirectory() as tmp:
-            self.assertEqual(mh.super_prompt(tmp), "")
+        self.assertTrue(all(p["health"] in ("green", "amber", "red") for p in d["pages"]))
+        self.assertEqual(sum(d["counts"].values()), len(d["pages"]))
+        self.assertTrue(all(" UTC · " in p["pub"] and " IST" in p["pub"] for p in d["pages"] if p["ageH"] is not None))
 
     def test_new_pages_are_wired_into_home(self):
         """Operator 2026-10-25: every new development/page must show on MTS Home. A page shows when it is in registry.json."""
