@@ -30,9 +30,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "chain n reads (5 Gemini scans) + fix sync.py/tasks.py docstring drift",
-      "ref": "bab3a11097a3",
-      "utc": "2026-11-11T20:39:28Z"
+      "line": "ship: 7 file(s)",
+      "ref": "6670219dec33",
+      "utc": "2026-11-13T00:10:03Z"
     }
   ],
   "layers": [],
@@ -42,7 +42,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T21:00:48Z",
+  "refreshed": "2026-11-13T03:31:07Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -54,7 +54,7 @@
     "ship gate selection and train mode",
     "bg_watch.py thresholds"
   ],
-  "scope_sha": "bab3a11097a3",
+  "scope_sha": "6670219dec33",
   "size": "S",
   "sources": [],
   "state": "ready",

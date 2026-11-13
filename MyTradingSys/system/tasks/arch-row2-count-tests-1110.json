@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:31:01Z",
   "commands": [],
   "context": {
     "calls_to_edit": null,
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "wiring test dropped == 270; passes here",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:31:01Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "wiring audit: Tom, Fabio, Habib sourced rules vs layer code (446 rows)",
@@ -36,13 +43,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk df49156c1",
   "note": "REVIEWED:2026-11-11 T0-ONLY (planner-a2-1111; twin check run)",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T02:52:08Z",
   "refs": [],
-  "result": "",
+  "result": "wiring test dropped == 270; passes here",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/wiring_audit_2026-10/test_wiring_tom_fabio_habib.py"
   ],
@@ -54,12 +67,13 @@
   "sources": [
     "MyTradingSys/system/ARCH_REVIEW_2026-11-10.md row 2"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep research tests for len(...) == <3-digit> over live output, not tmp fixtures",
     "Write the failing append-a-row test first",
     "Turn the count into a unique-id check; run the file"
   ],
+  "taken": "2026-11-13T03:31:01Z",
   "tests": "MyTradingSys/research/wiring_audit_2026-10/test_wiring_tom_fabio_habib.py: new test appends a Tom row to a tmp CSV copy; fails on the pre-change code (271 != 270)",
   "title": "ARCH_REVIEW row 2: research exact-count tests (rows == 337) become set-based or frozen fixture; keep the trial ledger",
   "weight": "ROUTINE",

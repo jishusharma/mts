@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:59Z",
   "commands": [
     "python scripts/dev/run_all_tests.py --quick"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "trade_sanity helper + template rows; used in btc_last_orderflow_rules_1112; test passes",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:59Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: docstring no longer carries a cost-like literal; T06 cost inventory test passes Ne",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk 442e47bf4",
   "not_twin_of": [
     "extract-backtest-howto-K31xH-6g9Vc-1112"
   ],
@@ -35,7 +43,12 @@
   "refined_by": "",
   "refreshed": "2026-11-11T20:54:00Z",
   "refs": [],
-  "result": "",
+  "result": "trade_sanity helper + template rows; used in btc_last_orderflow_rules_1112; test passes",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/backtest/ (one new helper + test)"
   ],
@@ -48,12 +61,13 @@
   "sources": [
     "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/backtest_howto_K31xH_1112/GAP_TABLE.md S5, S6, S8",
     "Write the helper and its failing test",
     "Add the rows to the RESULT template"
   ],
+  "taken": "2026-11-13T03:30:59Z",
   "tests": "new test fails on a deliberately shifted fill",
   "title": "From video K31xH-6g9Vc GAP_TABLE: add a trade-log sanity print (5 latest trades vs 1m klines) and per-year plus long/short lines to backtest RESULT tables",
   "weight": "",

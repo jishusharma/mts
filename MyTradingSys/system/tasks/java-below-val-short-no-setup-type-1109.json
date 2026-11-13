@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:30:57Z",
   "commands": [
     "mvn -q test -Dtest=SetupCandidatesBuilderRulesTest+SetupCandidatesCriticalWave1Test+SetupCandidatesBuilderTierTest"
   ],
@@ -16,6 +17,12 @@
   "lane": "JIS-NB",
   "latest": [
     {
+      "kind": "ship",
+      "line": "tc_short candidate for below_val, candidate-list test at RulesTest:242",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:57Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "SetupCandidatesBuilder: symmetric value-area rules (above VAH keeps ct_short, below VAL ad",
@@ -26,6 +33,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk e6f378bf3",
   "note": "Fable review REVIEW_FABLE.md J1, cross-checked in POSTMORTEM_OPUS.md C4a. Live path: builder never deploys; the operator/coordinator deploys per DEPLOY_RUNBOOK.md. Do not build under this refine step.",
   "prio": 1,
   "refine_tries": 0,
@@ -35,7 +43,12 @@
     "MyTradingSys/research/tom_fabio_course_correction_2026-11-07/REVIEW_FABLE.md",
     "src/main/java/datafeed/SetupCandidatesBuilder.java"
   ],
-  "result": "",
+  "result": "tc_short candidate for below_val, candidate-list test at RulesTest:242",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "src/main/java/datafeed/SetupCandidatesBuilder.java",
     "src/test/java/datafeed/SetupCandidatesBuilderRulesTest.java"
@@ -49,13 +62,14 @@
   "sources": [
     "Fable review REVIEW_FABLE.md 2026-11-09 (research/tom_fabio_course_correction_2026-11-07)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep consumers of setup-type strings; list them in the commit",
     "write the failing candidate-list tests first (below_val short continuation, plus the fail-closed states and a non-trade balance-move/restart-state snapshot case per the live-path rule)",
     "add the short continuation branch in determineSetupType val/swing_low zones for trend_healthy only; mvn tests green",
     "sync.py ship; do not deploy"
   ],
+  "taken": "2026-11-13T03:30:57Z",
   "tests": "SetupCandidatesBuilderRulesTest (new cases on the candidate list), SetupCandidatesCriticalWave1Test, SetupCandidatesBuilderTierTest",
   "title": "Java fix 36513c888 adds short below VAL but determineSetupType returns null for short at val zones (:482): breakdown continuation short still impossible; add a setup type + test on the candidate, not the direction list",
   "weight": "ROUTINE",

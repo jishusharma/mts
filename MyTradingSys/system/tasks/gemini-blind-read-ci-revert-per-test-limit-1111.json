@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-13T03:30:54Z",
   "commands": [],
   "created": "2026-11-11T16:36:02Z",
   "depends_on": [],
@@ -16,6 +16,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "report on trunk, line 1 MATCH=4 DIFF=0 NOT_IN_DATA=0",
+      "ref": "87b0cdee1",
+      "utc": "2026-11-13T03:30:54Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: reverted 6b3d0cd27 (per-test 120 s limit broke CI step 4.9, test_aibridge_chain lo",
@@ -26,15 +32,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: read-only audit complete",
+  "next": "END: already on trunk 79fec0210",
   "note": "",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T16:36:27Z",
   "refs": [],
-  "result": "",
-  "result_receipt": {},
+  "result": "report on trunk, line 1 MATCH=4 DIFF=0 NOT_IN_DATA=0",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/run_all_tests.py, scripts/dev/extra_tests.tsv (read; the revert is git show c2771d345, which removed scripts/dev/pytest_test_limit.py and test_pytest_test_limit.py)",
     "MyTradingSys/research/layer_lab/reports/2026-11-11_gemini-blind-read-ci-revert-per-test-limit-1111.md (new)"
@@ -47,7 +57,7 @@
   "sources": [
     "Lead B jis-nuc PLAN_24H tick 2026-11-11 (NUC queue empty after 191bfffd)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files named in scope_in",
     "List the clauses: 4 clauses: (1) the revert removes every file and line 6b3d0cd27 added to the gate, (2) no test still imports the removed plugin, (3) run_all_tests.py pytest commands match their pre-6b3d0cd27 form, (4) nothing left in the repo claims the 120 s limit is active",
