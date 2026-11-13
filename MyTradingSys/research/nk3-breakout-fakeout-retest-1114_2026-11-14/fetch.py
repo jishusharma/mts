@@ -39,7 +39,7 @@ def run(coin, refresh=False):
     a = a[np.unique(a[:, 0], return_index=True)[1]]
     a = a[a[:, 0] + STEP <= now]  # closed bars only
     tmp = path + ".tmp.npz"
-    np.savez_compressed(tmp, t=a[:, 0].astype(np.int64), o=a[:, 1], h=a[:, 2], l=a[:, 3], c=a[:, 4], v=a[:, 5])
+    np.savez_compressed(tmp, ts=a[:, 0].astype(np.int64), o=a[:, 1], h=a[:, 2], l=a[:, 3], c=a[:, 4], v=a[:, 5])
     os.replace(tmp, path)
     return sym, f"{len(a)} bars {time.strftime('%Y-%m-%d', time.gmtime(a[0,0]/1000))}..{time.strftime('%Y-%m-%d', time.gmtime(a[-1,0]/1000))}"
 
