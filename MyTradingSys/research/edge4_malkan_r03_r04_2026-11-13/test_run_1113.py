@@ -81,3 +81,38 @@ def test_r03_short_target_and_cap_and_gap():
     assert t[0]["reason"] == "cap" and t[0]["exit"] == 30 and abs(t[0]["net_r"] - (1 / 1.5 - COST * 12 / 1.5)) < 1e-9
     # a missing bar inside the trade window: the trade is dropped, not repaired
     assert r.simulate(mk(r03_rows() + [(12, 12.1, 8.9, 9)], skip={7}), sig, 12, H) == []
+
+
+def test_placebo_same_trade_count():
+    import numpy as np
+    pools = {"A": np.array([1.0, 2.0, 3.0]), "B": np.array([-5.0, -6.0])}
+    out = r.placebo_draw(pools, {"A": 3, "B": 2}, np.random.default_rng(1))
+    assert len(out) == 5                                   # exactly the observed trade count
+    assert sorted(out)[:2] and all(x in (1.0, 2.0, 3.0) for x in out[:3]) and all(x in (-5.0, -6.0) for x in out[3:])
+    # observed mean far above every possible placebo mean -> p = 1/(B+1); far below -> p = 1
+    assert r.placebo_p(pools, {"A": 3, "B": 2}, 99.0, np.random.default_rng(2), b=19) == 1 / 20
+    assert r.placebo_p(pools, {"A": 3, "B": 2}, -99.0, np.random.default_rng(2), b=19) == 1.0
+
+
+def test_bh_and_verdict_rules():
+    # hand BH q=0.10, m=4: sorted p .01 .02 .5 .9 vs thresholds .025 .05 .075 .10 -> largest k with p<=thr is 2
+    assert list(r.bh([0.5, 0.01, 0.9, 0.02])) == [False, True, False, True]
+    base = dict(n=40, mean_r=0.1, lo=0.01, placebo_p=0.03)
+    assert r.verdict_cell(base, True, False) == "PASS"
+    assert r.verdict_cell(base, True, True) == "FAIL"                       # ONE-REGIME cannot carry a PASS
+    assert r.verdict_cell(dict(base, lo=-0.01), True, False) == "FAIL"      # CI includes 0
+    assert r.verdict_cell(dict(base, n=29), True, False) == "UNDERPOWERED"
+    assert r.overall(["UNDERPOWERED", "FAIL"]) == "FAIL" and r.overall(["UNDERPOWERED"] * 8) == "UNDERPOWERED"
+    assert r.overall(["FAIL", "PASS"]) == "PASS"
+
+
+def test_summary_json_schema_and_trials_null():
+    cells = [dict(rule="R03", tf="1h", lookback=12, split=s, n=5, mean_r=0.1, verdict="UNDERPOWERED" if s == "VALIDATION" else None)
+             for s in ("DEV", "VALIDATION", "RECENT")]
+    s = r.build_summary(cells)
+    assert s["trials"] is None and s["overall"] == "UNDERPOWERED" and s["n_pass"] == 0 and len(s["cells"]) == 3
+    s.update(effects="e", n_text="n", verdict_text="v")
+    row = r.layer_map_row(s, "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md")
+    assert row["trials"] is None and row["layers"] == ["rsi_divergence"] and row["verdict"].startswith("UNDERPOWERED")
+    for k in ("id", "title", "date", "market", "params", "split", "fees", "interaction", "effects", "n", "verdict", "report", "read"):
+        assert k in row
