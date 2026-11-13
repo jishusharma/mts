@@ -7,17 +7,17 @@
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-13T15:05:30Z",
-    "misses": 15,
+    "folded": "2026-11-13T15:32:05Z",
+    "misses": 31,
     "reads": [
       "MyTradingSys/research/VERDICTS.csv",
       "MyTradingSys/research/sim_desk/export_results.py",
       "scripts/dev/verdicts.py",
+      "scripts/dev/run_all_tests.py",
       "MyTradingSys/research/edge_views_2026-11-11/POOLED/RESULT.md",
       "sim_desk/results/habib-plan-hit-rate-1104.json",
       "MyTradingSys/research/edge_views_2026-11-11/POOLED/tables.md",
-      "MyTradingSys/research/sim_desk/DESIGN.md",
-      "MyTradingSys/backtest/test_no_own_costs.py"
+      "MyTradingSys/research/sim_desk/DESIGN.md"
     ],
     "session": "agent-ae159c6551f45b12f"
   },
