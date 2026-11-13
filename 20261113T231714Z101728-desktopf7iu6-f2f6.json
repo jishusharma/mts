@@ -1,0 +1,1 @@
+{"t": "20261113T231714Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ack", "text": "ack q-d8cd77 told tests 1,2 KILL shipped (c0632d2f, ddad0598); test 3 and 4 Builders running; test 5 next", "login": "A", "id": "q-d8cd77", "state": "told", "host": "desktop-f7iu69n", "note": "tests 1,2 KILL shipped (c0632d2f, ddad0598); test 3 and 4 Builders running; test 5 next"}
