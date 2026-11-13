@@ -47,6 +47,30 @@ def fetch(sym, iv):
     return [rows[k] for k in sorted(rows) if k >= START_MS]
 
 
+def resample(rows, hours):
+    """Aligned 8h/12h bars (UTC bucket start) from 4h rows [t,o,h,l,c,v]; a bucket missing any 4h bar is dropped."""
+    step, span = 4 * 3600000, hours * 3600000
+    by = {int(r[0]): r for r in rows}
+    out = []
+    for t0 in sorted(k for k in by if k % span == 0):
+        parts = [by.get(t0 + i * step) for i in range(hours // 4)]
+        if all(parts):
+            out.append([t0, parts[0][1], max(p[2] for p in parts), min(p[3] for p in parts), parts[-1][4], sum(p[5] for p in parts)])
+    return out
+
+
+def check_continuity(rows, step_ms):
+    """Count missing steps (gaps) and repeated open times (dups) in rows sorted by open time."""
+    gaps = dups = 0
+    for a, b in zip(rows, rows[1:]):
+        d = int(b[0]) - int(a[0])
+        if d == 0:
+            dups += 1
+        elif d > step_ms:
+            gaps += 1
+    return {"gaps": gaps, "dups": dups}
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     for c in COINS:
