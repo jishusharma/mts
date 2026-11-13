@@ -1,9 +1,20 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T10:07:51Z",
   "commands": [
     "python -m pytest -q scripts/dev/test_verify_extract_quotes.py"
   ],
+  "context": {
+    "calls_to_edit": null,
+    "folded": "2026-11-13T10:05:51Z",
+    "misses": 16,
+    "reads": [
+      "scripts/dev/test_verify_extract_quotes.py",
+      "extracts/v2/fabio/Is1HvdfQm5c_v2.md"
+    ],
+    "session": "agent-a0f881c1339744b45"
+  },
   "created": "2026-11-13T01:57:24Z",
   "depends_on": [],
   "done_when": "verify_extract_quotes.py exits 1 and prints STAMP-OFF for a quote whose adjacent stamp is >120 s from the quote's marker in raw_transcripts_canonical/<id>_raw.txt; exits 0 on a correct stamp; transcript without markers prints STAMP-UNCHECKED and exits 0; new tests in test_verify_extract_quotes.py",
@@ -16,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "verify_extract_quotes: STAMP-OFF >120 s, STAMP-UNCHECKED untimed; 29 tests green; shipped ",
+      "ref": "a13ea14e9",
+      "utc": "2026-11-13T10:07:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "verify_extract_quotes: compare Devanagari words (Hindi quotes no longer always MISSING)",
@@ -26,13 +43,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: verifier done",
   "note": "Refined by planner-refine-1113b. Stamps are advisory: the Source GPS thirds tag stays the authority.",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T06:36:03Z",
   "refs": [],
-  "result": "",
+  "result": "verify_extract_quotes: STAMP-OFF >120 s, STAMP-UNCHECKED untimed; 29 tests green; shipped a13ea14e",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/verify_extract_quotes.py",
     "scripts/dev/test_verify_extract_quotes.py"
@@ -46,13 +69,14 @@
   "sources": [
     "third check 2026-11-13: THIRD_CHECK_I2_REFUTE.md IR-09 line 75, IR-18, IR-19 stamps off"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read verify_extract_quotes.py check() lines 179-228 and transcript_body (markers are stripped at line 61: keep an offset map first)",
     "Write the failing test: fixture raw file with [m:ss] markers, extract line with a stamp 40+ min off",
     "Parse a stamp on the quote line or the next line; locate the quote's nearest preceding marker; compare, tolerance 120 s; no markers = STAMP-UNCHECKED, never fail",
     "Run test_verify_extract_quotes.py -q, then the checker on one real extract (tf_extraction_plan_1113) to confirm no false fails; ship"
   ],
+  "taken": "2026-11-13T10:07:51Z",
   "tests": "scripts/dev/test_verify_extract_quotes.py: new test_stamp_far_from_marker_fails (fixture transcript with markers, stamp 76:01 vs 1:30:45) fails on pre-change script; existing tests stay green",
   "title": "[GEMINI] Check every Argon timestamp against the transcript before use: IR-09/18/19 were off (e.g. [76:01] vs 1:30:45)",
   "weight": "ROUTINE",
