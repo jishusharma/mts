@@ -37,5 +37,5 @@ Regime mix (BTC daily close vs 200-day SMA: above / below / within 5%), share of
 | R04 | 4h | 18 | RECENT | 590 | -0.256 | [-0.399, -0.099] | 0.710 |
 
 Limitations: no funding charge; stops and targets assumed taker with 2 bp slippage in total; placebo pools are random subsets (up to 3000 candidate bars per coin and cell, split by entry time); swing = 1-bar-each-side close pivot and the 2x lookback time cap are OURS; a stop touched in the same bar as the target counts as the stop.
-The 12 and 18 lookback cells are near copies (A is the most recent swing, usually well inside 12 bars), so they are not independent tests. The stop is one signal candle wide, so the 0.0012 round-trip cost alone is a large fraction of R (the loss is mostly cost, not direction).
+The 12 and 18 lookback cells are near copies (A is the most recent swing, usually well inside 12 bars), so they are not independent tests. The stop is one signal candle wide, so the round-trip cost (shown above) alone is a large fraction of R (the loss is mostly cost, not direction).
 One-sided p is the share of day-cluster bootstrap means at or below zero; BH 10% over the 8 VALIDATION p-values. n < 30 is UNDERPOWERED, never no edge.
