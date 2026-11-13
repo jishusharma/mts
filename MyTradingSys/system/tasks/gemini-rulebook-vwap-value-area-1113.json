@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T19:15:29Z",
   "commands": [
     "git status --short"
   ],
@@ -14,11 +15,18 @@
   "id": "gemini-rulebook-vwap-value-area-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/indicator_rulebooks/VWAP_VALUE_AREA.md",
+      "ref": "19881058d",
+      "utc": "2026-11-13T19:15:29Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: Gemini rule-book fill 11-13; a later Sonnet pass fills section 5 and sets INDEX status",
+  "next": "END: card complete",
   "note": "Docs only. No code change. Web quotes are UNVERIFIED unless the page was fetched and read; never invent a quote. Section 5 numbers are filled by a later Sonnet pass.",
   "prio": 2,
   "refine_tries": 0,
@@ -30,6 +38,12 @@
     "MyTradingSys/research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md",
     "MyTradingSys/research/value_area_acceptance_2026-11-05/RESULT.md"
   ],
+  "result": "MyTradingSys/research/indicator_rulebooks/VWAP_VALUE_AREA.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/indicator_rulebooks/VWAP_VALUE_AREA.md"
   ],
@@ -44,7 +58,7 @@
   "sources": [
     "Operator order 2026-11-13 ~17:10Z (OPERATOR_DECISIONS.md): rule book for every indicator"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read research/indicator_rulebooks/TEMPLATE.md and research/adx_di_2026-11/HOW_TO_USE_ADX_1113.md (the model).",
     "Open the developer's original source and 2-3 independent public sources for VWAP and value area (web search / fetch). Mark each claim SOURCED (URL, fetched) or UNVERIFIED.",
@@ -52,6 +66,7 @@
     "Write research/indicator_rulebooks/VWAP_VALUE_AREA.md: sections 1-4 and 6-8; section 5 = pointers to our studies found by grep (study folder, no numbers).",
     "Update the INDEX.md row status only if all eight sections are present."
   ],
+  "taken": "2026-11-13T19:15:29Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Rule book sections 2-4, 6-8: VWAP and value area",
   "weight": "ROUTINE",

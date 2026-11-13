@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T18:33:46Z",
   "commands": [
     "python -m pytest MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/test_run_1113.py -q"
   ],
@@ -18,8 +19,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "",
+  "note": "split into size-S cards a/b/c-1114 (agent-runnable)",
+  "pinned": false,
   "prio": 1,
+  "reason": "split into size-S cards a/b/c-1114 (agent-runnable)",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T18:27:01Z",
@@ -38,7 +41,7 @@
   "sources": [
     "Supervisor C, operator order 2026-11-13 18:15Z"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "Read MAL-R03/R04 in RULES.md; write MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/PRE_REG.md from PRE_REG_TEMPLATE.md with '## Context' and 'Regime mix:' line; mark SOURCED (confirm candle, stop beyond signal candle, target point C) vs OURS (12/18 bars, 1h/4h, closes only)",
     "Fetch 1h/4h klines for 20 perps (adx_1d_through25_2026-11-13/fetch_klines.py pattern)",

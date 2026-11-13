@@ -2529,3 +2529,12 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13 ~18:15Z: load logins A and B and both Gemini accounts (voice, JIS-NB)
 - Operator order (sense): logins A and B are hardly doing anything; put them to use in line with the 5-hour plan; do not get off track; keep watching threads, CPU, cleanups and the Haiku feed watcher; engage every model and give them loads of tasks so the quota is used before it expires tomorrow.
 - Mechanism: `MyTradingSys/system/LOGIN_PLAN_2026-11-13.md` (ordered queue per login and per Gemini account, read at station boot per WORKERS.md rule 10) plus a HIGH broadcast to the laptop; two wave-2 cards filed (edge4-rsi-4h-le12-daily-lt30-1113, edge4-malkan-divergence-r03-r04-1113). Login B needs one operator-started session on the NUC (start line in the plan).
+
+## 2026-11-13 ~18:38Z: login C spends past the 5-hour pacing until weekly 85%; edge in 3 hours (voice, JIS-NB)
+- Operator order (sense): do not worry about the session (5-hour) limits; until the weekly reading is 85% use the session limits fully and save work. All he needs is an edge, found in the next 3 hours, from what was discussed. Forget the laptop as the main engine (assign it what you like).
+- Applied: 5 Sonnet edge studies started on the desktop at 18:40Z (4h/8h/12h RSI extremes with daily band; Malkan divergence R03/R04; the RSI-confirm rule with one layer at a time; where to sell; NY-session value return). Workers do not ship; the Supervisor ships after the pre-ship checks. `supervisor.py plan` still prints CRUCIAL-ONLY from its pacing rule: his order outranks it until week 85%.
+
+## 2026-11-13 ~18:42Z: shipping must stop blocking work (voice, JIS-NB)
+- Operator (sense): why are we still stuck on red CI; has shipping time improved; find a solution or remove the blockage; we need to work freely.
+- Measured: local ship 9 s to 2.4 min (was 17-27 min); CI median 4 min; but 35 of 57 trunk runs red in 4 h, from 4 breaks, each a check CI runs and the local ship gate did not (PRE_REG context lint, wiring registry row, own-cost test, shared-list consistency).
+- Mechanism: card ship-gate-misses-prereg-lint-and-cost-test-1113 (Builder ship-gate-ci-parity-1113, started 18:45Z): the ship gate runs those checks on the merged tree before the push. No gate removed. Next if red persists: the ship train (cards ship-train-*), which lands only green batches.

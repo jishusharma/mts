@@ -45,11 +45,16 @@ CVD / Cumulative Delta is an order-flow market microstructure concept that origi
 | Habib / CBP | No extract mentions CVD or taker delta (uses structural imbalance, session levels, FVG) | `extracts/processed/` (none found) |
 | CryptoCred | No extract mentions CVD or taker delta (uses support/resistance, market structure, trigger candles) | `extracts/processed/cryptocred/` (none found) |
 
-## 5. OUR measurements (pointers only)
-- `research/orderflow_views_2026-10-14/` (`RESULT.md`, `study.py`): Price vs CVD divergence backtest on BTCUSDT 1m and 5m (2022-01..2026-10-14, 4.8 years, n=4933 to 11143). Pre-registered pass mark met by 0 of 12 arms. Verdict: NEGATIVE.
-- `research/wlow_bounce_bbrsi60_2026-10-16/` (`RESULT.md`, `PRE_REG.md`, `study.py`): Weekly low bounce with CVD sign and median split layers on BTC 1h. Verdict: INCONCLUSIVE (n=8, UNDERPOWERED).
-- `backtest/layers/fabio/` (`FABIO_L1_REPORT.md`, `fabio_cvd_absorption.py`): Event study of CVD absorption constructs on 15m and 1h.
-- `research/setup_alpha_beta_v2_2026-10/` (`VERDICTS.csv`): Setup Beta S1 session + CVD on DEV (n=50) and VALIDATION (n=23). Verdict: INCONCLUSIVE.
+## 5. OUR measurements
+All rows OURS, copied from the named file. BTCUSDT. CVD here is Binance kline taker-buy delta, not aggregated all-exchange CVD (that is NOT_MEASURED).
+| Study folder | What was tested | n | Fee-net result | Verdict |
+|---|---|---|---|---|
+| `research/orderflow_views_2026-10-14/RESULT.md` (DEV-only rerun note 2026-10-17) | Price lower low with CVD not lower low (and mirror), 60 min after entry, DIV minus CONTROL, DEV before 2024-07-01 | 1m long 4933, 1m short 5434, 5m long 1411, 5m short 1858 (full-period n, original run) | DIV minus CONTROL, DEV rerun (Welch t): 1m long -0.023 (-1.4), 1m short +0.016 (1.1), 5m long +0.017 (0.5), 5m short -0.022 (-0.9). Pass mark (>= 0.05, t >= 2) met by 0 of 4; 0 of 12 arms incl. OI split | 1m, 5m: DO NOT USE (file verdict NEGATIVE). Original table is flagged CONTAMINATED (DEV read 2024-07..12); use the rerun row |
+| `backtest/layers/fabio/FABIO_L1_REPORT.md` | CVD absorption, frozen IS-best params applied to OOS (last 30%), fee 0.10% round trip, h=5 | OOS 5m 1639, 15m 982, 1h 109 | OOS h5 net: 5m -0.100%, 15m -0.099%, 1h -0.142%; PBO 0.683 / 0.330 / 0.333 | 5m, 15m, 1h: DO NOT USE (file verdict "no edge") |
+| `research/setup_alpha_beta_v2_2026-10/RESULT.md` | Beta S1: 15m PDH/PDL sweep + session + kline-CVD absorption, 1.5R / 90 min bracket, taker fees | DEV 50; VAL 23 | mean R net DEV -0.583 (SE 0.230, t -2.54); VAL -0.697 (SE 0.217, t -3.21); plain-sweep S0 DEV -0.47 R | 15m: DO NOT USE for the primary arm (file verdict INCONCLUSIVE at pre-reg power; CVD adds nothing over plain sweep) |
+| `research/wlow_bounce_bbrsi60_2026-10-16/RESULT.md` | Weekly-low bounce, CVD change break to trigger, split by sign and median, 1h long h=4 | up 7 / down 1; high 4 / low 4 | net long: up -0.437%, down -0.405%, high -0.542%, low -0.325% (sign/median tests marked NOT_EVALUATED in the file) | 1h: UNDERPOWERED |
+| `research/volume_2026-10-09/VOLUME_RESEARCH_REPORT_2026-10-09.md` | CVD / OBV 20-bar price divergence, 4h and 1d, taker-delta z >= 2 spike | NOT_MEASURED here (file gives "no pass" without n in the row quoted) | no pass on either timeframe | 4h, 1d: DO NOT USE |
+Regime mix and DEV / VALIDATION / RECENT split: only setup_alpha_beta_v2 has DEV and VAL; Fabio L1 uses a 70/30 chronological IS/OOS and states "no regime split". Aggregated CVD, divergence at a level (VAL, band): NOT_MEASURED (listed untested in orderflow_views RESULT.md).
 
 ## 6. How to read it now on Live Aid
 CVD is displayed across two primary panels in Live Aid (`tools/live_aid/live_aid.html`):
