@@ -11,7 +11,7 @@ Regime mix: DEV (coin-days, 20 coins, n=39926, n/a excluded from %): UP 23.2%, B
 Regime mix: VAL (coin-days, 20 coins, n=20404, n/a excluded from %): UP 19.2%, BASE 5.4%, DOWN 6.9%, BEAR 49.7%, RANGE 18.8%
 Regime mix: RECENT (coin-days, 20 coins, n=9500, n/a excluded from %): UP 14.5%, BASE 4.9%, DOWN 5.1%, BEAR 63.1%, RANGE 12.5%
 
-The sample is dominated by BEAR (alts bled after 2018, 2021). Short-side phases (DOWN+BEAR) carry most days, long-side phases (UP+BASE) about 28% (DEV), 25% (VAL), 19% (RECENT). RANGE is never traded. Expect few long trades in RECENT; report n always.
+The sample is dominated by BEAR (alts bled after 2018, 2021). Short-side phases (DOWN+BEAR) carry most days, long-side phases (UP+BASE) 31.6% (DEV), 24.6% (VAL), 19.4% (RECENT). RANGE is never traded. Expect few long trades in RECENT; report n always.
 
 ## Universe (OURS)
 BTC ETH BNB XRP ADA LTC TRX LINK XLM DOGE ETC DASH ZEC NEO IOTA VET ATOM EOS BCH QTUM (USDT spot, each from its own listing date; 20 coins, pooled). Chosen as liquid, listed before 2020, no outcome look. Survivorship note: all still trade; a coin that was delisted is absent (bias unknown, reported as a caveat).
