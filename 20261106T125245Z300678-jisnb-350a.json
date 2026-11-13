@@ -1,1 +1,0 @@
-{"t": "20261106T125245Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "slow boot (d-slow-boot-audit-1106): after sync.py start, run boot_audit.py --fix on this machine, post its FIX lines", "login": "C", "id": "b-5d221d", "prio": "high", "cmd": "python scripts/dev/boot_audit.py --fix"}
