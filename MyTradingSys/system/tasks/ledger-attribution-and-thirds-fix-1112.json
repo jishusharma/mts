@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:06:00Z",
   "commands": [
     "python -m pytest -q MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py"
   ],
@@ -30,6 +31,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already on trunk fc1f7eacc: build_ledger strips nested block, channel_map.csv 19 ids, rFPC",
+      "ref": "4a55779f6",
+      "utc": "2026-11-13T12:06:00Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "extraction ledger: avoid forward-index lint false positive",
@@ -40,13 +47,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already on trunk",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T20:53:52Z",
   "refs": [],
-  "result": "",
+  "result": "Already on trunk fc1f7eacc: build_ledger strips nested block, channel_map.csv 19 ids, rFPCtOcfUMI + y67l86cSqb8 PASS, 4 tests pass",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/extraction_ledger_2026-10/build_ledger.py",
     "MyTradingSys/research/extraction_ledger_2026-10/test_build_ledger.py",
@@ -61,12 +74,13 @@
   "sources": [
     "tom-extract-opus-1112 (analyst_video_status_1112/STATUS.md)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Add a failing test in test_build_ledger.py: quote near the 1/3 mark in a transcript with a nested header",
     "Use vq.transcript_body in build_ledger body_for",
     "Channel map from transcript Title/uploader or the RANKED csv; rerun build_ledger.py"
   ],
+  "taken": "2026-11-13T12:06:00Z",
   "tests": "new test fails on pre-change build_ledger.py",
   "title": "Extraction ledger: tag Tom Vorwald EN channel ids (42 of 69 ON_DISK show analyst unknown) and make build_ledger thirds match verify_extract_quotes (nested metadata block)",
   "weight": "",
