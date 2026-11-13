@@ -27,7 +27,10 @@
   function fromAnalysts(list) {
     return (list || []).filter(Boolean).map(function (a) {
       var p = num(a.level);
-      return p ? { price: p, src: 'analyst', label: 'Analyst', badge: initials(a.analyst), bias: a.bias || '' } : null;
+      if (!p) return null;
+      var who = String(a.analyst || '').trim(); if (/^qriptal$/i.test(who)) who = 'Habib';   // Qriptal is the channel, Habib the analyst (operator rule)
+      return { price: p, src: 'analyst', label: 'Analyst', badge: initials(a.analyst), bias: a.bias || '', who: who, said: String(a.said || '').trim().slice(0, 80),
+               published: String(a.published || '').slice(0, 10), expired: !!a.expired };
     }).filter(Boolean);
   }
   // Names are anchored: 'Prev day low' contains 'day low', and an unanchored test labelled yesterday's low 'Today low' (11-10).
@@ -46,6 +49,11 @@
       [['ema200', 'E200'], ['sma200', 'S200'], ['ema55', 'E55']].forEach(function (a) {
         var v = r.avgs[a[0]] && num(r.avgs[a[0]].v);
         if (v) out.push({ price: v, src: 'ma', label: 'MA', badge: r.tf.toUpperCase() + a[1] });
+      });
+      // weekly bull-market support band: 20-week SMA + 21-week EMA (lengths SOURCED, research/ma_layer_2026-11/MA_CONCEPTS.md)
+      if (r.tf === '1w') [['sma20', '1WS20'], ['ema21', '1WE21']].forEach(function (a) {
+        var v = r.avgs[a[0]] && num(r.avgs[a[0]].v);
+        if (v) out.push({ price: v, src: 'ma', label: 'MA', badge: a[1] });
       });
     });
     return out;

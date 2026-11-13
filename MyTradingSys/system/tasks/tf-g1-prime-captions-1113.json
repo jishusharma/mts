@@ -16,7 +16,15 @@
   "id": "tf-g1-prime-captions-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Merge remote-tracking branch 'origin/fast-track' into jis-nuc/gemini-transcript-baileys-bt",
+      "ref": "55f67dda4d85",
+      "utc": "2026-11-12T20:31:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -24,7 +32,7 @@
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-12T18:58:59Z",
+  "refreshed": "2026-11-13T14:16:59Z",
   "refs": [
     "MyTradingSys/research/tf_extraction_plan_1113/BRIEF_GAP_EXTRACT.md",
     "MyTradingSys/research/tf_extraction_plan_1113/PLAN.md"
@@ -37,7 +45,7 @@
     "no repo code change",
     "no invented numbers: a number the trader did not say is NOT_SEEN"
   ],
-  "scope_sha": "",
+  "scope_sha": "55f67dda4d85",
   "size": "S",
   "sources": [
     "tf-extract-plan 2026-11-13 (operator order 11-13)"

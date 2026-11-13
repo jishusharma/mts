@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "commands": [],
-  "created": "2026-11-13T14:02:32Z",
+  "created": "2026-11-13T13:38:41Z",
   "depends_on": [],
   "done_when": "",
   "est_turns": null,
@@ -10,7 +10,8 @@
   "formula_ids": [],
   "from_inbox": "",
   "goal": "",
-  "id": "ship-remeasure-7day-1120",
+  "id": "live-aid-liq-burst-followthrough-1113",
+  "kind": "run",
   "lane": "SONNET",
   "layers": [],
   "live_path": false,
@@ -24,13 +25,11 @@
   "scope_in": [],
   "scope_out": [],
   "size": "",
-  "sources": [
-    "ship-remeasure-1113"
-  ],
+  "sources": [],
   "state": "raw",
   "steps": [],
   "tests": "",
-  "title": "2026-11-20: run scripts/dev/ship_timing_report.py for the 7 days after 2026-11-12T18:43:39Z and the 7 before; fill the 7-day verdict into SHIP_REMEASURE_2026-11-13.md (command at its end); do not start before 2026-11-20T18:44Z",
+  "title": "Live Aid: measure whether a 1m/2m forced-liquidation burst continues or reverses (run research/live_aid_liq_meaning_2026-11-13/liq_meaning.py once >=24h of liquidation events are recorded by card live-aid-liq-history-log-1113; fill tools/live_aid/liq_rates.js; add a random-time placebo before calling any rate a signal)",
   "weight": "",
   "worker": ""
 }
