@@ -1,24 +1,18 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T03:09:13Z",
   "commands": [
     "python -m pytest scripts/dev/test_cicd_run_per_test_limit.py -q"
   ],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-12T03:11:34Z",
-    "misses": 46,
+    "folded": "2026-11-13T03:09:11Z",
+    "misses": 1,
     "reads": [
-      "scripts/dev/cicd_run.py",
-      "scripts/dev/mts_signal.py",
-      "scripts/dev/pytest_test_limit.py",
-      "scripts/dev/test_pytest_test_limit.py",
-      "scripts/dev/extra_tests.tsv",
-      "scripts/dev/test_mts_signal.py",
-      "scripts/dev/run_all_tests.py",
-      ".github"
+      "scripts/dev/test_cicd_run_per_test_limit.py"
     ],
-    "session": "agent-afc65f04df2eed76e"
+    "session": "agent-aeadb33983a574f92"
   },
   "created": "2026-11-11T15:54:08Z",
   "depends_on": [],
@@ -32,6 +26,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already shipped in 3726fb54b (on fast-track): all 4 cicd_run pytest calls carry TEST_LIMIT",
+      "ref": "7b9eb86cd",
+      "utc": "2026-11-13T03:09:13Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
@@ -42,13 +42,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: nothing left",
   "note": "Source: Builder shipgate Noticed. Mechanism owner: ship-gate-per-test-timeout-1111 (in review); align to it.",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T15:57:20Z",
   "refs": [],
-  "result": "",
+  "result": "Already shipped in 3726fb54b (on fast-track): all 4 cicd_run pytest calls carry TEST_LIMIT_ARGS (pytest_test_limit plugin, shared with ship gate); test_cicd_run_per_test_limit.py 4 passed",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "scripts/dev/cicd_run.py",
     "scripts/dev/test_cicd_run_per_test_limit.py"
@@ -62,12 +68,13 @@
   "sources": [
     "Builder shipgate Noticed 2026-11-11"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "git fetch and merge origin/fast-track; reuse the helper the ship-gate card added (pytest-timeout is not installed); if absent, define PER_TEST_LIMIT_S=120 in cicd_run.py",
     "Add the limit to the four pytest command lists",
     "Test with a sleeping test"
   ],
+  "taken": "2026-11-13T03:09:13Z",
   "tests": "scripts/dev/test_cicd_run_per_test_limit.py: a test that sleeps past a short limit fails by test name through the cicd_run pytest command (fails on old code, which has no limit)",
   "title": "cicd_run.py pytest calls get the ship-gate per-test limit",
   "weight": "",
