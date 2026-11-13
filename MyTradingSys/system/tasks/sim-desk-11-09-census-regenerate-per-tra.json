@@ -19,9 +19,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "sim desk: 11-09 studies table (census, T01-T12, Malkan arms, operator 5 points) with verdi",
-      "ref": "005e69ff9f79",
-      "utc": "2026-11-09T07:52:53Z"
+      "line": "sim_desk: catalogue row, banner and page for the thin-zone result card",
+      "ref": "e60a2427ca6d",
+      "utc": "2026-11-12T09:13:41Z"
     }
   ],
   "layers": [],
@@ -31,7 +31,7 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-09T20:22:21Z",
+  "refreshed": "2026-11-13T12:14:58Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -44,7 +44,7 @@
     "no HOLDOUT window",
     "no prices in committed files (percent and timestamps only: repo is public)"
   ],
-  "scope_sha": "005e69ff9f79",
+  "scope_sha": "e60a2427ca6d",
   "size": "M",
   "sources": [
     "MyTradingSys/research/sim_desk/census_1109.py docstring (11-09 census rules)"

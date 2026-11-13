@@ -35,9 +35,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "Revert \"Revert AIBridge 0.7.33 DeepSeek block guard (CI RED: test_aibridge_account_lease u",
-      "ref": "5b6548bb8521",
-      "utc": "2026-11-08T10:34:48Z"
+      "line": "AIBridge 0.7.39: release the arm on pagehide, cap one result at 60000 chars, desk post/tak",
+      "ref": "2411379b6ded",
+      "utc": "2026-11-11T13:23:53Z"
     },
     {
       "auto": true,
@@ -54,7 +54,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:20:33Z",
+  "refreshed": "2026-11-13T12:15:06Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -68,7 +68,7 @@
     "any other host",
     "live tree"
   ],
-  "scope_sha": "5b6548bb8521",
+  "scope_sha": "2411379b6ded",
   "size": "S",
   "sources": [
     "scripts/aibridge/RELEASES.json (0.7.9 current)",

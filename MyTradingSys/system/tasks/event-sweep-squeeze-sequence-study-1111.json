@@ -17,9 +17,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "news-effect catalogue v2: verified flag, controls, analyst events, PPI fix",
-      "ref": "c686699d229c",
-      "utc": "2026-11-08T03:53:52Z"
+      "line": "Result: US open first-3-min study saved (1006 weekday opens 2023-01-02..2026-11-10: median",
+      "ref": "6bd8eb5ca34d",
+      "utc": "2026-11-11T14:51:02Z"
     }
   ],
   "layers": [],
@@ -29,7 +29,7 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-11T02:53:38Z",
+  "refreshed": "2026-11-13T12:15:24Z",
   "refs": [],
   "result": "",
   "scope_in": [
@@ -41,7 +41,7 @@
   "scope_out": [
     "no returns or PnL column, no entry rule, no live tree, no new threshold (swept = prior UTC day extreme crossed; window and ATR period quoted from existing studies, labelled OURS)"
   ],
-  "scope_sha": "c686699d229c",
+  "scope_sha": "6bd8eb5ca34d",
   "size": "M",
   "sources": [
     "operator 2026-11-11 chat; 2026-11-10 13:30Z to 16:00Z"

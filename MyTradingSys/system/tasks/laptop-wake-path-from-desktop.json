@@ -34,9 +34,9 @@
     {
       "auto": true,
       "kind": "ship",
-      "line": "laptop_wake.py: one-shot wake gate client for the Lenovo with verb allow-list + test; LENO",
-      "ref": "7019e48997f6",
-      "utc": "2026-11-07T14:20:52Z"
+      "line": "FIX hidden console windows: every captured subprocess call passes CREATE_NO_WINDOW, repo-w",
+      "ref": "8b71721d87ad",
+      "utc": "2026-11-10T21:33:05Z"
     },
     {
       "auto": true,
@@ -54,18 +54,20 @@
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-08T18:20:49Z",
+  "refreshed": "2026-11-13T12:14:53Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/system/LENOVO_SETUP.md",
     "scripts/dev/nuc_wake.py",
-    "scripts/dev/successor_wake.py"
+    "scripts/dev/successor_wake.py",
+    "scripts/dev/laptop_wake.py",
+    "scripts/dev/test_laptop_wake.py"
   ],
   "scope_out": [
     "unrelated files; live tree; other cards"
   ],
-  "scope_sha": "7019e48997f6",
+  "scope_sha": "8b71721d87ad",
   "size": "S",
   "sources": [
     "operator ask 2026-10-28 gap 11"

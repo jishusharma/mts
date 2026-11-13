@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T12:15:02Z",
   "commands": [
     "python scripts/dev/verdicts.py backfill"
   ],
@@ -26,6 +27,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "Already on trunk: B1.md 2-cell table (n 524, net15 -0.115 t-9.26, net60 -0.136 t-6.22), b1",
+      "ref": "6b22ac394",
+      "utc": "2026-11-13T12:15:02Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: DEV A2 n=170 INSUFFICIENT_N; A3 n=819 net15 -0.090% t-8.0, net60 -0.075% t-3.8 (no",
@@ -36,13 +43,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: B1 and B2 both FAIL on DEV, no VALIDATION read",
   "note": "DECISION (OURS 2026-11-12 planner-close-1112d): B2 stays NOT_RUN, not failed, until the operator approves the aggTrades fetch (100-400 GB to F:); do not fetch. Cells short of 180 are INSUFFICIENT_N.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-11T22:41:41Z",
   "refs": [],
-  "result": "",
+  "result": "Already on trunk: B1.md 2-cell table (n 524, net15 -0.115 t-9.26, net60 -0.136 t-6.22), b1.py+test_b1.py, B2 later run on DEV and FAILED (c77c2c786)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/btc_of_level_auction_1112/b1.py (new)",
     "MyTradingSys/research/btc_of_level_auction_1112/test_b1.py (new)",
@@ -59,12 +72,13 @@
   "sources": [
     "planner-close-1112d; PREREG research/btc_of_level_auction_1112/PREREG.md"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read PREREG.md; implement B1 from 1m klines per the frozen definitions (90th pct of abs(delta5) over prior 30 days, body < 0.15 %, level within 0.10 %); fixed seed 1112, fee 0.10 % round trip",
     "Run DEV only; report n per cell; n<180 prints INSUFFICIENT_N, thresholds never loosened; write B1.md with Regime mix and the contrast",
     "Write B2: NOT_RUN in B1.md (aggTrades for DEV not on disk; operator decision pending: 100-400 GB to F:); run verdicts.py backfill"
   ],
+  "taken": "2026-11-13T12:15:02Z",
   "tests": "pytest on a synthetic 5m series: a delta<0 bar at PDL within 0.10 % is a long event, delta<0 at a high is not an event; must fail on a stub b1.py first.",
   "title": "BTC level-auction B1: absorption at prior-day high/low or value-area edge, DEV only",
   "weight": "",
