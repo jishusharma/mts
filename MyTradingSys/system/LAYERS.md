@@ -189,6 +189,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-pulse-backtest-1109` refined p2 SONNET: Backtest Live Aid pulse: does SETUP FORMING (level within 0.15%, 1h-4h lean or Home direction, low-TF RSI/Wave
   - `live-aid-trendlines-liquidations-1106` ready p2 SONNET: Live aid strip: auto trendlines per timeframe and liquidation levels
   - `live-trading-aid-page-multi-tf-wavetrend` blocked p2 SONNET: Live trading aid page: multi-TF WaveTrend/RSI/BB/OI/CVD state + measured base rate per state, good visuals, le
+  - `live-aid-bb-touch-divergence-1113` raw p3 SONNET: Live Aid: Bollinger band touch + WaveTrend/RSI divergence as one board reading per timeframe; measure the boun
   - `live-aid-card-show-the-habib-daily-watch` ready p3 SONNET: Live-aid card: show the Habib daily watch (habib_watch.py candidate imbalance candles at known levels)
   - `live-aid-cbp-mts-state-on-home-1113` ready p3 SONNET: Live Aid Home: one row for CBP analyst levels (age, call) and MTS layer state (fired/silent per layer, R15) wh
   - `live-aid-closed-bars-sweep-1110` ready p3 SONNET: Live Aid: the old panels still read the forming candle (rsiVote 1h/4h lines ~1393, 5m delta ~848/867, STRIP ca
@@ -196,6 +197,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
   - `live-aid-liq-history-log-1113` ready p3 SONNET: Live Aid liquidation layer history survives reload but is never written to a scoreable log; add a log (time, s
   - `live-aid-script-paths-404-1113` ready p3 SONNET: Live Aid page script URLs 404: oi_snapshot.js and toast script not served
   - `live-loop-timeouts-b191` refined p3 SONNET: Network: re-check live-loop timeouts after B191 plus wrapper priority and snapshot.cp (read-only report first)
+  - `live-aid-flag-log-buttons-off-top-1113` raw p4 SONNET: Live Aid: move Auto-save / Download flag log buttons off the top bar into All readings; they serve the hit-rat
 
 ## Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) (`callers`)
 - Status: Score the posted calls on Binance klines before anything else (B162 + multi-analyst ingestion). Self-reported 67.1 % wins, avg win 3.99 %, avg loss 0.63 %: unverified. Multi-provider parser + kline scorecard built (2026-10-18); 4 ingestion cards ready.

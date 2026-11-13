@@ -789,7 +789,7 @@
   },
   {
    "id": "RSI-EXTREME-CONFIRM-1H-20261113",
-   "trials": 384,
+   "trials": null,
    "title": "Hourly RSI extreme (<=10/15/20/25, mirror >=75-90) + next candle closes beyond prior close, daily-RSI bucket, 4 stops x 3 exits, 10 coins",
    "date": "2026-11-13",
    "market": "Bybit linear 1h, BTC ETH SOL XRP DOGE BNB ADA LINK LTC AVAX, 2020+",
@@ -1157,7 +1157,7 @@
   },
   {
    "id": "BIGTRADE-EXIT",
-   "trials": 54,
+   "trials": null,
    "title": "Bigtrade fires x exit policies (backtest C)",
    "date": "2026-10-09",
    "market": "spot bars, TRAIN/VALIDATE; HOLDOUT 2025-07.. not read",
@@ -1662,7 +1662,7 @@
   },
   {
    "id": "EXTREME-CONFIRM-1H-20261113",
-   "trials": 54,
+   "trials": null,
    "title": "Extreme reading + confirming candle + next-open entry, 1h, 10 coins, daily-EMA bucket (BB %B, EMA200/dEMA20 ATR distance, StochRSI, run length, capitulation bar)",
    "date": "2026-11-13",
    "market": "Bybit linear 1h, 10 coins, 2020+",
