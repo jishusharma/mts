@@ -22,7 +22,7 @@ Written and committed before any outcome is computed. Research, not advice. Publ
 ## Entries (day index d0 = Monday after the event)
 - E1: buy open of d0.
 - E2 bear trap: from d0 within 21 days, first day s with low < ref_low (sweep), then first day r >= s with close > ref_low (reclaim; r may equal s). Buy open of r+1. No sweep+reclaim in 21 days = no trade.
-- E3 retest: from d0, first day c with close > L_event; then within 10 days after c, first day d with low <= L_event; buy at min(open_d, L_event). No trade otherwise.
+- E3 retest: from d0 within 28 days, first day c with close > L_event; then within 10 days after c, first day d with low <= L_event; buy at min(open_d, L_event). No trade otherwise.
 
 ## Exits
 - X1/X2/X4: close of day (entry_day + 7k - 1), k = 1, 2, 4 weeks.
