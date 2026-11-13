@@ -686,6 +686,8 @@ def start(repo, slug=None, here=False, quiet=False, worker=False):
         print(f"work ONLY there: cd {path}")
         repo = path
     mark_gateway(repo)
+    lock_guard(repo)
+    retry_pending_removals(repo)
     n = merge_trunk(repo)
     retire_released_gateway_trees(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
@@ -1508,6 +1510,8 @@ def ship(repo, gate=run_gate, docs_gate=run_docs_gate, release_slug=None, after_
     push_ref (`ship --train`, SHIP_TRAIN.md): push to this ref (queue/<host>/<slug>) instead of the trunk; None = the trunk, unchanged.
     Returns Pushed(sha, files) after a push, None when there was nothing to ship (ship-waits-own-ci: main() waits for that sha's CI run)."""
     refuse_live(repo)  # only commits are pushed; uncommitted files stay where they are
+    lock_guard(repo, fail=True)
+    retry_pending_removals(repo)
     t_ship_0 = time.monotonic()
     try:
         log_off = _timing_path(repo).stat().st_size
@@ -1736,6 +1740,7 @@ def where(repo, all_=False):
         if broken:
             print(broken_summary(broken))
     open_items = sum(t["flag"] != "ok" for t in trees)
+    print(tree_counts(trees))
     print(f"{open_items} worktree(s) hold work that is not on origin/{TRUNK}; commit and `sync.py ship` them (the live tree is shipped by its owners)"
           + ("" if all_ else f" [{len(trees)} trees checked; `sync.py where --all` lists every one]"))
 
@@ -2206,6 +2211,189 @@ def discard(repo, targets):
     return out
 
 
+TIDY_CURSOR = "mts_tidy_cursor"     # under the primary .git: last tree path a deadline-cut tidy looked at
+TIDY_PENDING = "mts_tidy_pending"   # under the primary .git: released trees whose removal failed (cwd inside, file lock); retried first
+TIDY_STOPPED = [0]                  # trees the last tidy() did not reach (callers that swallow its stdout print the one line from this)
+STALE_LOCK_S = 600                  # OURS: a git command holds index.lock for seconds; 10 min with no git process alive is a crash leftover
+
+
+def tidy_state_dir(repo):
+    """The primary tree's .git: one place every tree shares (worktree gitdirs are per tree)."""
+    rows = worktrees(repo)
+    return Path(rows[0][0] if rows else repo) / ".git"
+
+
+def tidy_order(repo, rows):
+    """Candidates oldest-first (mtime of the tree's own logs/HEAD or HEAD: file reads only, no git call), then rotated to start after
+    the tree a deadline-cut run stopped at, so repeated short budgets cover every tree instead of re-checking the same first ones."""
+    def stamp(row):
+        try:
+            gd = Path((Path(row[0]) / ".git").read_text(encoding="utf-8", errors="replace").split(":", 1)[1].strip())
+            return min(os.stat(gd / n).st_mtime for n in ("logs/HEAD", "HEAD") if (gd / n).exists())
+        except (OSError, IndexError, ValueError):
+            return 0.0
+    ordered = sorted(rows, key=stamp)
+    try:
+        last = (tidy_state_dir(repo) / TIDY_CURSOR).read_text(encoding="utf-8").strip()
+    except OSError:
+        return ordered
+    names = [str(Path(r[0]).resolve()) for r in ordered]
+    return ordered[names.index(last) + 1:] + ordered[:names.index(last) + 1] if last in names else ordered
+
+
+def git_running():
+    """True / False / None (cannot tell): is any git process alive. Fail closed: None means do not delete a lock."""
+    try:
+        if os.name == "nt":
+            r = subprocess.run(["tasklist", "/FI", "IMAGENAME eq git.exe", "/NH", "/FO", "CSV"], capture_output=True, text=True, timeout=20,
+                               creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            return ("git.exe" in r.stdout.lower()) if r.returncode == 0 else None
+        r = subprocess.run(["pgrep", "-x", "git"], capture_output=True, text=True, timeout=20, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        return r.returncode == 0 if r.returncode in (0, 1) else None
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+def stale_lock_state(repo, now=None, running=None):
+    """(path, age_s, removed) for this tree's index.lock, or None when there is none. Removed only when older than STALE_LOCK_S and
+    no git process is alive (`running` = injectable check); one printed line. Younger, git alive or unknown: untouched."""
+    gd = git(repo, "rev-parse", "--absolute-git-dir", check=False).stdout.strip()
+    lock = Path(gd) / "index.lock" if gd else None
+    if not lock or not lock.exists():
+        return None
+    age = (time.time() if now is None else now) - lock.stat().st_mtime
+    if age >= STALE_LOCK_S and (running or git_running)() is False:
+        try:
+            lock.unlink()
+        except OSError:
+            return str(lock), age, False
+        print(f"removed stale index.lock (age {int(age // 60)}m)")
+        return str(lock), age, True
+    return str(lock), age, False
+
+
+def lock_guard(repo, fail=False, **kw):
+    """Sweep this tree's stale index.lock; a lock that stays: `fail` raises a clear SyncError (ship), else it is only named (start)."""
+    st = stale_lock_state(repo, **kw)
+    if st and not st[2]:
+        msg = (f"{st[0]} exists (age {int(st[1] // 60)}m {int(st[1] % 60)}s): a git command may still be running, or it crashed; "
+               f"removed only when older than {STALE_LOCK_S // 60} min with no git process alive")
+        if fail:
+            raise SyncError(msg)
+        print(f"warning: {msg}")
+    return st
+
+
+def tree_removable(repo, p, branch):
+    """None when the finished tree `p` may go now, else why not: tidy's safety checks for one known tree (never primary, a lane,
+    trunk/detached, uncommitted files, commits off origin/TRUNK, ignored data). GATEWAY_MARKER does not count as a file."""
+    rows = worktrees(repo)
+    if not rows or p == Path(rows[0][0]).resolve() or p.name in LANE_WORKTREES or p.name in SWITCH_LANES:
+        return "primary or lane tree"
+    if branch in ("", "(detached)", TRUNK, "master", "main"):
+        return f"branch {branch or '(none)'}"
+    if any(not tidy_noise(l) for l in git(p, "status", "--short", check=False).stdout.splitlines()
+           if l and l[3:].strip('"') != GATEWAY_MARKER):
+        return "uncommitted files"
+    if git(repo, "merge-base", "--is-ancestor", branch, f"origin/{TRUNK}", check=False).returncode != 0:
+        return f"commits not on origin/{TRUNK}"
+    if ignored_data(p):
+        return "ignored data"
+    return None
+
+
+def remove_tree_now(repo, p, branch):
+    """Remove one checked tree. cwd moves to the primary first (Windows cannot rmdir the cwd). True when gone."""
+    primary = Path(worktrees(repo)[0][0])
+    try:
+        os.chdir(primary)
+    except OSError:
+        pass
+    r = git(primary, "worktree", "remove", "--force", str(p), check=False)
+    if r.returncode != 0 and p.exists():
+        return False
+    if git(primary, "branch", "-d", branch, check=False).returncode != 0:
+        git(primary, "branch", "-D", branch, check=False)   # already known to be on origin/TRUNK; -d judges against a lagging HEAD
+    git(primary, "worktree", "prune", check=False)
+    return True
+
+
+def retry_pending_removals(repo):
+    """Retry removals an earlier ship could not finish (TIDY_PENDING). A tree that is gone or no longer passes the checks leaves the list."""
+    f = tidy_state_dir(repo) / TIDY_PENDING
+    try:
+        paths = [l.strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip()]
+    except OSError:
+        return []
+    keep, gone, here = [], [], Path(repo).resolve()
+    by_path = {str(Path(pth).resolve()): b for pth, b in worktrees(repo)}
+    for pth in paths:
+        p = Path(pth).resolve()
+        if str(p) not in by_path:
+            continue
+        if p == here:
+            keep.append(pth)
+        elif tree_removable(repo, p, by_path[str(p)]) is None:
+            if remove_tree_now(repo, p, by_path[str(p)]):
+                gone.append(p.name)
+            else:
+                keep.append(pth)
+    try:
+        if keep:
+            f.write_text(chr(10).join(keep) + chr(10), encoding="utf-8")
+        else:
+            f.unlink()
+    except OSError:
+        pass
+    if gone:
+        print(f"tidy: removed {len(gone)} pending tree(s): " + ", ".join(gone))
+    return gone
+
+
+def retire_own_tree(repo):
+    """After `ship --release`: this tree is finished and known; checked clean and fully on origin/TRUNK it is removed in the same
+    ship (no scan, gateway marker or not). A removal that fails (cwd inside, file lock) goes to TIDY_PENDING for the next start/ship."""
+    p = Path(repo).resolve()
+    branch = git(repo, "branch", "--show-current", check=False).stdout.strip()
+    why = tree_removable(repo, p, branch)
+    if why:
+        print(f"tidy: own tree kept ({why})")
+        return False
+    state = tidy_state_dir(repo)
+    if remove_tree_now(repo, p, branch):
+        print(f"tidy: removed own finished tree {p.name}")
+        return True
+    try:
+        with open(state / TIDY_PENDING, "a", encoding="utf-8", newline="") as f:
+            f.write(str(p) + chr(10))
+    except OSError:
+        pass
+    print(f"tidy: could not remove {p.name} yet (in use); queued, the next start or ship retries")
+    return False
+
+
+def tree_counts(trees):
+    """One line for a supervisor: total / removable now / uncommitted / unshipped commits / locked (trees from survey())."""
+    removable = uncommitted = unshipped = locked = 0
+    for i, t in enumerate(trees):
+        gd = Path(t["path"]) / ".git"
+        try:
+            gdir = Path(gd.read_text(encoding="utf-8", errors="replace").split(":", 1)[1].strip()) if gd.is_file() else gd
+            if (gdir / "index.lock").exists():
+                locked += 1
+        except (OSError, IndexError):
+            pass
+        if t["ahead"] is None:
+            continue
+        if t["work"]:
+            uncommitted += 1
+        elif t["ahead"]:
+            unshipped += 1
+        elif i and t["name"] not in LANE_WORKTREES and t["name"] not in SWITCH_LANES and t["branch"] not in ("(detached)", TRUNK):
+            removable += 1
+    return f"trees: total {len(trees)} / removable now {removable} / uncommitted {uncommitted} / unshipped commits {unshipped} / locked {locked}"
+
+
 def tidy_noise(row):
     """is_noise plus, for tidy only: a modified LAYERS.md. It is generated ("do not hand-edit"; make_layers_md.write from
     layer_index.json, cards and layer_map.json) and `ship` regenerates it from those sources before it commits, so a copy that
@@ -2218,7 +2406,7 @@ def tidy_cutoff(deadline):
     return deadline is not None and time.time() > deadline
 
 
-def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None, fetch=True, deadline=None, gateway_only=False):
+def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS, now=None, fetch=True, deadline=None, gateway_only=False, gateway_too=False):
     """Retire finished worktrees: `../mts-<host>-<slug>` made by `start`, the App's `.claude/worktrees/*` and `../mts-relay-*`.
     Dry run unless apply. Removed only when: not the primary tree, not the one we are in, no live marker, clean (the pulled
     mirror and a stray AGENTS.md/.codex do not count), no ignored data files (those are deleted with the tree), branch fully
@@ -2229,7 +2417,11 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
     (ship has just pushed, so origin/TRUNK is current); `deadline` (epoch) stops the walk early, the rest waits for the next run.
     gateway_only (sync.py start): look ONLY at trees holding GATEWAY_MARKER whose task is released (no open claim on the slug) and fully
     shipped; those go after the normal TIDY_IDLE_HOURS, not wt_maint's 12 h gateway hold (the marker is deleted with the tree).
-    Returns the paths removed (or that would be)."""
+    gateway_too: marked trees are judged by the same rules as every other tree (released, clean, shipped) instead of being kept.
+    A deadline-cut walk resumes where it stopped (TIDY_CURSOR under .git, oldest tree first) and says so (TIDY_STOPPED[0] + one line).
+    Measured 2026-11-13 on JIS-NB under load: ~1.7 s per tree (status, status --ignored, log, merge-base: 4 git calls of ~0.4 s each),
+    so 15-20 s covered 9-12 of 65 trees, always the same first ones. Returns the paths removed (or that would be)."""
+    TIDY_STOPPED[0] = 0
     now = time.time() if now is None else now
     if fetch:
         git(repo, "fetch", "--quiet", "origin", TRUNK)
@@ -2260,15 +2452,24 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
             listed += 1
             print(f"keep  {p.name}: {why}")
 
-    for path, branch in rows[1:]:
+    gw = gateway_only or gateway_too
+    todo = tidy_order(repo, rows[1:])
+    cursor_file = tidy_state_dir(repo) / TIDY_CURSOR
+    for i, (path, branch) in enumerate(todo):
         if tidy_cutoff(deadline):
+            TIDY_STOPPED[0] = len(todo) - i
+            print(f"tidy: stopped at budget, {TIDY_STOPPED[0]} tree(s) not checked")
+            try:
+                cursor_file.write_text(str(Path(todo[i - 1][0]).resolve()) if i else "", encoding="utf-8")
+            except OSError:
+                pass
             break
         p = Path(path).resolve()
         if p == here or not p.exists() or (p / LIVE_MARKER).exists():
             continue
         if gateway_only and not (p / GATEWAY_MARKER).exists():
             continue
-        if (p / GATEWAY_MARKER).exists() and not gateway_only:
+        if (p / GATEWAY_MARKER).exists() and not gw:
             keep(p, "gateway", "gateway session's own tree (GATEWAY_NUC.md rule 7)")
             continue
         auto = (re.match(r"mts-.+-s\d{4}-\d{6}(-\d+)?$", p.name) or p.name.startswith(tuple(f"mts-{n.lower()}-" for n in hosts.aliases(socket.gethostname())) + ("mts-relay-",)
@@ -2284,7 +2485,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
             keep(p, "branch", f"branch {branch}")
             continue
         rows_dirty = [l for l in git(p, "status", "--short", check=False).stdout.splitlines()
-                      if l and not (gateway_only and l[3:].strip('"') == GATEWAY_MARKER)]   # the marker is .gitignore'd; this copes with a repo that lacks the entry
+                      if l and not (gw and l[3:].strip('"') == GATEWAY_MARKER)]   # the marker is .gitignore'd; this copes with a repo that lacks the entry
         if any(not tidy_noise(l) for l in rows_dirty):
             keep(p, "uncommitted", "uncommitted files")
             continue
@@ -2309,7 +2510,7 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
             continue
         if apply:
             # --force only for the noise rows above (pulled mirror, stray AGENTS.md/.codex): git counts untracked files as dirt
-            r = git(repo, "worktree", "remove", *(["--force"] if rows_dirty or gateway_only else []), str(p), check=False)
+            r = git(repo, "worktree", "remove", *(["--force"] if rows_dirty or gw else []), str(p), check=False)
             if r.returncode != 0:
                 keep(p, "remove-failed", f"remove failed ({r.stderr.strip()[:80]})")
                 continue
@@ -2320,6 +2521,11 @@ def tidy(repo, apply=False, include_named=False, min_idle_hours=TIDY_IDLE_HOURS,
         print(f"{'removed' if apply else 'would remove'}  {p.name} [{branch}]: clean, no ignored data, on origin/{TRUNK}, "
               f"idle {idle:.1f} h")
         out.append(str(p))
+    else:
+        try:
+            cursor_file.unlink()   # the whole list was walked: the next run starts from the oldest again
+        except OSError:
+            pass
     if apply:
         git(repo, "worktree", "prune", check=False)
     counts = ", ".join(f"{k} {n}" for k, n in sorted(kept.items(), key=lambda kv: (-kv[1], kv[0])))
@@ -2337,6 +2543,8 @@ def retire_released_gateway_trees(repo, budget_s=15, tidy_fn=None):
             gone = (tidy_fn or tidy)(repo, apply=True, fetch=False, deadline=time.time() + budget_s, gateway_only=True)
         if gone:
             print(f"start: retired {len(gone)} released gateway tree(s): " + ", ".join(Path(g).name for g in gone))
+        if TIDY_STOPPED[0]:
+            print(f"tidy: stopped at budget, {TIDY_STOPPED[0]} tree(s) not checked")
         return gone
     except Exception as e:   # noqa: BLE001
         print(f"start: gateway-tree retire skipped ({type(e).__name__}: {str(e)[:80]})")
@@ -2354,9 +2562,11 @@ def tidy_after_ship(repo, budget_s=TIDY_AFTER_SHIP_BUDGET_S, tidy_fn=None):
     try:
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            gone = (tidy_fn or tidy)(repo, apply=True, fetch=False, deadline=time.time() + budget_s)
+            gone = (tidy_fn or tidy)(repo, apply=True, fetch=False, deadline=time.time() + budget_s, gateway_too=True)
         if gone:
             print(f"tidy: retired {len(gone)} finished worktree(s): " + ", ".join(Path(g).name for g in gone))
+        if TIDY_STOPPED[0]:
+            print(f"tidy: stopped at budget, {TIDY_STOPPED[0]} tree(s) not checked")
         return gone
     except Exception as e:   # noqa: BLE001 - best effort by design
         print(f"tidy: skipped after ship ({type(e).__name__}: {str(e)[:80]})")
@@ -2455,7 +2665,7 @@ def main(argv):
         return 0
     if argv and argv[0] == "tidy" and len(argv) <= 3:
         try:
-            tidy(toplevel(Path.cwd()), "--apply" in argv, "--all" in argv)
+            tidy(toplevel(Path.cwd()), "--apply" in argv, "--all" in argv, gateway_too=True)
         except SyncError as e:
             print(f"sync: {e}", file=sys.stderr)
             return 1
@@ -2573,6 +2783,10 @@ def main(argv):
                 return TRAIN_EJECT_EXIT if verdict == "ejected" else 0
             if isinstance(pushed, Pushed):
                 write_last_pushed(repo, pushed)
+                if release_slug:
+                    primary = Path(worktrees(repo)[0][0])
+                    if retire_own_tree(repo):
+                        repo = primary
                 tidy_after_ship(repo)
             if isinstance(pushed, Pushed) and os.environ.get("SYNC_FIX_CI") and not ci_starts(pushed.files, ci_path_filter(repo)):
                 dispatch_ci()

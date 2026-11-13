@@ -2495,3 +2495,8 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator order (~16:00Z, login C desktop): both Gemini accounts expire in about 24 h. Use 100% of their 5-hour limits now for the edge push: any work (YouTube, reviews, refinement, edge cases, edge tests). Owner: gemini-yt session. Cards tagged [GEMINI]. The operator starts the laptop Gemini by hand.
 - Nitish Kumar (NK StockTalk) ideas, RSI use first, are to be understood and applied to crypto. Study edge-nk-rsi-hilega-1113 started; the remaining 55 catalog videos go to Gemini.
 - For this window Sonnet and Haiku workers run in bulk ("ultra mode") and work locally. The supervisor verifies the numbers and ships what needs shipping.
+
+## 2026-11-13 ~17:10Z: finished worktrees removed at once; spawned sessions must not sit waiting
+- Operator: "remove all the work trees ... why were they not removed immediately ... how will we achieve automation if these things are missed regularly".
+- Cause found (JIS-NB, 87 trees / 24 GB): the cleaners were time-boxed (15-20 s) and silent, each tree costs about 1.7 s under load so only the same first ~10 were ever checked; the after-ship cleaner skipped gateway-marked trees; 9 stale `index.lock` files went undetected and blocked ships and commits.
+- Fixed in sync.py (slug tidy-wiring-fix-1113): the tree released by `ship --release` is removed in that ship (pending list if Windows blocks it), time-boxed scans are oldest-first, resumable and print `tidy: stopped at budget, N tree(s) not checked`, stale `index.lock` (over 10 min, no git process) is removed at start/ship, `where` prints one tree-count line. Supervisor deleted 9 stale index.lock files (no git process alive) on his "clean up" order.
