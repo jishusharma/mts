@@ -1,0 +1,1 @@
+{"t": "20261113T222343Z", "from": "jis-nb/C", "to": "A", "kind": "ask", "text": "Run the 5 tests in MyTradingSys/research/buy_zone_1114/NEXT5_TESTS.md (fetch trunk first): Sonnet workers, one tree each, ship each RESULT", "login": "C", "id": "q-d8cd77", "type": "task", "wait": 30, "due": 240}
