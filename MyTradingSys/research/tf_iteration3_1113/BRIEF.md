@@ -2,6 +2,8 @@
 
 Iteration 2 (`../tf_extraction_plan_1113/ITERATION_2.md`, 9d41c7e5) fired the stopping rule: market profile is named in 23 videos and has never been coded. So iteration 3 runs. Each topic runs on two Gemini models (flash, argon); MODEL_COMPARE.md then sorts every row into AGREED / SINGLE / CONFLICT.
 
+Quality note 2026-11-13 (third check): Argon timestamps did not match the transcripts on IR-09 (cited [76:01], real 1:30:45), IR-18 ([100:51] vs 1:28:42), IR-19 ([130:07] vs 1:54:17). Check every Argon timestamp against the transcript before use in MODEL_COMPARE.md (card gemini-argon-timestamp-check-1113). Source: `../tf_extraction_plan_1113/THIRD_CHECK_I2_REFUTE.md`.
+
 ## The 5 gap patterns
 1. **Our number labelled as his.** A number the trader never states is filled by us and labelled SOURCED.
 2. **Named often, never coded.** A concept he names in many videos that has no code.
