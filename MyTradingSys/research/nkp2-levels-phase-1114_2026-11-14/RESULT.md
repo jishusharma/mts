@@ -1,6 +1,6 @@
 **VERDICT: FAIL, 0 of 2 DEV-chosen cells pass VAL (2024+) fee-net at 12 bp; best cell by day-CI low: NK2-core / MARKUP / C4_oi24h <=-3%, n 1081, net -0.021 R, day CI low -0.175.**
 
-Regime mix (days per phase, label from BTC through the prior close). DEV 2019-2023 (1826 days): CAPITULATION 52d (2.9%), MARKDOWN 434d (23.8%), RELIEF 154d (8.4%), ACCUM-RANGE 333d (18.2%), MARKUP 605d (33.1%), DISTRIBUTION 248d (13.6%). VAL 2024-2026-11-13 (1048 days): CAPITULATION 6d (0.6%), MARKDOWN 198d (18.9%), RELIEF 34d (3.2%), ACCUM-RANGE 156d (14.9%), MARKUP 321d (30.6%), DISTRIBUTION 333d (31.8%).
+Regime mix: (days per phase, label from BTC through the prior close). DEV 2019-2023 (1826 days): CAPITULATION 52d (2.9%), MARKDOWN 434d (23.8%), RELIEF 154d (8.4%), ACCUM-RANGE 333d (18.2%), MARKUP 605d (33.1%), DISTRIBUTION 248d (13.6%). VAL 2024-2026-11-13 (1048 days): CAPITULATION 6d (0.6%), MARKDOWN 198d (18.9%), RELIEF 34d (3.2%), ACCUM-RANGE 156d (14.9%), MARKUP 321d (30.6%), DISTRIBUTION 333d (31.8%).
 Signals (trades) per phase, registered stop basis, 12 bp sequence:
 | rule | split | CAPITULATION | MARKDOWN | RELIEF | ACCUM-RANGE | MARKUP | DISTRIBUTION |
 |---|---|---|---|---|---|---|---|
