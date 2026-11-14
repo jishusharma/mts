@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T07:00:48Z",
   "commands": [],
   "created": "2026-11-14T04:57:40Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "testgap-yt-mirrors-gemini4-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114d/testgap-yt-mirrors/test_yt_mirrors.py (5/5 pa",
+      "ref": "35a7bf340",
+      "utc": "2026-11-14T07:00:48Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: testgap-yt-mirrors-gemini4-1114 done",
   "note": "Planner refill4 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T04:57:40Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114d/testgap-yt-mirrors/test_yt_mirrors.py (5/5 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114d/testgap-yt-mirrors/"
   ],
@@ -37,13 +51,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -rl the module name under scripts and MyTradingSys tests; note existing coverage.",
     "Read scripts/dev/yt_mirrors.py; list its pure functions and expected outputs worked by hand.",
     "Write test_yt_mirrors.py in the lab folder with 3-5 cases; run pytest, expect pass.",
     "Copy the module to a scratch dir, break one line, rerun, record the failing test name in the docstring."
   ],
+  "taken": "2026-11-14T07:00:48Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Test gap: yt-mirrors",
   "weight": "ROUTINE",
