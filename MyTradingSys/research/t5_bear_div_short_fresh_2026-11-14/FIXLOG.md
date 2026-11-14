@@ -12,3 +12,6 @@ Trade counts are BEAR-true claim trades (DEV / VAL / pooled); all labelled event
 | 6 | ONE-YEAR flag only on VAL; regime-mix lacks RECENT / pooled shares; verdict naming; fullsample-quantile WARNs (3, none self-allowlisted); LUNA re-denomination; ICX/ONT 2 h offset bars (audit minor) | NOT FIXED here (minor, stats-stage or RESULT wording) | stats-stage items | carried to stage 4 / RESULT | n/a |
 
 Step A re-run by this worker after the code was final (trades.csv regenerated, 1.04 MB): fresh 45 kept 45 dropped 0; events 2212; BEAR true 828 (DEV 476, VAL 352, RECENT 169); by year 2019 15, 2020 21, 2021 15, 2022 239, 2023 186, 2024 107, 2025 139, 2026 106. Tests 15 pass (the audit's 13 + 2); lookahead lint 0 FAIL, 3 WARN (t5_stats.py fullsample-quantile, unchanged); prereg_context_lint 0 offenders. Mutation_check.txt not re-run (earlier 13/13 caught; the new base_lows function is pinned by its own test). Independent recompute of the new list not re-done: the recompute checker's literal-text count (-268) matches.
+
+## Ship-gate rename (2026-11-14, coordinator, no rule or number change)
+The tree-wide cost-constant gate flagged the coverage kwarg funding_prints=0 in t5_trades.py; renamed to n_prints. coverage.json key changes from funding_prints to n_prints; no trade, statistic or verdict affected.

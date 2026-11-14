@@ -118,7 +118,7 @@ def main():
         cov[sym] = dict(bars_4h=int(len(k4)), first_4h=utc(ts[0]), last_4h=utc(ts[-1]), bars_1d=int(len(k1)),
                         first_1d=utc(dts[0]), last_1d=utc(dts[-1]), n_gaps_4h=int((np.diff(ts) != T.BAR).sum()),
                         bear_bars_4h=int(bearA[T.WARM4:].sum()), phase_bars_4h=int((labA[T.WARM4:] != "").sum()),
-                        funding_file=fund is not None, funding_prints=0 if fund is None else len(fund),
+                        funding_file=fund is not None, n_prints=0 if fund is None else len(fund),
                         funding_first=None if first_f is None else utc(first_f), funding_last=None if last_f is None else utc(last_f),
                         events=len(ev), events_bear=sum(1 for e in ev if e["bear"]),
                         trades_no_funding_cover=sum(1 for e in ev if not e["covered"]),
