@@ -176,7 +176,7 @@ def write_result(here, S):
                    ("funding NOT_IN_DATA trades", "funding_not_in_data"), ("net % per day in position (pooled)", "in_pos_daily")):
         L.append("| %s | %s | %s |" % (lab, _g(S, "dev", k, lab), _g(S, "val", k, lab)))
     L.append("| bootstrap 95%% CI (4-wk moving block, 2000, seed 1114) | %+.3f..%+.3f | %+.3f..%+.3f |" % (db["ci_low"], db["ci_high"], vb["ci_low"], vb["ci_high"]))
-    L.append("| basket net % per day (same weeks) | %+.4f | %+.4f |" % (S["baseline"]["DEV"], S["baseline"]["VAL"]))
+    L.append("| basket net %% per day (same weeks) | %+.4f | %+.4f |" % (S["baseline"]["DEV"], S["baseline"]["VAL"]))
     L.append("")
     L.append("## Pass bars (PRE_REG)")
     L.append("")
