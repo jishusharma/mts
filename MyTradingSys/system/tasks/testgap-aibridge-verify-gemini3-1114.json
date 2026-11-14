@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T03:12:15Z",
   "commands": [],
   "created": "2026-11-14T00:25:10Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "testgap-aibridge-verify-gemini3-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "test_aibridge_verify.py (5 passed)",
+      "ref": "ec1432d15",
+      "utc": "2026-11-14T03:12:15Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "Planner refill3 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T00:45:17Z",
   "refs": [],
-  "result": "",
+  "result": "test_aibridge_verify.py (5 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114c/testgap-aibridge-verify/"
   ],
@@ -37,13 +51,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -rl aibridge_verify under scripts and MyTradingSys tests; note any existing coverage.",
     "Read scripts/dev/aibridge_verify.py; list its pure functions and their expected outputs worked by hand.",
     "Write test_aibridge_verify.py in the lab folder with 3-5 cases; run pytest, expect pass.",
     "Copy the module to a scratch dir, break one line, rerun, record which test fails in the docstring. Commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-14T03:12:15Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Test gap: aibridge_verify",
   "weight": "ROUTINE",
