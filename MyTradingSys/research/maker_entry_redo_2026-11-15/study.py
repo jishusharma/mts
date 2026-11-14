@@ -235,7 +235,7 @@ def cell(rows, pick):
     s0, sm = stats(t0, TAKER_PCT), stats(mk, MAKER_PCT)
     for pre, s in (("t_", s0), ("m_", sm)):
         for k, v in s.items():
-            out[pre + k] = v
+            out["%s%s" % (pre, k)] = v
     out["fill_rate"] = len(mk) / n_sig if n_sig else float("nan")
     out["t0_fill_rate"] = len(t0) / n_sig if n_sig else float("nan")
     both = [x for x in rows if x["m"] and x["t0"]]
