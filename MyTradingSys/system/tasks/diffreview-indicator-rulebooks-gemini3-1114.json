@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:29:24Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/diffreview-indicator-rulebooks/REVIEW.md exists, its first line is the verdict (N BUG, M RISK), and every sha from git log -- MyTradingSys/research/indicator_rulebooks appears in the table once",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review every commit of the last 24 h on origin/fast-track under MyTradingSys/research/indicator_rulebooks: hunt logic errors, wrong numbers vs their sources, unguarded None or empty input, bar-index off-by-one, fee or timezone slips, claims in text that the data does not support. Report only what you can cite file:line.",
+  "id": "diffreview-indicator-rulebooks-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:29:50Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/diffreview-indicator-rulebooks/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "git log --since='24 hours ago' --format='%h %s' origin/fast-track -- MyTradingSys/research/indicator_rulebooks; list shas (parse then count).",
+    "For each sha read git show --stat then the diff of code and prose that carries numbers; skip raw data files.",
+    "Table: sha, file:line, finding, severity (BUG / RISK / STYLE), one-line fix; CLEAN rows allowed.",
+    "Write REVIEW.md in the lab folder with the verdict line first. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] 24 h diff review: indicator rule books",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
