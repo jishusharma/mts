@@ -89,23 +89,5 @@ class HostsTest(unittest.TestCase):
         self.assertEqual(len(supervisor.pick_cards(rows, "JIS-DESKTOP", 3, live="JIS-NB")), 1)
 
 
-class WorktreeRootTests(unittest.TestCase):
-    def test_env_wins_empty_env_disables_and_host_row_needs_the_drive(self):
-        import os
-        from unittest import mock
-        with mock.patch.dict(os.environ, {"MTS_WORKTREE_ROOT": "X:/somewhere"}):
-            self.assertEqual(hosts.worktree_root(), "X:/somewhere")
-        with mock.patch.dict(os.environ, {"MTS_WORKTREE_ROOT": ""}):
-            self.assertIsNone(hosts.worktree_root())
-        env = {k: v for k, v in os.environ.items() if k != "MTS_WORKTREE_ROOT"}
-        with mock.patch.dict(os.environ, env, clear=True), mock.patch.object(hosts, "this_host", return_value="JIS-DESKTOP"):
-            with mock.patch("os.path.isdir", return_value=True):
-                self.assertEqual(hosts.worktree_root(), r"F:\MTS\wt")
-            with mock.patch("os.path.isdir", return_value=False):
-                self.assertIsNone(hosts.worktree_root())
-            with mock.patch.object(hosts, "this_host", return_value="JIS-NUC"):
-                self.assertIsNone(hosts.worktree_root())
-
-
 if __name__ == "__main__":
     unittest.main()

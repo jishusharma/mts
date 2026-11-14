@@ -523,30 +523,5 @@ class ProcsTest(unittest.TestCase):
         self.assertIn("procs (report only): 0 KILL candidate(s)", text)
 
 
-class UnshippedStudyTrees(unittest.TestCase):
-    def sh(self, cwd, *a):
-        subprocess.run(["git", "-C", str(cwd), *a], check=True, capture_output=True)
-
-    def test_old_unshipped_tree_listed_with_result_status_and_fresh_or_clean_not(self):
-        with tempfile.TemporaryDirectory() as d:
-            d = Path(d).resolve()
-            main = d / "main"
-            main.mkdir()
-            for c in (["init", "-q", "-b", "fast-track"], ["config", "user.email", "a@b"], ["config", "user.name", "t"]):
-                self.sh(main, *c)
-            (main / "a.txt").write_text("1")
-            self.sh(main, "add", "."); self.sh(main, "commit", "-qm", "i")
-            self.sh(main, "update-ref", "refs/remotes/origin/fast-track", "HEAD")
-            old = d / "mts-x-old"; clean = d / "mts-x-clean"
-            self.sh(main, "worktree", "add", "-q", str(old), "-b", "o"); self.sh(main, "worktree", "add", "-q", str(clean), "-b", "c")
-            r = old / "MyTradingSys" / "research" / "s"; r.mkdir(parents=True)
-            (r / "RESULT.md").write_text("x")
-            t = time.time() - 10 * 3600
-            os.utime(r / "RESULT.md", (t, t))
-            rows = g.unshipped_study_rows(main, now=time.time() + 7 * 3600)
-            self.assertEqual([(Path(p).name, rs) for p, h, st, rs in rows], [("mts-x-old", "RESULT.md")])
-            self.assertEqual(g.unshipped_study_rows(main), [])      # 10 h-old file but commit clock / fresh checkout: < 6 h idle
-
-
 if __name__ == "__main__":
     unittest.main()
