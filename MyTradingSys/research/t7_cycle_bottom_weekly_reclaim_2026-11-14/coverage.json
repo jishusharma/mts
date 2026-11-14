@@ -1,0 +1,635 @@
+{
+ "trades": 1035,
+ "per_coin": {
+  "1INCH#0": {
+   "bars": 2149,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-12-25",
+   "last": "2026-11-12",
+   "funding_prints": 6409
+  },
+  "AAVE#0": {
+   "bars": 2220,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-10-15",
+   "last": "2026-11-12",
+   "funding_prints": 6620
+  },
+  "ADA#0": {
+   "bars": 3133,
+   "ended": false,
+   "events": 14,
+   "trades": 14,
+   "first": "2018-04-17",
+   "last": "2026-11-13",
+   "funding_prints": 7432
+  },
+  "ALGO#0": {
+   "bars": 2701,
+   "ended": false,
+   "events": 19,
+   "trades": 19,
+   "first": "2019-06-22",
+   "last": "2026-11-12",
+   "funding_prints": 7032
+  },
+  "ANKR#0": {
+   "bars": 2670,
+   "ended": false,
+   "events": 14,
+   "trades": 14,
+   "first": "2019-07-23",
+   "last": "2026-11-12",
+   "funding_prints": 7030
+  },
+  "ATOM#0": {
+   "bars": 2756,
+   "ended": false,
+   "events": 18,
+   "trades": 18,
+   "first": "2019-04-29",
+   "last": "2026-11-13",
+   "funding_prints": 7378
+  },
+  "AVAX#0": {
+   "bars": 2244,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-09-22",
+   "last": "2026-11-13",
+   "funding_prints": 6691
+  },
+  "AXS#0": {
+   "bars": 2200,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-11-04",
+   "last": "2026-11-12",
+   "funding_prints": 7532
+  },
+  "BAND#0": {
+   "bars": 2613,
+   "ended": false,
+   "events": 19,
+   "trades": 19,
+   "first": "2019-09-18",
+   "last": "2026-11-12",
+   "funding_prints": 6857
+  },
+  "BAT#0": {
+   "bars": 2811,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2019-03-04",
+   "last": "2026-11-12",
+   "funding_prints": 7358
+  },
+  "BCH#0": {
+   "bars": 2543,
+   "ended": false,
+   "events": 14,
+   "trades": 14,
+   "first": "2019-11-28",
+   "last": "2026-11-13",
+   "funding_prints": 7488
+  },
+  "BNB#0": {
+   "bars": 3295,
+   "ended": false,
+   "events": 7,
+   "trades": 7,
+   "first": "2017-11-06",
+   "last": "2026-11-13",
+   "funding_prints": 7367
+  },
+  "BTC#0": {
+   "bars": 3375,
+   "ended": false,
+   "events": 8,
+   "trades": 8,
+   "first": "2017-08-17",
+   "last": "2026-11-12",
+   "funding_prints": 7488
+  },
+  "CELR#0": {
+   "bars": 2790,
+   "ended": false,
+   "events": 19,
+   "trades": 19,
+   "first": "2019-03-25",
+   "last": "2026-11-12",
+   "funding_prints": 6128
+  },
+  "CHZ#0": {
+   "bars": 2625,
+   "ended": false,
+   "events": 18,
+   "trades": 18,
+   "first": "2019-09-06",
+   "last": "2026-11-12",
+   "funding_prints": 6390
+  },
+  "COMP#0": {
+   "bars": 2332,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-06-25",
+   "last": "2026-11-12",
+   "funding_prints": 6944
+  },
+  "CRV#0": {
+   "bars": 2281,
+   "ended": false,
+   "events": 19,
+   "trades": 19,
+   "first": "2020-08-15",
+   "last": "2026-11-12",
+   "funding_prints": 6755
+  },
+  "DASH#0": {
+   "bars": 2787,
+   "ended": false,
+   "events": 20,
+   "trades": 20,
+   "first": "2019-03-28",
+   "last": "2026-11-12",
+   "funding_prints": 7385
+  },
+  "DOGE#0": {
+   "bars": 2689,
+   "ended": false,
+   "events": 14,
+   "trades": 14,
+   "first": "2019-07-05",
+   "last": "2026-11-13",
+   "funding_prints": 6914
+  },
+  "DOT#0": {
+   "bars": 2279,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2020-08-18",
+   "last": "2026-11-13",
+   "funding_prints": 6791
+  },
+  "EGLD#0": {
+   "bars": 2262,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-09-03",
+   "last": "2026-11-12",
+   "funding_prints": 6718
+  },
+  "ENJ#0": {
+   "bars": 2766,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2019-04-18",
+   "last": "2026-11-12",
+   "funding_prints": 7623
+  },
+  "EOS#0": {
+   "bars": 2556,
+   "ended": true,
+   "events": 19,
+   "trades": 19,
+   "first": "2018-05-28",
+   "last": "2025-05-26",
+   "funding_prints": 7466
+  },
+  "ETC#0": {
+   "bars": 3077,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2018-06-12",
+   "last": "2026-11-13",
+   "funding_prints": 7442
+  },
+  "ETH#0": {
+   "bars": 3375,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2017-08-17",
+   "last": "2026-11-12",
+   "funding_prints": 7488
+  },
+  "FIL#0": {
+   "bars": 2220,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-10-15",
+   "last": "2026-11-12",
+   "funding_prints": 6620
+  },
+  "FTM#0": {
+   "bars": 2044,
+   "ended": true,
+   "events": 11,
+   "trades": 11,
+   "first": "2019-06-11",
+   "last": "2025-01-13",
+   "funding_prints": 5190
+  },
+  "FTT#0": {
+   "bars": 1062,
+   "ended": true,
+   "events": 2,
+   "trades": 2,
+   "first": "2019-12-20",
+   "last": "2022-11-15",
+   "funding_prints": 3522
+  },
+  "FTT#1": {
+   "bars": 1148,
+   "ended": false,
+   "events": 9,
+   "trades": 9,
+   "first": "2023-09-22",
+   "last": "2026-11-12",
+   "funding_prints": 3522
+  },
+  "GRT#0": {
+   "bars": 2157,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-12-17",
+   "last": "2026-11-12",
+   "funding_prints": 6428
+  },
+  "HBAR#0": {
+   "bars": 2602,
+   "ended": false,
+   "events": 12,
+   "trades": 12,
+   "first": "2019-09-29",
+   "last": "2026-11-12",
+   "funding_prints": 6164
+  },
+  "ICX#0": {
+   "bars": 3005,
+   "ended": true,
+   "events": 20,
+   "trades": 20,
+   "first": "2018-06-13",
+   "last": "2026-09-03",
+   "funding_prints": 7052
+  },
+  "IOST#0": {
+   "bars": 2793,
+   "ended": false,
+   "events": 20,
+   "trades": 20,
+   "first": "2019-03-22",
+   "last": "2026-11-12",
+   "funding_prints": 7718
+  },
+  "IOTA#0": {
+   "bars": 3088,
+   "ended": false,
+   "events": 19,
+   "trades": 19,
+   "first": "2018-05-31",
+   "last": "2026-11-12",
+   "funding_prints": 7361
+  },
+  "KAVA#0": {
+   "bars": 2576,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2019-10-25",
+   "last": "2026-11-12",
+   "funding_prints": 8675
+  },
+  "KNC#0": {
+   "bars": 2345,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-06-12",
+   "last": "2026-11-12",
+   "funding_prints": 6968
+  },
+  "LINK#0": {
+   "bars": 2859,
+   "ended": false,
+   "events": 12,
+   "trades": 12,
+   "first": "2019-01-16",
+   "last": "2026-11-13",
+   "funding_prints": 7439
+  },
+  "LTC#0": {
+   "bars": 3258,
+   "ended": false,
+   "events": 18,
+   "trades": 18,
+   "first": "2017-12-13",
+   "last": "2026-11-13",
+   "funding_prints": 7463
+  },
+  "LUNA#0": {
+   "bars": 631,
+   "ended": true,
+   "events": 0,
+   "trades": 0,
+   "first": "2020-08-21",
+   "last": "2022-05-13",
+   "funding_prints": 1410
+  },
+  "LUNA#1": {
+   "bars": 1627,
+   "ended": false,
+   "events": 11,
+   "trades": 11,
+   "first": "2022-05-31",
+   "last": "2026-11-12",
+   "funding_prints": 1410
+  },
+  "MANA#0": {
+   "bars": 2290,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-08-06",
+   "last": "2026-11-12",
+   "funding_prints": 6170
+  },
+  "MATIC#0": {
+   "bars": 1965,
+   "ended": true,
+   "events": 8,
+   "trades": 8,
+   "first": "2019-04-26",
+   "last": "2024-09-10",
+   "funding_prints": 6602
+  },
+  "MKR#0": {
+   "bars": 1881,
+   "ended": true,
+   "events": 11,
+   "trades": 11,
+   "first": "2020-07-23",
+   "last": "2025-09-15",
+   "funding_prints": 5557
+  },
+  "NEAR#0": {
+   "bars": 2221,
+   "ended": false,
+   "events": 14,
+   "trades": 14,
+   "first": "2020-10-14",
+   "last": "2026-11-12",
+   "funding_prints": 6625
+  },
+  "NEO#0": {
+   "bars": 3281,
+   "ended": false,
+   "events": 18,
+   "trades": 18,
+   "first": "2017-11-20",
+   "last": "2026-11-13",
+   "funding_prints": 7346
+  },
+  "OCEAN#0": {
+   "bars": 1413,
+   "ended": true,
+   "events": 10,
+   "trades": 10,
+   "first": "2020-08-19",
+   "last": "2024-07-01",
+   "funding_prints": 5070
+  },
+  "OMG#0": {
+   "bars": 1903,
+   "ended": true,
+   "events": 9,
+   "trades": 9,
+   "first": "2019-04-03",
+   "last": "2024-06-17",
+   "funding_prints": 5448
+  },
+  "ONE#0": {
+   "bars": 2722,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2019-06-01",
+   "last": "2026-11-12",
+   "funding_prints": 6510
+  },
+  "ONT#0": {
+   "bars": 3080,
+   "ended": false,
+   "events": 25,
+   "trades": 25,
+   "first": "2018-06-08",
+   "last": "2026-11-12",
+   "funding_prints": 8760
+  },
+  "QTUM#0": {
+   "bars": 3161,
+   "ended": false,
+   "events": 21,
+   "trades": 21,
+   "first": "2018-03-19",
+   "last": "2026-11-12",
+   "funding_prints": 7308
+  },
+  "RUNE#0": {
+   "bars": 2261,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-09-04",
+   "last": "2026-11-12",
+   "funding_prints": 6746
+  },
+  "RVN#0": {
+   "bars": 2606,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2019-09-25",
+   "last": "2026-11-12",
+   "funding_prints": 8543
+  },
+  "SAND#0": {
+   "bars": 2282,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-08-14",
+   "last": "2026-11-12",
+   "funding_prints": 6317
+  },
+  "SNX#0": {
+   "bars": 2318,
+   "ended": false,
+   "events": 20,
+   "trades": 20,
+   "first": "2020-07-09",
+   "last": "2026-11-12",
+   "funding_prints": 6809
+  },
+  "SOL#0": {
+   "bars": 2286,
+   "ended": false,
+   "events": 12,
+   "trades": 12,
+   "first": "2020-08-11",
+   "last": "2026-11-13",
+   "funding_prints": 6793
+  },
+  "STORJ#0": {
+   "bars": 2227,
+   "ended": true,
+   "events": 13,
+   "trades": 13,
+   "first": "2020-07-30",
+   "last": "2026-09-03",
+   "funding_prints": 7368
+  },
+  "SUSHI#0": {
+   "bars": 2264,
+   "ended": false,
+   "events": 14,
+   "trades": 14,
+   "first": "2020-09-01",
+   "last": "2026-11-12",
+   "funding_prints": 6746
+  },
+  "THETA#0": {
+   "bars": 2774,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2019-04-10",
+   "last": "2026-11-12",
+   "funding_prints": 7048
+  },
+  "TRX#0": {
+   "bars": 3078,
+   "ended": false,
+   "events": 10,
+   "trades": 10,
+   "first": "2018-06-11",
+   "last": "2026-11-13",
+   "funding_prints": 7445
+  },
+  "UNI#0": {
+   "bars": 2249,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2020-09-17",
+   "last": "2026-11-13",
+   "funding_prints": 6707
+  },
+  "VET#0": {
+   "bars": 3034,
+   "ended": false,
+   "events": 18,
+   "trades": 18,
+   "first": "2018-07-25",
+   "last": "2026-11-13",
+   "funding_prints": 7355
+  },
+  "WAVES#0": {
+   "bars": 1978,
+   "ended": true,
+   "events": 7,
+   "trades": 7,
+   "first": "2019-01-18",
+   "last": "2024-06-17",
+   "funding_prints": 5317
+  },
+  "XLM#0": {
+   "bars": 3089,
+   "ended": false,
+   "events": 19,
+   "trades": 19,
+   "first": "2018-05-31",
+   "last": "2026-11-13",
+   "funding_prints": 7432
+  },
+  "XMR#0": {
+   "bars": 1804,
+   "ended": true,
+   "events": 7,
+   "trades": 7,
+   "first": "2019-03-15",
+   "last": "2024-02-20",
+   "funding_prints": 7395
+  },
+  "XRP#0": {
+   "bars": 3116,
+   "ended": false,
+   "events": 15,
+   "trades": 15,
+   "first": "2018-05-04",
+   "last": "2026-11-13",
+   "funding_prints": 7472
+  },
+  "XTZ#0": {
+   "bars": 2607,
+   "ended": false,
+   "events": 18,
+   "trades": 18,
+   "first": "2019-09-24",
+   "last": "2026-11-12",
+   "funding_prints": 8829
+  },
+  "YFI#0": {
+   "bars": 2286,
+   "ended": false,
+   "events": 16,
+   "trades": 16,
+   "first": "2020-08-10",
+   "last": "2026-11-12",
+   "funding_prints": 6758
+  },
+  "ZEC#0": {
+   "bars": 2795,
+   "ended": false,
+   "events": 13,
+   "trades": 13,
+   "first": "2019-03-21",
+   "last": "2026-11-13",
+   "funding_prints": 7385
+  },
+  "ZIL#0": {
+   "bars": 2824,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2019-02-19",
+   "last": "2026-11-12",
+   "funding_prints": 7964
+  },
+  "ZRX#0": {
+   "bars": 2815,
+   "ended": false,
+   "events": 17,
+   "trades": 17,
+   "first": "2019-02-28",
+   "last": "2026-11-12",
+   "funding_prints": 8010
+  }
+ }
+}

@@ -1,0 +1,4 @@
+C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-nk-sourced-hm-supertrap-1114\MyTradingSys\research\nk-sourced-hm-supertrap-1114_2026-11-14\fetch.py:2: SyntaxWarning: "\M" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\M"? A raw string is also an option.
+  F:\MTS\data_cache\binance\nk-sourced-hm-supertrap-1114\<SYM>USDT_5m.npz (a: ts_ms,o,h,l,c,v) and BTCUSDT_1d.npz (from 2017-08).
+C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-nk-sourced-hm-supertrap-1114\MyTradingSys\research\nk-sourced-hm-supertrap-1114_2026-11-14\fetch.py:70: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+  return sym, itv, "%d rows %s .. %s" % (len(a), dt.datetime.utcfromtimestamp(a[0, 0] / 1000), dt.datetime.utcfromtimestamp(a[-1, 0] / 1000))

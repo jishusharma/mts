@@ -1,0 +1,58 @@
+AVAX 2212
+DOT 2247
+UNI 2217
+AAVE 2189
+FIL 2189
+NEAR 2190
+ALGO 2671
+XTZ 2576
+SAND 2251
+MANA 2259
+THETA 2743
+GRT 2126
+HBAR 2571
+ENJ 2735
+        sample  fee_bp     n   days       win      mean  ci_trade    ci_day  p_cluster  placebo_p  placebo_mean       ex5      feeR      medS
+0          ALL    12.0  2524  959.0  0.249604 -0.100578 -0.185551 -0.254425     0.8980     0.1175     -0.154445 -0.214603  0.144844  0.008762
+1          ALL     6.0  2524  959.0  0.252377 -0.028156 -0.115865 -0.169196     0.6315     0.1310     -0.079599 -0.142042  0.072422  0.008762
+2      PRE2024    12.0  1392  561.0  0.228448 -0.252594 -0.346969 -0.404185     0.9960     0.9325     -0.163680 -0.370766  0.138894  0.009399
+3      PRE2024     6.0  1392  561.0  0.231322 -0.183147 -0.281756 -0.339571     0.9820     0.9415     -0.092424 -0.301105  0.069447  0.009399
+4        2024+    12.0  1132  398.0  0.275618  0.086354 -0.053797 -0.173354     0.2685     0.0010     -0.142229 -0.156783  0.152160  0.008160
+5        2024+     6.0  1132  398.0  0.278269  0.162434  0.019776 -0.096054     0.1310     0.0010     -0.064774 -0.080390  0.076080  0.008160
+6    coin:AVAX    12.0   192    NaN       NaN -0.281941       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+7     coin:DOT    12.0   192    NaN       NaN  0.293702       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+8     coin:UNI    12.0   156    NaN       NaN -0.176800       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+9    coin:AAVE    12.0   170    NaN       NaN -0.187676       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+10    coin:FIL    12.0   191    NaN       NaN  0.082679       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+11   coin:NEAR    12.0   184    NaN       NaN -0.124401       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+12   coin:ALGO    12.0   211    NaN       NaN -0.150922       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+13    coin:XTZ    12.0   179    NaN       NaN -0.207032       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+14   coin:SAND    12.0   186    NaN       NaN -0.274485       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+15   coin:MANA    12.0   161    NaN       NaN -0.144678       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+16  coin:THETA    12.0   185    NaN       NaN -0.397825       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+17    coin:GRT    12.0   145    NaN       NaN  0.219931       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+18   coin:HBAR    12.0   178    NaN       NaN  0.013917       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+19    coin:ENJ    12.0   194    NaN       NaN -0.036348       NaN       NaN        NaN        NaN           NaN       NaN       NaN       NaN
+regime mix {'RANGE': 0.381, 'DOWN': 0.351, 'UP': 0.267} days by sample                             min                       max  count
+sym                                                             
+AAVE  2020-11-15 00:00:00+00:00 2026-11-12 00:00:00+00:00   2189
+ALGO  2019-07-22 00:00:00+00:00 2026-11-12 00:00:00+00:00   2671
+AVAX  2020-10-23 00:00:00+00:00 2026-11-12 00:00:00+00:00   2212
+DOT   2020-09-18 00:00:00+00:00 2026-11-12 00:00:00+00:00   2247
+ENJ   2019-05-19 00:00:00+00:00 2026-11-12 00:00:00+00:00   2735
+FIL   2020-11-15 00:00:00+00:00 2026-11-12 00:00:00+00:00   2189
+GRT   2021-01-17 00:00:00+00:00 2026-11-12 00:00:00+00:00   2126
+HBAR  2019-10-30 00:00:00+00:00 2026-11-12 00:00:00+00:00   2571
+MANA  2020-09-06 00:00:00+00:00 2026-11-12 00:00:00+00:00   2259
+NEAR  2020-11-14 00:00:00+00:00 2026-11-12 00:00:00+00:00   2190
+SAND  2020-09-14 00:00:00+00:00 2026-11-12 00:00:00+00:00   2251
+THETA 2019-05-11 00:00:00+00:00 2026-11-12 00:00:00+00:00   2743
+UNI   2020-10-18 00:00:00+00:00 2026-11-12 00:00:00+00:00   2217
+XTZ   2019-10-25 00:00:00+00:00 2026-11-12 00:00:00+00:00   2576
+trades by phase {-1.0: 647, 0.0: 1425, 1.0: 452} longs 1240 shorts 1284
+FORWARD fee 12.0 Empty DataFrame
+Columns: [sym, day, dir, phase, netR]
+Index: [] candidate coin-days 0
+FORWARD fee 6.0 Empty DataFrame
+Columns: [sym, day, dir, phase, netR]
+Index: [] candidate coin-days 0
