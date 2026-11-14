@@ -307,5 +307,6 @@ scripts/dev/test_shared_lists.py
 MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/test_mal_div.py
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/test_htf.py
 MyTradingSys/research/rsi_confirm_layers_2026-11-13/test_study.py
+MyTradingSys/research/ny_session_value_return_2026-11-13/test_ny_session_value.py
 scripts/dev/test_yt_freedom.py
 MyTradingSys/research/t1_markdown_rally_rejection_short_2026-11-14/test_study.py

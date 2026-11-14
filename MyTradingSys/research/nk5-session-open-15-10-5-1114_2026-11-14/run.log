@@ -1,0 +1,62 @@
+BTC 14212
+ETH 14215
+BNB 14215
+XRP 14215
+ADA 14215
+DOGE 13285
+SOL 11270
+LTC 14215
+LINK 14135
+TRX 14215
+EOS 11532
+XLM 14215
+ETC 14215
+DASH 13780
+ZEC 13815
+BCH 12555
+ATOM 13620
+NEO 14215
+IOTA 14215
+VET 14215
+   period      row   fee     kind     n       win      mean      feeR      medS  ci_trade    ci_day  p_cluster  placebo_p  placebo_mean       ex5    q
+0     DEV    NY-2h  12bp  matched  2599  0.431705 -0.121971  0.159568  0.007749       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+1     DEV    NY-2h  12bp  control  1281  0.402810 -0.169018  0.151226  0.008107       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+2     DEV    NY-2h   6bp  matched  2599  0.458253 -0.042187  0.079784  0.007749       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+3     DEV    NY-2h   6bp  control  1281  0.413739 -0.093405  0.075613  0.008107       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+4     DEV    NY-4h  12bp  matched  2599  0.355137 -0.158951  0.159568  0.007749       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+5     DEV    NY-4h  12bp  control  1281  0.323185 -0.159842  0.151226  0.008107       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+6     DEV    NY-4h   6bp  matched  2599  0.365910 -0.079167  0.079784  0.007749       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+7     DEV    NY-4h   6bp  control  1281  0.334895 -0.084229  0.075613  0.008107       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+8     DEV  NY-asia  12bp  matched  2599  0.243940 -0.242770  0.159568  0.007749       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+9     DEV  NY-asia  12bp  control  1281  0.213115 -0.297599  0.151226  0.008107       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+10    DEV  NY-asia   6bp  matched  2599  0.247788 -0.162986  0.079784  0.007749       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+11    DEV  NY-asia   6bp  control  1281  0.215457 -0.221986  0.075613  0.008107       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+12    DEV   UTC-2h  12bp  matched  2011  0.398309 -0.170283  0.162733  0.007376       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+13    DEV   UTC-2h  12bp  control  1127  0.362910 -0.208116  0.149841  0.008236       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+14    DEV   UTC-2h   6bp  matched  2011  0.413725 -0.088917  0.081367  0.007376       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+15    DEV   UTC-2h   6bp  control  1127  0.375333 -0.133196  0.074920  0.008236       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+16    DEV   UTC-4h  12bp  matched  2011  0.351566 -0.148567  0.162733  0.007376       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+17    DEV   UTC-4h  12bp  control  1127  0.314108 -0.246360  0.149841  0.008236       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+18    DEV   UTC-4h   6bp  matched  2011  0.359523 -0.067200  0.081367  0.007376       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+19    DEV   UTC-4h   6bp  control  1127  0.320319 -0.171440  0.074920  0.008236       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+20    VAL    NY-2h  12bp  matched  1663  0.407697 -0.154035  0.176430  0.006671 -0.209305 -0.266270     0.9940     0.0650     -0.196582 -0.232420  1.0
+21    VAL    NY-2h  12bp  control   773  0.442432 -0.073561  0.161868  0.007534       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+22    VAL    NY-2h   6bp  matched  1663  0.438364 -0.065819  0.088215  0.006671       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+23    VAL    NY-2h   6bp  control   773  0.468305  0.007373  0.080934  0.007534       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+24    VAL    NY-4h  12bp  matched  1663  0.384847 -0.082190  0.176430  0.006671 -0.152105 -0.228216     0.8565     0.0065     -0.176716 -0.186550  1.0
+25    VAL    NY-4h  12bp  control   773  0.385511 -0.101956  0.161868  0.007534       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+26    VAL    NY-4h   6bp  matched  1663  0.401082  0.006025  0.088215  0.006671 -0.065118 -0.129181     0.4785     0.0080     -0.084380 -0.098163  1.0
+27    VAL    NY-4h   6bp  control   773  0.394567 -0.021022  0.080934  0.007534       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+28    VAL  NY-asia  12bp  matched  1663  0.307276  0.074494  0.176430  0.006671 -0.036138 -0.151362     0.2825     0.0000     -0.168897 -0.107855  1.0
+29    VAL  NY-asia  12bp  control   773  0.262613 -0.045015  0.161868  0.007534       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+30    VAL  NY-asia   6bp  matched  1663  0.312688  0.162709  0.088215  0.006671       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+31    VAL  NY-asia   6bp  control   773  0.266494  0.035919  0.080934  0.007534       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+32    VAL   UTC-2h  12bp  matched  1571  0.367919 -0.243702  0.180565  0.006312 -0.300533 -0.351205     1.0000     0.8870     -0.203063 -0.317477  1.0
+33    VAL   UTC-2h  12bp  control   684  0.418129 -0.041236  0.171596  0.006945       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+34    VAL   UTC-2h   6bp  matched  1571  0.386378 -0.153419  0.090283  0.006312       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+35    VAL   UTC-2h   6bp  control   684  0.440058  0.044563  0.085798  0.006945       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+36    VAL   UTC-4h  12bp  matched  1571  0.318905 -0.286447  0.180565  0.006312 -0.353991 -0.411125     1.0000     0.9735     -0.207342 -0.363791  1.0
+37    VAL   UTC-4h  12bp  control   684  0.326023 -0.242706  0.171596  0.006945       NaN       NaN        NaN        NaN           NaN       NaN  1.0
+38    VAL   UTC-4h   6bp  matched  1571  0.332909 -0.196164  0.090283  0.006312       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+39    VAL   UTC-4h   6bp  control   684  0.336257 -0.156908  0.085798  0.006945       NaN       NaN        NaN        NaN           NaN       NaN  NaN
+regime mix {'DEV': {'RANGE': 0.36, 'DOWN': 0.323, 'UP': 0.317}, 'VAL': {'RANGE': 0.399, 'DOWN': 0.356, 'UP': 0.246}}
