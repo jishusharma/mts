@@ -4,3 +4,7 @@
 - Original power result: 0 DEV and 0 VAL episodes in P1/P2/P3 (5 DEV episodes before the level gate, all away-from-level).
 - Nothing was fetched and no cache folder was written. The original RESULT.md is unchanged and its UNDERPOWERED verdict stands.
 - What would lift n (each is a NEW pre-registration with a new coin list or a pre-declared looser definition, not done here, not a tuning of the frozen one): coins outside the original universe, or a different timeframe or stack definition declared before any count. That is a coordinator decision.
+
+## Context
+
+Regime mix: none, because no run was made (the 10-symbol pool is a subset of the universe the original RESULT.md already used, so there is no new trade set to split by phase). The original RESULT.md carries the regime mix.

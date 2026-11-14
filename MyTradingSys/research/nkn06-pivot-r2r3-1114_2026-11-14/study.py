@@ -324,7 +324,7 @@ def make_result(res):
     L += ["### Placebo and hit rate (primary cells)", "", "| cell | matched real trades | real mean net R (matched) | placebo mean net R | placebo p | R3/S3 hit rate | share time-exit | skipped by 1.5R room VAL | no entry in day VAL |", "|---|---|---|---|---|---|---|---|---|"]
     for c in prim:
         pl, v = c["placebo"], c["val"]
-        L.append(f"| {c['id']} | {pl['matched']} | {f(pl['real_mean_matched'])} | {f(pl['placebo_mean'])} | {pl['p']:.3f} | {f(v.get('hit_rate'), 2) if v.get('hit_rate') is not None else 'n/a'} | {f(v.get('time_share'), 2) if v.get('time_share') is not None else 'n/a'} | {c['skipped']['VAL']['room']} | {c['skipped']['VAL']['no_entry']} |")
+        L.append(f"| {c['id']} | {pl['matched']} | {f(pl['real_mean_matched'])} | {f(pl['placebo_mean'])} | {pl['p']:.3f} | {f(v.get('hit_rate'), 2) if v.get('hit_rate') is not None else 'n/a'} | {f(v.get('time_share'), 2) if v.get('time_share') is not None else 'n/a'} | {(c.get('skipped') or {}).get('VAL', {}).get('room', 'n/a')} | {(c.get('skipped') or {}).get('VAL', {}).get('no_entry', 'n/a')} |")
     L += ["", "'Beats placebo' and 'profitable' are separate: a cell can beat random entries (which lose about 0.2 R after fees) and still have net R below zero.", ""]
     L += ["## CONTROL cells (never pooled with primary; 15 cells in total beside any positive row)", ""]
     L += ["| cell | phase | layer / variant | at/away | tf | side | n DEV | n VAL | gross R | net R 12bp | net R 6bp | win % | trade CI low | day CI low | ex-best-5 | note |", "|" + "---|" * 16]

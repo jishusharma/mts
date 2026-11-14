@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-nk-resume-1115\MyTradingSys\research\nkn06-pivot-r2r3-1114_2026-11-14\study.py", line 368, in <module>
+    run()
+    ~~~^^
+  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-nk-resume-1115\MyTradingSys\research\nkn06-pivot-r2r3-1114_2026-11-14\study.py", line 194, in run
+    (HERE / "RESULT.md").write_text(make_result(res), encoding="utf-8")
+                                    ~~~~~~~~~~~^^^^^
+  File "C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-nk-resume-1115\MyTradingSys\research\nkn06-pivot-r2r3-1114_2026-11-14\study.py", line 327, in make_result
+    L.append(f"| {c['id']} | {pl['matched']} | {f(pl['real_mean_matched'])} | {f(pl['placebo_mean'])} | {pl['p']:.3f} | {f(v.get('hit_rate'), 2) if v.get('hit_rate') is not None else 'n/a'} | {f(v.get('time_share'), 2) if v.get('time_share') is not None else 'n/a'} | {c['skipped']['VAL']['room']} | {c['skipped']['VAL']['no_entry']} |")
+                                                                                                                                                                                                                                                                             ~~~~~~~~~~~~^^^^^^^
+KeyError: 'VAL'
