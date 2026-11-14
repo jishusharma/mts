@@ -135,3 +135,13 @@ Holm over the two T11 cells (m=2): {'primary': 1.0, 'btc_above_sma200': 1.0}. Wo
 
 Funding NOT_IN_DATA legs (funding 0): VAL 61, DEV 65. Exit reasons VAL: {'TIME': 600, 'STOP': 158, 'STOP-GAP': 0, 'ENDED-EXIT': 2}.
 
+## Adversarial check
+
+Flag: **MINOR**. Final verdict: **FAIL** (checker re-derived the same verdict).
+
+- Order clean (aa41f4459 before e872739a7); no PRE_REG or code change after outcomes.
+- Spec fidelity clean; no look-ahead. 6 VAL trades recomputed from raw klines match (4 to 1e-7; ALGO and BCH differ 0.0006 and 0.0014 R from funding-print timestamp jitter).
+- Verdict FAIL re-derived: VAL net -0.016 R over 17 episodes, kill criterion a true; BTC > SMA200d row UNDERPOWERED (6 episodes).
+- Disclosure gap: the loader keeps only the longest contiguous bar run per coin, so pre-gap FTT (1062 bars) and pre-collapse LUNA (631 bars) are excluded from RSI, alive counts and breadth. DEV is affected (the 2022-01-10 event is an artefact, 6 FTT/LUNA legs missing), VAL is not; verdict unchanged. The earlier sentence 'all 68 coins present, no data-driven deviation' is wrong.
+- Funding prints are rounded to the second and a print just after the exit-day midnight counts, so independent recomputes can differ by about 1e-4 of price per leg.
+- Placebo p 0.001 against the same-window draw comes from the placebo losing -0.157 R, not from the signal making money.
