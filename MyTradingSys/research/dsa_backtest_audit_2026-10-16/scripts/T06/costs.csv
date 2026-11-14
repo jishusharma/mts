@@ -239,3 +239,4 @@ MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/study.py,177,Costs,2,
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/study.py,23,COST,2,other,round_trip,taker,fee in rsi_htf_extreme_2026-11-13,1,assign,"COST = 2 * (fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13 / 2)  # round trip, fraction of price"
 MyTradingSys/research/buyzone_test1_ladder_2026-11-14/ladder.py,13,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test1_ladder,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
 MyTradingSys/research/buyzone_test3_bear4h_2026-11-14/bear4h.py,23,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test3_bear4h,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
+MyTradingSys/research/buyzone_test4_capitulation_2026-11-14/lib.py,23,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test4_capitulation,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
