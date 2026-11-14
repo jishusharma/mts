@@ -1,0 +1,31 @@
+MUTATION CHECK (T5 stage 2). Each row: a deliberate break of the code, the committed test file run on it, then the code restored.
+Baseline (unbroken code): see the last line. Test file: test_t5_core.py (13 tests).
+
+- t5_core.py | signal bar taken before the swing is confirmed (c = j+1 instead of j+K)
+    -> CAUGHT by test_signal_causal_by_truncation_and_future_change | 1 failed, 12 passed in 2.01s
+- t5_core.py | phase flag read from the entry day's own daily bar (same-day read)
+    -> CAUGHT by test_phase_flag_previous_day_only_and_prefix_causal | 1 failed, 12 passed in 2.52s
+- t5_core.py | daily drawdown high window peeks 29 days ahead
+    -> CAUGHT by test_phase_flag_previous_day_only_and_prefix_causal | 1 failed, 12 passed in 2.70s
+- t5_core.py | stop not checked on the time-exit bar (time exit wins the tie)
+    -> CAUGHT by test_stop_wins_tie_with_time_exit_and_gap_fills | 1 failed, 12 passed in 2.75s
+- t5_core.py | stop fills at the level even when the bar gaps through it
+    -> CAUGHT by test_placebo_outcome_gap_through_trail_fills_at_open, test_stop_wins_tie_with_time_exit_and_gap_fills | 2 failed, 11 passed in 2.73s
+- t5_core.py | round-trip cost counts one taker leg only
+    -> CAUGHT by test_fee_and_funding_arithmetic_against_hand_numbers | 1 failed, 12 passed in 2.77s
+- t5_core.py | funding includes the print in the entry bar
+    -> CAUGHT by test_fee_and_funding_arithmetic_against_hand_numbers, test_placebo_outcome_equals_event_simulation | 2 failed, 11 passed in 2.55s
+- t5_core.py | lockout one bar too short (59 bars)
+    -> CAUGHT by test_lockout_boundary_is_exactly_60_bars, test_lockout_overlap_and_drop_rules | 2 failed, 11 passed in 2.56s
+- t5_core.py | split boundary inclusive: first VAL signal bar counted as DEV
+    -> CAUGHT by test_split_by_signal_bar_not_entry | 1 failed, 12 passed in 2.87s
+- t5_core.py | short return sign flipped (a planted short edge reads negative)
+    -> CAUGHT by test_fee_and_funding_arithmetic_against_hand_numbers, test_placebo_outcome_equals_event_simulation, test_placebo_outcome_gap_through_trail_fills_at_open, test_planted_edge_is_found_and_no_drift_reads_about_zero | 4 failed, 9 passed in 2.37s
+- t5_stats.py | placebo outcome sign flipped
+    -> CAUGHT by test_placebo_outcome_equals_event_simulation, test_placebo_outcome_gap_through_trail_fills_at_open | 2 failed, 11 passed in 3.31s
+- t5_stats.py | placebo stop fill ignores gaps
+    -> CAUGHT by test_placebo_outcome_gap_through_trail_fills_at_open | 1 failed, 12 passed in 3.27s
+- t5_stats.py | bootstrap ignores the week clusters (one cluster)
+    -> CAUGHT by test_planted_edge_is_found_and_no_drift_reads_about_zero | 1 failed, 12 passed in 2.53s
+
+Restored code: 13 passed in 2.10s
