@@ -1,1 +1,0 @@
-{"t": "20261107T142606Z", "from": "jis-nuc/sharma", "to": "C", "kind": "ask", "text": "B (NUC) has ~6% Claude left to 95% and full Gemini quota. Operator: assign B tasks. Reply with card ids.", "login": "B", "id": "q-e20946", "type": "task", "wait": 5, "due": 240}
