@@ -43,7 +43,6 @@ import sys
 import time
 from pathlib import Path
 
-import hosts                 # per-host worktree root (F:\MTS\wt on the desktop)
 import host_health as hh     # process snapshot, ancestor chain, own pids (stdlib only; scripts/dev sits on sys.path)
 
 TEMP =Path(os.environ.get("MTS_GUARD_TEMP") or os.path.expandvars(r"%LOCALAPPDATA%\Temp"))
@@ -274,7 +273,7 @@ def orphan_rows(main, trees=None, now=None):
     trees = worktree_paths(main) if trees is None else trees
     if trees is None:
         return []
-    cands = [Path(e.path) for r in hosts.worktree_roots(Path(main).parent) for e in scan(Path(r)) if e.name.startswith("mts-")]
+    cands = [Path(e.path) for e in scan(Path(main).parent) if e.name.startswith("mts-")]
     cands += [Path(e.path) for e in scan(Path(main) / ".claude" / "worktrees")]
     cands = [p for p in cands if dir_not_reparse(p) and os.path.normcase(str(p.resolve())) not in trees
              and not (p / ".git").exists() and not (p / LIVE_MARKER).exists()]
@@ -418,54 +417,6 @@ def repo_args(argv):
     return [argv[i + 1] for i, a in enumerate(argv[:-1]) if a == "--repo"]
 
 
-def _git_out(tree, *args):
-    try:
-        r = subprocess.run(["git", "-C", str(tree), *args], capture_output=True, text=True, timeout=60, creationflags=NO_WINDOW)
-        return r.stdout if r.returncode == 0 else None
-    except (OSError, subprocess.SubprocessError):
-        return None
-
-
-def unshipped_study_rows(main, min_hours=6.0, now=None, trunk="origin/fast-track"):
-    """[(path, idle_hours, state, result)] for study trees (mts-*, any root) idle >= min_hours with work not on trunk:
-    state = 'dirty' (uncommitted) and/or 'ahead N' (commits git cherry says trunk lacks); result = 'RESULT.md' when the tree holds
-    one, else 'no RESULT'. Read-only: the supervisor ships/tidies these (WORKERS.md rule 12); the guard never deletes them."""
-    now = time.time() if now is None else now
-    trees = worktree_paths(main)
-    if not trees:
-        return []
-    out = []
-    for p in sorted(trees):
-        pp = Path(p)
-        if not pp.name.startswith("mts-") or not pp.is_dir() or (pp / LIVE_MARKER).exists():
-            continue
-        if os.path.normcase(str(pp)) == os.path.normcase(str(Path(main).resolve())):
-            continue
-        status = _git_out(pp, "status", "--porcelain", "-uall")
-        if status is None:
-            continue
-        last = _git_out(pp, "log", "-1", "--format=%ct")
-        newest = float(last.strip()) if last and last.strip().isdigit() else 0.0
-        for line in status.splitlines():
-            f = pp / line[3:].strip().strip('"').split(" -> ")[-1]
-            try:
-                newest = max(newest, f.stat().st_mtime)
-            except OSError:
-                pass
-        idle = (now - newest) / 3600 if newest else 1e9
-        if idle < min_hours:
-            continue
-        cherry = _git_out(pp, "cherry", trunk) or ""
-        ahead = sum(1 for l in cherry.splitlines() if l.startswith("+"))
-        state = ", ".join(x for x in (("dirty" if status.strip() else ""), (f"ahead {ahead}" if ahead else "")) if x)
-        if not state:
-            continue
-        changed = status + (_git_out(pp, "diff", "--name-only", trunk + "...HEAD") or "")    # RESULT counts only if this tree made it
-        has = any(l.replace("\\", "/").split("/")[-1].strip().upper().startswith("RESULT") for l in changed.splitlines())
-        out.append((str(pp), idle, state, "RESULT.md" if has else "no RESULT"))
-    return out
-
-
 def plan():
     """Dry-run listing: (kind, path-or-name, bytes, reason) for everything --apply would delete. Deletes nothing."""
     rows = [("temp", p, size, reason(p)) for p, size in candidates()] + bucket_rows()
@@ -474,15 +425,6 @@ def plan():
             name, _, why = line[len("would remove  "):].partition(": ")
             rows.append(("worktree", name, 0, why or "finished tree"))
     return rows
-
-
-def unshipped_lines(main=None):
-    """Plan text for the supervisor: one line per unshipped study tree older than 6 h (empty when none / git cannot say)."""
-    main = main or main_checkout()
-    if not main:
-        return []
-    return ["UNSHIPPED %s idle %.0f h: %s, %s -> supervisor: ship then sync.py tidy" % (p, h, st, rs)
-            for p, h, st, rs in unshipped_study_rows(main)]
 
 
 def runaways():
@@ -834,9 +776,6 @@ def main(argv):
         msg = "LOW: " + ", ".join(f"{d} {g:.1f} GB free" for d, g in low) + f" (< {limit:g}); c_drive_guard --apply started in the background."
         for p, mb in runaways():
             msg += f" RUNAWAY task output {mb:.0f} MB: {p}"
-        unshipped = unshipped_lines()
-        if unshipped:
-            msg += " %d unshipped study tree(s) >6 h (supervisor ships+tidies): " % len(unshipped) + " | ".join(u.split(" -> ")[0] for u in unshipped[:5])
         print(msg)
         start_apply_detached()
         return 0
@@ -845,9 +784,6 @@ def main(argv):
         for kind, name, size, why in rows:
             print("would delete  %-8s %s (%.2f GB): %s" % (kind, name, size / 1e9, why))
         print("would delete %d item(s); nothing deleted (--apply deletes)" % len(rows))
-        if low_drives(float(os.environ.get("MTS_C_MIN_FREE_GB", "15"))) or "--unshipped" in argv:
-            for line in unshipped_lines():
-                print(line)
         return 0
     if argv[:1] == ["procs"]:
         if "--apply" in argv:
