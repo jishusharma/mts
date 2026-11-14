@@ -476,3 +476,14 @@ Survivorship: longs biased up, shorts biased down (hindsight universe; ENDED coi
 
 
 Holm m=2 over the two bootstrap p-values: 1d 1.0000, 4h 1.0000 (raw 0.5917, 0.9945).
+
+## Adversarial check
+
+Flag: **CLEAN**. Final verdict: **FAIL** (checker re-derived the same verdict).
+
+- Order clean: PRE_REG, code and 34 tests (a806236b3) came before RESULT; only result files changed after.
+- Spec fidelity clean; deviations 1-5 were written in PRE_REG before outcomes.
+- No look-ahead. Independent rebuild reproduced all 666 1d trades (max relative diff 5e-10); 3 dated VAL trades (XMR, RUNE, CRV) match to 1e-6.
+- Like-for-like placebo reproduced (expected -0.274 R vs builder -0.275). Bar 4 passes only because the frozen brackets lose about 0.27 R on random range days; it does not mean the trade is profitable.
+- Statistics match results.json; verdict FAIL re-derived (kill: VAL net <= 0 and real minus mirror <= 0). The 4h row's 1,655 trades were not recomputed; its CI is wholly below zero.
+- Power gate printed BLOCK on both cells (disclosed; run ordered).
