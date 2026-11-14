@@ -498,7 +498,7 @@ def branch_prefix(repo, host):
 
 
 # Persistent per-lane trees (operator q20, 2026-10-15): `start <slug>` inside one switches to a fresh branch instead of making a worktree.
-SWITCH_LANES = ("mts-app", "mts-relay", "mts-dsa")
+SWITCH_LANES = ("mts-app", "mts-relay", "mts-dsa", "mts-gemini")
 
 
 def switch_lane_branch(repo, slug):
@@ -692,7 +692,8 @@ def start(repo, slug=None, here=False, quiet=False, worker=False):
     lock_guard(repo)
     retry_pending_removals(repo)
     n = merge_trunk(repo)
-    retire_released_gateway_trees(repo)
+    if not quiet:
+        retire_released_gateway_trees(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     if not quiet:
@@ -2067,7 +2068,7 @@ def release(repo, slug, gate=run_gate, sleep=time.sleep):
 # Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
 # mts-control-room is the working folder of the Claude routine mts-control-room (~/.claude/scheduled-tasks/mts-control-room/
 # SKILL.md); it sits idle between runs, so without this `tidy --all` would remove it as hand-named.
-LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room", "mts-app")
+LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room", "mts-app", "mts-gemini")
 
 
 # 2026-10-25 (operator: C: must not fill): a tree that is clean, holds no ignored data and whose branch is fully on

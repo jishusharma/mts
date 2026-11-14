@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/mts_doctor.py --no-process",
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-14T18:07:37Z",
+  "depends_on": [],
+  "done_when": "Claude Login C reviews MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md, stamps ACCEPT/FIX, and executes Waves 1-4 (Batches D1-D3, C1-C3, I1-I3, R1) with tests green after each batch.",
+  "est_turns": 30,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review and execute the revalidated End-to-End Deduplication Plan in MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md across Docs/Roles (Batches D1-D3), Dev Scripts/Tests (Batches C1-C3), Infra/Tasks/Artifacts (Batches I1-I3), and Research Kit primitives (Batch R1).",
+  "id": "dedupe-mts-e2e-plan-1114",
+  "lane": "SONNET",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "not_twin_of": [
+    "apply-dedupe-audit-findings"
+  ],
+  "note": "REVIEWS:\nREVIEWED:2026-11-14 T0-ONLY",
+  "pinned": true,
+  "prio": 1,
+  "refine_tries": 1,
+  "refined_by": "gemini-4-argon",
+  "refreshed": "2026-11-14T18:08:30Z",
+  "refs": [
+    "MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md",
+    "MyTradingSys/research/mts_doctor/REPORT_2026-11-14.md",
+    "MyTradingSys/system/OPERATOR_DECISIONS.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md",
+    "MyTradingSys/research/mts_doctor/REPORT_2026-11-14.md"
+  ],
+  "scope_out": [
+    "CLAUDE.md (byte cap)",
+    "Live tree (.mts_live), running processes, HALT files, and secrets"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "MyTradingSys/research/dedupe_audit_2026-10/DOCS.md",
+    "MyTradingSys/research/dedupe_audit_2026-10/CODE.md",
+    "MyTradingSys/research/dedupe_audit_2026-10/INFRA.md",
+    "MyTradingSys/system/ARCH_REVIEW_2026-11-10.md",
+    "MyTradingSys/system/SHIP_ARCH_REVIEW_2026-11-12.md"
+  ],
+  "state": "refined",
+  "steps": [
+    "Claude Login C reviews MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md and MyTradingSys/research/mts_doctor/REPORT_2026-11-14.md against live trunk state and stamps ACCEPT/FIX",
+    "Execute Wave 1 (Batches D1-D3: Routing/Devices/Workers/Weekly-Cap conflicts, role budget headroom on supervisor.md, and indicator_rulebooks/INDEX.md 7 rows)",
+    "Execute Wave 2 (Batches C1-C3: retire make_layer_map.py, merge 5 shared-basename test pairs, consolidate scrub/LIVE_MARKER/pid_alive/stale_claims/utcnow/YouTube helpers)",
+    "Execute Wave 3 (Batches I1-I3: archive retired sched scripts, sweep 468 closed task cards to archive/, resolve 20 DUP-CARD pairs, clean artifacts/registry.json)",
+    "Execute Wave 4 (Batch R1: move 6 exact-duplicate research libs into research_kit.py, fix 6 Python 3.14 SyntaxWarnings, prune lookahead_allowlist.tsv)"
+  ],
+  "tests": "python scripts/dev/tasks.py check dedupe-mts-e2e-plan-1114 && python scripts/dev/run_all_tests.py --quick",
+  "title": "Claude Login C review and batch execution of E2E Deduplication Plan (IMPLEMENTATION_PLAN_2026-11-14.md)",
+  "weight": "IMPORTANT",
+  "worker": "session"
+}
