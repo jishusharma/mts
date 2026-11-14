@@ -288,3 +288,9 @@ def test_run_includes_toolchain_lines(tmp_path):
     q = dict(QUIET, toolchain=lambda: ["TOOLCHAIN java not on PATH"])
     out = h.run(str(tmp_path), procs=[], kill=lambda p: True, post=False, **q)
     assert "TOOLCHAIN java not on PATH" in out
+
+
+def test_explorer_exe_never_a_stray():
+    procs = [P(5400, 99, "explorer.exe", "C:\Windows\explorer.exe", age=99999, cpu=99999),
+             P(21216, 99, "python.exe", "python vp.py", age=99999, cpu=99999)]
+    assert {s["pid"] for s in h.find_strays(procs, NOW, me=9999)} == {21216}
