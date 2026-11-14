@@ -1,0 +1,12 @@
+loaded {'BTC': 58209, 'ETH': 49699, 'SOL': 44563, 'XRP': 48274, 'DOGE': 47793, 'BNB': 47148, 'ADA': 49620, 'LINK': 53170, 'LTC': 53170, 'AVAX': 45275} missing []
+events 636
+combo 4 20 129 t=15s
+combo 4 15 51 t=19s
+combo 4 12 21 t=26s
+combo 8 25 160 t=31s
+combo 8 20 67 t=35s
+combo 8 15 23 t=38s
+combo 12 25 110 t=42s
+combo 12 20 55 t=46s
+combo 12 15 20 t=50s
+{'FAIL': 20, 'UNDERPOWERED': 20} done 50s
