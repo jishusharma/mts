@@ -1,5 +1,5 @@
 """Tests for nkp4. The look-ahead tests must FAIL under STUDY_BUG=1 (and PHASE_LAG=0): run
-`STUDY_BUG=1 python -m pytest test_study.py` to see red. test_bug_is_detected proves the detectors detect."""
+`STUDY_BUG=1 python -m pytest test_nkp4_study.py` to see red. test_bug_is_detected proves the detectors detect."""
 import os, subprocess, sys
 from pathlib import Path
 import numpy as np, pandas as pd
@@ -7,10 +7,13 @@ import pytest
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import phases as PH, study as ST, stats as SS
+import nkp4_phases as PH, nkp4_study as ST, nkp4_stats as SS
 
 M15, H1, D1 = ST.M15, ST.H1, ST.D1
 T0 = 1_600_000_000_000 // D1 * D1
+# the three phase tests read the local BTC 15m cache (not in git, absent on CI): skip there, run on research machines
+needs_cache = pytest.mark.skipif(not (PH.ROOT / "binance_spot" / "BTCUSDT_15m.npz").exists(),
+                                 reason="local data_cache BTC 15m not present (CI)")
 
 
 def synth(days=130, seed=1):
@@ -75,6 +78,7 @@ def test_every_context_layer_has_data_in_synth():
         assert (ctx[li] >= 0).any(), ST.LAYERS[li]
 
 
+@needs_cache
 def test_phase_label_ignores_same_day_close():
     daily, _ = PH.load_btc_daily()
     base = PH.phase_table(daily)["label"]
@@ -88,6 +92,7 @@ def test_phase_label_ignores_same_day_close():
             assert lab == base.loc[d], f"phase at {pd.Timestamp(d).date()} changed when same-day close changed (mult {mult})"
 
 
+@needs_cache
 def test_phase_lag_zero_is_the_bug():
     daily, _ = PH.load_btc_daily()
     a = PH.phase_table(daily, lag=0)["label"]
@@ -101,7 +106,7 @@ def test_phase_lag_zero_is_the_bug():
 
 
 def test_bug_is_detected():
-    code = ("import sys; sys.path.insert(0, r'%s'); import test_study as T; ch, nk = T.count_changed_layers(); "
+    code = ("import sys; sys.path.insert(0, r'%s'); import test_nkp4_study as T; ch, nk = T.count_changed_layers(); "
             "print(len(ch)); sys.exit(0 if len(ch) > 0 else 1)" % HERE)
     env = dict(os.environ, STUDY_BUG="1")
     r = subprocess.run([sys.executable, "-W", "ignore", "-c", code], env=env, capture_output=True, text=True)
@@ -147,6 +152,7 @@ def test_rule_family_size():
     assert sum(len(v) for v in ST.BUCKETS.values()) == 24
 
 
+@needs_cache
 def test_shared_phase_table_verified():
     assert PH.verify_phase(30, seed=5) == []
 

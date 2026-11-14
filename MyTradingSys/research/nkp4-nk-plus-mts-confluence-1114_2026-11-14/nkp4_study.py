@@ -2,7 +2,7 @@
 uses only bars whose close time <= close time of bar i. STUDY_BUG=1 injects deliberate look-ahead (tests must fail)."""
 import os
 import numpy as np, pandas as pd
-import phases as PH
+import nkp4_phases as PH
 
 ROOT = PH.ROOT
 SLUG = "nkp4-nk-plus-mts-confluence-1114"
