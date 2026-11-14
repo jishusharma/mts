@@ -139,6 +139,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Backtests (layer_map.json, newest first):
   - 2026-11-13 `LA-FLAGS-FULL-20261113`: FAIL: 0 of 30 cells pass (CI lower bound < 0 in every cell, smallest BH-input p 0.415); no idea-flag group earns a testn | `MyTradingSys/research/live_aid_flags_full_2026-11-13/REPORT.md`
   - 2026-11-13 `EUR-LOW-US-SWEEP-RECLAIM-POOLED-20261113`: FAIL: no cell passes (best long HIGH maker VAL n 173, fee-net mean R +0.105 CI [-0.298,+0.577], BH none); power gate BLO | `MyTradingSys/research/eur_low_sweep_reclaim_pooled_2026-11-13/REPORT.md`
+  - 2026-11-13 `LA-EUROPE-HIGH-FADE-20261113`: FAIL: BTC VALIDATION n 1327, hit 48.7%, fee-net mean R -0.291 CI [-0.477, -0.098], placebo mean -0.326 (p95 -0.195) not  | `MyTradingSys/research/europe_high_fade_2026-11-13/REPORT.md`
   - 2026-10-18 `EUR-LOW-US-SWEEP-FOLLOWUPS-20261018`: BLOCKED by power gate (A, B, C); legs stay open | `MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md`
   - 2026-10-14 `LC-SIZING-QUICK-20261014`: EXPLORATORY NEGATIVE; full LC hypothesis untested | `MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md`
   - 2026-10-14 `EUR-LOW-US-SWEEP-20261014`: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested | `MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md`
