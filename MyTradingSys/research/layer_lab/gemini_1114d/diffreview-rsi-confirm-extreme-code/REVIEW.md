@@ -1,0 +1,28 @@
+# Diff Review: rsi_extreme_confirm / rsi_htf_extreme / rsi_confirm_layers (2026-11-13)
+
+Scope: last 24 h of `origin/fast-track` touching `MyTradingSys/research/rsi_extreme_confirm_2026-11-13`, `MyTradingSys/research/rsi_htf_extreme_2026-11-13`, and `MyTradingSys/research/rsi_confirm_layers_2026-11-13`.
+Local test check: `pytest MyTradingSys/research/rsi_extreme_confirm_2026-11-13 MyTradingSys/research/rsi_htf_extreme_2026-11-13 MyTradingSys/research/rsi_confirm_layers_2026-11-13 -v` -> 13 passed (7 in `test_engine.py`, 3 in `test_htf.py`, 3 in `test_study.py`). All 3 test files are registered in `scripts/dev/extra_tests.tsv:297` and `scripts/dev/extra_tests.tsv:308-309`.
+
+## Commits Reviewed (9 commits)
+
+| sha | subject / Result match | file:line | severity | finding / evidence |
+|---|---|---|---|---|
+| `4bf9f6198df1b7dfbd21dcf38420ebd6beebf407` | Matches `Result: pre-registration frozen (384 cells, DEV/VAL/RECENT, placebo, BH 10%)` | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/PRE_REG.md:25-26` | LOW | Boundary `50` omitted in prose: `"Long buckets <30, 30-40, 40-50, >50"` and `"short buckets mirrored >70, 60-70, 50-60, <50"` (code uses `>=50` / `<=50` in `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/run.py:39-41`). |
+| `cf596930afdb47098f4e5000e218675c34ebb462` | Matches `Result: 0 of 384 cells pass; 0 BH-significant on DEV or VALIDATION; fixed 1% stop worst, ATR/low-1% stops near zero` | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md:6` | LOW | Ambiguous count phrasing: `"Cells with VALIDATION n>=30: 177 of 384; with VALIDATION mean>0: 26;"` — `26` is `VAL_n >= 30` and `VAL_mean_r > 0` (OURS check on `cells.csv` shows `119` family cells have `VAL_mean_r > 0` across all `n`). |
+| `cf596930afdb47098f4e5000e218675c34ebb462` | (same commit) | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/run.py:1` | LOW | Docstring says `"python run.py  -> cells.csv + RESULT.md next to this file."` — `run.py` writes `cells.csv` and `meta.json` (`MyTradingSys/research/rsi_extreme_confirm_2026-11-13/run.py:216-223`), not `RESULT.md`. |
+| `811abde0a69277e9ca9927d9928abb396a340ddb` | Matches `Result: pre-registration written before any outcome` | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/rsi_grid_lib.py:1` | LOW | Stale copied docstring: `"Pure helpers for the deep-RSI-extreme grid study (PRE_REG.md in this folder)."` |
+| `2475f37c4cf4d7c08deb6b8781f16d4f7280df8c` | Matches `Result: pre-registration only, no outcomes computed` | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/PRE_REG.md:21` | LOW | Quotes `"Stop = low of s (SOURCED; \"red candle low\")."` while neither `MyTradingSys/research/rsi_confirm_layers_2026-11-13/PRE_REG.md:20` nor `MyTradingSys/research/rsi_confirm_layers_2026-11-13/rsi_grid_lib.py:63-74` restricts signal bar `s` to be red (`close < open`). |
+| `2475f37c4cf4d7c08deb6b8781f16d4f7280df8c` | (same commit) | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/rsi_grid_lib.py:1` | LOW | Stale copied docstring: `"Pure helpers for the deep-RSI-extreme grid study (PRE_REG.md in this folder)."` |
+| `680c35aff42277e9ca9927d9928abb396a340ddb` | Matches `Result: no cell passes; best n>=30 cell 12h<=20 tgt2R +0.56R VAL (CI 0.11..0.93) fails BH and day-cluster CI` | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/study.py:2` | LOW | Docstring says `"Reads runtime_data/edge4-rsi-htf-extreme-1113 klines; writes cells.csv, bands.csv, meta.json."` — omits `trades_4h12_daily_lt30.csv` written at `MyTradingSys/research/rsi_htf_extreme_2026-11-13/study.py:187`. |
+| `981557364fba1aa037a8ae5a1a366b5646fa6ef4` | Matches `Result: 0/56 layer splits PASS on VALIDATION; closest 4h dADX20-25 fails BH and flips sign in DEV; no pairs pass` | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md:3` | NO FINDINGS | Code, tests, and reported counts (`56` layer tests: `6` UNDERPOWERED, `50` FAIL; `3` pairs FAIL) match `cells.csv`, `base.csv`, and `pairs.csv`. |
+| `7a30bfbb7844d840916a4a0ee05c908adbf7bd14` | Gate fixes commit; no `Result:` line in commit message | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/PRE_REG.md:9-12` | LOW | Missing `Result:` line in commit message (`CLAUDE.md:33`); diff itself cleanly adds `Regime:`, `Phase:`, `Session:`, `Entry:` context lines and updates gate metadata. |
+| `8916b1c9510a1ca0c67cb9e9a3b52a71e2275c6c` | Merge `origin/fast-track` into `JIS-NB/edge4-rsi-confirm-layers-1113` | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/PRE_REG.md:1` | NO FINDINGS | Standard merge commit bringing `origin/fast-track` into the feature branch; no unreviewed study-code edits. |
+| `0e7026e3ece0aa5e8edaa3f275ff6618110009f2` | Gate fixes commit; no `Result:` line in commit message | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/PRE_REG.md:9-12` | LOW | Missing `Result:` line in commit message (`CLAUDE.md:33`); diff itself cleanly adds `Regime:`, `Phase:`, `Session:`, `Entry:` context lines and updates gate metadata. |
+
+## Summary
+
+- **HIGH**: 0
+- **MED**: 0
+- **LOW**: 9 (minor docstring omissions/staleness, boundary prose `50`, ambiguous `VAL mean>0` phrasing in `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md:6`, red-candle wording vs code in `MyTradingSys/research/rsi_confirm_layers_2026-11-13/PRE_REG.md:21`, and 2 gate-fix commits without a `Result:` line)
+- **NO FINDINGS**: 2 commits (`981557364fba1aa037a8ae5a1a366b5646fa6ef4`, `8916b1c9510a1ca0c67cb9e9a3b52a71e2275c6c`)
+- **Core correctness**: No look-ahead bugs, fee/cost omissions, or mismatched `Result:` claims found. All 13 unit tests pass (`pytest`), and all key summary numbers in `RESULT.md` match `cells.csv` and `meta.json`/`results.json`.
