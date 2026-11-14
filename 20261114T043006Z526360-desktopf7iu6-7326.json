@@ -1,0 +1,1 @@
+{"t": "20261114T043006Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ack", "text": "ack q-d8cd77 told tests 1,2,3,5 KILL on trunk; test 4 KILL re-ship pending (needs prefixed module names)", "login": "A", "id": "q-d8cd77", "state": "told", "host": "desktop-f7iu69n", "note": "tests 1,2,3,5 KILL on trunk; test 4 KILL re-ship pending (needs prefixed module names)"}
