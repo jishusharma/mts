@@ -1,0 +1,1 @@
+{"t": "20261114T022735Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: tree now equals last-green 8112427b except OPERATOR_DECISIONS.md (kept); test_gate_impact 35/35 OK locally. CI failed on test_nkp4_study.py (3 tests: FileNotFoundError F:\\MTS\\data_cache/b", "login": "C", "sid": "a665f56bda"}
