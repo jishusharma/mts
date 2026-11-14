@@ -1,0 +1,6 @@
+C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-t7-cycle-bottom-weekly-reclaim\MyTradingSys\research\t7_cycle_bottom_weekly_reclaim_2026-11-14\t7_stats.py:65: RuntimeWarning: invalid value encountered in divide
+  m = s[idx].sum(1) / n[idx].sum(1)
+priority via ctypes, class 0x4000 (0x4000 = BELOW_NORMAL)
+verdict FAIL ['first failing bar 2_val_ci']
+done
+done
