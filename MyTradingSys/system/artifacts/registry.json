@@ -459,13 +459,13 @@
         "jishusharma1985": "https://claude.ai/artifact/Y5YTBaMQcbfBZgigJyLhNL"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-13"
+        "jishusharma1985": "2026-11-14"
       },
       "purpose": "One app for every layer's concepts: diagram, his rule vs ours (SOURCED/OURS), fidelity, support layers, tests, sim check, ideas, gaps. Replaces the two concept decks.",
       "notes_go_to": "MyTradingSys/research/conceptualizer/concepts.json",
       "note": "Operator 2026-11-12: turn the concept decks into one application called Conceptualizer.",
-      "published_sha": "ca1b0e0f27848a7f1581bdcd1190b7f23adb97883ff2d9bf70fc1801dd40b6ed",
-      "published_at": "2026-11-13T13:51:59Z"
+      "published_sha": "b7b33439cdd00f7b450a7acb77891d609805032adc86e1caacb970e7a2203732",
+      "published_at": "2026-11-14T08:02:02Z"
     }
   ],
   "unpinned_old": {
