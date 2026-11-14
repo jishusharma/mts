@@ -15,7 +15,15 @@
   "id": "nk-extract-ph29imvolhc-1114",
   "kind": "run",
   "lane": "SONNET",
-  "latest": [],
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: 7 NK caption files + 7 Gemini extract cards ready",
+      "ref": "c32667a3c206",
+      "utc": "2026-11-14T06:21:08Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -23,14 +31,14 @@
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
-  "refreshed": "2026-11-14T06:13:33Z",
+  "refreshed": "2026-11-14T06:49:14Z",
   "refs": [],
   "result": "",
   "scope_in": [
     "MyTradingSys/research/nk_stocktalk_1113/interviews/ph29IMvOlhc/"
   ],
   "scope_out": [],
-  "scope_sha": "",
+  "scope_sha": "c32667a3c206",
   "size": "S",
   "sources": [
     "NK interviews 1114"

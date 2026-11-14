@@ -5,6 +5,7 @@ real Windows rename happens later, so the repo must work under the old name, the
 that compares or keys on a hostname goes through canonical() / same_host(), and state written under an old name (signals,
 acks, owner files, branch names) keeps matching the new one. Stdlib only; never raises.
 """
+import ntpath
 import os
 import socket
 
@@ -76,3 +77,38 @@ def unc_path(host, share, *parts):
         except OSError:
             pass
     return os.path.join(cands[0], *parts) if parts else cands[0]
+
+
+# Per-host paths (operator 2026-11-14, c-drive-worktrees-on-f-1114): study trees and the shared data cache go to F: on the desktop so
+# they stop filling C:. A host opts in by adding a row here (canonical name) or by setting the env var on that machine.
+# Value applies only when the drive exists; env wins; an empty env value means "today's behaviour" (tests use it).
+HOST_PATHS = {
+    "JIS-DESKTOP": {"worktree_root": r"F:\MTS\wt", "data_cache": r"F:\MTS\data_cache"},
+}
+
+
+def _host_path(env_name, field):
+    if env_name in os.environ:
+        v = os.environ[env_name].strip()
+        return v or None
+    v = HOST_PATHS.get(this_host(), {}).get(field)
+    drive = ntpath.splitdrive(v)[0] if v else ""   # a Windows drive letter only counts where that drive exists (never "/" on Linux CI)
+    if drive and os.name == "nt" and os.path.isdir(drive + "\\"):
+        return v
+    return None
+
+
+def worktree_root():
+    """Folder that holds this host's mts-<host>-<slug> trees, or None = next to the main checkout (the old behaviour)."""
+    return _host_path("MTS_WORKTREE_ROOT", "worktree_root")
+
+
+def worktree_roots(main_parent=None):
+    """Every folder that may hold study trees on this host: the configured root first, then the main checkout's parent."""
+    out = [r for r in (worktree_root(), main_parent) if r]
+    return list(dict.fromkeys(str(r) for r in out))
+
+
+def data_cache_dir():
+    """Shared market-data cache folder (env MTS_DATA_CACHE, else the host row), or None when the host has none."""
+    return _host_path("MTS_DATA_CACHE", "data_cache")
