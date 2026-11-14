@@ -257,3 +257,4 @@ MyTradingSys/research/rsi_htf_power_2026-11-13/study.py,22,COST,2,other,round_tr
 MyTradingSys/research/rsi_oi_unwind_newcoins_2026-11-13/study.py,21,COST,2,other,round_trip,taker,fee in rsi_oi_unwind_newcoins_2026-11-13,1,assign,COST = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13   # round-trip fraction of entry price
 MyTradingSys/research/winrate_vs_expectancy_2026-11-14/study.py,18,taker,0.0022,other,round_trip,taker,fee in winrate_vs_expectancy_2026-11-14,0,literal_in_text,"COST = {""taker"": 0.0022, ""maker"": 0.0013}"
 MyTradingSys/research/winrate_vs_expectancy_2026-11-14/study.py,18,maker,0.0013,other,round_trip,taker,fee in winrate_vs_expectancy_2026-11-14,0,literal_in_text,"COST = {""taker"": 0.0022, ""maker"": 0.0013}"
+MyTradingSys/research/buyzone_test1_ladder_2026-11-14/ladder.py,13,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test1_ladder,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
