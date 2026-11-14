@@ -71,7 +71,6 @@ def main(argv):
     ap.add_argument("--end", type=float, default=0.0, help="slice end, source seconds (0 = to the end)")
     ap.add_argument("--threads", type=int, default=0, help="cpu_threads (0 = half the logical cores, max 4)")
     ap.add_argument("--beam", type=int, default=5)
-    ap.add_argument("--language", default="en", help="spoken language code (default en; yt.py passes hi etc. with a multilingual --model such as small)")
     ap.add_argument("--no-hotwords", action="store_true")
     ap.add_argument("--fresh", action="store_true", help="ignore and overwrite an existing --out")
     a = ap.parse_args(argv)
@@ -118,7 +117,7 @@ def main(argv):
     cpu0 = me.cpu_times()
     t0 = time.time()
     segments, info = model.transcribe(
-        chunk, language=a.language, beam_size=a.beam, word_timestamps=True,
+        chunk, language="en", beam_size=a.beam, word_timestamps=True,
         vad_filter=True, vad_parameters=dict(min_silence_duration_ms=500),
         condition_on_previous_text=False,
         hotwords=None if a.no_hotwords else HOTWORDS)
