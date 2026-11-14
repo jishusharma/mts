@@ -222,10 +222,11 @@ class Fallback(Base):
         self.assertEqual(ids, ["ccccccccccc"])
 
     def test_gha_batch_dispatches_waits_and_reads_the_artifact(self):
-        calls = []
+        calls, kws = [], []
 
-        def fake_run(cmd, cwd=None, capture_output=None, text=None):
+        def fake_run(cmd, cwd=None, capture_output=None, text=None, **kw):
             calls.append(cmd[1:3])
+            kws.append(kw.get("creationflags"))
             cp = types.SimpleNamespace(returncode=0, stdout="", stderr="")
             if cmd[1:3] == ["run", "list"]:
                 cp.stdout = json.dumps([{"databaseId": 77, "createdAt": yt._iso(yt._now()), "event": "workflow_dispatch"}])
@@ -242,6 +243,7 @@ class Fallback(Base):
         self.assertEqual(list(got), ["aaaaaaaaaaa"])
         self.assertEqual(got["aaaaaaaaaaa"]["cues"], [(0, "hi")])
         self.assertEqual(calls[0], ["workflow", "run"])
+        self.assertEqual(set(kws), {yt.nowin.NOWIN})
 
     def test_fleet_ask_is_short_and_returns_the_ask_id(self):
         seen = {}
@@ -360,8 +362,8 @@ class YouTubeOnly(Base):
         for ok in ("https://www.youtube.com/watch?v=x", "https://youtu.be/x", "https://rr1---sn-a.googlevideo.com/videoplayback",
                    "https://i.ytimg.com/vi/x/0.jpg"):
             self.assertEqual(yt.yt_only(ok), ok)
-        for bad in ("https://api.ipify.org", "https://api.binance.com/api/v3/ticker", "https://fapi.binance.com/x",
-                    "https://www.youtube.com.evil.example/x", "https://notyoutube.com/", "https://deribit.com/"):
+        for bad in ("https://api.ipify.org", "https://exchange.example/api/v3/ticker", "https://futures.example/x",
+                    "https://www.youtube.com.evil.example/x", "https://notyoutube.com/", "https://options.example/"):
             with self.assertRaises(ValueError):
                 yt.yt_only(bad)
 

@@ -769,22 +769,39 @@
  ],
  "backtests": [
  {
-  "id": "NY-SESSION-VALUE-RETURN-20261113",
+  "id": "MALKAN-R03-R04-DIVERGENCE-20261113",
   "trials": null,
-  "title": "Tom return-to-value on the prior NY cash-session value area: re-entry for two 30m closes, target opposite edge, balanced vs trend, BTC ETH SOL 1m",
+  "title": "Malkan MAL-R03 bearish / MAL-R04 bullish RSI divergence on closes, swings 12/18 bars apart, confirm candle, 1h + 4h, 20 perps, exits 1R/2R/12-bar",
   "date": "2026-11-13",
-  "market": "Binance spot 1m klines (data.binance.vision), BTCUSDT ETHUSDT SOLUSDT 2020..2026-10-31",
+  "market": "Bybit linear 1h and 4h (folded), 20 USDT perps; DEV / VALIDATION / RECENT",
   "layers": [
-   "tom_vp_pivot"
+   "rsi_divergence"
   ],
-  "params": "SOURCED: Tom's prior-session value area rule (70-80% claim); OURS: 2x30m-close re-entry, stop at session extreme +1bp, first-30-min skip variants, 12 cells",
-  "split": "DEV to 2023-12-31 / VALIDATION 2024-01-01..2026-10-31",
-  "fees": "fee-net: 5 bp taker + 1 bp slippage per side = 12 bp round trip from fees.py",
-  "interaction": "balanced vs trend day; session-date bootstrap, placebo draws, BH 10% over 12 cells",
-  "effects": "none: opposite-edge reach about 40% (POC about 69%) against the claimed 70-80%; no cell has a fee-net edge",
-  "n": "12 cells; about 1260-1330 outside-value sessions per coin",
-  "verdict": "FAIL: 0 of 12 cells pass; opposite-edge reach about 40%",
-  "report": "MyTradingSys/research/ny_session_value_return_2026-11-13/RESULT.md",
+  "params": "SOURCED: Malkan R03/R04 divergence on closes with confirming candle (quoted in PRE_REG); OURS: swing spacing 12/18, stop beyond swing extreme, exits, 20-coin universe",
+  "split": "DEV / VALIDATION / RECENT, VALIDATION 150 weeks",
+  "fees": "fee-net: 2 x BINANCE_TAKER + SLIPPAGE_RT_S13 = 12 bp round trip from fees.py",
+  "interaction": "day-cluster bootstrap CI, matched placebo, BH 10% over 24 cells; UTC hour-block table descriptive",
+  "effects": "none: 1h cells -0.22..-0.25 R; best R03 4h T12 VALIDATION +0.030 R CI [-0.125,+0.210] not significant",
+  "n": "24 cells; 1h n ~6200 and 4h n ~1360 per cell on VALIDATION",
+  "verdict": "FAIL: 0 of 24 cells pass; R03 4h short is the only near-zero family",
+  "report": "MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/RESULT.md",
+  "id": "RSI-CONFIRM-LAYERS-20261113",
+  "trials": null,
+  "title": "RSI(14)<=20 + green confirm candle long, one layer at a time (daily ADX/DI, 4h ADX, OI unwind, volume capitulation, BTC 200d, BTC/ETH, session, funding, depth, stop size), 1h and 4h, 20 perps",
+  "date": "2026-11-13",
+  "market": "Bybit linear 1h/4h, 20 USDT perps from listing; DEV <=2023 / VALIDATION 2024+",
+  "layers": [
+   "rsi_levels",
+   "oi_delta"
+  ],
+  "params": "SOURCED: operator rule (RSI extreme, green confirm, stop = signal low); OURS: RSI<=20, layer thresholds, exits 1R/2R with 72 h cap",
+  "split": "DEV 2020-01-01..2023-12-31 / VALIDATION 2024-01-01..now",
+  "fees": "fee-net: 2 x BINANCE_TAKER (10 bp round trip), no slippage, no funding",
+  "interaction": "single-layer splits vs unfiltered base, week-block bootstrap CI, random-subset placebo, BH 10% over 56, pairs",
+  "effects": "none: OI-unwind 1h +1R VAL +0.117R but -0.222R in DEV; 4h dADX20-25 closest, fails BH and flips sign in DEV",
+  "n": "56 layer tests; 975 1h and 265 4h base trades",
+  "verdict": "FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass",
+  "report": "MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md",
   "read": "summary"
  },
  {

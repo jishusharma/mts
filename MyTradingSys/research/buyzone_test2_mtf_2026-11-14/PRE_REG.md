@@ -13,6 +13,11 @@ Regime mix: RECENT (coin-days, 20 coins, n=9500, n/a excluded from %): UP 14.5%,
 
 The sample is dominated by BEAR (alts bled after 2018, 2021). Short-side phases (DOWN+BEAR) carry most days, long-side phases (UP+BASE) 31.6% (DEV), 24.6% (VAL), 19.4% (RECENT). RANGE is never traded. Expect few long trades in RECENT; report n always.
 
+Regime: gate = per-coin daily phase (UP/BASE long, DOWN/BEAR short, RANGE no trade), previous day's bar only; results are split by phase and DEV/VAL/RECENT.
+Phase: the same daily phase flag (SMA200/SMA350/DI/540d high), see Rules table.
+Session: none, because the entry is a 4H close and 4H bars span all sessions; no session gate is tested.
+Entry: 4H close through the last confirmed 4H pivot, in the phase direction, with 1W/3D divergence in the last 28 days (control variant without it).
+
 ## Universe (OURS)
 BTC ETH BNB XRP ADA LTC TRX LINK XLM DOGE ETC DASH ZEC NEO IOTA VET ATOM EOS BCH QTUM (USDT spot, each from its own listing date; 20 coins, pooled). Chosen as liquid, listed before 2020, no outcome look. Survivorship note: all still trade; a coin that was delisted is absent (bias unknown, reported as a caveat).
 

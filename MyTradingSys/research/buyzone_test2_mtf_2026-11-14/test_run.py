@@ -3,12 +3,14 @@ import os
 import sys
 
 import numpy as np
+import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lib  # noqa: E402
 import run  # noqa: E402
 
 
+@pytest.mark.skipif(not os.path.exists(f"{lib.CACHE}/ETHUSDT_4h.npy"), reason="local kline cache absent (CI)")
 def test_fast_candidate_matches_reference():
     co = lib.Coin("ETH")
     cd = run.candidates(co)

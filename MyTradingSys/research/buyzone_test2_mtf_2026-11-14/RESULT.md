@@ -1,5 +1,9 @@
 # RESULT: Test 2, multi-timeframe context rule, both sides (2026-11-14)
 
+Regime mix: DEV (coin-days, 20 coins, n=39926, n/a excluded from %): UP 23.2%, BASE 8.4%, DOWN 4.6%, BEAR 51.6%, RANGE 12.2%
+Regime mix: VAL (coin-days, 20 coins, n=20404, n/a excluded from %): UP 19.2%, BASE 5.4%, DOWN 6.9%, BEAR 49.7%, RANGE 18.8%
+Regime mix: RECENT (coin-days, 20 coins, n=9500, n/a excluded from %): UP 14.5%, BASE 4.9%, DOWN 5.1%, BEAR 63.1%, RANGE 12.5%
+
 **Verdict (PRIMARY, RSI context, both sides pooled, 20 coins): KILL.** VAL fee-net 12 bp mean R = -0.075 per trade (n=91, block-bootstrap 95% CI -0.269..+0.145), placebo percentile 55 (needs >= 97.5), DEV +0.230 (n=130, CI -0.013..+0.484). Pre-registered as written in `PRE_REG.md` (committed with the code before any outcome); full tables in `RESULT_tables.md`, raw numbers in `RESULT_raw.json`.
 
 | Cell (12 bp fee-net mean R) | n | DEV | VAL (CI) | VAL placebo pct | Verdict |

@@ -3,6 +3,7 @@ import os
 import sys
 
 import numpy as np
+import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lib  # noqa: E402
@@ -41,6 +42,7 @@ def test_phase_uses_previous_day_only():
     assert lib.phase_for_4h(d4, dd, ph)[0] == 2  # day 2, never day 3
 
 
+@pytest.mark.skipif(not os.path.exists(f"{lib.CACHE}/BTCUSDT_1d.npy"), reason="local kline cache absent (CI)")
 def test_phase_series_ignores_future():
     a = np.load(f"{lib.CACHE}/BTCUSDT_1d.npy")[:-1]
     full = lib.phases(a)

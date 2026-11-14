@@ -2555,6 +2555,11 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Applied 20:08Z: 4 Sonnet studies on the desktop: weekly red-streak bounce (swing), bear-trap reclaim long in a downtrend (day trade), win rate versus profit per trade on long scalps (answers the Zing question on our data), and a descriptive map of past BTC bear-phase reactions and today's levels. A 13-study ship worker saves today's results. Memory updated: cap 95% this week.
 - Open: Zing's own closed-trade history (entry, stop, target, result, fees) is needed to judge its win rates; a win rate alone says nothing about profit.
 
+### 2026-11-14 16:53Z and 20:16Z - C: drive filling (operator alarm)
+- Operator: C: went from 19 GB to 10.5 GB free in a day; make it stop for good.
+- Cause: `sync.py` `new_worktree()` put every study tree next to the C: checkout (61 `mts-jis-nb-*` trees = 12 GB) and each study re-downloaded the same coin data into its own `runtime_data`; trees leave only via `sync.py tidy` after a ship.
+- Fix (card c-drive-worktrees-on-f-1114): trees default to `F:\MTS\wt` (env `MTS_WORKTREE_ROOT` or `hosts.py` HOST_PATHS), shared data cache `F:\MTS\data_cache` (`data_cache.py`), c_drive_guard lists unshipped study trees older than 6 h when C: < 15 GB. Existing trees are not migrated.
+
 ## 2026-11-13 ~21:40Z: YouTube freedom, free workarounds and backups, no paid proxy (JIS-NB)
 Operator: "Add youtube freedom to jobs and I need it fixed. I need workarounds, I need backups.. so that I can download what I need when I need." and "What paid proxy Man! We already had a working solution we built. So use that. Expand and build proxies that you need to. Don't fall back. Nothing is forbidden or illegal and i will respond to any charges."
 - Decision (OURS, on his words): `scripts/dev/yt.py` is the one fetch command (captions, audio, transcript; id, URL, playlist or @channel); routes warp, v6, tor, Invidious/Piped mirrors, yt-dlp client variants, local Whisper, GitHub Actions run, fleet ask; a lock or 429 moves to the next route in the same call. Free tools only: nothing paid; no public proxy lists; Tor and WARP carry YouTube hosts only and listen on localhost. The home IPv4 address is still never a route. Details and measurements: YT_PROXY.md "YouTube freedom". Standing card `yt-health-standing-1114`: `yt.py health` at coordinator load. Fleet setup by `mts_signal.py broadcast`.
@@ -2590,3 +2595,7 @@ Operator: "Add youtube freedom to jobs and I need it fixed. I need workarounds, 
 ## 2026-11-14 ~05:30Z: rolling parallel super sessions for 5 h, ultracode, ship branches first (operator)
 - Operator: start new rolling super sessions for the next 5 hours, tokens not a constraint, all work in parallel, ultracode mode; and "ship branches first" (unshipped JIS-NB/* branches go to trunk before new work).
 - Mechanism: ship-queue worker batches the unshipped branches and ships them one batch at a time through sync.py ship with CI checked on each sha.
+## 2026-11-13 21:15Z NK tests must be phase specific and apply the MTS brains to find useful trades (operator)
+- His words: "NK related tests must be phase specific and try to apply brains of mts in finding useful trades"
+- DECIDED (operator): NK tests run per phase with MTS context layers, not one coarse ADX phase. Action taken: MTS_BRAINS_SPEC_1114 written; four studies run (nkp1 session rules, nkp2 levels, nkp3 Hilega-Milega, nkp4 NK + MTS confluence) with blind reviews, synthesis in NK_PHASE_BRAINS_SYNTHESIS_1114.md.
+- Outcome: FAIL. 0 of 17 DEV-chosen cells pass VAL fee-net at 12 bp; DEV winners shrank about 1 R on VAL; gross R near 0 so fees decide. Only lead is CAPITULATION long (6 VAL days), needs its own pre-registration with more symbols.

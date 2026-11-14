@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T23:09:12Z",
   "commands": [
     "git status --short"
   ],
@@ -15,17 +16,30 @@
   "id": "diffreview-mts-tests-gemini2-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114b/diffreview-mts-tests/REVIEW.md",
+      "ref": "efc8d540f",
+      "utc": "2026-11-13T23:09:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: diffreview complete (0 BUG, 2 RISK, 4 STYLE across 16 commits)",
   "note": "Planner refill2 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T22:50:43Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114b/diffreview-mts-tests/REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114b/diffreview-mts-tests/REVIEW.md"
   ],
@@ -39,13 +53,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Run git log --since='24 hours ago' --format='%h %s' origin/fast-track -- MyTradingSys/tests and list the shas.",
     "For each sha read git show --stat then the code diff only (skip data and docs).",
     "Table: sha, file:line, finding, severity (BUG / RISK / STYLE), one-line fix. A sha with no finding gets a CLEAN row.",
     "Write REVIEW.md with a one-line verdict first (N BUG, M RISK) and the table. Commit on your gemini-q branch only; do not edit product code."
   ],
+  "taken": "2026-11-13T23:09:12Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] 24 h trunk diff review: mts-tests",
   "weight": "ROUTINE",
