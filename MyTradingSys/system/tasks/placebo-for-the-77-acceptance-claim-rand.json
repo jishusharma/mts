@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T18:18:53Z",
   "commands": [
     "python MyTradingSys/research/value_area_acceptance_2026-11-05/placebo80.py"
   ],
@@ -16,6 +17,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "real 77% [72..81] n=300 vs placebo 64.4% [60.0..68.7]; label adds +12.6 pts (>=10: yes); e",
+      "ref": "ff1a589c3",
+      "utc": "2026-11-14T18:18:53Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "eagle: accept80 value-area walk named as price bins (lint)",
@@ -26,13 +33,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: descriptive placebo complete, no trade rule or fee-net claim",
   "note": "Split from the 77-label card. Data is local to DESKTOP-F7IU69N (F:/MTS). Refined 2026-11-09 (planner).",
   "prio": 3,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-09T04:53:45Z",
   "refs": [],
-  "result": "",
+  "result": "real 77% [72..81] n=300 vs placebo 64.4% [60.0..68.7]; label adds +12.6 pts (>=10: yes); exact-width 62.3 vs 43.6",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/value_area_acceptance_2026-11-05/accept80.py",
     "MyTradingSys/research/value_area_acceptance_2026-11-05/placebo80.py",
@@ -45,13 +58,14 @@
   "scope_sha": "b0acc39a1d0a",
   "size": "S",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "placebo80.py imports accept80 (days_local, va, m30). For each real Event A (2 consecutive 30m closes below VAL), record segment index k, and d = close_k - (VAL - w/2) i.e. the distance the real test needs",
     "Placebo draw: same n=300 events; per event pick a random UTC day (not an Event A day) and the same segment index k, and test rest-of-day low <= close_k - d. Repeat 2000 draws, seed 7; report mean hit rate and 2.5/97.5 percentiles vs real 77% [72..81]",
     "Also run the exact-width variant (d = w/2 from the close) as a sensitivity row. Write PLACEBO.md: both tables, one verdict line (label adds >= 10 points over placebo or not)",
     "test_placebo80.py: synthetic 3-day series where every day drifts down by more than d, assert placebo hit rate == 1.0, and flat series == 0.0; run it against a stub returning 0.5 to see it fail first"
   ],
+  "taken": "2026-11-14T18:18:53Z",
   "tests": "MyTradingSys/research/value_area_acceptance_2026-11-05/test_placebo80.py (synthetic drift/flat series; fails against a stub)",
   "title": "Placebo for the 77% acceptance claim: random-day half-width touch, same n=300 days (split from tf-acceptance-77-label-placebo-1109)",
   "weight": "ROUTINE",

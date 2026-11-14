@@ -102,3 +102,19 @@ The first run (commit 9f7dc27ae, bar clusters) counted 16 cells. `REVIEW.md` fou
 - A7 regime split (review #11): score-window delta by the weekly regime tag of the bar-open week (`regime_weeks.csv`, `regime_split.csv`), descriptive only.
 - A8 holdout (review #6): RESULT says that no clean holdout remains for this family; any rule that ships from these cells needs fresh data.
 Not adopted: a materiality floor (review #8) is not invented after the fact; RESULT states the gains as statistical, not economic.
+
+## Follow-up: session-adjusted null, and a fresh-data run (frozen 2026-11-14, before any fresh bar is scored)
+Card `flip-engine-follow-up-session-adjusted-s`. Part 1 (done, `FOLLOWUP.md`, `flip_followup.py`): the null's clock is spent by a UTC hour-of-day volatility profile fitted on 2024 (`session_null.py`), the 7 cells that survived the recalibrated baseline are re-scored on the same 2025-01-01..2026-11-06 bars. Result: 2 of 7 survive the session baseline at Holm m = 48 (G1 split/Asia/at, G2 aligned/Asia/at).
+
+Regime mix: fit 2024-01-01..2025-01-01: 53 weeks: bull 35 (66%) | bear 0 (0%) | range 18 (34%) | n/a 0 (0%)
+Regime mix: fresh 2026-11-07..: the weeks tagged so far in `regime_weeks.csv` (2026-11-02, 2026-11-09) are both range; the mix of the full fresh window is computed by `ctx_regime.py` at run time, before any outcome is read, and printed in the run's first lines.
+
+**Fresh-data run (part 2), frozen now, not yet run.**
+- Data: 1m bars opening >= 2026-11-07T00:00Z, last complete bar at run time; nothing before it is reused. The score window of `RESULT.md` stays burned and is not a clean test; these bars are the first the 7 cells have never seen.
+- Family: exactly the 7 cells, open-colour only: G1 split/Asia/at; G1 split/EU/at; G2 aligned/Asia/at; G2 aligned/US/at; G2 aligned/US/inside; G2 split/Asia/inside; G3 aligned/US/inside (the baseline survivors of `RESULT.md`; the two cells that only appear under the session baseline are NOT added, no post-hoc additions). Holm m = 7.
+- Frozen, no refit: the 2024 hour profile (the 24 weights printed in `FOLLOWUP.md`, `session_null.py`), the 2024 baseline bins and cell shifts of `flip_followup.py` (fit rows unchanged), rows/points/ATR14 as above. Nothing is re-tuned on fresh bars.
+- Cluster: the UTC DAY of the bar open, not the week (OURS, deviation: a 30-week gate needs until mid-2027; the week-cluster result of part 1 stays the headline for the old window). A cell is powered with >= 30 distinct fresh bars AND >= 30 distinct days, so the earliest scored run is 2026-12-07 (30 full UTC days).
+- A cell COUNTS only if powered, Brier(cond on the session baseline) < Brier(session baseline) on the fresh rows, AND Holm p (m = 7, day clusters) < 0.05 on delta2 = realised - session baseline. The verdict states how many of 7 count; 0 of 7 means the cells were noise from the burned window.
+- Reported beside it, descriptive: delta vs the session null and vs the flat null, the regime mix of the fresh window, the number of fresh days.
+Phase: none; the bar's variance-time left is the phase. Session: Asia 00-08Z / EU 08-13Z / US 13-21Z of the evaluation minute. Entry: none, a probability of the open candle's close colour; no trade, fee or return, so no fee-net number exists for this study.
+Parameter labels: the hour profile and its use as a variance clock OURS (hour-of-day only, no weekday term, mean-1 normalisation); day clusters for the fresh run OURS; m = 7 OURS; everything else as the frozen text above.

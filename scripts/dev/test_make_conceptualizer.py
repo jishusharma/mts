@@ -173,3 +173,13 @@ def test_load_runs_the_wiring_check():
             assert "families must be a non-empty list" in str(e)
         else:
             raise AssertionError("load() must refuse a layer without families")
+
+
+def test_review_fixes_1114_data_matches_sources():
+    import json as _j
+    d = _j.loads((mc.REPO / "MyTradingSys/research/conceptualizer/concepts.json").read_text(encoding="utf-8"))
+    L = {x["id"]: x for x in d["layers"]}
+    deep = [r for r in L["malkan"]["tests"] if r[0].startswith("Deep RSI extreme grid")]
+    assert deep and all(r[4] == "FAIL" for r in deep)  # source grades the grid FAIL
+    txt = _j.dumps(L["live-engine"], ensure_ascii=False)
+    assert "not wired" not in txt and "nothing calls it" not in txt  # live_runner_cli.py calls the hook each poll
