@@ -58,7 +58,7 @@ def check_series(t, o, h, l, c, name="", step=M15, max_gap=12 * H1):
     return dict(t=t, o=np.asarray(o, float), h=np.asarray(h, float), l=np.asarray(l, float), c=np.asarray(c, float), gaps=gaps)
 
 
-def resample(raw, bucket, last_bar_offset):
+def resample(raw, bucket, last_bar_offset, fill=False):
     """aggregate bars to buckets of `bucket` ms (UTC aligned). The final bucket is kept only if its LAST sub-bar (open time bucket_start+last_bar_offset) is present (else it is partial and dropped);
     interior buckets with downtime gaps are kept. Result is checked contiguous."""
     t = raw["t"]
@@ -71,8 +71,17 @@ def resample(raw, bucket, last_bar_offset):
     hh = np.maximum.reduceat(raw["h"], starts)
     ll = np.minimum.reduceat(raw["l"], starts)
     u, first, last, hh, ll = u[ok], starts[ok], last[ok], hh[ok], ll[ok]
+    o_, c_ = raw["o"][first], raw["c"][last]
+    if fill and not (np.diff(u) == 1).all():
+        # whole buckets missing (exchange downtime > 1 bucket): insert flat bars at the previous close so the series stays contiguous (used for 1h only)
+        full = np.arange(u[0], u[-1] + 1)
+        ix = np.searchsorted(u, full, side="right") - 1          # last real bucket at or before each slot
+        real = np.isin(full, u)
+        pc = c_[ix]
+        o_, hh, ll, c_ = np.where(real, o_[ix], pc), np.where(real, hh[ix], pc), np.where(real, ll[ix], pc), pc
+        u = full
     assert (np.diff(u) == 1).all(), "resampled series not contiguous"
-    return dict(t=u * bucket, o=raw["o"][first], h=hh, l=ll, c=raw["c"][last])
+    return dict(t=u * bucket, o=o_, h=hh, l=ll, c=c_)
 
 
 def daily_from_15m(raw):
@@ -80,7 +89,7 @@ def daily_from_15m(raw):
 
 
 def hourly_from_15m(raw):
-    return resample(raw, H1, H1 - M15)
+    return resample(raw, H1, H1 - M15, fill=True)
 
 
 # ---------------- indicators (all causal) ----------------

@@ -300,3 +300,17 @@ def test_files_small():
     for p in HERE.iterdir():
         if p.is_file():
             assert p.stat().st_size < 200_000, p.name
+
+
+def test_hourly_resample_fills_missing_hours_flat():
+    n = 96
+    t = (19000 * 96 + np.arange(n)) * S.M15
+    c = 100.0 + np.arange(n)
+    keep = np.ones(n, bool)
+    keep[20:28] = False        # 2 whole hours (bars 20..27) missing
+    raw = S.check_series(t[keep], c[keep], c[keep] + 1, c[keep] - 1, c[keep])
+    H = S.hourly_from_15m(raw)
+    assert len(H["t"]) == 24 - 1 or len(H["t"]) == 24   # final bucket kept only if complete
+    assert (np.diff(H["t"]) == S.H1).all()
+    k = 5      # hour 5 = bars 20..23 missing: flat at the previous close (bar 19)
+    assert H["o"][k] == H["h"][k] == H["l"][k] == H["c"][k] == c[19]
