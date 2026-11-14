@@ -312,3 +312,4 @@ scripts/dev/test_yt_freedom.py
 MyTradingSys/research/t1_markdown_rally_rejection_short_2026-11-14/test_study.py
 MyTradingSys/research/edge_crowding_reversal_1113/test_crowd.py
 MyTradingSys/research/eur_low_sweep_reclaim_pooled_2026-11-13/test_study.py
+MyTradingSys/research/xsec_momentum_2026-11/test_study.py
