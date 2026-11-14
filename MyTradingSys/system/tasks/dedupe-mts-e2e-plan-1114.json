@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T19:06:19Z",
   "commands": [
     "python scripts/dev/mts_doctor.py --no-process",
     "python scripts/dev/run_all_tests.py --quick"
@@ -22,9 +23,10 @@
   "not_twin_of": [
     "apply-dedupe-audit-findings"
   ],
-  "note": "REVIEWS:\nREVIEWED:2026-11-14 T0-ONLY",
-  "pinned": true,
+  "note": "split into one card per batch: dedupe-d1-1115 ... dedupe-r1-1115 (plan reviewed 2026-11-15)",
+  "pinned": false,
   "prio": 1,
+  "reason": "split into one card per batch: dedupe-d1-1115 ... dedupe-r1-1115 (plan reviewed 2026-11-15)",
   "refine_tries": 1,
   "refined_by": "gemini-4-argon",
   "refreshed": "2026-11-14T18:08:30Z",
@@ -51,7 +53,7 @@
     "MyTradingSys/system/ARCH_REVIEW_2026-11-10.md",
     "MyTradingSys/system/SHIP_ARCH_REVIEW_2026-11-12.md"
   ],
-  "state": "refined",
+  "state": "dropped",
   "steps": [
     "Claude Login C reviews MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md and MyTradingSys/research/mts_doctor/REPORT_2026-11-14.md against live trunk state and stamps ACCEPT/FIX",
     "Execute Wave 1 (Batches D1-D3: Routing/Devices/Workers/Weekly-Cap conflicts, role budget headroom on supervisor.md, and indicator_rulebooks/INDEX.md 7 rows)",
