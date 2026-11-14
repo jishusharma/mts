@@ -133,3 +133,14 @@ Skipped signals: A {'no_funding': 1}, B {'no_funding': 2}. Trades csv bytes 1727
 - Placebo Cell B reads excess +0.040 R price-only (real -0.035, draws -0.075) with real below the 97.5th percentile (-0.020): the entry bar beats random flagged days a little but still loses money; not a pass.
 - Gate: measured DEV week-level sd of price-only R is 0.71 (A) and 0.66 (B), below the 1.0 floor used in the PRE_REG gate.
 - run.log is the console log of t12_run.py (priority proof: BelowNormal 0x4000 took) and is not committed.
+
+## Adversarial check
+
+Flag: **MINOR**. Final verdict: **FAIL (both cells)** (checker re-derived the same verdict).
+
+- Order clean (87851f68d before 7bfe1df4b); only result files changed after.
+- Spec fidelity matches the design; disclosed deviations: F3 is sum/9 with >= 3 prints per day, power-gate sd floor 1.0, calendar-week moving-block bootstrap, builder-frozen baseline/LOYO definitions, measured stop 18-25% (not 6-12%).
+- No look-ahead found.
+- FAIL re-derived for both cells (first failing bar 2): A VAL price-only net -0.079 R, CI -0.268..+0.141; B -0.036 R, CI -0.309..+0.236; Holm 1.0.
+- The ex-LUNA/FTT row is vacuous (those coins have no VAL trades). A FAIL under a BLOCKED power gate reads as untested, not proof of no edge.
+- OI part not tested: daily OI exists for 20 of 68 coins only.
