@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:33:55Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/doc-contradiction-workers-parallel-relay/FINDINGS.md exists with a topic table of at least 6 rows; each CONFLICT row quotes both sides with file:line",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find statements that disagree between MyTradingSys/system/WORKERS.md, PARALLEL.md and RELAY.md (numbers, caps, who may do what, file names, commands). Quote both sides verbatim with file:line; mark each STALE, CONFLICT or CONSISTENT.",
+  "id": "doc-contradiction-workers-parallel-relay-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:34:28Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/doc-contradiction-workers-parallel-relay/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read each of MyTradingSys/system/WORKERS.md, PARALLEL.md and RELAY.md; list the factual claims (numbers, caps, commands, paths).",
+    "Match claims by topic across the files; check that named files and commands exist (ls, grep).",
+    "Table: topic, side A quote file:line, side B quote file:line, verdict.",
+    "Write FINDINGS.md. Commit on your gemini-q branch only; never edit the docs."
+  ],
+  "tests": "MyTradingSys/tests/docs/test_integrity.py",
+  "title": "[GEMINI] Doc contradiction scan: WORKERS / PARALLEL / RELAY",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
