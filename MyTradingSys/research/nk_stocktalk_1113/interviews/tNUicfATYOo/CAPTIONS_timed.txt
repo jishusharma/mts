@@ -1,0 +1,65 @@
+# Video ID: tNUicfATYOo
+# Title: Hilega to Milega Strategy Tested 100 Times | NK StockTalk | Nifty & Banknifty
+# Published: 2023-03-27
+# Source: yt.py route tor (manual); uploader: Trader Insights
+# Analyst: 
+# Duration_s:599
+# Word count: 1026
+# ---
+[00:00:04] Hi everyone, hope you are doing well.
+[00:00:06] In our last video, we shared the Open High Low Vwap Strategy from Prosecurities provided by Himanshu Miglani on our channel
+[00:00:15] If any of you haven't watched that video yet, make sure to check it out after this one.
+[00:00:19] As you can tell from the title, this video will be an update video of Hilega Milega on Nifty & BankNifty
+[00:00:25] Credit for the strategy goes to Nitish Sir from NK StockTalk, who has a YouTube channel with over 100k subscribers
+[00:00:32] You can check out his channel on the screen.
+[00:00:34] We are also close to reaching 5k subscribers, so if you haven't subscribed yet and like our content, please do so.
+[00:00:41] For those who don't know, today we are going to backtest another famous strategy called Hilega Milega Strategy from NK StockTalk provided by Nitish Sir
+[00:00:54] We have already backtested it on stocks before. So, I recommend that you check out the suggested video first and then continue with this one.
+[00:01:04] Many people requested testing this strategy on a 15-minute timeframe on Nifty and BankNifty, so here is the video
+[00:01:12] As you know, we test Nifty & BankNifty strategy on futures chart because Tradingview has limited time frame. Therefore, I have tested it on both.
+[00:01:22] Let's now take a brief look at the strategy after the intro
+[00:01:25] We will test the Hilega Milega strategy a total of 100 times on Nifty 50 and BankNifty to determine its actual win rate.
+[00:01:34] So hi everyone, this is Pranit from Trader Insights. Let's start the video.
+[00:01:43] Let's first set up TradingView and then move on to the explanation.
+[00:01:47] First, we will open TradingView and search for Nifty. Two options will appear, Nifty 50 and Nifty Index Futures
+[00:02:00] We will use Nifty Futures in this setup because we will use VWAP and VWAP requires volume data which is not available in normal Nifty.
+[00:02:12] You can see that both price charts will look the same, only a slight difference in price.
+[00:02:21] If you are using Bank Nifty, then select Bank Nifty Futures Index Futures.
+[00:02:30] Now, we will set the timeframe to 15 minutes and add the Hilega Mila Indicator using the link in the description.
+[00:02:38] After that, we will add VWAP.
+[00:02:40] As I mentioned in the last video, it was somewhat subjective and objective. The video talked about many entry points but did not mention risk-reward or stop loss
+[00:02:51] They vaguely covered some small things. They might have mentioned it in another video, but I did not see it in this video, so we modified it a bit so that we can test it.
+[00:02:57] They have mentioned several entry signals such as if the red line and RSI blue zone crossover for buy, or if the blue zone turns red, you can enter
+[00:03:05] They said many things, but the entry we will test in this video is when the blue zone turns red and then goes inside the red zone, and the price is above VWAP, it is a strong buy signal
+[00:03:16] So, we will test that. If you want us to test any other entry signals, please let us know in the comments.
+[00:05:15] Rules for buy entry:
+[00:05:15] Close price should be above VWAP.
+[00:05:15] The RSI zone should be a red zone.
+[00:05:21] Entry will be high of the candle.
+[00:05:21] Stop Loss at Previous Swing Low.
+[00:05:21] Target is 1.5 times the risk.
+[00:05:30] This is our buy setup.
+[00:05:31] The sell setup is also similar. The RSI zone should turn from red to blue, the red line should enter from above the blue zone, and the price should be below VWAP.
+[00:05:42] The entry signal will be at the low of the candle. The stop loss will be at the previous swing high, and the target will be 1.5 times the risk.
+[00:05:51] While testing, we will keep the maximum risk per trade at 5% because we are using swing low or swing high stop loss, which can lead to extremely high stop loss
+[00:06:01] I know 5% is already quite high, but people in F&O trade like this. For beginners, I would still advise not to go more than 2% risk per trade.
+[00:06:12] So the strategy is clear, I think. Please watch their video if you want to know more about the strategy.
+[00:06:18] We will test this strategy 100 times and check its actual win rate. I will let you know the full results after the test.
+[00:06:25] You can also watch the complete test on YouTube by slowing down the playback speed.
+[00:06:28] So let's start the fast forwarding.
+[00:08:15] So the tests are over.
+[00:08:16] As you can see, there were a total of 100 trades, out of which 54 were wins and 46 were losses, resulting in a win rate of 54%.
+[00:08:24] The total gain in the account was 106.56%, and the maximum drawdown was -9.94%.
+[00:08:30] The longest continuous win streak was 5, and the longest continuous losing streak was 6
+[00:08:34] The total duration of the test was 9.237 months.
+[00:08:37] Based on the above results, the strategy is good and profitable, with a gain of 106.56% in 9.94 months and a drawdown of -9.94%
+[00:08:49] Kudos to Nitesh sir for sharing this strategy for free.
+[00:08:52] As always, I recommend testing any strategy yourself before deciding whether it is good or not.
+[00:08:59] I will add this strategy to the Google sheet (link in the description), and it will take the second position in the list
+[00:09:04] You can check the list and review or rewatch any specific strategy you like.
+[00:09:08] So guys if you like these videos please support us by subscribing to the channel and hitting the bell notification and do like the video and share the video.
+[00:09:14] If you want to support us, you will find our UPI ID on your screen.
+[00:09:18] Many people were asking me for the backtesting sheet. So i have shared this backtesting sheet on the channel , you can check out the video for it
+[00:09:32] You can check out our channel's playlist and watch other strategy videos.
+[00:09:38] All of our social media links will be in the description. Please follow us and show your support. We have more awesome content coming soon.
+[00:09:47] So, see you next time.
