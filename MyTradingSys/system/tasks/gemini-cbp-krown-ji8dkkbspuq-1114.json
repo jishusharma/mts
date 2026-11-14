@@ -42,7 +42,7 @@
   "sources": [
     "CBP catch-up 2026-11-14 (cbp-gemini-catchup session)"
   ],
-  "state": "open",
+  "state": "ready",
   "steps": [
     "Read only raw_transcripts_canonical/jI8dKkBSPuQ_raw.txt (English auto-captions) and MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md as the format example",
     "Write MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/EXTRACT.md: one block per call, > \"exact line from the caption file\", Source GPS: jI8dKkBSPuQ | BEGIN|MIDDLE|END; no numbers not quoted",
