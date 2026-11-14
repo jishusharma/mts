@@ -898,6 +898,82 @@
           "note": "no strategy has passed any gate"
         }
       }
+    },
+    {
+      "id": "nk_stocktalk",
+      "name": "NK StockTalk (Nitish Kumar rules, BTC port)",
+      "tracks": "Claude (Conceptualizer data)",
+      "status": "Rules catalogued; every tested NK rule failed or is inconclusive on BTC fee-net (Conceptualizer layer nk-stocktalk).",
+      "spec": [
+        "MyTradingSys/research/conceptualizer/sources_1114/NK55_RULES_1114.md"
+      ],
+      "code": [],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/conceptualizer/sources_1114/NK_TESTS_SYNTHESIS_1114.md"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [],
+      "plain": "Nitish Kumar's NSE rules ported to BTC: Hilega Milega, first hour, SRP, Bollinger, gap-RSI.",
+      "kind": "context"
+    },
+    {
+      "id": "cycle_context",
+      "name": "Cycle, phase and washout context (CBP context, buy-zone map, phase studies)",
+      "tracks": "Claude (Conceptualizer data)",
+      "status": "Context studies only; analyst calls are context, never signals (Conceptualizer layer cycle-context).",
+      "spec": [
+        "MyTradingSys/research/conceptualizer/sources_1114/BUY_ZONE_MAP_1114.md"
+      ],
+      "code": [],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/conceptualizer/sources_1114/EDGE_POSTMORTEM_1114.md"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [],
+      "plain": "Where in the BTC cycle a setup is tested: bottoms, washouts, bear phases, double bottoms.",
+      "kind": "context"
+    },
+    {
+      "id": "edge_harness",
+      "name": "Edge harness (fees, power, blind review, win-rate vs expectancy)",
+      "tracks": "Claude (Conceptualizer data)",
+      "status": "Fee-net gate: gross must be >= +0.30 R per trade to clear fees of 0.21-0.24 R (Conceptualizer layer edge-harness).",
+      "spec": [
+        "MyTradingSys/research/conceptualizer/sources_1114/EDGE_POSTMORTEM_1114.md"
+      ],
+      "code": [],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/conceptualizer/sources_1114/EDGE_BLIND_REVIEW_1114.md"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [],
+      "plain": "How candidate edges are judged: fee floor, sample power, blind review.",
+      "kind": "context"
+    },
+    {
+      "id": "adx_trend",
+      "name": "ADX / DI and trend tools (ADX, trendlines, VFI, squeeze, tick)",
+      "tracks": "Claude (Conceptualizer data)",
+      "status": "ADX census run; VFI, squeeze and tick modules built, untested (Conceptualizer layer adx-trend).",
+      "spec": [
+        "MyTradingSys/backtest/layers/FORMULAS.md"
+      ],
+      "code": [],
+      "ledger": [],
+      "results": [
+        "MyTradingSys/research/conceptualizer/sources_1114/edge7-daily-trend-follow-1113_RESULTS.md"
+      ],
+      "roadmap": [],
+      "cards": [],
+      "layers": [],
+      "plain": "Trend-strength and structure indicators kept as modules beside the trader layers.",
+      "kind": "context"
     }
   ],
   "cross_cutting": [

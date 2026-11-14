@@ -546,7 +546,10 @@ def reuse_finished_tree(repo, path):
 def new_worktree(repo, slug=None):
     host = socket.gethostname().lower()
     slug = slugify(slug) if slug else time.strftime("s%m%d-%H%M%S", time.gmtime())
-    path = Path(repo).resolve().parent / f"mts-{host}-{slug}"
+    root = hosts.worktree_root()    # F:\MTS\wt on JIS-NB (env MTS_WORKTREE_ROOT wins); None = next to the main checkout
+    if root:
+        Path(root).mkdir(parents=True, exist_ok=True)
+    path = (Path(root) if root else Path(repo).resolve().parent) / f"mts-{host}-{slug}"
     reused = reuse_finished_tree(repo, path)
     if reused:
         return reused
