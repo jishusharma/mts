@@ -9224,31 +9224,31 @@
           "MyTradingSys/research/conceptualizer/sources_1114/NKN-03-RESULT.md ; MyTradingSys/research/conceptualizer/sources_1114/NKN-03.md"
         ],
         [
-          "NKN-04 daily SMA20 reaction + small-TF counter-cross (frozen design, run in progress)",
-          "-",
-          "-",
-          "-",
-          "RUNNING",
-          "Pre-registered; no result seen",
-          "MyTradingSys/research/conceptualizer/sources_1114/NKN-04.md"
+          "NKN-04 daily SMA20 reaction + 15m counter-cross, 6 primary cells",
+          "15m",
+          "749 / 713 (V0 cells 1 / 4)",
+          "cell 1 +0.041R (day CI low -0.116, BH q 0.635); long cells -0.065 to -0.073R",
+          "FAIL",
+          "0 of 6 pass VAL 2024+ at 12 bp; thin V1/V2 cells cannot pass",
+          "MyTradingSys/research/nkn04-htf-sma20-countercross-1114_2026-11-14/RESULT.md"
         ],
         [
-          "NKN-05 weekly HM state claim (frozen design, run in progress)",
-          "-",
-          "-",
-          "-",
-          "RUNNING",
-          "Pre-registered; no result seen",
-          "MyTradingSys/research/conceptualizer/sources_1114/NKN-05.md"
+          "NKN-05 weekly HM state, P1 UP weekly-buy",
+          "15m / weekly",
+          "239 coin-weeks",
+          "+0.167R, week CI low -0.264, placebo p 0.545",
+          "FAIL",
+          "P1 FAIL; P2 and P3 UNDERPOWERED-WEEKS; sell state beat buy state",
+          "MyTradingSys/research/nkn05-hm-htf-state-1114_2026-11-14/RESULT.md"
         ],
         [
-          "NKN-06 pivot R2/R3 breakouts (frozen design, run in progress)",
-          "-",
-          "-",
-          "-",
-          "RUNNING",
-          "Pre-registered; no result seen",
-          "MyTradingSys/research/conceptualizer/sources_1114/NKN-06.md"
+          "NKN-06 pivot R2/R3 breakout, P1 long / P2 short mirror",
+          "1h",
+          "276 / 201",
+          "P1 -0.183R, P2 -0.430R (12 bp)",
+          "FAIL",
+          "P3 had 0 events by construction (untested, not a null)",
+          "MyTradingSys/research/nkn06-pivot-r2r3-1114_2026-11-14/RESULT.md"
         ],
         [
           "NKN-07..10 reversal checklist, master candle, RSI doji, HM overheat >86",
@@ -9267,6 +9267,15 @@
           "UNTESTED",
           "No option chain in the pipeline",
           "MyTradingSys/research/conceptualizer/sources_1114/NK_TESTS_SYNTHESIS_1114.md"
+        ],
+        [
+          "NKN-01..03 on the 10-symbol pool",
+          "daily / 1m",
+          "-",
+          "-",
+          "UNDERPOWERED",
+          "Pool is a subset of the universes already used (13-20 coins): no power lift, not run",
+          "MyTradingSys/research/nkn01-convergence-breakout-1114_2026-11-14/RESULT_10SYM.md ; MyTradingSys/research/nkn02-two-close-regime-1114_2026-11-14/RESULT_10SYM.md ; MyTradingSys/research/nkn03-intraday-sequence-1114_2026-11-14/RESULT_10SYM.md"
         ]
       ],
       "market_tiles": [
@@ -9283,8 +9292,8 @@
           "DEV-chosen context cells pass VAL"
         ],
         [
-          "6 running",
-          "NKN designs pending"
+          "0 of 6",
+          "NKN-01..06 pass VAL (3 underpowered, 3 FAIL)"
         ]
       ],
       "ideas": {
@@ -10793,7 +10802,7 @@
           "id": "weekly-hm-state",
           "name": "Weekly HM state claim",
           "who": "Nitish Kumar (NK StockTalk)",
-          "status": "untested",
+          "status": "failed",
           "diagram": "",
           "quote": {
             "text": "जब तक रेड लाइन नीचे है",
@@ -10827,11 +10836,11 @@
             ]
           ],
           "test": {
-            "study": "NKN-05 (run in progress)",
-            "n": "-",
-            "net": "-",
-            "verdict": "RUNNING",
-            "lesson": "Pre-registered; no result seen"
+            "study": "NKN-05",
+            "n": "239 coin-weeks (P1)",
+            "net": "+0.167R, week CI low -0.264, placebo p 0.545",
+            "verdict": "FAIL",
+            "lesson": "P1 FAIL; the weekly sell state beat the buy state; P2/P3 underpowered"
           },
           "sim": {
             "where": "none",
@@ -10891,7 +10900,7 @@
             "n": "-",
             "net": "S3 -0.26R, S2 -0.22R, R2 -0.08R, R3 -0.10R",
             "verdict": "FAIL",
-            "lesson": "Fade form loses at every level; breakout form RUNNING"
+            "lesson": "Fade form loses at every level; breakout form NKN-06 FAIL (P1 -0.183R n 276, P2 -0.430R n 201; P3 0 events)"
           },
           "sim": {
             "where": "none",
