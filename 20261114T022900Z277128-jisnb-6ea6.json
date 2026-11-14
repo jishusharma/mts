@@ -1,0 +1,1 @@
+{"t": "20261114T022900Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-889823 told C also reverted nkp4 (69b5bb28); re-ship with cache-free tests queued, low priority (week 86%)", "login": "C", "id": "b-889823", "state": "told", "host": "jis-nb", "note": "C also reverted nkp4 (69b5bb28); re-ship with cache-free tests queued, low priority (week 86%)"}
