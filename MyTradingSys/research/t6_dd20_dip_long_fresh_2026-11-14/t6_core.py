@@ -16,7 +16,7 @@ sys.path.insert(0, str(_BT))
 import fees  # noqa: E402  SOURCED constants
 
 DAY = 86400000
-FEE_RT = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13          # round trip, fraction of price
+RT_COST = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13          # round trip, fraction of price
 FLAT_BP_PER_SLOT = 1.0                                            # OURS: 1 bp per 8 h slot paid by the long
 FLAT_PER_SLOT = FLAT_BP_PER_SLOT / 10000.0
 SLOTS_PER_DAY = 3
@@ -150,7 +150,7 @@ def trade_at(coin, d0, fund=None):
         xd, delist = coin.n - 1, True
     entry_ms = int(coin.ms[d0])
     end_ms = int(coin.ms[xd]) + DAY
-    fee = FEE_RT
+    fee = RT_COST
     exit_px = float(coin.c[xd])
     gross = exit_px / entry_px - 1.0
     fcost, flat = funding_cost(fund, entry_ms, end_ms)
