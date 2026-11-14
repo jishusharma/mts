@@ -6,7 +6,7 @@ Rules: NK1 first-hour low break + VWAP (UTC and NY sessions, E3 session-end exit
 
 ## Context
 
-Regime mix (share of BTC days per phase; VAL is a single regime, 2024-26):
+Regime mix: share of BTC days per phase (VAL is a single regime, 2024-26):
 
 | phase | DEV | VAL |
 |---|---|---|
