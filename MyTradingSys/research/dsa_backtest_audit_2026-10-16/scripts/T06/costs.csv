@@ -240,5 +240,6 @@ MyTradingSys/research/rsi_htf_extreme_2026-11-13/study.py,23,COST,2,other,round_
 MyTradingSys/research/buyzone_test1_ladder_2026-11-14/ladder.py,13,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test1_ladder,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
 MyTradingSys/research/buyzone_test3_bear4h_2026-11-14/bear4h.py,23,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test3_bear4h,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
 MyTradingSys/research/nkp3-hilega-milega-phase-1114_2026-11-14/run.py,13,COST6,0.0012,fraction,round_trip,maker,cost in nkp3-hilega-milega-phase-1114_2026-11-14,0,assign,"COST12, COST6 = 0.0012, 0.0006  # 12 bp taker primary, 6 bp maker row"
+MyTradingSys/research/nkp1-session-rules-phase-1114_2026-11-14/study.py,27,FEE_M,0.0012,fraction,round_trip,maker,maker 6bp row in nkp1,0,assign,"FEE_T, FEE_M = 0.0012, 0.0006"
 MyTradingSys/research/nkp2-levels-phase-1114_2026-11-14/nkcore.py,22,taker,12.0,bp,round_trip,taker,cost in nkp2-levels-phase-1114_2026-11-14,0,literal_in_text,"RT_BP = {""taker"": 12.0, ""maker"": 6.0}"
 MyTradingSys/research/nkp2-levels-phase-1114_2026-11-14/nkcore.py,22,maker,6.0,bp,round_trip,maker,cost in nkp2-levels-phase-1114_2026-11-14,0,literal_in_text,"RT_BP = {""taker"": 12.0, ""maker"": 6.0}"
