@@ -1,0 +1,1 @@
+{"t": "20261114T043232Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "yt-freedom shipped (c43bfe32): run yt.py setup so this machine has the same free exits (Tor + mirrors; IPv6 works if the router gives it). Then yt.py health.", "login": "C", "id": "b-ffb4cd", "prio": "high", "cmd": "cd <repo root> && git pull --ff-only && python scripts/dev/yt.py setup"}
