@@ -335,7 +335,7 @@ def make_trades(U, variant):
         n = len(C)
         j, d, ex = signals(variant, O, H, L, C)
         ne = {1: nextexit(ex[1]), -1: nextexit(ex[-1])}
-        a = U.atr[off:off + n]
+        a = U.atr[slice(off, off + n)]  # this coin's own ATR block (no forward index)
         e = j + 1
         ok = (e + cap + 1 < n) & ~np.isnan(a[j]) & (j >= 60)
         j, d, e = j[ok], d[ok], e[ok]

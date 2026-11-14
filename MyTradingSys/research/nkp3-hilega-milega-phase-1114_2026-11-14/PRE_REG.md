@@ -5,6 +5,10 @@ Method = `MTS_BRAINS_SPEC_1114.md` (6 causal BTC phases x 8 single-bucket contex
 
 ## Context
 Operator wants rules judged inside the market phase they belong to, with the MTS context layers deciding which trades are worth taking. Earlier NK1-NK6 used one coarse ADX phase and no context; gross R was about 0 and fees decided. Here the phase is the 6-label BTC cycle/structure clock (day d labelled from closes through d-1); context layers are read at the signal bar close.
+Regime: phase = 6-label BTC cycle/structure clock, labelled from closes through the prior day; each rule is reported per phase with the phase-appropriate direction, no pooled headline.
+Phase: CAPITULATION / MARKDOWN / RELIEF / ACCUM-RANGE / MARKUP / DISTRIBUTION (table below); a phase under 5% of DEV days cannot supply a kept cell.
+Session: only as context layer C8 (UTC ASIA 21-07 / EU 07-13 / US 13-21 at the signal bar close); no other session gate.
+Entry: open of the bar after the signal bar close; HM = state flip, BO = close beyond band after an inside close, FO = close back inside after an outside close.
 Regime mix: reported in RESULT.md as days per phase (DEV and VAL) and signals per phase per rule. Expectation (not a result): DEV is mostly MARKUP/MARKDOWN/ACCUM-RANGE; CAPITULATION and RELIEF are thin (< 5% of DEV days makes a phase UNDERPOWERED, it cannot supply a kept cell).
 Disclosure: before this commit I ran one wiring smoke test on BTC+ETH 4h only (printed trade counts and gross means). Nothing in the design below was changed after seeing it, and no cell selection used it.
 
