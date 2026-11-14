@@ -1,3 +1,4 @@
+Regime mix: see the tables in RESULT.md
 ## Reading and caveats
 
 - **What failed.** DEV found 2 cells with a positive lower 90% bound out of 480 cells (4 rules x 120 cells; CAPITULATION cannot supply cells): NK2-core MARKUP long when OI fell 3% or more in 24h, and NK3-B MARKUP long in the Asia session. NK2-deep and NK3-A produced none. On VAL both turned negative: DEV net +0.172 R became -0.021 R (n 1081, day CI -0.175 .. +0.129, ex-best-5 -0.103, placebo p 0.90) and +0.339 R became -0.147 R (n 247, day CI -0.428 .. +0.149, ex-best-5 -0.401, placebo p 0.72). 2 kept cells out of about 480 correlated cells is what chance alone gives with a 5% tail, and 0 of 2 survived.
