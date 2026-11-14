@@ -3,6 +3,10 @@
 Written and committed before any outcome is computed. Research, not advice. Public spot data only.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 - Operator thesis (2026-11-13): BTC closed 6 red weeks (-20%), a reaction up is likely; where and how to buy it.
 - Phase definition (OURS): weekly close above its 50-week simple MA = BULL, below = BEAR (the 50wMA is the common cycle-trend line; the choice is not tuned). The current streak is a BEAR-phase streak (price below 50wMA). Every event is tagged and `Regime mix:` (share of VALIDATION events in BEAR) is reported; results are not generalised beyond the mix seen.
 - Why the streak matters (hypothesis, OURS): long runs of red weeks mark capitulation/exhaustion, so mean reversion up is more likely than after a random week. Counter-hypothesis: in a bear phase trends persist and the streak is momentum. Test decides.

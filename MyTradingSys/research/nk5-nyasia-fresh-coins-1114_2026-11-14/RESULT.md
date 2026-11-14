@@ -38,3 +38,5 @@ n = 0 completed. The 2026-11-13 NY-close anchor is 21:00 UTC and its 08:00 UTC e
 Limitations: stop fills at stop price (no gap slippage); HM reconstruction unverified against NK's chart; the 14-coin list was chosen for liquidity and 2021 history before running, several coins start 2019-2020 and their full history is used.
 
 Files: study.py, test_study.py (passes; the causality test fails under STUDY_BUG=1), fetch.py, results.csv, run.log.
+
+Regime mix: NOT_IN_DATA, because this result was written before the regime-mix rule; the regime share of its window was not computed (line appended at ship, 2026-11-14)

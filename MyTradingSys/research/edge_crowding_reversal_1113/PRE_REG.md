@@ -28,6 +28,10 @@ DEV 2020-01-01..2024-06-30; VALIDATION 2024-07-01..2025-06-30; RECENT 2025-07-01
 - BH at 10% over the 24 VALIDATION cells.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Crowding as a reversal cue is a common trader belief (squeeze after one-sided funding); the account ratio is retail-heavy so fading it is the standard form. OUR expectation is small: 4h/1d moves are 10-100x the round-trip fee, so fees matter little, but funding paid while held can eat or add to the edge. Parameters 90d, 5%, 2 sd, 1.0 x ATR3d, 0.5 x X, holds 1/3/7 are all OURS; none is SOURCED from a trader.
 
 Regime mix: DEV = 2020-21 bull, 2022 bear, 2023-24H1 recovery (about 60% up-trend days); VALIDATION = 2024H2 bull into 2025 chop; RECENT = 2025H2 onward mixed/down. Descriptive from price history; the exact up/down share per split is printed by study.py from prices before outcomes are read.

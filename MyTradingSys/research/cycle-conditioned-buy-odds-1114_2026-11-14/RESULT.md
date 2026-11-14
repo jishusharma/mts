@@ -84,3 +84,5 @@ Episodes with close <= 200w SMA +10%:
 - Fees: 24 bp round trip (12 bp per side) subtracted in net figures (mean 90d net in B1: +25.7% DEV, +26.4% VAL); immaterial next to 90d moves.
 
 Files: PRE_REG.md, fetch.py, analyze.py, extra.py, run.log, extra.log, bins.csv; feature table at F:\MTS\data_cache\btc_cycle_features_1114.csv (not in repo).
+
+Regime mix: NOT_IN_DATA, because this result was written before the regime-mix rule; the regime share of its window was not computed (line appended at ship, 2026-11-14)

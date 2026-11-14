@@ -6,6 +6,10 @@ Written and committed before any outcome (stop/target/return) is computed. Only 
 When RSI(14) on a timeframe TF closes at a deep extreme (<= T), and the NEXT TF bar is green and closes above the signal bar's close, buying at that close with the stop at the signal bar's low has positive fee-net expectancy, more so when the daily RSI is also very low. Sanity example (verified before the study): BTC 1h bar opened 2026-11-13 05:00Z, red, close 68106.7, RSI 9.2, low 67468.4; next bar green, close 69034.8 = entry; stop 67468.4 = 2.27 % away.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Prior test of this family (edge-rsi-extreme-confirm-1113): 0 of 384 cells passed, but stops were fixed-% / ATR and entry was the next open. This study uses the operator's own stop (signal-bar low) and entry (confirm-bar close), adds 4h/8h/12h, a daily-RSI split, a layer split and an exit-location table. Deep extremes are rare (BTC 1h RSI <= 10: ~6 episodes since 2020), so most cells will be UNDERPOWERED; part A is descriptive and is the main deliverable.
 Regime mix: BTC daily close vs 200d SMA (bull > +5 %, bear < -5 %): DEV bull 57 % / bear 34 % / range 9 %; VALIDATION bull 62 % / bear 11 % / range 27 %; RECENT bull 36 % / bear 54 % / range 10 %.
 

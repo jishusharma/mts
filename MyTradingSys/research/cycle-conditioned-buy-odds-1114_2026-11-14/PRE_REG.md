@@ -3,6 +3,10 @@
 Written and committed before any forward return, MAE or analog result was computed (only data fetch + availability checks done).
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Question: how good is buying BTC now (close ~68-71k, ~400 days after the 2025-10-06 ATH 126,199) versus any other day, given cycle position. Descriptive/understanding study; "now" is labelled provisional (2026-11-13 intraday snapshot, last complete day 2026-11-12).
 Regime mix of the sample is reported (below). Phase labels use only data known at the time:
 - bull: drawdown from running ATH > -20%

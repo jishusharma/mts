@@ -29,6 +29,10 @@ For every real trade: same coin, same calendar month, same side, same hold, entr
 Cluster bootstrap by ISO week (all coins in a week = one cluster), 4000 resamples, 95% CI of the mean, one-sided p of mean <= 0. BH at 10% over the cells' VALIDATION p-values (2 cells, both-sides pooled).
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Account ratio is retail-heavy; fading it is the standard form. Regime mix: DEV mixed bull/bear/recovery, VALIDATION = 2024H2 bull then 2025 chop, RECENT = 2025H2 onward mixed/down; the exact share of 3-day windows up per split is printed from prices by study.py. Parameters (90d, 5%, 3/7 days) are OURS, none SOURCED.
 Regime mix: DEV ~0.50 up, VALIDATION ~0.51, RECENT ~0.47 (wave-1 figures on prices; this coin set is printed before outcomes).
 

@@ -25,3 +25,10 @@ The first run (episode-based, run.py) has a look-ahead: L is a +/-10-day fractal
 - C1c: daily close above the highest high of the previous 20 days. C2c: daily close crosses above SMA20. C3c: 4H close above the last confirmed 4H fractal(3) swing high while the last confirmed fractal low is above the 30-day low. C4c: daily WT1 crosses above WT2 with WT1 < -53.
 - Placebo: all fall-state days, same stop rule, matched on entry premium over the stop reference (bucketed).
 - Same DEV/VALIDATION split, bootstrap CI over events (block = 10-day lockout).
+
+## Context
+(Appended 2026-11-14 when this branch was shipped; no result or parameter is changed by this note.)
+Regime: none, because the study was frozen before the context gate (CONTEXT_FILTER_REVIEW_2026-11-04) was enforced and tests its trigger as written
+Phase: none, because as above
+Session: none, because as above
+Entry: none, because as above (entry rule is the one in this PRE_REG)

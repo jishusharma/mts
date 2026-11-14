@@ -30,3 +30,10 @@ Reporting: counts by phase and by DEV/VAL/CASE; no claim of edge from the 2026 c
 
 ## Amendment 1 (made after seeing that the strict adjacent-pivot divergence did not fire at the 2026 top; before outcomes of the new variant were looked at)
 Added variants DIV_RSI_ANY_BB and DIV_WT_ANY_BB: the second swing high is compared with ANY earlier swing high inside the lookback that is lower in price and higher in oscillator (oscillator at that earlier high above the same threshold), still requiring a BB-upper poke at one of the two. Sequences are also run on this base (names SEQ_A_ANY, SEQ_B_ANY, SEQ_C_ANY and _UP mirrors). This is exploratory (conceived after the case), so only the DEV/VAL numbers count, not the case fit.
+
+## Context
+(Appended 2026-11-14 when this branch was shipped; no result or parameter is changed by this note.)
+Regime: none, because the study was frozen before the context gate (CONTEXT_FILTER_REVIEW_2026-11-04) was enforced and tests its trigger as written
+Phase: none, because as above
+Session: none, because as above
+Entry: none, because as above (entry rule is the one in this PRE_REG)

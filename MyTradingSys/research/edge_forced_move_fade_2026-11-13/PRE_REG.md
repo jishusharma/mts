@@ -2,6 +2,10 @@
 Committed before any outcome is computed. Sibling study (edge_oi_flush_2026-11-13, FAILED) used 1h/4h bars and price-flush + OI-drop; this one is 15m impulse bars, OI classes both ways.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Operator example, BTC 15m 13:30Z 2026-11-13: bar spiked 69,190 -> 70,187 on ~10x volume, OI fell the next bar, price returned within 2 h. Question: does OI over the impulse separate forced flow (stops/liquidations) from new positions, and does fading the forced move pay after fees. Existing work: edge_oi_flush (1h/4h, long-only-flush framing) found no pass; data reused only for funding.
 Regime mix: not classified before outcomes (OURS); reported as events/days per split and per month in results.
 

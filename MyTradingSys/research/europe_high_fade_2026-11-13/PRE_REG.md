@@ -3,6 +3,9 @@
 Card europe-high-fade-full-1113. Question: is the 60 % / n 30 hit rate in `research/live_aid_learning/2026-11-13.md` real? Nothing is tuned: the rule is the Live Aid code run unchanged (levelstory.js, pulse.js lane, replay.js `levels()`/`ladder()`) over all BTCUSDT history on disk. SOURCED = cited file, OURS = chosen here, frozen. Changing any parameter after a result = a new trial. No outcome (return, hit) had been computed when this file was committed.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 - Why: MTS has 0 of 44 fee-net backtests passing; the Live Aid 28-day replay (descriptive, no fees, 1h hit = r1h > 0) shows only this flag above the learner's own rule (n >= 30, hit >= 10 points from 50 %). Seventeen flag groups were looked at and the others sit at 41-53 %, so one group at 60 % with n 30 is what chance can give (multiple looks); a long history decides.
 - Phase: pooled 2019-2026, all phases. The regime split is reported, never judged on its own.
 - Regime rule (OURS): per UTC day, prior-day close vs SMA20 of prior daily closes (no look-ahead): > +2 % = up, < -2 % = down, else range. Regime mix is computed over ALL days of each cell's data.

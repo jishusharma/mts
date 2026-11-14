@@ -89,3 +89,5 @@ What would be observable next, by the history above: a bounce of >= 8% (to ~72,9
 - Pre-2017 daily history is a blend of blockchain.info and exchange data, thin-market.
 
 Files: anatomy.py, run.py, causal.py, now.py, now2.py, PRE_REG.md in this folder; raw data in F:\MTS\data_cache\btc_anatomy\.
+
+Regime mix: NOT_IN_DATA, because this result was written before the regime-mix rule; the regime share of its window was not computed (line appended at ship, 2026-11-14)

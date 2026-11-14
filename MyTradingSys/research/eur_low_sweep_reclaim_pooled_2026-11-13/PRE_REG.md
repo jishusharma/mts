@@ -6,6 +6,9 @@ Parents: `eur_low_us_sweep_2026-10-14/RESULT.md` (short leg exploratory negative
 When price trades below the Europe-session low during the US session and a 5m bar closes back above that low within 60 minutes, the failed break is a stop-run that has finished and price returns toward the Europe range. Long at the next 5m open, fee-net, beats a random-entry placebo. Mirror: sweep of the Europe high and a close back below it -> short.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 - Why now: the 10-14 base-rate study found ~93-95 % of US-window breaks of the Europe low reclaim within 120 minutes, but whether the reclaim is tradeable fee-net was never tested (10-18 BLOCKED on power, not killed). Pooling three coins is the unblock the BLOCKED file named.
 - Phase: pooled 2020-03 .. 2026-11, all phases; the regime split is reported, never judged on its own.
 - Regime rule (OURS, same as europe_high_fade): per UTC day, prior-day close vs SMA20 of prior daily closes (no look-ahead): > +2 % = up, < -2 % = down, else range.

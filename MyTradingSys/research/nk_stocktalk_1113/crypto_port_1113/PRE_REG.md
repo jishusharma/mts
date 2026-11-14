@@ -6,6 +6,10 @@ Written and committed BEFORE any rule outcome is computed. Code: `study.py` (wri
 Nitish Kumar (NK StockTalk, Indian index trader) claims (a) a 15m RSI(14) in the 70 or 30 zone during the last 30 min of the session predicts a gap up / gap down at the next open, (b) the "Hilega Milega" RSI-average state on 10m/5m/daily gives direction. Null: after 10 bp round-trip fees none of these ports has a positive fee-net mean on crypto perps.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Source: `nk_stocktalk_1113/flash_deep/cmH38Uo4sYM/EXTRACT.md` (RSI 14, 15m, zone 70/30, window 3:00-3:30 PM, confirm on 10m/5m, trail stop = candle low; "index only, not commodities or stocks, there the story is different") and `JLcDdrHkB5M/EXTRACT.md` (Hilega Milega formula NOT_STATED; weekly/monthly trend, 10m intraday). His rule is explicitly for cash-index gaps. Crypto perps trade 24/7 so there is no close and no gap: the whole port is OURS and the mechanism (overnight gap from closed-market news) is absent. Prior: low. This is a falsification test; a FAIL is the expected result.
 
 ## Regime mix:

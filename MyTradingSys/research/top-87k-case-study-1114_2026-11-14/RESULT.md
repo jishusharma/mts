@@ -218,3 +218,5 @@ Bottom sequence by past patterns (what would still be missing, not a call): a fa
 - No big-trade / order-flow data was used (task scoped to price, funding, OI, spot delta). Spot delta is a daily taker-flow proxy, not a footprint.
 - Funding/OI start 2020 (Bybit); pre-2020 funding/OI/CVD-in-futures not tested; 4H/1H only from 2019 and only counted for the case.
 - Sequence results are small (n 7-28) and the 2026 episode is in-sample by construction.
+
+Regime mix: NOT_IN_DATA, because this result was written before the regime-mix rule; the regime share of its window was not computed (line appended at ship, 2026-11-14)

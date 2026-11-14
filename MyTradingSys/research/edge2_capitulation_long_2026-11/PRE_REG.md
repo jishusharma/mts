@@ -34,6 +34,10 @@ Per-trade fee-net return, pooled over coins in the cell. 95% CI = bootstrap over
 Placebo: same coin, same calendar month, same split, same number of trades as the cell, entries at random bars (any bar; no extreme and no confirm condition) with identical mechanics (stop = low of the preceding bar - 0.25 ATR, same hold), 500 draws with replacement; pool ignores the one-position rule (disclosed).
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Wave 1 found the capitulation long positive in both VALIDATION and RECENT but with CIs spanning 0 because 54 cells diluted the test and n was small. This wave tests one rule, 6 cells, and more trades (30 coins, 4h). Daily-trend context is deliberately pooled (the lead appeared in two of three buckets).
 Regime mix: not computed here (no bucket in the rule); wave 1 DEV daily bars over the original 10 coins: above both 38% | between 15% | below both 47%.
 

@@ -4,6 +4,10 @@ Written and committed with the code BEFORE the first outcome run (2026-11-14). O
 Descriptive study plus three pre-registered tests. No orders, no account data, public market data only. Every parameter below is OURS (no source behind it) unless marked SOURCED.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Regime mix: the PUBLIC sample covers 2022-01-01 .. 2026-11-13 (bear 2022, recovery and halving run 2023-24, 2025 top and rollover, 2026 downtrend). The OUR sample covers 2024-12-02 .. 2026-10-22 only; its phase mix is printed in RESULT.md. The question is asked inside a 7-week downtrend low, so the DOWN phase and the deep-drawdown buckets are the cells that matter; the other phases are controls.
 
 ## Data (rows are labelled OUR or PUBLIC everywhere)

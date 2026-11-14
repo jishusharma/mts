@@ -4,6 +4,10 @@ Question: does the one near-miss row of nk5-session-open-15-10-5-1114 ("NY-asia"
 Rule: NY-asia ALONE. Exactly the source rule and parameters (study.py here is the source study.py with every other row removed; no new parameter, no new exit). Source study read from branch JIS-NB/nk5-session-open-15-10-5-1114.
 
 ## Context
+Regime: see the Context text of this section (label line added at ship 2026-11-14)
+Phase: see the Context text of this section (label line added at ship 2026-11-14)
+Session: see the Context text of this section (label line added at ship 2026-11-14)
+Entry: see the Context text of this section (label line added at ship 2026-11-14)
 Phase for UTC day D uses data to the close of D-1 only (daily bars from 5m): slope = SMA20(close)[D-1] - SMA20(close)[D-6]; ADX(14) Wilder with +DI/-DI. UP: ADX>=20, +DI>-DI, slope>0. DOWN: ADX>=20, -DI>+DI, slope<0. Else RANGE. (ADX 20 = operator order; 5-day slope window OURS, unchanged from source.)
 Matched direction: UP long only; DOWN short only; RANGE fade both ways. Mismatched direction not traded here (control rows are not part of this test).
 Regime mix: reported in RESULT.md (share of coin-days UP/DOWN/RANGE over the fresh universe, trades by phase, long/short split). The source VAL mix was RANGE 39.9 / DOWN 35.6 / UP 24.6.

@@ -356,3 +356,5 @@ Last bar 2026-11-13: BTC 68,954 (low of the forming bar 67,568; the 67,468 in th
 What it would take: price makes a lower low while RSI/WT print above the table values (1D RSI above 25.4, 4H above 16.7). If the low extends to the 57.8k area, the bar to beat on 1D is RSI 37.2 (the 2026-07-01 pivot; 30.5 at the low before it) and on 1W RSI 34.2 (pivot week 2026-06-01; 31.8 before). Confirmation levels (study definitions): close back above the lower band (4H 67,704; 1D 70,517; 3D 71,747); close above the last swing high between the two lows (4H 74,811; 1D 81,196; 3D 84,898; 1W 87,396); 20-bar mean (4H 72,030; 1D 76,744; 3D 80,657; 1W 74,095); MACD above its signal (MACD minus signal now: 4H -318, 1D -679, 3D -1,830, 1W -156). Last confirmed bullish RSI divergence outside the lower band: 4H pivot 2026-11-10 (72,727); 1D 2026-10-15 (79,800, since undercut); 3D 2025-10 (102,000); 1W 2026-06-01 (59,131).
 
 Raw per-timeframe output: btc_now.md.
+
+Regime mix: NOT_IN_DATA, because this result was written before the regime-mix rule; the regime share of its window was not computed (line appended at ship, 2026-11-14)

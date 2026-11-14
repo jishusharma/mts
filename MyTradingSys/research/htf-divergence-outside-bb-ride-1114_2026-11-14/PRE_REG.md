@@ -13,3 +13,10 @@ Stats: n, win rate (net R>0), mean net R, median hold (days), bootstrap 95% CI o
 Phase (known at signal time, daily SMA200 d of that symbol): bull = close>SMA200 and SMA200 rising over 30d; bear = close<SMA200 and falling; base = everything else; n/a before 200d warmup.
 Equity curve: BTC, one position at a time, long+short flip on opp signals (confirm none), compounding, 12 bp per trade, per TF and osc; plus long-only and short-only; vs buy and hold.
 No parameter tuning after seeing outcomes. All thresholds above are OURS (not the trader's).
+
+## Context
+(Appended 2026-11-14 when this branch was shipped; no result or parameter is changed by this note.)
+Regime: none, because the study was frozen before the context gate (CONTEXT_FILTER_REVIEW_2026-11-04) was enforced and tests its trigger as written
+Phase: none, because as above
+Session: none, because as above
+Entry: none, because as above (entry rule is the one in this PRE_REG)

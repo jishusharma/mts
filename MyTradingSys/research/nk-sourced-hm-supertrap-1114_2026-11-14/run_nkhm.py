@@ -1,4 +1,4 @@
-"""Run the PRE_REG study: python run.py -> results.json. Two worker processes below-normal priority (+ this one idle = 3 processes)."""
+"""Run the PRE_REG study: python run_nkhm.py -> results.json. Two worker processes below-normal priority (+ this one idle = 3 processes)."""
 import ctypes
 import json
 import multiprocessing as mp
