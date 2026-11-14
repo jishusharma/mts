@@ -1,5 +1,0 @@
-cmd: python scripts/dev/prereg_gate.py --n 118 --sd 5.79 --cost 0.01 --m 2 --sd-source F:/MTS/data_cache/binance/combo-edge-miner-1114/dev_cells.csv:206
-inputs: miner Cell A (ADX_DI+VOLX, 1d, long, UP_E, RIDE): DEV n=118, days=87 (day clusters), se12=0.6207 R (day-cluster SE of the mean, miner.py cluster_stats L508-518); sd = se12*sqrt(days) = 5.79 R (approximation of per-trade sd; the csv holds no per-trade sd); cost 0.01 R = feeR 0.0070 rounded up
-n 118 sd 5.79 m 2 z_holm 2.241 MDE 1.642 R + cost 0.01 = 1.652 vs max plausible gross 0.3; n needed 3785
-BLOCK: do not freeze (write BLOCKED.md with these numbers)
-exit code: 1
