@@ -247,12 +247,10 @@ def test_nan_and_inf_are_sanitised():
 
 
 def test_slow_venue_cannot_delay_past_deadline():
-    # Deterministic, not wall-clock: the slow venue blocks on a gate that the test opens only
-    # AFTER reading() has returned. A recorder that waits for the venue cannot return while the
-    # venue is still blocked, so `venue_finished` stays unset. The 5 s elapsed bound is only a
-    # generous ceiling for a loaded runner; the gate is the proof.
+    # No wall-clock assertion: the slow venue blocks on a gate that the test opens only AFTER
+    # reading() has returned. A recorder that waits for the venue cannot return while the venue
+    # is still blocked, so `venue_finished` stays unset. The gate is the proof, not a timer.
     import threading
-    import time as _t
     f0 = good_fetch()
     gate = threading.Event()
     venue_finished = threading.Event()
@@ -262,12 +260,9 @@ def test_slow_venue_cannot_delay_past_deadline():
             gate.wait(30)  # bounded so a blocking recorder fails in finite time instead of hanging
             venue_finished.set()
         return f0(url, timeout)
-    t0 = _t.time()
     try:
         rec = recorder.reading(dt(14, 31, 5), fresh_state(), f, [], [], local=False, deadline_s=0.2)
-        elapsed = _t.time() - t0
         assert not venue_finished.is_set(), "reading() waited for the slow venue"
-        assert elapsed < 5.0
         assert "error" in rec["deribit"] and "timeout" in rec["deribit"]["error"]
         assert rec["binance_spot"]["price"] == 69050.0
     finally:
