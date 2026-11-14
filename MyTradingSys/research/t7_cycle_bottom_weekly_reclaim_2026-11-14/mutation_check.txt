@@ -1,0 +1,14 @@
+baseline:
+Ran 21 tests in 0.451s  OK 
+M1 stop checks close instead of low (stop-wins-ties broken):
+Ran 21 tests in 0.216s  FAILED (failures=1) 
+M2 entry on signal bar (d0 = s, look-ahead):
+Ran 21 tests in 0.254s  FAILED (failures=2) 
+M3 private fee constant 0.001:
+Ran 21 tests in 0.208s  FAILED (failures=1) 
+M4 SMA window shifted one week ahead (look-ahead cross):
+Ran 21 tests in 0.260s  FAILED (failures=1) 
+M5 DD threshold 0.50:
+Ran 21 tests in 0.265s  FAILED (failures=1) 
+M6 stop floor removed (ATR only):
+Ran 21 tests in 0.452s  FAILED (failures=1, errors=1) 

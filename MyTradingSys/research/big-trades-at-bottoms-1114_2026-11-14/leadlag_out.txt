@@ -1,0 +1,5 @@
+1m n days 67 bottom-quintile flow days 14 mean next-24h ret 0.08% vs all -0.53% share up 64% vs 46%
+b50 n days 67 bottom-quintile flow days 14 mean next-24h ret -0.34% vs all -0.53% share up 57% vs 46%
+thr  n_days  corr(flow24, past24h ret)  corr(flow24, next24h ret)  spearman past  spearman next
+ 1m      67                      0.452                      0.053          0.550         -0.050
+b50      67                      0.307                      0.075          0.433         -0.009
