@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T07:09:56Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/PV9HZB8Sb8Q/EXTRACT.md"
   ],
@@ -17,6 +18,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "bcae51b5f4b6",
+      "ref": "bcae51b5f",
+      "utc": "2026-11-14T07:09:56Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Result: 7 NK caption files + 7 Gemini extract cards ready",
@@ -27,13 +34,19 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: already completed in bcae51b5f4b6",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T06:49:30Z",
   "refs": [],
-  "result": "",
+  "result": "bcae51b5f4b6",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/nk_stocktalk_1113/interviews/PV9HZB8Sb8Q/"
   ],
@@ -43,12 +56,13 @@
   "sources": [
     "NK interviews 1114"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/nk_stocktalk_1113/interviews/PV9HZB8Sb8Q/CAPTIONS_timed.txt (shipped on trunk; the only source; never watch the video, never invent text). Create raw_transcripts_canonical/PV9HZB8Sb8Q_raw.txt by stripping the [HH:MM:SS] prefixes and any header from CAPTIONS_timed.txt (git-ignored dir, mkdir -p).",
     "Write MyTradingSys/research/nk_stocktalk_1113/interviews/PV9HZB8Sb8Q/EXTRACT.md in the format of MyTradingSys/research/nk_stocktalk_1113/interviews/EXTRACT.md (quote block, Source GPS tag, bullet with timestamp). Captions are auto-generated Hindi/English with garbles; quote them as they are. Only rules, no biography.",
     "Run python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/PV9HZB8Sb8Q/EXTRACT.md; fix or drop failing quotes until exit 0. Commit EXTRACT.md only."
   ],
+  "taken": "2026-11-14T07:09:56Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Extract NK trading rules from caption file of YouTube video PV9HZB8Sb8Q into MyTradingSys/research/nk_stocktalk_1113/interviews/PV9HZB8Sb8Q/EXTRACT.md with verified quotes",
   "weight": "",
