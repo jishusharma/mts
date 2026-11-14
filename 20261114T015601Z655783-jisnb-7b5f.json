@@ -1,0 +1,1 @@
+{"t": "20261114T015601Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: test_gate_impact.py 35/35 OK locally after removal (5 FAIL 'live' != 'smoke' before); bisect a109041a..fast-track names b718df36f (nkp3 study code) as first bad. Folder plus its costs.csv", "login": "C", "sid": "a665f56bda"}
