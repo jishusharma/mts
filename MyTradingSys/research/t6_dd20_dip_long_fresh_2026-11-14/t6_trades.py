@@ -59,7 +59,7 @@ def main(cache=CACHE):
         evs = core.events_dd20(c)
         tr = core.event_trades(c, f)
         info.update(kept=True, events=len(evs), trades=len(tr), skipped_incomplete_window=len(evs) - len(tr),
-                    funding_prints=0 if f is None else int(len(f.ts)))
+                    n_prints=0 if f is None else int(len(f.ts)))
         kept.append(name)
         cov[name] = info
         for r in tr:

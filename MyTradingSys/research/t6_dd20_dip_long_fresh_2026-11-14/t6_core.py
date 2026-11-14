@@ -16,9 +16,9 @@ sys.path.insert(0, str(_BT))
 import fees  # noqa: E402  SOURCED constants
 
 DAY = 86400000
-RT_COST = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13          # round trip, fraction of price
-FLAT_BP_PER_SLOT = 1.0                                            # OURS: 1 bp per 8 h slot paid by the long
-FLAT_PER_SLOT = FLAT_BP_PER_SLOT / 10000.0
+ROUND_TRIP = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13          # round trip, fraction of price
+SLOT_BASIS = 1.0                                            # OURS: 1 bp per 8 h slot paid by the long
+FLAT_PER_SLOT = SLOT_BASIS / 10000.0
 SLOTS_PER_DAY = 3
 DD_FACTOR = 0.80                                                  # SOURCED edge9 study.py
 DD_LOOKBACK = 8                                                   # SOURCED
@@ -150,7 +150,7 @@ def trade_at(coin, d0, fund=None):
         xd, delist = coin.n - 1, True
     entry_ms = int(coin.ms[d0])
     end_ms = int(coin.ms[xd]) + DAY
-    fee = RT_COST
+    fee = ROUND_TRIP
     exit_px = float(coin.c[xd])
     gross = exit_px / entry_px - 1.0
     fcost, flat = funding_cost(fund, entry_ms, end_ms)

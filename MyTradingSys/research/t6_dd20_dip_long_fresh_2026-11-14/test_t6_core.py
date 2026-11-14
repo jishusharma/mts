@@ -146,7 +146,7 @@ def test_fee_and_flat_funding_hand_numbers():
     c = _fee_world()
     t = core.trade_at(c, 70)
     assert abs(t["gross"] - 0.10) < 1e-12
-    assert abs(core.RT_COST - RT_HAND) < 1e-15
+    assert abs(core.ROUND_TRIP - RT_HAND) < 1e-15
     assert t["funding_rule"] == "FLAT" and abs(t["funding"] - 14 * 3 * 0.0001) < 1e-12     # 42 bp
     assert abs(t["net_nofund"] - (0.10 - RT_HAND)) < 1e-12
     assert abs(t["net"] - (0.10 - RT_HAND - 0.0042)) < 1e-12
