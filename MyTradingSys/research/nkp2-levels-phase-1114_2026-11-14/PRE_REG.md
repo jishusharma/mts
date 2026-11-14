@@ -3,6 +3,9 @@
 Operator order 2026-11-13: NK tests must be phase specific and use the MTS brains to find useful trades. Method: `MTS_BRAINS_SPEC_1114.md` (6 causal phases x 8 single-bucket context layers, DEV selection, frozen cells, VAL once). This study re-tests NK2 (pivot S/R reclaim) and NK3 (breakout retest / fakeout fade). Label: SOURCED = a named document or NK quote, OURS = our choice. No parameter here is the trader's.
 
 ## Context
+- Regime: BTC cycle state M (BEAR/BULL/BASE) and the 6-phase label; reported per phase.
+- Session: none, because signals are 1h bars at any UTC hour (no session gate; C8 UTC session is a context layer).
+- Entry: level-approach rules NK2/NK3 on 1h bars as specified below; entry at the next bar open.
 - Phase: one label per UTC day from BTC daily data through the prior close (lag 1), applied to all 20 coins. 6 phases, first match: CAPITULATION, MARKDOWN, RELIEF, ACCUM-RANGE, MARKUP, DISTRIBUTION. Tests, thresholds and the cycle state M (BEAR / BULL / BASE) are exactly spec s1 (thresholds OURS; M SOURCED from the cycle-conditioned PRE_REG). Built once in `F:\MTS\data_cache\mts_brains\phase_daily.csv` by `mts_phase.py` (git hash in its first line), history `btc_cycles_2026-11/btc_daily.csv` then Binance 15m.
 - Phase-appropriate direction: CAPITULATION long, MARKDOWN short, RELIEF long, ACCUM-RANGE both, MARKUP long, DISTRIBUTION short. The report never pools phases into one headline; every phase is a row.
 - Context layers C1-C8 and their buckets: spec s2, constants fixed there (C1 4h RSI14 40/60; C2 1D LazyBear WT1 +-53 (computed from FORMULAS s20.1, EMA seeded with the first value, 200-bar warm-up); C3 4h %B SMA20 2sd 0.10/0.90; C4 OI 24h +-3%; C5 funding mean of the last 3 settlements, 0 / 0.03%; C6 24h taker delta vs 24h price; C7 RV7/RV60 0.7/1.3; C8 UTC session of the signal-bar close hour: Asia 21-07, EU 07-13, US 13-21). A cell uses one layer.
