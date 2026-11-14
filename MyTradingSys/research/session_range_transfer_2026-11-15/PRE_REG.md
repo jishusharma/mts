@@ -23,8 +23,11 @@ Verdict lines for `verdicts.py check`: all 4 BLOCK rows are word overlaps (opr_*
 Honest prior: the with-trend control (random same-session entries) beat the events in Shape A, so the random-entry control below is a hard kill gate.
 
 ## Context / regime (Context-before-backtest gate)
+- Regime: by day, bull/range/bear = D close vs SMA20 +-2 % (OURS, as with_trend_session), reported as `Regime mix:` plus by year; the verdict is on pooled DEV, regime rows are reported, never selected after the fact.
+- Phase: none, because this is a first-pass diagnostic on 2020-2023 pooled; phase-first testing is the testnet-forward stage (phase-first method), and the compress arm is the only context filter (Asia/London width in the lowest third of the last 20).
+- Session: UTC blocks, OURS: Asia 00-07 range transfers into London 07-10 (H1); London 07-13 range transfers into NY 13-16 (H2); late 21-24 not used.
+- Entry: first closed 15m bar whose CLOSE is beyond the prior session range, market entry at that close (taker, honest); no maker arm.
 - Window: DEV_EXT 2020-01-01..2021-12-31 and DEV 2022-01-01..2023-12-31 pooled (OPERATOR_DECISIONS D3-dev-ext); VAL 2024-01-01..2024-06-30 sealed until DEV passes; 2024-07+ never read here (holdout; the forward stage is testnet-forward).
-- Report `Regime mix:` per frozen PRE_REG: by day, bull/range/bear = D close vs SMA20 +-2 % (OURS, as with_trend_session), plus by year. Verdict is on the pooled DEV, regime rows are reported, not selected after the fact.
 - Symbols (10, OURS, all in `F:/MTS/data_cache/binance/<SYM>USDT_15m.npz`): BTC ETH SOL BNB XRP ADA DOGE LINK LTC AVAX. SOL/AVAX/DOGE start late (cache starts 2020-08, 2020-09, 2019-07); NOT_IN_DATA is counted, never filled.
 - Data: 15m closed bars only, UTC.
 
