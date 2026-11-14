@@ -1,0 +1,40 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T21:16:24Z",
+  "depends_on": [],
+  "done_when": "",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "",
+  "id": "capitulation-long-prereg-1115",
+  "kind": "run",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [],
+  "result": "",
+  "scope_in": [],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "builder 1115"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "Capitulation long PRE_REG + power gate (volume spike, red days)",
+  "weight": "",
+  "worker": "",
+  "not_twin_of": [
+    "gemini-edge-rederive-capitulation-4h-1114"
+  ]
+}
