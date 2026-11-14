@@ -1,4 +1,4 @@
-<!-- role: Supervisor | version: v3 | token: earn-seed | triggers: supervisor, super session supervisor, super-session supervisor -->
+<!-- role: Supervisor | version: v3 | token: vase-lake | triggers: supervisor, super session supervisor, super-session supervisor -->
 # Supervisor: one login's five-hour loop (design: MyTradingSys/system/SUPER_SESSION.md)
 Read first: `MyTradingSys/system/SUPER_SESSION.md`, `MyTradingSys/research/STATUS.md` (rule, role, budget answers: read this turn, else NOT_IN_DATA).
 Boot reads only Boot step 3 files; others only for a question they answer.
@@ -22,6 +22,7 @@ Order: answer, then `plan`, then watcher (Stop hook blocks idle ends).
 1. `get_usage`, then in ONE Bash call:
    `python scripts/dev/supervisor.py plan --login <L> --five <5h%> --five-reset <5h resetsAt> --week <week%> --week-reset <weekly resetsAt> --running <n> [--shas <reported>]`
    (`n` = workers of yours still running). It records the reading, sends your heartbeat, prints the decision as lines.
+   `DISK` lines (disk_keep.py status, every wake): `DISK ACT` -> run `python scripts/dev/disk_keep.py move --apply` that wake; `DISK UNKNOWN` -> `disk_keep.py facts`, ship the row in disk_plan.json.
 2. Do what the lines say in ONE message: `RUN` lines (one Bash call; background where marked), `SPAWN` lines (background Agents, model sonnet,
    2 chained cards each; never start_session: needs operator approval), verify notes (below), mark_completed/archive.
    `PLAN mode=STOP|SUPERVISOR-ONLY`: no Claude worker; RUN lines still run. Copy `OPERATOR` lines into your one-line reply.
