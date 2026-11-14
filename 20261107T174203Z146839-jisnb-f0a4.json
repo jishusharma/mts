@@ -1,1 +1,0 @@
-{"t": "20261107T174203Z", "from": "jis-nb/C", "to": "jis-laptop", "kind": "ask", "text": "Lead C: ship the Gemini (Argon) analysis of why the Fabio and Krown layers failed, with its implementation details after revalidation, now unshipped on the Lenovo; answer with the trunk path + sha.", "login": "C", "id": "q-7257c1", "type": "task", "wait": 30, "due": 90}
