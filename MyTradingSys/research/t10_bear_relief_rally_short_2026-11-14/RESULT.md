@@ -133,3 +133,16 @@ Rescue row (descriptive only, rally threshold 8%, never the verdict): VAL n 230,
 | STOP | 91 | 28 | -1.000 | 0.008 | -1.008 | -1.009 |
 | TARGET | 141 | 38 | +0.750 | 0.007 | +0.743 | +0.741 |
 | TIME | 127 | 43 | +0.140 | 0.006 | +0.134 | +0.131 |
+
+## Adversarial check
+
+Flag: MINOR. Final verdict: SIGN-FLIP (not a PASS). Checker re-derived SIGN-FLIP and agrees with the builder.
+
+- Independent pandas reimplementation from the spec text reproduced all 359 trades (244 DEV, 115 VAL); max relative difference 1e-7 (CSV rounding). Ex-best-2 -0.0773, ex-best-5 -0.2593, placebo rank 99.95%, block CI -0.278..+0.498 all match.
+- Order clean: freeze commit 8b2d39cf9 holds PRE_REG, code, tests; result commit 08dba7053 adds only result files. No look-ahead found.
+- Provenance caveat: the builder resumed a dead builder's worktree, so git cannot prove the first builder saw no outcomes before the freeze. Files found had no RESULT/results/trades and PRE_REG says "Seen results: none". The freeze commit predates any outcome read by the resuming builder.
+- The sign-flip label depends on the entry-day cycle label and the 10-day smoothing. With a one-day-lagged label BEAR is +0.047 (n 64) and the flip would not fire; with the raw unsmoothed column it still fires (BEAR -0.030 n 75, BULL +0.517 n 40). The frozen PRE_REG rule (entry-day label) stands.
+- Realized stops are often 15-35% (MATIC 21.9%, DASH 33.6%), against the spec's "typical 7-10%". Stop-out rate 25/115 in VAL. Fee R is only 0.008, so this does not change the result.
+- The ex-ENDED row equals the base row because there were 0 ENDED trades in both splits; it carries no information. 2018 has n 0 (first date with 30 alive coins is 2020-01-10).
+- The VAL mean is carried by three weeks: 2024-W35 (16 trades, +12.98 R), 2025-W46 (19 trades, +11.65 R), 2026-W08 (9 trades, +6.74 R). Together they exceed total VAL R (about +18.4), so without them the mean is negative. The positive mean must not be read as a bear-phase result; the BEAR stratum gross is +0.002.
+- Power gate was BLOCK (n 28 weeks vs 98 needed); reported, run went ahead. Result is positive but not significant: UNTESTED-grade for any edge claim.
