@@ -660,6 +660,15 @@ def _harness_tracked(out: str) -> bool:
     return q.suffix == ".output" and q.parent.name == "tasks" and q.is_file()
 
 
+def wait_cli_rc(rc: int) -> int:
+    """The shell exit of `wait`: a timeout is the normal quiet end of a watch, so 0 (2026-11-15: exit 3 read as a failure to the harness)."""
+    return 0 if rc == 3 else rc
+
+
+def wait_cli_message(rc: int, reason: str) -> str:
+    return f"{reason} (quiet, not a failure: run `plan`, act, re-arm `wait`)" if rc == 3 else reason
+
+
 def watchcheck(login: str | None = None, home=None, now: datetime | None = None, alive=None, tracked=None) -> tuple[int, str]:
     """Last call of every coordinator turn: exit 0 when a live, unexpired `wait` watcher marker exists AND that watcher is a harness
     background task (run_in_background), else (4, NO WAKE SOURCE ...). Fails closed. stall-fix-1104: a `&` watcher wakes nobody."""
@@ -2439,8 +2448,8 @@ def main(argv: list[str] | None = None) -> int:
             interval=args.interval,
             login=(args.login or "").strip().upper()[:1] or None,
         )
-        print(reason)
-        return rc
+        print(wait_cli_message(rc, reason))
+        return wait_cli_rc(rc)
     if args.cmd == "watchcheck":
         rc, msg = watchcheck((args.login or "").strip().upper()[:1] or None)
         print(msg)

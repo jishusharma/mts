@@ -141,12 +141,28 @@ def pages_line(repo, now=None, login=None, spawn=None, sid=None):
 PUBLISHER_ACCOUNTS = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}   # login letter -> registry account (artifacts.LOGIN_ACCOUNT)
 
 
-def check(repo=None, fetch=True):
+def once_per_session(repo, sid, behind):
+    """True when this session has not yet been told about this much lag (told again only when the lag has doubled); fails open."""
+    try:
+        gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
+        f = Path(gd) / ("mts_lag_seen_" + "".join(ch for ch in str(sid) if ch.isalnum() or ch in "-_")[:60])
+        if f.exists() and behind < 2 * int(f.read_text().strip() or 0):
+            return False
+        f.write_text(str(behind), encoding="utf-8")
+    except Exception:
+        pass
+    return True
+
+
+def check(repo=None, fetch=True, sid=None):
     repo = Path(repo or os.getcwd())
     if ".mts_live" in repo.resolve().parts:
         return ""
     behind, age = lag(repo, fetch=fetch)
-    return message(behind, age)
+    text = message(behind, age)
+    if text and sid and not once_per_session(repo, sid, behind):
+        return ""       # operator 2026-11-15: the same 1749-commit line rode every prompt of a session that cannot pull its checkout
+    return text
 
 
 def fast_forward(repo, fetch=True):
@@ -348,7 +364,7 @@ def main(argv):
         try:
             raw = sys.stdin.read() if argv[:1] == ["hook"] else ""
             cwd, sid = (payload_cwd(raw), payload_sid(raw)) if raw else (None, None)
-            text = check(cwd)
+            text = check(cwd, sid=sid)
             if ".mts_live" not in Path(cwd or os.getcwd()).resolve().parts:
                 text = chr(10).join(x for x in (text, pages_line(cwd or os.getcwd(), sid=sid)) if x)
         except Exception:
