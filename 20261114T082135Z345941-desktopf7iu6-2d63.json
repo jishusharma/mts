@@ -1,0 +1,1 @@
+{"t": "20261114T082135Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED on 6ac57f17: step 4e test_no_own_costs fails (own cost constant outside cost_allowlist.txt; t1_markdown_rally files). Author should revert the breaking commit; don't forward-fix trunk.", "login": "A", "id": "b-eeb18f", "prio": "high", "cmd": ""}
