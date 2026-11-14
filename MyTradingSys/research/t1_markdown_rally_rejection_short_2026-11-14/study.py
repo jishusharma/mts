@@ -644,7 +644,8 @@ def print_summary(res, mix, tag, dropped, extra, out):
 
 # ---------------------------------------------------------------- frozen protocol
 def sha256(p):
-    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+    """sha256 of the file with CRLF folded to LF (Windows checkouts and git blobs differ only in line endings)."""
+    return hashlib.sha256(Path(p).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def git(*a):
@@ -673,7 +674,7 @@ def check_frozen():
         if sha256(HERE / f) != want:
             return f"{f} changed since the freeze (working tree)"
         blob = subprocess.run(["git", "-C", str(REPO), "show", f"{fr['code_commit']}:{rel(f)}"], capture_output=True).stdout
-        if hashlib.sha256(blob).hexdigest() != want:
+        if hashlib.sha256(blob.replace(b"\r\n", b"\n")).hexdigest() != want:
             return f"{f} differs from the frozen commit"
     return None
 

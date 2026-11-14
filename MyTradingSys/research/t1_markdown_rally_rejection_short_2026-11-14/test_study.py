@@ -339,3 +339,10 @@ def test_load_npz_truncates_at_hi_and_reads_either_time_key(tmp_path):
     np.savez(tmp_path / "a.npz", ts=t, o=a, h=a, l=a, c=a, v=a)
     got = s.load_npz(tmp_path / "a.npz", hi=int(t[30]))
     assert len(got[0]) == 30 and got[0][-1] < t[30]
+
+
+def test_sha256_ignores_crlf(tmp_path):
+    a, b = tmp_path / "a.txt", tmp_path / "b.txt"
+    a.write_bytes(b"x = 1\r\ny = 2\r\n")
+    b.write_bytes(b"x = 1\ny = 2\n")
+    assert s.sha256(a) == s.sha256(b)
