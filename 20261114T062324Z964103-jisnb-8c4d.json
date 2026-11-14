@@ -1,0 +1,1 @@
+{"t": "20261114T062324Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship ci-sync-cwd-1114 Result: test_sync restores cwd in setUp/tearDown so a removed tree cannot leave os.getcwd() failing on Linux CI", "login": "C", "sid": "3d9b0fe6ca"}
