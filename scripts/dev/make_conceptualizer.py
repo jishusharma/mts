@@ -24,6 +24,7 @@ REPO = HERE.parents[1]
 SRC = REPO / "MyTradingSys" / "research" / "conceptualizer"
 TPL = HERE / "conceptualizer.tpl.html"
 OUT = REPO / "MyTradingSys" / "system" / "artifacts" / "conceptualizer.html"
+INDEX = REPO / "MyTradingSys" / "system" / "layer_index.json"  # layer families; every one must be wired to a Conceptualizer layer
 STATUSES = ("failed", "inconclusive", "promising", "untested")
 FIDELITY = ("match", "simplified", "distorted", "untested")
 TAGS = ("SOURCED", "OURS", "NOT_SEEN")  # NOT_SEEN = a slot of the trader's that no verified source states
@@ -34,8 +35,59 @@ NEEDED = ("id", "name", "who", "status", "quote", "rule", "ours", "params", "cod
 TEXT = ("id", "name", "who", "rule", "ours")  # must be non-empty strings
 
 
-def problems(data, src=SRC):
-    """Every row the page cannot render, as text (empty list = ok). Never raises on odd input."""
+def source_paths(cell):
+    """'a/b.md ; c/d.csv:12' -> ['a/b.md', 'c/d.csv']: repo-relative paths, optional :line or #anchor suffix dropped."""
+    return [re.sub(r"(:\d+(-\d+)?|#.*)$", "", x.strip()) for x in str(cell).split(";") if x.strip()]
+
+
+def family_ids(index=INDEX):
+    """Family ids of layer_index.json (None when the index cannot be read)."""
+    try:
+        return [f["id"] for f in json.loads(Path(index).read_text(encoding="utf-8"))["families"]]
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
+def wiring_problems(layers, families, repo=REPO):
+    """(a) every layer family of the index is claimed by a Conceptualizer layer's `families`; (b) every row of a layer's `tests`
+    names a source path (7th cell) that exists on disk under the repo. Never raises on odd input."""
+    out = []
+    claimed = set()
+    for L in layers:
+        if not isinstance(L, dict):
+            continue
+        fam = L.get("families")
+        if not (isinstance(fam, list) and fam and all(isinstance(x, str) for x in fam)):
+            out.append(f"layer {L.get('id')}: families must be a non-empty list of layer_index family ids")
+        else:
+            claimed.update(fam)
+            out += [f"layer {L.get('id')}: family {x!r} is not in layer_index.json" for x in fam if families is not None and x not in families]
+        tests = L.get("tests", [])
+        if not isinstance(tests, list):
+            out.append(f"layer {L.get('id')}: tests is not a list")
+            continue
+        for n, t in enumerate(tests):
+            tid = f"{L.get('id')}/test#{n}" + (f" ({t[0]})" if isinstance(t, list) and t and isinstance(t[0], str) else "")
+            if not (isinstance(t, list) and len(t) >= 6 and all(isinstance(x, str) for x in t)):
+                out.append(f"{tid}: test row needs 6 strings plus a source path")
+                continue
+            if len(t) < 7 or not t[6].strip():
+                out.append(f"{tid}: no source path")
+                continue
+            for sp in source_paths(t[6]):
+                pp = Path(sp)
+                if pp.is_absolute() or ".." in pp.parts or not (repo / pp).is_file():
+                    out.append(f"{tid}: source path {sp!r} does not exist in the repo")
+    if families is None:
+        out.append("layer_index.json unreadable: layer wiring cannot be checked")
+    else:
+        out += [f"layer family {f!r} (layer_index.json) has no Conceptualizer layer" for f in families if f not in claimed]
+    return out
+
+
+def problems(data, src=SRC, families=None, repo=REPO):
+    """Every row the page cannot render, as text (empty list = ok). Never raises on odd input.
+    families: layer_index family ids to wire (None = skip the wiring check; load() always passes the real ones)."""
     out = []
     layers = data.get("layers") if isinstance(data, dict) else None
     if not isinstance(layers, list):
@@ -79,12 +131,14 @@ def problems(data, src=SRC):
             d = c.get("diagram")
             if d and not (isinstance(d, str) and d.endswith(".svg") and "/" not in d and "\\" not in d and (src / "diagrams" / d).is_file()):
                 out.append(f"{cid}: diagram {d} missing (a .svg file name in diagrams/)")
+    if families is not None:
+        out += wiring_problems(layers, families, repo)
     return out
 
 
 def load(src=SRC):
     data = json.loads((src / "concepts.json").read_text(encoding="utf-8"))
-    bad = problems(data, src)
+    bad = problems(data, src, family_ids())
     if bad:
         raise SystemExit("conceptualizer: " + "; ".join(bad))
     for L in data["layers"]:

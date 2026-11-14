@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-14T00:31:19Z",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:51:21Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md exists, first line is N layers with no verdict row, and 3 briefs each have every field labelled SOURCED or OURS",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Cross-check MyTradingSys/system/LAYERS.md layer families against MyTradingSys/research/VERDICTS.csv and TRIAL_LEDGER.csv: list layers that have data in the cache but no verdict or trial row, and write 3 pre-registration briefs (hypothesis, entry, stop, cost 12 bp fee-net, DEV/VAL split, kill rule) labelled OURS. No outcomes computed.",
+  "id": "edge-untested-layers-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md",
+      "ref": "2d44f073a",
+      "utc": "2026-11-14T00:31:19Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: briefs complete",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:51:26Z",
+  "refs": [],
+  "result": "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "done",
+  "steps": [
+    "Parse VERDICTS.csv and TRIAL_LEDGER.csv (count rows, parse then count, never truncate); list layer ids seen.",
+    "Read LAYERS.md; table: layer, verdict rows, trial rows, data in cache (UNVERIFIABLE if cache absent).",
+    "Pick the 3 untested layers with data; write a brief for each: hypothesis, entry, stop, hold, 12 bp cost, DEV <= 2023-12-31 / VAL >= 2024-01-01, kill rule. Label OURS unless quoted from a transcript.",
+    "Write BRIEFS.md; commit on your gemini-q branch only. Do not compute any result."
+  ],
+  "taken": "2026-11-14T00:31:19Z",
+  "tests": "",
+  "title": "[GEMINI] Edge hunt: layers with no verdict row",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

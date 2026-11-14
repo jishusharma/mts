@@ -1,0 +1,22 @@
+label lag check (close_used == prior-day BTC close): 2872/2873 rows
+BTC: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+ETH: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+BNB: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+XRP: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+ADA: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+DOGE: 2019-07-05 12:00 .. 2026-11-13 20:45 rows 257882 gaps 18 filled 202
+SOL: 2020-08-11 06:00 .. 2026-11-13 20:45 rows 219326 gaps 10 filled 94
+LTC: 2019-01-01 00:00 .. 2026-11-13 20:45 rows 275622 gaps 21 filled 270
+LINK: 2019-01-16 10:00 .. 2026-11-13 20:45 rows 274142 gaps 21 filled 270
+TRX: 2019-01-01 00:00 .. 2026-11-13 20:45 rows 275622 gaps 21 filled 270
+DOT: 2020-08-18 23:00 .. 2026-11-13 20:45 rows 218586 gaps 10 filled 94
+AVAX: 2020-09-22 06:30 .. 2026-11-13 20:45 rows 215292 gaps 10 filled 94
+ATOM: 2019-04-29 04:00 .. 2026-11-13 20:45 rows 264302 gaps 20 filled 246
+ETC: 2019-01-01 00:00 .. 2026-11-13 20:45 rows 275622 gaps 21 filled 270
+BCH: 2019-11-28 10:00 .. 2026-11-13 20:45 rows 243923 gaps 15 filled 153
+XLM: 2019-01-01 00:00 .. 2026-11-13 21:00 rows 275623 gaps 21 filled 270
+UNI: 2020-09-17 03:00 .. 2026-11-13 21:00 rows 215787 gaps 10 filled 94
+NEAR: 2020-10-14 05:00 .. 2026-11-13 21:00 rows 213187 gaps 10 filled 94
+FIL: 2020-10-15 17:00 .. 2026-11-13 21:00 rows 213043 gaps 10 filled 94
+ALGO: 2019-06-22 00:00 .. 2026-11-13 21:00 rows 259179 gaps 18 filled 202
+overall FAIL

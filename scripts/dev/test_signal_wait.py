@@ -110,3 +110,14 @@ def test_supervisor_wait_without_signals_keeps_interval(tmp_path):
         probe=lambda repo, shas: {"shas": {}, "ci_red": False, "busy_slots": 0},
         fetcher=lambda repo: None, sleeper=sleeps.append)
     assert rc == 3 and sleeps == [300, 300]
+
+
+def test_repeat_gate_shows_an_unchanged_block_once_per_hour(tmp_path, monkeypatch):
+    monkeypatch.setattr(S, "state_dir", lambda: tmp_path)
+    a = "[MTS ASK q-1 to A] told, 1233 min old; OVERDUE"
+    b = "[MTS ASK q-1 to A] told, 1234 min old; OVERDUE"        # only the age ticked
+    assert S.repeat_gate("s1", a, now_s=1000) == a
+    assert S.repeat_gate("s1", b, now_s=1060) == ""             # same block: silent
+    assert S.repeat_gate("s2", b, now_s=1060) == b              # another session still sees it
+    assert S.repeat_gate("s1", a + "\n[MTS BROADCAST b-9 status]", now_s=1120) != ""   # changed: shown
+    assert S.repeat_gate("s1", a, now_s=1120 + 3700) == a       # unchanged but an hour old: shown again

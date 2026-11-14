@@ -1,0 +1,52 @@
+{
+ "BTC": {
+  "bars": 109519,
+  "gaps": 0,
+  "signals": 6216
+ },
+ "ETH": {
+  "bars": 109519,
+  "gaps": 0,
+  "signals": 6265
+ },
+ "SOL": {
+  "bars": 109519,
+  "gaps": 0,
+  "signals": 6256
+ },
+ "XRP": {
+  "bars": 109519,
+  "gaps": 0,
+  "signals": 6251
+ },
+ "DOGE": {
+  "bars": 109519,
+  "gaps": 0,
+  "signals": 6282
+ },
+ "BNB": {
+  "bars": 109520,
+  "gaps": 0,
+  "signals": 6233
+ },
+ "ADA": {
+  "bars": 109520,
+  "gaps": 0,
+  "signals": 6196
+ },
+ "LINK": {
+  "bars": 109520,
+  "gaps": 0,
+  "signals": 6147
+ },
+ "LTC": {
+  "bars": 109520,
+  "gaps": 0,
+  "signals": 6193
+ },
+ "AVAX": {
+  "bars": 109520,
+  "gaps": 0,
+  "signals": 6191
+ }
+}

@@ -1,0 +1,34 @@
+== dev summary ==
+Regime mix (days per phase from the phase table): {"DEV": {"no-label": 0, "CAPITULATION": 52, "MARKDOWN": 434, "RELIEF": 154, "ACCUM-RANGE": 333, "MARKUP": 605, "DISTRIBUTION": 248, "total_days": 1826}, "VAL": {"no-label": 0, "CAPITULATION": 6, "MARKDOWN": 198, "RELIEF": 34, "ACCUM-RANGE": 156, "MARKUP": 321, "DISTRIBUTION": 333, "total_days": 1048}}
+dropped coins (<730 d or missing): {}
+phase verification: {"days_checked": 1826, "md_table_and_t2": 434, "md_table_not_t2": 0, "t2_not_md_table_capitulation": 44, "t2_not_md_table_other": 0, "no_data": 0, "close_used_vs_prev_close_mismatch": 0}
+-- sample primary (20 coins) --
+  main: n 5320 days 407 win 0.437 be_win 0.464 gross 0.0113 cost 0.0744 net -0.0631 CI[-0.1409,0.0142] exbest5 -0.0950 sd_net 1.2103 hold24_gross 0.0540 hold24_net -0.0204 stop/target/time 0.55/0.40/0.05
+  no_hm: n 6185 days 412 win 0.437 be_win 0.467 gross 0.0065 cost 0.0741 net -0.0676 CI[-0.1402,0.0065] exbest5 -0.0976 sd_net 1.2039 hold24_gross 0.0559 hold24_net -0.0181 stop/target/time 0.54/0.40/0.05
+  no_vwap: n 6573 days 429 win 0.426 be_win 0.453 gross 0.0124 cost 0.0754 net -0.0629 CI[-0.1359,0.0098] exbest5 -0.0939 sd_net 1.2471 hold24_gross 0.1459 hold24_net 0.0706 stop/target/time 0.56/0.39/0.05
+  neither: n 9558 days 433 win 0.421 be_win 0.443 gross 0.0227 cost 0.0759 net -0.0532 CI[-0.1171,0.0091] exbest5 -0.0779 sd_net 1.2791 hold24_gross 0.1506 hold24_net 0.0748 stop/target/time 0.56/0.37/0.06
+  control_non_md: n 17443 days 1331 win 0.415 be_win 0.456 gross -0.0260 cost 0.0679 net -0.0940 CI[-0.1334,-0.0530] exbest5 -0.1058 sd_net 1.2193 hold24_gross -0.1172 hold24_net -0.1852 stop/target/time 0.57/0.38/0.05
+  maker_6bp: n 5073 fill_ratio 0.937 gross -0.0335 cost 0.0371 net -0.0706 CI[-0.1482,0.0049]
+  placebo: n 5320 real_net -0.0631 placebo_mean -0.0528 EXCESS -0.0103 p 0.7283
+  signals per phase (trigger+HM+VWAP): {"no-label": 0, "CAPITULATION": 1105, "MARKDOWN": 10029, "RELIEF": 3601, "ACCUM-RANGE": 7932, "MARKUP": 15192, "DISTRIBUTION": 5213}
+  verdict (this split only, PRE_REG bar): FAIL
+-- sample secondary (20 coins) --
+  main: n 4977 days 409 win 0.447 be_win 0.465 gross 0.0386 cost 0.0792 net -0.0406 CI[-0.1230,0.0381] exbest5 -0.0764 sd_net 1.2047 hold24_gross 0.1372 hold24_net 0.0580 stop/target/time 0.53/0.41/0.06
+  no_hm: n 5670 days 415 win 0.450 be_win 0.464 gross 0.0485 cost 0.0792 net -0.0307 CI[-0.1064,0.0455] exbest5 -0.0637 sd_net 1.2101 hold24_gross 0.1593 hold24_net 0.0802 stop/target/time 0.52/0.41/0.06
+  no_vwap: n 6084 days 427 win 0.431 be_win 0.455 gross 0.0243 cost 0.0799 net -0.0556 CI[-0.1292,0.0210] exbest5 -0.0895 sd_net 1.2388 hold24_gross 0.1595 hold24_net 0.0796 stop/target/time 0.54/0.39/0.07
+  neither: n 8841 days 431 win 0.421 be_win 0.443 gross 0.0290 cost 0.0805 net -0.0514 CI[-0.1181,0.0173] exbest5 -0.0774 sd_net 1.2749 hold24_gross 0.1480 hold24_net 0.0675 stop/target/time 0.55/0.37/0.08
+  control_non_md: n 16209 days 1333 win 0.426 be_win 0.458 gross 0.0007 cost 0.0739 net -0.0732 CI[-0.1120,-0.0346] exbest5 -0.0859 sd_net 1.2122 hold24_gross -0.1301 hold24_net -0.2040 stop/target/time 0.55/0.39/0.06
+  maker_6bp: n 4823 fill_ratio 0.962 gross 0.0137 cost 0.0396 net -0.0259 CI[-0.1067,0.0546]
+  placebo: n 4977 real_net -0.0406 placebo_mean -0.0485 EXCESS 0.0079 p 0.3287
+  signals per phase (trigger+HM+VWAP): {"no-label": 0, "CAPITULATION": 1066, "MARKDOWN": 10012, "RELIEF": 3366, "ACCUM-RANGE": 7688, "MARKUP": 14409, "DISTRIBUTION": 5356}
+  verdict (this split only, PRE_REG bar): FAIL
+-- sample pooled (40 coins) --
+  main: n 10297 days 419 win 0.442 be_win 0.465 gross 0.0245 cost 0.0767 net -0.0522 CI[-0.1277,0.0231] exbest5 -0.0853 sd_net 1.2076 hold24_gross 0.0942 hold24_net 0.0175 stop/target/time 0.54/0.41/0.05
+  no_hm: n 11855 days 422 win 0.443 be_win 0.465 gross 0.0265 cost 0.0765 net -0.0500 CI[-0.1233,0.0232] exbest5 -0.0811 sd_net 1.2070 hold24_gross 0.1054 hold24_net 0.0289 stop/target/time 0.53/0.41/0.06
+  no_vwap: n 12657 days 432 win 0.428 be_win 0.454 gross 0.0181 cost 0.0776 net -0.0594 CI[-0.1268,0.0113] exbest5 -0.0908 sd_net 1.2431 hold24_gross 0.1524 hold24_net 0.0749 stop/target/time 0.55/0.39/0.06
+  neither: n 18399 days 433 win 0.421 be_win 0.443 gross 0.0258 cost 0.0781 net -0.0523 CI[-0.1148,0.0104] exbest5 -0.0776 sd_net 1.2771 hold24_gross 0.1494 hold24_net 0.0713 stop/target/time 0.56/0.37/0.07
+  control_non_md: n 33652 days 1355 win 0.420 be_win 0.457 gross -0.0132 cost 0.0708 net -0.0840 CI[-0.1217,-0.0465] exbest5 -0.0958 sd_net 1.2159 hold24_gross -0.1234 hold24_net -0.1943 stop/target/time 0.56/0.39/0.06
+  maker_6bp: n 9896 fill_ratio 0.949 gross -0.0105 cost 0.0383 net -0.0488 CI[-0.1241,0.0262]
+  placebo: n 10297 real_net -0.0522 placebo_mean -0.0505 EXCESS -0.0017 p 0.5554
+  signals per phase (trigger+HM+VWAP): {"no-label": 0, "CAPITULATION": 2171, "MARKDOWN": 20041, "RELIEF": 6967, "ACCUM-RANGE": 15620, "MARKUP": 29601, "DISTRIBUTION": 10569}
+  verdict (this split only, PRE_REG bar): FAIL

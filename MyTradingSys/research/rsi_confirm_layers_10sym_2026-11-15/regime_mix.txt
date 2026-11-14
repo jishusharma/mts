@@ -1,0 +1,4 @@
+DEV 2020-03-01..2023-12-31: 200 weeks: bull 39 (20%) | bear 0 (0%) | range 161 (80%) | n/a 0 (0%)
+VALIDATION 2024-01-01..2026-11-14: 150 weeks: bull 58 (39%) | bear 0 (0%) | range 92 (61%) | n/a 0 (0%)
+VAL first half 2024-01-01..2025-06-30: 79 weeks: bull 50 (63%) | bear 0 (0%) | range 29 (37%) | n/a 0 (0%)
+VAL second half 2025-07-01..2026-11-14: 71 weeks: bull 8 (11%) | bear 0 (0%) | range 63 (89%) | n/a 0 (0%)

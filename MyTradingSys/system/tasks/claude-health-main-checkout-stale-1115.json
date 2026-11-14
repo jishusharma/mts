@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-14T19:20:04Z",
+  "depends_on": [],
+  "done_when": "Shipped with a test that fails on the old code; before/after bytes in the commit",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Find who writes mts_pages_seen_<sid> and mts_pages_stale.json at the main checkout root (untracked strays).",
+  "id": "claude-health-main-checkout-stale-1115",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 7 file(s)",
+      "ref": "6670219dec33",
+      "utc": "2026-11-13T00:10:03Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Doctor HOOK-REG WARN: main checkout 1759 commits behind; hooks load from it. Fast-forward is the checkout owner's call; pages_line writes its marker under the git dir, so another writer exists.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:20:21Z",
+  "refs": [
+    "B212"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/trunk_lag.py"
+  ],
+  "scope_out": [
+    "CLAUDE.md; .mts_live; secrets"
+  ],
+  "scope_sha": "6670219dec33",
+  "size": "S",
+  "sources": [
+    "gemini-revalidate-1115"
+  ],
+  "state": "ready",
+  "steps": [
+    "Doctor HOOK-REG WARN: main checkout 1759 commits behind; hooks load from it. Fast-forward is the checkout owner's call; pages_line writes its marker under the git dir, so another writer exists."
+  ],
+  "tests": "python scripts/dev/run_all_tests.py --quick",
+  "title": "Main checkout is 1700+ commits behind and carries stray mts_pages_seen_*/mts_pages_stale.json at its root",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

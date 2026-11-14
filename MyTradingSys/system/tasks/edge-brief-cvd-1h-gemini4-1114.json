@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T04:57:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114d/edge-brief-cvd-1h/BRIEF.md exists with a first-line verdict BRIEF READY or NO DATA, a cell table of at least 3 pre-registered cells (rule, TF, fee-net horizon, n floor) and a data-coverage line citing the file name and row count",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read indicator_rulebooks/CVD.md and MyTradingSys/data/klines (BTCUSDT 5m/15m/1h json). State what CVD-based rule is testable with the cached data only, count the rows, and write a PRE-REG-style brief (cells, entry/stop/target, fee-net, DEV/VAL split, n floor, kill criterion). Do not run the study; skip lookahead-prone cells. Label each parameter SOURCED or OURS.",
+  "id": "edge-brief-cvd-1h-gemini4-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill4 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T04:57:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114d/edge-brief-cvd-1h/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read CVD.md and check whether cached klines carry taker-buy volume (parse the json, count fields and rows).",
+    "Choose 3-6 cells with a SOURCED rule quote; mark parameters OURS where not from the rule book.",
+    "Check cells against FORMULAS.md fee-net definitions; no lookahead.",
+    "Write BRIEF.md in MyTradingSys/research/layer_lab/gemini_1114d/edge-brief-cvd-1h/. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Edge-hunt brief: CVD layer on 1h cache",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

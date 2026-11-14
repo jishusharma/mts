@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:51:10Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/rederive-us-open-first3m/REDERIVE.md exists with a first-line verdict (AGREE / DISAGREE / UNVERIFIABLE) and a claim table of at least 4 rows, each with a file:line",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-derive the headline verdict of MyTradingSys/research/us_open_first3m_2026-11-11 from its PRE_REG.md rule and its cells or results files, without reading the report first. Then compare with the report: same verdict, n and mean, or list every mismatch.",
+  "id": "rederive-us-open-first3m-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:51:15Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/rederive-us-open-first3m/REDERIVE.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/us_open_first3m_2026-11-11/PRE_REG.md only (frozen rule: decision cell, threshold, n, cost). Write down the expected pass/fail test before opening results.",
+    "Open results.json in that folder; recompute n, mean R and the PASS/FAIL call by your own arithmetic (show the formula). Data not on this machine: UNVERIFIABLE.",
+    "Only now read the RESULT or REPORT file; table: claim, claimed, recomputed, MATCH / MISMATCH / UNVERIFIABLE, file:line.",
+    "Write REDERIVE.md, first line AGREE / DISAGREE / UNVERIFIABLE. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind re-derivation: us-open-first3m verdict",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

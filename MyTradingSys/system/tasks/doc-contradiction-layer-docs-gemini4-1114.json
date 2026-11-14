@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T04:57:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114d/doc-contradiction-layer-docs/CONTRADICTIONS.md exists, first line is N CONTRADICTIONS / M CLEAN PAIRS, and each row cites both file:line quotes",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read these docs (not scanned by earlier gemini cards): MyTradingSys/system/INDICATOR_MAP.md, SPEC_INDICATOR_MAP.md, LAYER_INTEGRATION.md, PROMOTION_PIPELINE.md, LAB_RECIPES.md. List every pair of statements that disagree (numbers, names, who may do what, paths); each row quotes both sides with file:line and says which is newer by git log. Read-only.",
+  "id": "doc-contradiction-layer-docs-gemini4-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill4 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T04:57:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114d/doc-contradiction-layer-docs/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read: MyTradingSys/system/INDICATOR_MAP.md, SPEC_INDICATOR_MAP.md, LAYER_INTEGRATION.md, PROMOTION_PIPELINE.md, LAB_RECIPES.md.",
+    "Extract checkable claims (numbers, owners, paths, rules) into a list.",
+    "Compare across docs; confirm each hit with a verbatim quote from both.",
+    "Write CONTRADICTIONS.md in MyTradingSys/research/layer_lab/gemini_1114d/doc-contradiction-layer-docs/. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Doc contradiction scan: layer / indicator maps",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

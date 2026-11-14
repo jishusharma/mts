@@ -1,0 +1,11 @@
+{
+ "code_commit": "d87d6d24e5b8113736f5df0a26c9c31820cff1c0",
+ "sha256": {
+  "PRE_REG.md": "1f317b7bd0fa6db3014ff41de46e79e91ae1f30199bfe0b0ddadc924baec3899",
+  "study.py": "aaeb9d599431facac923aa22d400626a3635264ce3aab102d874b7915b740acc",
+  "fetch.py": "759acae7d73b31329144f923d10da3ee267f0469cd146e8b545dbe19835580e1",
+  "test_study.py": "39167b1c627997bfd34adb9e605d1781223059bc0dfd171f3f9fd2543fa1599f",
+  "verify_trades.py": "884d7f93092232c0b3b5b72445b1a51623c41eb038d554e011f1ff813e9cd24b"
+ },
+ "note": "DEV run and gate committed in this commit; frozen.json is committed separately right after. study.py val checks these hashes."
+}

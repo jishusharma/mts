@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T21:08:26Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py <RULES.md>"
   ],
@@ -14,7 +15,14 @@
   "id": "gemini-edge-mine-nk-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-nk-argon/RULES.md",
+      "ref": "1fe4460b4",
+      "utc": "2026-11-13T21:08:26Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,6 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-11-13T15:58:26Z",
   "refs": [],
+  "result": "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-nk-argon/RULES.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_edge_1113/mine-nk-argon/"
   ],
@@ -39,13 +53,14 @@
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only: MyTradingSys/research/nk_stocktalk_1113/flash_deep/ and flash/ (EXTRACT.md per video). No web, no memory.",
     "Write MyTradingSys/research/layer_lab/gemini_edge_1113/mine-nk-argon/RULES.md: table of 15 rules (id, indicator, extreme threshold, confirming candle, entry, stop, exit, timeframe, source file). A parameter the source does not state is NOT_STATED, never invented.",
     "Under each rule put the verbatim quote as > \"...\" then Source GPS: <id> | BEGIN|MIDDLE|END where the source has one. Run verify_extract_quotes.py on RULES.md until exit 0; commit on your gemini-q branch only.",
     "End with a ranked top 5 by fewest NOT_STATED fields."
   ],
+  "taken": "2026-11-13T21:08:26Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] argon twin: Mine 15 testable rules from NK extracts",
   "weight": "ROUTINE",

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T05:28:35Z",
   "commands": [
     "python scripts/dev/fetch_captions_timed.py --analyst Tom --status"
   ],
@@ -26,8 +27,10 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "note": "Gemini lane effort low. Hindi: see OPERATOR_DECISIONS 2026-11-13. Extract cards follow after SELECTED.md exists.",
+  "note": "superseded by 7a23a226f: trunk CATALOG/SELECTED are caption-verified (5 CAPTIONED); Gemini branch had LISTED-ONLY marks, invented SRP expansion, wrong dates",
+  "pinned": false,
   "prio": 2,
+  "reason": "superseded by 7a23a226f: trunk CATALOG/SELECTED are caption-verified (5 CAPTIONED); Gemini branch had LISTED-ONLY marks, invented SRP expansion, wrong dates",
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T14:17:30Z",
@@ -46,7 +49,7 @@
   "sources": [
     "Supervisor C 2026-11-13 relaying operator: NK StockTalk"
   ],
-  "state": "ready",
+  "state": "dropped",
   "steps": [
     "List the channel: python -c \"import sys;sys.path.insert(0,'scripts/dev');import yt_transcript_sites as y;print(y.list_channel('@NKStockTalk', n=200))\" (public transcript-site listing, no caption request); add anything Gemini search grounding finds, dated; never a proxy or cookies",
     "Caption language: run fetch_captions_timed.py --status first (no network); while BLOCKED do NOT fetch, write caption language as unknown_until_unlock with the unlock time; never guess",

@@ -1,0 +1,15 @@
+rule,split,level,subset,n,days,gross,cost,net
+NK2-core,VAL,S1,appropriate-direction trades,1561,338,-0.066813,0.10795,-0.17477
+NK2-core,VAL,S1,all trades,3214,681,-0.075588,0.10714,-0.18273
+NK2-core,VAL,P,appropriate-direction trades,8943,1005,0.047483,0.10855,-0.061069
+NK2-core,VAL,P,all trades,15267,1026,0.015617,0.10661,-0.090992
+NK2-core,VAL,R1,appropriate-direction trades,2055,470,0.15383,0.12551,0.02832
+NK2-core,VAL,R1,all trades,3242,740,0.060692,0.11939,-0.058696
+NK2-deep,VAL,S3,appropriate-direction trades,99,51,-0.14189,0.12144,-0.26333
+NK2-deep,VAL,S3,all trades,232,101,-0.13896,0.11822,-0.25719
+NK2-deep,VAL,S2,appropriate-direction trades,328,128,-0.10112,0.12053,-0.22165
+NK2-deep,VAL,S2,all trades,799,285,0.0020909,0.11599,-0.1139
+NK2-deep,VAL,R2,appropriate-direction trades,449,204,0.053927,0.1307,-0.076777
+NK2-deep,VAL,R2,all trades,718,334,0.043713,0.12732,-0.083608
+NK2-deep,VAL,R3,appropriate-direction trades,148,95,0.031539,0.13257,-0.10103
+NK2-deep,VAL,R3,all trades,236,151,0.058261,0.12574,-0.06748

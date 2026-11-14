@@ -222,8 +222,8 @@ a { color: var(--blue-soft); }
   }
 
   function tests(L) {
-    return '<div class="eyebrow">' + esc(L.name) + '</div><h2>Every test so far</h2><div class="scroll"><table><tr><th>Study</th><th>TF</th><th style="text-align:right">n</th><th style="text-align:right">Net (OURS)</th><th>Verdict</th><th>Lesson</th></tr>' +
-      L.tests.map(function (t) { return '<tr><td>' + esc(t[0]) + '</td><td>' + esc(t[1]) + '</td><td class="num">' + esc(t[2]) + '</td><td class="num">' + esc(t[3]) + '</td><td class="' + vcls(t[4]) + '" style="font:700 .82rem var(--mono)">' + esc(t[4]) + '</td><td class="small">' + esc(t[5]) + '</td></tr>'; }).join('') + '</table></div>';
+    return '<div class="eyebrow">' + esc(L.name) + '</div><h2>Every test so far</h2><div class="scroll"><table><tr><th>Study</th><th>TF</th><th style="text-align:right">n</th><th style="text-align:right">Net (OURS)</th><th>Verdict</th><th>Lesson</th><th>Source</th></tr>' +
+      L.tests.map(function (t) { return '<tr><td>' + esc(t[0]) + '</td><td>' + esc(t[1]) + '</td><td class="num">' + esc(t[2]) + '</td><td class="num">' + esc(t[3]) + '</td><td class="' + vcls(t[4]) + '" style="font:700 .82rem var(--mono)">' + esc(t[4]) + '</td><td class="small">' + esc(t[5]) + '</td><td class="small" style="font-family:var(--mono);word-break:break-all">' + esc(t[6] || '') + '</td></tr>'; }).join('') + '</table></div>';
   }
   function ideasView(L) {
     function tbl(rows, title, cls) {

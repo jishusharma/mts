@@ -1,0 +1,36 @@
+Mutation check: each line below breaks the code on purpose, runs test_t4_core.py, then restores the file (sha256 checked).
+
+baseline (unbroken code): exit 0; 35 passed in 9.23s
+MUTATION [t4_core.py] phase label keyed to the same day (look-ahead)
+  result: CAUGHT (1 failed, 34 passed in 12.29s); failing tests: test_phase_flag_reads_only_closes_before_the_entry_day; file restored: True
+MUTATION [t4_core.py] funding feature read from the same day (no lag)
+  result: CAUGHT (2 failed, 33 passed in 10.57s); failing tests: test_future_bars_do_not_change_signal_or_phase_flag, test_funding_feature_lags_one_day_and_same_day_read_is_caught; file restored: True
+MUTATION [t4_core.py] BRK5 window includes the current bar
+  result: CAUGHT (3 failed, 32 passed in 9.52s); failing tests: test_brk5_uses_prior_bars_only, test_world_has_natural_onsets, test_future_bars_do_not_change_signal_or_phase_flag; file restored: True
+MUTATION [t4_core.py] taker bias window includes the current bar
+  result: CAUGHT (1 failed, 34 passed in 10.11s); failing tests: test_nb_abs_bias_is_shifted_one_bar_hand_number; file restored: True
+MUTATION [t4_core.py] target wins a same-bar tie with the stop
+  result: CAUGHT (1 failed, 34 passed in 7.77s); failing tests: test_stop_wins_same_bar_tie_with_target; file restored: True
+MUTATION [t4_core.py] stop gap filled at the stop instead of the worse open
+  result: CAUGHT (1 failed, 34 passed in 7.03s); failing tests: test_stop_gap_fills_at_the_worse_open_and_target_at_target; file restored: True
+MUTATION [t4_core.py] funding sign flipped (longs would receive positive funding)
+  result: CAUGHT (2 failed, 33 passed in 7.81s); failing tests: test_funding_window_after_entry_open_up_to_and_including_exit_open, test_trade_row_net_r_against_a_hand_number; file restored: True
+MUTATION [t4_core.py] slippage dropped from the cost
+  result: CAUGHT (4 failed, 31 passed in 7.59s); failing tests: test_cost_is_twelve_basis_points_from_fees_py, test_net_r_hand_numbers, test_trade_row_net_r_against_a_hand_number, test_target_trade_hand_number_t3r; file restored: True
+MUTATION [t4_core.py] overlap filter removed
+  result: CAUGHT (3 failed, 32 passed in 8.23s); failing tests: test_greedy_overlap_hand_example, test_overlapping_signals_on_one_coin_are_skipped_and_later_one_taken, test_trades_respect_phase_split_and_entry_window; file restored: True
+MUTATION [t4_core.py] split by entry day instead of signal bar day
+  result: CAUGHT (1 failed, 34 passed in 7.34s); failing tests: test_split_by_signal_bar_not_entry_day; file restored: True
+MUTATION [t4_core.py] onset filter removed (every true bar is a signal)
+  result: CAUGHT (1 failed, 34 passed in 7.32s); failing tests: test_onset_only_first_true_bar_and_first_bar_never; file restored: True
+MUTATION [t4_core.py] return sign flipped (planted edge must disappear)
+  result: CAUGHT (8 failed, 27 passed in 7.20s); failing tests: test_stop_wins_same_bar_tie_with_target, test_stop_gap_fills_at_the_worse_open_and_target_at_target, test_stop_touch_exactly_counts_and_is_checked_from_the_entry_bar, test_ride_exit_at_next_open_after_close_at_or_below_prior_10d_low, test_time_exits_at_close_of_last_hold_bar_and_unresolved_at_data_end, test_trade_row_net_r_against_a_hand_number, test_target_trade_hand_number_t3r, test_planted_edge_is_found_by_the_stats_code; file restored: True
+MUTATION [t4_core.py] phase gate removed
+  result: CAUGHT (1 failed, 34 passed in 8.09s); failing tests: test_phase_gate_and_warmup; file restored: True
+MUTATION [t4_stats.py] ex-best weeks drops the worst weeks
+  result: CAUGHT (1 failed, 34 passed in 9.22s); failing tests: test_ex_best_weeks_hand_number; file restored: True
+MUTATION [t4_stats.py] bootstrap resamples one week only
+  result: CAUGHT (3 failed, 32 passed in 7.75s); failing tests: test_week_bootstrap_resamples_weeks_not_trades, test_planted_edge_is_found_by_the_stats_code, test_no_drift_world_reads_about_zero; file restored: True
+MUTATION [t4_stats.py] bootstrap p formula without the +1
+  result: CAUGHT (1 failed, 34 passed in 8.71s); failing tests: test_week_bootstrap_p_formula_and_sign; file restored: True
+after restore: exit 0; 35 passed in 7.84s

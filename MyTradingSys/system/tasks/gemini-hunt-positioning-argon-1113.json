@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T22:31:08Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/hunt_positioning/argon.md"
   ],
@@ -18,6 +18,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tf_iteration3_1113/hunt_positioning/argon.md",
+      "ref": "9402b8e75",
+      "utc": "2026-11-13T22:31:08Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Gemini gap hunts: cryptocred (both models), positioning, session_timing, volume_candles_ma",
@@ -28,7 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "END: positioning gap hunt complete on argon",
   "note": "Run as gemini_queue.py run gemini-hunt-positioning-argon-1113:low:argon. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request. Find the layer's transcripts from the LAYERS.md section 'funding, OI, whale and FlowHorse reads'. Twin card on the other model: compare in MODEL_COMPARE.",
   "prio": 1,
   "refine_tries": 0,
@@ -38,7 +44,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/tf_iteration3_1113/hunt_positioning/argon.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -57,7 +63,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Find the positioning transcripts in raw_transcripts_canonical via the LAYERS.md section; compare with that layer code",

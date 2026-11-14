@@ -1,0 +1,3 @@
+Regime mix: DEV (coin-days, 20 coins, n=39926, n/a excluded from %): UP 23.2%, BASE 8.4%, DOWN 4.6%, BEAR 51.6%, RANGE 12.2%
+Regime mix: VAL (coin-days, 20 coins, n=20404, n/a excluded from %): UP 19.2%, BASE 5.4%, DOWN 6.9%, BEAR 49.7%, RANGE 18.8%
+Regime mix: RECENT (coin-days, 20 coins, n=9500, n/a excluded from %): UP 14.5%, BASE 4.9%, DOWN 5.1%, BEAR 63.1%, RANGE 12.5%

@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T05:21:12Z",
   "commands": [
     "git status --short"
   ],
@@ -14,7 +15,14 @@
   "id": "gemini-edge-review-adx-di-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_edge_1113/review-adx-di-argon/REVIEW.md (SOUND)",
+      "ref": "a1ac9b626",
+      "utc": "2026-11-14T05:21:12Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,6 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-11-13T15:58:36Z",
   "refs": [],
+  "result": "MyTradingSys/research/layer_lab/gemini_edge_1113/review-adx-di-argon/REVIEW.md (SOUND)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_edge_1113/review-adx-di-argon/"
   ],
@@ -39,13 +53,14 @@
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files in MyTradingSys/research/adx_di_2026-11 and the scripts they import. Do not read other reviews of the same study.",
     "Recount each headline number from the code and data in the folder; where data is not on this machine say UNVERIFIABLE. Table: claim, claimed value, recounted value, MATCH / MISMATCH / UNVERIFIABLE.",
     "Look-ahead hunt: per feature name the bar timestamps used vs the entry bar. Fee hunt: state fee model, side, round-trip count. Cite file:line for every finding.",
     "Write MyTradingSys/research/layer_lab/gemini_edge_1113/review-adx-di-argon/REVIEW.md with a one-line verdict first (SOUND / FLAWED / UNVERIFIABLE); commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-14T05:21:12Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] argon twin: Blind review of adx-di study",
   "weight": "ROUTINE",
