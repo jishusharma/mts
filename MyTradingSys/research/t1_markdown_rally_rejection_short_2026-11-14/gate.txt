@@ -1,0 +1,5 @@
+# prereg_gate.py run 2026-11-14 on the DEV half. n = independent DEV MARKDOWN days (434, counted straight from phase_daily.csv with pandas, 2019-01-01..2023-12-31); sd = DEV primary-sample sd of per-trade net R (1.2103, dev_summary.txt line 6); cost = mean cost R at 12 bp (0.0744); m = auto + 1 new cell
+cmd: python scripts/dev/prereg_gate.py --n 434 --sd 1.2103 --cost 0.0744 --m auto --new-cells 1 --sd-source MyTradingSys/research/t1_markdown_rally_rejection_short_2026-11-14/dev_summary.txt:6
+n 434 sd 1.2103 m 249 z_holm 3.718 MDE 0.265 R + cost 0.0744 = 0.339 vs max plausible gross 0.3; n needed 598
+BLOCK: do not freeze (write BLOCKED.md with these numbers)
+exit 1

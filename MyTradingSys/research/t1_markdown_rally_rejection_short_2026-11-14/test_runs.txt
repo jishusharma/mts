@@ -1,0 +1,17 @@
+# test_study.py runs (synthetic only). 2026-11-14
+## clean
+..............................                                           [100%]
+30 passed in 5.04s
+## STUDY_BUG=1 (must FAIL causality tests)
+E         comparison failed
+FAILED test_study.py::test_pivots_use_only_prior_complete_day - assert (False)
+FAILED test_study.py::test_indicators_unchanged_when_future_bars_removed_or_poked[328]
+FAILED test_study.py::test_indicators_unchanged_when_future_bars_removed_or_poked[488]
+FAILED test_study.py::test_indicators_unchanged_when_future_bars_removed_or_poked[820]
+FAILED test_study.py::test_hm_and_vwap_read_at_signal_close - assert np.float...
+FAILED test_study.py::test_phase_for_day_uses_closes_through_prior_day_only
+FAILED test_study.py::test_zero_drift_gross_zero_net_minus_fee_and_planted_drift_reads
+7 failed, 23 passed in 4.33s
+## PHASE_LAG=0 (must FAIL the phase causality test)
+FAILED test_study.py::test_phase_for_day_uses_closes_through_prior_day_only
+1 failed, 29 passed in 4.68s
