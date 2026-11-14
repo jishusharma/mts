@@ -244,3 +244,4 @@ MyTradingSys/research/nkp1-session-rules-phase-1114_2026-11-14/study.py,27,FEE_M
 MyTradingSys/research/nkp2-levels-phase-1114_2026-11-14/nkcore.py,22,taker,12.0,bp,round_trip,taker,cost in nkp2-levels-phase-1114_2026-11-14,0,literal_in_text,"RT_BP = {""taker"": 12.0, ""maker"": 6.0}"
 MyTradingSys/research/nkp2-levels-phase-1114_2026-11-14/nkcore.py,22,maker,6.0,bp,round_trip,maker,cost in nkp2-levels-phase-1114_2026-11-14,0,literal_in_text,"RT_BP = {""taker"": 12.0, ""maker"": 6.0}"
 MyTradingSys/research/buyzone_test5_flowlead_2026-11-14/flow.py,11,(literal),0.0012,fraction,round_trip,n/a,cost in buyzone_test5_flowlead,0,literal_in_text,"FEES = {""12"": 0.0012, ""6"": 0.0006}"
+MyTradingSys/research/t10_bear_relief_rally_short_2026-11-14/t10_core.py,17,FEE_RT,2,fraction,round_trip,taker,fee in t10_bear_relief_rally_short_2026-11-14,1,assign,FEE_RT = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13      # round trip, fraction of price (12 bp)
