@@ -11,9 +11,9 @@ import nkp4_phases as PH, nkp4_study as ST, nkp4_stats as SS
 
 M15, H1, D1 = ST.M15, ST.H1, ST.D1
 T0 = 1_600_000_000_000 // D1 * D1
-# the three phase tests read the local BTC 15m cache (not in git, absent on CI): skip there, run on research machines
-needs_cache = pytest.mark.skipif(not (PH.ROOT / "binance_spot" / "BTCUSDT_15m.npz").exists(),
-                                 reason="local data_cache BTC 15m not present (CI)")
+# the three phase tests read the local BTC 15m cache (not in git). Research machines use the real daily
+# series; CI (no cache) runs the same tests on a deterministic synthetic daily series so the look-ahead checks always run.
+HAVE_CACHE = (PH.ROOT / "binance_spot" / "BTCUSDT_15m.npz").exists()
 
 
 def synth(days=130, seed=1):
@@ -31,6 +31,30 @@ def synth(days=130, seed=1):
                oi=dict(ts=hts, oi=1e6 * np.exp(np.cumsum(rng.normal(0, 0.01, nh)))),
                fund=dict(ts=T0 + np.arange(days * 3, dtype=np.int64) * 8 * H1, fr=rng.normal(0.0001, 0.0003, days * 3)))
     return D, aux
+
+
+def synth_btc_daily(seed=7):
+    """Deterministic daily BTC-like series 2015-01-01..2026-10-31 (in memory, nothing committed).
+    ~4.3k rows because the phase features need a 1400-day warm-up and the tests read 2019-06..2026-10."""
+    rng = np.random.default_rng(seed)
+    idx = pd.date_range("2015-01-01", "2026-10-31", freq="D")
+    t = np.arange(len(idx))
+    drift = 0.0015 * np.sin(2 * np.pi * t / 900.0)          # slow bull/bear cycles
+    c = 100 * np.exp(np.cumsum(drift + rng.normal(0, 0.035, len(idx))))
+    o = np.r_[c[0], c[:-1]]
+    h = np.maximum(o, c) * (1 + rng.uniform(0, 0.03, len(idx)))
+    l = np.minimum(o, c) * (1 - rng.uniform(0, 0.03, len(idx)))
+    return pd.DataFrame({"high": h, "low": l, "close": c}, index=idx)
+
+
+@pytest.fixture
+def btc_source(monkeypatch):
+    """Real cache when present; otherwise synthetic daily frame patched into PH.load_btc_daily."""
+    if HAVE_CACHE:
+        return PH.load_btc_daily()[0]
+    daily = synth_btc_daily()
+    monkeypatch.setattr(PH, "load_btc_daily", lambda: (daily, daily.iloc[0:0]))
+    return daily
 
 
 def poke(D, aux, i):
@@ -78,9 +102,8 @@ def test_every_context_layer_has_data_in_synth():
         assert (ctx[li] >= 0).any(), ST.LAYERS[li]
 
 
-@needs_cache
-def test_phase_label_ignores_same_day_close():
-    daily, _ = PH.load_btc_daily()
+def test_phase_label_ignores_same_day_close(btc_source):
+    daily = btc_source
     base = PH.phase_table(daily)["label"]
     rng = np.random.default_rng(3)
     days = base.loc["2019-06-01":"2026-10-01"].dropna().index
@@ -92,9 +115,8 @@ def test_phase_label_ignores_same_day_close():
             assert lab == base.loc[d], f"phase at {pd.Timestamp(d).date()} changed when same-day close changed (mult {mult})"
 
 
-@needs_cache
-def test_phase_lag_zero_is_the_bug():
-    daily, _ = PH.load_btc_daily()
+def test_phase_lag_zero_is_the_bug(btc_source):
+    daily = btc_source
     a = PH.phase_table(daily, lag=0)["label"]
     rng = np.random.default_rng(3)
     days = a.loc["2019-06-01":"2026-10-01"].dropna().index
@@ -152,9 +174,12 @@ def test_rule_family_size():
     assert sum(len(v) for v in ST.BUCKETS.values()) == 24
 
 
-@needs_cache
-def test_shared_phase_table_verified():
-    assert PH.verify_phase(30, seed=5) == []
+def test_shared_phase_table_verified(btc_source):
+    if HAVE_CACHE:
+        assert PH.verify_phase(30, seed=5) == []     # shared cache table, as built on research machines
+    else:
+        # no shared cache on CI: check the phase table built from the synthetic series instead (never writes PHASE_CSV)
+        assert PH.verify_phase(30, seed=5, table=PH.phase_table(btc_source)) == []
 
 
 def test_files_under_5mb():
