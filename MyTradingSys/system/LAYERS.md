@@ -5,7 +5,7 @@ every card change). Pointers: `layer_index.json`; layer status and backtests: `l
 Rules: no fixed core; layers may combine or filter each other, results decide (CLAUDE.md, 2026-10-13). A new backtest is a row in
 `layer_map.json` (it then shows here); a new layer joins a family in `layer_index.json`; a new card names `--layer <family>`.
 
-Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | wavetrend = WaveTrend (LazyBear oscillator) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line) | pizzino = Pizzino (Jason bar count + Michael nested swing states)
+Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | wavetrend = WaveTrend (LazyBear oscillator) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line) | pizzino = Pizzino (Jason bar count + Michael nested swing states) | nk_stocktalk = NK StockTalk (Nitish Kumar rules, BTC port) | cycle_context = Cycle, phase and washout context (CBP context, buy-zone map, phase studies) | edge_harness = Edge harness (fees, power, blind review, win-rate vs expectancy) | adx_trend = ADX / DI and trend tools (ADX, trendlines, VFI, squeeze, tick)
 
 ## Tom (order flow + volume profile) (`tom`)
 - Status: Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.
@@ -81,6 +81,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `rsi_divergence`: no edge, all TFs | module backtest/layers/rsi/run_divergence_mtf.py
 - Backtests (layer_map.json, newest first):
   - 2026-11-14 `MALKAN-R03-R04-RSI-DIV-20261114`: FAIL: 0 of 8 VALIDATION cells PASS; rule in PRE_REG.md frozen before any outcome | `MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md`
+  - 2026-11-13 `RSI-CONFIRM-LAYERS-20261113`: FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md`
   - 2026-11-13 `RSI-HTF-EXTREME-20261113`: FAIL/UNDERPOWERED: 0 of 40 cells pass (24 FAIL, 16 UNDERPOWERED); no edge claim | `MyTradingSys/research/rsi_htf_extreme_2026-11-13/RESULT.md`
   - 2026-11-13 `EDGE4-RSI-4H-LE12-DAILY-LT30-20261113`: UNDERPOWERED: no cell reaches VALIDATION n>=30 (max 12, 4h), 0/12 PASS; the 4h VALIDATION pocket is not confirmed in DEV | `MyTradingSys/research/edge4_rsi_4h_le12_2026-11-13/REPORT.md`
   - 2026-11-13 `RSI-EXTREME-CONFIRM-1H-20261113`: FAIL: 0/384 pass, 0 BH-significant on DEV or VALIDATION; only VAL-positive pocket is negative in DEV and RECENT | `MyTradingSys/research/rsi_extreme_confirm_2026-11-13/RESULT.md`
@@ -117,6 +118,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `funding_cvd_fade`: FAIL, closed | module backtest/layers/positioning/funding_cvd_fade.py
 - Layer `oi_delta`: descriptive study | module research/_archive/loose_2026-10/OI_DELTA_4STATE_BACKTEST_2026-09-21.md
 - Backtests (layer_map.json, newest first):
+  - 2026-11-13 `RSI-CONFIRM-LAYERS-20261113`: FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass | `MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md`
   - 2026-11-05 `BIGCANDLE-STORY-1H-20261105`: descriptive: stories are readable, odds are near baseline; no trade rule | `MyTradingSys/research/bigcandle_story_2026-11-05/RESULT.md`
   - 2026-10-14 `PRICE-CVD-DIV-1M5M-20261014`: NEGATIVE: CVD divergence adds nothing over price alone on 1m/5m | `MyTradingSys/research/orderflow_views_2026-10-14/RESULT.md`
   - 2026-09-29, rerun 2026-10-07 (full funding) `T055-C1`: FAIL (rerun OOS net -0.0453%, Sharpe -0.035); closed | `MyTradingSys/research/fast_track_2026-09-27/T055_BT_RERUN_FULLFUNDING_2026-10-07.md`
@@ -134,6 +136,7 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Layer `turn_of_candle`: no edge, closed | module backtest/layers/turn_of_candle/
 - Layer `session_levels`: no edge | module research/t087_session_levels_2026-10-09
 - Backtests (layer_map.json, newest first):
+  - 2026-11-13 `EUR-LOW-US-SWEEP-RECLAIM-POOLED-20261113`: FAIL: no cell passes (best long HIGH maker VAL n 173, fee-net mean R +0.105 CI [-0.298,+0.577], BH none); power gate BLO | `MyTradingSys/research/eur_low_sweep_reclaim_pooled_2026-11-13/REPORT.md`
   - 2026-10-18 `EUR-LOW-US-SWEEP-FOLLOWUPS-20261018`: BLOCKED by power gate (A, B, C); legs stay open | `MyTradingSys/research/eur_low_us_sweep_followups_2026-10-18/RESULT.md`
   - 2026-10-14 `LC-SIZING-QUICK-20261014`: EXPLORATORY NEGATIVE; full LC hypothesis untested | `MyTradingSys/research/levels_sizing_2026-10-14/REPORT.md`
   - 2026-10-14 `EUR-LOW-US-SWEEP-20261014`: EXPLORATORY NEGATIVE (short leg); long-after-reclaim untested | `MyTradingSys/research/eur_low_us_sweep_2026-10-14/RESULT.md`
@@ -269,6 +272,34 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pz-4-backtest` refined p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
   - `pz-5-confluence-and-live` refined p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
+
+## NK StockTalk (Nitish Kumar rules, BTC port) (`nk_stocktalk`)
+- Status: Rules catalogued; every tested NK rule failed or is inconclusive on BTC fee-net (Conceptualizer layer nk-stocktalk).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/research/conceptualizer/sources_1114/NK55_RULES_1114.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/NK_TESTS_SYNTHESIS_1114.md`
+- Open cards: none
+
+## Cycle, phase and washout context (CBP context, buy-zone map, phase studies) (`cycle_context`)
+- Status: Context studies only; analyst calls are context, never signals (Conceptualizer layer cycle-context).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/research/conceptualizer/sources_1114/BUY_ZONE_MAP_1114.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/EDGE_POSTMORTEM_1114.md`
+- Open cards: none
+
+## Edge harness (fees, power, blind review, win-rate vs expectancy) (`edge_harness`)
+- Status: Fee-net gate: gross must be >= +0.30 R per trade to clear fees of 0.21-0.24 R (Conceptualizer layer edge-harness).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/research/conceptualizer/sources_1114/EDGE_POSTMORTEM_1114.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/EDGE_BLIND_REVIEW_1114.md`
+- Open cards: none
+
+## ADX / DI and trend tools (ADX, trendlines, VFI, squeeze, tick) (`adx_trend`)
+- Status: ADX census run; VFI, squeeze and tick modules built, untested (Conceptualizer layer adx-trend).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/backtest/layers/FORMULAS.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/edge7-daily-trend-follow-1113_RESULTS.md`
+- Open cards: none
 
 ## Cross-cutting
 

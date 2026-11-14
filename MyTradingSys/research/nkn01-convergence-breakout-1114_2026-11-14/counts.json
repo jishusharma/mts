@@ -1,0 +1,119 @@
+{
+ "cells": {
+  "P1": {
+   "dev": 0,
+   "val": 0
+  },
+  "P2": {
+   "dev": 0,
+   "val": 0
+  },
+  "P3": {
+   "dev": 0,
+   "val": 0
+  },
+  "C1": {
+   "dev": 5,
+   "val": 0
+  },
+  "C2": {
+   "dev": 1,
+   "val": 1
+  },
+  "C3": {
+   "dev": 0,
+   "val": 0
+  },
+  "C4": {
+   "dev": 1,
+   "val": 0
+  },
+  "C5": {
+   "dev": 0,
+   "val": 0
+  },
+  "C6": {
+   "dev": 0,
+   "val": 0
+  },
+  "C7": {
+   "dev": 0,
+   "val": 0
+  },
+  "C8": {
+   "dev": 0,
+   "val": 0
+  },
+  "C9": {
+   "dev": 0,
+   "val": 0
+  },
+  "C10": {
+   "dev": 0,
+   "val": 0
+  }
+ },
+ "at_level_share": {
+  "dev": {
+   "n": 5,
+   "at": 0,
+   "away": 5,
+   "na": 0
+  },
+  "val": {
+   "n": 0,
+   "at": 0,
+   "away": 0,
+   "na": 0
+  }
+ },
+ "v1_v2_effect": {
+  "dev": {
+   "v0": 0,
+   "v1_removes": 0,
+   "v2_nodata": 0,
+   "v2_crowded": 0
+  },
+  "val": {
+   "v0": 0,
+   "v1_removes": 0,
+   "v2_nodata": 0,
+   "v2_crowded": 0
+  }
+ },
+ "p1_val": 0,
+ "regime_mix": {
+  "DEV": {
+   "coin_days": 20720,
+   "UP": 27.5,
+   "DOWN": 35.1,
+   "RANGE": 37.4,
+   "mixed": true,
+   "btc_cycle": {
+    "CAPITULATION": 3.3,
+    "MARKDOWN": 30.0,
+    "RELIEF": 8.1,
+    "ACCUM-RANGE": 17.0,
+    "MARKUP": 26.1,
+    "DISTRIBUTION": 15.5
+   },
+   "btc_above_sma200": 47.6
+  },
+  "VAL": {
+   "coin_days": 20940,
+   "UP": 24.8,
+   "DOWN": 35.1,
+   "RANGE": 40.1,
+   "mixed": true,
+   "btc_cycle": {
+    "CAPITULATION": 0.6,
+    "MARKDOWN": 18.8,
+    "RELIEF": 3.3,
+    "ACCUM-RANGE": 14.9,
+    "MARKUP": 30.7,
+    "DISTRIBUTION": 31.7
+   },
+   "btc_above_sma200": 61.7
+  }
+ }
+}

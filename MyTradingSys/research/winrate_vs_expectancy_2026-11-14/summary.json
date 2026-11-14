@@ -1,0 +1,28 @@
+{
+ "coins": [
+  "BTC",
+  "ETH",
+  "SOL",
+  "XRP",
+  "DOGE",
+  "BNB",
+  "ADA",
+  "LINK",
+  "LTC",
+  "AVAX",
+  "DOT",
+  "ATOM",
+  "TRX",
+  "BCH",
+  "ETC",
+  "UNI",
+  "NEAR",
+  "FIL",
+  "XLM",
+  "AAVE"
+ ],
+ "skipped": {},
+ "n_family": 72,
+ "n_pass": 0,
+ "n_bh": 0
+}

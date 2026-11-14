@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T18:18:51Z",
   "commands": [],
   "created": "2026-11-06T17:00:55Z",
   "depends_on": [],
@@ -14,6 +15,12 @@
   "lane": "SONNET",
   "latest": [
     {
+      "kind": "ship",
+      "line": "2 of 7 baseline-survivor cells survive the session-adjusted baseline at Holm m=48 (G1 spli",
+      "ref": "ff1a589c3",
+      "utc": "2026-11-14T18:18:51Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "GPT spec tests for candle_flip flip_model.py",
@@ -24,6 +31,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: fresh-data run pre-registered, earliest scoring 2026-12-07",
   "note": "planner 11-06 refined; fresh data run itself cannot start before 2026-11-07 bars exist | PARKED 2026-11-08: not on CRITICAL_PATH_2026-11-08: long-history DEV study; phase-first testnet-forward replaced backtest gates (d-phase-first-method-1106) REVIEWED: Lead C credit batch 2026-11-08 T0 scoping only",
   "prio": 3,
   "refine_tries": 0,
@@ -32,7 +40,12 @@
   "refs": [
     "MyTradingSys/research/candle_flip_probability_2026-11/RESULT.md"
   ],
-  "result": "",
+  "result": "2 of 7 baseline-survivor cells survive the session-adjusted baseline at Holm m=48 (G1 split/Asia/at, G2 aligned/Asia/at); calibration only, no fee-net number; fresh-data run pre-registered",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/candle_flip_probability_2026-11"
   ],
@@ -42,12 +55,13 @@
   "scope_sha": "2ba1444c6aac",
   "size": "M",
   "sources": [],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "read RESULT.md to list the 7 cells and the baseline",
     "fail-first test, then session-adjusted sigma in the null",
     "write PRE_REG.md for 2026-11-07+ run and export results json"
   ],
+  "taken": "2026-11-14T18:18:51Z",
   "tests": "MyTradingSys/backtest/layers/test_flip_null_session.py: session-sigma null must differ from flat-sigma null on a fixture with two sessions (fails with no session-sigma function)",
   "title": "flip engine follow-up: session-adjusted sigma for the null, then a fresh-data run (2026-11-07 on) of the 7 cells that beat the recalibrated baseline",
   "weight": "",

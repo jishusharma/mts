@@ -617,6 +617,30 @@ def sender_note(text):
     return "\n".join(lines)
 
 
+REPEAT_MIN = 60   # OURS: an unchanged status block is shown again only after this many minutes (2026-11-15: the same 3 overdue lines rode every prompt)
+
+
+def repeat_gate(sid, text, now_s=None, ttl_min=REPEAT_MIN):
+    """text if this session has not been shown the same block (digits ignored: ages tick) within ttl_min, else ''; fails open."""
+    if not text or not sid:
+        return text
+    try:
+        sd = state_dir()
+        sd.mkdir(parents=True, exist_ok=True)
+        f = sd / ("status-shown-%s.json" % "".join(c for c in str(sid) if c.isalnum() or c in "-_")[:60])
+        key, t = hashlib.sha1(re.sub(r"[0-9]+", "#", text).encode("utf-8")).hexdigest(), now_s if now_s is not None else time.time()
+        try:
+            old = json.loads(f.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            old = {}
+        if old.get("key") == key and t - float(old.get("at") or 0) < ttl_min * 60:
+            return ""
+        f.write_text(json.dumps({"key": key, "at": t}), encoding="utf-8", newline=chr(10))
+    except Exception:
+        pass
+    return text
+
+
 def handle(payload):
     """Returns the text to print (may be empty)."""
     if os.environ.get("MTS_SIGNALS", "").lower() == "off":
@@ -1111,7 +1135,7 @@ def _handle_rows(payload, sid, ev, auto):
         except Exception:
             pass
     if ev == "UserPromptSubmit":
-        out.append(status_block(rows))
+        out.append(repeat_gate(sid, status_block(rows)))
     if ev != "SessionStart":
         out.append(news(rows, sid, seen_f, sd, fetch))
     return "\n".join(t for t in out if t)

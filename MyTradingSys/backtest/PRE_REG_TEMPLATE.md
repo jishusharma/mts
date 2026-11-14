@@ -17,6 +17,8 @@ Source: research/mts_flow_audit_2026-10-13/REPORT.md section 3.
 - 0f Kill: which result ends this source for good, and how many redesigns are allowed before it?
 - 0g Operator intent (class C9, 2026-10-30): when the idea comes from the operator's own trading (his levels, his "first touch", his lower highs), does the encoding fire where HE would mark it? Check it on at least 3 of his dated chart notes or screenshots before any run; a definition he has not confirmed is labelled OURS and the result says so. Examples of misses: T087 "first touch" was one 1m touch, he means approach classes (near miss, wick through, close through then fail, accepted); coded KR-L10 cannot see his daily last lower high.
 
+0h. Data location (c-drive-worktrees-on-f-1114, 2026-11-14): downloaded klines/trades go through `scripts/dev/data_cache.py` (`cached(name, producer)`, folder env `MTS_DATA_CACHE`), never into the tree's own `runtime_data`; nothing over 5 MB is created inside a tree (WORKERS.md rule 12).
+
 ## 1. Source home: market, timeframe, session, holding period (with quote + file:line).
 
 Answer: TODO

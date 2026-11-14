@@ -1637,3 +1637,10 @@ def test_us_session_no_now_no_line_and_plan_lines_carries_it():
     assert S.US_SESSION_LINE in out
     ctx["us_claims"] = {"us-session-2026-11-13"}
     assert S.US_SESSION_LINE not in "\n".join(S.plan_lines("A", "DESKTOP-F7IU69N", p, {}, ctx, gate_key=False))
+
+
+def test_wait_timeout_is_a_quiet_exit_zero_on_the_command_line():
+    import stop_guard
+    assert S.wait_cli_rc(3) == 0 and S.wait_cli_rc(0) == 0 and S.wait_cli_rc(4) == 4
+    assert "not a failure" in S.wait_cli_message(3, "TIMEOUT after 3000s") and S.wait_cli_message(0, "x") == "x"
+    assert stop_guard.SUP_PLAN_MAX_MIN >= 30          # a plan 25 min old still lets the turn end while the watcher is live

@@ -660,6 +660,15 @@ def _harness_tracked(out: str) -> bool:
     return q.suffix == ".output" and q.parent.name == "tasks" and q.is_file()
 
 
+def wait_cli_rc(rc: int) -> int:
+    """The shell exit of `wait`: a timeout is the normal quiet end of a watch, so 0 (2026-11-15: exit 3 read as a failure to the harness)."""
+    return 0 if rc == 3 else rc
+
+
+def wait_cli_message(rc: int, reason: str) -> str:
+    return f"{reason} (quiet, not a failure: run `plan`, act, re-arm `wait`)" if rc == 3 else reason
+
+
 def watchcheck(login: str | None = None, home=None, now: datetime | None = None, alive=None, tracked=None) -> tuple[int, str]:
     """Last call of every coordinator turn: exit 0 when a live, unexpired `wait` watcher marker exists AND that watcher is a harness
     background task (run_in_background), else (4, NO WAKE SOURCE ...). Fails closed. stall-fix-1104: a `&` watcher wakes nobody."""
@@ -1720,6 +1729,11 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["routine_runs"], ctx["routine_notes"] = routines_due.lines(repo, loop_home(home), now)
     except Exception as e:
         notes.append(f"NOTE routines_due failed ({type(e).__name__}: {str(e)[:60]})")
+    try:
+        import disk_keep
+        notes = notes + disk_keep.status_lines(host=host)     # DISK per drive; DISK ACT when a floor is breached (disk_plan.json)
+    except Exception as e:   # noqa: BLE001
+        notes.append(f"NOTE disk_keep failed ({type(e).__name__}: {str(e)[:60]})")
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
@@ -2434,8 +2448,8 @@ def main(argv: list[str] | None = None) -> int:
             interval=args.interval,
             login=(args.login or "").strip().upper()[:1] or None,
         )
-        print(reason)
-        return rc
+        print(wait_cli_message(rc, reason))
+        return wait_cli_rc(rc)
     if args.cmd == "watchcheck":
         rc, msg = watchcheck((args.login or "").strip().upper()[:1] or None)
         print(msg)

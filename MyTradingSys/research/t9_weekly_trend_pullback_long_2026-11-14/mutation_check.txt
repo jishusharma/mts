@@ -1,0 +1,10 @@
+MUTATION [if coin.l[d] <= stop: -> if coin.l[d] < stop:]: 1 failed, 27 passed in 4.12s
+MUTATION [nxt >= last_week_start -> nxt > last_week_start]: 2 failed, 26 passed in 4.27s
+MUTATION [entry = float(coin.o[d0])
+        atr -> entry = float(coin.c[d0])
+        atr]: 1 failed, 27 passed in 2.90s
+MUTATION [out[n - 1] = x[:n].mean() -> out[n - 1] = x[0]]: 1 failed, 27 passed in 2.58s
+MUTATION [fcost, covered = funding_cost(fund, entry_ms, end_ms) -> fcost, covered = 0.0, False]: 1 failed, 27 passed in 2.69s
+MUTATION [if coin.l[d] <= stop:
+                gap -> if coin.l[d] <= stop and False:
+                gap]: 3 failed, 25 passed in 2.57s

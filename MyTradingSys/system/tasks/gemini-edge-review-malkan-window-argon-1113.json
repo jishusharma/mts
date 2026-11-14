@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T05:53:26Z",
   "commands": [
     "git status --short"
   ],
@@ -14,7 +15,14 @@
   "id": "gemini-edge-review-malkan-window-argon-1113",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_edge_1113/review-malkan-window-argon/REVIEW.md",
+      "ref": "75770377d",
+      "utc": "2026-11-14T05:53:26Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
@@ -25,6 +33,12 @@
   "refined_by": "",
   "refreshed": "2026-11-13T15:59:27Z",
   "refs": [],
+  "result": "MyTradingSys/research/layer_lab/gemini_edge_1113/review-malkan-window-argon/REVIEW.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_edge_1113/review-malkan-window-argon/"
   ],
@@ -39,13 +53,14 @@
   "sources": [
     "Supervisor C 2026-11-13 16:00Z operator order: edge push until 20:00Z"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only the files in MyTradingSys/research/malkan_window_wide_2026-11 and MyTradingSys/research/malkan_window_dev_2026-11 and the scripts they import. Do not read other reviews of the same study.",
     "Recount each headline number from the code and data in the folder; where data is not on this machine say UNVERIFIABLE. Table: claim, claimed value, recounted value, MATCH / MISMATCH / UNVERIFIABLE.",
     "Look-ahead hunt: per feature name the bar timestamps used vs the entry bar. Fee hunt: state fee model, side, round-trip count. Cite file:line for every finding.",
     "Write MyTradingSys/research/layer_lab/gemini_edge_1113/review-malkan-window-argon/REVIEW.md with a one-line verdict first (SOUND / FLAWED / UNVERIFIABLE); commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-14T05:53:26Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] argon twin: Blind review of malkan-window study",
   "weight": "ROUTINE",

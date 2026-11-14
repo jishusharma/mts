@@ -291,5 +291,15 @@ class PagesRefreshGuard(unittest.TestCase):
                 self.assertTrue(T.pages_line(repo, now=1100.0, spawn=lambda *a: None).startswith("PAGES STALE"))
 
 
+class OncePerSessionTest(unittest.TestCase):
+    def test_lag_line_is_told_once_per_session_until_it_doubles(self):
+        with tempfile.TemporaryDirectory() as d:
+            sh(d, "init", "-q")
+            self.assertTrue(T.once_per_session(d, "s1", 100))
+            self.assertFalse(T.once_per_session(d, "s1", 150))
+            self.assertTrue(T.once_per_session(d, "s2", 150))
+            self.assertTrue(T.once_per_session(d, "s1", 200))
+
+
 if __name__ == "__main__":
     unittest.main()

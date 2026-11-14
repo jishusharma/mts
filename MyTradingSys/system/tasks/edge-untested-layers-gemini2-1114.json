@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T00:31:19Z",
   "commands": [
     "git status --short"
   ],
@@ -15,17 +16,30 @@
   "id": "edge-untested-layers-gemini2-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md",
+      "ref": "2d44f073a",
+      "utc": "2026-11-14T00:31:19Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: briefs complete",
   "note": "Planner refill2 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T22:51:26Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114b/edge-untested-layers/BRIEFS.md"
   ],
@@ -39,13 +53,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Parse VERDICTS.csv and TRIAL_LEDGER.csv (count rows, parse then count, never truncate); list layer ids seen.",
     "Read LAYERS.md; table: layer, verdict rows, trial rows, data in cache (UNVERIFIABLE if cache absent).",
     "Pick the 3 untested layers with data; write a brief for each: hypothesis, entry, stop, hold, 12 bp cost, DEV <= 2023-12-31 / VAL >= 2024-01-01, kill rule. Label OURS unless quoted from a transcript.",
     "Write BRIEFS.md; commit on your gemini-q branch only. Do not compute any result."
   ],
+  "taken": "2026-11-14T00:31:19Z",
   "tests": "",
   "title": "[GEMINI] Edge hunt: layers with no verdict row",
   "weight": "ROUTINE",

@@ -36,6 +36,7 @@ sys.path.insert(0, str(REPO / "MyTradingSys" / "observation"))
 import capture  # noqa: E402  (time parsing and the timeframe list are shared with the observation channel)
 sys.path.insert(0, str(HERE))
 import nowin  # noqa: E402
+import hosts  # noqa: E402  (worktree roots)
 
 nowin.install()
 
@@ -132,8 +133,8 @@ def project_dirs():
     if not base.is_dir():
         return []
     slugs = family_slugs()
-    sibling = slug(main_root().parent / "mts-")
-    return [d for d in sorted(base.iterdir()) if d.is_dir() and (d.name in slugs or d.name.startswith(sibling))]
+    siblings = tuple(slug(Path(r) / "mts-") for r in hosts.worktree_roots(main_root().parent))
+    return [d for d in sorted(base.iterdir()) if d.is_dir() and (d.name in slugs or d.name.startswith(siblings))]
 
 
 # ---------------------------------------------------------------- event store

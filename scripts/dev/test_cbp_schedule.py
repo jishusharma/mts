@@ -60,3 +60,23 @@ def test_trigger_start_is_in_the_past_so_the_first_week_is_not_skipped():
     for n in ET.fromstring(xml).findall('.//{*}StartBoundary'):
         d = date.fromisoformat(n.text[:10])
         assert d <= date(2026, 10, 26), "a future StartBoundary left 10-31/11-01 unfired after the reinstall"
+
+
+def test_task_runs_with_no_visible_window():
+    xml = schedule.task_xml('F:/Python/python.exe', 's', 'h', utcoffset=timedelta(0))
+    root = ET.fromstring(xml)
+    ns = {"t": "http://schemas.microsoft.com/windows/2004/02/mit/task"}
+    assert root.find('.//t:Exec/t:Command', ns).text.lower().endswith('pythonw.exe')
+    assert root.find('.//t:Settings/t:Hidden', ns).text == 'true'
+
+
+def test_cbp_run_children_carry_no_window_flag():
+    import subprocess
+    import cbp_run
+    flag = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
+    assert flag or sys.platform != 'win32'
+    with patch.object(cbp_run.subprocess, 'run') as run:
+        cbp_run._run(['x'])
+        assert run.call_args.kwargs['creationflags'] == flag
+    for fn in (cbp_run.fetch_new, cbp_run.llm_extract, cbp_run.rebuild_dashboard):
+        assert fn.__defaults__ is not None and cbp_run._run in fn.__defaults__

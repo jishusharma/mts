@@ -1,0 +1,422 @@
+[
+ {
+  "symbol": "AKEUSDT",
+  "base": "AKE",
+  "turnover24h": 341168208.6292,
+  "name": "akedo",
+  "launch_ms": 1758892362000
+ },
+ {
+  "symbol": "HYPEUSDT",
+  "base": "HYPE",
+  "turnover24h": 237002337.1359,
+  "name": "Hyperliquid",
+  "launch_ms": 1733316740000
+ },
+ {
+  "symbol": "BARDUSDT",
+  "base": "BARD",
+  "turnover24h": 161571910.8793,
+  "name": "Lombard",
+  "launch_ms": 1758016137000
+ },
+ {
+  "symbol": "1000PEPEUSDT",
+  "base": "1000PEPE",
+  "turnover24h": 116877962.654,
+  "name": "",
+  "launch_ms": 1683108271000
+ },
+ {
+  "symbol": "ENAUSDT",
+  "base": "ENA",
+  "turnover24h": 70141619.8545,
+  "name": "Ethena",
+  "launch_ms": 1712050966000
+ },
+ {
+  "symbol": "INITUSDT",
+  "base": "INIT",
+  "turnover24h": 63904937.7414,
+  "name": "Initia",
+  "launch_ms": 1744616093000
+ },
+ {
+  "symbol": "SUIUSDT",
+  "base": "SUI",
+  "turnover24h": 62881853.876,
+  "name": "Sui",
+  "launch_ms": 1683029724000
+ },
+ {
+  "symbol": "ARIAUSDT",
+  "base": "ARIA",
+  "turnover24h": 50792955.1929,
+  "name": "aria-ai",
+  "launch_ms": 1756903625000
+ },
+ {
+  "symbol": "JCTUSDT",
+  "base": "JCT",
+  "turnover24h": 36357565.4687,
+  "name": "janction",
+  "launch_ms": 1763374327000
+ },
+ {
+  "symbol": "INJUSDT",
+  "base": "INJ",
+  "turnover24h": 34661345.7273,
+  "name": "Injective",
+  "launch_ms": 1660694400000
+ },
+ {
+  "symbol": "LITUSDT",
+  "base": "LIT",
+  "turnover24h": 34571608.3925,
+  "name": "Lighter",
+  "launch_ms": 1767089298000
+ },
+ {
+  "symbol": "WLDUSDT",
+  "base": "WLD",
+  "turnover24h": 34025189.1979,
+  "name": "Worldcoin",
+  "launch_ms": 1690184920000
+ },
+ {
+  "symbol": "XMRUSDT",
+  "base": "XMR",
+  "turnover24h": 33188005.0362,
+  "name": "Monero",
+  "launch_ms": 1640143015000
+ },
+ {
+  "symbol": "PUMPFUNUSDT",
+  "base": "PUMPFUN",
+  "turnover24h": 30745885.6352,
+  "name": "pump-fun",
+  "launch_ms": 1752119132000
+ },
+ {
+  "symbol": "SOPHUSDT",
+  "base": "SOPH",
+  "turnover24h": 29422331.3097,
+  "name": "sophon",
+  "launch_ms": 1748437483000
+ },
+ {
+  "symbol": "ONDOUSDT",
+  "base": "ONDO",
+  "turnover24h": 28931488.8769,
+  "name": "Ondo",
+  "launch_ms": 1705919392000
+ },
+ {
+  "symbol": "TAOUSDT",
+  "base": "TAO",
+  "turnover24h": 27952381.8266,
+  "name": "bittensor",
+  "launch_ms": 1706601081000
+ },
+ {
+  "symbol": "ARBUSDT",
+  "base": "ARB",
+  "turnover24h": 24386279.5764,
+  "name": "Arbitrum",
+  "launch_ms": 1679563660000
+ },
+ {
+  "symbol": "BTWUSDT",
+  "base": "BTW",
+  "turnover24h": 24090789.0184,
+  "name": "Bitway Btw",
+  "launch_ms": 1780646878000
+ },
+ {
+  "symbol": "TRUMPUSDT",
+  "base": "TRUMP",
+  "turnover24h": 20721406.3779,
+  "name": "OFFICIAL TRUMP",
+  "launch_ms": 1737181907000
+ },
+ {
+  "symbol": "ZROUSDT",
+  "base": "ZRO",
+  "turnover24h": 20399934.2184,
+  "name": "LayerZero",
+  "launch_ms": 1718891646000
+ },
+ {
+  "symbol": "GRAMUSDT",
+  "base": "GRAM",
+  "turnover24h": 19110360.1767,
+  "name": "GRAM",
+  "launch_ms": 1782121594000
+ },
+ {
+  "symbol": "HUSDT",
+  "base": "H",
+  "turnover24h": 18115269.7116,
+  "name": "Humanity",
+  "launch_ms": 1750845035000
+ },
+ {
+  "symbol": "PONSUSDT",
+  "base": "PONS",
+  "turnover24h": 17193586.4237,
+  "name": "Pons",
+  "launch_ms": 1788168745000
+ },
+ {
+  "symbol": "BMTUSDT",
+  "base": "BMT",
+  "turnover24h": 16688099.1761,
+  "name": "Bubblemaps",
+  "launch_ms": 1741852724000
+ },
+ {
+  "symbol": "FARTCOINUSDT",
+  "base": "FARTCOIN",
+  "turnover24h": 16488312.0132,
+  "name": "Fartcoin",
+  "launch_ms": 1734683847000
+ },
+ {
+  "symbol": "MAGMAUSDT",
+  "base": "MAGMA",
+  "turnover24h": 16270207.5677,
+  "name": "magma-finance",
+  "launch_ms": 1766732813000
+ },
+ {
+  "symbol": "TIAUSDT",
+  "base": "TIA",
+  "turnover24h": 15933500.3014,
+  "name": "Tia",
+  "launch_ms": 1698768749000
+ },
+ {
+  "symbol": "USELESSUSDT",
+  "base": "USELESS",
+  "turnover24h": 14663883.0016,
+  "name": "theuselesscoin",
+  "launch_ms": 1752144978000
+ },
+ {
+  "symbol": "PIEVERSEUSDT",
+  "base": "PIEVERSE",
+  "turnover24h": 13238492.4604,
+  "name": "Pieverse",
+  "launch_ms": 1763127243000
+ },
+ {
+  "symbol": "QNTUSDT",
+  "base": "QNT",
+  "turnover24h": 12690644.6158,
+  "name": "Quant",
+  "launch_ms": 1687154400000
+ },
+ {
+  "symbol": "AEROUSDT",
+  "base": "AERO",
+  "turnover24h": 12515055.225,
+  "name": "Aerodrome Finance",
+  "launch_ms": 1721034308000
+ },
+ {
+  "symbol": "APTUSDT",
+  "base": "APT",
+  "turnover24h": 10997394.0023,
+  "name": "Aptos",
+  "launch_ms": 1666107272000
+ },
+ {
+  "symbol": "STRKUSDT",
+  "base": "STRK",
+  "turnover24h": 10858092.1426,
+  "name": "Starknet Token",
+  "launch_ms": 1708436526000
+ },
+ {
+  "symbol": "CAPUSDT",
+  "base": "CAP",
+  "turnover24h": 10846069.8859,
+  "name": "CAP",
+  "launch_ms": 1782703707000
+ },
+ {
+  "symbol": "VVVUSDT",
+  "base": "VVV",
+  "turnover24h": 10703406.2296,
+  "name": "Venice Token",
+  "launch_ms": 1738038705000
+ },
+ {
+  "symbol": "OPUSDT",
+  "base": "OP",
+  "turnover24h": 10347551.595,
+  "name": "Optimism",
+  "launch_ms": 1654059063000
+ },
+ {
+  "symbol": "KGENUSDT",
+  "base": "KGEN",
+  "turnover24h": 10150436.9557,
+  "name": "kgen",
+  "launch_ms": 1759850272000
+ },
+ {
+  "symbol": "DNAUSDT",
+  "base": "DNA",
+  "turnover24h": 9956035.5096,
+  "name": "NeoSoul",
+  "launch_ms": 1792148731000
+ },
+ {
+  "symbol": "DGAIUSDT",
+  "base": "DGAI",
+  "turnover24h": 9767310.9879,
+  "name": "DGrid AI",
+  "launch_ms": 1788507579000
+ },
+ {
+  "symbol": "WLFIUSDT",
+  "base": "WLFI",
+  "turnover24h": 9577588.2909,
+  "name": "World Liberty Financial",
+  "launch_ms": 1755939756000
+ },
+ {
+  "symbol": "SHELLUSDT",
+  "base": "SHELL",
+  "turnover24h": 9475947.4078,
+  "name": "myshell",
+  "launch_ms": 1739777623000
+ },
+ {
+  "symbol": "XPLUSDT",
+  "base": "XPL",
+  "turnover24h": 9306536.7512,
+  "name": "Plasma",
+  "launch_ms": 1755854834000
+ },
+ {
+  "symbol": "JUPUSDT",
+  "base": "JUP",
+  "turnover24h": 8998360.4527,
+  "name": "Jupiter",
+  "launch_ms": 1706716267000
+ },
+ {
+  "symbol": "QUSDT",
+  "base": "Q",
+  "turnover24h": 8713718.8066,
+  "name": "quack-ai",
+  "launch_ms": 1757673982000
+ },
+ {
+  "symbol": "IMXUSDT",
+  "base": "IMX",
+  "turnover24h": 8517969.7848,
+  "name": "Immutable X",
+  "launch_ms": 1637712000000
+ },
+ {
+  "symbol": "ERAUSDT",
+  "base": "ERA",
+  "turnover24h": 8305886.9675,
+  "name": "Caldera",
+  "launch_ms": 1752767182000
+ },
+ {
+  "symbol": "ETHFIUSDT",
+  "base": "ETHFI",
+  "turnover24h": 8128155.8169,
+  "name": "ether.fi",
+  "launch_ms": 1710767803000
+ },
+ {
+  "symbol": "GRASSUSDT",
+  "base": "GRASS",
+  "turnover24h": 8055736.5869,
+  "name": "Grass",
+  "launch_ms": 1728987123000
+ },
+ {
+  "symbol": "MNTUSDT",
+  "base": "MNT",
+  "turnover24h": 7971157.8195,
+  "name": "Mantle",
+  "launch_ms": 1696225255000
+ },
+ {
+  "symbol": "ASTERUSDT",
+  "base": "ASTER",
+  "turnover24h": 7593022.1978,
+  "name": "Aster",
+  "launch_ms": 1758267993000
+ },
+ {
+  "symbol": "IDOLUSDT",
+  "base": "IDOL",
+  "turnover24h": 7584205.797,
+  "name": "MEET48",
+  "launch_ms": 1794563015000
+ },
+ {
+  "symbol": "PLAYSOUTUSDT",
+  "base": "PLAYSOUT",
+  "turnover24h": 6596375.1105,
+  "name": "playsout",
+  "launch_ms": 1768902912000
+ },
+ {
+  "symbol": "UAIUSDT",
+  "base": "UAI",
+  "turnover24h": 6210045.5213,
+  "name": "unifai-network",
+  "launch_ms": 1763374294000
+ },
+ {
+  "symbol": "ICNTUSDT",
+  "base": "ICNT",
+  "turnover24h": 5935012.6538,
+  "name": "Impossible Cloud Network Token",
+  "launch_ms": 1751540416000
+ },
+ {
+  "symbol": "VIRTUALUSDT",
+  "base": "VIRTUAL",
+  "turnover24h": 5726312.3683,
+  "name": "Virtuals Protocol",
+  "launch_ms": 1730449551000
+ },
+ {
+  "symbol": "WIFUSDT",
+  "base": "WIF",
+  "turnover24h": 5653307.8793,
+  "name": "dogwifhat",
+  "launch_ms": 1704965504000
+ },
+ {
+  "symbol": "BIRBUSDT",
+  "base": "BIRB",
+  "turnover24h": 5633699.2343,
+  "name": "Moonbirds",
+  "launch_ms": 1769598765000
+ },
+ {
+  "symbol": "MONUSDT",
+  "base": "MON",
+  "turnover24h": 5568972.9899,
+  "name": "Monad",
+  "launch_ms": 1763992686000
+ },
+ {
+  "symbol": "RENDERUSDT",
+  "base": "RENDER",
+  "turnover24h": 5467586.4789,
+  "name": "Render",
+  "launch_ms": 1721982407000
+ }
+]

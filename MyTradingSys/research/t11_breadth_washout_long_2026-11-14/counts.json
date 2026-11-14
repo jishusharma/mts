@@ -1,0 +1,768 @@
+{
+ "coins": [
+  "1INCH",
+  "AAVE",
+  "ADA",
+  "ALGO",
+  "ANKR",
+  "ATOM",
+  "AVAX",
+  "AXS",
+  "BAND",
+  "BAT",
+  "BCH",
+  "BNB",
+  "BTC",
+  "CELR",
+  "CHZ",
+  "COMP",
+  "CRV",
+  "DASH",
+  "DOGE",
+  "DOT",
+  "EGLD",
+  "ENJ",
+  "EOS",
+  "ETC",
+  "ETH",
+  "FIL",
+  "FTM",
+  "FTT",
+  "GRT",
+  "HBAR",
+  "ICX",
+  "IOST",
+  "IOTA",
+  "KAVA",
+  "KNC",
+  "LINK",
+  "LTC",
+  "LUNA",
+  "MANA",
+  "MATIC",
+  "MKR",
+  "NEAR",
+  "NEO",
+  "OCEAN",
+  "OMG",
+  "ONE",
+  "ONT",
+  "QTUM",
+  "RUNE",
+  "RVN",
+  "SAND",
+  "SNX",
+  "SOL",
+  "STORJ",
+  "SUSHI",
+  "THETA",
+  "TRX",
+  "UNI",
+  "VET",
+  "WAVES",
+  "XLM",
+  "XMR",
+  "XRP",
+  "XTZ",
+  "YFI",
+  "ZEC",
+  "ZIL",
+  "ZRX"
+ ],
+ "n_coins": 68,
+ "coin_source": {
+  "1INCH": "wave2-1114",
+  "AAVE": "wave2-1114",
+  "ADA": "combo-edge-miner-1114",
+  "ALGO": "wave2-1114",
+  "ANKR": "wave2-1114",
+  "ATOM": "combo-edge-miner-1114",
+  "AVAX": "combo-edge-miner-1114",
+  "AXS": "wave2-1114",
+  "BAND": "wave2-1114",
+  "BAT": "wave2-1114",
+  "BCH": "combo-edge-miner-1114",
+  "BNB": "combo-edge-miner-1114",
+  "BTC": "wave2-1114",
+  "CELR": "wave2-1114",
+  "CHZ": "wave2-1114",
+  "COMP": "wave2-1114",
+  "CRV": "wave2-1114",
+  "DASH": "wave2-1114",
+  "DOGE": "combo-edge-miner-1114",
+  "DOT": "combo-edge-miner-1114",
+  "EGLD": "wave2-1114",
+  "ENJ": "wave2-1114",
+  "EOS": "wave2-1114",
+  "ETC": "combo-edge-miner-1114",
+  "ETH": "wave2-1114",
+  "FIL": "wave2-1114",
+  "FTM": "wave2-1114",
+  "FTT": "wave2-1114",
+  "GRT": "wave2-1114",
+  "HBAR": "wave2-1114",
+  "ICX": "wave2-1114",
+  "IOST": "wave2-1114",
+  "IOTA": "wave2-1114",
+  "KAVA": "wave2-1114",
+  "KNC": "wave2-1114",
+  "LINK": "combo-edge-miner-1114",
+  "LTC": "combo-edge-miner-1114",
+  "LUNA": "wave2-1114",
+  "MANA": "wave2-1114",
+  "MATIC": "wave2-1114",
+  "MKR": "wave2-1114",
+  "NEAR": "wave2-1114",
+  "NEO": "combo-edge-miner-1114",
+  "OCEAN": "wave2-1114",
+  "OMG": "wave2-1114",
+  "ONE": "wave2-1114",
+  "ONT": "wave2-1114",
+  "QTUM": "wave2-1114",
+  "RUNE": "wave2-1114",
+  "RVN": "wave2-1114",
+  "SAND": "wave2-1114",
+  "SNX": "wave2-1114",
+  "SOL": "combo-edge-miner-1114",
+  "STORJ": "wave2-1114",
+  "SUSHI": "wave2-1114",
+  "THETA": "wave2-1114",
+  "TRX": "combo-edge-miner-1114",
+  "UNI": "combo-edge-miner-1114",
+  "VET": "combo-edge-miner-1114",
+  "WAVES": "wave2-1114",
+  "XLM": "combo-edge-miner-1114",
+  "XMR": "wave2-1114",
+  "XRP": "combo-edge-miner-1114",
+  "XTZ": "wave2-1114",
+  "YFI": "wave2-1114",
+  "ZEC": "combo-edge-miner-1114",
+  "ZIL": "wave2-1114",
+  "ZRX": "wave2-1114"
+ },
+ "first_day": "2017-08-17",
+ "last_day": "2026-11-13",
+ "events_total": 49,
+ "events_lt30_alive": 9,
+ "events_no_valid_leg": 0,
+ "events_used": 40,
+ "primary": {
+  "episodes": {
+   "DEV": 18,
+   "VAL": 17
+  },
+  "events": {
+   "DEV": 21,
+   "VAL": 19
+  }
+ },
+ "secondary_above_sma200": {
+  "episodes": {
+   "DEV": 7,
+   "VAL": 6
+  },
+  "events": {
+   "DEV": 7,
+   "VAL": 6
+  }
+ },
+ "legs_total": 1540,
+ "legs_dev": 780,
+ "legs_val": 760,
+ "median_stop_pct": 0.22964976586133048,
+ "median_fee_R": 0.005225348240609993,
+ "min_stop_pct": 0.08,
+ "val_events_by_bin": {
+  "15-30": 12,
+  "30-50": 3,
+  ">=50": 4
+ },
+ "val_events_above": 6,
+ "val_events_below": 13,
+ "dev_events_above": 7,
+ "dev_events_below": 14,
+ "events_by_state": {
+  "DEV": {
+   "BEAR": 12,
+   "BASE": 7,
+   "BULL": 2,
+   "NA": 0
+  },
+  "VAL": {
+   "BEAR": 7,
+   "BASE": 1,
+   "BULL": 11,
+   "NA": 0
+  }
+ },
+ "event_list": [
+  {
+   "date": "2019-11-21",
+   "B": 0.161,
+   "alive": 31,
+   "signals": 14,
+   "legs": 14,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2019-12-04",
+   "B": 0.161,
+   "alive": 31,
+   "signals": 12,
+   "legs": 12,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2019-12-16",
+   "B": 0.29,
+   "alive": 31,
+   "signals": 16,
+   "legs": 16,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2020-03-12",
+   "B": 0.944,
+   "alive": 36,
+   "signals": 35,
+   "legs": 35,
+   "state": "BASE",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2020-09-21",
+   "B": 0.186,
+   "alive": 43,
+   "signals": 21,
+   "legs": 21,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2020-11-04",
+   "B": 0.163,
+   "alive": 43,
+   "signals": 17,
+   "legs": 17,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2021-05-19",
+   "B": 0.254,
+   "alive": 63,
+   "signals": 33,
+   "legs": 33,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2021-06-21",
+   "B": 0.203,
+   "alive": 64,
+   "signals": 49,
+   "legs": 49,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2021-07-20",
+   "B": 0.197,
+   "alive": 66,
+   "signals": 45,
+   "legs": 45,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2021-12-04",
+   "B": 0.273,
+   "alive": 66,
+   "signals": 36,
+   "legs": 36,
+   "state": "BULL",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2022-01-10",
+   "B": 0.152,
+   "alive": 66,
+   "signals": 27,
+   "legs": 27,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2022-01-21",
+   "B": 0.5,
+   "alive": 66,
+   "signals": 56,
+   "legs": 56,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2022-04-30",
+   "B": 0.409,
+   "alive": 66,
+   "signals": 52,
+   "legs": 52,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2022-06-11",
+   "B": 0.182,
+   "alive": 66,
+   "signals": 40,
+   "legs": 40,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2022-11-09",
+   "B": 0.621,
+   "alive": 66,
+   "signals": 55,
+   "legs": 55,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2022-12-16",
+   "B": 0.373,
+   "alive": 67,
+   "signals": 43,
+   "legs": 43,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2023-03-09",
+   "B": 0.343,
+   "alive": 67,
+   "signals": 50,
+   "legs": 50,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2023-05-08",
+   "B": 0.269,
+   "alive": 67,
+   "signals": 50,
+   "legs": 50,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2023-06-05",
+   "B": 0.164,
+   "alive": 67,
+   "signals": 32,
+   "legs": 32,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2023-08-16",
+   "B": 0.493,
+   "alive": 67,
+   "signals": 50,
+   "legs": 50,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2023-09-11",
+   "B": 0.373,
+   "alive": 67,
+   "signals": 47,
+   "legs": 47,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2024-04-13",
+   "B": 0.552,
+   "alive": 67,
+   "signals": 51,
+   "legs": 51,
+   "state": "BULL",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2024-06-11",
+   "B": 0.179,
+   "alive": 67,
+   "signals": 42,
+   "legs": 42,
+   "state": "BULL",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2024-07-04",
+   "B": 0.625,
+   "alive": 64,
+   "signals": 54,
+   "legs": 54,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2024-08-03",
+   "B": 0.25,
+   "alive": 64,
+   "signals": 44,
+   "legs": 44,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-02-02",
+   "B": 0.274,
+   "alive": 62,
+   "signals": 46,
+   "legs": 46,
+   "state": "BULL",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-03-09",
+   "B": 0.177,
+   "alive": 62,
+   "signals": 43,
+   "legs": 43,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-04-06",
+   "B": 0.403,
+   "alive": 62,
+   "signals": 48,
+   "legs": 48,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-06-21",
+   "B": 0.197,
+   "alive": 61,
+   "signals": 43,
+   "legs": 43,
+   "state": "BULL",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-10-10",
+   "B": 0.633,
+   "alive": 60,
+   "signals": 49,
+   "legs": 49,
+   "state": "BULL",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-11-03",
+   "B": 0.15,
+   "alive": 60,
+   "signals": 35,
+   "legs": 35,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-11-21",
+   "B": 0.317,
+   "alive": 60,
+   "signals": 44,
+   "legs": 44,
+   "state": "BULL",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-12-01",
+   "B": 0.283,
+   "alive": 60,
+   "signals": 40,
+   "legs": 40,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2025-12-15",
+   "B": 0.2,
+   "alive": 60,
+   "signals": 32,
+   "legs": 32,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2026-01-31",
+   "B": 0.617,
+   "alive": 60,
+   "signals": 52,
+   "legs": 52,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2026-06-02",
+   "B": 0.333,
+   "alive": 60,
+   "signals": 34,
+   "legs": 34,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2026-06-23",
+   "B": 0.267,
+   "alive": 60,
+   "signals": 29,
+   "legs": 29,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2026-07-27",
+   "B": 0.183,
+   "alive": 60,
+   "signals": 19,
+   "legs": 19,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2026-08-12",
+   "B": 0.183,
+   "alive": 60,
+   "signals": 15,
+   "legs": 15,
+   "state": "BEAR",
+   "above": 0.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  },
+  {
+   "date": "2026-10-29",
+   "B": 0.259,
+   "alive": 58,
+   "signals": 40,
+   "legs": 40,
+   "state": "BASE",
+   "above": 1.0,
+   "skipped": {
+    "incomplete": 0,
+    "hole": 0
+   }
+  }
+ ],
+ "excluded_lt30_alive": [
+  {
+   "date": "2018-03-16",
+   "B": 0.5,
+   "alive": 2
+  },
+  {
+   "date": "2018-06-12",
+   "B": 0.5,
+   "alive": 4
+  },
+  {
+   "date": "2018-08-07",
+   "B": 0.4,
+   "alive": 5
+  },
+  {
+   "date": "2018-09-05",
+   "B": 0.2,
+   "alive": 5
+  },
+  {
+   "date": "2018-11-14",
+   "B": 0.429,
+   "alive": 7
+  },
+  {
+   "date": "2019-07-11",
+   "B": 0.312,
+   "alive": 16
+  },
+  {
+   "date": "2019-08-09",
+   "B": 0.222,
+   "alive": 18
+  },
+  {
+   "date": "2019-08-29",
+   "B": 0.278,
+   "alive": 18
+  },
+  {
+   "date": "2019-09-24",
+   "B": 0.571,
+   "alive": 21
+  }
+ ],
+ "no_valid_leg": []
+}

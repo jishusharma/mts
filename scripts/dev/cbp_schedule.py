@@ -30,6 +30,16 @@ WEEKEND_TIMES = (("Saturday", "05:30"), ("Sunday", "16:30"))
 DAYS = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
 
+def windowless(python):
+    """pythonw.exe beside python.exe: Task Scheduler then opens no console for the launcher (the child
+    processes get CREATE_NO_WINDOW). Falls back to `python` when pythonw is absent or the name differs."""
+    p = Path(str(python))
+    if p.name.lower() != "python.exe":
+        return str(python)
+    w = p.with_name("pythonw.exe")
+    return str(w) if (w.exists() or not p.exists()) else str(python)
+
+
 def task_xml(python, script, home, utcoffset=None):
     """Windows evaluates DaysOfWeek in the host's local day, so a UTC time that crosses local midnight
     (20:00 UTC = 01:30 IST next day) moves its days one forward; `utcoffset` (default: host) drives that."""
@@ -55,10 +65,10 @@ def task_xml(python, script, home, utcoffset=None):
             '<Settings><MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>'
             '<DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>'
             '<StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>'
-            '<StartWhenAvailable>true</StartWhenAvailable><WakeToRun>true</WakeToRun>'
+            '<StartWhenAvailable>true</StartWhenAvailable><Hidden>true</Hidden><WakeToRun>true</WakeToRun>'
             '<ExecutionTimeLimit>PT3H</ExecutionTimeLimit>'
             '<RestartOnFailure><Interval>PT15M</Interval><Count>3</Count></RestartOnFailure>'
-            '</Settings><Actions Context="Author"><Exec><Command>' + escape(str(python)) +
+            '</Settings><Actions Context="Author"><Exec><Command>' + escape(windowless(python)) +
             '</Command><Arguments>' + escape(args) + '</Arguments><WorkingDirectory>' +
             escape(str(ROOT)) + '</WorkingDirectory></Exec></Actions></Task>')
 

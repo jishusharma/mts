@@ -397,3 +397,117 @@ def test_hydrogen_model_id():
     assert 'hydrogen' in g.MODELS
     assert g.model_id('hydrogen', 'medium') == 'gemini-4-hydrogen-medium'
     assert g.model_id('hydrogen', 'low') == 'gemini-4-hydrogen-low'
+
+
+class GeminiDeliveryQualityTest(unittest.TestCase):
+    """gemini-lane-opt: worker rules require Next:/preship.py check, audit/run PASS softened to SOUND, preship guards review/solo,
+    and solo ship passes --again --no-ci-wait --next without double-releasing the claim."""
+
+    def test_rules_require_next_trailer_and_preship_check(self):
+        r = gq.rules_for("flash", "gemini-3.8-flash-low")
+        self.assertIn("Next:", r)
+        self.assertIn("preship.py check", r)
+
+    def test_deliver_softens_pass_on_audit_card_and_runs_preship_in_review_mode(self):
+        import json
+        with tempfile.TemporaryDirectory() as td:
+            t = Path(td)
+            log = t / "soft-card.log"
+            log.write_text("START soft-card gemini-3.8-flash-low\nCHECKS: pass pytest\nEXIT 0 after 5s\n", encoding="utf-8")
+            subprocess.run(["git", "init", "-q", str(t)], check=True)
+            subprocess.run(["git", "-C", str(t), "config", "user.email", "t@t"], check=True)
+            subprocess.run(["git", "-C", str(t), "config", "user.name", "t"], check=True)
+            card_file = t / "MyTradingSys" / "system" / "tasks" / "soft-card.json"
+            card_file.parent.mkdir(parents=True, exist_ok=True)
+            card_file.write_text(json.dumps({
+                "id": "soft-card", "title": "t", "lane": "CODEX", "kind": "audit",
+                "state": "done", "result": "PASS: 3 checks verified", "next": "END: audit complete",
+            }, indent=2) + "\n", encoding="utf-8")
+            subprocess.run(["git", "-C", str(t), "add", str(card_file)], check=True)
+            subprocess.run(["git", "-C", str(t), "commit", "-q", "-m", "done\n\nResult: PASS: 3 checks\nNext: END: audit complete"], check=True)
+            calls = []
+
+            def fake_git(*args, **kw):
+                calls.append(args)
+                if args[:2] == ("rev-list", "--count"):
+                    return subprocess.CompletedProcess(args, 0, "1\n", "")
+                if args[:1] in (("commit",), ("add",)):
+                    return subprocess.run(["git", "-C", str(kw.get("cwd", t)), *args], capture_output=True, text=True)
+                return subprocess.CompletedProcess(args, 0, "", "")
+
+            with mock.patch.object(gq, "git", side_effect=fake_git), \
+                 mock.patch("preship.docs_ship_failures", side_effect=lambda root, paths: []):
+                gq.deliver("soft-card", t, log, "review")
+            out = log.read_text(encoding="utf-8")
+            self.assertIn("REVIEW gemini-q/soft-card", out)
+            saved = json.loads(card_file.read_text(encoding="utf-8"))
+            self.assertTrue(saved["result"].startswith("SOUND:"), saved["result"])
+
+    def test_deliver_review_refuses_push_when_preship_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            t = Path(td)
+            log = t / "pf.log"
+            log.write_text("START pf gemini-3.8-flash-low\nEXIT 0 after 5s\n", encoding="utf-8")
+            calls = []
+
+            def fake_git(*args, **kw):
+                calls.append(args)
+                if args[:2] == ("rev-list", "--count"):
+                    return subprocess.CompletedProcess(args, 0, "1\n", "")
+                return subprocess.CompletedProcess(args, 0, "", "")
+
+            with mock.patch.object(gq, "git", side_effect=fake_git), \
+                 mock.patch("preship.docs_ship_failures", side_effect=lambda root, paths: [(("doc-cap", 0, None, 0, "trim it"), ["SURFACE_POLICY.md: cap exceeded"])]):
+                gq.deliver("pf", t, log, "review")
+            out = log.read_text(encoding="utf-8")
+            self.assertIn("PRESHIP FAILED pf", out)
+            self.assertIn("SURFACE_POLICY.md", out)
+            self.assertFalse(any(a[:1] == ("push",) for a in calls))
+
+    def test_deliver_solo_passes_again_no_ci_wait_and_next_fallback(self):
+        with tempfile.TemporaryDirectory() as td:
+            t = Path(td)
+            log = t / "solo-card.log"
+            log.write_text("START solo-card gemini-3.8-flash-low\nEXIT 0 after 5s\n", encoding="utf-8")
+            seen_cmd = []
+
+            def fake_git(*args, **kw):
+                if args[:2] == ("rev-list", "--count"):
+                    return subprocess.CompletedProcess(args, 0, "1\n", "")
+                return subprocess.CompletedProcess(args, 0, "", "")
+
+            def fake_sh(cmd, **kw):
+                seen_cmd.append(list(cmd))
+                return subprocess.CompletedProcess(cmd, 0, "SHIPPED\n", "")
+
+            with mock.patch.object(gq, "git", side_effect=fake_git), \
+                 mock.patch.object(gq, "sh", side_effect=fake_sh), \
+                 mock.patch("preship.docs_ship_failures", side_effect=lambda root, paths: []):
+                gq.deliver("solo-card", t, log, "solo")
+            out = log.read_text(encoding="utf-8")
+            self.assertIn("SOLO SHIPPED solo-card", out)
+            self.assertEqual(len(seen_cmd), 1)
+            for flag in ("--release", "solo-card", "--again", "--no-ci-wait", "--next"):
+                self.assertIn(flag, seen_cmd[0])
+
+    def test_run_job_solo_does_not_double_release_when_deliver_ships(self):
+        with tempfile.TemporaryDirectory() as td:
+            (Path(td) / "c1").mkdir()
+            sh_calls = []
+
+            def fake_sh(cmd, **kw):
+                sh_calls.append(list(cmd))
+                return subprocess.CompletedProcess(cmd, 0, "BRIEF", "")
+
+            with mock.patch.object(gq, "ROOT", Path(td)), mock.patch.object(gq, "git", return_value=cp(0)), \
+                    mock.patch("sync.open_claims", return_value=[]), \
+                    mock.patch.object(gq, "card_gate", return_value=(True, "")), \
+                    mock.patch.object(gq, "claim_with_retry", return_value=("ok", "")), \
+                    mock.patch.object(gq, "keep_lease"), \
+                    mock.patch.object(gq, "sh", side_effect=fake_sh), \
+                    mock.patch.object(gq, "deliver", return_value=True), \
+                    mock.patch.object(gq.subprocess, "run", return_value=cp(0)):
+                gq.run_job("c1", "low", "flash", "solo")
+            releases = [c for c in sh_calls if "release" in c]
+            self.assertEqual(releases, [], f"solo SHIPPED already releases via ship --release; got extra release calls: {releases}")
+
