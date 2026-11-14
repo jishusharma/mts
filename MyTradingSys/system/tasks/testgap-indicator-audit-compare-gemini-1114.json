@@ -1,0 +1,67 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-13T21:57:52Z",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T21:47:32Z",
+  "depends_on": [],
+  "done_when": "scripts/dev/test_indicator_audit_compare.py exists, python -m pytest scripts/dev/test_indicator_audit_compare.py passes with at least 3 tests, and a docstring names the mutation that made one test fail",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "scripts/dev/indicator_audit_compare.py has no test file named for it. Write scripts/dev/test_indicator_audit_compare.py with 3-5 cases (normal, empty, malformed input) and show a new test fails against a deliberately broken copy of the function (mutation).",
+  "id": "testgap-indicator-audit-compare-gemini-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "scripts/dev/test_indicator_audit_compare.py (5 passed)",
+      "ref": "7a860338f",
+      "utc": "2026-11-13T21:57:52Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: Gemini queue refill 11-14, output on a gemini-q branch",
+  "note": "Planner refill 1114. Every number must trace to a file or verbatim quote. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T21:47:32Z",
+  "refs": [],
+  "result": "scripts/dev/test_indicator_audit_compare.py (5 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "scripts/dev/test_indicator_audit_compare.py"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2026-11-14 (planner-gemini-refill-1114)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read scripts/dev/indicator_audit_compare.py; list its public functions and what each returns.",
+    "Write scripts/dev/test_indicator_audit_compare.py: one assert per behaviour, expected values worked by hand from the code docstring or inputs, never copied from running it.",
+    "Copy scripts/dev/indicator_audit_compare.py to a scratch file, break one branch (flip a comparison), point the test at it, record the failure line in the test docstring; then run on the real module and see it pass.",
+    "Run python -m pytest on the new test file only; paste the pass count in the commit message. Commit on your gemini-q branch only."
+  ],
+  "taken": "2026-11-13T21:57:52Z",
+  "tests": "scripts/dev/test_indicator_audit_compare.py",
+  "title": "[GEMINI] Test-gap: new tests for indicator_audit_compare.py",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
