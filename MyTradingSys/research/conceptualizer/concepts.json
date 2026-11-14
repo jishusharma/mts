@@ -1831,8 +1831,8 @@
           "1h–12h",
           "32 (best cell)",
           "+0.585R (CI −0.48..+1.64)",
-          "INCONCL.",
-          "48 of 60 cells under 30 trades",
+          "FAIL",
+          "48 of 60 cells under 30 trades; best powered cell FAIL",
           "MyTradingSys/research/conceptualizer/sources_1114/edge3-rsi-deep-extreme-grid-1113_RESULTS.md"
         ],
         [
@@ -13942,7 +13942,7 @@
           "code": "MyTradingSys/backtest/layers/consensus/writer.py",
           "fidelity": [
             "untested",
-            "Writer built; README says nothing calls it yet"
+            "Writer built; live_runner_cli.py calls the hook every poll (observation only)"
           ],
           "support": [
             [
@@ -14122,13 +14122,13 @@
           "MyTradingSys/backtest/layers/alerts/test_live_runner_core.py"
         ],
         [
-          "Consensus writer unit tests (37); not wired",
+          "Consensus writer unit tests (37); called each poll by live_runner_cli.py",
           "-",
           "-",
           "-",
           "DESCR.",
-          "writer built; nothing calls it",
-          "MyTradingSys/backtest/layers/consensus/README.md ; MyTradingSys/backtest/layers/consensus/test_writer.py"
+          "observation only: never gates a core",
+          "MyTradingSys/backtest/layers/alerts/live_runner_cli.py ; MyTradingSys/backtest/layers/consensus/README.md ; MyTradingSys/backtest/layers/consensus/test_writer.py"
         ],
         [
           "Promotion gate unit tests (56)",
@@ -14177,8 +14177,8 @@
       },
       "gaps": [
         [
-          "Consensus writer not wired",
-          "README: nothing calls it yet; hook points and snapshot id open"
+          "Consensus rows not yet scored",
+          "hook runs every poll (observation only); agreement not yet scored against fee-net R"
         ],
         [
           "No fee-net study",
