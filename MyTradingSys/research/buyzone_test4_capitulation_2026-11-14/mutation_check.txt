@@ -1,0 +1,17 @@
+MUT s/OI_DROP = -0.05/OI_DROP = -0.5/
+FAILED test_lib.py::test_build_events_stop_entry_and_hold - assert 0 == 1
+4 failed, 4 passed in 5.07s
+MUT s/RECLAIM = 14/RECLAIM = 30/
+FAILED test_lib.py::test_reclaim_window_is_14_bars - AssertionError: assert [...
+1 failed, 7 passed in 4.15s
+MUT s/bool(fund\[u\] < 0)/bool(fund[u] < 1)/
+FAILED test_lib.py::test_each_condition_is_needed - AssertionError: assert [{...
+1 failed, 7 passed in 4.47s
+MUT s/min(u + RECLAIM, n - 1) + 1/n/
+FAILED test_lib.py::test_reclaim_window_is_14_bars - AssertionError: assert [...
+1 failed, 7 passed in 5.15s
+MUT s/m = l\[u:s + 1\].min()/m = l[u]/
+........                                                                 [100%]
+8 passed in 2.73s
+FAILED test_lib.py::test_stop_uses_lowest_low_between_undercut_and_reclaim - ...
+1 failed, 8 passed in 5.17s
