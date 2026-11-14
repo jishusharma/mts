@@ -15,6 +15,7 @@ from backtest import research_kit as RK  # noqa: E402
 
 NY = ZoneInfo("America/New_York")
 MIN = 60_000
+WINDOW = 60                       # bars T0..T0+59 must all exist
 SYMBOLS = ["BTC", "ETH", "SOL", "BNB", "XRP", "DOGE", "ADA", "AVAX", "LINK", "LTC"]
 ENTRY_OFFSET = 3                  # entry = open of bar T0+3 (0 would be a look-ahead: the open of the first bar)
 HORIZON_BAR = {27: 29, 57: 59}    # exit = close of bar T0+k
@@ -40,14 +41,16 @@ def events_for(t, o, c, days, entry_offset=ENTRY_OFFSET):
     for d in days:
         t0 = open_ms(d)
         i = int(np.searchsorted(t, t0))
-        if i + 59 >= len(t) or t[i] != t0 or t[i + 59] != t0 + 59 * MIN:
+        fwd_t = t[i:i + WINDOW]
+        if len(fwd_t) < WINDOW or fwd_t[0] != t0 or fwd_t[-1] != t0 + (WINDOW - 1) * MIN:
             skipped += 1
             continue
-        m3 = c[i + 2] / o[i] - 1
+        fwd_o, fwd_c = o[i:i + WINDOW], c[i:i + WINDOW]
+        m3 = fwd_c[2] / fwd_o[0] - 1
         if m3 == 0:
             continue
-        e = o[i + entry_offset]
-        out.append(dict(day=d, m3=float(m3), r27=float(c[i + HORIZON_BAR[27]] / e - 1), r57=float(c[i + HORIZON_BAR[57]] / e - 1)))
+        e = fwd_o[entry_offset]
+        out.append(dict(day=d, m3=float(m3), r27=float(fwd_c[HORIZON_BAR[27]] / e - 1), r57=float(fwd_c[HORIZON_BAR[57]] / e - 1)))
     return out, skipped
 
 

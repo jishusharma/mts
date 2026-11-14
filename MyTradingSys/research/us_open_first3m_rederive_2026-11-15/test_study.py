@@ -17,10 +17,9 @@ def bars():
     t = t0 + np.arange(-5, 70) * S.MIN
     o = np.full(len(t), 100.0)
     c = np.full(len(t), 100.0)
-    i = 5
-    c[i + 2] = 101.0                         # first 3 minutes up 1 %
-    o[i + 3] = 101.0                         # entry bar open
-    c[i + 29], c[i + 59] = 102.01, 99.99     # exits
+    c[7] = 101.0                         # first 3 minutes up 1 %
+    o[8] = 101.0                         # entry bar open
+    c[34], c[64] = 102.01, 99.99     # exits
     return t.astype(np.int64), o, c
 
 
