@@ -2582,3 +2582,8 @@ Operator: "Add youtube freedom to jobs and I need it fixed. I need workarounds, 
 ## 2026-11-13 ~20:50Z: where to buy after the 7-week fall (operator, voice)
 - Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
 - Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).
+
+## 2026-11-13 21:15Z NK tests must be phase specific and apply the MTS brains to find useful trades (operator)
+- His words: "NK related tests must be phase specific and try to apply brains of mts in finding useful trades"
+- DECIDED (operator): NK tests run per phase with MTS context layers, not one coarse ADX phase. Action taken: MTS_BRAINS_SPEC_1114 written; four studies run (nkp1 session rules, nkp2 levels, nkp3 Hilega-Milega, nkp4 NK + MTS confluence) with blind reviews, synthesis in NK_PHASE_BRAINS_SYNTHESIS_1114.md.
+- Outcome: FAIL. 0 of 17 DEV-chosen cells pass VAL fee-net at 12 bp; DEV winners shrank about 1 R on VAL; gross R near 0 so fees decide. Only lead is CAPITULATION long (6 VAL days), needs its own pre-registration with more symbols.
