@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:31:43Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/sourcecheck-bollinger/SOURCECHECK.md exists, first line is N CONFIRMED / M CONTRADICTED / K NOT FETCHED, and every row has a verbatim quote or the words NOT FETCHED",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Blind read of the named rule book; for each rule line marked UNVERIFIED or lacking a quote, find a public primary source and mark CONFIRMED / CONTRADICTED / NOT FETCHED with a verbatim quote; list cited local quotes not found in their file.",
+  "id": "sourcecheck-bollinger-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:41:57Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/sourcecheck-bollinger/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read BOLLINGER.md; list every rule line with its label (SOURCED / OURS / UNVERIFIED) and cited source.",
+    "For each cited local source file, grep the quoted text; record found or not found with file:line.",
+    "For UNVERIFIED lines fetch a public primary source; no paid or login pages; NOT FETCHED if unreachable.",
+    "Write SOURCECHECK.md in the lab folder. Commit on your gemini-q branch only; never edit the rule book."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Primary-source check of BOLLINGER rule book",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
