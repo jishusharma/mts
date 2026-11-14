@@ -26,7 +26,7 @@ Regime mix: DEV trades by BTC smoothed state: BASE 49% BEAR 0% BULL 51% (calenda
 |---|---|---|
 | 1 power (VAL n>=30, weeks>=20) | PASS | n 103, weeks 54 |
 | 2 VAL mean>0 and CI low>0 | FAIL | -0.035, CI low -0.716 |
-| 3 DEV mean>0 | PASS | +5.061 (n 133) |
+| 3 DEV mean>0 | PASS (uncapped, outlier-driven) | +5.061 (n 133); DEV 3R-capped net -0.063 R; DOGE +425 R, ANKR +76 R, FTM +37 R |
 | 4 placebo same-window | FAIL | real -0.035, draws mean -0.045, p97.5 +0.838, excess +0.010, p 0.478, rank 52.3 pct, n 103 skipped 0 |
 | 4g placebo global (not a bar) | - | real -0.035, draws mean -0.149, p97.5 +0.853, p 0.290, rank 71.1 pct |
 | 5 ex-best-5 weeks, 3R-capped | FAIL | -0.644 (n 96); uncapped -0.650 |
@@ -47,3 +47,16 @@ Holm: per-study p 0.7286; family (9 cells) worst case 1.0000.
 - DEV-only positive flag: True. Baseline days used: {'DEV': 636, 'VAL': 717}.
 
 Tables by year, BTC state, exit reason and coin: tables.md. Numbers: results.json.
+
+## Adversarial check
+
+Flag: MINOR. Final verdict: FAIL (first failing bar 2), kills a_val_mean_le0 + b_placebo; FRAGILE on bars 7 and 8; DEV-only positive.
+
+- Checker recomputed 3 VAL trades (BCH, AAVE, TRX) from raw klines: match to better than 1e-10 relative.
+- Independent full re-implementation gives the same 236 (coin, entry date) pairs; max net R relative difference 5e-11; VAL n 103 mean -0.034706, DEV n 133 mean +5.060878.
+- Order clean: PRE_REG, code, tests frozen in 3f4f49cc before outcomes (ea3df0fb); only change was escaping a % in a label format string (t9_run.py line 179), no rule or parameter.
+- Spec fidelity and look-ahead: no undisclosed deviation, no look-ahead found; placebo is like-for-like (103 of 103 real trades had candidates).
+- Verdict re-derived from PRE_REG bars matches: failed 2, 4, 5, 6, 7, 8; kill c did not fire.
+- Bar 3 PASS rests on three outlier trades and bull drift (DEV 3R-capped net -0.063 R); annotated in the bar table.
+- Power: measured VAL week-level sd is 3.8 R, far above the gate's 1.0 R floor (D1), so the true MDE is larger than the printed 0.581 R and n needed is far above 93.
+- Funding is NOT_IN_DATA (zero charged) for 8 trades; disclosed, flat-funding sensitivity stays negative.
