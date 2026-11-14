@@ -1,0 +1,8 @@
+Mutation check: each planted bug is applied to a temp copy of t10_core.py; the test file must fail.
+tie order: target checked before stop            -> CAUGHT: 1 failed, 26 passed in 3.19s
+fee dropped from net                             -> CAUGHT: 1 failed, 26 passed in 2.41s
+look-ahead: prior_min includes the signal bar    -> CAUGHT: 1 failed, 26 passed in 2.48s
+entry at signal-bar index t, not t+1             -> CAUGHT: 4 failed, 23 passed in 2.48s
+short sign flipped                               -> CAUGHT: 3 failed, 24 passed in 1.91s
+cooldown off                                     -> CAUGHT: 1 failed, 26 passed in 1.83s
+funding sign flipped (short pays positive)       -> CAUGHT: 1 failed, 26 passed in 2.31s

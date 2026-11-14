@@ -1,0 +1,3 @@
+priority: ctypes GetPriorityClass=0x4000 (0x4000 = BELOW_NORMAL)
+SIGN-FLIP positive only in the phase opposite to the gate
+exit 0
