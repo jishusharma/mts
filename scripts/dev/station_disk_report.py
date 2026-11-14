@@ -14,9 +14,6 @@ import tempfile
 import time
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import hosts  # noqa: E402
-
 HOME = Path.home()
 
 
@@ -26,7 +23,7 @@ def candidates():
         "vm_bundles": [Path("F:/ClaudeVM"), Path(os.environ.get("APPDATA", "")) / "Claude" / "vm_bundles"],
         "claude_data": [Path(os.environ.get("LOCALAPPDATA", "")) / "Claude-Data"],
         "temp": [Path(tempfile.gettempdir())],
-        "worktrees": [p for r in hosts.worktree_roots(proj if proj.exists() else None) for p in Path(r).glob("mts-*")],
+        "worktrees": list(proj.glob("mts-*")) if proj.exists() else [],
         "mts_live": [Path("C:/MTS"), proj / "BinanceDataFeed" / ".mts_live"],
         "dumps": [Path("F:/Dumps"), Path("C:/Dumps"), HOME / "Dumps"],
     }
