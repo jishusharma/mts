@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:32:46Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/edge-brief-session-levels/BRIEFS.md exists, first line is the count of briefs, and each brief has hypothesis, entry, stop, hold, 12 bp fee-net cost, DEV <= 2023-12-31 / VAL >= 2024-01-01 split and kill rule, each field labelled SOURCED or OURS",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Read MyTradingSys/research/indicator_rulebooks/SESSION_LEVELS.md plus VERDICTS.csv and TRIAL_LEDGER.csv; find session-level setups (open, high/low, sweep, retest) with cached BTC/ETH kline data but no verdict row, and write 3 pre-registration briefs. No outcomes computed.",
+  "id": "edge-brief-session-levels-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:32:57Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/edge-brief-session-levels/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Parse VERDICTS.csv and TRIAL_LEDGER.csv (count rows, never truncate); grep session-level setups already tried.",
+    "Check the data cache path from MyTradingSys/research/buy_zone_1114/NEXT5_TESTS.md for kline coverage (listings only, never copy data).",
+    "Write 3 briefs labelled SOURCED (quote file:line) or OURS; no result numbers.",
+    "Write BRIEFS.md in the lab folder; commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Edge hunt: session-level pre-registration briefs",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
