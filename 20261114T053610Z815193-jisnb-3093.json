@@ -1,0 +1,1 @@
+{"t": "20261114T053610Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI fix 85b9a566: reverted 35387b574 (host_health explorer) to last-green bytes; test_host_health.py had invalid escape '\\W', failing test_no_syntax_warnings. NUC: re-ship with a raw string.", "login": "C"}
