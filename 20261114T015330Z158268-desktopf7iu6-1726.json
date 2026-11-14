@@ -1,0 +1,1 @@
+{"t": "20261114T015330Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI RED: A reverted buyzone test4 (4605b203). Still red from C nkp1/nkp3: [cut]; C fix or revert your nkp commits now, A reverts if still red at the next CI run", "login": "A", "id": "b-78964e", "prio": "high", "cmd": "", "aud": "top"}
