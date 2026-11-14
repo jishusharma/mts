@@ -5,7 +5,7 @@ every card change). Pointers: `layer_index.json`; layer status and backtests: `l
 Rules: no fixed core; layers may combine or filter each other, results decide (CLAUDE.md, 2026-10-13). A new backtest is a row in
 `layer_map.json` (it then shows here); a new layer joins a family in `layer_index.json`; a new card names `--layer <family>`.
 
-Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | wavetrend = WaveTrend (LazyBear oscillator) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line) | pizzino = Pizzino (Jason bar count + Michael nested swing states)
+Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow layer) | guidance = Tom/Fabio cross-guidance (BB, LVN, regime filters) | rsi = RSI / Malkan / Kurisko | cryptocred = CryptoCred setups | positioning = Positioning (funding, OI, whale / FlowHorse) | session_timing = Session / timing (session levels, turn of candle, session momentum) | volume_candles_ma = Volume, candle patterns, daily MA setups, bigtrade | live_engine = Live engine, execution and live-market reads (feeds every layer) | callers = Callers (posted trade calls: Qriptal, RLinda, Bennett, Crypto Chase, Roman) | krown = Krown (TA 101: zones, volume, candles, averages, ranges) | wavetrend = WaveTrend (LazyBear oscillator) | pitchfork = Pitchfork (Andrews / Schiff / Morge median line) | pizzino = Pizzino (Jason bar count + Michael nested swing states) | nk_stocktalk = NK StockTalk (Nitish Kumar rules, BTC port) | cycle_context = Cycle, phase and washout context (CBP context, buy-zone map, phase studies) | edge_harness = Edge harness (fees, power, blind review, win-rate vs expectancy) | adx_trend = ADX / DI and trend tools (ADX, trendlines, VFI, squeeze, tick)
 
 ## Tom (order flow + volume profile) (`tom`)
 - Status: Tom on BTC with our own judgement (operator 2026-10-13). DAX chain held, no FDAX data bought (q11). The old BTC encoding stays stopped.
@@ -271,6 +271,34 @@ Families: tom = Tom (order flow + volume profile) | fabio = Fabio (order-flow la
 - Open cards (`python scripts/dev/tasks.py brief <id>`):
   - `pz-4-backtest` refined p1 SONNET: Pizzino layer: BTC backtest DEV/VALIDATION/holdout, fee-net, trial ledger
   - `pz-5-confluence-and-live` refined p2 SONNET: Pizzino layer: confluence table with other layers; cbp.query bias and levels as live input
+
+## NK StockTalk (Nitish Kumar rules, BTC port) (`nk_stocktalk`)
+- Status: Rules catalogued; every tested NK rule failed or is inconclusive on BTC fee-net (Conceptualizer layer nk-stocktalk).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/research/conceptualizer/sources_1114/NK55_RULES_1114.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/NK_TESTS_SYNTHESIS_1114.md`
+- Open cards: none
+
+## Cycle, phase and washout context (CBP context, buy-zone map, phase studies) (`cycle_context`)
+- Status: Context studies only; analyst calls are context, never signals (Conceptualizer layer cycle-context).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/research/conceptualizer/sources_1114/BUY_ZONE_MAP_1114.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/EDGE_POSTMORTEM_1114.md`
+- Open cards: none
+
+## Edge harness (fees, power, blind review, win-rate vs expectancy) (`edge_harness`)
+- Status: Fee-net gate: gross must be >= +0.30 R per trade to clear fees of 0.21-0.24 R (Conceptualizer layer edge-harness).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/research/conceptualizer/sources_1114/EDGE_POSTMORTEM_1114.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/EDGE_BLIND_REVIEW_1114.md`
+- Open cards: none
+
+## ADX / DI and trend tools (ADX, trendlines, VFI, squeeze, tick) (`adx_trend`)
+- Status: ADX census run; VFI, squeeze and tick modules built, untested (Conceptualizer layer adx-trend).
+- Tracks: Claude (Conceptualizer data)
+- Spec / sources: `MyTradingSys/backtest/layers/FORMULAS.md`
+- Other results: `MyTradingSys/research/conceptualizer/sources_1114/edge7-daily-trend-follow-1113_RESULTS.md`
+- Open cards: none
 
 ## Cross-cutting
 
