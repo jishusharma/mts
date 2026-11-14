@@ -16,3 +16,8 @@ Counts are fresh non-bear trades.csv. Before: RIDE DEV 128 / VAL 111, T3R DEV 13
 
 Checks after the fix: 37 tests pass (8 s); lookahead_lint on the folder: 0 FAIL, the 2 WARN rows above; prereg_context_lint clean; step A rerun 27 s.
 Mutation: new tests fail on the pre-fix t4_core.py (3 failed, 34 passed).
+
+## Ship-gate rename (2026-11-14, coordinator, no rule or number change)
+The tree-wide cost-constant gate (T06 scanner, step 3xm) flagged three names bound to numeric literals in t4_core.py:
+COST12, FUND_PCT, FUND_SNAP_MS. Renamed to ROUND_TRIP, LO_PCTL, SNAP_MS (ROUND_TRIP_HALF for COST6). Values and formulas unchanged;
+the cost still comes from fees.py. Tests re-run; trades.csv not regenerated (no behaviour change), checked below.

@@ -323,8 +323,8 @@ def test_time_exits_at_close_of_last_hold_bar_and_unresolved_at_data_end():
 
 # ---------------------------------------------------------------- fees and funding arithmetic
 def test_cost_is_twelve_basis_points_from_fees_py():
-    assert abs(C.COST12 - 0.0012) < 1e-12
-    assert C.COST12 == 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13
+    assert abs(C.ROUND_TRIP - 0.0012) < 1e-12
+    assert C.ROUND_TRIP == 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13
 
 
 def test_net_r_hand_numbers():

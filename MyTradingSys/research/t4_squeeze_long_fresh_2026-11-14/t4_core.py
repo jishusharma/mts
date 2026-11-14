@@ -40,14 +40,14 @@ PHASES = ["UP_E", "UP_L", "MIX_E", "MIX_L", "DOWN_E", "DOWN_L"]
 NONBEAR = (0, 1, 2, 3)                   # UP_E UP_L MIX_E MIX_L: the hypothesis cell
 BEAR = (4, 5)                            # DOWN_E DOWN_L: control row only
 
-COST12 = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13   # 12 bp round trip, fees.py
-COST6 = COST12 / 2                                       # informational row only
+ROUND_TRIP = 2 * fees.BINANCE_TAKER + fees.SLIPPAGE_RT_S13   # 12 bp round trip, fees.py
+ROUND_TRIP_HALF = ROUND_TRIP / 2                                       # informational row only
 
 STOP_ATR, MIN_STOP, TARGET_R = 2.5, 0.02, 3.0            # OURS (miner)
 HOLD_DAYS = {"T3R": 30, "RIDE": 60}                      # OURS (miner)
 KINDS = ("RIDE", "T3R")
 NB_THRESH = 0.08                                         # OURS (miner)
-FUND_PCT = 0.10                                          # OURS (miner)
+LO_PCTL = 0.10                                          # OURS (miner)
 SEED = 1114
 
 FRESH = ("NEAR FIL ALGO MATIC SAND MANA AXS THETA EOS XTZ IOTA ONT QTUM ZIL ENJ BAT CHZ ICX WAVES KNC OMG RVN HBAR EGLD FTM GRT "
@@ -126,7 +126,7 @@ def bars_from_df(df, step):
     return {k: df[k].to_numpy(dtype=np.int64 if k == "ts" else float) for k in ("ts", "o", "h", "l", "c", "v", "tbv")}
 
 
-FUND_SNAP_MS = 60000
+SNAP_MS = 60000
 
 
 def snap_ts(ts):
@@ -134,7 +134,7 @@ def snap_ts(ts):
     settlement instant, the rest exactly on it; without snapping a print AT a bar open is charged or dropped by that jitter alone.
     Minute (not 8h) snapping keeps the real settlement hour of coins that pay every 4h or at shifted hours."""
     ts = np.asarray(ts, np.int64)
-    return ((ts + FUND_SNAP_MS // 2) // FUND_SNAP_MS) * FUND_SNAP_MS
+    return ((ts + SNAP_MS // 2) // SNAP_MS) * SNAP_MS
 
 
 def load_funding(path):
@@ -187,7 +187,7 @@ def fund_lo_daily(d1_ts, fund_ts, fund_rate):
     fd = f.reindex(days)
     fd3 = fd.rolling(3, min_periods=3).mean().to_numpy()
     fp = pct_rank(fd3, 90)
-    return days, np.asarray(fp <= FUND_PCT, bool)
+    return days, np.asarray(fp <= LO_PCTL, bool)
 
 
 def bar_features(D, flow, bug=False):
@@ -320,7 +320,7 @@ def funding_paid(cf, e, xt):
 
 def net_return(ret, funding, cost=None):
     """Gross return - round-trip cost - funding paid (fraction of notional); cost defaults to the 12 bp of fees.py."""
-    return ret - (COST12 if cost is None else cost) - funding
+    return ret - (ROUND_TRIP if cost is None else cost) - funding
 
 
 def net_r(ret, funding, risk, cost=None):
@@ -435,8 +435,8 @@ def make_trades(coin, kind, allowed, gate, brain=None):
                 coin=coin.sym, kind=kind, gate=gate, split=window, signal_ts=int(coin.ts[s]), signal_utc=utc_str(int(coin.ts[s])),
                 entry_ts=int(coin.ts[e]), entry_utc=utc_str(int(coin.ts[e])), entry_price=entry, stop=entry - S, risk=risk,
                 exit_bar_ts=int(coin.ts[int(sm["xi"][j])]), exit_ts=exit_ts, exit_price=float(sm["fill"][j]),
-                exit_reason=WHY[int(sm["why"][j])], hold_bars=xt - e, hold_days=(xt - e) / NB, gross=gross, cost=COST12,
-                funding=fund, net_ret=net, R=net / risk, R6=net_r(gross, fund, risk, COST6),
+                exit_reason=WHY[int(sm["why"][j])], hold_bars=xt - e, hold_days=(xt - e) / NB, gross=gross, cost=ROUND_TRIP,
+                funding=fund, net_ret=net, R=net / risk, R6=net_r(gross, fund, risk, ROUND_TRIP_HALF),
                 phase=PHASES[int(coin.phase[s])], brain_label=bl, brain_cycle=bc,
                 entry_week=iso_week(int(coin.ts[e])), entry_day=eday,
                 fund_covered=bool(exit_ts <= coin.fund_last + 8 * 3600000)))

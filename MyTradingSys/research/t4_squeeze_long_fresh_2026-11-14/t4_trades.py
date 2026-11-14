@@ -106,7 +106,7 @@ def main():
     dc = write_csv(rows["bear"], os.path.join(a.out, "trades_control.csv"))
     counts(dc, "fresh control (DOWN)")
     meta = dict(fresh_kept=sorted(cov), fresh_dropped=dropped, coins=cov, btc_last_close_day=C.utc_str(int(btc["ts"][-1]))[:10],
-                data_end=C.utc_str(C.DATA_END_MS), cost12=C.COST12, seed=C.SEED)
+                data_end=C.utc_str(C.DATA_END_MS), cost12=C.ROUND_TRIP, seed=C.SEED)
     if not a.no_old20:
         rows20, cov20, dropped20 = run_universe(C.OLD20, a.miner, table, brain, [nonbear])
         d20 = write_csv(rows20["nonbear"], os.path.join(a.out, "trades_old20.csv"))
