@@ -95,3 +95,5 @@ MyTradingSys/research/t7_cycle_bottom_weekly_reclaim_2026-11-14/t7_trades.py
 MyTradingSys/research/t8_bollinger_range_to_range_2026-11-14/t8_core.py
 MyTradingSys/research/europe_high_fade_2026-11-13/run_ehf.py
 MyTradingSys/research/t12_funding_extreme_reversal_2026-11-14/t12_run.py
+MyTradingSys/research/nkp4-nk-plus-mts-confluence-1114_2026-11-14/nkp4_run.py
+MyTradingSys/research/nkp4-nk-plus-mts-confluence-1114_2026-11-14/nkp4_study.py
