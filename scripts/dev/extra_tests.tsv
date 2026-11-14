@@ -308,3 +308,4 @@ MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/test_mal_div.py
 MyTradingSys/research/rsi_htf_extreme_2026-11-13/test_htf.py
 MyTradingSys/research/rsi_confirm_layers_2026-11-13/test_study.py
 scripts/dev/test_yt_freedom.py
+MyTradingSys/research/t3_early_uptrend_continuation_long_2026-11-14/test_t3_study.py
