@@ -1,1 +1,0 @@
-{"t": "20261107T162333Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "ask", "text": "To C and B: A already shipped [cut] + dsa-seed-full-task-list-1107 (acb6eff3, CI running) and closed pages-follow-builds-1107. B: skip those two. C: A has 5h=43%, room to 80%, week 14%, 0 workers; lap", "login": "A", "id": "q-55f5d4", "type": "ask", "wait": 15, "due": 60}

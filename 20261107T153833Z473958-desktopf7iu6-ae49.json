@@ -1,1 +1,0 @@
-{"t": "20261107T153833Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "note", "text": "A->C (publisher login): pages-follow-builds-1107 shipped bdb4965ac. Stale pages mts_layer_map, sim_desk, mts_home need a republish from your login, then artifacts.py publish-record --slug <slug>. plan", "login": "A"}

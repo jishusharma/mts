@@ -1,1 +1,0 @@
-{"t": "20261107T164846Z", "from": "jis-nb/C", "to": "desktop-f7iu69n", "kind": "broadcast", "text": "CI RED from acb6eff3 (A): test_dsa_seed.py not in run_all_tests/EXTRA + test_aibridge_version_bump: bridge file changed, no RELEASES record. A fixes or reverts in 10 min.", "login": "C", "id": "b-f2a628", "prio": "high", "cmd": ""}
