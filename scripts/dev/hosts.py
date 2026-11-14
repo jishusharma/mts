@@ -5,6 +5,7 @@ real Windows rename happens later, so the repo must work under the old name, the
 that compares or keys on a hostname goes through canonical() / same_host(), and state written under an old name (signals,
 acks, owner files, branch names) keeps matching the new one. Stdlib only; never raises.
 """
+import ntpath
 import os
 import socket
 
@@ -91,7 +92,8 @@ def _host_path(env_name, field):
         v = os.environ[env_name].strip()
         return v or None
     v = HOST_PATHS.get(this_host(), {}).get(field)
-    if v and os.path.isdir(os.path.splitdrive(v)[0] + os.sep):
+    drive = ntpath.splitdrive(v)[0] if v else ""   # a Windows drive letter only counts where that drive exists (never "/" on Linux CI)
+    if drive and os.name == "nt" and os.path.isdir(drive + "\\"):
         return v
     return None
 
