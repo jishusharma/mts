@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T04:57:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test3-bear4h/REDERIVE.md exists with a first-line PASS or FAIL verdict and a claim table of at least 4 rows, each with a file:line",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-derive the headline of MyTradingSys/research/buyzone_test3_bear4h_2026-11-14 from PRE_REG.md and FORMULAS.md, not study code. The stated result is REPORT.md and summary.json. PASS if verdict, n and headline number match, else FAIL with every mismatch.",
+  "id": "rederive-buyzone-test3-bear4h-gemini4-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill4 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T04:57:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test3-bear4h/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/buyzone_test3_bear4h_2026-11-14/PRE_REG.md and list the data files; do not open RESULT.md, REPORT.md or study code yet.",
+    "Recompute the headline numbers with a small script saved in the lab folder (parse, then count; never conclude from truncated output).",
+    "Only then read the result file; build the claim table: claim, recomputed, stated, file:line, MATCH or MISMATCH.",
+    "Write REDERIVE.md in MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test3-bear4h/, verdict first. Commit on your gemini-q branch only; never edit the study folder."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind re-derive: buyzone_test3_bear4h_2026-11-14",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

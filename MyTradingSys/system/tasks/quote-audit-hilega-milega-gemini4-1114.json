@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T04:57:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114d/quote-audit-hilega-milega/QUOTES.md exists, first line is N FOUND / M NOT FOUND, and each row names the quote, the source file and a line number or NOT FOUND",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "For every quoted line in MyTradingSys/research/indicator_rulebooks/HILEGA_MILEGA.md, grep the cited source file (transcript or extract) and record whether the quote is verbatim; run scripts/dev/verify_extract_quotes.py on it if the format fits. Read-only.",
+  "id": "quote-audit-hilega-milega-gemini4-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill4 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T04:57:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114d/quote-audit-hilega-milega/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "List every quote in HILEGA_MILEGA.md with its cited source.",
+    "grep each quote in the source (normalise whitespace only); record file:line.",
+    "Flag paraphrases presented as quotes.",
+    "Write QUOTES.md in MyTradingSys/research/layer_lab/gemini_1114d/quote-audit-hilega-milega/. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Quote audit: HILEGA_MILEGA rule book",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
