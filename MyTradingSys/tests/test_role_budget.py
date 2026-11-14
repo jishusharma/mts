@@ -12,7 +12,7 @@ ROLES = REPO / "MyTradingSys" / "system" / "roles"
 
 BUDGET = {  # bytes, OURS
     "1985artifacts_guy.md": 2200, "builder.md": 1800, "eagle_eyes.md": 7100, "lab_guy.md": 8300,
-    "lead.md": 4000, "session_planner.md": 11500, "supervisor.md": 7700,
+    "lead.md": 4000, "session_planner.md": 11500, "supervisor.md": 7500,
 }
 MODE_BUDGET = {"think.md": 7500, "pipeline.md": 8000, "admin.md": 5200, "doctor.md": 1800}  # roles/lead/, bytes with CRLF, OURS = size + ~5%
 
