@@ -1,4 +1,3 @@
-Regime mix: see the tables in RESULT.md
 ## Reading and caveats
 Regime mix: see RESULT.md (days per phase, DEV and VAL).
 
