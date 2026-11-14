@@ -569,10 +569,22 @@ class SyncTest(unittest.TestCase):
         self.assertNotEqual(self.branch_of(self.a), f"{sync.socket.gethostname()}/anything")
 
     def test_tidy_all_keeps_every_named_lane_tree(self):
-        lanes = [self.make_tree(self.tmp.resolve() / n, f"jisnb/{n}") for n in ("mts-app", "mts-relay", "mts-dsa")]
+        lanes = [self.make_tree(self.tmp.resolve() / n, f"jisnb/{n}") for n in ("mts-app", "mts-relay", "mts-dsa", "mts-gemini")]
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(sync.tidy(self.a, apply=True, include_named=True, now=time.time() + 48 * 3600), [])
         self.assertTrue(all(l.exists() for l in lanes))
+
+    def test_start_slug_in_mts_gemini_lane_switches_branch_and_retire_own_tree_keeps_it(self):
+        lane = self.make_lane("mts-gemini")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(lane, slug="gemini-opt", quiet=True)
+        self.assertEqual(Path(path).resolve(), lane.resolve())
+        self.assertNotIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/gemini-opt")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertFalse(sync.retire_own_tree(lane))
+        self.assertTrue(lane.exists())
 
     def test_claim_rejects_flag_like_name(self):
         with self.assertRaises(sync.SyncError):
@@ -779,10 +791,13 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(busy.exists())
         self.assertTrue(own.exists())
 
-    def test_start_calls_the_gateway_retire(self):
+    def test_start_calls_the_gateway_retire_unless_quiet(self):
+        with mock.patch.object(sync, "retire_released_gateway_trees") as m, contextlib.redirect_stdout(io.StringIO()):
+            sync.start(self.a, slug="zzz", quiet=False)
+        m.assert_called_once()
         with mock.patch.object(sync, "retire_released_gateway_trees") as m, contextlib.redirect_stdout(io.StringIO()):
             sync.start(self.a, slug="zzz", quiet=True)
-        m.assert_called_once()
+        m.assert_not_called()
 
     def test_start_writes_gateway_marker_only_on_gateway_profile(self):
         with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):
