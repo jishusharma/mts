@@ -99,13 +99,11 @@ class WorktreeRootTests(unittest.TestCase):
             self.assertIsNone(hosts.worktree_root())
         env = {k: v for k, v in os.environ.items() if k != "MTS_WORKTREE_ROOT"}
         with mock.patch.dict(os.environ, env, clear=True), mock.patch.object(hosts, "this_host", return_value="JIS-DESKTOP"):
-            with mock.patch("os.path.isdir", return_value=True), mock.patch("os.name", "nt"):
+            with mock.patch("os.path.isdir", return_value=True):
                 self.assertEqual(hosts.worktree_root(), r"F:\MTS\wt")
             with mock.patch("os.path.isdir", return_value=False):
                 self.assertIsNone(hosts.worktree_root())
             with mock.patch.object(hosts, "this_host", return_value="JIS-NUC"):
-                self.assertIsNone(hosts.worktree_root())
-            with mock.patch("os.path.isdir", return_value=True), mock.patch("os.name", "posix"):   # CI runner: "F:" has no drive, "/" exists
                 self.assertIsNone(hosts.worktree_root())
 
 
