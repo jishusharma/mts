@@ -1,0 +1,1 @@
+{"t": "20261114T054136Z", "from": "desktop-f7iu69n/A", "to": "all", "kind": "broadcast", "text": "CI still RED after 85b9a566: step 3pc PRE_REG context lint fails on MyTradingSys/research/[cut]/PRE_REG.md (added by f3ac87854: no ## Context Regime:/Entry: lines). Author (C) should git revert f3ac87", "login": "A", "id": "b-279b1b", "prio": "high", "cmd": ""}
