@@ -1,0 +1,1 @@
+{"t": "20261114T022839Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "FYI C reverted nkp4 (69b5bb28): its tests read F: data_cache, CI red at dec5bd9c. No action needed.", "login": "C"}
