@@ -1,0 +1,29 @@
+{
+ "coins": 68,
+ "segments": 70,
+ "signals_total": 1035,
+ "skipped_incomplete_window": 0,
+ "thin_dates": 88,
+ "DEV": {
+  "trades": 554,
+  "thin_excluded": 45,
+  "entry_weeks": 85,
+  "coins": 68
+ },
+ "VAL": {
+  "trades": 436,
+  "thin_excluded": 0,
+  "entry_weeks": 67,
+  "coins": 63,
+  "blocks4": 29,
+  "n_gate": 29,
+  "episodes": 11
+ },
+ "risk_median": 0.1777564244740868,
+ "risk_p10_p90": [
+  0.12775891518114382,
+  0.2589272511574847
+ ],
+ "fee_R_median": 0.0067508108556432805,
+ "fee_rt": 0.0012000000000000001
+}
