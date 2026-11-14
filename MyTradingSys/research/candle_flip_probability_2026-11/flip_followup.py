@@ -95,7 +95,7 @@ def main():
                "session_null": {"counts": int(se["counts"].sum()), "survives_48": int(se["survives_48"].sum()), "names": [f"{r.group.split(' ')[0]} {r.cell}" for r in se[se["survives_48"]].itertuples()]},
                "session_baseline": {"counts": int(se["counts2"].sum()), "survives_48": int(se["survives_48_2"].sum()), "names": [f"{r.group.split(' ')[0]} {r.cell}" for r in se[se["survives_48_2"]].itertuples()]},
                "seven_cells": seven}
-    res = HERE.parent / "sim_desk" / "results" / "flip-engine-follow-up.json"
+    res = HERE.parents[2] / "sim_desk" / "results" / "flip-engine-follow-up.json"   # repo-root sim_desk/results (the card path); not the catalogued research/sim_desk/results desk cards
     res.write_text(json.dumps(summary, indent=1, default=float) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps({k: v for k, v in summary.items() if k != "seven_cells"}, indent=1))
     print(pd.DataFrame(seven).to_string())
