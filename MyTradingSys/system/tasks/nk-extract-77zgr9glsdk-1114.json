@@ -1,7 +1,6 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "2026-11-14T18:57:06Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/77zgR9gLsdk/EXTRACT.md"
   ],
@@ -18,12 +17,6 @@
   "lane": "SONNET",
   "latest": [
     {
-      "kind": "ship",
-      "line": "extract exists, verify_extract_quotes.py exit 0 (0 problems)",
-      "ref": "d09b433cb",
-      "utc": "2026-11-14T18:57:06Z"
-    },
-    {
       "auto": true,
       "kind": "ship",
       "line": "Result: 7 NK caption files + 7 Gemini extract cards ready",
@@ -34,19 +27,13 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: extract folded into nk-stocktalk layer (nk-resume-1115)",
   "note": "",
   "prio": 2,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T06:48:39Z",
   "refs": [],
-  "result": "extract exists, verify_extract_quotes.py exit 0 (0 problems)",
-  "result_receipt": {
-    "trust": {
-      "tag": "UNCHECKED"
-    }
-  },
+  "result": "",
   "scope_in": [
     "MyTradingSys/research/nk_stocktalk_1113/interviews/77zgR9gLsdk/"
   ],
@@ -56,13 +43,12 @@
   "sources": [
     "NK interviews 1114"
   ],
-  "state": "done",
+  "state": "ready",
   "steps": [
     "Read MyTradingSys/research/nk_stocktalk_1113/interviews/77zgR9gLsdk/CAPTIONS_timed.txt (shipped on trunk; the only source; never watch the video, never invent text). Create raw_transcripts_canonical/77zgR9gLsdk_raw.txt by stripping the [HH:MM:SS] prefixes and any header from CAPTIONS_timed.txt (git-ignored dir, mkdir -p).",
     "Write MyTradingSys/research/nk_stocktalk_1113/interviews/77zgR9gLsdk/EXTRACT.md in the format of MyTradingSys/research/nk_stocktalk_1113/interviews/EXTRACT.md (quote block, Source GPS tag, bullet with timestamp). Captions are auto-generated Hindi/English with garbles; quote them as they are. Only rules, no biography.",
     "Run python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/77zgR9gLsdk/EXTRACT.md; fix or drop failing quotes until exit 0. Commit EXTRACT.md only."
   ],
-  "taken": "2026-11-14T18:57:06Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Extract NK trading rules from caption file of YouTube video 77zgR9gLsdk into MyTradingSys/research/nk_stocktalk_1113/interviews/77zgR9gLsdk/EXTRACT.md with verified quotes",
   "weight": "",
