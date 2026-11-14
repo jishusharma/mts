@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/EXTRACT.md"
+  ],
+  "created": "2026-11-14T06:12:33Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/EXTRACT.md exists, each rule is a verbatim quote block (> \"quote\" then **Source GPS: tNUicfATYOo | BEGIN|MIDDLE|END**) plus a bullet with [HH:MM:SS] and the rule, and python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/EXTRACT.md exits 0",
+  "est_turns": 8,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Extract trading rules (indicator settings, entries, exits, stops, filters, psychology rules with numbers) NK states in video tNUicfATYOo, verbatim from the caption file only",
+  "id": "nk-extract-tnuicfatyoo-1114",
+  "kind": "run",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "Result: 7 NK caption files + 7 Gemini extract cards ready",
+      "ref": "c32667a3c206",
+      "utc": "2026-11-14T06:21:08Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T06:49:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/"
+  ],
+  "scope_out": [],
+  "scope_sha": "c32667a3c206",
+  "size": "S",
+  "sources": [
+    "NK interviews 1114"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/CAPTIONS_timed.txt (shipped on trunk; the only source; never watch the video, never invent text). Create raw_transcripts_canonical/tNUicfATYOo_raw.txt by stripping the [HH:MM:SS] prefixes and any header from CAPTIONS_timed.txt (git-ignored dir, mkdir -p).",
+    "Write MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/EXTRACT.md in the format of MyTradingSys/research/nk_stocktalk_1113/interviews/EXTRACT.md (quote block, Source GPS tag, bullet with timestamp). Captions are auto-generated Hindi/English with garbles; quote them as they are. Only rules, no biography.",
+    "Run python scripts/dev/verify_extract_quotes.py MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/EXTRACT.md; fix or drop failing quotes until exit 0. Commit EXTRACT.md only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Extract NK trading rules from caption file of YouTube video tNUicfATYOo into MyTradingSys/research/nk_stocktalk_1113/interviews/tNUicfATYOo/EXTRACT.md with verified quotes",
+  "weight": "",
+  "worker": "agent"
+}

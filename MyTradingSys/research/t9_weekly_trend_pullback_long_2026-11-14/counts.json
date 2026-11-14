@@ -1,0 +1,30 @@
+{
+ "universe": 68,
+ "coins_with_flag_defined": 68,
+ "DEV": {
+  "signals": 133,
+  "entry_weeks": 45,
+  "blocks4": 24,
+  "signals_on_dates_with_30_alive": 131,
+  "mean_fee_R": 0.00781272366311515,
+  "median_stop_pct": 0.20915459616869542,
+  "by_state": {
+   "BULL": 68,
+   "BASE": 65
+  },
+  "weeks_with_ge5_flagged": 78
+ },
+ "VAL": {
+  "signals": 103,
+  "entry_weeks": 54,
+  "blocks4": 24,
+  "signals_on_dates_with_30_alive": 103,
+  "mean_fee_R": 0.009551989281031221,
+  "median_stop_pct": 0.15178655370290886,
+  "by_state": {
+   "BULL": 93,
+   "BASE": 10
+  },
+  "weeks_with_ge5_flagged": 83
+ }
+}

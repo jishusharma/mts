@@ -56,6 +56,10 @@ class SyncTest(unittest.TestCase):
         shutil.rmtree(cls.tpl, ignore_errors=True)
 
     def setUp(self):
+        try:
+            os.getcwd()
+        except OSError:   # an earlier test's tree (the cwd sync.remove_tree_now moved to) was removed: Linux then fails os.getcwd()
+            os.chdir(Path(__file__).resolve().parent)
         self.tmp = Path(tempfile.mkdtemp())
         shutil.copytree(self.tpl, self.tmp, dirs_exist_ok=True)
         origin = self.tmp / "origin.git"
@@ -70,6 +74,7 @@ class SyncTest(unittest.TestCase):
         self.gated = []
 
     def tearDown(self):
+        os.chdir(Path(__file__).resolve().parent)   # sync.remove_tree_now chdirs into a tree: never rmtree the cwd below
         os.environ.pop("MTS_WORKTREE_ROOT", None)
         os.environ.pop("MTS_GATE_SLOTS_DIR", None)
         os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
