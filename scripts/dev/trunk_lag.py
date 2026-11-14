@@ -141,27 +141,27 @@ def pages_line(repo, now=None, login=None, spawn=None, sid=None):
 PUBLISHER_ACCOUNTS = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}   # login letter -> registry account (artifacts.LOGIN_ACCOUNT)
 
 
-REPEAT_AFTER = 50   # OURS: a session already told it is N commits behind hears again only when the gap has grown by this many
+def once_per_session(repo, sid, behind):
+    """True when this session has not yet been told about this much lag (told again only when the lag has doubled); fails open."""
+    try:
+        gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
+        f = Path(gd) / ("mts_lag_seen_" + "".join(ch for ch in str(sid) if ch.isalnum() or ch in "-_")[:60])
+        if f.exists() and behind < 2 * int(f.read_text().strip() or 0):
+            return False
+        f.write_text(str(behind), encoding="utf-8")
+    except Exception:
+        pass
+    return True
 
 
 def check(repo=None, fetch=True, sid=None):
-    """The TRUNK LAG line. With a session id it prints at most once per session (measured 2026-11-15: 517 B at every prompt of a session in
-    a stale main checkout), again only when the tree fell REPEAT_AFTER commits further behind; an unwritable marker prints (fail open)."""
     repo = Path(repo or os.getcwd())
     if ".mts_live" in repo.resolve().parts:
         return ""
     behind, age = lag(repo, fetch=fetch)
     text = message(behind, age)
-    if text and sid:
-        try:
-            gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
-            seen = Path(gd) / ("mts_lag_seen_" + "".join(ch for ch in str(sid) if ch.isalnum() or ch in "-_")[:60])
-            if gd and seen.exists() and behind - int(seen.read_text(encoding="utf-8").strip() or 0) < REPEAT_AFTER:
-                return ""
-            if gd:
-                seen.write_text(str(behind), encoding="utf-8")
-        except Exception:
-            pass
+    if text and sid and not once_per_session(repo, sid, behind):
+        return ""       # operator 2026-11-15: the same 1749-commit line rode every prompt of a session that cannot pull its checkout
     return text
 
 
