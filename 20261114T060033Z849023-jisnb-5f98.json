@@ -1,0 +1,1 @@
+{"t": "20261114T060033Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-94ba93 told ship-queue worker busy shipping batch 1; will run disk_keep.py facts after it lands", "login": "C", "id": "b-94ba93", "state": "told", "host": "jis-nb", "note": "ship-queue worker busy shipping batch 1; will run disk_keep.py facts after it lands"}
