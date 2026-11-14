@@ -1,0 +1,120 @@
+{
+ "id": "M3",
+ "idea": "NK6 confluence L2&L3&L5",
+ "limit_level": "close of signal bar",
+ "verdict": "FAIL",
+ "gates": {
+  "1": true,
+  "2": false,
+  "3": false,
+  "4": true,
+  "5": null,
+  "6": false
+ },
+ "gate5_note": "BH needs all 6 rows' placebo p; this row alone p=0.0010. Moot since gates 2,3,6 fail.",
+ "gates_failed": [
+  2,
+  3,
+  5,
+  6
+ ],
+ "VAL": {
+  "n_signals": 1996,
+  "n_filled": 1890,
+  "fill_rate": 0.9468937875751503,
+  "thin": false,
+  "mean_net_R_filled": -0.09260814945852149,
+  "mean_gross_R_filled": 0.040076636502753185,
+  "mean_fee_R_filled": 0.1326847859612747,
+  "per_signal_R": -0.08769008140110501,
+  "ci_trade": [
+   -0.15554098603107325,
+   -0.029530544659772815
+  ],
+  "ci_day": [
+   -0.17245850425749296,
+   -0.008819043573829169
+  ],
+  "n_days": 752,
+  "ex_best5_days": -0.1349740662720848,
+  "taker_n": 1996,
+  "taker_gross": 0.08400958039741166,
+  "taker_net12": -0.11216772484451613,
+  "taker_net6": -0.014079072223552256,
+  "orig_gross_filled": 0.054090734482626815,
+  "adverse_selection_R": -0.029918845914784845,
+  "taker_net12_filled_subset": -0.14189619117358088,
+  "miss_reasons": {
+   "no_through": 106
+  },
+  "exit_types": {
+   "time": 188,
+   "stop": 1141,
+   "target": 561
+  },
+  "phase_mix": [
+   0.18837675350701402,
+   0.5811623246492986,
+   0.23046092184368738
+  ]
+ },
+ "DEV": {
+  "n_signals": 2991,
+  "n_filled": 2845,
+  "fill_rate": 0.9511868940153795,
+  "thin": false,
+  "mean_net_R_filled": -0.13771780968059302,
+  "mean_gross_R_filled": -0.021882701806781774,
+  "mean_fee_R_filled": 0.11583510787381128,
+  "per_signal_R": -0.13099537564068445,
+  "ci_trade": [
+   -0.18791784931474473,
+   -0.08794838545312877
+  ],
+  "ci_day": [
+   -0.19812272314157867,
+   -0.07244741739675432
+  ],
+  "n_days": 1167,
+  "ex_best5_days": -0.16760921893353178,
+  "taker_n": 2991,
+  "taker_gross": 0.007777530203393202,
+  "taker_net12": -0.16316704429733137,
+  "taker_net6": -0.07769475704696908,
+  "orig_gross_filled": -0.017900521562111856,
+  "adverse_selection_R": -0.02567805176550506,
+  "taker_net12_filled_subset": -0.1882793368039535,
+  "miss_reasons": {
+   "no_through": 146
+  },
+  "exit_types": {
+   "time": 261,
+   "stop": 1787,
+   "target": 797
+  },
+  "phase_mix": [
+   0.24005349381477767,
+   0.5315947843530592,
+   0.22835172183216315
+  ]
+ },
+ "placebo": {
+  "p": 0.000999000999000999,
+  "mean": -0.18833931381619534,
+  "filled_n": 1890,
+  "draws": 1000
+ },
+ "baseline_replication": {
+  "orig_result": {
+   "n": 1996,
+   "gross": 0.084,
+   "net12": -0.112
+  },
+  "mine": {
+   "n": 1996,
+   "gross": 0.08400958039741166,
+   "net12": -0.11216772484451613,
+   "net6": -0.014079072223552256
+  }
+ }
+}
