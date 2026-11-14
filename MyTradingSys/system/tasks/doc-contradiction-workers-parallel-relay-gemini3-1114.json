@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T01:55:46Z",
   "commands": [],
   "created": "2026-11-14T00:33:55Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "doc-contradiction-workers-parallel-relay-gemini3-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114c/doc-contradiction-workers-parallel-relay/FIND",
+      "ref": "626587adf",
+      "utc": "2026-11-14T01:55:46Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: doc contradiction scan complete",
   "note": "Planner refill3 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T00:34:28Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114c/doc-contradiction-workers-parallel-relay/FINDINGS.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114c/doc-contradiction-workers-parallel-relay/"
   ],
@@ -37,13 +51,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read each of MyTradingSys/system/WORKERS.md, PARALLEL.md and RELAY.md; list the factual claims (numbers, caps, commands, paths).",
     "Match claims by topic across the files; check that named files and commands exist (ls, grep).",
     "Table: topic, side A quote file:line, side B quote file:line, verdict.",
     "Write FINDINGS.md. Commit on your gemini-q branch only; never edit the docs."
   ],
+  "taken": "2026-11-14T01:55:46Z",
   "tests": "MyTradingSys/tests/docs/test_integrity.py",
   "title": "[GEMINI] Doc contradiction scan: WORKERS / PARALLEL / RELAY",
   "weight": "ROUTINE",
