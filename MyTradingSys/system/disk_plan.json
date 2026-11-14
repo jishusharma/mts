@@ -1,0 +1,18 @@
+{
+  "_doc": "Per-device data plan (operator 2026-11-14 05:32Z). One row per canonical host (hosts.py). floors in GB free; overflow = where cold data goes. Read by scripts/dev/disk_keep.py (status/move) and supervisor.py plan. UNKNOWN rows stay UNKNOWN until the host acks the broadcast that runs `python scripts/dev/disk_keep.py facts`; then paste its JSON as the row.",
+  "hosts": {
+    "JIS-DESKTOP": {
+      "status": "KNOWN",
+      "drives": {
+        "C:\\": {"floor_gb": 20, "holds": "Windows, repo checkout (BinanceDataFeed, live tree .mts_live), Claude transcripts, Chrome, codex-runtimes; NO study trees, NO market data"},
+        "F:\\": {"floor_gb": 20, "holds": "F:\\MTS\\wt study trees, F:\\MTS\\data_cache, F:\\CryptoScrapper CBP store, F:\\MTS_backup.git"},
+        "D:\\": {"floor_gb": 0, "holds": "overflow only: cold trees and cold cache files"}
+      },
+      "overflow": {"wt": "D:\\MTS\\wt_cold", "data": "D:\\MTS\\data_cold"},
+      "protect": ["F:\\CryptoScrapper", "F:\\MTS_backup.git"],
+      "cold_after_hours": {"wt": 24, "data": 168}
+    },
+    "JIS-LAPTOP": {"status": "UNKNOWN", "fact_cmd": "python scripts/dev/disk_keep.py facts"},
+    "JIS-NUC": {"status": "UNKNOWN", "fact_cmd": "python scripts/dev/disk_keep.py facts"}
+  }
+}

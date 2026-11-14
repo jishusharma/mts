@@ -41,9 +41,10 @@ class DataCacheTests(unittest.TestCase):
     def test_host_row_default(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("MTS_DATA_CACHE")
-            with mock.patch.object(hosts, "HOST_PATHS", {"JIS-DESKTOP": {"data_cache": self.tmp.name}}), \
-                    mock.patch.object(hosts, "this_host", return_value="JIS-DESKTOP"):
-                self.assertEqual(hosts.data_cache_dir(), self.tmp.name)
+            with mock.patch.object(hosts, "HOST_PATHS", {"JIS-DESKTOP": {"data_cache": r"F:\MTS\data_cache"}}), \
+                    mock.patch.object(hosts, "this_host", return_value="JIS-DESKTOP"), \
+                    mock.patch("os.name", "nt"), mock.patch("os.path.isdir", return_value=True):   # a drive letter counts only on Windows
+                self.assertEqual(hosts.data_cache_dir(), r"F:\MTS\data_cache")
             with mock.patch.object(hosts, "this_host", return_value="JIS-NUC"):
                 self.assertIsNone(hosts.data_cache_dir())
 
