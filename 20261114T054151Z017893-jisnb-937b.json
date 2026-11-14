@@ -1,0 +1,1 @@
+{"t": "20261114T054151Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "CI: also reverted f3ac87854 (T1 PRE_REG lacked ## Context: Regime:/Entry:, failed PRE_REG context lint); re-ship T1 with a Context line.", "login": "C"}
