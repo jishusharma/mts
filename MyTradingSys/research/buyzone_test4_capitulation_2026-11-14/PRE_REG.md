@@ -6,7 +6,7 @@ Source brief: `buy_zone_1114/NEXT5_TESTS.md` Test 4 and its Shared rules. Task f
 Regime: none as a separate gate; the phase below (daily, previous day only) is reported per phase, not used to filter.
 Phase: UP, BASE, RANGE, DOWN, POSTPEAK_BEAR, definitions copied unchanged from Test 1 (`buyzone_test1_ladder_2026-11-14/ladder.py::phases`), computed from closed daily bars through the bar before the entry bar. Label "" (not enough history) is reported as NOPHASE and kept in Step 1; in Step 2 it counts only in the all-phase pool.
 Session: not applicable, daily bars (UTC day).
-Entry (Step 2): next daily open after the signature day's closing bar (OURS).
+Entry: next daily open after the signature day's closing bar (OURS).
 Regime mix: reported in REPORT.md as share of signature events per phase per split; a split with more than 85% of events from one calendar year is flagged ONE-YEAR and cannot carry a PASS alone. Regime mix in UP: reported; BASE: reported; RANGE: reported; DOWN: reported; POSTPEAK_BEAR: reported; NOPHASE: reported.
 
 ## Data (OURS)
