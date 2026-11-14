@@ -1,5 +1,5 @@
 """Tests for nkp4. The look-ahead tests must FAIL under STUDY_BUG=1 (and PHASE_LAG=0): run
-`STUDY_BUG=1 python -m pytest test_study.py` to see red. test_bug_is_detected proves the detectors detect."""
+`STUDY_BUG=1 python -m pytest test_nkp4_study.py` to see red. test_bug_is_detected proves the detectors detect."""
 import os, subprocess, sys
 from pathlib import Path
 import numpy as np, pandas as pd
@@ -7,7 +7,7 @@ import pytest
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-import phases as PH, study as ST, stats as SS
+import nkp4_phases as PH, nkp4_study as ST, nkp4_stats as SS
 
 M15, H1, D1 = ST.M15, ST.H1, ST.D1
 T0 = 1_600_000_000_000 // D1 * D1
@@ -101,7 +101,7 @@ def test_phase_lag_zero_is_the_bug():
 
 
 def test_bug_is_detected():
-    code = ("import sys; sys.path.insert(0, r'%s'); import test_study as T; ch, nk = T.count_changed_layers(); "
+    code = ("import sys; sys.path.insert(0, r'%s'); import test_nkp4_study as T; ch, nk = T.count_changed_layers(); "
             "print(len(ch)); sys.exit(0 if len(ch) > 0 else 1)" % HERE)
     env = dict(os.environ, STUDY_BUG="1")
     r = subprocess.run([sys.executable, "-W", "ignore", "-c", code], env=env, capture_output=True, text=True)

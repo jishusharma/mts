@@ -1,10 +1,10 @@
 """nkp4 runner. Stage `dev` (signals < 2024-01-01 only; writes dev_cells.csv, dev_stepA.json, cells_frozen.json).
 Stage `val` (refuses unless cells_frozen.json is committed and the study code is unchanged since the commit it names).
-Usage: python run.py dev | python run.py val"""
+Usage: python nkp4_run.py dev | python nkp4_run.py val"""
 import sys, json, subprocess, time, datetime as dt
 from pathlib import Path
 import numpy as np, pandas as pd
-import phases as PH, study as ST, stats as SS
+import nkp4_phases as PH, nkp4_study as ST, nkp4_stats as SS
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]

@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 import pandas as pd
-import phases as PH
+import nkp4_phases as PH
 
 HERE = Path(__file__).resolve().parent
 dev = json.loads((HERE / "dev_stepA.json").read_text())
@@ -141,7 +141,7 @@ Active kept cells for BTC/ETH: none, because there are no kept cells. Both coins
 - OI and funding are USD-M perp series used as context for spot-priced trades; no funding cost charged on the spot trades.
 - Parameters are OURS (phase thresholds, bucket cutoffs, MTS-agreement mapping, stop/target/hold); not tuned on DEV or VAL. Nothing was added after the DEV result.
 - Zero kept cells is a valid pre-registered outcome; it supports "no NK or NK+MTS rule has fee-net edge on 15m crypto in any single-bucket phase cell", and does not show that other timeframes, exits or maker-only execution would fail.
-- Files: PRE_REG.md, study.py, phases.py, stats.py, run.py, test_study.py, fetch.py, dev_cells.csv, dev_stepA.json, cells_frozen.json, val_results.json. Raw data in F:\\MTS\\data_cache\\ (not in git).
+- Files: PRE_REG.md, nkp4_study.py, nkp4_phases.py, nkp4_stats.py, nkp4_run.py, test_nkp4_study.py, nkp4_fetch.py, dev_cells.csv, dev_stepA.json, cells_frozen.json, val_results.json. Raw data in F:\\MTS\\data_cache\\ (not in git).
 """
 (HERE / "RESULT.md").write_text(txt, encoding="utf-8")
 print(txt[:1500])
