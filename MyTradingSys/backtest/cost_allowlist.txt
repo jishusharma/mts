@@ -76,3 +76,6 @@ MyTradingSys/research/nkp1-session-rules-phase-1114_2026-11-14/study.py
 MyTradingSys/research/t9_weekly_trend_pullback_long_2026-11-14/t9_core.py
 MyTradingSys/research/t1_markdown_rally_rejection_short_2026-11-14/study.py
 MyTradingSys/research/t1_markdown_rally_rejection_short_2026-11-14/verify_trades.py
+MyTradingSys/research/maker-entry-1114_2026-11-14/M1/analyze.py
+MyTradingSys/research/maker-entry-1114_2026-11-14/M1/run.py
+MyTradingSys/research/maker-entry-1114_2026-11-14/M4/nk5_orig.py
