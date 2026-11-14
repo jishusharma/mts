@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T06:14:27Z",
   "commands": [],
   "created": "2026-11-14T04:57:40Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "rederive-buyzone-test5-flowlead-gemini4-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test5-flowlead/REDERIVE.md (",
+      "ref": "05338ba6a",
+      "utc": "2026-11-14T06:14:27Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: blind rederive complete",
   "note": "Planner refill4 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T04:57:40Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test5-flowlead/REDERIVE.md (PASS; KILL, ALL1M VAL +32.60 bp, ALL5M VAL +4.81 bp)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test5-flowlead/"
   ],
@@ -37,13 +51,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/buyzone_test5_flowlead_2026-11-14/PRE_REG.md and list the data files; do not open RESULT.md, REPORT.md or study code yet.",
     "Recompute the headline numbers with a small script saved in the lab folder (parse, then count; never conclude from truncated output).",
     "Only then read the result file; build the claim table: claim, recomputed, stated, file:line, MATCH or MISMATCH.",
     "Write REDERIVE.md in MyTradingSys/research/layer_lab/gemini_1114d/rederive-buyzone-test5-flowlead/, verdict first. Commit on your gemini-q branch only; never edit the study folder."
   ],
+  "taken": "2026-11-14T06:14:27Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Blind re-derive: buyzone_test5_flowlead_2026-11-14",
   "weight": "ROUTINE",
