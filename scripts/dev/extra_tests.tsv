@@ -315,3 +315,4 @@ MyTradingSys/research/edge_crowding_reversal_1113/test_crowd.py
 MyTradingSys/research/eur_low_sweep_reclaim_pooled_2026-11-13/test_study.py
 MyTradingSys/research/xsec_momentum_2026-11/test_study.py
 MyTradingSys/research/rsi_deep_extreme_grid_2026-11-13/test_rsi_grid.py
+MyTradingSys/research/wt_c30_retest_10sym_2026-11-15/test_10sym.py
