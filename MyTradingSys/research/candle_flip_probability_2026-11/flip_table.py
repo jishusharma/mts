@@ -44,8 +44,9 @@ def offsets(S, points=POINTS):
     return np.unique(np.clip(j, 0, S - 2))
 
 
-def tf_rows(o, h, l, c, S, t0_ms=START_MS, cut_ms=CUT_MS, max_rows=MAX_ROWS, points=POINTS, seed=None, tf="?"):
-    """Rows for one timeframe from dense 1m arrays starting at t0 (no gaps). Returns a DataFrame (empty for S < 2)."""
+def tf_rows(o, h, l, c, S, t0_ms=START_MS, cut_ms=CUT_MS, max_rows=MAX_ROWS, points=POINTS, seed=None, tf="?", clock=None):
+    """Rows for one timeframe from dense 1m arrays starting at t0 (no gaps). Returns a DataFrame (empty for S < 2).
+    clock (optional) = callable (B, J, S) -> variance-time left, see session_null.py: adds the column t_left_s, the session-adjusted variance clock (follow-up card); the other columns are unchanged."""
     o, h, l, c = (np.asarray(x, float) for x in (o, h, l, c))
     J = offsets(S, points)
     nb = len(c) // S
@@ -111,8 +112,9 @@ def tf_rows(o, h, l, c, S, t0_ms=START_MS, cut_ms=CUT_MS, max_rows=MAX_ROWS, poi
     hr = ((g + 1) % 1440) // 60                     # session of the evaluation minute CLOSE time
     sess = np.where(hr < 8, 0, np.where(hr < 13, 1, np.where(hr < 21, 2, 3))).astype(np.int8)
     keep = (price != open_) & (price != pc) & (sd > 0)
+    extra = {"t_left_s": clock(B, Jf, S)} if clock is not None else {}
     df = pd.DataFrame({
-        "tf": tf, "bar_ms": b_open_ms[B], "j": Jf, "t_left": t_left, "d_open": d_open, "d_pc": d_pc,
+        **extra, "tf": tf, "bar_ms": b_open_ms[B], "j": Jf, "t_left": t_left, "d_open": d_open, "d_pc": d_pc,
         "htf": "na" if own else np.where(aligned, "aligned", "split"), "sess": sess, "bb": np.where(at_band, "at", "inside"),
         "y_open": y_open, "y_pc": y_pc, "p0_open": p0_open, "p0_pc": p0_pc, "win": np.where(win[B] == 0, "fit", "score"),
     })
