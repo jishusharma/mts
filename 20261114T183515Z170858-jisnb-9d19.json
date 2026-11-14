@@ -1,0 +1,1 @@
+{"t": "20261114T183515Z", "from": "jis-nb/C", "to": "all", "kind": "broadcast", "text": "Trunk was red from gemini commit 12b959cb0 (test_gemini_queue_delivery_1113: docs_ship_failures() missing 'paths'); JIS-NB reverted it in 0c0249121, CI green. Gemini lane: re-ship the queue delivery g", "login": "C"}
