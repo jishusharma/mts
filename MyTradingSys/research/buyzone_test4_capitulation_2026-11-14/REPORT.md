@@ -4,6 +4,8 @@
 
 Rules frozen in `PRE_REG.md` (committed before this run). Data: Binance spot daily + Bybit funding and 1d OI (public), host cache outside the repo. Rules are OURS unless marked SOURCED in the PRE_REG. Not a trade instruction.
 
+Regime mix: signature events (7-day set) DEV 127 / VAL 221; UP 88, BASE 59, RANGE 36, DOWN 29, POSTPEAK_BEAR 136, NOPHASE 0 (per-split table below); no split flagged ONE-YEAR.
+
 ## Coverage
 | Coin | OI first stamp | daily bars | last closed bar |
 |---|---|---|---|
