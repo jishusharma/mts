@@ -2588,6 +2588,13 @@ Operator: "Add youtube freedom to jobs and I need it fixed. I need workarounds, 
 - Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
 - Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).
 
+## 2026-11-14 ~22:30Z: quick Fable sessions for critical tasks; Claude temp data is the supervisor's (operator)
+- Operator: spawn quick Fable sessions for critical tasks; Claude temp/VM data on this machine is the supervisor's to manage, no questions.
+- Mechanism: the supervisor starts a time-boxed Fable session per critical task (first one: ship-queue-unblock-1114) and cleans Claude temp/VM data without asking.
+
+## 2026-11-14 ~05:30Z: rolling parallel super sessions for 5 h, ultracode, ship branches first (operator)
+- Operator: start new rolling super sessions for the next 5 hours, tokens not a constraint, all work in parallel, ultracode mode; and "ship branches first" (unshipped JIS-NB/* branches go to trunk before new work).
+- Mechanism: ship-queue worker batches the unshipped branches and ships them one batch at a time through sync.py ship with CI checked on each sha.
 ## 2026-11-13 21:15Z NK tests must be phase specific and apply the MTS brains to find useful trades (operator)
 - His words: "NK related tests must be phase specific and try to apply brains of mts in finding useful trades"
 - DECIDED (operator): NK tests run per phase with MTS context layers, not one coarse ADX phase. Action taken: MTS_BRAINS_SPEC_1114 written; four studies run (nkp1 session rules, nkp2 levels, nkp3 Hilega-Milega, nkp4 NK + MTS confluence) with blind reviews, synthesis in NK_PHASE_BRAINS_SYNTHESIS_1114.md.
