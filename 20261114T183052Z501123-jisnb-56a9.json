@@ -1,0 +1,1 @@
+{"t": "20261114T183052Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship revert-gemini-queue-guards-1114 Result: revert of gemini queue delivery guards (5 files) to restore last-green trunk bytes; 3 tests in test_gemini_queue_delivery_1113 failed on every shard since ", "login": "C", "sid": "a665f56bda"}
