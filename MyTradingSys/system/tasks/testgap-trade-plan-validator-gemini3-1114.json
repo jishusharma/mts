@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T03:35:11Z",
   "commands": [],
   "created": "2026-11-14T00:28:15Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "testgap-trade-plan-validator-gemini3-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114c/testgap-trade-plan-validator/test_trade_plan_",
+      "ref": "8eafc0e55",
+      "utc": "2026-11-14T03:35:11Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card done",
   "note": "Planner refill3 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T00:48:56Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114c/testgap-trade-plan-validator/test_trade_plan_validator.py",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114c/testgap-trade-plan-validator/"
   ],
@@ -37,13 +51,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -rl trade_plan_validator under scripts and MyTradingSys tests; note any existing coverage.",
     "Read MyTradingSys/execution/trade_plan_validator.py; list its pure functions and their expected outputs worked by hand.",
     "Write test_trade_plan_validator.py in the lab folder with 3-5 cases; run pytest, expect pass.",
     "Copy the module to a scratch dir, break one line, rerun, record which test fails in the docstring. Commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-14T03:35:11Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Test gap: trade_plan_validator",
   "weight": "ROUTINE",
