@@ -2,13 +2,13 @@
 
 CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_PROMPT.md`; Codex: `AGENTS.md`).
 
-## Boot 
+## Boot
 1. `python scripts/dev/sync.py start <slug>`: in a lane tree (mts-app/relay/dsa) it switches to branch <host>/<slug>; elsewhere it prints `WORKTREE: <path>` (work only there).
 2. Read `MyTradingSys/research/STATUS.md`, not what it summarises; `LESSONS_DIGEST.md` only for live-path or backtest work. RED `CI green:` / `CI RED`: first to see it (the author above all) `git revert`s the breaking commit, ships in 10 min; last-green bytes = revert, a new line = forward-fix (never forward-fix trunk). A hand-over (NEXT_SESSION.md) is history: current state comes from disk or git this turn. Read the ACTIVE entries of `MyTradingSys/system/ANNOUNCEMENTS.md` (STOP/HOLD there outranks the queue). `[MTS ACTION REQUIRED]` outranks the current task: do it first. Where a kind of work goes (machine, channel, model, checker): `MyTradingSys/system/ROUTING.md`.
 3. Task from NEXT_SESSION.md or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship --release <slug>`, `sync.py where` (own tree clean). Station (no role line = Builder): fetch, read queue + login plan, loop (WORKERS.md rule 10).
 4. Hand-over: no schedulers or routines anywhere (SCHEDULING_POLICY.md). Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next. Zero operator input: defaults for open questions. His "keep working" outranks hand-over.
 5a. Role sessions ("You are Eagle_Eyes"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner (none: Builder fallback).
-5. SHORT SESSIONS (unattended single-task workers only): one task; hand over when done or at the tool-turn cap (WORKERS.md rule 5): steps 3-4, one line, stop.
+5. SHORT SESSIONS (unattended single-task workers): one task; at done or the tool-turn cap (WORKERS.md rule 5) do steps 3-4, one line, stop.
 5b. After `get_usage`, once: `mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>`, then `scripts/dev/exhaust.py plan` (same args; C = jishusharma1985; `EXHAUST_PHASE.md`).
 6. Task shipped: mark your session completed (`mark_completed`); coordinators mark their workers.
 
@@ -19,8 +19,8 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 - The operator dictates by voice: expect misheard words; take the reading that fits the project.
 - Never wait on a question. Ask who started you: an Agent ends its report with the question and its default; a session uses SendMessage. Only money, mainnet, going private, deleting data or a live-tree change reach the operator; work goes on at the safe default. Stuck on another machine's state: `mts_signal.py who`, then broadcast.
 - Fleet-wide by default: put what one machine needs in the repo; a per-machine step goes out as `mts_signal.py broadcast --cmd ...`, never via the operator.
-- Reply shape (operator): bold result line first; a table when the content is discrete rows, else bullets; a "YOU DO" next-step list (max ~3) only when he must act; strip hedging/background; under ~8 lines unless he asked for depth. Plain words (OPERATOR_REPLY_FORMAT.md; health pulse + discard test: OPERATOR_PREFS.md).
-- Surface: Win App only; never say "use the CLI". Permission block: try the allowed equivalent.
+- Reply shape (operator): bold result line, table for discrete rows else bullets, "YOU DO" list (max 3) only when he must act, under ~8 lines unless he asks for depth, plain words (OPERATOR_REPLY_FORMAT.md; OPERATOR_PREFS.md).
+- Surface: Win App only, never "use the CLI". Permission block: try the allowed equivalent.
 
 ## Gates (before any commit touching the area)
 - `sync.py ship`: smoke gate (live-path or unknown paths = all `--quick`; `--full`); CI + green-only deploy gate the rest. Full: `python scripts/dev/run_all_tests.py` (`--quick`: no Maven/backtest). Extractions: `scripts/dev/verify_extract_quotes.py <extract.md>`.
@@ -34,11 +34,11 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 - Testnet only (Deribit test); no mainnet orders/accounts (public market data OK: q-gap-c); never read `.secrets/`, `.env`, keys.
 - Repo is PUBLIC: never commit runtime/order/account data; backups go only to local F:/MTS_backup.git; go private at mainnet or the first fee-net OOS pass, whichever first (q-go-private-on-edge).
 - Live tree (`.mts_live`) changes only by a manual/coordinator deploy (DEPLOY_RUNBOOK.md). Builders never deploy, stop/restart processes, touch HALT or open trades, bar operator-called testnet (cotrade.py).
-- Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed (more, Windows file rules: MOVED_RULES.md).
+- Live-path changes need a test for restart/reset state, non-trade balance moves and API errors; safety checks fail closed (MOVED_RULES.md).
 - Layers and numbers: no fixed core, fee-net out-of-sample results decide what trades; label each parameter SOURCED or OURS, never call OURS the trader's (MOVED_RULES.md).
 - Anything off: report -> independent audit -> fix. Never conclude from truncated output; parse, then count.
 - Noticed gaps: non-Agent sessions file a raw card the same turn; Agents end with `Noticed:`; chat decisions go to OPERATOR_DECISIONS.md (WORKERS.md rule 11).
-- Chrome: no Chrome tool until the operator names a deviceId in chat; never pick by label.
+- Chrome: only device `f0b63f88-d660-492a-afdd-76ef378e2b06` (his purple "j" 1985 chart profile, OPERATOR_DECISIONS 2026-11-12 13:42Z); never `84a11bf5…` (main profile) or a "Browser 1/2" label; not listed: no Chrome, no re-ask.
 
 ## Where to look (`MyTradingSys/system/`)
 | Need | Read |

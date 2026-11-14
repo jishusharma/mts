@@ -1,0 +1,44 @@
+label lag check (close_used == prior-day BTC close): 2872/2873 rows
+BTC: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+ETH: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+BNB: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+XRP: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+ADA: 2019-01-01 00:00 .. 2026-11-13 20:30 rows 275621 gaps 21 filled 270
+DOGE: 2019-07-05 12:00 .. 2026-11-13 20:45 rows 257882 gaps 18 filled 202
+SOL: 2020-08-11 06:00 .. 2026-11-13 20:45 rows 219326 gaps 10 filled 94
+LTC: 2019-01-01 00:00 .. 2026-11-13 20:45 rows 275622 gaps 21 filled 270
+LINK: 2019-01-16 10:00 .. 2026-11-13 20:45 rows 274142 gaps 21 filled 270
+TRX: 2019-01-01 00:00 .. 2026-11-13 20:45 rows 275622 gaps 21 filled 270
+DOT: 2020-08-18 23:00 .. 2026-11-13 20:45 rows 218586 gaps 10 filled 94
+AVAX: 2020-09-22 06:30 .. 2026-11-13 20:45 rows 215292 gaps 10 filled 94
+ATOM: 2019-04-29 04:00 .. 2026-11-13 20:45 rows 264302 gaps 20 filled 246
+ETC: 2019-01-01 00:00 .. 2026-11-13 20:45 rows 275622 gaps 21 filled 270
+BCH: 2019-11-28 10:00 .. 2026-11-13 20:45 rows 243923 gaps 15 filled 153
+XLM: 2019-01-01 00:00 .. 2026-11-13 21:00 rows 275623 gaps 21 filled 270
+UNI: 2020-09-17 03:00 .. 2026-11-13 21:00 rows 215787 gaps 10 filled 94
+NEAR: 2020-10-14 05:00 .. 2026-11-13 21:00 rows 213187 gaps 10 filled 94
+FIL: 2020-10-15 17:00 .. 2026-11-13 21:00 rows 213043 gaps 10 filled 94
+ALGO: 2019-06-22 00:00 .. 2026-11-13 21:00 rows 259179 gaps 18 filled 202
+DEV-only event counts (candidates before de-overlap, no outcome computed)
+ 1 PRIMARY     short DOWNxMARKDOWN V0 at          DEV candidates 2630 coin-days 1262
+ 2 PRIMARY     short DOWNxMARKDOWN V1 at          DEV candidates 448 coin-days 287
+ 3 PRIMARY     short DOWNxMARKDOWN V2 at          DEV candidates 423 coin-days 275
+ 4 PRIMARY     long UPxMARKUP V0 at               DEV candidates 2336 coin-days 1205
+ 5 PRIMARY     long UPxMARKUP V1 at               DEV candidates 457 coin-days 302
+ 6 PRIMARY     long UPxMARKUP V2 at               DEV candidates 447 coin-days 297
+ 7 CONTROL     short DOWNxMARKDOWN V0 away        DEV candidates 6334 coin-days 2681
+ 8 CONTROL     short DOWNxMARKDOWN V1 away        DEV candidates 438 coin-days 258
+ 9 CONTROL     short DOWNxMARKDOWN V2 away        DEV candidates 355 coin-days 219
+10 CONTROL     long UPxMARKUP V0 away             DEV candidates 9177 coin-days 3856
+11 CONTROL     long UPxMARKUP V1 away             DEV candidates 560 coin-days 347
+12 CONTROL     long UPxMARKUP V2 away             DEV candidates 450 coin-days 287
+13 CONTROL C1  short DOWNx!MARKDOWN V0 at         DEV candidates 1968 coin-days 965
+14 CONTROL C2  long UPx!MARKUP V0 at              DEV candidates 1608 coin-days 797
+15 CONTROL C3  short UPxMARKUP V0 at              DEV candidates 867 coin-days 458
+16 CONTROL C4  long DOWNxMARKDOWN V0 at           DEV candidates 821 coin-days 443
+17 CONTROL C5  short RANGEx* V0 at                DEV candidates 6449 coin-days 3042
+18 CONTROL C6  long RANGEx* V0 at                 DEV candidates 5582 coin-days 2764
+19 CONTROL FP  cell1 + FP split                   DEV candidates 115 coin-days 102
+20 CONTROL FP  cell4 + FP split                   DEV candidates 154 coin-days 128
+21 CONTROL WC  cell1 + weekly confluence          DEV candidates 164 coin-days 84
+22 CONTROL WC  cell4 + weekly confluence          DEV candidates 190 coin-days 102

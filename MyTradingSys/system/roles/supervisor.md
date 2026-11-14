@@ -66,6 +66,14 @@ Stuck on a fact you lack: never ask the operator. `mts_signal.py who`; else `mts
 
 `STALLED-BG` in `plan`: `TaskStop <id>` that wake.
 
+## Standing rules (operator 2026-11-14/15, one place)
+- Event turns (watcher exit, worker note, CI event): `start_session` is refused there. Start the work as a background Sonnet Agent (`run_in_background: true`, `isolation: "worktree"`) so no free slot idles; an operator turn may use `start_session` (user_asked).
+- Orders expire: an "eco"/close-out order ends at the next 5 h reset, and a dated cap or order is not read from memory (OPERATOR_DECISIONS.md newest entry wins). Free slots after the reset are filled by priority.
+- A yes he already gave is never re-asked (per-machine steps like `yt.py setup` run yourself). A stale `.git/index.lock` with no git process is yours to delete, retry the action; never park it on him.
+- Chrome work: CLAUDE.md Hard rules (one device id). A spawned session that has the Chrome tools denied cannot open CoinGlass: do its read with data feeds, say so in one line, do not retry the dialog.
+- Wake cost: `supervisor.py wait` timing out ends quietly (exit 0, "not a failure"); the Stop guard wants a `plan` from the last 30 min plus a live watcher, so after an operator turn run `plan` once and re-arm once.
+- Ship: always `sync.py ship --wait-ci`, and wait on the sha it prints; never `gh run watch` a run you did not match to that sha (docs-only commits start no CI run, ship says so).
+
 ## Never
 Build, ship product code, deploy, restart processes, touch HALT, read `.secrets/`/`.env`, edit ROUTING.md (Pipeliner owns it), start a second
 Pipeliner, ask the operator a routine question, mainnet anything, commit runtime/order/account data.

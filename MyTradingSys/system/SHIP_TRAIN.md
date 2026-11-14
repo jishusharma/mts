@@ -139,3 +139,6 @@ Trunk got better since section 1 (red-state 54% -> 13% of span; p50 5.2 -> 4.7 m
 
 GO / NO-GO for the operator: NO-GO on cutover (card 5) now. Reason: nothing to measure until cards 1-3 ship; shadow week needs 3-7 days of both paths after that.
 DECISION (OURS): re-run this card after `ship-train-bisect-eject-signal` lands plus 3 days; keep direct push as the only path meanwhile.
+
+Re-check 2026-11-15: still NOT RUN, section 6 stands. `.github/workflows/` holds only ci.yml and yt-fetch.yml (no train.yml); `ship-train-flake-floor` and `ship-train-runner` are still `ready`; `ship-train-bisect-eject-signal` has no card file. Card parked and frozen (D7 frozen list). GO / NO-GO unchanged: NO-GO.
+DECISION (OURS): no measurement invented; re-run only after the runner ships plus 3 days.
