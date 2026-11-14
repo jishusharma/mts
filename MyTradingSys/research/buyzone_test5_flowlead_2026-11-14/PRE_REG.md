@@ -12,13 +12,13 @@ Regime mix: reported in REPORT.md as the share of flow days per phase per split 
 ## Data (OURS)
 | Item | Choice |
 |---|---|
-| Flow | Binance public daily aggTrades dumps `data.binance.vision`, BTCUSDT, spot AND USD-M futures, UTC days 2022-01-01 to the last published day. No key. Each day is reduced on the fly by `fetch_flow.py` to large-trade sums; raw trades are never kept |
+| Flow | Binance public daily aggTrades dumps `data.binance.vision`, BTCUSDT, spot AND USD-M futures, UTC days 2023-01-01 to the last published day. No key. Each day is reduced on the fly by `fetch_flow.py` to large-trade sums; raw trades are never kept |
 | Large trade | one aggTrade row (same-side, same-price aggregate of one taker order) with price x qty >= $1M ("1M") or >= $5M ("5M"). Both cutoffs are reported. Aggressor buy = `is_buyer_maker` False |
 | Window | window t = one UTC day D. Flow is complete at D 24:00, return starts at the D+1 open |
 | Price | Binance spot BTCUSDT 1d klines from the host cache (same source as Test 1), last (possibly partial) bar dropped. Returns: `ret24 = Close[D+1]/Close[D]-1` (t+1..t+24 h), `ret72 = Close[D+3]/Close[D]-1` (t+1..t+72 h) |
 | Cache | outside the repo (`F:/MTS/data_cache` absent here): flow in `$MTS_FLOW_CACHE` or `C:/Users/e-ngineers/mts_cache/buyzone_test5`, price in `$MTS_DATA_CACHE` or `C:/Users/e-ngineers/MTS_data_cache/binance_spot_1d`. Never committed; repo is public. Tests use synthetic fixtures only and read no cache |
 | Gap 2026-11-13 | the brief says the 11-13 files were not yet published. At registration time `BTCUSDT-aggTrades-2026-11-13.zip` returns 404 for spot. The last flow day used is the last day that has BOTH spot and futures flow AND the closed daily bars needed (D+1 for ret24, D+3 for ret72). Days with a missing spot or futures file are dropped and listed (gaps.json count in the REPORT) |
-| Why 2022 start | download size limits the window (a full 2017+ aggTrades history is over 50 GB). 2022-01-01 gives DEV = 2022-2023 (two calendar years, about 730 days) and VAL = 2024 onwards (about 1050 days). Shorter DEV than other tests is a stated weakness |
+| Why 2023 start | DECISION OURS, made before any outcome: download and parse cost limits the window (aggTrades are 8 to 80 MB per day per venue; a first plan from 2022-01-01 was cut at the 2022-04 files after the machine was CPU bound). DEV = 2023 only (365 days) and VAL = 2024 to the last day (about 1050 days). A one-year DEV is a stated weakness: the DEV-sign check is weak and DEV quintile edges rest on 365 days. 2022 files already cached are ignored |
 | Coinbase premium | extra feature, DESCRIPTIVE only (cannot change the verdict): `prem[D] = 1e4 x (CB_close[D] / BN_close[D] - 1)` bp, Coinbase `BTC-USD` public daily candles (api.exchange.coinbase.com, UTC) vs Binance BTCUSDT daily close. It mixes the USD-USDT basis with the premium; stated in the report |
 
 ## Flow feature (OURS)
@@ -40,7 +40,7 @@ Block bootstrap of the day pairs by 7-calendar-day blocks of D (longer than the 
 
 ## Verdict (SOURCED NEXT5 Test 5; conservative details DECISION OURS)
 PRIMARY = ALL phases, VAL, ret24, spread of top vs bottom flow quintile, for BOTH F_ALL,1M and F_ALL,5M.
-- UNDERPOWERED (do not claim) if VAL days with a ret24 < 200.
+- UNDERPOWERED (do not claim) if VAL days with a ret24 < 200 or DEV days with a ret24 < 300.
 - PASS only if, for BOTH cutoffs: VAL spread > 0 AND bootstrap CI low > 0 AND actual spread > shuffle 97.5th percentile AND DEV spread > 0 (sign agrees). A PASS is a LEAD PASS only: it licenses pre-registering a separate fee-net trade test, nothing else.
 - Otherwise KILL, stated with the VAL spread in bp, CI, shuffle percentile and n for both cutoffs. If the cutoffs disagree in sign it is stated as MIXED and counted as KILL.
 - The shared rule "VAL fee-net 12 bp mean R > 0" is not a PASS condition here (brief: lead-signal test, fee note); the fee-net rows are reported anyway.
