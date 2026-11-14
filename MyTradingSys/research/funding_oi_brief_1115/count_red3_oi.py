@@ -43,8 +43,7 @@ def events(sym):
     d['fwd_low'] = d.l.shift(-1) / d.c - 1; d['fwd_close'] = d.c.shift(-1) / d.c - 1; d['fwd_high'] = d.h.shift(-1) / d.c - 1
     # require 4 consecutive calendar days present and next day present
     idx = d.index.to_series()
-    fwd_idx = idx.shift(-1)
-    ok = (idx - idx.shift(3)).dt.days.eq(3) & (fwd_idx - idx).dt.days.eq(1)
+    ok = (idx - idx.shift(3)).dt.days.eq(3) & (idx.shift(-1) - idx).dt.days.eq(1)
     d['ok'] = ok & d.oi3.notna()
     d['sym'] = sym
     return d

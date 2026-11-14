@@ -11,10 +11,9 @@ def one(sym):
     s = pd.read_csv(R + f'spot_1d/{sym}.csv'); s['day'] = pd.to_datetime(s.ts // 86400000 * 86400, unit='s'); s = s.set_index('day')
     o = pd.read_csv(R + f'oi/{sym}.csv'); o['day'] = pd.to_datetime(o.ts // 86400000 * 86400, unit='s'); o = o.drop_duplicates('day').set_index('day').oi
     d = s[['o', 'c']].copy(); d['oi'] = o; d = d.asfreq('D')
-    d['fwd_close'] = d.c.shift(-1)
     build = (d.oi.shift(1) / d.oi.shift(4) - 1 >= BUILD) & (d.c.shift(1) < d.c.shift(4))
     flush = (d.oi / d.oi.shift(1) - 1 <= FL_OI) & (d.c / d.c.shift(1) - 1 <= FL_PX)
-    raw = (build & flush & d.fwd_close.notna()).fillna(False)
+    raw = (build & flush & d.c.shift(-1).notna()).fillna(False)
     keep, last = [], -99
     for i, v in enumerate(raw.to_numpy()):
         if v and i - last > CD: keep.append(True); last = i
