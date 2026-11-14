@@ -198,13 +198,13 @@
         "jishusharma1985": "https://claude.ai/artifact/KaPy7f5BKFsvmqin84DpyF"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-13"
+        "jishusharma1985": "2026-11-14"
       },
       "purpose": "Simulator desk: what each study tested, verdicts and example trades. The runnable desk itself is the local app (research/sim_desk/desk.py).",
       "notes_go_to": "Read only.",
       "note": "Added to the registry 2026-10-25 (operator: new development must show on MTS Home). No repo html path: the sim-desk sessions publish it; staleness is not tracked here. Live page title is 'Test Simulator' (v22, 2026-11-04).",
-      "published_sha": "4cf19fa8f804b561a270f6f377a9b3da996a02bbc144e2db3f89b19b6430eeb6",
-      "published_at": "2026-11-13T13:12:31Z"
+      "published_sha": "3e5e61c852e42794fb302df937022504c26426e762848bd949097390e8d6eebb",
+      "published_at": "2026-11-14T05:37:26Z"
     },
     {
       "slug": "cbp_analyst_desk",
@@ -223,7 +223,7 @@
         "jishusharma1985": "https://claude.ai/artifact/BpADzQGp8cQkrkQydRxESM"
       },
       "last_published": {
-        "jishusharma1985": "2026-11-13"
+        "jishusharma1985": "2026-11-14"
       },
       "purpose": "Who says what on BTC bottom and alts, from every CBP analyst video. The one CBP page.",
       "notes_go_to": "Read only.",
@@ -237,9 +237,9 @@
       ],
       "max_age_h": 36,
       "publish_file": "F:/CryptoScrapper/cbp_v2/cbp_board.html",
-      "published_at": "2026-11-13T11:58:57Z",
+      "published_at": "2026-11-14T05:37:27Z",
       "feed_hashes": {
-        "F:/CryptoScrapper/cbp_v2/cbp_board.html": "092f4dbb76e7ab3ff2c2033eb005dadc28202f9d57a8bb249ebcb5cf508bad76"
+        "F:/CryptoScrapper/cbp_v2/cbp_board.html": "ffcca14576a4befc466aab49ad0ef4deff9a9fb8fcfad9fd2d18e13ddb063afb"
       }
     },
     {
