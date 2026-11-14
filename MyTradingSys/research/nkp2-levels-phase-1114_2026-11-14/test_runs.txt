@@ -1,0 +1,15 @@
+== env NORMAL=1
+17 passed in 19.02s
+== env STUDY_BUG=1
+FAILED test_study.py::test_phase_lag_causal - AssertionError: (17266, 0, 5)
+FAILED test_study.py::test_bar_phase_matches_truncated_btc - AssertionError: ...
+FAILED test_study.py::test_signals_truncation_invariant - assert np.False_
+3 failed, 14 passed in 16.70s
+== env PHASE_LAG=0
+FAILED test_study.py::test_phase_lag_causal - AssertionError: (17266, 0, 5)
+1 failed, 16 passed in 17.99s
+== env STUDY_BUG=2
+FAILED test_study.py::test_context_layer_ignores_future_bars[0] - AssertionEr...
+FAILED test_study.py::test_context_layer_ignores_future_bars[1] - AssertionEr...
+FAILED test_study.py::test_context_layer_ignores_future_bars[2] - AssertionEr...
+3 failed, 14 passed in 18.91s

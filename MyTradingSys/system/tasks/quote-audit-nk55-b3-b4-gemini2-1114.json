@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:51:35Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/quote-audit-nk55-b3-b4/AUDIT.md exists with per-extract counts of quotes checked and failed and a row for every FAIL",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Run verify_extract_quotes.py on MyTradingSys/research/nk_stocktalk_1113/extract55/nk55_extract_b3.md and b4, and check NK55_RULES_1114.md rule quotes against them; for each FAIL find the transcript line and say whether it is misquoted, mistimed or missing.",
+  "id": "quote-audit-nk55-b3-b4-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:51:41Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/quote-audit-nk55-b3-b4/AUDIT.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read the usage line of scripts/dev/verify_extract_quotes.py.",
+    "Run it on b3 and b4; keep full counts (parse then count, never truncate).",
+    "Each FAIL: row file, quote, verdict (MISQUOTED / MISTIMED / NOT_IN_TRANSCRIPT), evidence line. Also check every quote in NK55_RULES_1114.md appears in b0 to b4.",
+    "Write AUDIT.md, first line 2 extracts, X quotes checked, Y fail. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Quote audit: nk55 extracts b3 and b4",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

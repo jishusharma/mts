@@ -2559,3 +2559,36 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Operator: C: went from 19 GB to 10.5 GB free in a day; make it stop for good.
 - Cause: `sync.py` `new_worktree()` put every study tree next to the C: checkout (61 `mts-jis-nb-*` trees = 12 GB) and each study re-downloaded the same coin data into its own `runtime_data`; trees leave only via `sync.py tidy` after a ship.
 - Fix (card c-drive-worktrees-on-f-1114): trees default to `F:\MTS\wt` (env `MTS_WORKTREE_ROOT` or `hosts.py` HOST_PATHS), shared data cache `F:\MTS\data_cache` (`data_cache.py`), c_drive_guard lists unshipped study trees older than 6 h when C: < 15 GB. Existing trees are not migrated.
+
+## 2026-11-13 ~21:40Z: YouTube freedom, free workarounds and backups, no paid proxy (JIS-NB)
+Operator: "Add youtube freedom to jobs and I need it fixed. I need workarounds, I need backups.. so that I can download what I need when I need." and "What paid proxy Man! We already had a working solution we built. So use that. Expand and build proxies that you need to. Don't fall back. Nothing is forbidden or illegal and i will respond to any charges."
+- Decision (OURS, on his words): `scripts/dev/yt.py` is the one fetch command (captions, audio, transcript; id, URL, playlist or @channel); routes warp, v6, tor, Invidious/Piped mirrors, yt-dlp client variants, local Whisper, GitHub Actions run, fleet ask; a lock or 429 moves to the next route in the same call. Free tools only: nothing paid; no public proxy lists; Tor and WARP carry YouTube hosts only and listen on localhost. The home IPv4 address is still never a route. Details and measurements: YT_PROXY.md "YouTube freedom". Standing card `yt-health-standing-1114`: `yt.py health` at coordinator load. Fleet setup by `mts_signal.py broadcast`.
+- Found while building: the home IPv4 is 429-locked but this machine's IPv6 address is not (a separate address, own guard and lock), and Tor's exits are refused by YouTube's caption endpoint only (metadata and audio work).
+
+## 2026-11-13 ~21:20Z: YouTube fetcher bans are not allowed to block work; find the route (operator)
+- His words: "you can't be sitting behind youtube fetcher bans, find way. We already discussed it like proxy/vpn etc".
+- Already decided earlier (see d-yt-warp-proxy 2026-11-02, the 2026-11-12 06:05Z "never blocked" entry, YT_PROXY.md): free WARP proxy (its exit address is locked by our own guard until 2026-11-16T03:02Z), OpenVPN (profile password lost), then path 4 = public transcript site. Paid proxy/VPN and new network software (Tor, VPN clients) stay a money/install decision for him and were not started.
+- DONE (OURS) 2026-11-13: path 4 (`yt_transcript_sites.py`, Invidious instance, no request from our address) fetched the 55 uncaptioned NK StockTalk videos (Hindi tracks, `--langs hi`) while the desktop (to 2026-11-16T03:02Z) and NUC (to 2026-11-16T14:21Z) locks stand; no YouTube request was made, so the locks did not grow. Files in F:\MTS\data_cache\youtube\nk\ (not in the repo). Rule in ROUTING.md (caption fetch row).
+- Update ~21:35Z (relayed by the coordinator), his words: "What paid proxy Man! We already had a working solution we built. So use that. Expand and build proxies that you need to. Don't fall back. Nothing is forbidden or illegal and i will respond to any charges." DECIDED: the built chain (YT_PROXY.md) is the route; no paid proxy was ever proposed to be bought. Result: path 4 gave 55 of 55 NK videos plus 8 of 12 NK interview ids (tracks: `hi`; one video only had `en-IN`, so pass `--langs hi,en-IN`). Not done, not needed: Tor and more instances (no capacity gap). Still open: QOawWwI4zUQ, X8W0pWK0GnM, 1bpY43ybo_I, 3hhkEwBfWeo (instance returns 404/500 = no caption track served; next path = audio plus local Whisper, YT_PROXY.md path 5, after the locks end or via an instance audio route).
+
+## 2026-11-13 ~20:15Z: context first for every test and edge search (operator, voice)
+- Operator (paraphrased): context before any test or edge search. Downtrend: shorts at seller levels or lower lows. Uptrend: longs. Range: range trades. Test only trade types that match the phase. Extract and test the Nitish Kumar videos. Try confluence combinations.
+- Mechanism: PRE_REG `## Context` and `Regime mix:` gate (step 3pc); NK videos go to the Gemini lane (gemini-yt).
+
+## 2026-11-13 ~20:25Z: billing question (operator, open, his click)
+- Facts: plan auto-renews 14 Nov; Full reset expires 11 Dec; Fable reset 9 Mar 2027.
+- Proposal: he presses Full reset himself near 95% weekly. Open, his click. Nothing was bought or changed.
+
+## 2026-11-13 ~20:30Z: C: drive filled, permanent fix (operator)
+- Facts: C: fell from 19 to 10.5 GB free (worktrees and data cache were on C:).
+- Operator order (paraphrased): permanent fix in its own session (worktrees and data cache moved to F:). Keep C: above 20 GB. Ultra mode with Haiku and Sonnet workers only. Check every spawned session on each wake. Audit that all his messages are wired to a card, decision or answer.
+- Mechanism: session c-drive-fix (local_2afe75a7-e396-44d6-a2be-55e1fa84a288).
+
+## 2026-11-13 ~20:50Z: where to buy after the 7-week fall (operator, voice)
+- Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
+- Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).
+
+## 2026-11-13 21:15Z NK tests must be phase specific and apply the MTS brains to find useful trades (operator)
+- His words: "NK related tests must be phase specific and try to apply brains of mts in finding useful trades"
+- DECIDED (operator): NK tests run per phase with MTS context layers, not one coarse ADX phase. Action taken: MTS_BRAINS_SPEC_1114 written; four studies run (nkp1 session rules, nkp2 levels, nkp3 Hilega-Milega, nkp4 NK + MTS confluence) with blind reviews, synthesis in NK_PHASE_BRAINS_SYNTHESIS_1114.md.
+- Outcome: FAIL. 0 of 17 DEV-chosen cells pass VAL fee-net at 12 bp; DEV winners shrank about 1 R on VAL; gross R near 0 so fees decide. Only lead is CAPITULATION long (6 VAL days), needs its own pre-registration with more symbols.

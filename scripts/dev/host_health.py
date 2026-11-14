@@ -45,7 +45,7 @@ PROTECTED = (".mts_live", "live_runner_cli", "loop-supervisor", "start-trading-d
 SHIP_CHAIN = ("sync.py", "auto_deploy", "wait_then_ship", "cicd_run")   # a live process of one of these above a gate = a live ship/deploy
 SKIP_NAMES = {"system", "idle", "registry", "smss.exe", "csrss.exe", "wininit.exe", "services.exe", "lsass.exe", "svchost.exe",
               "dwm.exe", "winlogon.exe", "msmpeng.exe", "memory compression", "fontdrvhost.exe", "claude.exe", "chrome.exe",
-              "msedge.exe", "searchindexer.exe", "system idle process", "wmiprvse.exe", "audiodg.exe", "sihost.exe"}
+              "msedge.exe", "searchindexer.exe", "system idle process", "wmiprvse.exe", "audiodg.exe", "sihost.exe", "explorer.exe"}
 POLICY_REL = "MyTradingSys/system/STRAY_REAP_POLICY.md"
 POLICY_TEXT = """# Stray-process reap policy
 

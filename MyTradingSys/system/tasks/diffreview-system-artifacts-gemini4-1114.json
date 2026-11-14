@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T04:57:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114d/diffreview-system-artifacts/REVIEW.md exists, lists every commit touching MyTradingSys/system/artifacts in the last 24 h by sha, and each finding row has a sha, file:line and a severity or the words NO FINDINGS",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review the last 24 h of trunk in MyTradingSys/system/artifacts. Per commit: does it match its Result: line; broken link, wrong number, unlabeled parameter, missing test. Read-only.",
+  "id": "diffreview-system-artifacts-gemini4-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill4 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T04:57:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114d/diffreview-system-artifacts/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run git log --since='24 hours ago' origin/fast-track --name-status -- MyTradingSys/system/artifacts; list shas.",
+    "For each sha read the diff; compare with its commit message Result: line.",
+    "Record findings: sha, file:line, severity (HIGH/MED/LOW), evidence quote.",
+    "Write REVIEW.md in MyTradingSys/research/layer_lab/gemini_1114d/diffreview-system-artifacts/. Commit on your gemini-q branch only; do not edit reviewed files."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Diff review: MyTradingSys/system/artifacts",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

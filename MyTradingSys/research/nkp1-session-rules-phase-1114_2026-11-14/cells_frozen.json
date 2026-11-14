@@ -1,0 +1,56 @@
+{
+ "code_commit": "5edae31704b0c0a965a89eae033db12fb4ab786c",
+ "split": "2024-01-01",
+ "dev_phase_share": {
+  "MARKUP": 0.3414,
+  "DISTRIBUTION": 0.1902,
+  "MARKDOWN": 0.1864,
+  "ACCUM-RANGE": 0.1716,
+  "RELIEF": 0.0756,
+  "CAPITULATION": 0.0348
+ },
+ "eligible_phases": [
+  2,
+  3,
+  4,
+  5,
+  6
+ ],
+ "kept": {
+  "NK1-UTC": [
+   {
+    "phase": 5,
+    "layer": 3,
+    "bucket": 0,
+    "n": 279,
+    "days": 83,
+    "mean": 0.8916751686409741,
+    "se": 0.462163817018728,
+    "score": 0.29936602074977225
+   },
+   {
+    "phase": 5,
+    "layer": 1,
+    "bucket": 0,
+    "n": 365,
+    "days": 116,
+    "mean": 0.7960784712074137,
+    "se": 0.4082708259994947,
+    "score": 0.27283858060646127
+   },
+   {
+    "phase": 5,
+    "layer": 6,
+    "bucket": 0,
+    "n": 337,
+    "days": 190,
+    "mean": 0.5577591997079445,
+    "se": 0.2523891104624117,
+    "score": 0.23429731573931767
+   }
+  ],
+  "NK1-NY": [],
+  "NK5-NYasia": [],
+  "NK5-UTC4h": []
+ }
+}
