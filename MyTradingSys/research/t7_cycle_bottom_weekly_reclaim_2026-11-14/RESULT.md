@@ -29,7 +29,7 @@ Kill criteria: {'a_val_net_le0': False, 'b_placebo_not_above': False}. Top-3 coi
 
 Episodes VAL: 11 (reading valid); mean +0.011 R, CI -0.580 to +0.698, ex-best-2 -0.475. DEV episodes 13.
 
-Leave-one-year-out VAL: {'2024': '-0.087', '2025': '+1.104', '2026': '+0.912'}.
+Leave-one-year-out VAL (each value is the mean with that year DROPPED, so 2024: -0.087 means VAL without 2024): {'2024': '-0.087', '2025': '+1.104', '2026': '+0.912'}.
 Holm: per-study p 0.1034 (one cell), family (9 cells) p 0.9310. DEV week-level sd (measured now) +1.264 R.
 
 ### BTC cycle state VAL
@@ -65,8 +65,22 @@ Holm: per-study p 0.1034 (one cell), family (9 cells) p 0.9310. DEV week-level s
 | 2022 | 187 | 26 | -0.430 | -0.820 | 0.20 | -1.06 | +5.31 |
 | 2023 | 266 | 32 | +0.454 | -0.103 | 0.48 | -1.05 | +9.82 |
 
-BEAR-only VAL: n 192, mean +0.184, CI -0.494 to +0.448. BASE-only VAL: n 64, mean +2.183, CI +0.422 to n/a.
+BEAR-only VAL: n 192, mean +0.184, CI -0.494 to +0.448. BASE-only VAL: n 64, mean +2.183, CI +0.422 to n/a (CI high n/a: bootstrap divide-by-zero on empty weeks; cosmetic).
 Survivorship: ex-ENDED VAL n 435 mean +0.656; ex-LUNA/FTT VAL n 418 mean +0.680 (DEV: ex-ENDED +0.269, ex-LUNA/FTT +0.264). Direction: longs are biased UP (hindsight list, collapsed coins exit at a last close that may not be tradable).
 Thin dates (< 30 alive coins) excluded: 45 trades.
 
-BTC descriptive row (a), not a pass cell: [{"signal_date": "2019-04-07", "entry_date": "2019-04-08", "exit_date": "2019-10-07", "n_coins": 0, "basket_net": NaN, "btc_net": 0.5181210412609013, "split": "DEV"}, {"signal_date": "2020-02-02", "entry_date": "2020-02-03", "exit_date": "2020-03-02", "n_coins": 0, "basket_net": NaN, "btc_net": -0.13027412901639496, "split": "DEV"}, {"signal_date": "2020-05-03", "entry_date": "2020-05-04", "exit_date": "2020-11-02", "n_coins": 24, "basket_net": 0.5615597904526061, "btc_net": 0.47461898531405455, "split": "DEV"}, {"signal_date": "2023-01-15", "entry_date": "2023-01-16", "exit_date": "2023-07-17", "n_coins": 65, "basket_net": -0.07573487371717087, "btc_net": 0.4114556116408691, "split": "DEV"}, {"signal_date": "2023-10-22", "entry_date": "2023-10-23", "exit_date": "2024-04-22", "n_coins": 64, "basket_net": 0.8432649294192925, "btc_net": 1.07144516929876, "split": "DEV"}, {"signal_date": "2026-08-23", "entry_date": "2026-08-24", "exit_date": null, "n_coins": 0, "basket_net": NaN, "btc_net": NaN, "split": "VAL"}]
+BTC descriptive row (a), UNUSABLE: 3 of 6 events have n_coins 0 (basket NaN), 1 has no exit (open 2026-08 event), and 5 of 6 events fall in DEV where about 3 were expected. Not a pass cell: [{"signal_date": "2019-04-07", "entry_date": "2019-04-08", "exit_date": "2019-10-07", "n_coins": 0, "basket_net": NaN, "btc_net": 0.5181210412609013, "split": "DEV"}, {"signal_date": "2020-02-02", "entry_date": "2020-02-03", "exit_date": "2020-03-02", "n_coins": 0, "basket_net": NaN, "btc_net": -0.13027412901639496, "split": "DEV"}, {"signal_date": "2020-05-03", "entry_date": "2020-05-04", "exit_date": "2020-11-02", "n_coins": 24, "basket_net": 0.5615597904526061, "btc_net": 0.47461898531405455, "split": "DEV"}, {"signal_date": "2023-01-15", "entry_date": "2023-01-16", "exit_date": "2023-07-17", "n_coins": 65, "basket_net": -0.07573487371717087, "btc_net": 0.4114556116408691, "split": "DEV"}, {"signal_date": "2023-10-22", "entry_date": "2023-10-23", "exit_date": "2024-04-22", "n_coins": 64, "basket_net": 0.8432649294192925, "btc_net": 1.07144516929876, "split": "DEV"}, {"signal_date": "2026-08-23", "entry_date": "2026-08-24", "exit_date": null, "n_coins": 0, "basket_net": NaN, "btc_net": NaN, "split": "VAL"}]
+
+Median VAL trade is -0.128 R with a 46% win rate; the +0.65 R mean is carried by a few heavy-tail entries (2024-11-11 week: HBAR, CRV, IOTA, SAND, SUSHI; 2024-02 weeks: ZRX, THETA, GRT; HBAR alone about +29 R).
+Notes: funding print timestamps are rounded to the second (prints at 00:00:00.001 at the entry open are not charged; VAL mean moves about 0.0002 R). ATR here is Wilder as the spec says; FORMULAS.md section 12 core ATR is a plain SMA and is not used here.
+
+## Adversarial check
+Flag: MINOR. Final verdict: FAIL (checker agrees).
+- Order clean: PRE_REG, code, tests committed (6d961f7c6) before RESULT/results/trades (bbde11ee8); no later change to spec or code.
+- Spec fidelity good line by line; the four PRE_REG deviations are real, pre-run and harmless.
+- No look-ahead found (Sunday signal, Monday open entry, stop wins ties, split by signal bar).
+- 3 dated VAL trades (AAVE, IOST, SAND) recomputed from raw klines match to 1e-6; full rebuild matched 1035 of 1035 trades (max diff 5e-11).
+- Independent placebo: draw mean 0.329, 97.5th 0.514 vs real 0.652; bar 4 holds.
+- Independent bootstrap CI -0.241 to +1.836: CI low negative, so bar 2 fails robustly. Ex-best-5 -0.277 and leave-one-year-out 2024 dropped -0.087 reproduced.
+- FAIL rests on CI and tail concentration, not a negative mean; power gate was BLOCK so the read is weak either way.
+- Wording fixes applied (loyo meaning, median/win rate, BTC row unusable, funding rounding, ATR note, CI high n/a).
