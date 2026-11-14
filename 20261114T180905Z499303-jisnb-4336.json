@@ -1,0 +1,1 @@
+{"t": "20261114T180905Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship stop-guard-content-equal-1111 Result: ahead_commits returns 0 when every file changed since the merge-base equals origin/fast-track (moved-trunk case); fail-first test added (3 fail on old guard,", "login": "C", "sid": "26d8dd1bfc"}
