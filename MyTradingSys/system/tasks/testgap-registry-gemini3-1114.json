@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-14T03:31:59Z",
   "commands": [],
   "created": "2026-11-14T00:27:07Z",
   "depends_on": [],
@@ -13,17 +14,30 @@
   "id": "testgap-registry-gemini3-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114c/testgap-registry/test_registry.py (5 passed)",
+      "ref": "ac6b06050",
+      "utc": "2026-11-14T03:31:59Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: card complete",
   "note": "Planner refill3 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-14T00:48:26Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114c/testgap-registry/test_registry.py (5 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114c/testgap-registry/"
   ],
@@ -37,13 +51,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "grep -rl registry under scripts and MyTradingSys tests; note any existing coverage.",
     "Read MyTradingSys/backtest/layers/promotion/registry.py; list its pure functions and their expected outputs worked by hand.",
     "Write test_registry.py in the lab folder with 3-5 cases; run pytest, expect pass.",
     "Copy the module to a scratch dir, break one line, rerun, record which test fails in the docstring. Commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-14T03:31:59Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Test gap: registry",
   "weight": "ROUTINE",
