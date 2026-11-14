@@ -1,0 +1,72 @@
+{
+ "code_commit": "ff5c77ffa9424c8844ca8215072800aa2989a74c",
+ "created_utc": "2026-11-13T23:00:11.125325+00:00",
+ "spec": "MTS_BRAINS_SPEC_1114",
+ "dev_end": "2023-12-31",
+ "val_start": "2024-01-01",
+ "dev_phase_share": {
+  "CAPITULATION": 0.0285,
+  "MARKDOWN": 0.2377,
+  "RELIEF": 0.0843,
+  "ACCUM-RANGE": 0.1824,
+  "MARKUP": 0.3313,
+  "DISTRIBUTION": 0.1358
+ },
+ "eligible": {
+  "NK2-core": {
+   "cells_scored": 120,
+   "cells_n_days_ok": 106,
+   "positive_dev_mean": 16,
+   "score_gt0": 1
+  },
+  "NK2-deep": {
+   "cells_scored": 120,
+   "cells_n_days_ok": 22,
+   "positive_dev_mean": 1,
+   "score_gt0": 0
+  },
+  "NK3-A": {
+   "cells_scored": 120,
+   "cells_n_days_ok": 76,
+   "positive_dev_mean": 12,
+   "score_gt0": 0
+  },
+  "NK3-B": {
+   "cells_scored": 120,
+   "cells_n_days_ok": 46,
+   "positive_dev_mean": 20,
+   "score_gt0": 1
+  }
+ },
+ "no_data": [],
+ "cells": [
+  {
+   "rule": "NK2-core",
+   "phase": "MARKUP",
+   "phase_id": 5,
+   "layer": "C4_oi24h",
+   "bucket": "<=-3%",
+   "bucket_id": 0,
+   "direction": "long",
+   "basis": "close",
+   "dev_n": 574,
+   "dev_days": 159,
+   "dev_net": 0.17166371928918484,
+   "dev_score": 0.00040532071850572863
+  },
+  {
+   "rule": "NK3-B",
+   "phase": "MARKUP",
+   "phase_id": 5,
+   "layer": "C8_session",
+   "bucket": "asia",
+   "bucket_id": 0,
+   "direction": "long",
+   "basis": "intraday",
+   "dev_n": 262,
+   "dev_days": 143,
+   "dev_net": 0.3388157274824135,
+   "dev_score": 0.13456495333520999
+  }
+ ]
+}
