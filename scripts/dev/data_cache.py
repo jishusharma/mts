@@ -46,24 +46,9 @@ def write_atomic(path, data):
     return path
 
 
-def cold_path(name):
-    """Where disk_keep.py moves cold cache files (hosts row `overflow.data`), or None."""
-    try:
-        import json
-        row = (json.loads((Path(__file__).resolve().parents[2] / "MyTradingSys" / "system" / "disk_plan.json").read_text(encoding="utf-8"))
-               .get("hosts") or {}).get(hosts.this_host()) or {}
-        d = (row.get("overflow") or {}).get("data")
-        return Path(d) / name if d and row.get("status") == "KNOWN" else None
-    except (OSError, ValueError):
-        return None
-
-
 def cached(name, producer):
-    """Bytes-file for `name`: the cached copy when it exists (also in the cold folder), else producer() -> bytes is stored and returned."""
+    """Bytes-file for `name`: the cached copy when it exists, else producer() -> bytes is stored and its path returned."""
     p = cache_path(name)
     if p.is_file() and p.stat().st_size > 0:
         return p
-    c = cold_path(name)
-    if c is not None and c.is_file() and c.stat().st_size > 0:
-        return c
     return write_atomic(p, producer())
