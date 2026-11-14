@@ -29,8 +29,10 @@ def test_atr_plain_sma_s12():
 def test_pct_rank_excludes_current_and_needs_full_window():
     out = C.pct_rank([1, 2, 3, 2.5, 0.5], 3)
     assert np.isnan(out[2]) and abs(out[3] - 2 / 3) < 1e-12 and out[4] == 0.0
-    out2 = C.pct_rank([1, 2, 3, np.nan, 5, 0.1], 3)      # NaN in the window counts in the denominator, never as <=
-    assert np.isnan(out2[3]) and abs(out2[4] - 2 / 3) < 1e-12
+    out2 = C.pct_rank([1, 2, 3, np.nan, 5, 0.1], 3)      # strict: any NaN in the prior window gives NaN
+    assert np.isnan(out2[3]) and np.isnan(out2[4]) and np.isnan(out2[5])
+    out3 = C.pct_rank([np.nan, 1, 2, 3, 4, 0.5], 3)
+    assert np.isnan(out3[3]) and abs(out3[4] - 1.0) < 1e-12 and out3[5] == 0.0
 
 
 def _flat_bars(n, t0=ms(2021, 1, 1)):
@@ -88,6 +90,41 @@ def test_fund_lo_hand_example_and_missing():
     assert not none.any()
     short = C.fund_lo_daily(days[:60] * DAY, fts[:60], rate[:60])[1]
     assert not short.any()                         # fewer than 90 prior values
+
+
+def test_fund_lo_false_until_90_full_prior_values():
+    """Regression (checker blocker): a coin with a thin funding history used to pass FUND_LO because NaN counted as 'not <=' but
+    the share was still divided by 90. Constant-high funding then a deep negative dip at day 40: the dip must NOT fire (only 37
+    prior fd3 values), and the same dip after a full window must fire."""
+    d0 = C.day_num(2021, 1, 1)
+    days = np.arange(d0, d0 + 200)
+    rate = np.full(200, 0.001)
+    rate[40:42] = -0.001
+    rate[150:152] = -0.001
+    fts = days * DAY + 3600_000
+    _, lo = C.fund_lo_daily(days * DAY, fts, rate)
+    assert not lo[:92].any()                      # window of 90 prior fd3 values needs ~92 days of funding
+    assert lo[150] and lo[151] and lo[152]
+    # a gap inside the window (missing funding days) also blocks the flag
+    keep = np.ones(200, bool)
+    keep[100:103] = False
+    _, lo2 = C.fund_lo_daily(days * DAY, fts[keep], rate[keep])
+    assert not lo2[150:153].any()
+
+
+def test_funding_print_jitter_does_not_move_a_print_across_a_bar_open():
+    """Regression (checker major): +1 ms stamps vs exact stamps at the entry and exit opens must charge the same funding."""
+    t0 = 1_000_000_020_000 - (1_000_000_020_000 % STEP)
+    ts = t0 + STEP * np.arange(8)
+    exact = np.array([ts[1], ts[2], ts[3]])
+    rate = np.array([0.5, 0.001, 0.002])
+    pay = []
+    for jit in (0, 1, 3, 17):
+        fts = C.snap_ts(exact + jit)
+        _, cf = C.cum_funding(ts, STEP, fts, rate)
+        pay.append(C.funding_paid(cf, 1, 3))
+    assert max(pay) - min(pay) < 1e-15 and abs(pay[0] - 0.003) < 1e-12   # entry-open print excluded, exit-open included
+    assert C.snap_ts([ts[1] + 1])[0] == ts[1] and C.snap_ts([ts[1] + 4 * 3600000 + 2])[0] == ts[1] + 4 * 3600000
 
 
 # ---------------------------------------------------------------- synthetic world

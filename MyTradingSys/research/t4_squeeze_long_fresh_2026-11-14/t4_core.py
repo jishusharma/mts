@@ -82,7 +82,8 @@ def atr_sma(h, l, c, n=14):
 
 def pct_rank(x, w):
     """Share of the PRIOR w values <= x[t] (excludes the current value); NaN until w prior values exist or when x[t] is NaN.
-    A NaN inside the window counts in the denominator and never as <=."""
+    STRICT: the result is NaN unless the whole window of w prior values is finite (a NaN inside the window used to count as
+    "not <=" while still dividing by w, which made a thin history look like a low rank; fixed, see FIXLOG.md)."""
     x = np.asarray(x, float)
     n = len(x)
     out = np.full(n, np.nan)
@@ -91,7 +92,10 @@ def pct_rank(x, w):
     for a in range(w, n, 1500):
         b = min(n, a + 1500)
         win = sliding_window_view(x[a - w:b - 1], w)
-        out[a:b] = (win <= x[a:b, None]).mean(1)
+        full = np.isfinite(win).all(1)
+        r = (win <= x[a:b, None]).mean(1)
+        r[~full] = np.nan
+        out[a:b] = r
     out[np.isnan(x)] = np.nan
     return out
 
@@ -122,10 +126,22 @@ def bars_from_df(df, step):
     return {k: df[k].to_numpy(dtype=np.int64 if k == "ts" else float) for k in ("ts", "o", "h", "l", "c", "v", "tbv")}
 
 
+FUND_SNAP_MS = 60000
+
+
+def snap_ts(ts):
+    """Snap funding print stamps to the nearest whole minute. The cache stamps about half of the prints 1 to 20 ms after the
+    settlement instant, the rest exactly on it; without snapping a print AT a bar open is charged or dropped by that jitter alone.
+    Minute (not 8h) snapping keeps the real settlement hour of coins that pay every 4h or at shifted hours."""
+    ts = np.asarray(ts, np.int64)
+    return ((ts + FUND_SNAP_MS // 2) // FUND_SNAP_MS) * FUND_SNAP_MS
+
+
 def load_funding(path):
     df = pd.read_csv(path).sort_values("ts")
     df = df[df.ts <= DATA_END_MS]
-    return df.ts.to_numpy(np.int64), df.rate.to_numpy(float)
+    ts = df.ts.to_numpy(np.int64)
+    return snap_ts(ts), df.rate.to_numpy(float)
 
 
 # ------------------------------------------------------------------ phase labels (causal)

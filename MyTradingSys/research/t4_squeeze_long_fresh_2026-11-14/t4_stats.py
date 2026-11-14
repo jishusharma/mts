@@ -222,8 +222,10 @@ def verdict(trades, coins, table, closes, starts, n_boot=N_BOOT, n_draw=N_PLACEB
     s["bar7"] = bool(s["top_coin_removal"]["all_positive"])
     s["fragile"] = not s["bar7"]
     bars = [s["bar2"], s["bar3"], s["bar4"], s["bar5"], s["bar6"], s["bar7"]]
-    s["verdict"] = "UNDERPOWERED" if not s["bar1_power"] else ("PASS" if all(bars) else "FAIL")
-    s["kill"] = bool(s["bar1_power"] and (not (len(vr) and vr.R.mean() > 0) or not (s["ex_best5_t3r"]["mean"] > 0) or
+    nan5 = bool(np.isnan(s["ex_best5_t3r"]["mean"]))        # fewer than 6 entry weeks: cannot be tested, not a failed bar
+    s["ex_best5_undefined"] = nan5
+    s["verdict"] = "UNDERPOWERED" if (not s["bar1_power"] or nan5) else ("PASS" if all(bars) else "FAIL")
+    s["kill"] = bool(s["bar1_power"] and not nan5 and (not (len(vr) and vr.R.mean() > 0) or not (s["ex_best5_t3r"]["mean"] > 0) or
                                           (len(vr) >= 60 and not s["bar4"])))
     s["prediction_confirmed"] = bool(len(vr) and vr.R.mean() > 0 and len(vt) and vt.R.mean() < vr.R.mean())
     return s

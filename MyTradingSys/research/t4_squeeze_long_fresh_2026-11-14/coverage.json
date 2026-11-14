@@ -54,12 +54,12 @@
    "funding_last": "2026-10-31 20:00",
    "funding_prints": 7030,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 5,
-   "onsets_eligible": 5,
+   "onsets_all": 4,
+   "onsets_eligible": 4,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 5,
-   "trades_nonbear_T3R": 5
+   "trades_nonbear_RIDE": 4,
+   "trades_nonbear_T3R": 4
   },
   "AXS": {
    "bars_1d": 2200,
@@ -84,12 +84,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 6857,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 10,
-   "onsets_eligible": 10,
+   "onsets_all": 8,
+   "onsets_eligible": 8,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 8,
-   "trades_nonbear_T3R": 8
+   "trades_nonbear_RIDE": 7,
+   "trades_nonbear_T3R": 7
   },
   "BAT": {
    "bars_1d": 2811,
@@ -99,10 +99,10 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7358,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 11,
-   "onsets_eligible": 11,
-   "trades_bear_RIDE": 3,
-   "trades_bear_T3R": 3,
+   "onsets_all": 9,
+   "onsets_eligible": 9,
+   "trades_bear_RIDE": 1,
+   "trades_bear_T3R": 1,
    "trades_nonbear_RIDE": 5,
    "trades_nonbear_T3R": 5
   },
@@ -114,12 +114,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 6128,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 9,
-   "onsets_eligible": 9,
+   "onsets_all": 8,
+   "onsets_eligible": 8,
    "trades_bear_RIDE": 1,
    "trades_bear_T3R": 1,
-   "trades_nonbear_RIDE": 8,
-   "trades_nonbear_T3R": 8
+   "trades_nonbear_RIDE": 7,
+   "trades_nonbear_T3R": 7
   },
   "CHZ": {
    "bars_1d": 2625,
@@ -204,12 +204,12 @@
    "funding_last": "2026-10-31 20:00",
    "funding_prints": 7623,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 5,
-   "onsets_eligible": 5,
+   "onsets_all": 3,
+   "onsets_eligible": 3,
    "trades_bear_RIDE": 1,
    "trades_bear_T3R": 1,
-   "trades_nonbear_RIDE": 4,
-   "trades_nonbear_T3R": 4
+   "trades_nonbear_RIDE": 2,
+   "trades_nonbear_T3R": 2
   },
   "EOS": {
    "bars_1d": 2556,
@@ -264,10 +264,10 @@
    "funding_last": "2025-06-19 08:00",
    "funding_prints": 3522,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 4,
-   "onsets_eligible": 4,
-   "trades_bear_RIDE": 3,
-   "trades_bear_T3R": 3,
+   "onsets_all": 0,
+   "onsets_eligible": 0,
+   "trades_bear_RIDE": 0,
+   "trades_bear_T3R": 0,
    "trades_nonbear_RIDE": 0,
    "trades_nonbear_T3R": 0
   },
@@ -339,12 +339,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7361,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 19,
-   "onsets_eligible": 19,
-   "trades_bear_RIDE": 2,
-   "trades_bear_T3R": 2,
-   "trades_nonbear_RIDE": 12,
-   "trades_nonbear_T3R": 12
+   "onsets_all": 16,
+   "onsets_eligible": 16,
+   "trades_bear_RIDE": 1,
+   "trades_bear_T3R": 1,
+   "trades_nonbear_RIDE": 11,
+   "trades_nonbear_T3R": 11
   },
   "KAVA": {
    "bars_1d": 2576,
@@ -354,12 +354,12 @@
    "funding_last": "2026-10-31 20:00",
    "funding_prints": 8675,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 17,
-   "onsets_eligible": 17,
+   "onsets_all": 10,
+   "onsets_eligible": 10,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 11,
-   "trades_nonbear_T3R": 12
+   "trades_nonbear_RIDE": 9,
+   "trades_nonbear_T3R": 9
   },
   "KNC": {
    "bars_1d": 2345,
@@ -384,12 +384,12 @@
    "funding_last": "2022-05-13 00:00",
    "funding_prints": 1410,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 1,
-   "onsets_eligible": 1,
+   "onsets_all": 0,
+   "onsets_eligible": 0,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 1,
-   "trades_nonbear_T3R": 1
+   "trades_nonbear_RIDE": 0,
+   "trades_nonbear_T3R": 0
   },
   "MANA": {
    "bars_1d": 2290,
@@ -414,12 +414,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 6602,
    "last_4h": "2024-09-10 00:00",
-   "onsets_all": 1,
-   "onsets_eligible": 1,
+   "onsets_all": 0,
+   "onsets_eligible": 0,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 1,
-   "trades_nonbear_T3R": 1
+   "trades_nonbear_RIDE": 0,
+   "trades_nonbear_T3R": 0
   },
   "MKR": {
    "bars_1d": 1881,
@@ -474,12 +474,12 @@
    "funding_last": "2025-06-19 08:00",
    "funding_prints": 5448,
    "last_4h": "2024-06-17 00:00",
-   "onsets_all": 8,
-   "onsets_eligible": 8,
+   "onsets_all": 6,
+   "onsets_eligible": 6,
    "trades_bear_RIDE": 2,
    "trades_bear_T3R": 2,
-   "trades_nonbear_RIDE": 6,
-   "trades_nonbear_T3R": 6
+   "trades_nonbear_RIDE": 4,
+   "trades_nonbear_T3R": 4
   },
   "ONE": {
    "bars_1d": 2722,
@@ -519,12 +519,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7308,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 11,
-   "onsets_eligible": 11,
+   "onsets_all": 10,
+   "onsets_eligible": 10,
    "trades_bear_RIDE": 3,
    "trades_bear_T3R": 3,
-   "trades_nonbear_RIDE": 4,
-   "trades_nonbear_T3R": 5
+   "trades_nonbear_RIDE": 3,
+   "trades_nonbear_T3R": 4
   },
   "RUNE": {
    "bars_1d": 2261,
@@ -564,12 +564,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 6317,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 6,
-   "onsets_eligible": 6,
+   "onsets_all": 5,
+   "onsets_eligible": 5,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 5,
-   "trades_nonbear_T3R": 5
+   "trades_nonbear_RIDE": 4,
+   "trades_nonbear_T3R": 4
   },
   "SNX": {
    "bars_1d": 2318,
@@ -579,12 +579,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 6809,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 6,
-   "onsets_eligible": 6,
+   "onsets_all": 5,
+   "onsets_eligible": 5,
    "trades_bear_RIDE": 1,
    "trades_bear_T3R": 1,
-   "trades_nonbear_RIDE": 5,
-   "trades_nonbear_T3R": 5
+   "trades_nonbear_RIDE": 4,
+   "trades_nonbear_T3R": 4
   },
   "STORJ": {
    "bars_1d": 2227,
@@ -624,12 +624,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7048,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 15,
-   "onsets_eligible": 15,
+   "onsets_all": 14,
+   "onsets_eligible": 14,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 11,
-   "trades_nonbear_T3R": 11
+   "trades_nonbear_RIDE": 10,
+   "trades_nonbear_T3R": 10
   },
   "WAVES": {
    "bars_1d": 1978,
@@ -639,12 +639,12 @@
    "funding_last": "2025-06-19 08:00",
    "funding_prints": 5317,
    "last_4h": "2024-06-17 00:00",
-   "onsets_all": 5,
-   "onsets_eligible": 5,
+   "onsets_all": 2,
+   "onsets_eligible": 2,
    "trades_bear_RIDE": 0,
    "trades_bear_T3R": 0,
-   "trades_nonbear_RIDE": 5,
-   "trades_nonbear_T3R": 5
+   "trades_nonbear_RIDE": 2,
+   "trades_nonbear_T3R": 2
   },
   "XMR": {
    "bars_1d": 1804,
@@ -654,12 +654,12 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7395,
    "last_4h": "2024-02-20 00:00",
-   "onsets_all": 17,
-   "onsets_eligible": 17,
-   "trades_bear_RIDE": 3,
-   "trades_bear_T3R": 3,
-   "trades_nonbear_RIDE": 7,
-   "trades_nonbear_T3R": 9
+   "onsets_all": 13,
+   "onsets_eligible": 13,
+   "trades_bear_RIDE": 2,
+   "trades_bear_T3R": 2,
+   "trades_nonbear_RIDE": 6,
+   "trades_nonbear_T3R": 8
   },
   "XTZ": {
    "bars_1d": 2607,
@@ -669,12 +669,12 @@
    "funding_last": "2026-10-31 20:00",
    "funding_prints": 8829,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 9,
-   "onsets_eligible": 9,
+   "onsets_all": 6,
+   "onsets_eligible": 6,
    "trades_bear_RIDE": 4,
    "trades_bear_T3R": 4,
-   "trades_nonbear_RIDE": 2,
-   "trades_nonbear_T3R": 3
+   "trades_nonbear_RIDE": 1,
+   "trades_nonbear_T3R": 1
   },
   "YFI": {
    "bars_1d": 2286,
@@ -714,12 +714,12 @@
    "funding_last": "2026-10-31 20:00",
    "funding_prints": 8010,
    "last_4h": "2026-11-12 20:00",
-   "onsets_all": 13,
-   "onsets_eligible": 13,
+   "onsets_all": 11,
+   "onsets_eligible": 11,
    "trades_bear_RIDE": 2,
    "trades_bear_T3R": 2,
-   "trades_nonbear_RIDE": 8,
-   "trades_nonbear_T3R": 9
+   "trades_nonbear_RIDE": 7,
+   "trades_nonbear_T3R": 7
   }
  },
  "cost12": 0.0012000000000000001,
@@ -797,10 +797,10 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7378,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 6,
-   "onsets_eligible": 6,
-   "trades_nonbear_RIDE": 5,
-   "trades_nonbear_T3R": 5
+   "onsets_all": 5,
+   "onsets_eligible": 5,
+   "trades_nonbear_RIDE": 4,
+   "trades_nonbear_T3R": 4
   },
   "AVAX": {
    "bars_1d": 2243,
@@ -836,10 +836,10 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7367,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 11,
-   "onsets_eligible": 11,
-   "trades_nonbear_RIDE": 8,
-   "trades_nonbear_T3R": 8
+   "onsets_all": 10,
+   "onsets_eligible": 10,
+   "trades_nonbear_RIDE": 7,
+   "trades_nonbear_T3R": 7
   },
   "BTC": {
    "bars_1d": 3375,
@@ -849,8 +849,8 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7488,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 28,
-   "onsets_eligible": 28,
+   "onsets_all": 27,
+   "onsets_eligible": 27,
    "trades_nonbear_RIDE": 21,
    "trades_nonbear_T3R": 21
   },
@@ -914,10 +914,10 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7439,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 12,
-   "onsets_eligible": 12,
-   "trades_nonbear_RIDE": 6,
-   "trades_nonbear_T3R": 7
+   "onsets_all": 10,
+   "onsets_eligible": 10,
+   "trades_nonbear_RIDE": 5,
+   "trades_nonbear_T3R": 6
   },
   "LTC": {
    "bars_1d": 3257,
@@ -940,8 +940,8 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7346,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 7,
-   "onsets_eligible": 7,
+   "onsets_all": 5,
+   "onsets_eligible": 5,
    "trades_nonbear_RIDE": 3,
    "trades_nonbear_T3R": 4
   },
@@ -966,8 +966,8 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7445,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 14,
-   "onsets_eligible": 14,
+   "onsets_all": 12,
+   "onsets_eligible": 12,
    "trades_nonbear_RIDE": 8,
    "trades_nonbear_T3R": 8
   },
@@ -992,10 +992,10 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7355,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 2,
-   "onsets_eligible": 2,
-   "trades_nonbear_RIDE": 2,
-   "trades_nonbear_T3R": 2
+   "onsets_all": 1,
+   "onsets_eligible": 1,
+   "trades_nonbear_RIDE": 1,
+   "trades_nonbear_T3R": 1
   },
   "XLM": {
    "bars_1d": 3088,
@@ -1018,8 +1018,8 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7472,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 3,
-   "onsets_eligible": 3,
+   "onsets_all": 2,
+   "onsets_eligible": 2,
    "trades_nonbear_RIDE": 2,
    "trades_nonbear_T3R": 2
   },
@@ -1031,10 +1031,10 @@
    "funding_last": "2026-10-31 16:00",
    "funding_prints": 7385,
    "last_4h": "2026-11-13 16:00",
-   "onsets_all": 27,
-   "onsets_eligible": 27,
-   "trades_nonbear_RIDE": 11,
-   "trades_nonbear_T3R": 13
+   "onsets_all": 25,
+   "onsets_eligible": 25,
+   "trades_nonbear_RIDE": 9,
+   "trades_nonbear_T3R": 11
   }
  },
  "old20_dropped": {},
