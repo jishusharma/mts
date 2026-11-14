@@ -141,12 +141,28 @@ def pages_line(repo, now=None, login=None, spawn=None, sid=None):
 PUBLISHER_ACCOUNTS = {"A": "jishu.sharma", "B": "jishu.awgp", "C": "jishusharma1985"}   # login letter -> registry account (artifacts.LOGIN_ACCOUNT)
 
 
-def check(repo=None, fetch=True):
+REPEAT_AFTER = 50   # OURS: a session already told it is N commits behind hears again only when the gap has grown by this many
+
+
+def check(repo=None, fetch=True, sid=None):
+    """The TRUNK LAG line. With a session id it prints at most once per session (measured 2026-11-15: 517 B at every prompt of a session in
+    a stale main checkout), again only when the tree fell REPEAT_AFTER commits further behind; an unwritable marker prints (fail open)."""
     repo = Path(repo or os.getcwd())
     if ".mts_live" in repo.resolve().parts:
         return ""
     behind, age = lag(repo, fetch=fetch)
-    return message(behind, age)
+    text = message(behind, age)
+    if text and sid:
+        try:
+            gd = git(repo, "rev-parse", "--absolute-git-dir").stdout.strip()
+            seen = Path(gd) / ("mts_lag_seen_" + "".join(ch for ch in str(sid) if ch.isalnum() or ch in "-_")[:60])
+            if gd and seen.exists() and behind - int(seen.read_text(encoding="utf-8").strip() or 0) < REPEAT_AFTER:
+                return ""
+            if gd:
+                seen.write_text(str(behind), encoding="utf-8")
+        except Exception:
+            pass
+    return text
 
 
 def fast_forward(repo, fetch=True):
@@ -348,7 +364,7 @@ def main(argv):
         try:
             raw = sys.stdin.read() if argv[:1] == ["hook"] else ""
             cwd, sid = (payload_cwd(raw), payload_sid(raw)) if raw else (None, None)
-            text = check(cwd)
+            text = check(cwd, sid=sid)
             if ".mts_live" not in Path(cwd or os.getcwd()).resolve().parts:
                 text = chr(10).join(x for x in (text, pages_line(cwd or os.getcwd(), sid=sid)) if x)
         except Exception:

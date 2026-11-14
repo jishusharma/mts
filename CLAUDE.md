@@ -8,7 +8,7 @@ CLAUDE.md is in context; never Read it. Code mode only (DSA chat: `DSA_SESSION_P
 3. Task from NEXT_SESSION.md or `tasks.py next`; `sync.py claim "<task>"`, work, `sync.py ship --release <slug>`, `sync.py where` (own tree clean). Station (no role line = Builder): fetch, read queue + login plan, loop (WORKERS.md rule 10).
 4. Hand-over: no schedulers or routines anywhere (SCHEDULING_POLICY.md). Overwrite NEXT_SESSION.md, `sync.py ship`; the coordinator (SUPER_SESSION.md) starts the next. Zero operator input: defaults for open questions. His "keep working" outranks hand-over.
 5a. Role sessions ("You are Eagle_Eyes"): the `role_loader.py` hook injects `roles/<role>.md`; the first reply is its `ROLE LOADED: ...` banner (none: Builder fallback).
-5. SHORT SESSIONS (unattended single-task workers only): one task; hand over when done or at the tool-turn cap (WORKERS.md rule 5): steps 3-4, one line, stop.
+5. SHORT SESSIONS (unattended single-task workers only): one task; hand over when done or at the 40-turn cap (WORKERS.md rule 4): steps 3-4, one line, stop.
 5b. After `get_usage`, once: `mts_signal.py budget --login <A|B|C> --five <%> --week <%> --reset <UTC>`, then `scripts/dev/exhaust.py plan` (same args; C = jishusharma1985; `EXHAUST_PHASE.md`).
 6. Task shipped: mark your session completed (`mark_completed`); coordinators mark their workers.
 

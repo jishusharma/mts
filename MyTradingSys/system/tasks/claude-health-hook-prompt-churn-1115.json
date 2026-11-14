@@ -1,0 +1,58 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-14T19:20:01Z",
+  "depends_on": [],
+  "done_when": "Shipped with a test that fails on the old code; before/after bytes in the commit",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Measure mts_signal per-prompt hook output and print only on change (B212 claim 5).",
+  "id": "claude-health-hook-prompt-churn-1115",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "ship: 7 file(s)",
+      "ref": "6670219dec33",
+      "utc": "2026-11-13T00:10:03Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "usage_reminder fires only around Agent calls (~60 B), not per prompt; trunk_lag 517 B/prompt already fixed once per session; shot/ci_watch/role_loader print 0 B; mts_signal status lines (~0.8 KB seen) not measured because the hook mutates ack state.",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:20:20Z",
+  "refs": [
+    "B212"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/trunk_lag.py"
+  ],
+  "scope_out": [
+    "CLAUDE.md; .mts_live; secrets"
+  ],
+  "scope_sha": "6670219dec33",
+  "size": "S",
+  "sources": [
+    "gemini-revalidate-1115"
+  ],
+  "state": "ready",
+  "steps": [
+    "usage_reminder fires only around Agent calls (~60 B), not per prompt; trunk_lag 517 B/prompt already fixed once per session; shot/ci_watch/role_loader print 0 B; mts_signal status lines (~0.8 KB seen) not measured because the hook mutates ack state."
+  ],
+  "tests": "python scripts/dev/run_all_tests.py --quick",
+  "title": "Measure per-prompt hook output of mts_signal/shot/ci_watch and emit on state change only",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

@@ -96,6 +96,20 @@ class TrunkLagTest(unittest.TestCase):
         finally:
             os.chdir(here)
 
+    def test_hook_warns_once_per_session_and_again_when_the_gap_grows(self):
+        for i in range(3):
+            commit(self.origin, f"b{i}", 1_000_100 + i)
+        sh(self.tree, "fetch", "-q", "origin")
+        behind, _ = T.lag(self.tree, now=1_000_100 + 7200, fetch=False)
+        self.assertEqual(behind, 3)
+        with unittest.mock.patch.object(T, "lag", return_value=(3, 7200)):
+            self.assertIn("TRUNK LAG", T.check(self.tree, fetch=False, sid="s1"))
+            self.assertEqual(T.check(self.tree, fetch=False, sid="s1"), "")             # same session, same gap: silent
+            self.assertIn("TRUNK LAG", T.check(self.tree, fetch=False, sid="s2"))       # another session hears it
+            self.assertIn("TRUNK LAG", T.check(self.tree, fetch=False))                 # no session id: always prints, as before
+        with unittest.mock.patch.object(T, "lag", return_value=(3 + T.REPEAT_AFTER, 7200)):
+            self.assertIn("TRUNK LAG", T.check(self.tree, fetch=False, sid="s1"))       # the gap grew by REPEAT_AFTER: say it again
+
     def test_fetch_is_throttled(self):
         T.lag(self.tree, now=1_000_000 + 10)
         commit(self.origin, "b", 1_000_050)
