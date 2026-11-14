@@ -1,0 +1,20 @@
+T6 mutation check (stage 2). Each row: one temporary edit to t6_core.py / t6_stats.py, test_t6_core.py run, file restored.
+rc=1 means the tests caught the planted bug (every row must be rc=1).
+
+lookahead: signal reads the next week's close    rc=1  3 failed, 17 passed in 2.12s | failing: test_signal_and_bull_flag_use_only_bars_through_signal_week, test_threshold_boundary_is_inclusive_at_080, test_split_is_by_entry_instant_not_exit
+cooldown off                                     rc=1  1 failed, 19 passed in 2.26s | failing: test_cooldown_gap_of_exactly_8_weeks_allowed_nothing_in_between
+cooldown strict (> 8 instead of >= 8)            rc=1  1 failed, 19 passed in 1.77s | failing: test_cooldown_gap_of_exactly_8_weeks_allowed_nothing_in_between
+warm-up lockout removed (week 1 start)           rc=1  6 failed, 14 passed in 1.81s | failing: test_signal_and_bull_flag_use_only_bars_through_signal_week, test_cooldown_gap_of_exactly_8_weeks_allowed_nothing_in_between, test_no_event_before_week_8_even_if_falling_from_the_start, test_threshold_boundary_is_inclusive_at_080, test_split_is_by_entry_instant_not_exit, test_primary_row_matches_independent_entry_exit
+stop tie: < instead of <=                        rc=1  2 failed, 18 passed in 1.73s | failing: test_stop_wins_ties_on_low_equal_stop, test_stop_on_entry_day_and_gap_fill_at_open
+gap fill at the stop instead of the open         rc=1  1 failed, 19 passed in 2.11s | failing: test_stop_on_entry_day_and_gap_fill_at_open
+fee dropped                                      rc=1  3 failed, 17 passed in 2.02s | failing: test_stop_wins_ties_on_low_equal_stop, test_fee_and_flat_funding_hand_numbers, test_real_funding_window_boundaries_and_sign
+funding sign flipped                             rc=1  1 failed, 19 passed in 2.10s | failing: test_real_funding_window_boundaries_and_sign
+funding includes the entry-instant print         rc=1  1 failed, 19 passed in 1.91s | failing: test_real_funding_window_boundaries_and_sign
+funding excludes the exit-day-end print          rc=1  1 failed, 19 passed in 1.84s | failing: test_real_funding_window_boundaries_and_sign
+split by exit instant                            rc=1  1 failed, 19 passed in 1.89s | failing: test_split_is_by_entry_instant_not_exit
+phase read of next day (same-day leak)           rc=1  1 failed, 19 passed in 1.52s | failing: test_phase_same_day_read_is_caught_and_tag_uses_entry_day_row
+phase leak check blind                           rc=1  1 failed, 19 passed in 1.62s | failing: test_phase_same_day_read_is_caught_and_tag_uses_entry_day_row
+placebo compares against itself (no excess)      rc=1  1 failed, 19 passed in 2.16s | failing: test_planted_edge_is_found_by_the_stats_code
+bootstrap CI low taken at the median             rc=1  1 failed, 19 passed in 2.28s | failing: test_planted_edge_is_found_by_the_stats_code
+ex-best-weeks drops none                         rc=1  1 failed, 19 passed in 2.09s | failing: test_ex_best_weeks_and_top_coin_removal_hand_numbers
+RESTORED (final code): 20 passed in 1.44s
