@@ -1,0 +1,40 @@
+{
+ "new": {
+  "n": 2786,
+  "parent_definition_reach_pct": 69.34673366834171,
+  "poc_already_passed_or_behind (dist<=0)": {
+   "n": 977,
+   "share_pct": 35.06819813352477,
+   "reach_pct": 94.77993858751279
+  },
+  "0<dist<36bp": {
+   "n": 673,
+   "share_pct": 24.156496769562096,
+   "reach_pct": 77.56315007429421
+  },
+  ">=36bp ahead": {
+   "n": 1136,
+   "share_pct": 40.77530509691314,
+   "reach_pct": 42.6056338028169
+  }
+ },
+ "seen": {
+  "n": 910,
+  "parent_definition_reach_pct": 68.46153846153847,
+  "poc_already_passed_or_behind (dist<=0)": {
+   "n": 320,
+   "share_pct": 35.16483516483517,
+   "reach_pct": 93.75
+  },
+  "0<dist<36bp": {
+   "n": 225,
+   "share_pct": 24.725274725274726,
+   "reach_pct": 79.11111111111111
+  },
+  ">=36bp ahead": {
+   "n": 365,
+   "share_pct": 40.10989010989011,
+   "reach_pct": 39.726027397260275
+  }
+ }
+}
