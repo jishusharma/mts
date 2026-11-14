@@ -6,7 +6,7 @@ The one row with positive maker net R, M4 (NK5 NY-asia), fails the day-cluster C
 
 | Row | Idea | Signals | Filled (fill rate) | Net R taker (12bp, all signals) | Net R maker per filled trade | Fee saved (R/trade) | Adverse selection (R) | Placebo p | Day-CI low | Ex-best-5 | Verdict | Checker |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| M1 | NK2 pivot reclaim, 1h SHORT-P | 6102 | 3994 (65.5%) | -0.009 | -0.037 | 0.024 | -0.195 | 0.020 | -0.126 | -0.080 | FAIL (gates 2, 3, 6) | MINOR (independent rebuild of all 14,736 signals: VAL fill rate and net R identical; truncation tests clean; 1 of 36 hand-traced signals differs by 0.17 R) |
+| M1 | NK2 pivot reclaim, 1h SHORT-P | 6102 | 3994 (65.5%) | -0.009 | -0.037 | 0.024 | -0.195 | 0.020 | -0.126 | -0.080 | FAIL (gates 2, 3, 6) | NOT RUN (stopped at budget freeze); study's own baseline matches the original exactly; row stands unchecked |
 | M2 | NK3 fakeout fade, 1h B X1 | 2448 | 1227 (50.1%) | -0.034 | -0.123 | 0.019 | -0.323 | 0.420 | -0.214 | -0.159 | FAIL (2, 3, 4, 5, 6) | CLEAN (independent fill code: fill rate identical, net R within 0.001) |
 | M3 | NK6 confluence L2&L3&L5 | 1996 | 1890 (94.7%) | -0.112 | -0.093 | 0.063 | -0.030 | 0.001 | -0.173 | -0.135 | FAIL (2, 3, 6) | MINOR (no bug; verdict stands) |
 | M4 | NK5 NY-asia hold to 08:00 UTC | 1663 | 1541 (92.7%) | +0.074 | **+0.109** | 0.046 | +0.004 | 0.001 | -0.110 | -0.078 | FAIL (3, 6) | CLEAN (independent recompute: fill rate 0.9266, net 0.1093) |
@@ -30,7 +30,7 @@ Gate 5 (BH q 0.05 over the six placebo p values 0.020, 0.420, 0.001, 0.001, 0.42
 M1, M2, M3, M4, M5 reproduce their original RESULT exactly (same n, same net to 3 decimals). M6 is a replication on Binance spot vs the original Bybit perp (net within 0.02-0.06 R; n within 3%), so M6 is a like-for-like re-run, not an exact one.
 
 ## Caveats and flags
-- All six rows have an adversarial checker; none found a bug that changes a verdict. M1 checker minors: 43 of 14,736 signals differ slightly (1m data gaps); touch-basis stops give -0.029 (still negative).
+- M1 adversarial checker was NOT RUN (stopped at the supervisor's budget freeze). Next step: one checker agent on `M1/` (recompute fill rate and net R for 30+ signals by hand, truncation test). The other five rows have a checker; none found a bug.
 - The weekly limit killed the library agent and the first M1 agent mid-run (06:16 local). The library files and tests were on disk; M1 was re-run in a second workflow. Library tests are covered by each study's own tests and the checkers' independent recomputation.
 - M2 checker note: the market stop fills at the stop price with no gap slippage (an optimism in favour of every row); the true results would be slightly worse.
 - M4 is a fixed-time (08:00 UTC) hold with no target, so a maker entry is not what drives it; its +0.109 is the NK5 long tail (30% win rate), not fill selection. Day-cluster CI [-0.110, +0.357].
