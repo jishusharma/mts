@@ -106,3 +106,70 @@ def test_empty_text_duplicate_layer_fidelity_and_diagram_escape_are_caught():
     text = "\n".join(mc.problems(data))
     for want in ("empty rule", "duplicate id", "fidelity grade", "diagram ../concepts.json", "duplicate layer id"):
         assert want in text, want
+
+
+# ---- wiring checks (operator order 2026-11-14: "every MTS layer is in the Conceptualizer" is a machine check) ----
+def _wired(data, families):
+    """Give each layer of `data` the family ids it claims, so only the check under test can fail."""
+    for i, L in enumerate(data["layers"]):
+        L["families"] = [families[i % len(families)]]
+        L["tests"] = [r[:6] + ["MyTradingSys/system/layer_index.json"] for r in L["tests"]]
+    return data
+
+
+def test_family_without_a_conceptualizer_layer_fails_the_build():
+    data = _real()
+    fams = ["fam_a", "fam_b"]
+    _wired(data, fams)
+    assert mc.problems(data, families=fams) == []
+    text = "\n".join(mc.problems(data, families=fams + ["fam_orphan"]))
+    assert "layer family 'fam_orphan' (layer_index.json) has no Conceptualizer layer" in text
+
+
+def test_layer_claiming_an_unknown_family_or_none_fails():
+    data = _real()
+    _wired(data, ["fam_a"])
+    data["layers"][0]["families"] = ["ghost"]
+    del data["layers"][1]["families"]
+    text = "\n".join(mc.problems(data, families=["fam_a"]))
+    assert "family 'ghost' is not in layer_index.json" in text
+    assert "families must be a non-empty list" in text
+
+
+def test_test_row_needs_a_source_path_that_exists():
+    data = _real()
+    _wired(data, ["fam_a"])
+    rows = data["layers"][0]["tests"]
+    rows[:] = [["s", "1h", "10", "-0.1R", "FAIL", "l"],                                     # no source cell
+               ["s", "1h", "10", "-0.1R", "FAIL", "l", ""],                                 # empty source
+               ["s", "1h", "10", "-0.1R", "FAIL", "l", "MyTradingSys/nope/NOT_THERE.md"],   # missing file
+               ["s", "1h", "10", "-0.1R", "FAIL", "l", "../outside.md"],                    # escapes the repo
+               ["s", "1h", "10", "-0.1R", "FAIL", "l", "MyTradingSys/system/layer_index.json:3 ; scripts/dev/make_conceptualizer.py"]]  # ok
+    text = "\n".join(mc.problems(data, families=["fam_a"]))
+    assert text.count("no source path") == 2
+    assert text.count("does not exist in the repo") == 2
+    assert "test#4" not in text
+
+
+def test_real_data_wiring_is_clean():
+    """The shipped concepts.json: every layer_index family is wired and every test row's source exists."""
+    fams = mc.family_ids()
+    assert fams, "layer_index.json must be readable"
+    assert mc.problems(_real(), families=fams) == []
+
+
+def test_load_runs_the_wiring_check():
+    import json
+    import tempfile
+    data = _real()
+    for L in data["layers"]:
+        L.pop("families", None)
+    with tempfile.TemporaryDirectory() as d:
+        (Path(d) / "diagrams").mkdir()
+        (Path(d) / "concepts.json").write_text(json.dumps(data), encoding="utf-8")
+        try:
+            mc.load(Path(d))
+        except SystemExit as e:
+            assert "families must be a non-empty list" in str(e)
+        else:
+            raise AssertionError("load() must refuse a layer without families")
