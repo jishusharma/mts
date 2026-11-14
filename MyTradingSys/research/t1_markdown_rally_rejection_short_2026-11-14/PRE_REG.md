@@ -3,10 +3,13 @@
 Origin: `EDGE_POSTMORTEM_1114.md` section 4, test T1. Labels: S = SOURCED (named document / NK quote), O = OURS. No OURS parameter is the trader's. One frozen cell, no grid, nothing tuned on DEV.
 
 ## Context
+- Regime: MARKDOWN day label from the MTS phase table (BTC market phase, applies to every coin); cycle state BEAR/BULL/BASE reported per row.
 - Phase: MARKDOWN only. Day label from `F:\MTS\data_cache\mts_brains\phase_daily.csv` (MTS_BRAINS_SPEC s1: c < SMA50, SMA50 slope <= -1%, and cycle BEAR or c < SMA200; closes through d-1 only, lag 1; thresholds O, spec S). Cycle state BEAR/BULL/BASE reported per row. BTC reads MARKDOWN since 2026-11-13, so the idea is live now.
 - Idea: in a market-wide MARKDOWN day, a 1h push above the daily pivot P (or R1) that closes back below it, with NK Hilega-Milega in sell state on 30m and price under VWAP, falls to the next pivot below. Short only.
 - Prior art on this exact trigger: nk2 1h SHORT-P gross +0.101 R, n 6102, net -0.009 R at 12 bp (stop floor 0.5%, no cycle-phase gate). T1 changes only: MARKDOWN gate, HM + VWAP filters, stop floor 1.2%, exit rule.
 - Session: none (any UTC hour).
+- Entry: next 1h open after a 1h close back below daily pivot P or R1 (high above it), HM sell on 30m, close under 00:00-UTC VWAP; taker short.
+- Amendment note: Regime:/Entry: lines added 2026-11-14 after the CI context lint reverted the first push; no outcome had been computed, no rule changed.
 
 Regime mix: DEV (2019-01-01..2023-12-31) and VAL (2024-01-01+) MARKDOWN days counted from the phase table by the study before any outcome is computed (prior knowledge from nkp2: MARKDOWN 23.8% of DEV days, about 19% of VAL days; about 343 DEV + 199 VAL days per the post-mortem). RESULT carries days per phase DEV/VAL and signals per phase.
 
