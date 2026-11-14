@@ -1,7 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
-  "closed": "",
+  "closed": "2026-11-14T06:00:18Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md"
   ],
@@ -15,11 +15,18 @@
   "id": "gemini-cbp-michael-kemdm3_h-w0-1114",
   "kind": "run",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md",
+      "ref": "f77932a2b",
+      "utc": "2026-11-14T06:00:18Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "END: extract feeds the CBP desk rebuild",
+  "next": "END: task done",
   "note": "Run as gemini_queue.py run gemini-cbp-michael-kemdm3_h-w0-1114:low. Disk only, no YouTube request. Captions fetched 2026-11-14 via yt.py route v6.",
   "prio": 2,
   "refine_tries": 0,
@@ -28,7 +35,12 @@
   "refs": [
     "MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/"
   ],
@@ -42,7 +54,7 @@
   "sources": [
     "CBP catch-up 2026-11-14 (cbp-gemini-catchup session)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read only raw_transcripts_canonical/KeMDM3_h-W0_raw.txt (English auto-captions) and MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md as the format example",
     "Write MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md: one block per call, > \"exact line from the caption file\", Source GPS: KeMDM3_h-W0 | BEGIN|MIDDLE|END; no numbers not quoted",
