@@ -1,0 +1,47 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T18:08:09Z",
+  "depends_on": [],
+  "done_when": "python scripts/dev/mts_doctor.py --no-process reports OK for SIZE-HEADROOM, DEAD-REF 0, DUPLICATE 0; role_loader.py check and lint exit 0; pytest MyTradingSys/tests/test_role_budget.py MyTradingSys/tests/docs/test_integrity.py pass",
+  "est_turns": null,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Resolve B212 (BUGS.md): restore >=5% SIZE-HEADROOM on CLAUDE.md and roles, deduplicate Hard rules boilerplate, fix tool-turn cap contradiction, wrap role_loader.py blocks in XML tags, and fix DEAD-REF/DUPLICATE.",
+  "id": "bug-claude-prompt-health-and-efficiency-1114",
+  "lane": "SONNET",
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "OPERATOR QUOTE: check the AI health of Claude AI and specially the the prompts it uses. Find improvements as per the lastest of the latest reports on using Claude AI Models efficiently and effectively. / raise a bug for claude",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refs": [
+    "B212"
+  ],
+  "result": "",
+  "scope_in": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    "MyTradingSys/system/GEMINI_START.md",
+    "MyTradingSys/system/WORKERS.md",
+    "MyTradingSys/system/SURFACE_POLICY.md",
+    "MyTradingSys/system/PLAN_5H_2026-10-19.md",
+    "MyTradingSys/system/roles/",
+    "scripts/dev/role_loader.py"
+  ],
+  "scope_out": [],
+  "size": "",
+  "sources": [
+    "operator 2026-11-14"
+  ],
+  "state": "raw",
+  "steps": [],
+  "tests": "",
+  "title": "B212: Fix Claude prompt health, SIZE-HEADROOM, duplicated Hard rules, tool-turn cap contradiction, and XML delimiters",
+  "weight": "",
+  "worker": ""
+}
