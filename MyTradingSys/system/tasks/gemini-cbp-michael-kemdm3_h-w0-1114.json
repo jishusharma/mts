@@ -1,0 +1,56 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md"
+  ],
+  "created": "2026-11-14T05:45:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md exists, every call carries a verbatim quote and Source GPS, and verify_extract_quotes.py exits 0",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Extract every call (level, direction, date) Michael states in KeMDM3_h-W0, each with a verbatim quote from the caption file and a Source GPS line, same format as MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md.",
+  "id": "gemini-cbp-michael-kemdm3_h-w0-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: extract feeds the CBP desk rebuild",
+  "note": "Run as gemini_queue.py run gemini-cbp-michael-kemdm3_h-w0-1114:low. Disk only, no YouTube request. Captions fetched 2026-11-14 via yt.py route v6.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T05:45:00Z",
+  "refs": [
+    "MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no numbers from our own docs or prior knowledge",
+    "never verify against a translation"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "CBP catch-up 2026-11-14 (cbp-gemini-catchup session)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read only raw_transcripts_canonical/KeMDM3_h-W0_raw.txt (English auto-captions) and MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md as the format example",
+    "Write MyTradingSys/research/cbp_gap_1114/KeMDM3_h-W0/EXTRACT.md: one block per call, > \"exact line from the caption file\", Source GPS: KeMDM3_h-W0 | BEGIN|MIDDLE|END; no numbers not quoted",
+    "Run verify_extract_quotes.py until exit 0; commit on your branch"
+  ],
+  "taken": "",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] CBP call extract, Michael KeMDM3_h-W0",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
