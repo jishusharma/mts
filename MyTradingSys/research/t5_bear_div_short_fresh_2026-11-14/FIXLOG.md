@@ -1,0 +1,14 @@
+# T5 FIXLOG (mechanical fix round, before any pooled statistic). PRE_REG.md untouched; no rule changed.
+
+Trade counts are BEAR-true claim trades (DEV / VAL / pooled); all labelled events stay 2212 (BEAR-false controls 1116 -> 1384).
+
+| # | Finding (checker) | Verdict | Cause | Fix | Before -> after |
+|---|---|---|---|---|---|
+| 1 | BEAR flag higher-low window differs from PRE_REG (recompute: blocker, audit: major) | FIXED | code took min Low[t-179..t-120] (shift(120) of a 60-bar min, inherited from the source engine); PRE_REG says min Low[t-59..t] >= min Low[t-179..t-60] | t5_core.base_lows: prior window = 120-bar rolling min shifted by 60; test_base_reclaim_prior_window_is_120_bars_ending_at_t_minus_60 (fails on old code: no such window) | DEV 595 -> 476, VAL 501 -> 352, pooled 1096 -> 828 (-268, equal to the recompute checker's count); RECENT 261 -> 169 |
+| 2 | Funding 0 for a trade whose entry bar is before the coin's first print (recompute: minor, ONT control row) | FIXED | build_events zeroed funding whenever the entry bar was uncovered | funding = G[x] - G[e] always (G is cumulative and 0 before the first print); test extended (old code returned 0.0) | ONT control row funding 0 -> 0.00112; the BEAR-true "no funding cover" count 39 -> 28 flagged rows are those with no print in the hold |
+| 3 | Placebo pool split by entry-bar time, real trades by signal bar (audit: minor) | FIXED | CoinTable.pool used ts | pool uses signal bar = ts - BAR; test_placebo_pool_splits_by_signal_bar_like_real_trades (fails on old code) | no trade list change |
+| 4 | Lockout chain over all labelled events (audit minor) | REJECTED as a code change | PRE_REG source reading, matches the source engine, DEVIATIONS #2 | none; stays a DEVIATIONS reading, coordinator may record a PRE_REG clarification | n/a |
+| 5 | 'stop' label also used when trail equals stop0 (recompute minor) | REJECTED | cosmetic, prices and R identical | none; 'stop' = exit at stop0 on any bar | n/a |
+| 6 | ONE-YEAR flag only on VAL; regime-mix lacks RECENT / pooled shares; verdict naming; fullsample-quantile WARNs (3, none self-allowlisted); LUNA re-denomination; ICX/ONT 2 h offset bars (audit minor) | NOT FIXED here (minor, stats-stage or RESULT wording) | stats-stage items | carried to stage 4 / RESULT | n/a |
+
+Step A re-run by this worker after the code was final (trades.csv regenerated, 1.04 MB): fresh 45 kept 45 dropped 0; events 2212; BEAR true 828 (DEV 476, VAL 352, RECENT 169); by year 2019 15, 2020 21, 2021 15, 2022 239, 2023 186, 2024 107, 2025 139, 2026 106. Tests 15 pass (the audit's 13 + 2); lookahead lint 0 FAIL, 3 WARN (t5_stats.py fullsample-quantile, unchanged); prereg_context_lint 0 offenders. Mutation_check.txt not re-run (earlier 13/13 caught; the new base_lows function is pinned by its own test). Independent recompute of the new list not re-done: the recompute checker's literal-text count (-268) matches.

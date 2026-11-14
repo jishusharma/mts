@@ -121,10 +121,11 @@ class CoinTable:
 
     def pool(self, split):
         ok = self.eligible.copy()
+        sig = self.ts - T.BAR                      # split by the signal bar (entry bar minus one), as real trades
         if split == "DEV":
-            ok &= self.ts < T.VAL_START
+            ok &= sig < T.VAL_START
         elif split == "VAL":
-            ok &= self.ts >= T.VAL_START
+            ok &= sig >= T.VAL_START
         return np.nonzero(ok)[0]
 
     def outcome(self, idx, r):

@@ -165,7 +165,12 @@ def test_fee_and_funding_arithmetic_against_hand_numbers():
     late = e + 3
     G2, f2, l2 = T.funding_cum(ts, [(int(ts[late]), 9e-4)])
     ev2, _ = T.build_events("X", ts, o, h, l, c, bear, lab, G2, f2, l2, sigs=[(e - 1, e - 6, 102.0)])
-    assert ev2[0]["fund"] == 0.0 and not ev2[0]["covered"]
+    # prints inside the hold count even when the entry bar precedes the coin's first print (PRE_REG: 0 only BEFORE the first print)
+    assert not ev2[0]["covered"] and abs(ev2[0]["fund"] - 9e-4) < 1e-12
+    after_exit = x + 10                                              # index of the first print, past the exit bar
+    G3, f3, l3 = T.funding_cum(ts, [(int(ts[after_exit]), 9e-4)])        # first print after the exit: nothing inside the hold
+    ev3, _ = T.build_events("X", ts, o, h, l, c, bear, lab, G3, f3, l3, sigs=[(e - 1, e - 6, 102.0)])
+    assert ev3[0]["fund"] == 0.0 and not ev3[0]["covered"]
 
 
 # ---------------------------------------------------------------- lockout, overlap, drops
@@ -316,3 +321,38 @@ def test_verdict_order():
     v = S.verdict({k: _info(topcoin_rest=-0.1) for k in ok})
     assert v["verdict"] == "REPLICATED-WEAK" and "FRAGILE" in v["labels"]
     assert S.verdict({k: _info(val_mean=-0.1, val_ci_lo=-0.3) for k in ok})["verdict"] == "FAIL"
+
+
+def test_base_reclaim_prior_window_is_120_bars_ending_at_t_minus_60():
+    n = 240
+    l = np.full(n, 100.0)
+    l[130] = 90.0          # inside t-179..t-60 for t = 200 (index 21..140) but NOT inside t-179..t-120 (21..80)
+    rec, pri = T.base_lows(l)
+    assert np.isnan(pri[:179]).all() and not np.isnan(pri[179])
+    assert pri[200] == 90.0 and rec[200] == 100.0
+    assert rec[200] >= pri[200] - 10
+    l2 = np.full(n, 100.0)
+    l2[30] = 120.0 - 40.0   # low 80 at index 30 is inside t-179..t-120 for t = 200 only if t-179 <= 30 <= t-120 -> 21..80: yes
+    l2[130] = 105.0
+    rec2, pri2 = T.base_lows(l2)
+    assert pri2[200] == 80.0
+    l3 = np.full(n, 100.0)
+    l3[100] = 70.0         # index 100 is in t-179..t-60 (21..140) for t=200 but not in 21..80
+    rec3, pri3 = T.base_lows(l3)
+    assert pri3[200] == 70.0
+    l4 = np.full(n, 100.0)
+    l4[150] = 70.0         # in the recent window (141..200) only
+    rec4, pri4 = T.base_lows(l4)
+    assert rec4[200] == 70.0 and pri4[200] == 100.0
+
+
+def test_placebo_pool_splits_by_signal_bar_like_real_trades():
+    n = 400
+    ts = T.VAL_START + (np.arange(n) - 200) * T.BAR
+    x = np.full(n, 100.0)
+    lab = np.array(["RANGE"] * n, dtype=object)
+    tab = S.CoinTable(ts, x, x + 1, x - 1, x, np.ones(n, bool), lab, np.zeros(n), None)
+    first_val_entry = 201                    # entry bar open = VAL_START + 1 bar; its signal bar is the first VAL bar
+    dev, val = tab.pool("DEV"), tab.pool("VAL")
+    assert first_val_entry in val and first_val_entry not in dev
+    assert 200 in dev and 200 not in val     # entry bar opens exactly at VAL_START but its signal bar is still DEV

@@ -101,6 +101,13 @@ def bollinger_upper(c):
 
 
 # ---------------------------------------------------------------- daily phase labels and BEAR flag
+def base_lows(l):
+    """(min Low[t-59..t], min Low[t-179..t-60]) per daily bar; NaN until 180 bars exist. The prior window is 120 bars wide
+    (PRE_REG), i.e. a 120-bar rolling min shifted by 60."""
+    l = np.asarray(l, float)
+    return _roll(l, 60, np.min), _shift(_roll(l, 120, np.min), 60)
+
+
 def daily_labels(h, l, c):
     """Test 1 phase label at daily bar t from bars <= t only. '' = not enough history (no phase)."""
     h, l, c = (np.asarray(a, float) for a in (h, l, c))
@@ -109,8 +116,7 @@ def daily_labels(h, l, c):
     for i in range(len(h)):
         hi365[i] = h[max(0, i - 364):i + 1].max()           # min_periods = 1
     dd = 1 - c / hi365
-    lo_recent = _roll(l, 60, np.min)
-    lo_prior = _shift(lo_recent, 120)                        # min Low[t-179..t-60]
+    lo_recent, lo_prior = base_lows(l)
     hl = lo_recent >= lo_prior
     up = (c > sma200) & (sma200 > _shift(sma200, 30))
     base = ~up & (dd >= 0.40) & hl
@@ -253,7 +259,7 @@ def build_events(coin, ts, o, h, l, c, bearA, labA, G, first_fund, last_fund=Non
         gap = bool(covered and last_fund is not None and ts[x] + BAR > last_fund)
         ev.append(dict(coin=coin, sig=int(cc), j=int(j), e=int(e), x=int(x), stop0=float(stop0), entry=entry, px=px, reason=reason,
                        r=(stop0 - entry) / entry, gross=(entry - px) / entry, bars_held=int(x - e + 1),
-                       fund=float(G[x] - G[e]) if covered else 0.0, covered=bool(covered), fund_gap=gap,
+                       fund=float(G[x] - G[e]), covered=bool(covered), fund_gap=gap,
                        bear=bool(bearA[e]), label=str(labA[e]), sig_ts=int(ts[cc]), entry_ts=int(ts[e]), exit_ts=int(ts[x])))
         last_e, last_exit = e, x
     return ev, cnt
