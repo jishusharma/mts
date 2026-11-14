@@ -1720,6 +1720,11 @@ def plan(repo: Path, login: str, rd: dict, running: int = 0, send: bool = True, 
         ctx["routine_runs"], ctx["routine_notes"] = routines_due.lines(repo, loop_home(home), now)
     except Exception as e:
         notes.append(f"NOTE routines_due failed ({type(e).__name__}: {str(e)[:60]})")
+    try:
+        import disk_keep
+        notes = notes + disk_keep.status_lines(host=host)     # DISK per drive; DISK ACT when a floor is breached (disk_plan.json)
+    except Exception as e:   # noqa: BLE001
+        notes.append(f"NOTE disk_keep failed ({type(e).__name__}: {str(e)[:60]})")
     lines = plan_lines(login, host, pl, live, ctx, (Path.home() / ".ssh" / "nuc_gate").exists()) + notes + who_block(_who_rows() if who_rows is None else who_rows)
     loop_home(home).mkdir(parents=True, exist_ok=True)
     for ih, _lg, _n in (ctx.get("idle_hosts", []) if send else []):     # a dry run never silences the line
