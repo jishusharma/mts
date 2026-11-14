@@ -1,0 +1,16 @@
+Verdict: 2 BUG, 1 RISK across 12 commits on origin/fast-track under MyTradingSys/tools/live_aid (24 h window ending 2026-11-14).
+
+| sha | file:line | finding | severity | one-line fix |
+|---|---|---|---|---|
+| `00f302217` | `MyTradingSys/tools/live_aid/build_artifact.py:14-15` | `home_one.js` added at `MyTradingSys/tools/live_aid/live_aid.html:427` is missing from `TAGS`, leaving the script tag un-inlined in the Artifact; also `MyTradingSys/tools/live_aid/home_one.js:152` `nextUsOpen` adds `i * DAY` without DST adjustment, `MyTradingSys/tools/live_aid/home_one.js:220` / `MyTradingSys/tools/live_aid/home_one.js:237` / `MyTradingSys/tools/live_aid/home_one.js:290` / `MyTradingSys/tools/live_aid/home_one.js:337` swallow exceptions, and `MyTradingSys/tools/live_aid/home_one.js:208` divides by `r.box.l` checking `isFinite` not `> 0` | BUG | Add `home_one.js` to `TAGS` in `MyTradingSys/tools/live_aid/build_artifact.py:14-15` (and guard `r.box.l > 0` + log caught errors in `home_one.js`). |
+| `f9892bb14` | `MyTradingSys/tools/live_aid/build_artifact.py:14-15` | CLEAN (merge commit; `build_artifact.py` conflict resolved keeping both `adx_strip.js` and `flow_chart.js`) | CLEAN | — |
+| `1da5577bd` | `MyTradingSys/tools/live_aid/home.js` | CLEAN (clean merge commit with no conflict diff) | CLEAN | — |
+| `815446a70` | `MyTradingSys/tools/live_aid/adx_strip.js` | CLEAN (`adx_now.py` and `adx_strip.js` fail closed on short/bad bars and surface errors) | CLEAN | — |
+| `57bc8f79a` | `MyTradingSys/tools/live_aid/test_live_aid_key.py` | CLEAN (test-only file split from `test_live_aid_guidance.py`) | CLEAN | — |
+| `13ad1412f` | `MyTradingSys/tools/live_aid/flow_collector.py:294` | `digest()` formats `dpx={r['dpx']:+.1f}` directly, raising `TypeError` when `oi_runs()` at `MyTradingSys/tools/live_aid/flow_collector.py:107` sets `dpx` to `None`; also `MyTradingSys/tools/live_aid/flow_collector.py:405-406` `ws_loop` swallows exceptions and `MyTradingSys/tools/live_aid/flow_chart.js:143` divides by `bars[1].t - bars[0].t` without `> 0` guard | BUG | Format `dpx` with `_n()` in `MyTradingSys/tools/live_aid/flow_collector.py:294` (and log `ws_loop` errors / guard `bars[1].t > bars[0].t`). |
+| `79fe7e9d2` | `MyTradingSys/tools/live_aid/home.js` | CLEAN (bottom-rail flag markers, `_chartKey`, `_divLine`, and `_boardInputs` guard empty/out-of-range inputs) | CLEAN | — |
+| `0be17fc4a` | `MyTradingSys/tools/live_aid/home.js:108` | `volRead()` computes `v(n - 1) / (sum / VOL_AVG)` without guarding `sum > 0`, producing `Infinity`/`NaN` on a zero-volume window | RISK | Guard `sum > 0` before dividing in `volRead()`. |
+| `3d63e9f46` | `MyTradingSys/tools/live_aid/flag_autosave.js` | CLEAN (`flag_autosave.js`, `boardLog`, and `live_aid.html` autosave fall back safely to `localStorage`) | CLEAN | — |
+| `faf02a0f2` | `MyTradingSys/tools/live_aid/home.js` | CLEAN (`foldCard` and `VIEWS` routes guard `localStorage` access) | CLEAN | — |
+| `b5dda085e` | `MyTradingSys/tools/live_aid/home.js` | CLEAN (`caption` and session high/low lines guard empty `rows5` and `< 3` session bars) | CLEAN | — |
+| `0b3973041` | `MyTradingSys/tools/live_aid/home.js` | CLEAN (WaveTrend chip row and `localStorage` persistence guarded) | CLEAN | — |

@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:50:26Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/diffreview-research-py/REVIEW.md exists, its first line is the verdict, and every sha from the git log appears in the table once",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review every commit of the last 24 h on origin/fast-track under MyTradingSys/research (*.py only): hunt logic errors, unguarded None, swallowed exceptions, bar-index off-by-one, lookahead, fee or timezone mistakes. Check lookahead and DEV/VAL leaks. Report only what you can cite file:line.",
+  "id": "diffreview-research-py-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:50:30Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/diffreview-research-py/REVIEW.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Run git log --since='24 hours ago' --format='%h %s' origin/fast-track -- MyTradingSys/research and list the shas.",
+    "For each sha read git show --stat then the code diff only (skip data and docs).",
+    "Table: sha, file:line, finding, severity (BUG / RISK / STYLE), one-line fix. A sha with no finding gets a CLEAN row.",
+    "Write REVIEW.md with a one-line verdict first (N BUG, M RISK) and the table. Commit on your gemini-q branch only; do not edit product code."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] 24 h trunk diff review: research-py",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -1,0 +1,53 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "git status --short"
+  ],
+  "created": "2026-11-13T22:51:58Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114b/buy-zone-next5-review/REVIEW.md exists, first line is N BLOCKERS, M AMBIGUITIES, and the table has one row per test brief with file:line and a proposed fix sentence",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Review MyTradingSys/research/buy_zone_1114/NEXT5_TESTS.md against BUY_ZONE_MAP.md section 4: check that each of the 5 test briefs is internally consistent (entry, stop, hold, phase split with no lookahead, placebo, 12 and 6 bp costs, DEV/VAL, verdict rule) and could be coded unambiguously. Hunt hidden lookahead, ambiguous terms and undefined thresholds; every parameter labelled SOURCED or OURS.",
+  "id": "buy-zone-next5-review-gemini2-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill2 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-13T22:52:04Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114b/buy-zone-next5-review/REVIEW.md"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read BUY_ZONE_MAP.md section 4 and NEXT5_TESTS.md in full.",
+    "Per test brief: list every parameter, mark SOURCED (quote the map) or OURS, and any term two coders would read differently.",
+    "Check shared rules vs each brief: phase split from previous-day daily bar only, lockout 10 days, placebo N >= 1000, PASS rule needs CI low > 0 and DEV sign.",
+    "Table: test, finding, file:line, severity (BLOCKER / AMBIGUITY / OK), fix sentence. Write REVIEW.md, do not edit the briefs. Commit on your gemini-q branch only."
+  ],
+  "tests": "",
+  "title": "[GEMINI] Code review: buy_zone_1114 NEXT5_TESTS briefs",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

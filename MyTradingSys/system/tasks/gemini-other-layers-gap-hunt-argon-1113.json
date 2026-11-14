@@ -2,7 +2,7 @@
   "approved_by": "",
   "asks": "",
   "claim": "",
-  "closed": "",
+  "closed": "2026-11-13T23:08:52Z",
   "commands": [
     "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/tf_iteration3_1113/other_layers/argon.md"
   ],
@@ -18,6 +18,12 @@
   "lane": "CODEX",
   "latest": [
     {
+      "kind": "ship",
+      "line": "MyTradingSys/research/tf_iteration3_1113/other_layers/argon.md",
+      "ref": "94ce17ca5",
+      "utc": "2026-11-13T23:08:52Z"
+    },
+    {
       "auto": true,
       "kind": "ship",
       "line": "Gemini flash second-model runs: code_vs_rulebook, i2_refute, other_layers, iteration-4 hed",
@@ -28,7 +34,7 @@
   "layers": [],
   "live_path": false,
   "mutation_check": "",
-  "next": "",
+  "next": "END: completed 5-pattern gap hunt for Malkan and Krown on model argon",
   "note": "Run as gemini_queue.py run gemini-other-layers-gap-hunt-argon-1113:low:argon. Reads transcripts ON DISK only (raw_transcripts_canonical/*_raw.txt); NO YouTube request, so caption locks do not apply.",
   "prio": 1,
   "refine_tries": 0,
@@ -38,7 +44,7 @@
     "MyTradingSys/backtest/layers/FORMULAS.md",
     "MyTradingSys/research/tf_iteration3_1113/BRIEF.md"
   ],
-  "result": "",
+  "result": "MyTradingSys/research/tf_iteration3_1113/other_layers/argon.md",
   "result_receipt": {
     "trust": {
       "tag": "UNCHECKED"
@@ -57,7 +63,7 @@
   "sources": [
     "Supervisor C 2026-11-13, operator order: use both Gemini models fully; ITERATION_2 stopping rule fired (iteration 3 GO)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read MyTradingSys/research/tf_iteration3_1113/BRIEF.md (5 gap patterns)",
     "Find Malkan and Krown transcripts in raw_transcripts_canonical (header names the analyst); compare with their layer code",
