@@ -8,7 +8,7 @@ import pytest
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import study as S  # noqa: E402
-import run as R  # noqa: E402
+import run_nkhm as R  # noqa: E402
 
 T0 = 1704067200000  # 2024-01-01 00:00 UTC, a Monday
 

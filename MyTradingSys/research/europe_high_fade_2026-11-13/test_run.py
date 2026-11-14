@@ -2,7 +2,7 @@
 import os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import run
+import run_ehf as run
 
 D0 = 1_700_000_000_000 // run.DAY * run.DAY
 H, M5 = run.H, run.M5

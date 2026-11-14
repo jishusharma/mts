@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fade as F
-import run as R
+import run_efmf as R
 
 HERE = Path(__file__).resolve().parent
 TFS = {"30m": 1_800_000, "1h": 3_600_000}
