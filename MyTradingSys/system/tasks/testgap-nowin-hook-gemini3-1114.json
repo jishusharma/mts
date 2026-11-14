@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:26:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/testgap-nowin-hook/test_nowin_hook.py exists, python -m pytest on it passes with at least 3 tests, and its docstring names the mutation (with the failing test name) that made one test fail on the broken scratch copy",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "scripts/dev/nowin_hook.py has no test named for it (grep tests first; stop with NO GAP if one exists). Write 3-5 hand-computed cases (normal, empty, malformed) in the lab folder via sys.path insert; no network. Show one case fails on a broken scratch copy.",
+  "id": "testgap-nowin-hook-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:47:20Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/testgap-nowin-hook/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "grep -rl nowin_hook under scripts and MyTradingSys tests; note any existing coverage.",
+    "Read scripts/dev/nowin_hook.py; list its pure functions and their expected outputs worked by hand.",
+    "Write test_nowin_hook.py in the lab folder with 3-5 cases; run pytest, expect pass.",
+    "Copy the module to a scratch dir, break one line, rerun, record which test fails in the docstring. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Test gap: nowin_hook",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

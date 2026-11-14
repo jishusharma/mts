@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:31:22Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/rederive-mtf-lead-lag/REDERIVE.md exists with a first-line PASS or FAIL verdict and a claim table of at least 4 rows, each with a file:line",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Re-derive the headline verdict of MyTradingSys/research/mtf_lead_lag_2026-11-09 from its PRE_REG.md rule (or study code) and the data files (RESULT_dev.json, RESULT_val.json) WITHOUT reading RESULT.md first. Then compare with RESULT.md: PASS if verdict, n and mean match, else FAIL listing every mismatch.",
+  "id": "rederive-mtf-lead-lag-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:31:37Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/rederive-mtf-lead-lag/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Read MyTradingSys/research/mtf_lead_lag_2026-11-09/PRE_REG.md (or the study header if none) and the data files; do not open RESULT.md or REPORT.md yet.",
+    "Recompute the headline numbers by hand or with a small script saved in the lab folder (parse then count).",
+    "Only then read RESULT.md; build the claim table: claim, recomputed, stated, file:line, MATCH or MISMATCH.",
+    "Write REDERIVE.md, verdict first. Commit on your gemini-q branch only; never edit the study folder."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] Blind re-derive: mtf_lead_lag_2026-11-09",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}
