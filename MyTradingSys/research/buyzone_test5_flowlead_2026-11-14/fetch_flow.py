@@ -35,15 +35,35 @@ def reduce_frame(df):
     return out
 
 
-def parse_zip(raw):
-    z = zipfile.ZipFile(io.BytesIO(raw))
-    with z.open(z.namelist()[0]) as f:
-        df = pd.read_csv(f, header=None, usecols=[1, 2, 6], names=None, dtype=str)
+def _frame_arrow(f):
+    import pyarrow as pa
+    import pyarrow.csv as pc
+    t = pc.read_csv(f, read_options=pc.ReadOptions(autogenerate_column_names=True),
+                    convert_options=pc.ConvertOptions(include_columns=["f1", "f2", "f6"],
+                                                      column_types={"f1": pa.float64(), "f2": pa.float64(), "f6": pa.string()}))
+    return pd.DataFrame({"price": t["f1"].to_numpy(), "qty": t["f2"].to_numpy(),
+                         "maker": t["f6"].to_numpy(zero_copy_only=False) == "True"})
+
+
+def _frame_pandas(f):
+    df = pd.read_csv(f, header=None, usecols=[1, 2, 6], dtype=str)
     df.columns = ["price", "qty", "maker"]
     df = df[pd.to_numeric(df["price"], errors="coerce").notna()].copy()    # drops a header row if present
     df["price"] = df["price"].astype(float)
     df["qty"] = df["qty"].astype(float)
     df["maker"] = df["maker"].str.lower().eq("true")
+    return df
+
+
+def parse_zip(raw):
+    z = zipfile.ZipFile(io.BytesIO(raw))
+    name = z.namelist()[0]
+    try:                      # fast path when pyarrow is installed; a header row or any parse error falls back to pandas
+        with z.open(name) as f:
+            df = _frame_arrow(f)
+    except Exception:
+        with z.open(name) as f:
+            df = _frame_pandas(f)
     return reduce_frame(df)
 
 
@@ -76,7 +96,7 @@ def main():
         os.makedirs(os.path.join(CACHE, k), exist_ok=True)
     jobs = [(k, d) for d in days for k in KINDS]
     gaps = []
-    with Pool(6) as p:
+    with Pool(8) as p:
         for i, (k, d, st) in enumerate(p.imap_unordered(one, jobs, chunksize=2)):
             if st in ("404", "fail"):
                 gaps.append([k, d, st])
