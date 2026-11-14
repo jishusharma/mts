@@ -1,4 +1,4 @@
-"""Run the pre-registered study; writes results.json and RESULT.md. Usage: python run.py"""
+"""Run the pre-registered study; writes results.json and RESULT.md. Usage: python run_nk6.py"""
 import json, os, sys, time
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))

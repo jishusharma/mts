@@ -1,4 +1,4 @@
-"""Run the PRE_REG study. python run.py -> results.json (+ prints). Two passes (trades, then placebo)."""
+"""Run the PRE_REG study. python run_nk4.py -> results.json (+ prints). Two passes (trades, then placebo)."""
 import json, os, sys, time
 import numpy as np
 import study as S

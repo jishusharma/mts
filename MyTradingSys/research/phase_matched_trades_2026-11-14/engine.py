@@ -1,4 +1,4 @@
-"""Phase-matched trade study engine (PRE_REG.md). Pure functions; data loading in run.py."""
+"""Phase-matched trade study engine (PRE_REG.md). Pure functions; data loading in run_pmt.py."""
 import sys
 import os
 sys.dont_write_bytecode = True

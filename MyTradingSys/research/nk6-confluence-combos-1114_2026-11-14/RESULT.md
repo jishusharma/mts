@@ -77,4 +77,4 @@ Count buckets (mean net R, n VAL): n=1 -0.201 (n=199807); n=2 -0.201 (n=138497);
 ## Parameters
 SOURCED: RSI 30/70 re-cross, standard pivots P/S1/R1, breakout-retest-fakeout concept, Hilega state meaning (red under green = buy). OURS: first-hour = UTC 00:00-01:00, K=4 window, RSI9/EMA3/WMA21, 20-bar breakout window, 6-bar retest window, ADX 20/SMA20 phase, stop/target/time exit, fees, placebo design.
 
-Files: study.py, run.py, make_result.py, test_study.py (causality test passes on real code, fails under STUDY_BUG=1), fetch.py, results.json. Data: F:\MTS\data_cacheinance_spot (note: sibling workers share this cache and overwrite files with key `t`; study.load accepts both).
+Files: study.py, run_nk6.py, make_result.py, test_study.py (causality test passes on real code, fails under STUDY_BUG=1), fetch.py, results.json. Data: F:\MTS\data_cacheinance_spot (note: sibling workers share this cache and overwrite files with key `t`; study.load accepts both).

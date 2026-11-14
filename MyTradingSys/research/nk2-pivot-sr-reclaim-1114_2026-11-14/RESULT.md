@@ -45,4 +45,4 @@ Control rows (mismatched direction, not gated):
 ## BTC today (descriptive only, no advice)
 Data ends 2026-11-13 20:30 UTC (BTC 68,888). Provisional 11-13 day (H 71,514, L 67,568, C 68,888, not yet closed) gives 11-14 standard pivots: P 69,323, R1 71,079, R2 73,269, R3 75,025, S1 67,133, S2 65,377, S3 63,187. Price sits below P (about 0.6% under). Phase label = DOWN (MA20 slope down, ADX>=20 with DI- above DI+). Under the rule a short-side setup would be a rejection of P 69,323 or R1 71,079; the long reclaim trigger would be a close back above P with the control-phase caveat (long in DOWN is a control row, net -0.165 R on 1h). 12 Nov levels for reference: P 72,264, S1 70,310, S3 67,205.
 
-Files: PRE_REG.md, fetch_15m.py, study.py, run.py, test_study.py (passes real; STUDY_BUG=1 fails), summary.json. Data in F:\MTS\data_cacheinance\<SYM>USDT_15m.npz.
+Files: PRE_REG.md, fetch_15m.py, study.py, run_nk2.py, test_study.py (passes real; STUDY_BUG=1 fails), summary.json. Data in F:\MTS\data_cacheinance\<SYM>USDT_15m.npz.
