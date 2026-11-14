@@ -156,7 +156,16 @@ def catch_up(an, cfg, cutoff, why, outdir=None):
     return waiting
 
 
-def fetch_new(cutoff, store, run=subprocess.run, sleep=None, recent=None):
+NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+
+def _run(*args, **kwargs):
+    """subprocess.run that never opens a console window (the scheduled task must be invisible)."""
+    kwargs.setdefault("creationflags", NO_WINDOW)
+    return subprocess.run(*args, **kwargs)
+
+
+def fetch_new(cutoff, store, run=_run, sleep=None, recent=None):
     """yt-dlp captions for each actionable analyst, newest first, stopping at `cutoff` (YYYY-MM-DD).
     Existing transcripts are skipped by fetch_captions_timed, so reruns download nothing new.
     Returns the analysts whose fetch exited nonzero; one of them never stops the others.
@@ -219,7 +228,7 @@ def local_videos(cutoff):
     return out
 
 
-def llm_extract(video, body, run=subprocess.run):
+def llm_extract(video, body, run=_run):
     """One `claude -p` pass per video; returns the parsed JSON object or raises ValueError."""
     vid, analyst, published, title, _ = video[:5]
     prompt = PROMPT % {"analyst": analyst, "published": published, "title": title.replace('"', "'")}
@@ -453,7 +462,7 @@ def run_once(now, fetch=fetch_new, extract=llm_extract, store=None):
     return added, len(data["rows"]), rejected
 
 
-def rebuild_dashboard(run=subprocess.run):
+def rebuild_dashboard(run=_run):
     """Refresh market data, then rebuild the v5 CBP Analyst Desk board (cbp_v2/cbp_board.html).
     Each step is best effort: a failure here never fails the run, and the build runs on the last data.
     Returns the names of tools that failed (non-zero exit or exception) so the run log says which one."""
