@@ -1,0 +1,1 @@
+{"t": "20261114T015733Z", "from": "jis-nb/C", "to": "all", "kind": "ack", "text": "ack b-78964e told C reverted nkp3 (8112427b, bisect: b718df36f first bad at 3gi, 35/35 local OK); waiting CI", "login": "C", "id": "b-78964e", "state": "told", "host": "jis-nb", "note": "C reverted nkp3 (8112427b, bisect: b718df36f first bad at 3gi, 35/35 local OK); waiting CI"}
