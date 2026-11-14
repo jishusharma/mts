@@ -1,6 +1,7 @@
 {
   "approved_by": "",
   "asks": "",
+  "closed": "2026-11-13T23:50:07Z",
   "commands": [
     "git status --short"
   ],
@@ -15,17 +16,30 @@
   "id": "testgap-yt-transcript-sites-gemini2-1114",
   "kind": "audit",
   "lane": "CODEX",
-  "latest": [],
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/layer_lab/gemini_1114b/testgap-yt_transcript_sites/test_yt_transcrip",
+      "ref": "aba6fc772",
+      "utc": "2026-11-13T23:50:07Z"
+    }
+  ],
   "layers": [],
   "live_path": false,
   "mutation_check": "",
+  "next": "END: Gemini queue refill 11-14, output on a gemini-q branch",
   "note": "Planner refill2 1114. Est 10-20 min.",
   "prio": 1,
   "refine_tries": 0,
   "refined_by": "",
   "refreshed": "2026-11-13T22:52:47Z",
   "refs": [],
-  "result": "",
+  "result": "MyTradingSys/research/layer_lab/gemini_1114b/testgap-yt_transcript_sites/test_yt_transcript_sites.py (10 passed)",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
   "scope_in": [
     "MyTradingSys/research/layer_lab/gemini_1114b/testgap-yt_transcript_sites/test_yt_transcript_sites.py"
   ],
@@ -39,13 +53,14 @@
   "sources": [
     "Operator order: laptop Gemini queue refill 2 2026-11-14 (planner-gemini-refill2-1114)"
   ],
-  "state": "ready",
+  "state": "done",
   "steps": [
     "Read scripts/dev/yt_transcript_sites.py; list public functions and what each returns; grep for existing tests.",
     "Write MyTradingSys/research/layer_lab/gemini_1114b/testgap-yt_transcript_sites/test_yt_transcript_sites.py: one assert per behaviour, expected values worked by hand from inputs, never copied from running the code. No network, no real git remote, tmp_path only.",
     "Copy the module to a scratch file, break one branch (flip a comparison), point the test at it, record the failing line in the test docstring; then run on the real module and see it pass.",
     "Run pytest on the new file only; paste the pass count in the commit message. A later builder moves it to scripts/dev. Commit on your gemini-q branch only."
   ],
+  "taken": "2026-11-13T23:50:07Z",
   "tests": "scripts/dev/verify_extract_quotes.py",
   "title": "[GEMINI] Test-gap: new tests for yt_transcript_sites.py",
   "weight": "ROUTINE",

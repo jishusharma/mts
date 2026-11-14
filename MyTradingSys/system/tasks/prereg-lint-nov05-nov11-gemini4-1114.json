@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T04:57:40Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114d/prereg-lint-nov05-nov11/LINT.md exists with a table of at least 6 studies, one row each with PRE_REG present Y/N, frozen split Y/N, n floor Y/N, kill criterion Y/N and a file:line, plus a column checking each PRE_REG's ## Context section (Regime/Phase/Session/Entry lines)",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Lint the PRE_REG files of these folders under MyTradingSys/research/: anticipation_map_2026-11-05, bigcandle_story_2026-11-05, value_area_acceptance_2026-11-05, auction_forward_2026-11-09, mtf_lead_lag_2026-11-09, tom_swing_2026-11-09, us_open_first3m_2026-11-11, with_trend_session_2026-11-11 (N if no PRE_REG). Check SOURCED/OURS labels, frozen split, n floor, kill criterion. Read-only.",
+  "id": "prereg-lint-nov05-nov11-gemini4-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill4 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T04:57:40Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114d/prereg-lint-nov05-nov11/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 4 2026-11-14 (planner-gemini-refill4-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "List each folder and whether PRE_REG*.md exists.",
+    "For each present PRE_REG check the five items; record the line.",
+    "Check that the git commit of PRE_REG predates the results commit (git log).",
+    "Write LINT.md in MyTradingSys/research/layer_lab/gemini_1114d/prereg-lint-nov05-nov11/. Commit on your gemini-q branch only."
+  ],
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] PRE_REG lint: Nov 5-11 studies",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

@@ -2555,6 +2555,16 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 - Applied 20:08Z: 4 Sonnet studies on the desktop: weekly red-streak bounce (swing), bear-trap reclaim long in a downtrend (day trade), win rate versus profit per trade on long scalps (answers the Zing question on our data), and a descriptive map of past BTC bear-phase reactions and today's levels. A 13-study ship worker saves today's results. Memory updated: cap 95% this week.
 - Open: Zing's own closed-trade history (entry, stop, target, result, fees) is needed to judge its win rates; a win rate alone says nothing about profit.
 
+### 2026-11-14 16:53Z and 20:16Z - C: drive filling (operator alarm)
+- Operator: C: went from 19 GB to 10.5 GB free in a day; make it stop for good.
+- Cause: `sync.py` `new_worktree()` put every study tree next to the C: checkout (61 `mts-jis-nb-*` trees = 12 GB) and each study re-downloaded the same coin data into its own `runtime_data`; trees leave only via `sync.py tidy` after a ship.
+- Fix (card c-drive-worktrees-on-f-1114): trees default to `F:\MTS\wt` (env `MTS_WORKTREE_ROOT` or `hosts.py` HOST_PATHS), shared data cache `F:\MTS\data_cache` (`data_cache.py`), c_drive_guard lists unshipped study trees older than 6 h when C: < 15 GB. Existing trees are not migrated.
+
+## 2026-11-13 ~21:40Z: YouTube freedom, free workarounds and backups, no paid proxy (JIS-NB)
+Operator: "Add youtube freedom to jobs and I need it fixed. I need workarounds, I need backups.. so that I can download what I need when I need." and "What paid proxy Man! We already had a working solution we built. So use that. Expand and build proxies that you need to. Don't fall back. Nothing is forbidden or illegal and i will respond to any charges."
+- Decision (OURS, on his words): `scripts/dev/yt.py` is the one fetch command (captions, audio, transcript; id, URL, playlist or @channel); routes warp, v6, tor, Invidious/Piped mirrors, yt-dlp client variants, local Whisper, GitHub Actions run, fleet ask; a lock or 429 moves to the next route in the same call. Free tools only: nothing paid; no public proxy lists; Tor and WARP carry YouTube hosts only and listen on localhost. The home IPv4 address is still never a route. Details and measurements: YT_PROXY.md "YouTube freedom". Standing card `yt-health-standing-1114`: `yt.py health` at coordinator load. Fleet setup by `mts_signal.py broadcast`.
+- Found while building: the home IPv4 is 429-locked but this machine's IPv6 address is not (a separate address, own guard and lock), and Tor's exits are refused by YouTube's caption endpoint only (metadata and audio work).
+
 ## 2026-11-13 ~21:20Z: YouTube fetcher bans are not allowed to block work; find the route (operator)
 - His words: "you can't be sitting behind youtube fetcher bans, find way. We already discussed it like proxy/vpn etc".
 - Already decided earlier (see d-yt-warp-proxy 2026-11-02, the 2026-11-12 06:05Z "never blocked" entry, YT_PROXY.md): free WARP proxy (its exit address is locked by our own guard until 2026-11-16T03:02Z), OpenVPN (profile password lost), then path 4 = public transcript site. Paid proxy/VPN and new network software (Tor, VPN clients) stay a money/install decision for him and were not started.
@@ -2577,3 +2587,33 @@ Answer: his fee arithmetic is right for a winner; the break-even table (win rate
 ## 2026-11-13 ~20:50Z: where to buy after the 7-week fall (operator, voice)
 - Operator (paraphrased): find where to buy after the 7-week decline. Study big trades across exchanges, using published studies to understand them, not to validate them. Retest versus double-bottom anatomy and confirmation levels with WaveTrend, RSI and CVD. Cycle-conditioned buy odds. Edge ideas for each market phase. HTF divergence outside Bollinger Bands with confirmation, ridden for a full cycle, on both sides. Learn from how the top could have been shorted.
 - Mechanism: research cards for each study, each shipping PRE_REG before outcomes; labels SOURCED (operator) or OURS (parameters).
+
+## 2026-11-14 ~22:30Z: quick Fable sessions for critical tasks; Claude temp data is the supervisor's (operator)
+- Operator: spawn quick Fable sessions for critical tasks; Claude temp/VM data on this machine is the supervisor's to manage, no questions.
+- Mechanism: the supervisor starts a time-boxed Fable session per critical task (first one: ship-queue-unblock-1114) and cleans Claude temp/VM data without asking.
+
+## 2026-11-14 ~05:30Z: rolling parallel super sessions for 5 h, ultracode, ship branches first (operator)
+- Operator: start new rolling super sessions for the next 5 hours, tokens not a constraint, all work in parallel, ultracode mode; and "ship branches first" (unshipped JIS-NB/* branches go to trunk before new work).
+- Mechanism: ship-queue worker batches the unshipped branches and ships them one batch at a time through sync.py ship with CI checked on each sha.
+## 2026-11-13 21:15Z NK tests must be phase specific and apply the MTS brains to find useful trades (operator)
+- His words: "NK related tests must be phase specific and try to apply brains of mts in finding useful trades"
+- DECIDED (operator): NK tests run per phase with MTS context layers, not one coarse ADX phase. Action taken: MTS_BRAINS_SPEC_1114 written; four studies run (nkp1 session rules, nkp2 levels, nkp3 Hilega-Milega, nkp4 NK + MTS confluence) with blind reviews, synthesis in NK_PHASE_BRAINS_SYNTHESIS_1114.md.
+- Outcome: FAIL. 0 of 17 DEV-chosen cells pass VAL fee-net at 12 bp; DEV winners shrank about 1 R on VAL; gross R near 0 so fees decide. Only lead is CAPITULATION long (6 VAL days), needs its own pre-registration with more symbols.
+
+## 2026-11-14 05:32Z: keep F: (and every drive) from filling like C: did (JIS-NB, via Supervisor C)
+- His words: "make sure that F drive does not get into the same issues like C before - if we need to move data to D then keep moving regularly - make this a regular supervisor session activity - all devices must see how to manage their data - different devices have different constraints so they need different solutions."
+- DECIDED (operator): per-device data plan with floors, overflow target and a move tool, run every supervisor wake on every login. Action: `MyTradingSys/system/disk_plan.json` (desktop C>=20 GB, F>=20 GB, overflow D:\MTS\wt_cold and D:\MTS\data_cold; laptop and NUC UNKNOWN until they ack `disk_keep.py facts`), `scripts/dev/disk_keep.py status|facts|speed|move`, `DISK` / `DISK ACT` lines in `supervisor.py plan`, wake step in roles/supervisor.md.
+
+## 2026-11-14 ~18:00Z: spend the whole 5 h window by weekly pace; never ask for a yes he already gave (operator, via Supervisor C)
+- His words: weekly is fine, plan to spend 100% of this session, do all planned work by priority; "for yt.py setup it is a waste to ask me when I have already asked u to provide the solution... not wait - so fix it".
+- DECIDED (operator): the supervisor runs per-machine setup steps (yt.py setup) itself; no wait-for-yes on work he has already ordered. Eco/close-out order of 2026-11-14 is lifted after the 5 h reset. Done: `yt.py setup` ran on jis-nb, tor up, 7 caption routes up, b-ffb4cd acked done.
+
+## 2026-11-15 CBP Analyst Desk: every tab deduped and refreshed (operator order; session cbp-refresh-1115)
+- Operator: "Update All CBP modules/Artifacts - make sure each tab is deduped and refreshed". The earlier 11-14 note said "What changed" repeated the Trail change log and Alts repeated the retired Dark Horse list; no other tab rules were found in the repo, so the safe default applied (one home per claim, move not delete).
+- Done (generator F:/CryptoScrapper/cbp_v2/tools/build_board.py, 5 tabs before and after): Now owns the newest 6 flips, Trail shows only older flips; BTC prices live on the BTC levels tab only, Analysts cards keep conditions without a ladder price; the hand-typed 11-03 level, read and coin tables are replaced by the stores (rows.json pointers, verdicts.json summaries and alt stances, one tile per coin); Dark horse group dropped (list kept in research/cbp/ALT_PICKS_2026-11-03.md); header stamped UTC + IST; the feed tile shows the newest video date and turns amber when older than 2 days.
+- Test: MyTradingSys/tests/test_cbp_board_dedupe.py (a tab repeating another's rows, a coin or ladder level twice, a board older than verdicts.json/rows.json). Context only, never signals.
+
+## 2026-11-15 Claude's own health check: fewer repeats, one rule per place (operator order 2026-11-14 ~19:05Z, via Supervisor C; session claude-health-1115)
+- Operator: validate Claude's own prompts/hooks/memory, change what hurts, remove contradictions, lean, removals over additions.
+- DECIDED (OURS, root causes): (1) the trunk-lag line and the ask/broadcast status lines were printed on every prompt (about 830 bytes each time) to a main checkout that cannot pull; now told once per session (lag again only when it doubles) and an unchanged status block once per 60 min. (2) `supervisor.py wait` timeout exits 0 with "not a failure"; the Stop guard's plan freshness 10 -> 30 min (the live-watcher check is unchanged). (3)-(5) one "Standing rules" block in roles/supervisor.md: event turns use a background Sonnet Agent, orders expire at the 5 h reset, no re-asking a given yes, stale index.lock is the session's to delete, `ship --wait-ci` on the printed sha. (6) Chrome contradiction fixed in CLAUDE.md: one device id (f0b63f88, OPERATOR_DECISIONS 2026-11-12 13:42Z), never a Browser 1/2 label; the stale main checkout still injects the old text until it is pulled. (7) Memory 110 -> 89 files, MEMORY.md 98 lines/16.8 KB -> 27 lines/6.5 KB; five login-cap memories became one dated file, four reply-shape memories one, Fable-era pilots and expired orders deleted.
+- Not changed: Stop guard itself, Hard rules, Gates, the 300 s watcher interval; commit attribution follows the harness model reminder (not repo-controlled). Spawned-session Chrome denial is a permission-mode matter of the app, noted in the role file.

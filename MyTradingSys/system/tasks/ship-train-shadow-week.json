@@ -4,12 +4,13 @@
   "commands": [],
   "context": {
     "calls_to_edit": null,
-    "folded": "2026-11-06T17:43:50Z",
-    "misses": 11,
+    "folded": "2026-11-14T19:11:34Z",
+    "misses": 7,
     "reads": [
-      "MyTradingSys/system/SHIP_TRAIN.md"
+      "MyTradingSys/system/SHIP_TRAIN.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md"
     ],
-    "session": "agent-a8863611e6b1ae2cf"
+    "session": "agent-a040633e780f96872"
   },
   "created": "2026-11-03T20:35:41Z",
   "depends_on": [],

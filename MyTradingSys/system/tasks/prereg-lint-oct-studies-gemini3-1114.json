@@ -1,0 +1,51 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "created": "2026-11-14T00:35:28Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/layer_lab/gemini_1114c/prereg-lint-oct-studies/LINT.md exists with one row per PRE_REG.md found (count stated on line 1) and a prereg_context_lint.py exit code per row",
+  "est_turns": 15,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Check each PRE_REG.md under MyTradingSys/research in folders dated 2026-10-* or 2026-11-01..11-09 against the template (gross_effect_screen_2026-10-15/PRE_REG.md): rule frozen before RESULT, one m, verdicts.py check, SOURCED/OURS labels. Run scripts/dev/prereg_context_lint.py on each and list the missing items per file.",
+  "id": "prereg-lint-oct-studies-gemini3-1114",
+  "kind": "audit",
+  "lane": "CODEX",
+  "latest": [],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "Planner refill3 1114. Est 10-20 min.",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T00:35:54Z",
+  "refs": [],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/layer_lab/gemini_1114c/prereg-lint-oct-studies/"
+  ],
+  "scope_out": [
+    "no edits outside scope_in",
+    "every number must trace to a file or a verbatim quote, never memory",
+    "do not run sync.py ship"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "Operator order: laptop Gemini queue refill 3 2026-11-14 (planner-gemini-refill3-1114)"
+  ],
+  "state": "ready",
+  "steps": [
+    "Find PRE_REG.md files in the dated folders (glob, then count).",
+    "Run prereg_context_lint.py on each; record exit code and first message.",
+    "Check the template items by reading; table of missing items per file.",
+    "Write LINT.md. Commit on your gemini-q branch only; never edit the studies."
+  ],
+  "tests": "scripts/dev/prereg_context_lint.py",
+  "title": "[GEMINI] PRE_REG lint: studies dated 2026-10 and early 2026-11",
+  "weight": "ROUTINE",
+  "worker": "agent"
+}

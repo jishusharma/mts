@@ -126,7 +126,7 @@ def reason(path, transcript=None):
     return sync.unshipped_reason(t)
 
 
-SUP_PLAN_MAX_MIN = 10   # a Supervisor turn may end only if a `plan` ran this recently (OURS)
+SUP_PLAN_MAX_MIN = 30   # a Supervisor turn may end only if a `plan` ran this recently (OURS; 10 -> 30 on 2026-11-15: it re-fired each operator Q&A turn while the live watcher already guarded the wake)
 
 
 def planner_login(sid, home=None):

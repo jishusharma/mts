@@ -56,6 +56,10 @@ class SyncTest(unittest.TestCase):
         shutil.rmtree(cls.tpl, ignore_errors=True)
 
     def setUp(self):
+        try:
+            os.getcwd()
+        except OSError:   # an earlier test's tree (the cwd sync.remove_tree_now moved to) was removed: Linux then fails os.getcwd()
+            os.chdir(Path(__file__).resolve().parent)
         self.tmp = Path(tempfile.mkdtemp())
         shutil.copytree(self.tpl, self.tmp, dirs_exist_ok=True)
         origin = self.tmp / "origin.git"
@@ -66,9 +70,12 @@ class SyncTest(unittest.TestCase):
         self.slots_base.mkdir(parents=True, exist_ok=True)
         os.environ["MTS_GATE_SLOTS_DIR"] = str(self.slots_base)
         os.environ["SYNC_ALLOW_SECOND_SHIP"] = "1"   # tests ship repeatedly; TierTest turns the 10-minute rule on
+        os.environ["MTS_WORKTREE_ROOT"] = ""         # "" = next to the main checkout, whatever this machine's host row says
         self.gated = []
 
     def tearDown(self):
+        os.chdir(Path(__file__).resolve().parent)   # sync.remove_tree_now chdirs into a tree: never rmtree the cwd below
+        os.environ.pop("MTS_WORKTREE_ROOT", None)
         os.environ.pop("MTS_GATE_SLOTS_DIR", None)
         os.environ.pop("SYNC_ALLOW_SECOND_SHIP", None)
         shutil.rmtree(self.tmp, ignore_errors=True)
@@ -562,10 +569,22 @@ class SyncTest(unittest.TestCase):
         self.assertNotEqual(self.branch_of(self.a), f"{sync.socket.gethostname()}/anything")
 
     def test_tidy_all_keeps_every_named_lane_tree(self):
-        lanes = [self.make_tree(self.tmp.resolve() / n, f"jisnb/{n}") for n in ("mts-app", "mts-relay", "mts-dsa")]
+        lanes = [self.make_tree(self.tmp.resolve() / n, f"jisnb/{n}") for n in ("mts-app", "mts-relay", "mts-dsa", "mts-gemini")]
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(sync.tidy(self.a, apply=True, include_named=True, now=time.time() + 48 * 3600), [])
         self.assertTrue(all(l.exists() for l in lanes))
+
+    def test_start_slug_in_mts_gemini_lane_switches_branch_and_retire_own_tree_keeps_it(self):
+        lane = self.make_lane("mts-gemini")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            path = sync.start(lane, slug="gemini-opt", quiet=True)
+        self.assertEqual(Path(path).resolve(), lane.resolve())
+        self.assertNotIn("WORKTREE:", buf.getvalue())
+        self.assertEqual(self.branch_of(lane), f"{sync.socket.gethostname()}/gemini-opt")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertFalse(sync.retire_own_tree(lane))
+        self.assertTrue(lane.exists())
 
     def test_claim_rejects_flag_like_name(self):
         with self.assertRaises(sync.SyncError):
@@ -707,6 +726,23 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(ahead.exists())
         self.assertTrue(self.a.exists())  # primary tree never touched
 
+    def test_new_worktree_honours_mts_worktree_root(self):
+        root = self.tmp / "wtroot"
+        with mock.patch.dict(os.environ, {"MTS_WORKTREE_ROOT": str(root)}), contextlib.redirect_stdout(io.StringIO()):
+            p = sync.new_worktree(self.a, "elsewhere")
+        self.assertEqual(p.resolve().parent, root.resolve())
+        self.assertTrue((p / "README.md").exists())
+        self.assertNotEqual(p.resolve().parent, self.a.resolve().parent)
+
+    def test_tidy_finds_and_removes_a_tree_under_the_custom_root(self):
+        root = self.tmp / "wtroot"
+        with mock.patch.dict(os.environ, {"MTS_WORKTREE_ROOT": str(root)}), contextlib.redirect_stdout(io.StringIO()):
+            done = sync.new_worktree(self.a, "done")
+            later = time.time() + 48 * 3600
+            self.assertEqual(sync.tidy(self.a, now=later), [str(done.resolve())])
+            self.assertEqual(sync.tidy(self.a, apply=True, now=later), [str(done.resolve())])
+        self.assertFalse(done.exists())
+
     def test_tidy_skips_gateway_marked_worktree(self):
         with contextlib.redirect_stdout(io.StringIO()):
             marked = sync.new_worktree(self.a, "gw")
@@ -755,10 +791,13 @@ class SyncTest(unittest.TestCase):
         self.assertTrue(busy.exists())
         self.assertTrue(own.exists())
 
-    def test_start_calls_the_gateway_retire(self):
+    def test_start_calls_the_gateway_retire_unless_quiet(self):
+        with mock.patch.object(sync, "retire_released_gateway_trees") as m, contextlib.redirect_stdout(io.StringIO()):
+            sync.start(self.a, slug="zzz", quiet=False)
+        m.assert_called_once()
         with mock.patch.object(sync, "retire_released_gateway_trees") as m, contextlib.redirect_stdout(io.StringIO()):
             sync.start(self.a, slug="zzz", quiet=True)
-        m.assert_called_once()
+        m.assert_not_called()
 
     def test_start_writes_gateway_marker_only_on_gateway_profile(self):
         with mock.patch.dict(os.environ, {"MTS_GATEWAY": "1"}):

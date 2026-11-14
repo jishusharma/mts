@@ -1,0 +1,963 @@
+{
+ "overall": "UNDERPOWERED",
+ "best_primary": null,
+ "prereg_code_commit": "b1b4fa2732348e6c900e94c76b1f9f5b46630bf3",
+ "head": "22557eef7fa592d6c155f742670859138baa5c59",
+ "cells": {
+  "P1": {
+   "id": "P1",
+   "status": "PRIMARY",
+   "note": "",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false,
+    "bh_q": 1.0,
+    "p_bh": 1.0
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 5
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "UNDERPOWERED"
+  },
+  "P2": {
+   "id": "P2",
+   "status": "PRIMARY",
+   "note": "",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false,
+    "bh_q": 1.0,
+    "p_bh": 1.0
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 4
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "UNDERPOWERED"
+  },
+  "P3": {
+   "id": "P3",
+   "status": "PRIMARY",
+   "note": "",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false,
+    "bh_q": 1.0,
+    "p_bh": 1.0
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 4
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "UNDERPOWERED"
+  },
+  "C1": {
+   "id": "C1",
+   "status": "CONTROL",
+   "note": "level comparison",
+   "n_signals_dev": 5,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 5,
+    "gross": 0.20890268877760482,
+    "net12": 0.18819832266262287,
+    "net6": 0.19855050572011387,
+    "win": 60.0,
+    "ex5": NaN
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 148
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C2": {
+   "id": "C2",
+   "status": "CONTROL",
+   "note": "a pause, not a turn",
+   "n_signals_dev": 1,
+   "n_signals_val": 1,
+   "dev": {
+    "n": 1,
+    "gross": 3.111585359339593,
+    "net12": 3.1023534622733355,
+    "net6": 3.1069694108064643,
+    "win": 100.0,
+    "ex5": NaN
+   },
+   "val": {
+    "n": 1,
+    "gross": -1.0,
+    "net12": -1.039266240971753,
+    "net6": -1.0196331204858766,
+    "win": 0.0,
+    "ex5": NaN,
+    "ci_trade": NaN,
+    "ci_72h": NaN,
+    "p72": NaN,
+    "ci_day": NaN,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "real_matched": -1.039266240971753,
+    "placebo_mean": -0.6351299337876477,
+    "p": 1.0,
+    "n_matched": 1,
+    "coverage": 1.0,
+    "pool_n": 24
+   },
+   "censored_val": 0,
+   "coins_val": 1,
+   "verdict": "CONTROL"
+  },
+  "C3": {
+   "id": "C3",
+   "status": "CONTROL",
+   "note": "falling knife",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 3
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C4": {
+   "id": "C4",
+   "status": "CONTROL",
+   "note": "continuation (any BTC label)",
+   "n_signals_dev": 1,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 1,
+    "gross": 0.6016464380171709,
+    "net12": 0.5806648098677338,
+    "net6": 0.5911556239424524,
+    "win": 100.0,
+    "ex5": NaN
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 159
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C5": {
+   "id": "C5",
+   "status": "CONTROL",
+   "note": "episodes only",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 1
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C6": {
+   "id": "C6",
+   "status": "CONTROL",
+   "note": "timeframe 4h, R floor 1.2%",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 26
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C7": {
+   "id": "C7",
+   "status": "CONTROL",
+   "note": "mirrored short, NK forbids shorts",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 7
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C8": {
+   "id": "C8",
+   "status": "CONTROL",
+   "note": "NK index filter: BTC > SMA20 and SMA50 (BTC itself excluded)",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 1
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C9": {
+   "id": "C9",
+   "status": "CONTROL",
+   "note": "limit at SMA20 within 5 bars",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 3
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  },
+  "C10": {
+   "id": "C10",
+   "status": "CONTROL",
+   "note": "stack width 5%, power check",
+   "n_signals_dev": 0,
+   "n_signals_val": 0,
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0,
+    "plc_beaten": false
+   },
+   "placebo": {
+    "p": null,
+    "pool_n": 5
+   },
+   "censored_val": 0,
+   "coins_val": 0,
+   "verdict": "CONTROL"
+  }
+ },
+ "extra": {
+  "c4_by_cycle": {
+   "CAPITULATION": {
+    "dev": {
+     "n": 0
+    },
+    "val": {
+     "n": 0
+    }
+   },
+   "MARKDOWN": {
+    "dev": {
+     "n": 0
+    },
+    "val": {
+     "n": 0
+    }
+   },
+   "RELIEF": {
+    "dev": {
+     "n": 0
+    },
+    "val": {
+     "n": 0
+    }
+   },
+   "ACCUM-RANGE": {
+    "dev": {
+     "n": 0
+    },
+    "val": {
+     "n": 0
+    }
+   },
+   "MARKUP": {
+    "dev": {
+     "n": 1,
+     "gross": 0.6016464380171709,
+     "net12": 0.5806648098677338,
+     "net6": 0.5911556239424524,
+     "win": 100.0,
+     "ex5": NaN
+    },
+    "val": {
+     "n": 0
+    }
+   },
+   "DISTRIBUTION": {
+    "dev": {
+     "n": 0
+    },
+    "val": {
+     "n": 0
+    }
+   }
+  },
+  "level_comparison": {
+   "dev": {
+    "at": {
+     "n": 0
+    },
+    "away": {
+     "n": 5,
+     "gross": 0.20890268877760482,
+     "net12": 0.18819832266262287,
+     "net6": 0.19855050572011387,
+     "win": 60.0,
+     "ex5": NaN
+    }
+   },
+   "val": {
+    "at": {
+     "n": 0
+    },
+    "away": {
+     "n": 0
+    }
+   }
+  }
+ },
+ "fresh_val_descriptive": {
+  "P1": {
+   "n": 0
+  },
+  "P2": {
+   "n": 0
+  },
+  "P3": {
+   "n": 0
+  },
+  "C1": {
+   "n": 0
+  },
+  "C2": {
+   "n": 0
+  },
+  "C3": {
+   "n": 0
+  },
+  "C4": {
+   "n": 0
+  },
+  "C5": {
+   "n": 0
+  },
+  "C6": {
+   "n": 1,
+   "gross": 1.159947013809108,
+   "net12": 1.1330263213896385,
+   "net6": 1.1464866675993732,
+   "win": 100.0,
+   "ex5": NaN,
+   "ci_trade": NaN,
+   "ci_72h": NaN,
+   "p72": NaN,
+   "ci_day": NaN
+  },
+  "C7": {
+   "n": 0
+  },
+  "C8": {
+   "n": 0
+  },
+  "C9": {
+   "n": 0
+  },
+  "C10": {
+   "n": 0
+  }
+ },
+ "regime_mix": {
+  "DEV": {
+   "coin_days": 20720,
+   "UP": 27.5,
+   "DOWN": 35.1,
+   "RANGE": 37.4,
+   "mixed": true,
+   "btc_cycle": {
+    "CAPITULATION": 3.3,
+    "MARKDOWN": 30.0,
+    "RELIEF": 8.1,
+    "ACCUM-RANGE": 17.0,
+    "MARKUP": 26.1,
+    "DISTRIBUTION": 15.5
+   },
+   "btc_above_sma200": 47.6
+  },
+  "VAL": {
+   "coin_days": 20940,
+   "UP": 24.8,
+   "DOWN": 35.1,
+   "RANGE": 40.1,
+   "mixed": true,
+   "btc_cycle": {
+    "CAPITULATION": 0.6,
+    "MARKDOWN": 18.8,
+    "RELIEF": 3.3,
+    "ACCUM-RANGE": 14.9,
+    "MARKUP": 30.7,
+    "DISTRIBUTION": 31.7
+   },
+   "btc_above_sma200": 61.7
+  }
+ },
+ "provenance": [
+  {
+   "file": "BTCUSDT_15m.npz",
+   "key": "t",
+   "n": 275620,
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 270,
+   "coin": "BTC",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "ETHUSDT_15m.npz",
+   "key": "t",
+   "n": 275620,
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 270,
+   "coin": "ETH",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "BNBUSDT_15m.npz",
+   "key": "t",
+   "n": 275620,
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 270,
+   "coin": "BNB",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "XRPUSDT_15m.npz",
+   "key": "t",
+   "n": 275620,
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 270,
+   "coin": "XRP",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "ADAUSDT_15m.npz",
+   "key": "t",
+   "n": 275620,
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 270,
+   "coin": "ADA",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "DOGEUSDT_15m.npz",
+   "key": "ts",
+   "n": 257882,
+   "first": 1562328000000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 18,
+   "missing_bars": 201,
+   "coin": "DOGE",
+   "set": "gated",
+   "daily_first": 1562371200000,
+   "daily_last": 1794441600000,
+   "h4_bars": 16128,
+   "funding": true
+  },
+  {
+   "file": "SOLUSDT_15m.npz",
+   "key": "t",
+   "n": 219324,
+   "first": 1597125600000,
+   "last": 1794600900000,
+   "step_ms": 900000,
+   "gap_events": 10,
+   "missing_bars": 94,
+   "coin": "SOL",
+   "set": "gated",
+   "daily_first": 1597190400000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13713,
+   "funding": true
+  },
+  {
+   "file": "LTCUSDT_15m.npz",
+   "key": "ts",
+   "n": 275622,
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 269,
+   "coin": "LTC",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "LINKUSDT_15m.npz",
+   "key": "ts",
+   "n": 274142,
+   "first": 1547632800000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 269,
+   "coin": "LINK",
+   "set": "gated",
+   "daily_first": 1547683200000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17145,
+   "funding": true
+  },
+  {
+   "file": "TRXUSDT_15m.npz",
+   "key": "ts",
+   "n": 275622,
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 269,
+   "coin": "TRX",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "DOTUSDT_15m.npz",
+   "key": "ts",
+   "n": 218586,
+   "first": 1597791600000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 10,
+   "missing_bars": 93,
+   "coin": "DOT",
+   "set": "gated",
+   "daily_first": 1597795200000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13667,
+   "funding": true
+  },
+  {
+   "file": "AVAXUSDT_15m.npz",
+   "key": "ts",
+   "n": 215292,
+   "first": 1600756200000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 10,
+   "missing_bars": 93,
+   "coin": "AVAX",
+   "set": "gated",
+   "daily_first": 1600819200000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13461,
+   "funding": true
+  },
+  {
+   "file": "ATOMUSDT_15m.npz",
+   "key": "ts",
+   "n": 264302,
+   "first": 1556510400000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 20,
+   "missing_bars": 245,
+   "coin": "ATOM",
+   "set": "gated",
+   "daily_first": 1556582400000,
+   "daily_last": 1794441600000,
+   "h4_bars": 16530,
+   "funding": true
+  },
+  {
+   "file": "ETCUSDT_15m.npz",
+   "key": "ts",
+   "n": 275622,
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 269,
+   "coin": "ETC",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "BCHUSDT_15m.npz",
+   "key": "ts",
+   "n": 243923,
+   "first": 1574935200000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 15,
+   "missing_bars": 152,
+   "coin": "BCH",
+   "set": "gated",
+   "daily_first": 1574985600000,
+   "daily_last": 1794441600000,
+   "h4_bars": 15253,
+   "funding": true
+  },
+  {
+   "file": "XLMUSDT_15m.npz",
+   "key": "ts",
+   "n": 275622,
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 21,
+   "missing_bars": 269,
+   "coin": "XLM",
+   "set": "gated",
+   "daily_first": 1546300800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 17238,
+   "funding": true
+  },
+  {
+   "file": "UNIUSDT_15m.npz",
+   "key": "ts",
+   "n": 215786,
+   "first": 1600311600000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 10,
+   "missing_bars": 93,
+   "coin": "UNI",
+   "set": "gated",
+   "daily_first": 1600387200000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13492,
+   "funding": true
+  },
+  {
+   "file": "NEARUSDT_15m.npz",
+   "key": "ts",
+   "n": 213186,
+   "first": 1602651600000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 10,
+   "missing_bars": 93,
+   "coin": "NEAR",
+   "set": "gated",
+   "daily_first": 1602720000000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13329,
+   "funding": false
+  },
+  {
+   "file": "FILUSDT_15m.npz",
+   "key": "ts",
+   "n": 213042,
+   "first": 1602781200000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 10,
+   "missing_bars": 93,
+   "coin": "FIL",
+   "set": "gated",
+   "daily_first": 1602806400000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13320,
+   "funding": false
+  },
+  {
+   "file": "ALGOUSDT_15m.npz",
+   "key": "ts",
+   "n": 259178,
+   "first": 1561161600000,
+   "last": 1794601800000,
+   "step_ms": 900000,
+   "gap_events": 18,
+   "missing_bars": 201,
+   "coin": "ALGO",
+   "set": "gated",
+   "daily_first": 1561161600000,
+   "daily_last": 1794441600000,
+   "h4_bars": 16209,
+   "funding": false
+  },
+  {
+   "file": "AAVEUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 639300,
+   "first": 1602730800000,
+   "last": 1794606600000,
+   "step_ms": 300000,
+   "gap_events": 10,
+   "missing_bars": 287,
+   "coin": "AAVE",
+   "set": "fresh",
+   "daily_first": 1602806400000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13324,
+   "funding": false
+  },
+  {
+   "file": "ENJUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 796078,
+   "first": 1555560000000,
+   "last": 1794606900000,
+   "step_ms": 300000,
+   "gap_events": 20,
+   "missing_bars": 746,
+   "coin": "ENJ",
+   "set": "fresh",
+   "daily_first": 1555632000000,
+   "daily_last": 1794441600000,
+   "h4_bars": 16596,
+   "funding": false
+  },
+  {
+   "file": "GRTUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 620958,
+   "first": 1608237000000,
+   "last": 1794606600000,
+   "step_ms": 300000,
+   "gap_events": 9,
+   "missing_bars": 275,
+   "coin": "GRT",
+   "set": "fresh",
+   "daily_first": 1608249600000,
+   "daily_last": 1794441600000,
+   "h4_bars": 12941,
+   "funding": false
+  },
+  {
+   "file": "HBARUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 749074,
+   "first": 1569729600000,
+   "last": 1794606900000,
+   "step_ms": 300000,
+   "gap_events": 17,
+   "missing_bars": 518,
+   "coin": "HBAR",
+   "set": "fresh",
+   "daily_first": 1569801600000,
+   "daily_last": 1794441600000,
+   "h4_bars": 15615,
+   "funding": false
+  },
+  {
+   "file": "MANAUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 659376,
+   "first": 1596708000000,
+   "last": 1794606600000,
+   "step_ms": 300000,
+   "gap_events": 10,
+   "missing_bars": 287,
+   "coin": "MANA",
+   "set": "fresh",
+   "daily_first": 1596758400000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13742,
+   "funding": false
+  },
+  {
+   "file": "SANDUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 657036,
+   "first": 1597410000000,
+   "last": 1794606600000,
+   "step_ms": 300000,
+   "gap_events": 10,
+   "missing_bars": 287,
+   "coin": "SAND",
+   "set": "fresh",
+   "daily_first": 1597449600000,
+   "daily_last": 1794441600000,
+   "h4_bars": 13693,
+   "funding": false
+  },
+  {
+   "file": "THETAUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 798382,
+   "first": 1554868800000,
+   "last": 1794606900000,
+   "step_ms": 300000,
+   "gap_events": 20,
+   "missing_bars": 746,
+   "coin": "THETA",
+   "set": "fresh",
+   "daily_first": 1554940800000,
+   "daily_last": 1794441600000,
+   "h4_bars": 16644,
+   "funding": false
+  },
+  {
+   "file": "XTZUSDT_5m.npz",
+   "key": "a[:,0]",
+   "n": 750430,
+   "first": 1569322800000,
+   "last": 1794606900000,
+   "step_ms": 300000,
+   "gap_events": 17,
+   "missing_bars": 518,
+   "coin": "XTZ",
+   "set": "fresh",
+   "daily_first": 1569369600000,
+   "daily_last": 1794441600000,
+   "h4_bars": 15643,
+   "funding": false
+  }
+ ],
+ "total_cells": 13,
+ "primary_cells": 3,
+ "universe": [
+  "BTC",
+  "ETH",
+  "BNB",
+  "XRP",
+  "ADA",
+  "DOGE",
+  "SOL",
+  "LTC",
+  "LINK",
+  "TRX",
+  "DOT",
+  "AVAX",
+  "ATOM",
+  "ETC",
+  "BCH",
+  "XLM",
+  "UNI",
+  "NEAR",
+  "FIL",
+  "ALGO"
+ ],
+ "fresh_universe": [
+  "AAVE",
+  "ENJ",
+  "GRT",
+  "HBAR",
+  "MANA",
+  "SAND",
+  "THETA",
+  "XTZ"
+ ]
+}

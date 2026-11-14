@@ -1,0 +1,82 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [],
+  "context": {
+    "calls_to_edit": 17,
+    "folded": "2026-11-14T19:06:29Z",
+    "misses": 18,
+    "reads": [
+      "MyTradingSys/system/OPERATOR_DECISIONS.md",
+      "scripts/dev/preship.py",
+      "MyTradingSys/system/LAYER_LAB.md",
+      "MyTradingSys/research/indicator_rulebooks/INDEX.md",
+      "MyTradingSys/system/ANNOUNCEMENTS.md",
+      "MyTradingSys/research/indicator_rulebooks/TEMPLATE.md",
+      "scripts/dev/rulebook_check.py"
+    ],
+    "session": "e3536051-4415-467a-abd2-61f42ca4ca5b"
+  },
+  "created": "2026-11-14T18:08:09Z",
+  "depends_on": [],
+  "done_when": "B212 closed once cards claude-health-role-loader-xml-tags-1115, claude-health-hook-prompt-churn-1115, claude-health-main-checkout-stale-1115 and dedupe-d3-1115 are done",
+  "est_turns": 10,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Resolve B212 (BUGS.md): restore >=5% SIZE-HEADROOM on CLAUDE.md and roles, deduplicate Hard rules boilerplate, fix tool-turn cap contradiction, wrap role_loader.py blocks in XML tags, and fix DEAD-REF/DUPLICATE.",
+  "id": "bug-claude-prompt-health-and-efficiency-1114",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "gemini lane: re-apply SWITCH_LANES/--quiet/delivery guards (12b959cb0) with docs_ship_fail",
+      "ref": "2e515adabeb2",
+      "utc": "2026-11-14T19:06:35Z"
+    },
+    {
+      "auto": true,
+      "kind": "report",
+      "line": "2e515adabeb2 gemini lane: re-apply SWITCH_LANES/--quiet/delivery guards (12b959cb0) with d",
+      "ref": "MyTradingSys/system/GEMINI_START.md",
+      "utc": "2026-11-14T19:06:35Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "2026-11-15 gemini-revalidate-1115: measured and fixed trunk-lag repeat (517 B per prompt -> once per session), cite fix CLAUDE.md:11/WORKERS.md:30, duplicate YouTube line; wrong claims: Hard rules duplication is already pointer lines, usage_reminder is not per-prompt, tool-turn-cap test only scans roles/",
+  "prio": 1,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:20:07Z",
+  "refs": [
+    "B212"
+  ],
+  "result": "",
+  "scope_in": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    "MyTradingSys/system/GEMINI_START.md",
+    "MyTradingSys/system/WORKERS.md",
+    "MyTradingSys/system/SURFACE_POLICY.md",
+    "MyTradingSys/system/PLAN_5H_2026-10-19.md",
+    "MyTradingSys/system/roles/",
+    "scripts/dev/role_loader.py"
+  ],
+  "scope_out": [],
+  "scope_sha": "2e515adabeb2",
+  "size": "S",
+  "sources": [
+    "operator 2026-11-14"
+  ],
+  "state": "ready",
+  "steps": [
+    "see the three claude-health-* cards"
+  ],
+  "tests": "python scripts/dev/mts_doctor.py --no-process",
+  "title": "B212: Fix Claude prompt health, SIZE-HEADROOM, duplicated Hard rules, tool-turn cap contradiction, and XML delimiters",
+  "weight": "",
+  "worker": "session"
+}

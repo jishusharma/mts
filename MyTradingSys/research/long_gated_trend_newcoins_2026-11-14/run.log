@@ -1,0 +1,9 @@
+C:\Users\E-ngineers\IdeaProjects\mts-jis-nb-edge8-long-gated-trend-newcoins-1114\MyTradingSys\research\long_gated_trend_newcoins_2026-11-14\study.py:178: RuntimeWarning: Mean of empty slice
+  bk = np.nanmean(R, axis=0); bk = np.where(np.isnan(bk), 0.0, bk)
+new60 d0 2020-07-18 v0 2024-01-01 basket Sh 0.74 regime {'bull': 0.5606494746895893, 'bear': 0.2941738299904489, 'range': 0.1451766953199618, 'n': 1047}
+9 GATED-TSM30    tr  363 valAnn +0.163 Sh +0.32 CI[-0.00098,+0.00195] plc 0.37662337662337664 mdd 0.74 gross 0.43 FAIL 21s
+10 GATED-ADX14   tr  267 valAnn +0.251 Sh +0.70 CI[-0.00041,+0.00181] plc 0.0939060939060939 mdd 0.55 gross 0.24 FAIL 37s
+parent60 d0 2020-07-18 v0 2024-01-01 basket Sh -0.05 regime {'bull': 0.5606494746895893, 'bear': 0.2941738299904489, 'range': 0.1451766953199618, 'n': 1047}
+9 GATED-TSM30    tr  680 valAnn +0.163 Sh +0.33 CI[-0.00105,+0.00217] plc 0.057942057942057944 mdd 0.83 gross 0.53 FAIL 30s
+10 GATED-ADX14   tr  412 valAnn +0.268 Sh +0.66 CI[-0.00064,+0.00232] plc 0.003996003996003996 mdd 0.63 gross 0.36 FAIL 60s
+done

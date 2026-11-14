@@ -1,0 +1,21 @@
+# edge2-capitulation-long-1113 RESULTS
+
+Verdict: FAIL (not a pass). 0 of 6 tested cells pass; every VALIDATION and RECENT week-block CI includes 0; 0 BH rejections at 10%. PRE_REG frozen in 99f4cb645 before outcomes. Wave-1 1h/OLD10 VALIDATION+RECENT were already seen; out-of-sample = NEW20 and 4h.
+
+Per-trade fee-net mean, 95% week-block CI, placebo mean / 95th pct (all in %). NEW20 = DOT UNI ATOM NEAR FIL TRX ETC BCH AAVE XLM ICP APT ARB OP INJ SAND MANA AXS ALGO GRT. T = tested, d = descriptive.
+```
+T 1h NEW20 24h | DEV n853 -0.10% [-0.91,+0.56] plc -0.18/-0.02 | VAL n340 +0.65% [-0.61,+1.98] plc -0.03/+0.27 | REC n420 +0.28% [-0.37,+0.97] plc -0.19/+0.02 | BH False passV False passVR False
+T 1h NEW20 3d | DEV n841 -0.04% [-0.89,+0.73] plc -0.29/-0.06 | VAL n338 +0.65% [-0.81,+2.30] plc +0.02/+0.43 | REC n417 +0.21% [-0.52,+1.02] plc -0.30/-0.03 | BH False passV False passVR False
+T 4h OLD10 24h | DEV n103 -0.05% [-0.91,+0.73] plc -0.19/+0.37 | VAL n35 -1.20% [-3.59,+2.09] plc -0.10/+0.88 | REC n69 +0.43% [-1.01,+2.26] plc -0.26/+0.23 | BH False passV False passVR False
+T 4h OLD10 3d | DEV n103 -0.02% [-1.20,+1.16] plc -0.30/+0.42 | VAL n35 -1.50% [-3.60,+1.67] plc +0.08/+1.56 | REC n68 +0.45% [-1.18,+2.58] plc -0.54/+0.30 | BH False passV False passVR False
+T 4h NEW20 24h | DEV n178 +1.06% [+0.01,+2.17] plc -0.27/+0.14 | VAL n72 +0.74% [-2.85,+5.14] plc -0.08/+0.70 | REC n95 +1.36% [-0.23,+3.13] plc -0.31/+0.36 | BH False passV False passVR False
+T 4h NEW20 3d | DEV n177 +0.50% [-1.02,+2.16] plc -0.34/+0.31 | VAL n72 -0.11% [-3.29,+3.75] plc +0.03/+1.24 | REC n94 +2.37% [-0.37,+5.47] plc -0.59/+0.28 | BH False passV False passVR False
+d 1h ALL30 24h | DEV n1504 -0.09% [-0.77,+0.52] plc -0.16/-0.05 | VAL n548 +0.68% [-0.40,+1.89] plc -0.04/+0.19 | REC n682 +0.32% [-0.23,+0.86] plc -0.18/-0.02 | BH  passV  passVR 
+d 1h ALL30 3d | DEV n1485 -0.06% [-0.79,+0.64] plc -0.25/-0.10 | VAL n541 +0.69% [-0.74,+2.19] plc +0.05/+0.38 | REC n676 +0.22% [-0.39,+0.87] plc -0.28/-0.07 | BH  passV  passVR 
+d 4h ALL30 24h | DEV n281 +0.65% [-0.22,+1.62] plc -0.23/+0.12 | VAL n107 +0.10% [-2.99,+4.07] plc -0.11/+0.45 | REC n164 +0.97% [-0.37,+2.62] plc -0.33/+0.08 | BH  passV  passVR 
+d 4h ALL30 3d | DEV n280 +0.31% [-0.83,+1.53] plc -0.33/+0.16 | VAL n107 -0.57% [-3.41,+2.89] plc +0.06/+0.98 | REC n162 +1.57% [-0.56,+3.65] plc -0.60/-0.00 | BH  passV  passVR 
+d 1h OLD10 24h | DEV n651 -0.07% [-0.73,+0.51] plc -0.12/+0.04 | VAL n208 +0.74% [-0.37,+1.82] plc -0.05/+0.26 | REC n262 +0.39% [-0.13,+0.92] plc -0.16/+0.05 | BH  passV  passVR 
+d 1h OLD10 3d | DEV n644 -0.08% [-0.79,+0.62] plc -0.19/+0.05 | VAL n203 +0.76% [-0.69,+2.24] plc +0.12/+0.74 | REC n259 +0.25% [-0.39,+0.96] plc -0.24/+0.05 | BH  passV  passVR 
+```
+
+Reading: 1h NEW20 (new coins, same direction as wave 1) is positive on VALIDATION (+0.65%, n 338-340, above placebo p95 on 24h) and RECENT (+0.2..+0.3%) but CIs span 0 (lower -0.4..-0.8%), and DEV is about 0 (-0.1%): the effect exists only after mid-2024, so it is regime-dependent or noise. 4h NEW20 is positive in 3 of 4 split cells but n is 72-95 with CI half-width 3-5%. 4h OLD10 VALIDATION is negative (-1.2/-1.5%). Cells.csv and run_output.txt are in the study folder.

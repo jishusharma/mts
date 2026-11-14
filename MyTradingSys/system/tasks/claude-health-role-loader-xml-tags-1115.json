@@ -1,0 +1,59 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-14T19:19:56Z",
+  "depends_on": [],
+  "done_when": "Change shipped with a test that fails on the old code and before/after bytes stated in the commit",
+  "est_turns": 20,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "role_loader.py: wrap injected role file and ROLES row in XML tags, soften ALL-CAPS RULES_ANSWER headings. scripts/dev/role_loader.py:413-419,479,495 emit '----- file -----' delimiters and caps headings (B212 claim 4 verified); test_role_loader and the banner/first-reply contract must change together; measure the byte delta before and after",
+  "id": "claude-health-role-loader-xml-tags-1115",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "stop_guard: Supervisor turns cannot end without a live watcher and a fresh plan",
+      "ref": "efc374bdfcf4",
+      "utc": "2026-10-29T21:09:29Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:19:59Z",
+  "refs": [
+    "B212"
+  ],
+  "result": "",
+  "scope_in": [
+    "scripts/dev/role_loader.py"
+  ],
+  "scope_out": [
+    "CLAUDE.md; .mts_live; secrets"
+  ],
+  "scope_sha": "efc374bdfcf4",
+  "size": "S",
+  "sources": [
+    "gemini-revalidate-1115"
+  ],
+  "state": "ready",
+  "steps": [
+    "re-measure the claim on current trunk",
+    "fix with fail-first test"
+  ],
+  "tests": "python scripts/dev/run_all_tests.py --quick",
+  "title": "role_loader.py: wrap injected role file and ROLES row in XML tags, soften ALL-CAPS RULES_ANSWER headings",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

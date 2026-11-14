@@ -2,8 +2,6 @@
 
 The Gemini lane binary is `agy.exe` (`C:/Users/E-ngineers/.gemini/bin/agy.exe`, not on PATH), never a `gemini` CLI: test with `agy.exe models`; a missing `gemini` command never means "no Gemini on this host".
 
-YouTube caption block: never stop; follow the path order in MyTradingSys/system/YT_PROXY.md.
-
 Rules are not copied here: `GEMINI.md` -> `AGENTS.md` -> `CLAUDE.md` is the single source (Claude-only parts do not apply: screenshots, Control Room pages, DSA posting, relay hand-over); protocol is PARALLEL.md.
 Gemini is one more work-tree session, modelled on Codex. It meets Claude only through `origin/fast-track` (commits, claims, task cards, desk board).
 **Gemini takes lane `CODEX` cards only** (audits, backtest runs, doc work, spec-derived tests), and only cards the Codex lab has not claimed: the claim is the lock. Machines and logins: `HOW_MTS_RUNS.md`.
@@ -53,21 +51,21 @@ The tool actually installed on the NUC (2026-10-17) is the **Google Antigravity 
 
 ## Laptop (DESKTOP-F7IU69N, Lenovo) setup, done 2026-10-18
 - Tool: the **standalone Antigravity app** (`%LOCALAPPDATA%\Programs\antigravity\Antigravity.exe`), not the VS Code extension used on the NUC. First-run onboarding is already completed; its data lives in `%USERPROFILE%\.gemini\antigravity`. UPDATE 2026-10-26: the `agy` CLI IS now installed here (`C:\Users\E-ngineers\.gemini\bin\agy.exe` v1.4.7, not on PATH, call it by full path). `agy.exe models` lists all models, so the login works. Headless `agy --print` is NOT yet tested here. `scripts/dev/gemini_queue.py` reads its queue root from env `MTS_GQ_ROOT` at call time (default `F:/MTS/gq`, else `~/.gemini/mts-gq` when there is no F: drive), so set it on the laptop. (Superseded text: CLI missing, only `language_server.exe`.)
-- Work tree: `C:\Users\e-ngineers\IdeaProjects\mts-gemini` (branch `DESKTOP-F7IU69N/gemini-start`, cut from `origin/fast-track`). No F: drive on the laptop. In Antigravity use File > Open Folder on that path only (not Add Folder to Workspace), sign in with the Google AI Pro login, set approval to ask-before-write/run, then paste the block below. Per task: `python scripts/dev/sync.py start gemini-<slug>` from that tree.
+- Work tree: `C:\Users\e-ngineers\IdeaProjects\mts-gemini` (`mts-gemini` is in `sync.SWITCH_LANES`, so `sync.py start gemini-<slug> --quiet` switches branches in-place in ~1 s without making a sibling worktree). No F: drive on the laptop. In Antigravity use File > Open Folder on that path only (not Add Folder to Workspace), sign in with the Google AI Pro login, set approval to ask-before-write/run, then paste the block below. Per task: `python scripts/dev/sync.py start gemini-<slug> --quiet` from that tree.
 - Same rules as the NUC (GEMINI.md -> AGENTS.md -> CLAUDE.md); lane CODEX cards only; the claim is the lock against the NUC Gemini and the Codex lab.
 - Google account on this laptop: `jishusharma1985@gmail.com` (Google AI Pro), as reported by the operator 2026-10-19; NOT yet confirmed inside the app. The NUC's Google account is not recorded here yet: record it the same way, so the two subscriptions can be told apart. Naming (2026-10-26): Claude logins A/B/C are labels for Claude only; the Gemini setups are `gemini-nuc` (JIS-NUC) and `gemini-laptop` (DESKTOP-F7IU69N). Never call a Gemini session "login A".
 - Approval mode: `%USERPROFILE%\.gemini\config\config.json` still showed auto-run settings on 2026-10-19 (`autoExecutionPolicy` EAGER, `artifactReviewMode` TURBO, `enableTerminalSandbox` false, `nonWorkspaceFileAccessPolicy` ALLOW). Operator reports the app is switched to ask-before-write and ask-before-run; re-checked 2026-10-26: `config.json` STILL shows autoExecutionPolicy EAGER, artifactReviewMode TURBO, enableTerminalSandbox false, nonWorkspaceFileAccessPolicy ALLOW. Operator to confirm in the app settings (the agent did not change it). Verify in the app's settings before any card runs here.
 
 ## Setup (NUC, done 2026-10-17)
-`git worktree add F:\MTS\mts-gemini -b jis-nuc/gemini-start origin/fast-track`; per task, `python scripts/dev/sync.py start gemini-<slug>` from that tree. In Antigravity use File > Open Folder on that path (not Add Folder to Workspace), open the agent panel, then paste the block below.
+`git worktree add F:\MTS\mts-gemini -b jis-nuc/gemini-start origin/fast-track`; per task, `python scripts/dev/sync.py start gemini-<slug> --quiet` from that tree (switches branches in-place inside `mts-gemini`). In Antigravity use File > Open Folder on that path (not Add Folder to Workspace), open the agent panel, then paste the block below.
 
 ## Paste into Gemini
 ```
-You are an MTS builder session (surface GEM, Gemini). Work only in this folder. Never read .secrets/, .env or keys; never run or stop live processes.
-0. FIRST, before reading any file: `python scripts/dev/sync.py start gemini-<slug>`, `sync.py where` (the tree is often behind origin; files below may not exist until this runs). Push fails: say so in one line, stop.
-   Then read GEMINI.md (-> AGENTS.md -> CLAUDE.md), MyTradingSys/research/STATUS.md, MyTradingSys/system/PARALLEL.md, MyTradingSys/system/GEMINI_START.md.
-1. Task pickup and execution: follow CODEX_START.md ("Paste into Codex" steps 1-2, provenance, skip OPUS).
-2. COMMIT ALWAYS; BEFORE STOPPING SHIP (SOLO, default) or PUSH YOUR BRANCH ONLY (REVIEW, when a coordinator asked): write and commit deliverables early (`Result: ...` + `MTS-Session: MTS-<UTC date>-<HHMMZ>-GEM-BLD-<slug>`); SOLO: `python scripts/dev/sync.py ship --release <slug>` and `sync.py where` shows `unshipped-commits=0 modified=0 untracked=0`; REVIEW: run local checks, `git push origin <branch>`, end with `REVIEW <branch> files=N checks=<result>`.
+You are an MTS builder session (surface GEM, Gemini). Work only in this folder (`mts-gemini`). Never read .secrets/, .env or keys; never run or stop live processes.
+0. FAST BOOT (one shell call before reading files): `python scripts/dev/sync.py start gemini-<slug> --quiet && python scripts/dev/tasks.py next --lane CODEX`. (`mts-gemini` switches branches in-place; `--quiet` skips the worktree tidy scan, doctor checklist, and live mirror pull.)
+   Then read `CLAUDE.md` and `MyTradingSys/research/STATUS.md` only (`GEMINI.md` and `AGENTS.md` are already in system context; read `PARALLEL.md` / `GEMINI_START.md` only when a step needs them).
+1. Claim and execute the top ready `CODEX` card (skip `OPUS`) without asking back: `python scripts/dev/sync.py claim "<card-id>" --area <paths>`, `python scripts/dev/tasks.py brief <card-id>`, fail-first tests, label every number SOURCED (quote + file:line) or OURS.
+2. PRE-SHIP & DELIVERY: run `python scripts/dev/preship.py check` before shipping/pushing. Commit deliverables early with body lines `Result: <what works/number>`, `Next: <card-id | stage | END: reason>`, `MTS-Session: MTS-<UTC date>-<HHMMZ>-GEM-BLD-<slug>` (plus `Reach: Q1-Q8 ok` when touching start/hook/sync/role files). SOLO (default): `python scripts/dev/sync.py ship --release gemini-<slug>` and verify `sync.py where` shows `unshipped-commits=0 modified=0 untracked=0`. REVIEW (when a coordinator asked): `git push origin <branch>`, end with `REVIEW <branch> files=N checks=<result>`.
 NO ASSUMPTIONS, NO FABRICATIONS: never self-stamp ACCEPT on cards Gemini refined/built (use T0-ONLY); never bulk-stamp ACCEPT or HOLD-CLEARED.
 ```
 

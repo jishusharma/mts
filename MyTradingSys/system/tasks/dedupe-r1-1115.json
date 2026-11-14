@@ -1,0 +1,66 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "commands": [
+    "python scripts/dev/run_all_tests.py --quick"
+  ],
+  "created": "2026-11-14T19:06:09Z",
+  "depends_on": [],
+  "done_when": "The batch's items are applied (moves/doc fixes only unless the card says otherwise), run_all_tests.py --quick is green, one ship.",
+  "est_turns": 25,
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Batch R1: research primitives into research_kit.py. Execute the matching batch of MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md (section 3, as corrected in section 5). Notes: needs same-output-hash test before any re-export; lookahead/cost gates.",
+  "id": "dedupe-r1-1115",
+  "kind": "build",
+  "lane": "SONNET",
+  "latest": [
+    {
+      "auto": true,
+      "kind": "ship",
+      "line": "docs(dedupe): add revalidated E2E deduplication implementation plan and proofs (1114)",
+      "ref": "4ddc37ee462d",
+      "utc": "2026-11-14T18:10:16Z"
+    },
+    {
+      "auto": true,
+      "kind": "audit",
+      "line": "4ddc37ee462d docs(dedupe): add revalidated E2E deduplication implementation plan and proof",
+      "ref": "MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md",
+      "utc": "2026-11-14T18:10:16Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "note": "",
+  "prio": 3,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T19:06:11Z",
+  "refs": [
+    "MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md"
+  ],
+  "result": "",
+  "scope_in": [
+    "MyTradingSys/research/dedupe_audit_2026-10/IMPLEMENTATION_PLAN_2026-11-14.md"
+  ],
+  "scope_out": [
+    "CLAUDE.md; .mts_live; secrets; never delete project data"
+  ],
+  "scope_sha": "4ddc37ee462d",
+  "size": "M",
+  "sources": [
+    "gemini-revalidate-1115"
+  ],
+  "state": "ready",
+  "steps": [
+    "re-run python MyTradingSys/research/dedupe_audit_2026-10/revalidate_dedupe.py and git grep -w each name before touching it",
+    "apply the batch items"
+  ],
+  "tests": "python scripts/dev/run_all_tests.py --quick",
+  "title": "Batch R1: research primitives into research_kit.py",
+  "weight": "ROUTINE",
+  "worker": "session"
+}

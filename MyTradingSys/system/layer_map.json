@@ -769,22 +769,39 @@
  ],
  "backtests": [
  {
-  "id": "RSI-CONFIRM-EXITS-20261113",
+  "id": "MALKAN-R03-R04-DIVERGENCE-20261113",
   "trials": null,
-  "title": "Where to sell the RSI-extreme + confirm-candle long: 16 exit rules (targets, trails, RSI/MA exits, time) on 1h RSI<=20, a second set and 4h, 20 perps",
+  "title": "Malkan MAL-R03 bearish / MAL-R04 bullish RSI divergence on closes, swings 12/18 bars apart, confirm candle, 1h + 4h, 20 perps, exits 1R/2R/12-bar",
   "date": "2026-11-13",
-  "market": "Bybit linear 1h/4h/1D, 20 USDT perps from listing; DEV <=2023 / VALIDATION 2024+",
+  "market": "Bybit linear 1h and 4h (folded), 20 USDT perps; DEV / VALIDATION / RECENT",
   "layers": [
-   "rsi_levels"
+   "rsi_divergence"
   ],
-  "params": "SOURCED: operator entry rule (RSI extreme, green confirm, stop = signal low); OURS: exit grid, RSI<=20, 168 h forward window",
-  "split": "DEV 2020-01-01..2023-12-31 / VALIDATION 2024-01-01..now",
+  "params": "SOURCED: Malkan R03/R04 divergence on closes with confirming candle (quoted in PRE_REG); OURS: swing spacing 12/18, stop beyond swing extreme, exits, 20-coin universe",
+  "split": "DEV / VALIDATION / RECENT, VALIDATION 150 weeks",
   "fees": "fee-net: 2 x BINANCE_TAKER + SLIPPAGE_RT_S13 = 12 bp round trip from fees.py",
-  "interaction": "16 exits x 3 sets, path table, placebo draws, day-cluster view",
-  "effects": "none: best S1 exit loses about 0.08R per trade net; 4h set gross-positive but no CI clears zero",
-  "n": "48 exit rules; S1 982 trades (482 DEV / 500 VAL)",
-  "verdict": "FAIL: 0 of 48 exit rules pass; no S1 exit has a positive fee-net VALIDATION mean",
-  "report": "MyTradingSys/research/rsi_confirm_exits_2026-11-13/RESULT.md",
+  "interaction": "day-cluster bootstrap CI, matched placebo, BH 10% over 24 cells; UTC hour-block table descriptive",
+  "effects": "none: 1h cells -0.22..-0.25 R; best R03 4h T12 VALIDATION +0.030 R CI [-0.125,+0.210] not significant",
+  "n": "24 cells; 1h n ~6200 and 4h n ~1360 per cell on VALIDATION",
+  "verdict": "FAIL: 0 of 24 cells pass; R03 4h short is the only near-zero family",
+  "report": "MyTradingSys/research/malkan_divergence_r03_r04_2026-11-13/RESULT.md",
+  "id": "RSI-CONFIRM-LAYERS-20261113",
+  "trials": null,
+  "title": "RSI(14)<=20 + green confirm candle long, one layer at a time (daily ADX/DI, 4h ADX, OI unwind, volume capitulation, BTC 200d, BTC/ETH, session, funding, depth, stop size), 1h and 4h, 20 perps",
+  "date": "2026-11-13",
+  "market": "Bybit linear 1h/4h, 20 USDT perps from listing; DEV <=2023 / VALIDATION 2024+",
+  "layers": [
+   "rsi_levels",
+   "oi_delta"
+  ],
+  "params": "SOURCED: operator rule (RSI extreme, green confirm, stop = signal low); OURS: RSI<=20, layer thresholds, exits 1R/2R with 72 h cap",
+  "split": "DEV 2020-01-01..2023-12-31 / VALIDATION 2024-01-01..now",
+  "fees": "fee-net: 2 x BINANCE_TAKER (10 bp round trip), no slippage, no funding",
+  "interaction": "single-layer splits vs unfiltered base, week-block bootstrap CI, random-subset placebo, BH 10% over 56, pairs",
+  "effects": "none: OI-unwind 1h +1R VAL +0.117R but -0.222R in DEV; 4h dADX20-25 closest, fails BH and flips sign in DEV",
+  "n": "56 layer tests; 975 1h and 265 4h base trades",
+  "verdict": "FAIL: 0 of 56 layer splits pass on VALIDATION (6 UNDERPOWERED, 50 FAIL); no pairs pass",
+  "report": "MyTradingSys/research/rsi_confirm_layers_2026-11-13/RESULT.md",
   "read": "summary"
  },
  {
@@ -1734,6 +1751,25 @@
    "n": "VALIDATION n by cell 379..1754",
    "verdict": "FAIL: 0 of 8 VALIDATION cells PASS; rule in PRE_REG.md frozen before any outcome",
    "report": "MyTradingSys/research/edge4_malkan_r03_r04_2026-11-13/REPORT.md",
+   "read": "summary"
+  },
+  {
+   "id": "EUR-LOW-US-SWEEP-RECLAIM-POOLED-20261113",
+   "trials": null,
+   "title": "Europe-session low swept in the US window, 5m close back above within 60 min, long at next open (mirror short), pooled BTC/ETH/SOL; the untested leg of EUR-LOW-US-SWEEP",
+   "date": "2026-11-13",
+   "market": "Bybit linear 5m BTCUSDT/ETHUSDT/SOLUSDT 2020-03..2026-11 (ETH from 2021-03, SOL from 2021-10), weekdays; DEV to 2024-06-30, VALIDATION 2024-07..2025-06, RECENT after",
+   "layers": [
+    "session_levels"
+   ],
+   "params": "Europe 07-13:30Z low/high, US 13:30-20Z, reclaim <=12 bars, stop at sweep extreme, exits MID/HIGH/2R, time stop 20Z, taker and maker-limit entry (12 cells), day-cluster bootstrap, placebo = random US-window bar above EL, BH 10%",
+   "split": "VALIDATION 2024-07-01..2025-06-30 (chosen before run)",
+   "fees": "taker 5 bp/side; maker cell 2 bp entry + 5 bp exit (fees.py); no funding or slippage",
+   "interaction": "none (sides and exits are separate cells)",
+   "effects": "all 12 cells: DEV and RECENT mostly negative; taker cells VALIDATION fee-net mean R -0.23 to -0.32, all CIs below zero; maker cells -0.12 to +0.11 with CIs spanning zero; events beat the placebo (placebo -0.55 to -0.69 with the same tight stop) but beating a loss-making placebo is not an edge",
+   "n": "VALIDATION per cell: long taker 378-384, long maker 173, short taker 331-336, short maker 148",
+   "verdict": "FAIL: no cell passes (best long HIGH maker VAL n 173, fee-net mean R +0.105 CI [-0.298,+0.577], BH none); power gate BLOCK (MDE ~0.25 R) so small edges not excluded; the 10-18 BLOCKED leg is now run, not killed below 0.25 R",
+   "report": "MyTradingSys/research/eur_low_sweep_reclaim_pooled_2026-11-13/REPORT.md",
    "read": "summary"
   }
  ]

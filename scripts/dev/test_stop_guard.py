@@ -91,6 +91,28 @@ class StopGuardTest(unittest.TestCase):
         sh(self.a, "commit", "-q", "-m", "real")
         self.assertIn("not shipped", self.run_hook())
 
+    def test_content_already_on_a_moved_trunk_does_not_block(self):
+        """Branch ahead 2 whose changed files equal the trunk tip (trunk took the same change and moved on) is shipped."""
+        for name in ("w.py", "v.py"):
+            (self.a / name).write_text(name + "\n", newline="\n")
+            sh(self.a, "add", name)
+            sh(self.a, "commit", "-q", "-m", name)
+        other = self.tmp / "b"
+        sh(self.tmp, "clone", "-q", str(self.tmp / "origin.git"), str(other))
+        sh(other, "config", "user.email", "t@t")
+        sh(other, "config", "user.name", "t")
+        for name in ("w.py", "v.py", "new.py"):
+            (other / name).write_text(name + "\n", newline="\n")
+        sh(other, "add", ".")
+        sh(other, "commit", "-q", "-m", "trunk took the same change and moved")
+        sh(other, "push", "-q", "origin", "HEAD:fast-track")
+        sh(self.a, "fetch", "-q", "origin")
+        self.assertEqual(self.run_hook(), "")
+        (self.a / "w.py").write_text("real\n", newline="\n")
+        sh(self.a, "add", "w.py")
+        sh(self.a, "commit", "-q", "-m", "real")
+        self.assertIn("not shipped", self.run_hook())
+
     def test_same_state_blocks_a_session_only_once(self):
         os.environ["MTS_STOP_GUARD_HOME"] = str(self.tmp)
         self.addCleanup(os.environ.pop, "MTS_STOP_GUARD_HOME", None)

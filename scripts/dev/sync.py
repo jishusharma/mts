@@ -498,7 +498,7 @@ def branch_prefix(repo, host):
 
 
 # Persistent per-lane trees (operator q20, 2026-10-15): `start <slug>` inside one switches to a fresh branch instead of making a worktree.
-SWITCH_LANES = ("mts-app", "mts-relay", "mts-dsa")
+SWITCH_LANES = ("mts-app", "mts-relay", "mts-dsa", "mts-gemini")
 
 
 def switch_lane_branch(repo, slug):
@@ -546,7 +546,10 @@ def reuse_finished_tree(repo, path):
 def new_worktree(repo, slug=None):
     host = socket.gethostname().lower()
     slug = slugify(slug) if slug else time.strftime("s%m%d-%H%M%S", time.gmtime())
-    path = Path(repo).resolve().parent / f"mts-{host}-{slug}"
+    root = hosts.worktree_root()    # F:\MTS\wt on JIS-NB (env MTS_WORKTREE_ROOT wins); None = next to the main checkout
+    if root:
+        Path(root).mkdir(parents=True, exist_ok=True)
+    path = (Path(root) if root else Path(repo).resolve().parent) / f"mts-{host}-{slug}"
     reused = reuse_finished_tree(repo, path)
     if reused:
         return reused
@@ -689,7 +692,8 @@ def start(repo, slug=None, here=False, quiet=False, worker=False):
     lock_guard(repo)
     retry_pending_removals(repo)
     n = merge_trunk(repo)
-    retire_released_gateway_trees(repo)
+    if not quiet:
+        retire_released_gateway_trees(repo)
     branch = git(repo, "branch", "--show-current").stdout.strip() or "(detached)"
     print(f"host={socket.gethostname()} branch={branch} pulled={n} head={git(repo, 'rev-parse', '--short', 'HEAD').stdout.strip()}")
     if not quiet:
@@ -1653,7 +1657,15 @@ def ahead_commits(path, n):
     if not n:
         return n
     base = git(path, "merge-base", f"origin/{TRUNK}", "HEAD", check=False)
-    if base.returncode == 0 and base.stdout.strip() and git(path, "diff", "--quiet", base.stdout.strip(), "HEAD", check=False).returncode == 0:
+    if base.returncode != 0 or not base.stdout.strip():
+        return n
+    base = base.stdout.strip()
+    if git(path, "diff", "--quiet", base, "HEAD", check=False).returncode == 0:
+        return 0
+    # Moved trunk: every file this branch changed since the merge-base already equals the trunk tip, so the content is shipped.
+    files = git(path, "-c", "core.quotepath=off", "diff", "--name-only", base, "HEAD", check=False)
+    names = [f for f in files.stdout.splitlines() if f] if files.returncode == 0 else []
+    if names and git(path, "diff", "--quiet", f"origin/{TRUNK}", "HEAD", "--", *names, check=False).returncode == 0:
         return 0
     return n
 
@@ -2056,7 +2068,7 @@ def release(repo, slug, gate=run_gate, sleep=time.sleep):
 # Fixed lanes other tooling points at (dispatcher prompts, codex lab, push recipe): `tidy --all` still keeps them.
 # mts-control-room is the working folder of the Claude routine mts-control-room (~/.claude/scheduled-tasks/mts-control-room/
 # SKILL.md); it sits idle between runs, so without this `tidy --all` would remove it as hand-named.
-LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room", "mts-app")
+LANE_WORKTREES = ("mts-push", "mts-refiner", "mts-codex-lab", "mts-codex", "mts-dsa", "mts-relay", "mts-control-room", "mts-app", "mts-gemini")
 
 
 # 2026-10-25 (operator: C: must not fill): a tree that is clean, holds no ignored data and whose branch is fully on

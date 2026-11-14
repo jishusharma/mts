@@ -1,0 +1,1047 @@
+{
+ "rule": "NKN-06",
+ "verdict": "FAIL",
+ "primary_verdicts": {
+  "P1": "FAIL",
+  "P2": "FAIL",
+  "P3": "UNDERPOWERED"
+ },
+ "cells": [
+  {
+   "id": "P1",
+   "role": "PRIMARY",
+   "phase": "UP x MARKUP",
+   "layer": "V0 rule alone",
+   "level": "daily floor pivot R2 trigger, R3 target",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "",
+   "ctx": "R2 break leads to R3 (FzNDQm7wC_s 00:09:44) SOURCED idea; pivots, 1h, fresh cross, at-level <=1 ATR, 1.5R room, day-end exit OURS",
+   "dev": {
+    "n": 525,
+    "gross": -0.047237582859407976,
+    "net12": -0.18191222606234503,
+    "net6": -0.11457490446087652,
+    "win": 0.2838095238095238,
+    "days": 259,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 276,
+    "gross": -0.0297337671129407,
+    "net12": -0.18261420003074105,
+    "net6": -0.10617398357184084,
+    "win": 0.2717391304347826,
+    "days": 120,
+    "trade_ci_low": -0.3759724253874243,
+    "day_ci_low": -0.38443228337005936,
+    "ex5": -0.3244050120781705,
+    "p_day": 0.9522619345163709,
+    "hit_rate": 0.2246376811594203,
+    "time_share": 0.06884057971014493
+   },
+   "skipped": {
+    "DEV": {
+     "room": 73,
+     "no_entry": 36,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 74,
+     "no_entry": 20,
+     "busy": 0
+    }
+   },
+   "descr_stacked": {
+    "stacked_n": 57,
+    "stacked_net12": 0.05031971494209779,
+    "clear_n": 219,
+    "clear_net12": -0.24324083543463054
+   },
+   "descr_hours": {
+    "1": 3,
+    "2": 9,
+    "3": 7,
+    "4": 20,
+    "5": 12,
+    "6": 11,
+    "7": 12,
+    "8": 16,
+    "9": 13,
+    "10": 15,
+    "11": 8,
+    "12": 20,
+    "13": 15,
+    "14": 21,
+    "15": 24,
+    "16": 20,
+    "17": 6,
+    "18": 12,
+    "19": 13,
+    "20": 6,
+    "21": 7,
+    "22": 6
+   },
+   "placebo": {
+    "matched": 276,
+    "real_mean_matched": -0.18261420003074105,
+    "placebo_mean": -0.10290275709013483,
+    "p": 0.8681318681318682
+   },
+   "p_day": 0.9522619345163709,
+   "bh_q": 1.0,
+   "verdict": "FAIL"
+  },
+  {
+   "id": "P2",
+   "role": "PRIMARY",
+   "phase": "DOWN x MARKDOWN",
+   "layer": "V0 rule alone",
+   "level": "daily floor pivot S2 trigger, S3 target",
+   "tf": "1h",
+   "side": "short",
+   "at": "at level",
+   "note": "",
+   "ctx": "mirror of P1 (S2 to S3), mirror OURS",
+   "dev": {
+    "n": 364,
+    "gross": -0.1666510875658579,
+    "net12": -0.3053883721492046,
+    "net6": -0.23601972985753122,
+    "win": 0.25824175824175827,
+    "days": 91,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 201,
+    "gross": -0.2642874561911122,
+    "net12": -0.4300725943635341,
+    "net6": -0.3471800252773231,
+    "win": 0.208955223880597,
+    "days": 62,
+    "trade_ci_low": -0.6221015687733681,
+    "day_ci_low": -0.7349444001566635,
+    "ex5": -0.7780134030783824,
+    "p_day": 0.9942514371407148,
+    "hit_rate": 0.15422885572139303,
+    "time_share": 0.0945273631840796
+   },
+   "skipped": {
+    "DEV": {
+     "room": 62,
+     "no_entry": 25,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 31,
+     "no_entry": 12,
+     "busy": 0
+    }
+   },
+   "placebo": {
+    "matched": 201,
+    "real_mean_matched": -0.4300725943635341,
+    "placebo_mean": -0.4022273195646563,
+    "p": 0.6363636363636364
+   },
+   "p_day": 0.9942514371407148,
+   "bh_q": 1.0,
+   "verdict": "FAIL"
+  },
+  {
+   "id": "P3",
+   "role": "PRIMARY",
+   "phase": "UP x MARKUP (labels of the entry day)",
+   "layer": "V0 rule alone",
+   "level": "daily floor pivot R3, three daily closes under it",
+   "tf": "1d",
+   "side": "long",
+   "at": "at R3",
+   "note": "",
+   "ctx": "three days sitting at R3 (a8RP5ftOfGo 00:13:56) SOURCED idea (count 3); 0.5% band, 5-day hold OURS",
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 0
+   },
+   "skipped": {},
+   "placebo": {
+    "matched": 0,
+    "real_mean_matched": NaN,
+    "placebo_mean": NaN,
+    "p": 1.0,
+    "note": "not run: n VAL < 20"
+   },
+   "p_day": 1.0,
+   "bh_q": 1.0,
+   "verdict": "UNDERPOWERED"
+  },
+  {
+   "id": "C1",
+   "role": "CONTROL",
+   "phase": "RANGE x MARKUP",
+   "layer": "V0",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "does the trend label add",
+   "ctx": "",
+   "dev": {
+    "n": 351,
+    "gross": -0.08102764101873847,
+    "net12": -0.236459469835859,
+    "net6": -0.1587435554272987,
+    "win": 0.2535612535612536,
+    "days": 188,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 226,
+    "gross": 0.1414608957524901,
+    "net12": -0.03292616921903442,
+    "net6": 0.054267363266727896,
+    "win": 0.3407079646017699,
+    "days": 90,
+    "trade_ci_low": -0.2407692618355897,
+    "day_ci_low": -0.2958200072169666,
+    "ex5": -0.23517029617018073,
+    "p_day": 0.5993501624593851,
+    "hit_rate": 0.252212389380531,
+    "time_share": 0.15486725663716813
+   },
+   "skipped": {
+    "DEV": {
+     "room": 66,
+     "no_entry": 25,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 54,
+     "no_entry": 12,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C2",
+   "role": "CONTROL",
+   "phase": "UP x cycle not MARKUP",
+   "layer": "V0",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "does the cycle label add",
+   "ctx": "",
+   "dev": {
+    "n": 313,
+    "gross": -0.17458790909975863,
+    "net12": -0.3143418363412644,
+    "net6": -0.24446487272051157,
+    "win": 0.2523961661341853,
+    "days": 167,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 117,
+    "gross": 0.07235782613712549,
+    "net12": -0.09896060246100916,
+    "net6": -0.013301388161941857,
+    "win": 0.3418803418803419,
+    "days": 80,
+    "trade_ci_low": -0.3644406492648502,
+    "day_ci_low": -0.37756242938971507,
+    "ex5": -0.28414479834326645,
+    "p_day": 0.7603099225193701,
+    "hit_rate": 0.23076923076923078,
+    "time_share": 0.15384615384615385
+   },
+   "skipped": {
+    "DEV": {
+     "room": 50,
+     "no_entry": 24,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 57,
+     "no_entry": 6,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C3",
+   "role": "CONTROL",
+   "phase": "DOWN x MARKDOWN, long (mismatched side)",
+   "layer": "V0",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "mismatch, descriptive",
+   "ctx": "",
+   "dev": {
+    "n": 311,
+    "gross": 0.03073374319625124,
+    "net12": -0.13143404009453846,
+    "net6": -0.0503501484491436,
+    "win": 0.3086816720257235,
+    "days": 109,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 205,
+    "gross": 0.018587951311291165,
+    "net12": -0.16187742416253428,
+    "net6": -0.07164473642562157,
+    "win": 0.28292682926829266,
+    "days": 72,
+    "trade_ci_low": -0.38307854478361475,
+    "day_ci_low": -0.4835648547329532,
+    "ex5": -0.47221297544776514,
+    "p_day": 0.8472881779555111,
+    "hit_rate": 0.2146341463414634,
+    "time_share": 0.14146341463414633
+   },
+   "skipped": {
+    "DEV": {
+     "room": 62,
+     "no_entry": 24,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 57,
+     "no_entry": 8,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C4",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V1",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "Malkan BULL (daily)",
+   "ctx": "",
+   "dev": {
+    "n": 435,
+    "gross": -0.07968836452083984,
+    "net12": -0.21197958180292567,
+    "net6": -0.14583397316188276,
+    "win": 0.27586206896551724,
+    "days": 236,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 216,
+    "gross": 0.06044970736789981,
+    "net12": -0.09678934407106327,
+    "net6": -0.01816981835158172,
+    "win": 0.2962962962962963,
+    "days": 109,
+    "trade_ci_low": -0.319144106041943,
+    "day_ci_low": -0.31927442311149606,
+    "ex5": -0.2491246623474225,
+    "p_day": 0.7945513621594601,
+    "hit_rate": 0.2361111111111111,
+    "time_share": 0.08796296296296297
+   },
+   "skipped": {
+    "DEV": {
+     "room": 58,
+     "no_entry": 30,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 64,
+     "no_entry": 15,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C5",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V1opp",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "Malkan BEAR (layer adds?)",
+   "ctx": "",
+   "dev": {
+    "n": 4,
+    "gross": 0.8651443488237355,
+    "net12": 0.7182470256566086,
+    "net6": 0.7916956872401721,
+    "win": 0.5,
+    "days": 4,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 2,
+    "gross": 1.0972222222232082,
+    "net12": 0.9196942005046768,
+    "net6": 1.0084582113639424,
+    "win": 0.5,
+    "days": 2,
+    "trade_ci_low": -1.1511393767702722,
+    "day_ci_low": -1.1511393767702722,
+    "ex5": NaN,
+    "p_day": 0.2511872031992002,
+    "hit_rate": 0.5,
+    "time_share": 0.0
+   },
+   "skipped": {
+    "DEV": {
+     "room": 0,
+     "no_entry": 1,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 0,
+     "no_entry": 1,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C6",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V2",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "Malkan BULL + 4h %B>=0.5",
+   "ctx": "",
+   "dev": {
+    "n": 414,
+    "gross": -0.06704583953960856,
+    "net12": -0.19958357179609953,
+    "net6": -0.13331470566785406,
+    "win": 0.2777777777777778,
+    "days": 228,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 209,
+    "gross": 0.0757610042647711,
+    "net12": -0.08077609889824076,
+    "net6": -0.0025075473167348117,
+    "win": 0.3014354066985646,
+    "days": 109,
+    "trade_ci_low": -0.2991936529999418,
+    "day_ci_low": -0.3092085236060629,
+    "ex5": -0.23760738450305185,
+    "p_day": 0.7488127968007998,
+    "hit_rate": 0.23923444976076555,
+    "time_share": 0.09090909090909091
+   },
+   "skipped": {
+    "DEV": {
+     "room": 51,
+     "no_entry": 30,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 58,
+     "no_entry": 15,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C7",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V0",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "away from level",
+   "note": "level effect",
+   "ctx": "",
+   "dev": {
+    "n": 18,
+    "gross": 0.029542446625390493,
+    "net12": -0.055954867993659486,
+    "net6": -0.01320621068413448,
+    "win": 0.3888888888888889,
+    "days": 17,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 14,
+    "gross": 0.41916252152408956,
+    "net12": 0.30510052977605284,
+    "net6": 0.36213152565007123,
+    "win": 0.5714285714285714,
+    "days": 10,
+    "trade_ci_low": -0.3317588684379247,
+    "day_ci_low": -0.32894297890516017,
+    "ex5": -0.6243404197154514,
+    "p_day": 0.17370657335666084,
+    "hit_rate": 0.35714285714285715,
+    "time_share": 0.2857142857142857
+   },
+   "skipped": {
+    "DEV": {
+     "room": 193,
+     "no_entry": 18,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 120,
+     "no_entry": 7,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C8",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V0",
+   "level": "",
+   "tf": "15m",
+   "side": "long",
+   "at": "at level",
+   "note": "15m trigger",
+   "ctx": "",
+   "dev": {
+    "n": 719,
+    "gross": -0.02437100469482132,
+    "net12": -0.21173699996958045,
+    "net6": -0.11805400233220086,
+    "win": 0.21835883171070933,
+    "days": 300,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 408,
+    "gross": 0.07190959542824017,
+    "net12": -0.13223147889178588,
+    "net6": -0.030160941731772858,
+    "win": 0.2426470588235294,
+    "days": 145,
+    "trade_ci_low": -0.3403079378262261,
+    "day_ci_low": -0.3452585930895642,
+    "ex5": -0.29523588020570407,
+    "p_day": 0.8830292426893277,
+    "hit_rate": 0.2034313725490196,
+    "time_share": 0.051470588235294115
+   },
+   "skipped": {
+    "DEV": {
+     "room": 20,
+     "no_entry": 25,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 30,
+     "no_entry": 4,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C9",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V0",
+   "level": "",
+   "tf": "4h",
+   "side": "long",
+   "at": "at level",
+   "note": "4h trigger",
+   "ctx": "",
+   "dev": {
+    "n": 132,
+    "gross": 0.031686832891943344,
+    "net12": -0.044876581579557574,
+    "net6": -0.006594874343807106,
+    "win": 0.3787878787878788,
+    "days": 94,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 82,
+    "gross": 0.0652115911332278,
+    "net12": -0.021931973879328655,
+    "net6": 0.02163980862694958,
+    "win": 0.4146341463414634,
+    "days": 54,
+    "trade_ci_low": -0.2942952948087577,
+    "day_ci_low": -0.3121394891538863,
+    "ex5": -0.2558558036642224,
+    "p_day": 0.55936015996001,
+    "hit_rate": 0.23170731707317074,
+    "time_share": 0.2682926829268293
+   },
+   "skipped": {
+    "DEV": {
+     "room": 163,
+     "no_entry": 105,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 104,
+     "no_entry": 47,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C10",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V0+BTC",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "BTC daily close > SMA20 and SMA50",
+   "ctx": "",
+   "dev": {
+    "n": 472,
+    "gross": -0.04816385351943818,
+    "net12": -0.1846335464750407,
+    "net6": -0.11639869999723942,
+    "win": 0.2838983050847458,
+    "days": 226,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 251,
+    "gross": -0.024803783946562106,
+    "net12": -0.17545833765258073,
+    "net6": -0.10013106079957146,
+    "win": 0.2749003984063745,
+    "days": 108,
+    "trade_ci_low": -0.37789212662569743,
+    "day_ci_low": -0.38788110852994895,
+    "ex5": -0.3201722941899048,
+    "p_day": 0.9425143714071482,
+    "hit_rate": 0.22310756972111553,
+    "time_share": 0.07171314741035857
+   },
+   "skipped": {
+    "DEV": {
+     "room": 69,
+     "no_entry": 30,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 68,
+     "no_entry": 18,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C11",
+   "role": "CONTROL",
+   "phase": "UP x MARKUP",
+   "layer": "V0",
+   "level": "",
+   "tf": "1h",
+   "side": "long",
+   "at": "at level",
+   "note": "close-based exit: 1h close back under R2",
+   "ctx": "",
+   "dev": {
+    "n": 525,
+    "gross": -0.06009406325861297,
+    "net12": -0.19476099257331048,
+    "net6": -0.12742752791596174,
+    "win": 0.26285714285714284,
+    "days": 259,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 276,
+    "gross": -0.021208690192651248,
+    "net12": -0.17409423815660377,
+    "net6": -0.09765146417462747,
+    "win": 0.2572463768115942,
+    "days": 120,
+    "trade_ci_low": -0.36466386383078014,
+    "day_ci_low": -0.37508407467308624,
+    "ex5": -0.3142463621948176,
+    "p_day": 0.9495126218445389,
+    "hit_rate": 0.213768115942029,
+    "time_share": 0.050724637681159424
+   },
+   "skipped": {
+    "DEV": {
+     "room": 73,
+     "no_entry": 36,
+     "busy": 0
+    },
+    "VAL": {
+     "room": 74,
+     "no_entry": 20,
+     "busy": 0
+    }
+   }
+  },
+  {
+   "id": "C12",
+   "role": "PLACEBO",
+   "phase": "UP x MARKUP",
+   "layer": "random entries, hour + R2-distance matched",
+   "level": "same",
+   "tf": "1h",
+   "side": "long",
+   "at": "-",
+   "note": "gate, not an edge cell",
+   "dev": {
+    "n": 0
+   },
+   "val": {
+    "n": 276
+   },
+   "placebo": {
+    "matched": 276,
+    "real_mean_matched": -0.18261420003074105,
+    "placebo_mean": -0.10290275709013483,
+    "p": 0.8681318681318682
+   },
+   "skipped": {}
+  }
+ ],
+ "event_study": {
+  "P1_event": {
+   "dev": {
+    "n": 598,
+    "gross": -0.05873180832404735,
+    "net12": -0.1914356538255564,
+    "net6": -0.12508373107480186,
+    "win": 0.2976588628762542,
+    "days": 283,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 350,
+    "gross": -0.02821293648834794,
+    "net12": -0.18092499919155955,
+    "net6": -0.10456896783995373,
+    "win": 0.31142857142857144,
+    "days": 134,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   }
+  },
+  "P2_event": {
+   "dev": {
+    "n": 426,
+    "gross": -0.15207120549834935,
+    "net12": -0.29222251095149915,
+    "net6": -0.22214685822492428,
+    "win": 0.284037558685446,
+    "days": 105,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   },
+   "val": {
+    "n": 232,
+    "gross": -0.24783825370791812,
+    "net12": -0.41358250433631244,
+    "net6": -0.33071037902211525,
+    "win": 0.23706896551724138,
+    "days": 69,
+    "trade_ci_low": NaN,
+    "day_ci_low": NaN,
+    "ex5": NaN,
+    "p_day": 1.0
+   }
+  },
+  "P3_event": null
+ },
+ "regime_mix": {
+  "DEV": {
+   "UP": 0.3141,
+   "DOWN": 0.3215,
+   "RANGE": 0.3644,
+   "P1cell": 0.1872,
+   "P2cell": 0.1515,
+   "known": 30385
+  },
+  "VAL": {
+   "UP": 0.2478,
+   "DOWN": 0.3513,
+   "RANGE": 0.401,
+   "P1cell": 0.1578,
+   "P2cell": 0.1218,
+   "known": 20960
+  }
+ },
+ "provenance": {
+  "BTC": {
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "n": 275620,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "t"
+  },
+  "ETH": {
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "n": 275620,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "t"
+  },
+  "BNB": {
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "n": 275620,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "t"
+  },
+  "XRP": {
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "n": 275620,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "t"
+  },
+  "ADA": {
+   "first": 1546300800000,
+   "last": 1794600900000,
+   "n": 275620,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "t"
+  },
+  "DOGE": {
+   "first": 1562328000000,
+   "last": 1794601800000,
+   "n": 257882,
+   "min_step": 900000,
+   "gaps": 18,
+   "max_gap_bars": 33,
+   "key": "ts"
+  },
+  "SOL": {
+   "first": 1597125600000,
+   "last": 1794600900000,
+   "n": 219324,
+   "min_step": 900000,
+   "gaps": 10,
+   "max_gap_bars": 19,
+   "key": "t"
+  },
+  "LTC": {
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "n": 275622,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "ts"
+  },
+  "LINK": {
+   "first": 1547632800000,
+   "last": 1794601800000,
+   "n": 274142,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "ts"
+  },
+  "TRX": {
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "n": 275622,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "ts"
+  },
+  "DOT": {
+   "first": 1597791600000,
+   "last": 1794601800000,
+   "n": 218586,
+   "min_step": 900000,
+   "gaps": 10,
+   "max_gap_bars": 19,
+   "key": "ts"
+  },
+  "AVAX": {
+   "first": 1600756200000,
+   "last": 1794601800000,
+   "n": 215292,
+   "min_step": 900000,
+   "gaps": 10,
+   "max_gap_bars": 19,
+   "key": "ts"
+  },
+  "ATOM": {
+   "first": 1556510400000,
+   "last": 1794601800000,
+   "n": 264302,
+   "min_step": 900000,
+   "gaps": 20,
+   "max_gap_bars": 41,
+   "key": "ts"
+  },
+  "ETC": {
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "n": 275622,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "ts"
+  },
+  "BCH": {
+   "first": 1574935200000,
+   "last": 1794601800000,
+   "n": 243923,
+   "min_step": 900000,
+   "gaps": 15,
+   "max_gap_bars": 24,
+   "key": "ts"
+  },
+  "XLM": {
+   "first": 1546300800000,
+   "last": 1794601800000,
+   "n": 275622,
+   "min_step": 900000,
+   "gaps": 21,
+   "max_gap_bars": 41,
+   "key": "ts"
+  },
+  "UNI": {
+   "first": 1600311600000,
+   "last": 1794601800000,
+   "n": 215786,
+   "min_step": 900000,
+   "gaps": 10,
+   "max_gap_bars": 19,
+   "key": "ts"
+  },
+  "NEAR": {
+   "first": 1602651600000,
+   "last": 1794601800000,
+   "n": 213186,
+   "min_step": 900000,
+   "gaps": 10,
+   "max_gap_bars": 19,
+   "key": "ts"
+  },
+  "FIL": {
+   "first": 1602781200000,
+   "last": 1794601800000,
+   "n": 213042,
+   "min_step": 900000,
+   "gaps": 10,
+   "max_gap_bars": 19,
+   "key": "ts"
+  },
+  "ALGO": {
+   "first": 1561161600000,
+   "last": 1794601800000,
+   "n": 259178,
+   "min_step": 900000,
+   "gaps": 18,
+   "max_gap_bars": 33,
+   "key": "ts"
+  }
+ },
+ "phase_csv_check": {
+  "days_compared": 4532,
+  "differing": 0
+ },
+ "code_commit": "13967cd392ecc9824f3547b93155fae84823a823",
+ "prereg_commit": "c9f514b9b08bd0b1a61edbb4bfc4ee5aa76c175a",
+ "total_cells": 15,
+ "primary_cells": 3,
+ "universe": [
+  "BTC",
+  "ETH",
+  "BNB",
+  "XRP",
+  "ADA",
+  "DOGE",
+  "SOL",
+  "LTC",
+  "LINK",
+  "TRX",
+  "DOT",
+  "AVAX",
+  "ATOM",
+  "ETC",
+  "BCH",
+  "XLM",
+  "UNI",
+  "NEAR",
+  "FIL",
+  "ALGO"
+ ]
+}

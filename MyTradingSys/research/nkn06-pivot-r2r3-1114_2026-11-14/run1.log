@@ -1,0 +1,40 @@
+BTC: key=t first=2019-01-01 00:00 last=2026-11-13 20:15 n=275620 gaps=21
+ETH: key=t first=2019-01-01 00:00 last=2026-11-13 20:15 n=275620 gaps=21
+BNB: key=t first=2019-01-01 00:00 last=2026-11-13 20:15 n=275620 gaps=21
+XRP: key=t first=2019-01-01 00:00 last=2026-11-13 20:15 n=275620 gaps=21
+ADA: key=t first=2019-01-01 00:00 last=2026-11-13 20:15 n=275620 gaps=21
+DOGE: key=ts first=2019-07-05 12:00 last=2026-11-13 20:30 n=257882 gaps=18
+SOL: key=t first=2020-08-11 06:00 last=2026-11-13 20:15 n=219324 gaps=10
+LTC: key=ts first=2019-01-01 00:00 last=2026-11-13 20:30 n=275622 gaps=21
+LINK: key=ts first=2019-01-16 10:00 last=2026-11-13 20:30 n=274142 gaps=21
+TRX: key=ts first=2019-01-01 00:00 last=2026-11-13 20:30 n=275622 gaps=21
+DOT: key=ts first=2020-08-18 23:00 last=2026-11-13 20:30 n=218586 gaps=10
+AVAX: key=ts first=2020-09-22 06:30 last=2026-11-13 20:30 n=215292 gaps=10
+ATOM: key=ts first=2019-04-29 04:00 last=2026-11-13 20:30 n=264302 gaps=20
+ETC: key=ts first=2019-01-01 00:00 last=2026-11-13 20:30 n=275622 gaps=21
+BCH: key=ts first=2019-11-28 10:00 last=2026-11-13 20:30 n=243923 gaps=15
+XLM: key=ts first=2019-01-01 00:00 last=2026-11-13 20:30 n=275622 gaps=21
+UNI: key=ts first=2020-09-17 03:00 last=2026-11-13 20:30 n=215786 gaps=10
+NEAR: key=ts first=2020-10-14 05:00 last=2026-11-13 20:30 n=213186 gaps=10
+FIL: key=ts first=2020-10-15 17:00 last=2026-11-13 20:30 n=213042 gaps=10
+ALGO: key=ts first=2019-06-22 00:00 last=2026-11-13 20:30 n=259178 gaps=18
+done BTC
+done ETH
+done BNB
+done XRP
+done ADA
+done DOGE
+done SOL
+done LTC
+done LINK
+done TRX
+done DOT
+done AVAX
+done ATOM
+done ETC
+done BCH
+done XLM
+done UNI
+done NEAR
+done FIL
+done ALGO

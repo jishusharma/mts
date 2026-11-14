@@ -1,0 +1,68 @@
+{
+  "approved_by": "",
+  "asks": "",
+  "closed": "2026-11-14T05:55:39Z",
+  "commands": [
+    "python scripts/dev/verify_extract_quotes.py MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/EXTRACT.md"
+  ],
+  "created": "2026-11-14T05:45:00Z",
+  "depends_on": [],
+  "done_when": "MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/EXTRACT.md exists, every call carries a verbatim quote and Source GPS, and verify_extract_quotes.py exits 0",
+  "formula_id": "",
+  "formula_ids": [],
+  "from_inbox": "",
+  "goal": "Extract every call (level, direction, date) Krown states in jI8dKkBSPuQ, each with a verbatim quote from the caption file and a Source GPS line, same format as MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md.",
+  "id": "gemini-cbp-krown-ji8dkkbspuq-1114",
+  "kind": "run",
+  "lane": "CODEX",
+  "latest": [
+    {
+      "kind": "ship",
+      "line": "MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/EXTRACT.md",
+      "ref": "bc3a45301",
+      "utc": "2026-11-14T05:55:39Z"
+    }
+  ],
+  "layers": [],
+  "live_path": false,
+  "mutation_check": "",
+  "next": "END: task done",
+  "note": "Run as gemini_queue.py run gemini-cbp-krown-ji8dkkbspuq-1114:low. Disk only, no YouTube request. Captions fetched 2026-11-14 via yt.py route v6.",
+  "prio": 2,
+  "refine_tries": 0,
+  "refined_by": "",
+  "refreshed": "2026-11-14T05:45:00Z",
+  "refs": [
+    "MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md"
+  ],
+  "result": "MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/EXTRACT.md",
+  "result_receipt": {
+    "trust": {
+      "tag": "UNCHECKED"
+    }
+  },
+  "scope_in": [
+    "MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/"
+  ],
+  "scope_out": [
+    "no repo code change",
+    "no numbers from our own docs or prior knowledge",
+    "never verify against a translation"
+  ],
+  "scope_sha": "",
+  "size": "M",
+  "sources": [
+    "CBP catch-up 2026-11-14 (cbp-gemini-catchup session)"
+  ],
+  "state": "done",
+  "steps": [
+    "Read only raw_transcripts_canonical/jI8dKkBSPuQ_raw.txt (English auto-captions) and MyTradingSys/research/cbp_gap_1112/RaTGViedzBQ/EXTRACT.md as the format example",
+    "Write MyTradingSys/research/cbp_gap_1114/jI8dKkBSPuQ/EXTRACT.md: one block per call, > \"exact line from the caption file\", Source GPS: jI8dKkBSPuQ | BEGIN|MIDDLE|END; no numbers not quoted",
+    "Run verify_extract_quotes.py until exit 0; commit on your branch"
+  ],
+  "taken": "",
+  "tests": "scripts/dev/verify_extract_quotes.py",
+  "title": "[GEMINI] CBP call extract, Krown jI8dKkBSPuQ",
+  "weight": "ROUTINE",
+  "worker": "gemini"
+}
