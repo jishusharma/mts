@@ -997,11 +997,9 @@ MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/study.py	fullsa
 MyTradingSys/research/wt_bible_studies_2026-11-04/wt_mtf_nesting/study.py	fwd-index	"gross": s * (c[i + H] - c[i]) / c[i] * 100.0, "phase": 0, "age": float("nan"), "slope": 0}	c[i+H] is the trade EXIT 12 bars after the dot-bar close entry (outcome), never a signal input; phase/slope lookups use closes at or before the entry bar close (searchsorted side=right on close times)
 MyTradingSys/research/wt_extreme_cross_2026-11/study.py	fwd-index	return [bars[k + 1]["t"] for k in keep], [r[k] for k in keep]	bars[k+1][t] is the OPEN of the next weekly/monthly bar = close time of bar k; final bar dropped; timestamp for as-of gating only (same helper as wavetrend_c30_retest study.py)
 MyTradingSys/research/wt_extreme_cross_volmatch_2026-11/study.py	fullsample-quantile	return np.nanquantile(np.asarray(x, float), np.arange(1, 10) / 10.0)	reviewed 2026-11-05: ATR deciles over the whole DEV window are the PRE_REG matched baseline of a descriptive study (no trade rule, no forward use)
-<<<<<<< HEAD
 MyTradingSys/research/xsec_momentum_2026-11/study.py	fullsample-quantile	res["placebo"][mode] = {k: {"p5": float(np.percentile(v, 5)), "mean": float(np.mean(v)), "p95": float(np.percentile(v, 95))}	pre-existing, unreviewed
 MyTradingSys/research/xsec_momentum_2026-11/study.py	fullsample-quantile	return {"mean": float(x.mean()), "lo": float(np.percentile(means, 2.5)), "hi": float(np.percentile(means, 97.5)),	pre-existing, unreviewed
 MyTradingSys/research/xsec_momentum_2026-11/study.py	fwd-index	r = b[t + WEEK] / b[t] - 1	pre-existing, unreviewed
-=======
 MyTradingSys/research/buyzone_test1_ladder_2026-11-14/ladder.py	fwd-index	out[i + 1] = 100.0 if ad == 0 else 100 - 100 / (1 + au / ad)	reviewed: RSI value stored at the bar whose close completes the diff (index shift of diff array), not future data
 MyTradingSys/research/buyzone_test1_ladder_2026-11-14/ladder.py	pivot-right-neighbour	w = np.concatenate([l[i - K:i], l[i + 1:i + K + 1]])	reviewed: swing low needs K right bars; it is known only at i+K and find_signals uses it only from bar j+K (test_causality_by_truncation)
 MyTradingSys/research/buyzone_test1_ladder_2026-11-14/ladder.py	fwd-index	if l[j + 1:cc + 1].min() <= l[j]:	reviewed: range ends at the signal bar cc (closed), never beyond
@@ -1064,4 +1062,3 @@ MyTradingSys/research/t9_weekly_trend_pullback_long_2026-11-14/t9_core.py	fwd-in
 MyTradingSys/research/t9_weekly_trend_pullback_long_2026-11-14/test_t9_core.py	fwd-index	c2[d0 + 1:] *= rs.uniform(0.3, 3.0, len(c2) - d0 - 1)	reviewed 2026-11-14 T9: test builds synthetic post-d0 prices on purpose; not a signal
 MyTradingSys/research/value_area_acceptance_2026-11-05/placebo80.py	fwd-index	later = flat_low[k + 1:]	reviewed 2026-11-14: outcome window (bars after the event bar) for the same-day result, never an input to the event; same rule as accept80.py
 MyTradingSys/research/value_area_acceptance_2026-11-05/placebo80.py	fwd-index	rest = [b for seg in segs[k + 1:] for b in seg]	reviewed 2026-11-14: outcome window (bars after the event bar) for the same-day result, never an input to the event; same rule as accept80.py
->>>>>>> origin/fast-track
