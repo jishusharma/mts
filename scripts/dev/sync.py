@@ -1656,7 +1656,15 @@ def ahead_commits(path, n):
     if not n:
         return n
     base = git(path, "merge-base", f"origin/{TRUNK}", "HEAD", check=False)
-    if base.returncode == 0 and base.stdout.strip() and git(path, "diff", "--quiet", base.stdout.strip(), "HEAD", check=False).returncode == 0:
+    if base.returncode != 0 or not base.stdout.strip():
+        return n
+    base = base.stdout.strip()
+    if git(path, "diff", "--quiet", base, "HEAD", check=False).returncode == 0:
+        return 0
+    # Moved trunk: every file this branch changed since the merge-base already equals the trunk tip, so the content is shipped.
+    files = git(path, "-c", "core.quotepath=off", "diff", "--name-only", base, "HEAD", check=False)
+    names = [f for f in files.stdout.splitlines() if f] if files.returncode == 0 else []
+    if names and git(path, "diff", "--quiet", f"origin/{TRUNK}", "HEAD", "--", *names, check=False).returncode == 0:
         return 0
     return n
 
