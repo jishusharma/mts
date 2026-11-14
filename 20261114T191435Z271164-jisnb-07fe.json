@@ -1,0 +1,1 @@
+{"t": "20261114T191435Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship Result: re-applied 12b959cb0 and fixed deliver() calling preship.docs_ship_failures(wt) without paths (the 3 red tests in test_gemini_queue_delivery_1113); it now passes (str(wt), changed paths v", "login": "C", "sid": "6b0b349536"}
