@@ -1,0 +1,8 @@
+Mutation check: each mutant of t12_core.py is run against test_t12_core.py; a mutant must make >=1 test fail.
+
+stop ignored on exit-day (stop loop ends one bar early)        -> KILLED  1 failed, 34 passed in 3.85s
+funding sign not flipped for shorts                            -> KILLED  1 failed, 34 passed in 3.23s
+percentile window includes the signal day                      -> KILLED  1 failed, 34 passed in 2.90s
+entry at signal bar open instead of next open                  -> KILLED  1 failed, 34 passed in 3.06s
+fee constant private 10bp                                      -> KILLED  2 failed, 33 passed in 3.46s
+Sunday assigned to next week                                   -> KILLED  1 failed, 34 passed in 4.63s
