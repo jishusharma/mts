@@ -29,6 +29,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import nowin  # noqa: E402
 
 SOCKS = ("127.0.0.1", 40050)   # OURS (WARP's wireproxy uses 40000)
 CONTROL = ("127.0.0.1", 40051)
@@ -228,7 +229,7 @@ def stop():
     if _control("SIGNAL SHUTDOWN"):
         return True
     if os.name == "nt":
-        return subprocess.run(["taskkill", "/F", "/IM", "tor.exe"], capture_output=True).returncode == 0
+        return subprocess.run(["taskkill", "/F", "/IM", "tor.exe"], capture_output=True, creationflags=nowin.NOWIN).returncode == 0
     return False
 
 

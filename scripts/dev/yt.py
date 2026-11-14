@@ -40,6 +40,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import nowin  # noqa: E402
 import yt_mirrors as mirrors  # noqa: E402
 import yt_tor  # noqa: E402
 import fetch_captions_timed as ft  # noqa: E402
@@ -702,7 +703,7 @@ class AsrRoute(Route):
         out.unlink(missing_ok=True)
         cmd = [self.python(), str(HERE / "asr_transcribe.py"), "--audio", str(audio), "--out", str(out), "--model", model,
                "--language", lang, "--no-hotwords"]
-        r = run(cmd, capture_output=True, text=True)
+        r = run(cmd, capture_output=True, creationflags=nowin.NOWIN, text=True)
         if r.returncode != 0 or not out.exists():
             raise RouteDown("whisper failed: " + (r.stderr or r.stdout or "")[-80:])
         cues = []
@@ -739,14 +740,14 @@ class GhaRoute(Route):
             raise RouteDown("gh not installed")
         t0 = _now() - timedelta(seconds=10)
         r = run([gh, "workflow", "run", "yt-fetch.yml", "--ref", os.environ.get("YT_GHA_REF", "fast-track"),
-                 "-f", "ids=" + ",".join(vids), "-f", "langs=" + ",".join(langs)], cwd=str(ROOT), capture_output=True, text=True)
+                 "-f", "ids=" + ",".join(vids), "-f", "langs=" + ",".join(langs)], cwd=str(ROOT), capture_output=True, creationflags=nowin.NOWIN, text=True)
         if r.returncode != 0:
             raise RouteDown("dispatch failed: " + (r.stderr or r.stdout)[-80:])
         rid = None
         for _ in range(12):
             sleep(5)
             out = run([gh, "run", "list", "--workflow", "yt-fetch.yml", "--limit", "5", "--json",
-                       "databaseId,createdAt,event"], cwd=str(ROOT), capture_output=True, text=True).stdout
+                       "databaseId,createdAt,event"], cwd=str(ROOT), capture_output=True, creationflags=nowin.NOWIN, text=True).stdout
             try:
                 rows = [x for x in json.loads(out or "[]") if x.get("event") == "workflow_dispatch"
                         and (_t(x.get("createdAt")) or t0) >= t0]
@@ -759,7 +760,7 @@ class GhaRoute(Route):
             raise RouteDown("run did not appear")
         end = time.monotonic() + timeout_s
         while time.monotonic() < end:
-            out = run([gh, "run", "view", str(rid), "--json", "status,conclusion"], cwd=str(ROOT), capture_output=True,
+            out = run([gh, "run", "view", str(rid), "--json", "status,conclusion"], cwd=str(ROOT), capture_output=True, creationflags=nowin.NOWIN,
                       text=True).stdout
             try:
                 st = json.loads(out or "{}")
@@ -773,7 +774,7 @@ class GhaRoute(Route):
         else:
             raise RouteDown(f"run {rid} still running after {timeout_s} s")
         with tempfile.TemporaryDirectory() as td:
-            r = run([gh, "run", "download", str(rid), "-D", td], cwd=str(ROOT), capture_output=True, text=True)
+            r = run([gh, "run", "download", str(rid), "-D", td], cwd=str(ROOT), capture_output=True, creationflags=nowin.NOWIN, text=True)
             if r.returncode != 0:
                 raise RouteDown("artifact download failed: " + (r.stderr or "")[-60:])
             got = {}
@@ -803,7 +804,7 @@ class FleetRoute(Route):
         shown = ",".join(vids[:6]) + (f" (+{len(vids) - 6} more, see yt_waiting)" if len(vids) > 6 else "")
         text = f"yt-freedom: fetch captions {shown}: python scripts/dev/yt.py get <id> --no-remote; ship cache files via sync.py"
         r = run([sys.executable, str(HERE / "mts_signal.py"), "ask", text[:190], "--to", "all", "--type", "task"],
-                capture_output=True, text=True, cwd=str(ROOT))
+                capture_output=True, creationflags=nowin.NOWIN, text=True, cwd=str(ROOT))
         m = re.search(r"\bq-[0-9a-f]{6}\b", (r.stdout or "") + (r.stderr or ""))
         if r.returncode != 0 and not m:
             raise RouteDown("ask failed: " + (r.stderr or r.stdout or "")[-60:])
@@ -1075,9 +1076,9 @@ def cmd_health(a, routes=None, log=print):
 def restart_wireproxy():
     """Kill any wireproxy and start it again through the existing helper; returns True when the port answers."""
     if os.name == "nt":
-        subprocess.run(["taskkill", "/F", "/IM", "wireproxy.exe"], capture_output=True)
+        subprocess.run(["taskkill", "/F", "/IM", "wireproxy.exe"], capture_output=True, creationflags=nowin.NOWIN)
     else:
-        subprocess.run(["pkill", "-x", "wireproxy"], capture_output=True)
+        subprocess.run(["pkill", "-x", "wireproxy"], capture_output=True, creationflags=nowin.NOWIN)
     SLEEP(1)
     return ft.ensure_proxy(wait=40)
 
