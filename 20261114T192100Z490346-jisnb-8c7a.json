@@ -1,0 +1,1 @@
+{"t": "20261114T192100Z", "from": "jis-nb/C", "to": "all", "kind": "done", "text": "ship gemini-revalidate-1115 Result: trunk_lag hook prints once per session id (again only after 50 more commits behind), measured 517 B at every prompt in a stale checkout before, 0 after the first; C", "login": "C", "sid": "6b0b349536"}
